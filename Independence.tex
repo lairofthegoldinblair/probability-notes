@@ -1,0 +1,841 @@
+\section{Independence}
+\begin{defn}Given a measure space $(\Omega, \mathcal{A}, P)$, a set $T$ and a
+  collection of $\sigma$-algebras $\mathcal{F}_t$ for $t \in T$, we
+  say that the $\mathcal{F}_t$ are \emph{k-ary independent} if for every
+  finite subset $t_1,\dots, t_n \in T$ with $n \leq k$ and every $A_{t_i} \in
+  \mathcal{F}_{t_i}$ we have $\probability{A_{t_1} \cap \cdots \cap A_{t_n}} =
+  \probability{A_{t_1}}\cdots\probability{A_{t_n}}$.  We say that
+  $\mathcal{F}_t$ are \emph{independent} if the
+  $\mathcal{F}_t$ are k-ary independent for every $k>0$.  It is common
+  to refer to independent events as \emph{jointly independent}
+  or \emph{mutually independent}
+  events when it is desirable to provide emphasis that we are not
+  considering k-ary independence for some particular value of k.  Furthermore, 2-ary independent events are often referred to
+  as \emph{pairwise independent} events.
+\end{defn}
+\begin{defn}Given a probability space $(\Omega, \mathcal{A}, P)$, a set $T$ and a
+  collection of random elements $\xi_t : (\Omega, \mathcal{A}) \to
+  (S_t, \mathcal{S}_t)$ for $t \in T$, we
+  say that the $\xi_t$ are \emph{independent} if the $\sigma$-algebras
+  $\sigma(\xi_t)$ are independent.
+\end{defn}
+\begin{examp}Given two sets $A,B \in \mathcal{A}$ it is easy to see that $\sigma(A)$
+  and $\sigma(B)$ are independent if and only if $\probability{A \cap B} =
+  \probability{A}\cdot \probability{B}$ thus the notion of
+  independence of $\sigma$-algebras generalizes the
+  simple notion of independence from elementary probability.
+\end{examp}
+\begin{examp}Consider the space of triples
+  $\{ (0,0,0),(0,1,1),(1,0,1),(1,1,0) \}$ with a uniform distribution.  Let
+  $\xi_1,\xi_2,\xi_3$ be the coordinate functions.  Note that each of
+  $\xi_i$ is uniformly distributed and that each joint distribution
+  $(\xi_i,\xi_j)$ for $i \neq j$ is uniformly distributed as well.
+  This shows that the $\xi_i$ are pairwise independent.  On the other
+  hand, note that joint distribution $(\xi_1,\xi_2,\xi_3)$ is also
+  uniformly distributed hence does not equal the product of the
+  marginal distributions hence the $\xi_i$ are not jointly
+  independent.  Intuitively the source of the dependence is clear; we
+  have arranged the sample space so that specifying two coordinate
+  values determines the value of the third coordinate.  Note this
+  example can also be framed in a more elementary way in terms of
+  events.  Consider the events $A_1 = \{(0,0,0),(0,1,1)\}$, $A_2 =
+  \{(0,0,0),(1,0,1)\}$ and $A_3 = \{(0,1,1),(1,0,1)\}$.  Note that the
+  events are pairwise independent but not independent.
+\end{examp}
+
+\begin{lem}\label{IndependenceProductMeasures}Suppose we are given a finite collection of
+  random elements $\xi_1, \dots, \xi_n$ in measurable spaces
+  $S_1, \dots, S_n$ with distributions $\mu_1, \dots, \mu_n$.  The
+  $\xi_i$ are independent if and only if the distribution of $(\mu_1,
+  \dots, \mu_n)$ on $S_1 \times \cdots \times S_n$ is $\mu_1 \otimes
+  \cdots \otimes \mu_n$.
+\end{lem}
+\begin{proof}If we assume that joint distribution of $\xi_i$ is $\mu_1 \otimes
+  \cdots \otimes \mu_n$ the clearly $\xi_i$ are independent since 
+\begin{align*}
+\probability{\xi_1^{-1}(B_1) \cap \cdots \cap \xi_n^{-1}(B_n)} &=
+\probability{(\xi_1, \dots, \xi_n)^{-1}(B_1 \times \cdots \times B_n)}
+  \\
+&=\probability{\xi_1^{-1}(B_1)} \cdots \probability{\xi_n^{-1}(B_n)}
+\end{align*}
+
+On the other hand, if we assume that the $\xi_i$ are independent the
+above calculation shows that $(\pushforward{(\xi_1, \dots, \xi_n)}{P}) =
+\mu_1 \otimes \cdots \otimes \mu_n$ on cylinder sets which together
+with the finiteness of probability measures shows that
+they are equal everywhere by the uniqueness of product measure proved
+in Theorem \ref{Fubini}.
+\end{proof}
+
+The fact that the joint distribution of indpendent random variables
+only depends on the distribution of the underlying random variables
+has the important consequence that the distribution of \emph{sums} of
+independent random variables also only depends on the distribution of
+the underlying random variables.  However we can actually be a bit
+more precise than that.
+
+\begin{defn}A \emph{measurable group} is a group $G$ with a
+  $\sigma$-algebra $\mathcal{G}$ such that the group inverse is
+$\mathcal{G}$-measurable and the group operation is $\mathcal{G}
+\otimes \mathcal{G} / \mathcal{G}$-measurable.
+\end{defn}
+\begin{defn}Given two $\sigma$-finite measures $\mu$ and $\nu$ on a measurable group
+  $(G, \mathcal{G})$, the \emph{convolution} $\mu * \nu$ is the measure on $G$ defined
+  by taking the pushforward of $\mu \otimes \nu$ under the group operation.
+\end{defn}
+\begin{lem}\label{Convolution}Convolution of measures on a measurable group $(G,
+  \mathcal{G})$ is associative.  Furthermore, if $G$ is Abelian, then
+  convolution of measures is commutative and we have the formula
+\begin{align*}
+\mu * \nu (B) &= \int \mu(B - g) \, d \nu(g) = \int \nu(B - g) \,  d \mu(g)
+\end{align*}
+\end{lem}
+\begin{proof}First we derive the formula for the convolution of two
+  measures as integrals.
+Suppose we are given
+  $\sigma$-finite measures $\mu, \nu$ and  a measurable
+  $A \in \mathcal{G}$.  Define $A^2 = \lbrace(g,h) \mid gh \in
+  A\rbrace$ and then the definition of the pushforward of a
+  measure,the construction of product measure and Tonelli's Theorem we get
+\begin{align*}
+\left(\mu*\nu \right)(A) &= \left(\mu \otimes \nu\right) (A^2) \\
+&= \int
+\int \characteristic{A^2}(g,h) \, d(\mu\otimes \nu)(g,h) \\
+&= \int \left [
+\int \characteristic{A^2}(g,h) \, d \mu(g) \right ]
+d\nu(h) \\
+&= \int \left [
+\int \characteristic{A^2}(g,h) \, d\nu(h) \right ]
+d \mu(g) \\
+\end{align*}
+Now consider the inner integral for a fixed $h \in G$ and define for
+each such fixed $h$ the right translation $Ah^{-1}$ and note that as a
+function of $g$ alone, $\characteristic{A^2}(g,h) =
+\characteristic{Ah^{-1}}(g)$.  Similarly, for fixed $g$ we introduce
+the left translation $g^{-1}A$ and have  $\characteristic{A^2}(g,h) =
+\characteristic{g^{-1}A}(h)$. Substituting into the integrals above, 
+\begin{align*}
+\left(\mu*\nu \right)(A) &= \int \mu(A\cdot g^{-1}) \, d \nu(g) = \int
+\nu(g^{-1}\cdot A) \, d \mu(g)
+\end{align*}
+In particular, if $G$ is Abelian then $g^{-1}\cdot A = A\cdot g^{-1}$ and we have
+the formula above.
+
+To see the associativity is an application of Tonelli's
+  Theorem with a bit of messy notation.  Suppose we are given
+  $\sigma$-finite measures $\mu_1, \mu_2, \mu_3$ and  a measurable
+  $A \in \mathcal{G}$.  Define $A^3 = \lbrace(g,h,k) \mid ghk \in
+  A\rbrace$ and note that for fixed $h,k$ we have
+  $\characteristic{A^3}(g,h,k) = \characteristic{Ak^{-1}h^{-1}}(g)$
+  and for fixed $g,h$ we have $\characteristic{A^3}(g,h,k) =
+  \characteristic{k^{-1}g^{-1}A}(k)$ 
+Now applying this observation and the integral formula above
+\begin{align*}
+\left((\mu_1 * \mu_2)*\mu_3 \right)(A) &= \int (\mu_1 *
+\mu_2)(Ak^{-1}) \, d\mu_3(k) \\
+&= \int \int \mu_1(Ak^{-1}h^{-1}) \, d\mu_2(h) d\mu_3(k) \\
+&= \int \int \int \characteristic{A^3}(g,h,k) \, d \mu_1(g) d\mu_2(h) d\mu_3(k) \\
+&= \int \int \int \characteristic{A^3}(g,h,k) \, d\mu_3(k) d\mu_2(h) d \mu_1(g) \\
+&= \int \int \mu_3(h^{-1} g^{-1} A) \, d\mu_2(h) d\mu_1(g) \\
+&= \int  (\mu_2 *\mu_3)(g^{-1} A) \, d\mu_1(g) \\
+&= \left(\mu_1 *  (\mu_2 *\mu_3) \right )(A)
+\end{align*}
+\end{proof}
+\begin{defn}A measure $\mu$ on a measurable group
+  $(G, \mathcal{G})$ is said to be \emph{left invariant} if for every
+  $g \in G$ and $A \in \mathcal{G}$, $\mu(g\cdot A) = \mu(A)$.  A
+  measure is said to be \emph{right invariant} if for every
+  $g \in G$ and $A \in \mathcal{G}$, $\mu(A\cdot g) = \mu(A)$.  A
+  measure that is both right invariant and left invariant is said to
+  be \emph{invariant}.
+\end{defn}
+\begin{lem}\label{ConvolutionDensity}Let $\lambda$ be an invariant measure on a measurable Abelian group
+  $(G, \mathcal{G})$ and let $\mu = f \cdot \lambda$ and $\nu = g
+  \cdot \lambda$ be measures which have densities with respect to
+  $\lambda$.  Then $\mu * \nu$ has the $\lambda$-density
+\begin{align*}
+(f * g)(x) &= \int f(x-y) g(y) \, d\lambda(y)
+\end{align*}
+\end{lem}
+\begin{proof}
+By the integral formula for convolution, given $A \in \mathcal{G}$,
+\begin{align*}
+(\mu * \nu)(A) &= \int \mu(A - y) \, d \nu(y) \\
+&= \int \int\characteristic{A - y}(x) f(x) g(y) \, d\lambda(x)
+d\lambda(y) \\
+&= \int \int\characteristic{A}(x+y) f(x) g(y) \, d\lambda(x)
+d\lambda(y) \\
+&= \int \int\characteristic{A}(x) f(x-y) g(y) \, d\lambda(x)
+d\lambda(y) \\
+&= \int \characteristic{A}(x) \left [ \int f(x-y) g(y) \, d\lambda(y)
+  \right ] d\lambda(x) \\
+&= ((f*g) \cdot \lambda)(A)
+\end{align*}
+\end{proof}
+\begin{examp}Let $\xi$ and $\eta$ be independent $N(0,1)$ random
+  variables.  Then $\xi + \eta$ is an $N(0,2)$ random variable.  From
+  Corollary \ref{ConvolutionDensity}, we
+  know $\xi + \eta$ has density given by the convolution of Gaussian
+  densities.
+\begin{align*}
+\frac{1}{2\pi} \int e^\frac{-(x-y)^2}{2} e^\frac{-y^2}{2} dy &=
+\frac{1}{2\pi} \int e^{-(y^2 -xy + \frac{1}{2}x^2)} dy =
+\frac{1}{2\pi} e^\frac{-x^2}{4} \int e^{-(y - \frac{x}{2})^2} dy =
+\frac{1}{\sqrt{4\pi}} e^\frac{-x^2}{4}
+\end{align*}
+\end{examp}
+
+\begin{lem}\label{IndependencePiSystem}Suppose we are given two
+  $\pi$-systems $\mathcal{S}$ and $\mathcal{T}$ in a probability space
+  $(\Omega, \mathcal{A}, P)$ such that
+  $\probability{A \cap B} = \probability{A} \probability{B}$ for all
+  $A \in \mathcal{S}$ and $B \in \mathcal{T}$.  Then
+  $\sigma(\mathcal{S})$ and $\sigma(\mathcal{T})$ are independent.
+\end{lem}
+\begin{proof}
+This is simply a pair of monotone class arguments.  First pick
+arbitrary element $A
+\in \mathcal{A}$.  We define $\mathcal{C} = \lbrace B \in
+  \mathcal{A} \mid  \probability{A \cap B} =  \probability{A}
+  \probability{B} \rbrace$.  We claim that $\mathcal{C}$ is a
+  $\lambda$-system.  First it is clear that $\Omega \in \mathcal{C}$.
+  Next assume that $B,C \in \mathcal{C}$ with $C \supset B$.  Then $C
+\setminus B \in \mathcal{C}$ because
+\begin{align*}
+\probability{A\cap ( C \setminus B)} &= \probability{ (A \cap C)
+  \setminus (A \cap B)} \\
+&=\probability{ A \cap C}
+  - \probability{A \cap B} \\
+&=\probability{ A} \probability{C}
+  - \probability{A} \probability{B} \\
+&=\probability{A} \left(\probability{C}
+  - \probability{B} \right) =  \probability{ A}
+\probability{C\setminus B}\\
+\end{align*}
+Next assume that $B_1 \subset B_2 \subset \cdots$ with $B_i \in
+\mathcal{C}$. We have $\cup_{n=1}^\infty B_n \in \mathcal{C}$ by the calculation
+\begin{align*}
+\probability{A\cap\cup_{n=1}^\infty B_n} &=
+\probability{\cup_{n=1}^\infty A \cap B_n} & & \text{by DeMorgan's
+  Law} \\
+&=\lim_{n \to \infty} \probability{ A \cap B_n} & & \text{by
+  Continuity of Measure} \\
+&=\lim_{n \to \infty} \probability{ A} \probability{B_n} & &
+\text{since $B_n \in \mathcal{C}$}\\
+&=\probability{ A} \lim_{n \to \infty} \probability{B_n} \\
+&=\probability{A} \probability{\cup_{n=1}^\infty B_n} & & \text{by
+  Continuity of Measure}\\
+\end{align*}
+
+Our assumption is that if we pick $A \in \mathcal{S}$, then $\mathcal{T} \subset \mathcal{C}$ so the
+$\pi$-$\lambda$ Theorem (Theorem \ref{MonotoneClassTheorem}) shows
+that $\sigma(\mathcal{T}) \subset \mathcal{C}$.  Since our choice of
+$A \in \mathcal{S}$ can be arbitrary, we know for every for every $A\in \mathcal{S}$ and
+every $B \in \sigma(\mathcal{T})$ we have $\probability{A \cap B} =
+\probability{A} \probability{B}$.  
+
+It remains to extend $\mathcal{S}$ to $\sigma(\mathcal{S})$.  This is
+done in exactly the same way.   Pick a $B \in \sigma(\mathcal{T})$ and define $\mathcal{D} \lbrace A \in
+  \mathcal{A} \mid  \probability{A \cap B} =  \probability{A}
+  \probability{B} \rbrace$.  We have shown that  $\mathcal{D}$ is a
+  $\lambda$-system and that $\mathcal{S} \subset \mathcal{D}$ hence
+  the $\pi$-$\lambda$ Theorem gives us $\mathcal{D} \supset
+  \sigma(\mathcal{S})$.  Since $B\in \sigma(\mathcal{T})$ was
+  arbitrary we have shown independence of $\sigma(\mathcal{S})$ and $\sigma(\mathcal{T})$.
+\end{proof}
+
+\begin{lem}\label{IndependenceGrouping}Let $\mathcal{A}_t$ for $t \in
+  T$ be an independent family of $\sigma$-algebras on $\Omega$.  The
+  for any disjoint partition $\mathcal{T}$ of $T$ we have
+  $\sigma(\bigcup_{s \in S} \mathcal{A}_s)$ are independent where $S
+  \in \mathcal{T}$.
+\end{lem}
+\begin{proof}
+For $S$ and element of the partition of $T$, let $\mathcal{C}_S$ be
+the set of all finite intersections of elements from $\cup_{s \in S}
+\mathcal{A}_s$.  Clearly each $\mathcal{C}_S$ is a $\pi$-system that
+generates $\sigma (\bigcup_{s \in S} \mathcal{A}_s)$.  Moreover,
+the independence of the $\mathcal{A}_t$ for all $t \in T$ shows that
+the $\mathcal{C}_S$ are independent $\pi$-systems by
+associativity of finite intersection of sets and multiplication in $\reals$.
+Thus Lemma \ref{IndependencePiSystem} shows the result.
+\end{proof}
+
+Note that the previous lemma can be taken as demonstrating that
+independence of sets cannot be destroyed by applying the operations of
+complementation, countable union and countable intersection.  The
+property of independence is also very robust in the sense that it
+cannot be destroyed by composition with any measurable mapping.
+\begin{lem}\label{IndependenceComposition}A
+  finite collection of random elements $\xi_1, \dots, \xi_n$ in
+  measurable spaces $(S_1,\mathcal{S}_1), \cdots, (S_n,
+  \mathcal{S}_n)$ is independent if and only $f_1 \circ \xi_1, \cdots,
+  f_n \circ \xi_n$ is independent for every measurable $f_1, \cdots, f_n$.
+\end{lem}
+\begin{proof}The reverse implication is clear because the identity on
+  every $(S_i, \mathcal{S}_i)$ is measurable.
+
+Now if $\xi_i$ are independent then by definition $\sigma(\xi_i)$ are
+independent $\sigma$-algebras.  But for any measurable $f_i$, $\sigma(f_i \circ \xi_i) \subset
+\sigma(\xi_i)$ and therefore the $f_1 \circ \xi_1, \cdots,
+  f_n \circ \xi_n$ are independent.
+\end{proof}
+
+Implicit in a few of the above proofs is the fact that independence
+among groups of independent objects can be reduced to checking
+independence of finite subsets within the groups.  Here is a
+codification of this fact stated in the simple case of checking
+pairwise independence.
+\begin{lem}\label{IndependenceFinitary}Let $\mathcal{F}_t$ and
+  $\mathcal{G}_s$ be sets of $\sigma$-algebras. Then
+  $\sigma(\bigcup_{t \in T} \mathcal{F}_t)$ is independent of
+  $\sigma(\bigcup_{s \in S} \mathcal{G}_s)$ if an only if for every
+  finite subset $T^\prime \subset T$ and $S^\prime \subset S$, we have $\sigma(\bigcup_{t \in T^\prime} \mathcal{F}_t)$ is independent of
+  $\sigma(\bigcup_{s \in S^\prime} \mathcal{G}_s)$
+\end{lem}
+\begin{proof}
+One direction of this is trivial.  For the other direction suppose we
+have independence over each of the finite subsets.  To prove the
+result note that set of finite intersections of elements of
+$\bigcup_{t \in T} \mathcal{F}_t$
+is a $\pi$-system that generates $\sigma(\bigcup_{t \in T}
+\mathcal{F}_t)$ (and similarly with $S$).  Our assumption tells us
+that these $\pi$-systems are independent hence we appeal to Lemma \ref{IndependencePiSystem}.
+\end{proof}
+
+\begin{lem}\label{IndependenceExpectations}A
+  finite collection of random elements $\xi_1, \dots, \xi_n$ in
+  measurable spaces $(S_1,\mathcal{S}_1), \cdots, (S_n,
+  \mathcal{S}_n)$ is
+  independent if and only if 
+\begin{align*}
+\expectation{f_1(\xi_1) \cdots f_n(\xi_n)} =
+  \expectation{f_1(\xi_1)} \cdots \expectation{f_n(\xi_n)}
+\end{align*}
+for all $f_i : S_n \to \reals$ that are either bounded
+measurable or positive measurable.
+\end{lem}
+\begin{proof}
+Note that for the special case $f_i = \characteristic{A_i}$ for 
+Borel sets $A_i \in \mathcal{B}(\reals)$, $f_i(\xi_i) =
+\characteristic{f_i^{-1}(A_i)}$ and therefore the claim is equivalent to
+the definition of independence as we can see by the following
+calculation
+\begin{align*}
+\expectation{f_1(\xi_1) \cdots f_n(\xi_n)} &=
+\expectation{\characteristic{f_1^{-1}(A_1)} \cdots
+  \characteristic{f_n^{-1}(A_n)}} \\
+&= \probability{f_1^{-1}(A_1) \cap \cdots \cap f_n^{-1}(A_n)} \\
+&= \probability{f_1^{-1}(A_1) } \cdots \probability{f_n^{-1}(A_n)} \\
+&=\expectation{f_1(\xi_1)} \cdots \expectation{f_n(\xi_n)}
+\end{align*}
+Therefore if we assume the result for all positive or bound measurable
+$f$ then we certainly have independence.  
+
+On the other hand if we assume independence of the $\xi_i$ then we
+know that the desired result holds for $f_i$ that are indicator
+functions.  It remains to apply the standard machinery to derive the
+result for more general $f_i$.
+
+For $f_i$ simple functions we simply use linearity of expectation.  If
+we write $f_i = c_{1,i} \characteristic{A _{1_i,i}} + \cdots + c_{m_i,i}
+\characteristic{A _{m_i, i}}$ then 
+\begin{align*}
+\expectation{f_1(\xi_1) \cdots f_n(\xi_n)} &= \sum_{k_1 = 1}^{m_1}
+\cdots \sum_{k_n = 1}^{m_n} c_{k_1, 1} \cdots c_{k_n, n}
+\expectation{\characteristic{A_{k_1,1}}(\xi_1)
+  \cdots\characteristic{A_{k_n,n}}(\xi_n)} \\
+&= \sum_{k_1 = 1}^{m_1}
+\cdots \sum_{k_n = 1}^{m_n} c_{k_1, 1} \cdots c_{k_n, n}
+\expectation{\characteristic{A_{k_1,1}}(\xi_1)} \cdots
+\expectation{\characteristic{A_{k_n,n}}(\xi_n)} \\
+&= \sum_{k_1 = 1}^{m_1} c_{k_1, 1} \expectation{\characteristic{A_{k_1,1}}(\xi_1)} 
+\cdots \sum_{k_n = 1}^{m_n} c_{k_n, n}
+\expectation{\characteristic{A_{k_n,n}}(\xi_n)} \\
+&=\expectation{f_1(\xi_1)} \cdots \expectation{f_n(\xi_n)}
+\end{align*}
+
+To show the result for positive $f$, first start by assuming that
+$f_1$ is positive and $f_2, \cdots, f_n$ are simple.  Pick $f_{i,1}$
+increasing simple functions such that $f_{i,1} \uparrow f_1$.  Then we
+have $f_{i,1} f_2 \cdots f_n \uparrow f_1 f_2 \cdots f_n$ we have
+\begin{align*}
+\expectation{f_1(\xi_1) \cdots f_n(\xi_n)} &= \lim_{i\to
+  \infty}\expectation{f_{i,1}(\xi_1) \cdots f_n(\xi_n)} & & \text{by
+  Monotone Convergence} \\
+&=\lim_{i\to
+  \infty}\expectation{f_{i,1}(\xi_1)} \cdots \expectation{f_n(\xi_n)}
+& & \text{result for simple functions} \\
+&=\expectation{f_1(\xi_1)} \cdots \expectation{f_n(\xi_n)} & &\text{by
+  Monotone Convergence}
+\end{align*}
+Having shown the result for $f_1$ positive and $f_2, \cdots, f_n$
+simple just iterate with Monotone Convergence as above to see the result for all
+$f_1, \cdots, f_n$ positive.
+
+For $f_i$ bounded, first write $f_1 = f_1^+ - f_1^-$ with $f_1^\pm
+\geq 0$ and bounded and assume that $f_2, \dots, f_n$ are positive and
+bounded.  Note that
+$f_1^\pm \circ \xi$ is integrable by the boundedness of $f_1^\pm$.
+Therefore by linearity of expectation and the fact that we have proven
+the result for positive $f_i$
+\begin{align*}
+\expectation{f_1(\xi_1) f_2(\xi_2) \cdots f_n(\xi_n)} &=
+\expectation{f_1^+(\xi_1) f_2(\xi_2) \cdots f_n(\xi_n)} -
+\expectation{f_1^-(\xi_1) f_2(\xi_2) \cdots f_n(\xi_n)} \\
+&=\expectation{f_1^+(\xi_1)}\expectation{f_2(\xi_2)} \cdots
+\expectation{f_n(\xi_n)} \\ 
+&-\expectation{f_1^-(\xi_1)}\expectation{f_2(\xi_2)} \cdots
+\expectation{f_n(\xi_n)} \\
+&=\expectation{f_1(\xi_1)}\expectation{f_2(\xi_2)} \cdots
+\expectation{f_n(\xi_n)} 
+\end{align*}
+Now perform induction on $i$ to get the final result.
+\end{proof}
+
+\begin{examp} TODO:  Find an example where this fails for integrable
+  $f$.  I'm pretty sure the crux is to find $f$ that is integrable for which $f \circ
+  \xi$ is not.  In any case if one finds such a pair, then the result
+  doesn't really even make sense since not all of the expectations are defined.
+\end{examp}
+
+\begin{cor}Suppose $f,g$ are independent integrable random variables
+ then $fg$ is integrable and $\expectation{fg} = \expectation{f}\expectation{g}$.
+\end{cor}
+\begin{proof}By Lemma
+  \ref{IndependenceExpectations}, independence of $f,g$ and positivity and measurability of $\abs{x}$, we see that 
+\begin{align*}\expectation{\abs{fg}} &= \expectation{\abs{f}\cdot \abs{g}} =
+  \expectation{\abs{f}}\expectation{\abs{g}} < \infty
+\end{align*}
+showing integrability of $f g$.
+
+This argument also shows that $\expectation{fg} =
+\expectation{f}\expectation{g}$ for positive $f,g$.  To extend to to
+integrable $f,g$ write $f = f_+ - f_-$ and $g = g+ - g_-$ and use
+linearity of expectation
+\begin{align*}
+\expectation{fg} &= \expectation{f_+ g_+} - \expectation{f_+ g_-} -
+\expectation{f_- g_-} + \expectation{f_- g_-} \\
+&= \expectation{f_+}\expectation{g_+} - \expectation{f_+}\expectation{ g_-} -
+\expectation{f_-}\expectation{ g_-} + \expectation{f_-}\expectation{
+  g_-} \\
+&= \left( \expectation{f_+} - \expectation{f_-}\right) \left( \expectation{g_+} - \expectation{g_-}\right)\\
+&= \expectation{f}\expectation{g}
+\end{align*}
+\end{proof}
+
+\begin{examp}\label{UncorrelatedNotIndependent}This is an example of random variables $\xi$ and
+  $\eta$ such that $\expectation{\xi \eta} =
+  \expectation{\xi} \cdot \expectation{\eta}$ (are
+  \emph{uncorrelated}) but $\xi$ and $\eta$ are
+  not independent.
+
+Consider the sample space $\Omega = \{1,2,3\}$ with uniform distribution.  A
+random variable $\xi:\Omega \to \reals$ is just a vector in $\reals^3$.  Let $\xi = (1,-1,0)$
+and let $\eta=(-1,-1,2)$.  Note that
+$\expectation{\xi}=\expectation{\eta} = \expectation{\xi \eta} = 0$
+and therefore $\xi$ and $\eta$ are uncorrelated.  On the other hand
+$\xi$ and $\eta$ are not independent; for example 
+\begin{align*}
+0=\probability{\xi=1
+  \wedge \eta = 2} \neq
+\probability{\xi=1}\probability{\eta=2}=\frac{1}{9}
+\end{align*}
+\end{examp}
+
+\begin{defn}Given a sequence of events $A_n$ the event that $A_n$
+  occurs \emph{infinitely often} is the set $\bigcap_{n=1}^\infty
+  \bigcup_{k=n}^\infty A_k = \limsup_{n \to \infty} A_n$.  The
+  probability that $A_n$ occurs infinitely often is often written $\probability{A_n \text{ i.o.}}$.
+\end{defn}
+
+\begin{thm}\label{BorelCantelli}[Borel Cantelli Theorem]Let
+  $(\Omega,\mathcal{A},P)$ be a probability space and let $A_1, A_2,
+  \dots \in \mathcal{A}$.
+ \begin{itemize}
+\item[(i)] If $\sum_{i=1}^\infty \probability{A_i} < \infty$
+  then $\probability{A_i \text{ i.o.}} = 0$.  
+\item[(ii)]If the $A_i$ are
+  independent and $\probability{A_i \text{ i.o.}} = 0$, then we have
+  $\sum_{i=1}^\infty \probability{A_i} < \infty$.  More precisely, if
+  $\sum_{i=1}^\infty \probability{A_i} = \infty$ then $\probability{A_i \text{ i.o.}} = 1$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+To prove (i) we observe that the convergence of $\sum_{i=1}^\infty
+\probability{A_i}$ implies that the partial sums converge to zero,
+$\lim_{n\to \infty} \sum_{i=n}^\infty
+\probability{A_i} = 0$.  Now we apply a union bound (subadditivity of
+measure) and use continuity of measure to see that
+\begin{align*}
+\probability{A_n \text{ i.o.}} &= \lim_{n\to \infty}
+\probability{\bigcup_{k=n}^\infty A_k}  \leq  \lim_{n\to \infty} \sum_{k=n}^\infty \probability{A_k} = 0
+\end{align*}
+
+To see (ii), first observe the simple calculation
+\begin{align*}
+\probability{\bigcap_{n=1}^\infty \bigcup_{k=n}^\infty A_k} &=
+\lim_{n\to \infty} \probability{\bigcup_{k=n}^\infty A_k}  & &\text{ by continuity of measure}\\
+&= \lim_{n\to \infty} \lim_{m\to \infty} \probability{\bigcup_{k=n}^m
+  A_k} & &\text{ by continuity of measure}\\
+&= \lim_{n\to \infty} \lim_{m\to \infty} \left ( 1 - \probability{\bigcap_{k=n}^m
+  A_k^c} \right ) & &\text{ by DeMorgan's law} \\
+&= \lim_{n\to \infty} \lim_{m\to \infty}\left ( 1 - \prod_{k=n}^m\probability{
+  A_k^c} \right )& &\text{by independence} \\
+&=  1 - \lim_{n\to \infty} \lim_{m\to \infty}\left (\prod_{k=n}^m\left
+    (1 - \probability{
+  A_k} \right) \right ) \\
+\end{align*}
+
+Now we recall the 
+elementary bound $1+x \leq e^x$ for $x \in \reals$ from Lemma
+\ref{BasicExponentialInequalities} and assume that
+$\sum_{n=1}^\infty \probability{A_n} = \infty$.  By the calculation
+above we have
+\begin{align*}
+\probability{\bigcap_{n=1}^\infty \bigcup_{k=n}^\infty A_k} &= 1 - \lim_{n\to \infty} \lim_{m\to \infty}\left (\prod_{k=n}^m\left
+    (1 - \probability{
+  A_k} \right) \right ) \\
+&\geq 1 - \lim_{n\to \infty} \lim_{m\to \infty}\left (\prod_{k=n}^m
+   e^{- \probability{
+  A_k}} \right ) \\
+&= 1 - \lim_{n\to \infty} \lim_{m\to \infty}
+   e^{- \sum_{k=n}^m\probability{
+  A_k}} \\
+&= 1
+\end{align*}
+But of course we know that $\probability{\bigcap_{n=1}^\infty
+  \bigcup_{k=n}^\infty A_k} \leq 1$ so in fact we have shown that
+$\probability {A_n \text{ i.o.}} = 1$.
+\end{proof}
+
+\begin{examp}Here is a somewhat synthetic example that shows when
+  $A_n$ are dependent it is possible to have $\probability{A_n \text{
+      i.o.}} = 0$ while $\sum_{n=1}^\infty \probability{A_n} =
+  \infty$.  Take $([0,1], \mathcal{B}([0,1]), \lambda$ as the measure
+  space.  Take the intervals $[0, \frac{1}{n}]$ in a sequence such
+  that $[0, \frac{1}{n}]$ occurs $n$ times (e.g. $[0,1],
+  [0,\frac{1}{2}], [0,\frac{1}{2}], [0,\frac{1}{3}],[0,\frac{1}{3}],
+  [0,\frac{1}{3}], \dots$). Clearly $\lbrace A_n \text{ i.o.} \rbrace
+  = \lbrace 0 \rbrace$.  On the other hand it is clear that
+  $\sum_{n=1}^\infty \probability{A_n} = \infty$.
+\end{examp}
+
+\begin{examp}This is a more probabilistic example.  Consider a game in
+  which there is a $n$-sided die for each $n=2, 3, \dots$.  In the
+  $n^{th}$ round of the game, one rolls the $n$-sided die.  If one
+  gets a $1$ then one stops the game else one continues to play.  Let
+  $A_n$ be the event that the player is still alive at round $n$.  It
+  is clear that player has a probability of $\frac{1}{2} \cdots
+  \frac{n-1}{n} = \frac{1}{n}$ of being alive at round $n$.  It is also clear that
+  the probability the player never loses is bounded by $\frac{1}{n}$
+  for all $n$ hence is 0.  The probability the player never loses is
+  the same as $\probability{A_n \text{ i.o.}}$ on the other hand,
+  $\sum_{n=1}^\infty \probability{A_n} = \sum_{n=1}^\infty \frac{1}{n}
+  = \infty$.
+\end{examp}
+
+The Borel Cantelli Theorem tells us
+that $\probability{A_n \text{ i.o.}}$ can only take the values $0$ and
+$1$ when the $A_n$ are independent events (and in fact gives us a test
+for determining which alternative holds).  The $0/1$ dichotomy is a
+general feature of sequences of independent events and describing the
+nature this dichotomy motivates the following definitions.
+
+\begin{defn}Let $\mathcal{A}_n$ be a sequence of $\sigma$-algebras on
+  a space $\Omega$.  The \emph{tail $\sigma$-algebra} $\mathcal{T}_\infty$ is
+  defined to be 
+\begin{align*}
+\mathcal{T}_\infty = \bigcap_{n=1}^\infty \sigma\left(\bigcup_{k=n}^\infty \mathcal{A}_k\right)
+\end{align*}
+\end{defn}
+
+\begin{thm}[Kolmogorov's $0-1$ Law]\label{Kolmogorov01Law}Let
+  $\mathcal{A}_n$ be a sequence of independent $\sigma$-algebras on
+  a probability space $(\Omega, \mathcal{A}, P)$ such that $\mathcal{A}_n
+  \subset \mathcal{A}$ for all $n>0$.  Then for every $T \in \mathcal{T}_\infty$ we have
+  $\probability{T}=0$ or $\probability{T} = 1$.
+\end{thm}
+\begin{proof}Let $\mathcal{T}_n = \sigma\left(\bigcup_{k=n}^\infty
+    \mathcal{A}_k\right)$ and $\mathcal{S}_n = \sigma\left(\bigcup_{k=1}^{n-1}
+    \mathcal{A}_k\right)$.  Then by Lemma \ref{IndependenceGrouping}
+  we see that $\mathcal{T}_n$ and $\mathcal{S}_n$ are independent.
+  Therefore for $A \in \mathcal{T}_n$ and $B \in \mathcal{S}_n$ we
+  have $\probability{A \cap B} = \probability{A} \probability{B}$.
+
+Now pick $A \in \mathcal{T}_\infty$, then by the above observation we
+have $\probability{A \cap B} = \probability{A} \probability{B}$ for $B
+\in \bigcup_{n=1}^\infty \mathcal{S}_n$.  Since $\mathcal{S}_1 \subset
+\mathcal{S}_1 \subset \cdots$, we can easily see that
+$\bigcup_{n=1}^\infty \mathcal{S}_n$ is a $\pi$-system.  Given $B_1,
+B_2 \in \bigcup_{n=1}^\infty \mathcal{S}_n$ there exist $n_1,n_2$ such
+that $B_i \in \mathcal{S}_{n_i}$ for $i=1,2$.  Then define $n =
+\max(n_1,n_2)$ and $B_i \in \mathcal{S}_n$ for $i=1,2$ and therefore
+$B_1 \cap B_2 \in \mathcal{S}_n \subset \bigcup_{n=1}^\infty
+\mathcal{S}_n$.  Applying Lemma \ref{IndependencePiSystem} we conclude
+that $\mathcal{T}_\infty$ and $\sigma(\bigcup_{n=1}^\infty
+\mathcal{S}_n)$ are independent.  Note that for every $n>0$, $\mathcal{T}_n
+\subset \sigma(\bigcup_{n=1}^\infty \mathcal{S}_n)$ hence the same is
+true of their intersection $\mathcal{T}_\infty$.  We may conclude
+that for any $A \in \mathcal{T}_\infty$ we have 
+\begin{align*}
+\probability{A} &= \probability{A \cap A} =
+\probability{A}\probability{A}
+\end{align*}
+which shows that $\probability{A} = 0$ or $\probability{A} = 1$.
+\end{proof}
+Tail algebras arise naturally in various limiting processes involving
+random variables.  In the case in which the random variables are
+independent, the limits have various kinds of almost sure properties
+that can be derived from Kolmogorov's $0-1$ Law.  Here are a few examples.
+\begin{cor}Let $(S,d)$ be a complete metric space and let $\xi_n$ be a sequence of independent random elements in
+  S.  Then either $\xi_n$ converges almost surely or diverges almost surely.
+\end{cor}
+\begin{proof}
+Let $\mathcal{T}_n = \sigma\left( \cup_{k\geq n} \sigma(\xi_k)
+\right)$ and let $\mathcal{T} = \cap_{n=1}^\infty \mathcal{T}_n $ be
+the tail $\sigma$-algebra.  By Kolmogorov's $0-1$ Law it suffices to show that the event that
+$\xi_n$ converges is $\mathcal{T}$-measurable. 
+Since $S$ is complete, we know that $\xi_n$ converges if and only if
+for every $\epsilon > 0$ there exists $N>0$ such that $d(\xi_m, \xi_n)
+< \epsilon$.  With that in mind, for every $m>0$, $n>0$ and $\epsilon>0$ define
+\begin{align*}
+A_{n,m,\epsilon} = \lbrace d(\xi_m, \xi_n) < \epsilon \rbrace
+\end{align*}
+which is $\sigma \left(\sigma(\xi_m) \cup \sigma(\xi_n)
+\right)$-measurable.
+
+To prove convergence it suffices to demonstrate it for any sequence of
+$\epsilon_k \to 0$.  So in particular if we choose $\epsilon_k =
+\frac{1}{k}$ we see that the event that $\xi_n$ converges is
+\begin{align*}
+\bigcap_{k=1}^\infty \bigcup_{N=1}^\infty \bigcap_{m,n\geq N} A_{m,n,\frac{1}{k}}
+\end{align*}
+Note that each $\bigcap_{m,n\geq N} A_{m,n,\frac{1}{k}}$ is
+$\mathcal{T}_N$-measurable and $A_{N+1} \subset A_N$ hence
+$\bigcup_{N=1}^\infty \bigcap_{m,n\geq N} A_{m,n,\frac{1}{k}}$ is
+$\mathcal{T}$-measurable.  Taking the countable union of
+$\mathcal{T}$-measurable  sets we see the event that $\xi_n$ converges
+is $\mathcal{T}$-measurable.  
+\end{proof}
+
+\begin{cor}\label{ConstantLimitOfIndependent}Let $\xi_n$ be a sequence of independent random variables.
+  Then $\limsup_{n \to \infty} \xi_n$ and $\liminf_{n \to \infty} \xi_n$ are almost surely constant.
+\end{cor}
+\begin{proof}Because $\liminf_n \xi_n= -\limsup_n -\xi_n$ if suffices to
+  show the result for $\limsup_n \xi_n$.   Let $\mathcal{T}$ be the tail $\sigma$-algebra of
+  $\sigma(\xi_n)$ and let $\mathcal{T}_n = \sigma\left(\cup_{k\geq n}
+  \sigma(\xi_k) \right)$.  By Kolmogorov's 0-1 Law, it suffices to show that $\limsup_{n \to \infty}
+  \xi_n$ is $\mathcal{T}$-measurable.
+
+By definition, $\limsup_{n \to \infty} \xi_n = \lim_{n \to \infty}
+\sup_{k \geq n} \xi_k$.  The term $\sup_{k \geq n} \xi_k$ is
+$\mathcal{T}_n$-measurable by \ref{LimitsOfMeasurable} and when taking the limit of the sequence
+we can ignore any finite prefix of the sequence.  Therefore we can
+express the limit as a limit of $\mathcal{T}_n$-measurable functions
+for $n>0$ arbitrary.  This shows that $\limsup_{n \to \infty} \xi_n$
+is $\mathcal{T}_n$-measurable for all $n>0$ hence $\mathcal{T}$-measurable.
+\end{proof}
+
+\begin{cor}\label{AlmostSureAverages}Let $\xi_n$ be a sequence of independent random variables.
+  Then $\lim_{n \to \infty} \frac{1}{n}\sum_{k=1}^\infty \xi_k$ almost
+  surely diverges or almost sure converges.  If it converges then the
+  limit is  almost surely constant.
+\end{cor}
+\begin{proof}
+Note that $\lim_{n \to \infty} \frac{1}{n}\sum_{k=1}^n \xi_k =
+\lim_{n \to \infty} \frac{1}{n}\sum_{k=m}^n \xi_k$ for any $m >
+0$.  Pick such an $m > 0$ and note that every finite partial sum
+$\frac{1}{n}\sum_{k=m}^n \xi_k$ is $\mathcal{T}_m$-measurable hence so
+is the limit $\lim_{n\to \infty} \frac{1}{n}\sum_{k=1}^n \xi_k$.
+Since $m >0$ was arbitrary we know that $\lim_{n\to \infty}
+\frac{1}{n}\sum_{k=1}^n \xi_k$ is $\mathcal{T}$-measurable.  
+\end{proof}
+
+The Borel Cantelli Theorem is a very useful technique in demonstrating
+the almost sure convergence of sequences of random variables.  The
+following simple version of the Strong Law of Large Numbers
+illustrates the technique with a minimum of distractions.
+\begin{lem}\label{SLLNL4}Let $\xi, \xi_1, \xi_2, \dots$ be independent identically
+  distributed random variables with $\expectation{\xi^4} < \infty$,
+  then $\lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^n \xi_k =
+  \expectation{\xi}$ a.s.
+\end{lem}
+\begin{proof}
+First note that it suffices to show the result when $\expectation{\xi}
+= 0$ since we can just compute
+\begin{align*}
+0 = \lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^n (\xi_k -
+\expectation{\xi}) = 
+\lim_{n \to \infty} (\frac{1}{n} \sum_{k=1}^n \xi_k) -
+\expectation{\xi}
+\end{align*}
+Furthermore by Corollary \ref{IncreasingMoments} the finite $4^{th}$ moment of $\xi$ implies finiteness of
+the first four moments, hence $\expectation{\left (\xi -
+    \expectation{\xi}\right )^4} <
+\infty$.
+
+Now assuming that $\xi_k$ have mean zero we fix $\epsilon > 0$ and apply Markov
+bounding to see
+\begin{align*}
+\probability{\abs{\sum_{k=1}^n \xi_k} > n \epsilon} &=
+\probability{\left ( \sum_{k=1}^n \xi_k \right ) ^4  > n^4 \epsilon^4} \\
+&\leq \frac{\expectation{\left ( \sum_{k=1}^n \xi_k \right )^4}}{ n^4 \epsilon^4}
+& & \text{by Markov's inequality}
+\\
+&= \frac{\sum_{k=1}^n\expectation{\xi_k^4}+6\sum_{k=1}^n
+ \sum_{l=k+1}^n\expectation{\xi_k^2 \xi_l^2}}{ n^4 \epsilon^4} & &
+\text{by independence and zero mean} \\
+&= \frac{\sum_{k=1}^n\expectation{\xi_k^4}+6\sum_{k=1}^n
+ \sum_{l=k+1}^n\sqrt{\expectation{\xi_k^4} \expectation{\xi_l^4}}}{ n^4 \epsilon^4} & &
+\text{by Cauchy Schwartz} \\
+&= \frac{\expectation{\xi^4}(n + 3(n^2 -n))}{ n^4 \epsilon^4} \leq \frac{3\expectation{\xi^4}}{ n^2 \epsilon^4} \\
+\end{align*}
+And therefore $\sum_{n=1}^\infty \probability{\abs{\sum_{k=1}^n \xi_k}
+  > n \epsilon}  < \infty$.  Now we can apply Borel Cantelli to see
+that $\probability{\frac{1}{n}\abs{\sum_{k=1}^n \xi_k
+    } > \epsilon \text{ i.o.}} = 0$.
+
+By the above argument, for every $m \in \naturals$ we get an event
+$A_m$ with $\probability{A_m} = 0$ such that for every $\omega \notin
+A_m$ there is $N_{\omega,m}$such that $\frac{1}{n}\abs{\sum_{k=1}^n
+  \xi_k(\omega)} \leq \frac{1}{m}$ for $n > N_{\omega,m}$.  Let $A =
+\cup{m=1}^\infty A_m$ and note that by countable subadditivity
+$\probability{A} = 0$.  Furthermore, for every $\epsilon > 0$, $\omega
+\in A$ we pick $m > \frac{1}{\epsilon}$ and then for $n > N_{\omega,
+  m}$ we have $\frac{1}{n}\abs{\sum_{k=1}^n
+  \xi_k(\omega)} \leq \frac{1}{m} < \epsilon$ for $n > N_{\omega,m}$
+giving the result.
+\end{proof}
+The proof above demonstrates a general pattern in applications of
+Borel Cantelli in which one applies it a countably infinite number of
+times and still derive an almost sure result.  We'll prove more
+refined versions of the Strong Law of Large Numbers later and those
+will also use Borel Cantelli but with more complications.
+
+
+It will prove to be important to be able to construct random variables
+with prescribed distributions.  In particular, we will soon need to be
+able to construct independent random variables with prescribed
+distributions.  The standard way of constructing them is to use
+product spaces, however we have only developed product spaces of
+finitely many factors.  Rather than developing the full fledged theory
+of infinitary products, we provide a mechanism which suffices for the
+construction of countably many random variables with prescribed
+distributions; in fact we show that it is possible to do so on the
+probability space $([0,1], \mathcal{B}([0,1]), \lambda)$.  First
+proceed by noticing that there is ready source of independence waiting
+for us to harvest.  Given $x \in [0,1]$ we can take the unique binary
+expansion $x = 0.\xi_1\xi_2 \cdots$ which has the property that
+$\sum_{n=1}^\infty \xi_n = \infty$ (here we are resolving the ambiguity
+between expansions that have a tail of $1$'s and those with a tail of
+$0$'s).
+\begin{lem}\label{BernoulliSequence}Let $\xi_n : [0,1] \to [0,1]$ be defined by taking the
+  $n^{th}$ digit of the binary expansion of $x \in [0,1]$.  Then
+  $\xi_n$ is a measurable function.  Let $\vartheta :  [0,1] \to
+  [0,1]$, then $\vartheta$ has a uniform distribution if and only if
+  $\xi_n \circ \vartheta$ comprise an independent sequence of
+  Bernoulli random variables with probability $\frac{1}{2}$.
+\end{lem}
+\begin{proof}To see the measurability of $\xi_n$ we first define the
+  \emph{floor function} to be $\lfloor x \rfloor = \sup \lbrace n \in
+  \integers \mid n \leq x\rbrace$.  Then define
+ \begin{align*}
+\xi(x) &= \begin{cases}
+0 & \text{if $x - \lfloor x \rfloor \in [0,\frac{1}{2})$} \\
+1 & \text{if $x - \lfloor x \rfloor \in [\frac{1}{2},1)$} \\
+\end{cases}
+\end{align*}
+It is clear that $\xi$ is a measurable function since $\xi^{-1}(0) =
+\cup_n [n, n+\frac{1}{2})$ and  $\xi^{-1}(1) =
+\cup_n [n+\frac{1}{2}, n+1)$.  Now define 
+\begin{align*}
+\xi_n(x) &= \xi(2^{n-1} x) & &\text{for $n \in \naturals$ and  $x \in \reals$}
+\end{align*}
+and notice that $\xi_n$ give the binary expansion of $x \in \reals$.
+By measurability of $\xi$ we see that $\xi_n$ are also measurable.
+
+Now suppose that $\vartheta$ is a $U(0,1)$ random variable on
+$[0,1]$ and consider $\xi_n \circ \vartheta$.  For every $(k_1, \dots,
+k_n) \in \lbrace 0,1\rbrace^n$, let $q = \sum_{j=1}^n \frac{k_j}{2^j}$ we clearly have 
+\begin{align*}
+\probability{\cap_{j \leq n} \lbrace \xi_j(\vartheta(x)) = k_j \rbrace}
+  &= \probability{\vartheta(x) \in [q, q+\frac{1}{2^{n}})
+    \rbrace} = \frac{1}{2^n}
+\end{align*}
+and summing over $(k_1, \dots, k_{n-1})$ we see 
+\begin{align*}
+\probability{\xi_n(\vartheta(x)) = k_n} &=\sum_{(k_1, \dots, k_{n-1})
+  \in \lbrace 0,1\rbrace^{n-1}}\probability{\cap_{j \leq n} \lbrace \xi_j(\vartheta(x)) = k_j \rbrace}
+  = \frac{1}{2}
+\end{align*}
+which shows that each $\xi_n \circ \vartheta$ is a Bernoulli random
+variable with probability $\frac{1}{2}$.
+
+In a similar vein, given $n_1, \dots, n_m$ and $k_{n_j} \in \lbrace 0,1 \rbrace$ , let $n = \sup(n_1, \dots,
+n_m)$ for $j=1,\dots, m$ and  $A_n = \lbrace (l_1, \dots, l_n) \mid l_{n_j} = k_{n_j} \text{
+  for } j=1, \dots , m\rbrace$ and we have 
+\begin{align*}
+\probability{ \cap_{j=1}^m \lbrace \xi_{n_j} (\vartheta(x)) =
+  k_{n_j} \rbrace } &=\sum_{(k_1, \dots, k_{n})
+  \in A_n}\probability{\cap_{j \leq n} \lbrace
+  \xi_j(\vartheta(x)) = k_j \rbrace} \\
+  &= 2^{n -m} \frac{1}{2^n} = \frac{1}{2^m}
+\end{align*}
+which shows that $\xi_{n_j} \circ \vartheta$ are independent.
+
+Next, suppose that we know $\xi_n \circ \vartheta$ is an independent Bernoulli sequence with
+probability $\frac{1}{2}$.  Let $\tilde{\vartheta}$ be a $U(0,1)$
+random variable (e.g. $\tilde{\vartheta}(x) = x$) and then we know
+from the first part of the Lemma
+that $\xi_n \circ \tilde{\vartheta}$ is also a Bernoulli sequence with
+probability $\frac{1}{2}$.
+
+Because of the
+independence of each the sequences and the fact that the elementwise
+the two sequences have the same distribution we know that the
+distribution of the sums is just the convolution of the distributions
+of the terms in the sequence, hence $\sum \xi_n \circ \vartheta
+\eqdist \sum \xi_n \circ \tilde{\vartheta}$.  Thus we have shown that
+$\sum \xi_n \circ \vartheta$ is also $U(0,1)$.
+\end{proof}
+
+\begin{lem}\label{ReproductionOfUniform}There exist measurable functions $f_1, f_2, \dots$ on
+  $[0,1]$ such
+  that whenever $\vartheta$ is a $U(0,1)$ random variable, the
+  sequence
+  $f_n \circ \vartheta$ is a family of independent $U(0,1)$  random variables.
+\end{lem}
+\begin{proof}
+Let $\xi_n \circ \vartheta$ denote the binary expansion of $\vartheta$
+from Lemma \ref{BernoulliSequence}.  By the result of that Lemma, we
+know that the $\xi_n \circ \vartheta$ are an i.i.d. sequence of
+Bernoulli random variables with probability $\frac{1}{2}$.  Now choose
+any bijection between $\naturals$ and $\naturals^2$ (e.g. the diagonal
+mapping).  With this relabeling of of the constructed family we now
+have a sequence $\xi_{n,m} \circ \vartheta$ of i.i.d. Bernoulli random
+variables.  Define $f_n(x) = \sum_{m=1}^\infty
+\frac{\xi_{n,m}(x)}{2^m}$ and apply Lemma \ref{BernoulliSequence} a
+second time to see that each $f_n \circ \vartheta$ is a $U(0,1)$
+random variable.  Furthermore, $f_n\circ \vartheta$ is $\sigma(\cup_m
+\sigma(\xi_{n,m} \circ \vartheta))$-measurable so by Lemma \ref{IndependenceGrouping} we
+see that the $f_n \circ \vartheta$ are independent.
+\end{proof}
+
+\begin{thm}\label{ExistenceCountableIndependentRandomVariables}For any probability measures $\mu_1, \mu_2, \dots$ on
+  $(\reals, \mathcal{B}(\reals))$ there exist independent random
+  variables $f_1, f_2, \dots$ on $([0,1], \mathcal{B}([0,1]),
+  \lambda)$ such that $\mathcal{L}(f_n) = \mu_n$.
+\end{thm}
+\begin{proof}
+Define $\vartheta(x) = x$ which is clearly a $U(0,1)$-random variable
+on $[0,1]$ and use Lemma \ref{ReproductionOfUniform} to construct
+$\vartheta_n$, a
+sequence of independent $U(0,1)$ random variables.  Let $F_n$ be the
+distribution function of the probability measure $\mu_n$ and let
+$G_n(y) = \sup \lbrace x \in \reals \mid F(x) \geq y \rbrace$ be the generalized
+inverse of $F_n$.  By the proof of Theorem \ref
+{LebesgueStieltjesMeasure}, we know that $\mathcal{L}(G_n\circ
+  \vartheta_n) = \mu_n$ and by Lemma \ref{IndependenceComposition} we
+  know that $G_n\circ  \vartheta_n$ are still independent.
+\end{proof}

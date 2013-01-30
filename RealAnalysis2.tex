@@ -1,0 +1,444 @@
+\section{More Real Analysis}
+Holding area for more advanced topics in real analysis that are
+eventually required (and in some cases there may be some topics that I
+am just interested in).
+\subsection{Topological Spaces}
+\begin{defn}
+\begin{itemize}
+\item[(i)]A topological space is said to be \emph{separable} if and
+  only if it has a countable dense subset.
+\item[(ii)]A topological space is said to be \emph{first countable} if and
+  only if every point has a countable local base.
+\item[(ii)]A topological space is said to be \emph{second countable} if and
+  only if every the topology has a countable base.
+\end{itemize}
+\end{defn}
+\begin{lem}A metric space is separable if and only if it is second countable.
+\end{lem}
+\begin{proof}
+TODO:
+outline of proof is to pick a countable dense subset $\lbrace x_n
+\rbrace$ and then pick the open balls $B(x_n; \frac{1}{m})$ for $m \in
+\naturals$.  Show this is a base of the topology.
+\end{proof}
+\begin{defn}Given a topological space $(X, \mathcal{T})$ the Baire
+  $\sigma$-algebra is smallest $\sigma$-algebra for which all bounded
+  continuous functions are measurable.  Equivalently 
+\begin{align*}
+Ba(X,\mathcal{T}) &= \sigma(\lbrace f^{-1}(U) \mid U \subset \reals
+\text{ is open; } f \in C_b(X,\reals)\rbrace)
+\end{align*}
+\end{defn}
+\begin{lem}For every topological space $(X, \mathcal{T})$, $Ba(X)
+  \subset \mathcal{B}(X)$.  For a metric space $(S,d)$, $Ba(S) = \mathcal{B}(S)$.
+\end{lem}
+\begin{lem}
+To see the inclusion $Ba(X)
+  \subset \mathcal{B}(X)$, note that by continuity of $f \in
+  C_b(X;\reals)$, every set $f^{-1}(U)$ is open.
+
+Now suppose $(S,d)$ is a metric space.  To show $\mathcal{B}(S)
+\subset Ba(S)$, it suffices if we show every closed set $F \subset S$
+can be written as $f^{-1}(G)$ where $G \subset \reals$ is closed and
+$f \in C_b(S; \reals)$.  By the triangle inequality (see e.g. Lemma
+\ref{DistanceToSetLipschitz}) we know
+that $g(x) = d(x, F)$ is continuous (in fact Lipschitz) and by Lemma
+\ref{MaxMinOfLipschitz} we know that $f(x) = d(x, F) \wedge 1$ is also
+Lipschitz and therefore $f(x) \in C_b(S; \reals)$.  Because $F$ is
+closed we also know that $F = f^{-1}(\lbrace 0 \rbrace)$ and we are done.
+\end{lem}
+
+TODO: How much this stuff on regularity can be extended to outer
+measures????  I want to understand the overlap with the results in
+Evans and Gariepy.
+
+\begin{lem}\label{InnerRegularSetsSigmaAlgebra}Let $X$ be a Hausdorff topological space, $\mathcal{A}$
+  a $\sigma$-algebra on $X$ and $\mu$ a finite tight measure.  Then
+\begin{align*}
+\mathcal{R} &= \lbrace A \in \mathcal{A} \mid A \text { and } A^c
+\text{ are $\mu$-inner regular} \rbrace
+\end{align*}
+is a $\sigma$-algebra.  The same is true if the condition is replaced
+by sets that are $\mu$-closed inner regular (without the requirement
+that $\mu$ is tight).
+\end{lem}
+\begin{proof}
+By definition, $\mathcal{R}$ is closed under complement.  By
+assumption that $\mu$ is tight we have $X \in \mathcal{R}$ so all that
+needs to be shown is closure under countable union.
+
+Assume $A_1, A_2, \dots \in \mathcal{R}$ and let $\epsilon>0$ be
+given.  By finiteness of $\mu$, $\mu(\cup_{n=1}^\infty A_n) < \infty$ and
+continuity of measure (Lemma \ref{ContinuityOfMeasure}) there exists $M>0$ such that $\mu(\cup_{n=1}^M
+A_n) > \mu(\cup_{n=1}^\infty A_n) - \epsilon$.
+ By assumption that $A_n \in \mathcal{R}$ and finiteness of $\mu$, for each
+$A_n$ there exists a compact $K_n$ such that $\mu(A_n \setminus K_n) <
+\frac{\epsilon}{2^n}$ and there exists compact $L_n$ such that $\mu(A_n^c \setminus L_n) <
+\frac{\epsilon}{2^n}$. Let
+\begin{align*}
+K &= \cup_{n=1}^M K_n \\
+L &= \cap_{n=1}^\infty L_n
+\end{align*}
+and note that both $K$ and $L$ are compact (in the latter case,
+because X is Hausdorff we know that each $L$ is closed hence the
+intersection is a closed subset of a compact set hence compact).
+Furthermore we can compute
+\begin{align*}
+\mu(\cup_{n=1}^\infty A_n \setminus K) &= \mu(\cup_{n=1}^\infty A_n
+\setminus \cup_{n=1}^M K_n)  \\
+&= \mu(\cup_{n=1}^M A_n
+\setminus \cup_{n=1}^M K_n)  + \mu(\cup_{n=1}^\infty A_n \setminus \cup_{n=1}^M A_n
+\setminus \cup_{n=1}^M K_n)\\
+&\leq \mu(\cup_{n=1}^M A_n \setminus K_n)  + \mu(\cup_{n=1}^\infty A_n
+\setminus \cup_{n=1}^M A_n)\\
+&\leq \sum_{n=1}^M(A_n \setminus K_n)  + \epsilon \\
+&\leq 3 \epsilon
+\end{align*}
+and
+\begin{align*}
+\mu((\cup_{n=1}^\infty A_n)^c \setminus L) &=\mu(\cap_{n=1}^\infty
+A_n^c \setminus \cap_{n=1}^\infty L_n) \\
+ &=\mu(\cap_{n=1}^\infty
+A_n^c \cap \cup_{n=1}^\infty L_n^c) \\
+ &=\mu(\cup_{n=1}^\infty \cap_{m=1}^\infty
+A_m^c \cap L_n^c) \\
+ &\leq \mu(\cup_{n=1}^\infty 
+A_n^c \cap L_n^c) \\
+ &\leq \sum_{n=1}^\infty (
+A_n^c \setminus L_n) \\
+&\leq 2 \epsilon
+\end{align*}
+
+TODO: The closed inner regular case...
+\end{proof}
+
+TODO:  In metric space, tightness is equivalent to inner regularity.
+Then Ulam's Theorem that finite measures on separable metric spaces
+are automatically inner regular.  Also finite measures on arbitrary
+metric spaces are closed inner regular as well as outer regular.
+
+\begin{lem}\label{FiniteMeasuresOnMetricSpacesAreClosedInnerRegular}
+Let $(S,d)$ be a metric space and $\mu$ be a Borel measure on $(S,
+\mathcal{B}(S))$, the $\mu$ is closed inner regular.  If in addition
+$\mu$ is a finite measure then it is outer regular.
+\end{lem}
+\begin{proof}
+Let $U$ be an open set in $S$.  Then $U^c$ is closed and the
+function $f(x) = d(x, U^c)$ is continuous.  If we define 
+\begin{align*}
+F_n &= f^{-1}([1/n, \infty))
+\end{align*}
+then each $F_n$ is closed, $F_1 \subset F_2 \subset \cdots$ and
+$\cup_{n=1}^\infty F_n = U$.  By continuity of measure (Lemma
+\ref{ContinuityOfMeasure}) we know that $\lim_{n \to \infty} \mu(F_n)
+= \mu(U)$.  So this shows that every open set is inner closed
+regular.  Furthermore it is trivial to note that $U^c$ is inner closed
+regular because it is closed.  
+
+By Lemma \ref{InnerRegularSetsSigmaAlgebra} we know know that 
+\begin{align*}
+\mathcal{B}(S) &\subset \mathcal{R} = \lbrace A \subset S \mid A
+\text{ and } A^c
+\text{ are inner closed regular}  \rbrace
+\end{align*}
+
+Outer regularity follows from taking complements and using the
+finiteness of $\mu$.
+\end{proof}
+
+If we add the criterion that the metric space is separable, then we
+can upgrade the regularity to inner regularity.
+\begin{lem}\label{SeparableInnerRegularTight}Let $(S,d)$ be a separable metric space and $\mu$ be a Borel measure on $(S,
+\mathcal{B}(S))$, then $\mu$ is inner regular if and only if it is tight.
+\end{lem}
+\begin{proof}
+Clearly inner regularity implies tightness (which is just inner
+regularity of the set $S$), so it suffices to show
+that tightness implies inner regularity.
+
+Suppose that $\mu$ is a tight measure.  By Lemma
+\ref{InnerRegularSetsSigmaAlgebra} it suffices to show that both open
+and closed sets are inner regular.
+
+Pick $\epsilon >0$ and select $K \subset S$ a compact set such that $\mu(S \setminus K) < \frac{\epsilon}{2}$.
+By Lemma \ref{FiniteMeasuresOnMetricSpacesAreClosedInnerRegular} we
+know that for any Borel set $B$ there exists a closed set $F \subset
+B$ such that $\mu(B \setminus F) < \frac{\epsilon}{2}$.  Note that $F
+\cap K$ is compact.   We have
+\begin{align*}
+\mu(B \setminus (F \cap K)) &\leq \mu(B \cap F^c) + \mu(B \cap K^c) \leq \mu(B \cap F^c) + \mu(S \cap K^c) < \epsilon
+\end{align*}
+\end{proof}
+\begin{thm}[Ulam's Theorem]\label{UlamsTheorem}Let $(S,d)$ be a separable metric space and $\mu$ be a Borel measure on $(S,
+\mathcal{B}(S))$, then $\mu$ is inner regular.
+\end{thm}
+\begin{proof}
+By Lemma \ref{SeparableInnerRegularTight} it suffices to show that $\mu$ is tight.  Pick
+$\epsilon > 0$ and we construct a compact set $K \subset S$ such that
+$\mu(S \setminus K) < \epsilon$.  Let
+$\overline{B}(x,r)$ denote the closed ball of radius $r$ around $x \in
+S$.  Pick
+a countable dense subset $x_1, x_2, \dotsc \in S$.  For each $m \in
+\naturals$, by density of $\lbrace x_n \rbrace$, we know $\cap_{n=1}^\infty \left ( S
+\setminus \cup_{j=1}^n \overline{B}(x_j, \frac{1}{m}) \right ) =
+\emptyset$, thus by
+continuity of measure (Lemma \ref{ContinuityOfMeasure}) there exists
+$N_m > 0$ such that $\mu(S
+\setminus \cup_{j=1}^n \overline{B}(x_j, \frac{1}{m}) < \frac{\epsilon}{2^m}$ for
+all $n \geq N_m$.
+If we define
+\begin{align*}
+K &= \cap_{m=1}^\infty \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})
+\end{align*}
+we claim that $K$ is compact.  Note that $K$ is easily seen to be
+closed as it is an intersection of a finite union of closed balls.
+Since $S$ is complete this implies that $K$ is also complete.  Also it
+is easy to see that $K$ is totally bounded since by construction we
+have demonstrated a cover by a finite number of balls of radius
+$\frac{1}{m}$ for each $m \in \naturals$.  So by Theorem
+\ref{CompactnessInMetricSpaces} we know $K$ is compact.
+
+To finish the result we claim $\mu(S \setminus K) < \epsilon$:
+\begin{align*}
+\mu(S \setminus K) 
+&= \mu(S \cap \left(\cap_{m=1}^\infty
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})\right)^c) \\
+&= \mu(S \cap \cup_{m=1}^\infty \left(
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})\right)^c) \\
+&= \mu(\cup_{m=1}^\infty S \setminus 
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})) \\
+&\leq \sum_{m=1}^\infty \mu( S \setminus 
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})) \\
+&< \epsilon
+\end{align*}
+\end{proof}
+\subsection{Riesz Representation}
+
+\begin{defn}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
+  topological space $S$.  
+\begin{itemize}
+\item[(i)] A Borel set $B$ is \emph{inner regular} if for
+ $\mu(B) = \sup_{K \subset B} \mu(K)$ where $K$
+  is compact. $\mu$ is inner regular if every Borel set is inner regular.
+\item[(ii)]A Borel set $B$ is \emph{outer regular} if $\mu(B) = \inf_{U \supset B} \mu(U)$ where $U$
+  is open.  A measure $\mu$ is outer regular if every Borel set
+  $B$ is outer regular.
+\item[(iii)] $\mu$ is \emph{locally finite} if every $x \in S$ has an
+  open neighborhood $x \in U$ such that $\mu(U) < \infty$.
+\item[(iv)] $\mu$ is a \emph{Radon measure} it is inner regular and
+  locally finite.
+\item[(v)] $\mu$ is a \emph{Borel measure} when?????  In some cases
+  I've seen it required that $\mu(B) < \infty$ for all Borel sets $B$
+  (reference?) and in other cases just that the Borel sets are measurable.
+\item[(vi)]A Borel set  $B$ is \emph{closed regular} if $\mu(B) = \inf_{F \subset B} \mu(F)$ where $F$
+  is closed (e.g. Dudley pg. 224).  A measure $\mu$ is closed regular
+  if every Borel set $B$ is closed regular.
+\item[(vii)] If $\mu$ is finite, then we say \emph{tight} if and only if
+  X is inner regular (e.g. Dudley pg. 224).
+\end{itemize}
+\end{defn}
+
+\begin{defn}Let $\mu$ be a Borel measure on a Hausdorff topological space. A set measurable set $A$ is called \emph{regular} if 
+\begin{itemize}
+\item[(i)]$\mu(A) = \inf_{U \supset A} \mu(A)$ where $U$ are open
+\item[(ii)]$\mu(A) = \sup_{F \subset A} \mu(A)$ where $F$ are closed 
+\end{itemize}
+TODO: Alternative def assumes that $F$ are compact (see inner
+regularity above).  If every measurable set is regular then $\mu$ is
+said to be regular.  Note that if we assume the definition of
+regularity uses compact inner approximations then regular measures are
+inner and outer regular (although inner and outer regularity refer to
+only Borel sets; is that a meaningful distinction?)
+\end{defn}
+
+
+TODO: Regularity of outer measures and the relationship to regularity
+of measures as defined above (see Evans and Gariepy).  Note that
+regularity of outer measure implies that if we take an outer measure $\mu$
+and the measure on the $\mu$-measurable sets and then take the induced
+outer measure we get $\mu$ back if and only $\mu$ is a regular outer
+measure.  Evans and Gariepy show that Radon outer measures on
+$\reals^n$ are inner
+regular as measures on the $\mu$-measurable sets.  Note that inner
+regular is part of the most common definition of Radon measure so
+their result can be taken as showing a weaker definition of Radon
+measure holds on $\reals^n$ (but also they phrase everything in terms
+of outer measures...).
+
+\begin{thm}Let $\mu$ be a finite Borel measure on a metric space $S$,
+  then $\mu$ is closed regular.  If $\mu$ is tight then $\mu$ is regular.
+\end{thm}
+TODO: Specialize the definition of Radon measure in the presence of
+more assumptions on $X$ (in particular local compactness,
+$\sigma$-compactness, second countability).
+
+TODO: Are Radon measures automatically outer regular?
+
+Tao proves Riesz representation under assumption of local compactness
+and $\sigma$-compactness.
+
+Kallenberg proves Riesz representation under assumption of local
+compactness and second countability (this is more general than the Tao
+result as $\sigma$-compactness implies second countability (I think)).
+
+Evans and Gareipy prove Riesz representation only on $\reals^n$.
+
+Dudley proves Riesz representation of compact Hausdorff spaces (in
+which cases the dual measures are Baire measures instead of Radon
+measures).  Dudley does not really discuss Radon measures.  
+
+\subsection{Covering Theorems in $\reals^n$}
+
+Since our purposes have been to understand probability theory we have
+hitherto avoided making assumptions that we are dealing with
+$\reals^n$.  While this decision has benefits, it has drawbacks as
+well.  Among them we lose sight of some history but also some of the
+beautiful and deep understanding of the measure theory of the reals.
+TODO: Vitali and Besicovich.
+
+\subsection{Hausdorff Measure}
+
+\subsubsection{Introduction}
+
+In this section we discuss the construction of a family of outer
+measures on $\reals^n$ called \emph{Hausdorff measures}.  Note the
+construction can be generalized to metric spaces.  The following is
+motivation why a tool like Hausdorff measure may be useful.  Suppose
+very specifically that we are
+in $\reals^3$, then the Lebesgue product measure essentially
+corresponds to a notion of volume.  What about the surface area of a
+$2$-dimensional object or the length of a $1$-dimensional object?  As
+you may have learned in advanced calculus these ideas can indeed be
+describe in great generality by the notion of differential forms.
+However, the formalism of forms usually has some notion of smoothness
+associated with it (hence the adjective differential); a natural question to ask is whether one can fine
+a purely measure theoretic approach to the problem.  Hausdorff measures
+provide one answer to this question.   The broad form of the theory
+is perhaps a bit more general than one might expect; for any space
+there is a Hausdorff outer measure for every real number $s$.  The
+case of integers
+$s=1$ corresponds to arclength, $s=2$ surface area, $s=3$ volume and so
+on.  Measures with $s$ non-integral are
+\emph{fractal}.  On $\reals^n$, the Hausdorff measure with $s=n$ is equal to
+Lebesgue measure and any Hausdorff measure with $s > n$ is trivial
+(gives $0$ measure to all sets).  We'll prove all of this and more in
+what follows.
+
+\subsubsection{Construction of Hausdorff Measure}
+
+The following technical Lemma is useful (we'll use it when
+discussing Hausdorff outer measures).  If the reader is in a hurry,
+no harm will come from skipping over this result and returning to it
+when the need arises.  Note that if the user is only interested in
+probability theory this result may never come up.
+\begin{lem}[Caratheodory Criterion]\label{CaratheodoryCriterion}Let $(S,d)$ be a metric space with an outer measure $\mu^*$.
+  Then $\mu^*$ is a Borel outer measure (i.e. all Borel sets are
+  $\mu^*$-measurable) if and only if $\mu^*(A \cup B) = \mu^*(A) +
+  \mu^*(B)$ for all $A,B$ such that $d(A, B) > 0$.
+\end{lem}
+\begin{proof}
+We begin with the only if direction.  Let $A$ be a closed set in $S$
+and let $B \subset S$.  To show $A$ is $\mu^*$-measurable it suffices
+to show $\mu^*(B) \geq \mu^*(A \cap B) + \mu^*(A^c \cap B)$.  Since
+the inequality is trivially satisfied when $\mu^*(B) = \infty$ we
+assume that $\mu^*(B) < \infty$.  For
+every $n \in \naturals$, let $A_n =
+\lbrace x \in S \mid d(x, A) \leq \frac{1}{n} \rbrace$.  By definition
+of $A_n$, we have $d(A,
+A_n^c) > \frac{1}{n} > 0$ and therefore $d(A \cap B, A_n^c \cap B)
+> \frac{1}{n} > 0$.  Now by our assumption, we can conclude $\mu^*((A
+\cap B) \cup (A_n^c \cap B)) = \mu^*(A \cap B) +
+\mu^*(A_n^c \cap B)$.
+
+We claim that $\lim_{n \to \infty} \mu^*(A_n^c \cap B) = \mu^*(A^c
+\cap B)$.  Note that if we prove the claim the Lemma is proven because then we have
+\begin{align*}
+\mu^*(B) &\geq \mu^*((A
+\cap B) \cup (A_n^c \cap B)) & & \text{by monotonicity}\\
+&= \mu^*(A \cap B) +
+\mu^*(A_n^c \cap B)
+\end{align*}
+and taking limits we have 
+\begin{align*}
+\mu^*(B) \geq \lim_{n\to \infty} \mu^*(A \cap B) +
+\mu^*(A_n^c \cap B) &= \mu^*(A \cap B) +
+\mu^*(A^c \cap B)
+\end{align*}
+To prove the claim we observe that monotonicity of outer measure
+implies that $\lim_{n \to \infty} \mu^*(A_n^c \cap B) \leq \mu^*(A^c
+\cap B)$ so we just need to
+work on the opposite inequality.  To see it first define the rings
+around $A$
+\begin{align*}
+R_n &= \lbrace x \mid \frac{1}{n+1} < d(x, A) \leq \frac{1}{n} \rbrace
+\end{align*}
+and note that because $A$ is closed, for each $n$,
+\begin{align*}
+A^c &= \lbrace x \in S \mid d(x, A) > 0 \rbrace \\
+&=\lbrace x \in S \mid d(x, A) > n \rbrace \cup \bigcup_{m=n}^\infty \lbrace
+x \in S \mid \frac{1}{m+1} < d(x, A) \leq \frac{1}{m} \rbrace \\
+&=A_n^c \cup \bigcup_{m=n}^\infty R_m
+\end{align*}
+It follows that
+$A^c \cap B = A_n^c \cap B \cup \cup_{m=n}^\infty
+R_m \cap B$ and therefore by subadditivity of outer measure 
+\begin{align*}
+\mu^*(A^c \cap B) \leq \mu^*(A_n^c \cap B) + \sum_{m=n}^\infty
+\mu^*(R_m \cap B)
+\end{align*}
+The claim will follow if we can show $\lim_{n \to \infty} \sum_{m=n}^\infty
+\mu^*(R_m \cap B)=0$ which in turn will follow if we can show that $\sum_{m=1}^\infty
+\mu^*(R_m \cap B)$ converges.  By construction, $d(R_{2m}, R_{2n})
+> 0$ and therefore $d(R_{2m} \cap B, R_{2n} \cap B)
+> 0$ for any $m \neq n$.  So if we consider only the even terms of the
+series we can use our hypothesis to show that for any $n$
+\begin{align*}
+\sum_{m=1}^n \mu^*(R_{2m} \cap B) &= \mu^*(\cup_{m=1}^n
+R_{2m} \cap B) \leq \mu^*(B) < \infty
+\end{align*}
+and by taking limits $\sum_{m=1}^\infty \mu^*(R_{2m} \cap B) \leq \mu^*(B)$
+The same argument applies to the odd indexed terms and we get
+\begin{align*}
+\sum_{m=1}^\infty \mu^*(R_{m} \cap B) &\leq 2\mu^*(B) < \infty
+\end{align*}
+The claim and the Lemma follow.
+\end{proof}
+
+
+TODO:  Here I am taking the path of Evans and Gariepy and normalizing
+Hausdorff measure so that $\mathcal{H}^n = \lambda_n$.  I am not sure
+if this winds up being inconvenient when one considers Hausdorff
+measure in arbitrary metric spaces (nor do I know whether we'll bother
+considering Hausdorff measures in metric spaces).
+
+\begin{lem}Let $\lambda_n$ be Lebesgue measure on $\reals^n$, then
+  $\lambda_n(B(0, 1)) = \frac{\pi^{n/2}}{\Gamma(\frac{n}{2} + 1)}$.
+\end{lem}
+\begin{proof}
+TODO
+\end{proof}
+
+\begin{defn}Let $(S,d)$ be a metric space and $A \subset S$, the
+  \emph{diameter} of $A$ is 
+\begin{align*}
+\diam(A) &= \sup \lbrace d(x,y) \mid x,y \in A \rbrace
+\end{align*}
+\end{defn}
+
+\begin{defn}Let $(S,d)$ be a metric space, $0 \leq s < \infty$ and $0
+  < \delta$.  Then for $A \subset S$,
+\begin{align*}
+\mathcal{H}^s_\delta(A) &= \inf \lbrace \sum_{n=1}^\infty \alpha(s)
+\left ( \frac{\diam(C_n)}{2}\right )^s \mid A \subset
+\cup_{n=1}^\infty C_n \text{ where } \diam(C_n) \leq \delta \text{ for
+  all } n\rbrace
+\end{align*}
+where 
+\begin{align*}
+\alpha(s) &= \frac{\pi^{n/2}}{\Gamma(\frac{n}{2} + 1)}
+\end{align*}
+For $A$ and $s$ as above define
+\begin{align*}
+\mathcal{H}^s(A) &= \lim_{\delta \to 0} \mathcal{H}_\delta^s(A) = \sup_{\delta>0} \mathcal{H}_\delta^s(A)
+\end{align*}
+\end{defn}

@@ -1,0 +1,1365 @@
+\section{Likelihood Theory}
+TODO:
+\begin{itemize}
+\item[(i)] Definition of Likelihood function
+\item[(ii)] Definition of Maximum Likelihood estimate
+\item[(iii)] Fisher information: regularity conditions (FI and Le Cam), score function
+  and information matrix; information matrix as Riemannian metric on
+  manifold of parameters
+\item[(iv)] Cramer-Rao Lower Bound
+\item[(v)] Asymptotic distribution/Asymptotic Normality : Delta Method and Second Order Delta Method
+\item[(vi)] Asymptotic consistency of MLEs 
+\item[(vii)] Asymptotic efficiency of MLEs
+\item[(viii)] Hypothesis testing with MLE: Likelihood Ratio Tests 
+  Wilks Theorem(Schervish Thm 7.125, van der Vaart 16.9), Wald Tests and Score Tests
+\item[(ix)] Problems with boundaries lack of regularity
+\item[(x)] M-estimators
+\item[(xi)]Observed information matrix...
+\end{itemize}
+
+As a quick motivation for where maximum likelihood estimation comes
+from, consider the following measure of distance between two
+probability distributions that was motivated by information theory.
+\begin{defn}Suppose $\mu$ and $\nu$ such that $\nu << \mu$.  The the \emph{Kullback-Liebler divergence} or \emph{relative
+    entropy} of $\mu$ and $\nu$ is defined as
+\begin{align*}
+\kldiv{\mu}{\nu} &= -\sexpectation{\log \frac{d\nu}{d\mu}}{\mu}
+\end{align*}
+If $\nu$ is not absolutely continuous with respect to $\mu$ then by
+convention $\kldiv{\mu}{\nu} = \infty$.
+\end{defn}
+
+\begin{examp}
+Suppose $\mu$ and $\nu$ are probability measures that are both
+absolutely continuous with respect to a third measure $\lambda$ and
+furthermore $\nu << \mu$.  Then we may write $\mu = f \cdot \lambda$
+and $\nu = g \cdot \lambda$ where we assume that $\lambda$- almost
+surely $f=0$ implies $g=0$.  In this case we can make sense of the
+ratio $\frac{g}{f}$ if we agree that $\frac{0}{0} = 0$ and in this
+case $\frac{d\nu}{d\mu} = \frac{g}{f}$.
+
+In this case we get the formula 
+\begin{align*}
+\kldiv{\mu}{\nu} &= -\int \log(\frac{g}{f}) f \, d\lambda = \int \log(\frac{f}{g}) f \, d\lambda
+\end{align*}
+that the user may have encounter before.
+\end{examp}
+
+\begin{lem}[Gibbs Inequality]\label{GibbsInequality}For all
+  probability distributions $\mu$ and $\nu$, $\kldiv{\mu}{\nu} \geq 0$
+  with equality if and only if $\mu$ and $\nu$ agree except on a set
+  of measure zero with respect to $\mu$.
+\end{lem}
+\begin{proof}
+It suffices to handle the case in which $\mu << \nu$.  In this case we
+can simply use the strict concavity of $\log$ and apply Jensen's inequality
+\begin{align*}
+\kldiv{\mu}{\nu} &= -\sexpectation{\log \frac{d\nu}{d\mu}}{\mu} \geq
+-\log \sexpectation{\frac{d\nu}{d\mu}}{\mu} = \log
+\sexpectation{1}{\nu} = 0
+\end{align*}
+By strictness, we have equality if and only if $\frac{d\nu}{d\mu}$ is
+almost surely (with respect to $\mu$) a constant.  This constant must be $1$ because $\mu$ and
+$\nu$ are both probability measures.  
+\end{proof}
+
+\begin{examp}Continuing the previous example we specialize to case in
+  which we consider a family of densities indexed by a set $\Theta$.
+  Specifically for each $\theta \in \Theta$, we suppose we have a
+  density $f(x \mid \theta)$ with respect to a base measure
+  $\lambda$.  The problems of (parametric) statistical estimation generally start
+  with such an assumption and and assume there is distinguished
+  \emph{true} value $\theta_0$ from among the elements of the set
+  $\Theta$.  The Gibbs Inequality suggests a potential path.  We know
+  from the previous example that 
+\begin{align*}
+\kldiv{\theta_0}{\theta} &= \sexpectation{ \log( \frac{f(x \mid \theta_0)}{f(x
+  \mid \theta)})}{\theta_0} = \sexpectation{ \log( f(x \mid \theta_0))
+}{\theta_0} - \sexpectation{ \log( f(x \mid \theta))
+}{\theta_0} \geq 0
+\end{align*}
+with equality if an only $f(x \mid \theta_0)$ and $f(x \mid \theta)$
+give the same measure (which we generally assume to imply that
+$\theta_0 = \theta$; a condition referred to as
+\emph{identifiability}).  So this means that $\sexpectation{ \log( f(x \mid \theta))
+}{\theta_0}$ has a unique maximum at the value $\theta_0$.  Now this
+isn't of much use directly since it assume knowledge of the density
+$f(x \mid \theta_0)$ in order to compute the expectations, but it
+suggests that we should consider using an approximation of the measure
+defined by the density such as one defined by sampling and consider
+contexts in which we maximize the function $f(x \mid \theta)$
+considered as a function of $\theta$.  This insight leads to the
+method of maximum likelihood which we shall study in some detail in
+the following chapter.
+\end{examp}
+TODO: Bayesian interpretation as information gain upon changing
+belief.
+
+Now we apply this idea in the context of parametric estimation.  If we
+suppose that we are given a parametric family of densities $f(x;
+\theta)$ relative to some measure $\nu$.
+
+TODO: To be continued...
+
+\subsection{The Delta Method}
+
+\begin{defn}Given a metric space $(S,d)$ and arbitrary index set $A$, a set of random elements
+  $\xi_\alpha$ in $S$ with $\alpha \in A$ is said to be \emph{tight} if for
+  every $\epsilon > 0$ there exists a compact set $K \subset S$ such
+  that $\sup_\alpha \probability{\xi_\alpha \notin K} < \epsilon$.  In
+  the case in which $\xi_\alpha$ are random vectors in some $\reals^n$
+  it is also common to that a tight set of random vectors is
+  \emph{bounded in probability}.
+\end{defn}
+
+Just as with convergence in distribution, note that tightness is
+really a property of the law of the random elements $\xi_\alpha$.  
+We will eventually see that tightness is a type of sequential
+compactness; if one goes a bit farther than we intend to go, one can in
+fact show that there is a metric on the space of measures (the
+Levy-Prohorov metric which metrizes convergence in distribution) and that tight sets are compact sets of
+measures in the corresponding metric space (are all compact sets tight???).
+
+The first thing that we shall see about tightness is the fact that
+sequence that converge in distribution are tight.
+
+\begin{lem}\label{WeakConvergenceImpliesTight}Suppose $\xi_n \todist
+  \xi$ with $\xi, \xi_1, \xi_2, \dots$ random vectors, then $\xi_n$ is a tight sequence.
+\end{lem}
+\begin{proof}
+TODO: Can we use Portmanteau and clean up the argument by making the
+continuous approximation unnecessary?  Answer is certainly yes but
+it's not clear how much simpler it makes the argument.
+
+Suppose we are given an $\epsilon > 0$.  First since $\xi$ is almost surely finite, continuity of measure shows
+that $\lim_{M \to \infty} \probability{\abs{\xi} > M} = 0$ and
+therefore we can find $M_1 > 0$ such $\probability{\abs{\xi} > M_1} <
+\frac{\epsilon}{2}$.   Now pick an arbitrary $M_2 > M_1$ and let $f$ be a
+bounded continuous function such that $\characteristic{\abs{x} > M_2}
+\leq f \leq \characteristic{\abs{x} > M_1}$.  Then we have 
+\begin{align*}
+\probability{\abs{\xi_n} > M_2} &\leq \expectation{f(\xi_n)} 
+\end{align*}
+and 
+\begin{align*}
+\expectation{f(\xi)} \leq \probability{\abs{\xi} > M_1} \leq \frac{\epsilon}{2}
+\end{align*}
+but also we can find $N > 0$ such that $\abs{\expectation{f(\xi_n)} -
+  \expectation{f(\xi)} } < \frac{\epsilon}{2}$ for all $n \geq
+N$.  Putting the pieces together we have for all $n \geq N$, 
+\begin{align*}
+\probability{\abs{\xi_n} > M_2} &\leq \expectation{f(\xi_n)} \leq
+\expectation{f(\xi)} + \abs{\expectation{f(\xi_n)} -
+  \expectation{f(\xi)}} < \epsilon
+\end{align*}
+Now for each $0 \leq n \leq N$, we can find $M^\prime_n$ such that
+$\probability{\abs{\xi_n} > M^\prime_n} < \epsilon$, so if we take
+$M=\max(M_2, M^\prime_1, \dots, M^\prime_{n-1})$ then we get
+$\sup_n\probability{\abs{\xi_n} > M} < \epsilon$ and tightness is shown.
+\end{proof}
+\begin{lem}\label{ScaledTightSequenceConvergeZeroProb}Suppose $r_n$ is a sequence of real numbers such that
+  $\lim_{n \to \infty} \abs{r_n} = \infty$ and
+  $\eta, \xi, \xi_1, \xi_2, \dots$ is a sequence of random vectors such that $r_n(\xi_n -
+  \xi) \todist \eta$.  Then $\xi_n \toprob \xi$.
+\end{lem}
+\begin{proof}
+The proof only relies on the fact that $r_n(\xi_n -  \xi)$ is a
+tight sequence (Lemma \ref{WeakConvergenceImpliesTight}).  Suppose we
+are given $\epsilon, \delta > 0$.  By
+tightness, we can pick $M > 0$ such that 
+\begin{align*}
+\sup_n \probability{\abs{r_n(\xi_n - \xi)} > M} &= \sup_n \probability{\abs{\xi_n - \xi} > \frac{M}{\abs{r_n}}} < \delta
+\end{align*}
+Because $\lim_n \abs{r_n} = \infty$ we pick $N>0$ such that
+$\frac{M}{\abs{r_n}} \leq \epsilon$ for $n \geq N$.  Then 
+\begin{align*}
+\probability{\abs{r_n(\xi_n - \xi)} > \epsilon} &\leq \sup_n \probability{\abs{\xi_n - \xi} > \frac{M}{\abs{r_n}}} < \delta
+\end{align*}
+for $n \geq N$ and we have show $\xi_n \toprob \xi$.
+\end{proof}
+
+In this result we have restricted ourselves to random vectors in
+$\reals^n$ because it is an important special case (especially in
+parametric statistics) and because it is a trivial matter to show that all random
+vectors are tight.  Generalization to arbitrary metric spaces is
+subtle because it is no longer the case that an arbitrary random
+element is tight.  One can repair the argument above by adding the
+assumption that the elements of the sequence are tight random elements
+or one can explore what conditions on a metric space guarantee that
+all random elements are tight.  Though we don't go into it at the
+moment, it turns out separability and completeness (i.e. Polishness) 
+are sufficient to guarantee tightness of arbitrary random
+elements and there is also a more subtle necessary and sufficient
+condition that has been identified (universal measurability see
+Dudley's RAP).
+
+Part of the importance of tightness is lies in its role as a
+compactness property (that is to say the fact that it implies weak
+convergence of a subsequence).  On the other hand, in some cases one
+uses only the boundedness aspect.  This is particularly true in
+asymptotic statistics.  TODO: Introduce the $O_P(r_n)$ and $o_p(r_n)$
+notation.
+\begin{lem}\label{AlgebraOfStochasticConvergence}Let $\xi_1,
+  \xi_2, \dots$ and
+  $\eta_1, \eta_2, \dots$ be sequences of random vectors.
+\begin{itemize}
+\item[(i)]If $\xi_n \toprob 0$ then $\xi_n$ is tight. ($o_p(1) = O_P(1)$).
+\item[(ii)]If $\xi_n \toprob 0$ and $\eta_n \toprob 0$ then $\xi_n +
+  \eta_n \toprob 0$.  ($o_P(1) + o_P(1) = o_P(1)$).
+\item[(iii)]If $\xi_n$ is tight and $\eta_n \toprob 0$ then $\xi_n +
+  \eta_n$ is tight.  ($O_P(1) + o_P(1) = O_P(1)$).
+\item[(iv)]If $\xi_n$ is tight and $\eta_n \toprob 0$ then $\xi_n *
+  \eta_n \toprob 0$ (this is true for many kinds of multiplication;
+  scalar multiplication, dot product, matrix multiplication). ($O_P(1)
+  o_P(1) = o_P(1)$.
+\item[(v)]If $\eta_n$ is tight sequence of random variables and
+  $\xi_n \eta_n \toprob 0$ then $\xi_n \toprob 0$. ($o_P(O_P(1)) = o_P(1)$).
+\end{itemize}
+\end{lem}
+\begin{proof}
+To prove (i) simply note that $\xi_n \toprob 0$ implies $\xi_n
+\todist 0$ (Lemma
+\ref{ConvergenceInProbabilityImpliesConvergenceInDistribution}) the
+therefore we know $\xi_n$ is tight by Lemma
+\ref{WeakConvergenceImpliesTight}.
+
+The statement of (ii) is a corollary to the Continuous Mapping Theorem
+(Corollary \ref{ConvergenceInProbabilityAndAlgebraicOperations}).
+
+TODO: Finish...
+\end{proof}
+
+Here is a slightly more involved fact that we shall use in the sequel.
+\begin{lem}\label{InvertMatrixInProbability}Let $\Psi_n$ be a sequence of
+  random matrices such that $\Psi_n \toprob \Psi$ with $\Psi$ almost surely
+  equal to a constant nonsingular matrix.  Suppose $\xi_n$ is a
+  sequence of random vectors such that $\Psi_n \xi_n$ is tight, then
+  $\xi_n$ is tight.
+\end{lem}
+\begin{proof}
+Recall that because convergence in
+probability only depends on the underlying topology induced by a
+metric (Corollary \ref{ConvergenceInProbabilityIndependentOfMetric})
+and that all norms on a finite dimensional vector space are
+equivalent; this means that we are free to choose the operator norm when dealing with
+the convergence of the matrices $\Psi_n$.  
+
+We remind the reader of some basic facts about the operator norm.  
+In any normed vector space of linear operators with the operator norm
+we have Neumann series for inverting perturbations of the identity
+operator.  Specifically for any $A$ with $\norm{A} < 1$, we have
+\begin{align*}
+(1 - A)^{-1} &= \sum_{n=0}^\infty A^n & & \text{converges absolutely} \\
+\norm{(1 - A)^{-1}} &\leq \sum_{n=0}^\infty \norm{A^n} \leq 
+\sum_{n=0}^\infty \norm{A}^n = (1 - \norm{A})^{-1} \\
+(1-A) (1 - A)^{-1} &= \sum_{n=0}^\infty A^n - \sum_{n=1}^\infty A^n =
+1 \\
+(1 - A)^{-1}(1-A) &= \sum_{n=0}^\infty A^n - \sum_{n=1}^\infty A^n =
+1 \\
+\end{align*}
+which shows that $(1-A)$ is invertible with inverse $(1-A)^{-1}$
+defined by the Neumann series.  We now extend this argument
+to show there is an  open neighborhood of any invertible operator in
+the space of invertible operators.  Suppose $T$ is invertible and let
+$\norm{T - A} < \frac{1}{\norm{T^{-1}}}$.  Then we can write $T - A =
+T(1 - T^{-1}A)$ where $\norm{T^{-1}A} \leq \norm{T^{-1}}\norm{A} < 1$
+so that $(1-T^{-1}A)$ is invertible.  This shows $T-A$ is product of
+invertible operators hence is itself invertible.  Moreover we have the
+norm bound
+\begin{align*}
+\norm{(T-A)^{-1}} &\leq \norm{T}\norm{(1 - T^{-1}A)^{-1}} \leq
+\frac{\norm{T}}{1 -
+\norm{T^{-1}A}} \leq \frac{\norm{T}}{1 -
+\norm{T^{-1}}\norm{A}}
+\end{align*}
+
+With that little piece of operator theory out of the way we can return
+statistics proper.  We have assumed $\Psi_n \toprob
+\Psi$ with $\Psi$ an invertible a.s. constant matrix.  Pick $\delta > 0$ and $0
+< \epsilon <
+\frac{1}{2\norm{\Psi^{-1}}}$, then we know that
+there exists an $N > 0$ such that $\probability{\norm{\Psi_n - \Psi} \leq \epsilon} \geq
+1 - \frac{\delta}{2}$ for all $n > N$.  By the preceeding
+discussion we know that whenever $\norm{\Psi_n - \Psi} \leq \epsilon$,
+  $\Psi_n$ is invertible and $\norm{\Psi_n^{-1}} < 2 \norm{\Psi^{-1}}$.  By
+  tightness of $\Psi_n \xi_n$ we can find $M > 0$ such that 
+\begin{align*}
+\sup_n \probability{\norm{\Psi_n \xi_n}>M} < \frac{\delta}{2}
+\end{align*}
+Therefore by applying the inverse of $\Psi_n$ and using
+its operator norm bound we get
+\begin{align*}
+\sup_{n>N} \probability{\norm{\xi_n}>2M \norm{\Psi^{-1}}}< \delta
+\end{align*} 
+Because random vectors in $\reals^n$ are tight, we know that there is
+an $M^\prime$ such that $\probability{\norm{\xi_n}>M^\prime} < \delta$ for all $0 < n \leq N$ and
+therefore $\xi_n$ is tight.
+\end{proof}
+
+\begin{defn}Given an open set $U \subset \reals^m$ and function $\phi :
+  U\to \reals^n$  we say that $\phi$ is \emph{Frechet differentiable} at a
+  point $x\in U$ if there is a linear map $A : \reals^m \to
+  \reals^n$ such that for every sequence $h_n \in \reals^m$ such that
+$\lim_{n \to \infty} \abs{h_n} = 0$ we have 
+\begin{align*}
+\lim_{n \to \infty}
+  \frac{\phi(x + h_n) - \phi(x) - A h_n}{\abs{h_n}} &= 0 
+\end{align*}
+The linear map $A$ is called the \emph{Frechet derivative} of $\phi$
+at $x$ is usually written $D\phi(x)$.
+\end{defn}
+
+\begin{thm}[Delta Method]\label{DeltaMethod}Let $\phi : D \subset
+  \reals^k \to \reals^m$ be Frechet differentiable at $\theta \in D$.  Let
+  $\xi, \xi_1, \xi_2, \dots$ be random vectors with values in $D$ and $r_n$ be a sequence
+  of real numbers such that $\lim_{n \to \infty} r_n = \infty$ and
+  $r_n(\xi_n - \theta) \todist \xi$.  Then 
+\begin{align*}
+r_n(\phi(\xi_n) -
+  \phi(\theta)) \todist D\phi(\theta) \xi
+\end{align*}
+and moreover 
+\begin{align*}
+\abs{r_n(\phi(\xi_n) - \phi(\xi)) - D\phi(\theta) r_n(\xi_n - \theta)} \toprob 0
+\end{align*}
+\end{thm}
+\begin{proof}
+By Lemma \ref{ScaledTightSequenceConvergeZeroProb} be know that $\xi_n
+- \theta
+\toprob 0$.  By differentiability of $\phi$ we know that  for every
+sequence $h_n \to 0$,
+\begin{align*}
+\lim_n \frac{\phi(\theta + h_n) - \phi(\theta) - D\phi(\theta)h_n}{\abs{h_n}} = 0
+\end{align*}
+
+The first thing to show is that we can extend this fact to random
+sequences.  We state this as a general fact.  Suppose $\psi(x)$ is a
+function such that for every $h_n \to 0$ we have
+$\frac{\psi(h_n)}{\abs{h_n}} \to 0$.  We claim that if we are given
+random vectors $\eta_n$ such that $\eta_n \toprob 0$ then
+$\frac{\psi(\eta_n)}{\abs{\eta_n}} \toprob 0$.  To see this define a
+new function by 
+\begin{align*}
+f(x) &= \begin{cases}
+\frac{\psi(x)}{\abs{x}} & \text{for $x \neq 0$} \\
+0 & \text{for $x=0$}
+\end{cases}
+\end{align*}
+and note that by assumption $f$ is continuous at $0$.  Now by the
+Continuous Mapping Theorem (Theorem \ref{ContinuousMappingTheorem}) we know that $f(\eta_n)
+\toprob f(0) = 0$.
+
+Having shown the above fact, we can use $\xi_n - \theta \toprob 0$ to
+conclude
+\begin{align*}
+\frac{\phi(\xi_n) - \phi(\theta) - D\phi(\theta) (\xi_n -
+  \theta)}{\abs{\xi_n - \theta}} &\toprob 0
+\end{align*}
+and if we multiply top and bottom by $r_n$ and use linearity of the
+Frechet derivative we get
+\begin{align*}
+\frac{r_n(\phi(\xi_n) - \phi(\theta)) - D\phi(\theta) r_n(\xi_n -
+  \theta)}{\abs{r_n(\xi_n - \theta)}}  &\toprob 0
+\end{align*}
+Tightness of $r_n(\xi_n - \theta)$ allows us to conclude that 
+\begin{align*}
+r_n(\phi(\xi_n) - \phi(\theta)) - D\phi(\theta) r_n(\xi_n -  \theta)  \toprob 0
+\end{align*}
+which gives us the second conclusion of the Theorem.
+
+To prove this last fact suppose $\xi_n, \eta_n$ are random vectors
+such that $\frac{\xi_n}{\abs{\eta_n}} \toprob 0$ and $\eta_n$ is
+tight.  Suppose we are given $\epsilon, \delta > 0$.  Use tightness to
+pick an $M>0$ such that $\sup_n \probability{\abs{\eta_n} > M} <
+\frac{\delta}{2}$ and use $\frac{\xi_n}{\abs{\eta_n}} \toprob 0$ to
+pick an $N$ such that $\probability{\abs{\frac{\xi_n}{\eta_n}} >
+  \frac{\epsilon}{M}} < \frac{\delta}{2}$ for all $n \geq N$.
+Then
+\begin{align*}
+\probability{\abs{\xi_n}>\epsilon} &=
+\probability{\abs{\xi_n}>\epsilon ; \abs{\eta_n} > M} +
+\probability{\abs{\xi_n}>\epsilon ; \abs{\eta_n} \leq M} \\
+&\leq \probability{\abs{\eta_n} > M} +
+\probability{\frac{\abs{\xi_n}}{\abs{\eta_n}}>\frac{\epsilon}{M}} \\
+&< \delta
+\end{align*}
+for all $n \geq N$ which shows $\xi_n \toprob 0$.  TODO: Is it better to
+think of this as $O_P(1) o_P(1) = o_P(1)$; probably better to think of
+this as $o_P(O_P(1)) = o_P(1)$?
+
+To get the first conclusion we simply use the fact that matrix
+multiplication is continuous and the Continuous Mapping Theorem
+(Theorem \ref{ContinuousMappingTheorem}) to see
+that $D\phi(\theta) r_n(\xi_n - \theta) \todist D\phi(\theta) \xi$ and Slutsky's
+Lemma (Lemma \ref{Slutsky})) and the part of this Theorem just proven
+to conclude $r_n(\phi(\xi_n) - \phi(\theta)) \todist D\phi(\theta) \xi$.
+\end{proof}
+
+\begin{examp}One of the most common problems in statistics is the
+  comparison of binomial populations.  For example, to estimate
+  treatment effectiveness one might want to compare the proportion of
+  postive responses between a treated group and a control group.  One
+  common way to estimate the difference in proportions between two
+  independent populations is the \emph{risk ratio}
+\begin{align*}
+\hat{RR} &= \frac{\hat{p}_1}{\hat{p}_2}
+\end{align*}
+where $\hat{p}_i$ denotes the sample proportion.  Here we calculate
+the asymptotic distribution of the risk ratio by using the Delta method.
+
+The trick is to apply a logarithm to convert the division into
+subtraction.  First we consider a single sample proportion $\hat{p}$.  Since
+$\hat{p} = \frac{1}{n} \sum_n \xi_i$ for $\xi_i$ a Bernoulli random
+variable with rate $p$, we can apply the Central Limit Theorem to
+conclude that 
+\begin{align*}
+\sqrt{n} (\hat{p} - p) &\todist N(0, p(1-p))
+\end{align*}
+Assuming $p \neq 0$, the Delta Method (Theorem \ref{DeltaMethod}) yields
+\begin{align*}
+\sqrt{n} (\ln (\hat{p}) - \ln(p)) &\todist \frac{1}{p}N(0, p(1-p)) =
+  N(0, \frac{1-p}{p})
+\end{align*}
+Therefore is we apply this reasoning to the risk ratio and use the
+fact that a sum of independent normal random variables is normal, we
+see that 
+\begin{align*}
+\sqrt{n} (\ln (\hat{RR}) - \ln(RR)) &\todist N(0, \frac{1-p_1}{p_1} + \frac{1-p_2}{p_2})
+\end{align*}
+
+This result can then be used to create asymptotic confidence intervals
+for the estimation of risk ratio 
+\begin{align*}
+\ln(\hat{p}_1/\hat{p}_2) \pm z_{\alpha/2}\sqrt{\frac{1-\hat{p}_1}{n_1
+  \hat{p}_1} + \frac{1-\hat{p}_2}{n_2 \hat{p}_2}}
+\end{align*}
+
+
+TODO: Discuss the implications of substituting the variance estimate
+into this formula.
+\end{examp}
+TODO: Lay down the conceptual framework in which parametric statistics
+is modeled.  Basic problem statement is this.  Assume that one has a
+probability space $(\Omega, \mathcal{A}, P)$ and a family of random
+elements $\xi_\theta$ in a measure space $(X, \mathcal{X}, \mu)$ with
+$\theta \in \Theta$ an unknown parameter that determines the
+distribution of $\xi_\theta$.   Assume we make observations of the
+value of $\xi$ (or more properly observations of generally independent
+random variables with the same distribution as $\xi$), we want to find an estimate of the value (or the
+distribution) of $\theta$.
+
+There is the subtlety around the notion of
+having a random variable $\xi$ with \emph{conditional density}
+$f(x\mid \theta)$.  The question is how rigorously one needs to think
+about the parameter $\theta$.  In the simplest form, one can just
+think of having a family of random variables $\xi_\theta$ for $\theta
+\in \Theta$ and not concern oneself with measurability in $\theta$.
+This seems to be sufficient when discussing frequentist methods for
+example.  Note also that the notation $f(x\mid \theta)$ seems to hedge
+on how we want to think of the functional dependence on $\theta$.
+We'll see that understanding the dependence on $\theta$ is important but doesn't map
+nicely to standard probabilisitc or measure theoretic notions and has
+its own somewhat idiosyncratic notions of regularity.
+In the Bayesian formulation it appears that one wants to
+view $\theta$ as a random quantity as well and one assumes the
+existence of a random element $\theta$ in $\Theta$ and a random
+element $\xi$ in $X$ and take the conditional distribution
+$P_\theta = \probability{\xi \in \cdot \mid \theta}$.  Then one assumes that the
+conditional distributions are all absolutely continuous with respect
+to $\mu$ and thereby get the conditional densities $f(x \mid
+\theta)$ such that $P_\theta = f(x \mid \theta) \cdot \mu$.  It is not yet clear to me at what point one is forced to
+take the latter approach.
+
+Here is one account of the FI regularity conditions.
+
+\begin{defn}
+Suppose we are given a measure space $(X, \mathcal{X}, \mu)$ and a family of
+probability measures $P_\theta$ with $\theta \in
+\Theta \subset \reals^n$ for some $n > 0$.  Suppose that  such that there
+exist densities $f(x \mid \theta)$  for each $P_\theta$ with respect so $\mu$.  The $f(x
+\mid \theta)$ are said to satisfy the \emph{FI regularity constraints}
+if the following are true:
+\begin{itemize}
+\item[(i)] $\Theta \subset \reals^n$ is convex and contains and open
+  set.  There exists a set $B \in \mathcal{X}$ with $\mu(B^c) = 0$ such
+  that $\frac{\partial}{\partial \theta_i} f(x \mid \theta)$ exists
+  for every $i=1, \dots, n$, every $\theta \in \Theta$ and every $x
+  \in B$.
+\item[(ii)] For every $k = 1,\dots, n$, 
+\begin{align*}
+\frac{\partial}{\partial \theta_i} \int f(x \mid \theta)
+  \, d \mu(x) = \int \frac{\partial}{\partial \theta_i} f(x \mid
+  \theta) \, d \mu(x)
+\end{align*}
+\item[(iii)]The set $C = \lbrace x \in X \mid f(x \mid \theta) >
+  0$ does not depend on $\theta$.
+\end{itemize}
+\end{defn}
+
+\begin{defn}Let $\xi$ be a random element in the measure space $(X,
+  \mathcal{X}, \mu)$ with conditional density
+  $f(x \mid \theta)$ with respect to $\mu$.  Suppose that $f(x \mid
+  \theta)$ satisfy the FI regularity constraints.  Then the random
+  vector 
+\begin{align*}
+U(\xi \mid \theta) &= \left( \frac{\partial}{\partial \theta_1} \log f(\xi \mid \theta),
+  \dots ,  \frac{\partial}{\partial \theta_n} \log f(\xi \mid \theta)\right)
+\end{align*}
+is called the \emph{score function}.
+\end{defn}
+
+The basic calculation with the score function is that if we assume
+that $\xi$ is a random element with density $f(x \mid \theta)$ then
+\begin{align*}
+\sexpectation{\frac{\partial}{\partial \theta_i} \log f(\xi \mid
+  \theta)}{\theta} &= \int \frac{\frac{\partial}{\partial \theta_i}  f(x \mid \theta)}{f(x \mid
+  \theta)} f(x \mid \theta) \, d\mu(x) \\
+&=\int \frac{\partial}{\partial \theta_i}  f(x \mid \theta) \, d\mu(x) \\
+&=\frac{\partial}{\partial \theta_i}\int f(x \mid \theta) \, d\mu(x) =
+\frac{\partial}{\partial \theta_i} 1 = 0
+\end{align*}
+and therefore $\sexpectation{U(\xi \mid \theta)}{\theta} = 0$ under
+the FI regularity constraints.
+
+If we differentiate both side of this latter equality 
+\begin{align*}
+0 &= \frac{\partial}{\partial \theta_j} \int \frac{\partial}{\partial
+  \theta_i}\log f(x \mid  \theta) f(x \mid \theta) \, d\mu(x) \\
+&=\int \frac{\partial^2}{\partial
+  \theta_i\partial
+  \theta_j}\log f(x \mid  \theta) f(x \mid \theta) + \frac{\partial}{\partial
+  \theta_i}\log f(x \mid  \theta) \frac{\partial}{\partial
+  \theta_j} f(x \mid  \theta)\, d\mu(x) \\
+&=\int (\frac{\partial^2}{\partial
+  \theta_i\partial
+  \theta_j}\log f(x \mid  \theta) + \frac{\partial}{\partial
+  \theta_i}\log f(x \mid  \theta) \frac{\partial}{\partial
+  \theta_j} \log f(x \mid  \theta)) f(x \mid \theta)\, d\mu(x) \\
+\end{align*}
+which shows that when $\xi$ has density $f(x \mid \theta)$, we have
+the identity
+\begin{align*}
+-\sexpectation{\frac{\partial^2}{\partial
+  \theta_i\partial
+  \theta_j}\log f(\xi \mid  \theta) }{\theta} = \sexpectation{\frac{\partial}{\partial
+  \theta_i}\log f(\xi \mid  \theta) \frac{\partial}{\partial
+  \theta_j} \log f(\xi \mid  \theta)}{\theta}
+\end{align*}
+This quantity is called the \emph{Fisher information matrix}.   TODO:
+The Fisher information as a Riemannian metric on $\Theta$.
+
+TODO: What kind of object is the score function (i.e. what domain and
+range).  More specifically, how does one think of the $\theta$ dependence in the score
+function?  In the Bayesian formulation everything is fine because
+$\xi$ is an honest random element and we are just composing it with a
+deterministic function.  In the formulation in which we don't think of
+$\theta$ as being random, then are we thinking of $\xi$ as having
+$\theta$-dependence when we plug it in?  The answer to this is YES. 
+
+\begin{examp}Let $\xi$ be a parameteric Gaussian family with
+  $\theta=(\mu, \sigma)$.  Then $f(x \mid \theta) =
+  \frac{1}{\sqrt{2\pi\sigma^2}} e^{\frac{-(x-\mu)^2}{2\sigma^2}}$ and
+  $U(\xi | \theta) = \frac{\xi - \mu}{\sigma^2}$.
+\end{examp}
+
+\begin{defn}Let $\xi$ be a random element with conditional density
+  $f(x \mid \theta)$ with respect to a measure space $(X,
+  \mathcal{X}, \mu)$.  For every $x \in X$, the function 
+\begin{align*}
+L(\theta) &= f(x \mid \theta)
+\end{align*}
+is called the \emph{likelihood function}.
+
+Any random element $\hat{\theta}$ in $\Theta$ that satisfies
+\begin{align*}
+\max_{\theta \in \Theta} f(\xi \mid \theta) = f(\xi \mid \hat{\theta})
+\end{align*}
+is called a \emph{maximum likelihood estimator} of $\theta$.
+\end{defn}
+
+It is important to note that in most statistical applications the
+random element $\xi$ whose likelihood we are investigating is a random
+vector that corresponds to sampling from a population.  This is to say
+that is some underlying distribution of interest that corresponds to
+some random element $\xi$ and that we model repeated sampling as a
+random element $\sample{\xi} = (\xi_1, \dotsc, \xi_n)$ in a product
+space $\mathcal{X}^n$.  In all cases we shall be concerned about for
+the moment, we assume that the samples are i.i.d. hence the joint
+density of the sample is just the product of the density of $\xi$.  In
+some cases it may be convenient to emphasize that the likelihood
+function is of such a form; in those cases we may choose to write
+$L_n(\theta)$ for the sample likelihood.
+
+The fact that likelihood functions for independent samples are products
+is leveraged constantly in what follows and is in large part
+responsible for the nice asymptotic properties of maximum likelihood
+estimators.  To release the power of this fact we simply convert the
+product into a sum by taking log and create the log likelihood.  Note that because the log is
+monotonic, one can perform maximum likelihood estimation equally well
+by taking maxima of the log likelihood.  We shall usually write
+$\ell(x \mid \theta)$ to denote a log likelihood and the case of
+i.i.d. samples we shall use a subscript to emphasize the
+dependence on sample size $\ell_n(\sample{\xi} \mid \theta) =
+\sum_{i=1}^n\log f(\xi_i \mid \theta)$.  The maximum likelihood estimator
+associated with i.i.d. samples of size $n$ is denoted:
+\begin{align*}
+\hat{\theta}_n &= \max_{\theta \in \Theta} \sum_{i=1}^n \log f(\xi_i \mid \theta)
+\end{align*}
+and it is the estimator that we shall spend some time studying.  The
+motivation behind this mechanism is that we know from the Gibbs
+Inequality (Lemma \ref{GibbsInequality}) that the true parameter
+$\theta_0$ is characterized as the maximum of $\sexpectation{\log f(x
+  \mid \theta)}{\theta_0}$.  Now we can view $\hat{\theta}_n$ as the
+result of substituting the (random) empirical measure in the
+expectation.  To the extent that the empirical measure converges we
+may hope that the estimator converges as well.  Less abstractly, we
+know from the Strong Law of Large Numbers that
+$\frac{1}{n}\sum_{i=1}^n \log f(\xi_i \mid \theta) \toas
+\sexpectation{\frac{1}{n}\sum_{i=1}^n \log f(\xi \mid
+  \theta)}{\theta_0}$ so thinking of this as convergence of functions
+of $\theta$ we may hope that the convergence is strong enough so that
+the maxima converge.
+
+Note that the definition of the maximum likelihood estimator is using
+the $\max$ and not the $\sup$; this means that in the case the
+supremum is not actually attained on the set $\Theta$ (e.g. $\Theta$
+is open and the supremum is attained on the boundary) then MLE may not
+exist.  In some accounts of the theory, the maximum is taken over the
+closure of the parameter domain (should we do this?)
+
+\begin{examp}\label{MLENormalParameters}Consider the case parameter estimation in a normal
+  distribution $\frac{1}{\sqrt{2\pi}\sigma} e^{-(x - \mu)^2 /
+    2\sigma^2}$.  If we consider $\mu$ unknown and $\sigma$ known the
+    the MLE for the mean is given by setting the derivative with
+    respect to $\mu$ to be zero
+\begin{align*}
+\frac{\partial}{\partial \mu} \sum_{i=1}^n \log \frac{1}{\sqrt{2\pi}\sigma} e^{-(\xi_i - \mu)^2 /
+    2\sigma^2} &= - \frac{1}{\sigma^2} \sum_{i=1}^n (\xi_i - \mu) = 0 
+\end{align*}
+which implies it is the sample mean $\hat{\mu}_n = \frac{1}{n}
+\sum_{i=1}^n \xi_n$.
+
+If we assume that $\mu$ is known and $\sigma$ is unknown the finding
+the maximum by differentiation we get
+\begin{align*}
+\frac{\partial}{\partial \sigma} \sum_{i=1}^n \log \frac{1}{\sqrt{2\pi}\sigma} e^{-(\xi_i - \mu)^2 /
+    2\sigma^2} &= \frac{1}{\sigma^3} \sum_{i=1}^n (\xi_i - \mu) - n \frac{1}{\sigma}= 0 
+\end{align*}
+and therefore the biased estimate of standard deviation $\hat{\sigma}_n = \frac{1}{n} \sum_{i=1}^n (\xi_n-\mu)^2$.
+\end{examp}
+
+TODO: Example of estimating the rate of a Bernoulli r.v.  Note the
+boundary behavior.
+
+TODO:  Example of $\xi$ as a random vector of independent observations
+(factoring the likelihood function).
+
+Note that we have allowed an MLE to be an arbitrary random element in
+$\Theta$.  It makes intuitive sense however that the estimator should
+depend on the value of $\xi$.  That is indeed the case in many cases
+of interest and one of our goals shall be to understand the conditions
+under which that dependence holds.
+
+\begin{thm}If there is a sufficient statistic and the MLE exists, then
+  the MLE is a function of the sufficient statistic.
+\end{thm}
+\begin{proof}
+TODO: Apply the factorization theorem.
+\end{proof}
+
+TODO: Bring up the notion of \emph{identifiability}; clearly if the
+likelihood function attains its maximum value for multiple values of
+$\theta$ then it is subtle to describe what consistency means (which
+is the correct value of $\theta$).
+
+As we've seen in Example \ref{MLENormalParameters} we cannot expect
+that maximum likelihood estimators will be consistent.  However it is
+often the case that they will be asymptotically consistent.  
+TODO: Define weakly and strongly asymptotically consistent.
+The following theorem provides a set of sufficient conditions under
+which a maximum likelihood estimator is strongly asymptotically consistent.
+\begin{thm}[Asymptotic Consistency of MLE]\label{AsymptoticConsistencyMLE}Let $\xi, \xi_1, \xi_2, \dots$ be i.i.d. parametric
+  family with distribution $f(x \mid \theta) \, d \mu$ with respect to measure
+  space $(X, \mathcal{X}, \mu)$.  Assume that  $\theta_0$ is fixed and
+  define 
+\begin{align*}
+Z(M, x) &= \inf_{\theta \in M} \log \frac{f(x \mid \theta_0)}{f(x \mid \theta)}
+\end{align*}
+Assume that for all $\theta \neq \theta_0$ there is an open neighborhood $U_\theta$
+such that $\theta \in U_\theta$ and $\sexpectation{Z(U_\theta, \xi)}{\theta_0} >
+0$.
+
+If $\Theta$ is not compact, assume that there is a compact $K \subset
+\Theta$ such that $\theta_0 \in K$ and $\sexpectation{Z(\Theta
+  \setminus K, \xi)}{\theta_0} > 0$.  Then 
+\begin{align*}
+\lim_{n \to \infty} \hat{\theta}_n = \theta_0
+\end{align*}
+almost surely with respect to $P_{\theta_0}$.
+\end{thm}
+
+Before starting in on the proof make sure to understand the nature of
+the hypotheses.  Given the observation $x$ we have $Z(U, x) < 0$ if
+there is a $\theta \in U$ such that a $\theta$ this more likely than
+$\theta_0$, whereas $Z(U, x) > 0$ tells us that $\theta_0$ is more
+likely than any $\theta \in U$.  Thus the conditions $\sexpectation{Z(U_\theta, \xi)}{\theta_0} >
+0$ are statements that on average there is no better explanation than
+$\theta_0$.  One thing that is interesting about the result is that it
+is only required that $\theta_0$ be the best average estimate locally
+in $\Theta$ (admittedly the weakening to a local property is only
+allowed over a compact set).
+
+\begin{proof}
+By Lemma \ref{ConvergenceAlmostSureByInfinitelyOften}, the Theorem is proven if we can show that
+$\sprobability{ d(\hat{\theta}_n, \theta_0) \geq \epsilon \text{
+  i.o.}}{\theta_0}= 0$
+for every $\epsilon > 0$.  
+So assume that we have fixed $\epsilon > 0$ and let $B(\theta_0,
+\epsilon)$ be the $\epsilon$-ball around $\theta_0$.  Since $K
+\setminus B(\theta_0, \epsilon)$ is compact and $U_\theta$ is a cover,
+we can find an finite subcover $U_1, \dots, U_{m-1}$ of $K
+\setminus B(\theta_0, \epsilon)$ such that each $U_j$ satisfies
+$\sexpectation{Z(U_j, \xi)}{\theta_0} > 0$.  If we define $U_m
+= \Theta\setminus K$ then we by hypothesis have a finite cover $U_1, \dots,
+U_m$ of $\Theta
+\setminus B(\theta_0, \epsilon)$ with each $U_j$ satisfying the same
+property.
+
+Now on each $U_j$ we can apply the Strong Law of Large Numbers to
+conclude that for each $j$, $\frac{1}{n} \sum_{i=1}^n Z(U_j, \xi_i)
+\toas \sexpectation{Z(U_j, \xi)}{\theta_0} > 0$ a.s. The key
+point from this point on is to understand that if we assume that
+$\hat{\theta}_n \in U_j$ infinitely often it would force the
+expectation $\sexpectation{Z(U_j, \xi)}{\theta_0}$ to be nonpositive.  Precisely,
+\begin{align*}
+&\sprobability{\hat{\theta}_n \notin B(\theta_0, \epsilon) \text{
+    i.o.}}{\theta_0} \\
+&\leq \sprobability{\hat{\theta}_n
+  \in \cup_{j=1}^m U_j \text{ i.o.}}{\theta_0} & & \text{since $B^c
+  \subset \cup_{j=1}^m U_j $}\\
+&= \sprobability{\cup_{j=1}^m \lbrace \hat{\theta}_n
+  \in U_j \text{ i.o.} \rbrace }{\theta_0}  & & \text{by
+    finiteness of $n$}  \\
+&\leq \sum_{j=1}^m \sprobability{\hat{\theta}_n
+  \in U_j \text{ i.o.}}{\theta_0} & & \text{by
+  subadditivity} \\
+&\leq \sum_{j=1}^m \sprobability{\inf_{\theta \in U_j} \sum_{i=1}^n
+  \log \frac{f(\xi_i, \theta_0)}{f(\xi_i, \theta)} \leq 0 \text{
+    i.o.}}{\theta_0} & & \text{because $\sum_{i=1}^n
+  \log \frac{f(\xi_i, \theta_0)}{f(\xi_i, \hat{\theta}_n)} \leq 0$ } \\
+&\leq \sum_{j=1}^m \sprobability{\sum_{i=1}^n \inf_{\theta \in U_j} 
+  \log \frac{f(\xi_i, \theta_0)}{f(\xi_i, \theta)} \leq 0 \text{
+    i.o.}}{\theta_0} \\
+&= \sum_{j=1}^m \sprobability{\lim_{n \to \infty} \frac{1}{n}\sum_{i=1}^n \inf_{\theta \in U_j} 
+  \log \frac{f(\xi_i, \theta_0)}{f(\xi_i, \theta)} \leq 0}{\theta_0}
+\\
+&= \sum_{j=1}^m \sprobability{\lim_{n \to    \infty} \frac{1}{n}
+  \sum_{i=1}^n  Z(U_j, \xi_i) \leq 0 }{\theta_0}\\
+&=0
+\end{align*}
+since as noted the last equality follows from fact that the Strong Law of Large Numbers tells us that almost
+surely for all $1 \leq j \leq m$,
+\begin{align*}
+\lim_{n \to    \infty} \frac{1}{n} \sum_{i=1}^n  Z(U_j, \xi_i) &=
+  \sprobability{Z(U_j, \xi)}{\theta_0} > 0
+\end{align*}
+\end{proof}
+
+Note that the proof above has a gap in it from the outset.  The
+functions $Z(M, x)$ for a fixed $M \subset \Theta$ are defined as an
+infimum of an uncountable collection of random variables hence we do
+not know that they are measurable.  On the other hand we clearly need
+them to be in order to take expectations.  TODO:  How do we get around
+these issues?  I suspect there are two paths to explore: 1) take a
+countable dense subset and show that the infimum can be reduced to a
+countable one or 2) abandon measurability and see if we can make due
+with outer expectations (a la empirical process theory).
+
+\begin{examp}
+Consider the problem of estimating the parameter $\theta \in [0,
+\infty)$ in the family $U(0, \theta)$.  Assume that $\theta_0$ is the
+true parameter and we want to show consistency of the maximum
+likelihood estimator.  The likelihood function in
+this case is 
+\begin{align*}
+f(x \mid \theta) &= \begin{cases}
+\frac{1}{\theta} & \text{if $0 \leq x \leq \theta$} \\
+0 & \text{if $x < 0$ or $x > \theta$}
+\end{cases}
+\end{align*}
+Note that you should be thinking of $f(x \mid \theta)$ as a function
+of $\theta$ with $x$ fixed.  To apply Theorem
+\ref{AsymptoticConsistencyMLE}
+we need to show $\sexpectation{Z(U, \theta)}{\theta_0} > 0$ for
+appropriately chosen $U \subset [0, \infty)$.  Since $\sprobability{x <
+  0}{\theta_0} = \sprobability{x > \theta_0}{\theta_0} = 0$ for
+purposes of computing the expectations we may assume that $0 \leq x
+\leq \theta_0$.  With this in mind, for such an $x$, we have the likelihood ratio
+\begin{align*}
+\log \frac{f(x \mid \theta_0)}{f (x \mid \theta)} &= \begin{cases}
++\infty & \text{if $0 \leq \theta < x$} \\
+\log \frac{\theta}{\theta_0} & \text{if $x \leq \theta$} 
+\end{cases}
+\end{align*}
+
+So now we find our neighborhoods.  Pick $\theta > \theta_0$ and define
+$U_\theta = (\frac{\theta + \theta_0}{2}, \infty)$ (any left hand
+endpoint between $\theta_0$ and $\theta$ would suffice).  In this
+case,
+\begin{align*}
+Z(U_\theta, x) &= \inf_{\psi > \frac{\theta + \theta_0}{2}} \frac{f(x
+  \mid \theta_0)}{f(x \mid \theta)} = 
+\inf_{\psi > \frac{\theta +    \theta_0}{2}} \log \frac{\psi}{\theta_0} =
+\log \frac{\theta + \theta_0}{2 \theta_0} > 0
+\end{align*}
+therefore $\sexpectation{Z(U_\theta, x)}{\theta_0} > 0$.
+
+If we pick $\theta < \theta_0$ then pick $U_\theta = (\theta/2,
+\infty)$ and note that $Z(U_\theta, x)$ is $+infty$ on $(\theta/2,
+\theta)$ and therefore $\sexpectation{Z(U_\theta, x)}{\theta_0} =
++\infty$.
+
+Lastly we have to find a compact set $K$ such that
+$\sexpectation{Z(\reals_+ \setminus K, x)}{\theta_0} > 0$.  Pick $a >
+1$ and consider the interval $[\theta_0/a, a\theta_0]$.  Note that 
+\begin{align*}
+Z(\reals_+ \setminus [\theta_0/a, a\theta_0], x) &= \begin{cases}
+\log \frac{x}{\theta_0} & \text{if $x < \frac{\theta_0}{a}$} \\
+\log a & \text{if $\frac{\theta_0}{a} \leq x \leq \theta_0$} \\
+\end{cases}
+\end{align*}
+so integrating,
+\begin{align*}
+\sexpectation{Z(\reals_+ \setminus [\theta_0/a, a\theta_0],
+  x)}{\theta_0} &= 
+\frac{1}{\theta_0} \int_0^{\frac{\theta_0}{a}} \log \frac{x}{\theta_0}
+\, dx
++ \frac{\theta_0 - \frac{\theta_0}{a}}{\theta_0} \log a
+\end{align*}
+
+TODO:  Wait a minute, the first integral is $-\infty$!!!!!!
+\end{examp}
+
+TODO: The following Theorem only requires upper semi-continuity.
+\begin{thm}Let $\xi, \xi_1, \xi_2, \dots$ be i.i.d. parametric
+  family with distribution $f(x \mid \theta) \, d \mu$ with respect to measure
+  space $(X, \mathcal{X}, \mu)$.  Assume that  $\theta_0$ is fixed and
+  define 
+\begin{align*}
+Z(M, x) &= \inf_{\theta \in M} \log \frac{f(x \mid \theta_0)}{f(x \mid \theta)}
+\end{align*}
+Assume that for all $\theta \neq \theta_0$ there is an open neighborhood $U_\theta$
+such that $\theta \in U_\theta$ and $\sexpectation{Z(U_\theta, \xi)}{\theta_0} >
+-\infty$.  Assume $f(x \mid \theta)$ is
+  a continuous function of $\theta$ for almost all $x$ with respect to
+  $P_{\theta_0}$
+
+If $\Theta$ is not compact, assume that there is a compact $K \subset
+\Theta$ such that $\theta_0 \in K$ and $\sexpectation{Z(\Theta
+  \setminus K, \xi)}{\theta_0} > 0$.  Then 
+\begin{align*}
+\lim_{n \to \infty} \hat{\theta}_n = \theta_0
+\end{align*}
+almost surely with respect to $P_{\theta_0}$.
+\end{thm}
+\begin{proof}
+We show that for all $\theta \neq \theta_0$ there exists a
+neighborhood $\theta \in U_\theta$ such that
+$\sexpectation{Z(U_\theta, \xi)}{\theta_0} > 0$ and then apply the
+previous Theorem \ref{AsymptoticConsistencyMLE}.
+
+Pick $\theta \neq \theta_0$ and assume that we have an open
+neighborhood $U_\theta$ with $\theta \in U_\theta$ and $\sexpectation{Z(U_\theta, \xi)}{\theta_0} >
+-\infty$.  If $\sexpectation{Z(U_\theta, \xi)}{\theta_0} > 0$ then
+have found a suitable neighborhood so we may assume
+$\sexpectation{Z(U_\theta, \xi)}{\theta_0} \leq 0$ as well (we really
+just need to assume that the value if finite a bit later in the proof).  Now for each $n \in \naturals$ pick a closed ball $U^n_\theta =
+B(\theta, r_n) \subset U_\theta$ such that $r_n \leq \frac{1}{n}$ and
+$r_n$ are non-increasing.  Furthermore because $U^{n+1}_\theta \subset
+U^n_\theta$ we have for fixed $x$, $Z(U^n_\theta, x)$ is increasing in
+$n$.
+
+Now assume that we have an $x$ such that $f(x \mid \theta)$ is
+continuous.  This implies $\log \frac{f(x \mid \theta_0)}{f(x \mid
+  \theta)}$ is continuous as well.  This continuity coupled with the
+compactness of $U^n_\theta$ implies that there exists a $\theta_n(x)
+\in U^n_\theta$ such that $Z(U^n_\theta, x) = \log \frac{f(x \mid \theta_0)}{f(x \mid
+  \theta_n(x))}$.  Clearly we have $\cap_n U^n_\theta =
+\lbrace \theta \rbrace$ and this implies $\lim_{n \to \infty}
+\theta_n(x) = \theta$.  Again by continuity we get
+\begin{align*}
+\lim_{n \to \infty} Z(U^n_\theta, x) &= \lim_{n \to \infty}\log \frac{f(x \mid \theta_0)}{f(x \mid
+  \theta_n(x))} = \log \frac{f(x \mid \theta_0)}{f(x \mid
+  \theta)}
+\end{align*}
+
+Now because $U^n_\theta \subset U_\theta$ we have $Z(U^n_\theta, x)
+\geq Z(U_\theta, x)$ and $\sexpectation{Z(U_\theta, \xi)}{\theta_0}$
+is finite, we may apply Fatou's Lemma (Theorem
+\ref{Fatou})
+\begin{align*}
+\liminf_{n \to \infty} \sexpectation{ Z(U^n_\theta, x)}{\theta_0} -
+\sexpectation{Z(U_\theta, x)}{\theta_0} &= \liminf_{n \to \infty} \sexpectation{ Z(U^n_\theta, x) - Z(U_\theta,
+x)}{\theta_0} \\
+&\geq \sexpectation{ \lim_{n \to \infty}  \left (Z(U^n_\theta, x) - Z(U_\theta,
+x) \right )}{\theta_0} \\
+&=\sexpectation{ \log \frac{f(x \mid \theta_0)}{f(x \mid
+  \theta)}}{\theta_0} -
+\sexpectation{Z(U_\theta, x)}{\theta_0} 
+\end{align*}
+Cancelling the (finite) common term $\sexpectation{Z(U_\theta, x)}{\theta_0}$ we get
+\begin{align*}
+\liminf_{n \to \infty} \sexpectation{ Z(U^n_\theta, x)}{\theta_0} \geq \sexpectation{ \log \frac{f(x \mid \theta_0)}{f(x \mid
+  \theta)}}{\theta_0}  > 0
+\end{align*}
+where the last inequality follows from the positivity of relative
+entropy (Lemma \ref{GibbsInequality}).  Now by this inequality we can
+find an $N >0$ such that $\sexpectation{ Z(U^n_\theta, x)}{\theta_0} >
+0$ for all $n \geq N$, but in particular there is a single
+neighborhood $U^N_\theta$ with this property.  
+\end{proof}
+The technical conditions above are sufficient to prove asymptotic
+efficient of MLEs but it is certainly not necessary.
+
+TODO: Example showing consistency without conditions.
+
+TODO: Note a different condition that suffices (Martingale proof:
+Schervish Lemma 7.83)
+
+Maximum likelihood estimators are asymptotically normal under certain
+circumstances.  If is unfortunate that any precise statement of those
+circumstances is technical and verbose.  It is also unfortunate that
+there is no definitive characterization of asymptotic normality as a
+set of necessary and sufficient conditions.  Instead there are a
+number of sufficient conditions available with different levels of
+generality and sophistication.  TODO: This is equally true about
+asymptotic consistency and asymptotic results in general; move this
+comment to an appropriate place and generalize.
+
+Before stating a rather classical version of such a result let's consider the
+case of a scalar parameter in a somewhat heuristic fashion.  If we
+assume that we have a consistent MLE such that $\hat{\theta}_n \toas
+\theta_0$ and we want to prove that $\sqrt{n}(\hat{\theta}_n -
+\theta_0 ) \todist N(0, \sigma^2)$ for an appropriate $\sigma$.  We assume that $f(x \mid
+\theta)$ is twice continuously differentiable as a function of
+$\theta$; under these conditions the
+maximum of the likelihood implies a vanishing derivative
+\begin{align*}
+\frac{\partial}{\partial \theta} \ell_n (\xi \mid \hat{\theta}_n) &= 0
+\end{align*} 
+If we apply the mean value theorem to the function
+$\frac{\partial}{\partial \theta} \ell_n (\xi \mid \theta)$ to conclude
+that there is a value $\theta^*_n$ that lies between $\hat{\theta}_n$
+and $\theta_0$ such that 
+\begin{align*}
+\frac{\frac{\partial}{\partial \theta} \ell_n (\xi \mid \hat{\theta}_n)
+  - \frac{\partial}{\partial \theta} \ell_n (\xi \mid
+  \theta_0)}{\hat{\theta}_n - \theta_0} &= \frac{\partial^2}{\partial \theta^2}\ell_n (\xi \mid \theta^*_n)
+\end{align*}
+or rearranging terms to set up ourselves up to take advantage of the
+Central Limit Theorem (ignore the possiblity that the denominator vanishes):
+\begin{align*}
+\sqrt{n}(\hat{\theta}_n - \theta_0) &=
+-\frac{\sqrt{n}
+ \frac{\partial}{\partial \theta} \ell_n (\xi \mid
+  \theta_0)}{\frac{\partial^2}{\partial \theta^2}\ell_n (\xi \mid \theta^*_n)} 
+\end{align*}
+Now consider the numerator $\mu = \sexpectation{\log f(\xi \mid
+  \theta_0)}{\theta_0} = 0$ and variance $i(\theta_0) = \sexpectation{\log^2 f(\xi \mid
+  \theta_0)}{\theta_0}$ and we can apply the Central Limit Theorem to see
+\begin{align*}
+\frac{1}{\sqrt{n}} \ell^\prime_n (\xi \mid \theta_0) &= \frac{1}{\sqrt{n}}
+\sum_{i=1}^n \frac{\partial}{\partial \theta} \log f(\xi_i \mid
+\theta_0) \todist N(0, i(\theta_0))
+\end{align*}
+This looks quite promising but there is a factor of
+$\frac{1}{\sqrt{n}}$ that was added that will have to be addressed.
+
+Now if we consider the denominator things don't look so good; however a small
+modification seems amenable to analysis.  If we consider
+$\frac{\partial^2}{\partial \theta^2}\ell_n (\xi \mid \theta_0)$, then
+we see that the Weak Law Of Large Numbers tells us that
+\begin{align*}
+-\frac{1}{n}\frac{\partial^2}{\partial \theta^2}\ell_n (\xi \mid \theta_0) &=
+-\frac{1}{n}\sum_{i=1}^n \frac{\partial^2}{\partial \theta^2}\ell_n (\xi_i \mid
+\theta_0)  \toprob \sexpectation{-\frac{\partial^2}{\partial \theta^2}
+  \log f (\xi \mid
+\theta_0) }{\theta_0} =  i(\theta_0)
+\end{align*}
+Moreover, the factor of $\frac{1}{n}$ that we needed here to apply the
+Law of Large Numbers
+cancelled exactly with our use of $\frac{1}{\sqrt{n}}$ in the Central
+Limit Theorem application so that our Taylor expansion can be written as
+\begin{align*}
+\sqrt{n}(\hat{\theta}_n - \theta_0) &=
+-\frac{
+ \frac{\partial}{\partial \theta} \ell_n (\xi \mid
+  \theta_0)}{\sqrt{n}} \cdot 
+\frac{n}{\frac{\partial^2}{\partial
+    \theta^2}\ell_n (\xi \mid \theta_0)} \cdot
+\frac {\frac{\partial^2}{\partial
+    \theta^2}\ell_n (\xi \mid \theta_0)}
+{\frac{\partial^2}{\partial \theta^2}\ell_n (\xi \mid \theta^*_n)} 
+\end{align*}
+and we are in position to use Slutsky's Lemma to extend the asymptotic
+normality of the first factor to $\sqrt{n}(\hat{\theta}_n - \theta_0)$.
+The rub is that we have
+a term 
+\begin{align*}
+\frac{\frac{\partial^2}{\partial \theta^2}\ell_n (\xi \mid \theta_0) }{\frac{\partial^2}{\partial \theta^2}\ell_n (\xi \mid \theta_n^*) }
+\end{align*}
+to understand.  By consistency of the estimator we know that
+$\theta_n^* \toas \theta_0$ we might hope that this term converges to
+$1$ (at least in probability).  In fact additional smoothness
+assumptions on $f$ are sufficient to guarantee that this is the case;
+the expression of these smoothness constraints is what provides the
+complexity to statements of asymptotic normality of MLEs.
+When that is shown, then keeping track of the factors of $i(\theta_0)$
+we see that Slutsky's Lemma will tell us that
+\begin{align*}
+\sqrt{n}(\hat{\theta}_n - \theta_0) \todist N(0, i(\theta_0)^{-1})
+\end{align*}
+
+In the following Theorem we capture all the varied assumptions that
+are required to make an argument like the above rigorous; the result
+is also stated for multivariate parameters.  The details of the proof
+are organized a bit differently than the outline of the scalar case
+given above (e.g. dealing with boundaries in parameter space) but the
+main points of the proof remain the same:
+\begin{itemize}
+\item[1)] Taylor expand the likelihood function around ${\theta}_0$
+\item[2)] Use the Central Limit Theorem to prove convergence of the
+  first derivative term at $\theta_0$
+\item[3)] Use the Weak Law of Large Numbers to prove convergence of
+  the second derivative term at $\theta_0$
+\item[4)] Use asymptotic consistency of $\hat{\theta}_n$ and bounds on the variation of the second derivative to
+  conclude that the difference between the second derivatives at
+  $\theta_0$ and $\hat{\theta}_n$ go to zero in probability.
+\item[5)] Use Slutsky's Lemma to glue all the pieces together.
+\end{itemize}
+
+
+\begin{thm}Let $\xi, \xi_1, \xi_2, \dots$ be i.i.d. parametric
+  family with distribution $f(x \mid \theta) \, d \mu$ with respect to measure
+  space $(X, \mathcal{X}, \mu)$ with $\Theta \subset \reals^k$
+  for some $k > 0$.  Assume
+\begin{itemize}
+\item[(i)]$\hat{\theta}_n \toprob \theta_0$ in $P_{\theta_0}$ for every
+  $\theta_0 \in \Theta$.
+\item[(ii)]$f(x \mid \theta)$ has continuous second partial
+  derivatives with respect to $\theta$ and that differentiation can be
+  passed under the integral sign
+\item[(iii)]there exists $H_r(x, \theta)$ such that for each $\theta_0
+  \in int(\Theta)$ and each $k,j$,
+\begin{align*}
+\sup_{\norm{\theta - \theta_0} \leq r}
+\abs{\frac{\partial^2}{\partial\theta_k \partial\theta_j} \log f(x
+  \mid \theta_0) - \frac{\partial^2}{\partial\theta_k \partial\theta_j} \log f(x
+  \mid \theta)} \leq H_r(x, \theta_0)
+\end{align*}
+with $\lim_{r \to 0} \sexpectation{H_r(\xi, \theta_0)}{\theta_0} = 0$.
+\item[(iv)]the Fisher information matrix $\mathcal{I}_\xi(\theta_0)$ is
+  finite and nonsingular.
+\end{itemize}
+Then 
+\begin{align*}
+\sqrt{n} \left(\hat{\theta}_n - \theta_0\right ) \todist N(0, \mathcal{I}^{-1}_\xi(\theta_0))
+\end{align*}
+\end{thm}
+\begin{proof}
+We start with
+
+Claim 1: $\frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta)
+\toprob 0$
+
+One might jump to the conclusion that $D_{\hat{\theta}_n} \ell_n(\sample{\xi}
+\mid \theta) = 0$ everywhere because $\hat{\theta}_n$ is a maximum,
+however there are some details about handling the issue of boundaries on
+$\Theta$.  One does know that $D_{\hat{\theta}_n} \ell_n(
+\sample{\xi} \mid \theta) = 0$ when $\hat{\theta}_n \in \interior(\Theta)$ but
+there is the possibility that some $\hat{\theta}_n$ lies on the
+boundary of $\Theta$ and the derivative might not vanish in this case.
+To handle the boundary effects, first we know that $\theta_0 \in
+\interior(\Theta)$  and therefore there is an open neighborhood
+$\theta_0 \in U \subset \interior(\Theta)$.  By the vanishing of the
+derivative at any maximum in the interior, we know
+\begin{align*}
+\frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta) &=
+\frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta)
+\characteristic{\hat{\theta}_n  \in U} + \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta)
+\characteristic{\hat{\theta}_n  \notin U} \\
+&= \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta)
+\characteristic{\hat{\theta}_n  \notin U}
+\end{align*}
+Using the fact that $\hat{\theta}_n \toprob
+\theta_0$ allows us to conclude that 
+\begin{align*}
+\lim_{n \to \infty} \sprobability{\hat{\theta}_n  \notin U}{\theta_0} &= 0
+\end{align*}
+so in particular,
+\begin{align*}
+\lim_{n \to \infty} \sprobability{ \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi}
+  \mid \theta) \characteristic{\hat{\theta}_n  \notin U} = 0}{\theta_0} &=0
+\end{align*}
+Putting these two pieces of information together we see
+\begin{align*}
+ \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta) &=
+ \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta)
+\characteristic{\hat{\theta}_n  \notin U} \toprob 0
+\end{align*}
+
+Now we derive a quadratic approximation to the likelihood by using a
+Taylor expansion (actually just the Mean Value Theorem) of
+$D_\theta \ell_n(\sample{\xi} \mid \theta)$ around ${\theta}_0$.  Once
+again there is the issue of boundaries but moreover  the domain
+$\Theta$ is not convex so the Taylor series only applies cleanly when
+$\hat{\theta}_n$ belongs to a ball around $\theta_0$.  To handle this,
+pick an $R > 0$ such that we have $B(\theta_0; R) \subset
+\interior(\Theta)$.  In this case, when $\norm{\hat{\theta}_n -
+  \theta_0} < R$ then we know there exists a $\theta^*_n$ between $\theta_0$ and
+$\hat{\theta}_n$ such that 
+\begin{align*}
+D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta) - D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) &= D^2_{\theta^*_n} \ell_n(\sample{\xi} \mid \theta) \cdot
+(\hat{\theta}_n - \theta_0)
+\end{align*}
+As it turns out what happens when $\norm{\hat{\theta}_n - \theta_0}
+\geq R$ won't matter since it is an event that occurs with vanishingly
+small probability as $n$ grows.  Accordingly, we define
+\begin{align*}
+\Delta_n &= \begin{cases}
+ D^2_{\theta^*_n} \ell_n(\sample{\xi} \mid \theta) & \text{when $\norm{\hat{\theta}_n -
+  \theta_0} < R$} \\
+0 & \text{when $\norm{\hat{\theta}_n -
+  \theta_0} \geq R$} \\
+\end{cases}
+\end{align*}
+TODO: Do we need to justify measurability here...
+
+Claim 2: $ \frac{1}{\sqrt{n}}(D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) + \Delta_n \cdot (\hat{\theta}_n - \theta_0)) \toprob 0$
+
+Pick an $\epsilon > 0$.  From the definition of $\Delta_n$ we have
+\begin{align*}
+ \frac{1}{\sqrt{n}} (D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) + \Delta_n \cdot (\hat{\theta}_n - \theta_0))
+&= \begin{cases}
+ \frac{1}{\sqrt{n}} (D_{\hat{\theta}_n} \ell_n(\sample{\xi}
+\mid \theta) & \text{when $\norm{\hat{\theta}_n -
+  \theta_0} < R$} \\
+ \frac{1}{\sqrt{n}} (D_{{\theta}_0} \ell_n(\sample{\xi}
+\mid \theta) & \text{when $\norm{\hat{\theta}_n -
+  \theta_0} \geq R$} \\
+\end{cases}
+\end{align*}
+and therefore
+\begin{align*}
+&\lim_{n \to \infty} \sprobability{ \frac{1}{\sqrt{n}} (D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) + \Delta_n \cdot (\hat{\theta}_n - \theta_0)) >
+\epsilon}{\theta_0} \\
+&= 
+\lim_{n \to \infty} \sprobability{  \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi}
+\mid \theta) > \epsilon;\norm{\hat{\theta}_n -
+  \theta_0} < R}{\theta_0} \\
+&+ \lim_{n \to \infty}\sprobability{  \frac{1}{\sqrt{n}} D_{{\theta}_0} \ell_n(\sample{\xi}
+\mid \theta) > \epsilon;\norm{\hat{\theta}_n -
+  \theta_0} \geq R}{\theta_0} \\
+&\leq 
+\lim_{n \to \infty} \sprobability{ \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi}
+\mid \theta) > \epsilon}{\theta_0} + \lim_{n \to \infty}\sprobability{\norm{\hat{\theta}_n -
+  \theta_0} \geq R}{\theta_0} = 0
+\end{align*}
+where we have used Claim 1 and the weak consistency of the estimator
+$\hat{\theta}_0$.
+
+Claim 3: $\frac{1}{n}\Delta_n \toprob -\mathcal{I}_\xi(\theta_0)$
+
+Write 
+\begin{align*}
+\frac{1}{n}\Delta_n &= \frac{1}{n}D^2_{\theta_0} \ell_n(\sample{\xi} \mid
+\theta)  \characteristic{\norm{\hat{\theta}_n -
+  \theta_0} < R} \\
+&+
+(D^2_{\theta^*_n} \ell_n(\sample{\xi} \mid \theta) - D^2_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta))  \characteristic{\norm{\hat{\theta}_n -
+  \theta_0} < R} \\
+\end{align*}
+and we address the convergence of each of the summands.  First note
+that by weak consistency of the estimator $\hat{\theta}_n$ we have
+$\characteristic{\norm{\hat{\theta}_n -
+  \theta_0} < R} \toprob 1$.
+By the Weak Law of Large Numbers and the fact we can exchange
+derivatives and expectations we have
+\begin{align*}
+\frac{1}{n}D^2_{\theta_0} \ell_n(\sample{\xi} \mid
+\theta) &= \frac{1}{n}\sum_{i=1}^n D^2_{\theta_0} \log f(\xi_i \mid
+\theta) \toprob \sexpectation{D^2_{\theta_0} \log f(\xi \mid
+\theta)}{\theta_0} = -\mathcal{I}_\xi(\theta_0)
+\end{align*}
+and therefore by Corollary
+\ref{ConvergenceInProbabilityAndAlgebraicOperations} to the Continuous
+Mapping Theorem we can combine these facts to conclude
+\begin{align*}
+\frac{1}{n}D^2_{\theta_0} \ell_n(\sample{\xi} \mid
+\theta) \characteristic{\norm{\hat{\theta}_n -
+  \theta_0} < R} &\toprob -\mathcal{I}_\xi(\theta_0)
+\end{align*}
+We turn attention to the error term which we show is $o_P(1)$.
+Let $\epsilon > 0$ be given.  Pick any $0 < r \leq R$ such that
+$\sexpectation{H_r(\xi, \theta_0)}{\theta_0} < \frac{\epsilon}{2}$.
+Again applying the Weak Law of Large Numbers 
+\begin{align*}
+\frac{1}{n} \sum_{i=1}^n H_r(\xi_i, \theta_0) \toprob \sexpectation{H_r(\xi, \theta_0)}{\theta_0} < \frac{\epsilon}{2}
+\end{align*}
+and therefore
+\begin{align*}
+\lim_{n \to \infty} \sprobability{\frac{1}{n} \sum_{i=1}^n H_r(\xi_i,
+  \theta_0) < \epsilon}{\theta_0} &\leq \lim_{n \to \infty} \sprobability{\abs{\frac{1}{n} \sum_{i=1}^n H_r(\xi_i,
+  \theta_0) - \sexpectation{H_r(\xi, \theta_0)}{\theta_0}} <
+\frac{\epsilon}{2}}{\theta_0} = 0
+\end{align*}
+Now apply this fact to get a bound on each entry of the Hessian matrix
+\begin{align*}
+&\lim_{n \to \infty} \sprobability{\frac{1}{n}\abs{D^2_{\theta^*_n, j,k} \ell_n(\sample{\xi} \mid
+\theta) - D^2_{\theta_0, j,k} \ell_n(\sample{\xi} \mid
+\theta) } \characteristic{\norm{\theta^*_n - \theta_0} < R} <
+\epsilon}{\theta_0} \\
+&\lim_{n \to \infty} \sprobability{\frac{1}{n}\abs{D^2_{\theta^*_n, j,k} \ell_n(\sample{\xi} \mid
+\theta) - D^2_{\theta_0, j,k} \ell_n(\sample{\xi} \mid
+\theta) } \characteristic{\norm{\theta^*_n - \theta_0} < r} <
+\epsilon}{\theta_0} \\
+&+ \lim_{n \to \infty} \sprobability{\frac{1}{n}\abs{D^2_{\theta^*_n, j,k} \ell_n(\sample{\xi} \mid
+\theta) - D^2_{\theta_0, j,k} \ell_n(\sample{\xi} \mid
+\theta) } \characteristic{r \leq \norm{\theta^*_n - \theta_0} < R} <
+\epsilon}{\theta_0} \\
+&\leq
+\lim_{n \to \infty} \sprobability{\frac{1}{n} \sum_{i=1}^n H_r(\xi_i,
+  \theta_0) < \epsilon}{\theta_0} + 
+\lim_{n \to \infty} \sprobability{ \characteristic{r \leq \norm{\theta^*_n -
+      \theta_0} < R} }{\theta_0} \\
+&= 0
+\end{align*}
+and therefore we have shown $\frac{1}{n} (D^2_{\theta^*_n, j,k} \ell_n(\sample{\xi} \mid
+\theta) - D^2_{\theta_0, j,k} \ell_n(\sample{\xi} \mid
+\theta) ) \characteristic{\norm{\theta^*_n - \theta_0} < R} \toprob 0$.
+
+Claim 4: $ \frac{1}{\sqrt{n}} D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) \todist N(0, \mathcal{I}_\xi(\theta_0))$
+
+First note that 
+\begin{align*}
+\frac{1}{n} D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) &= \frac{1}{n} \sum_{i=1}^n D_{\theta_0} \log f(\xi_i
+\mid \theta) \toprob \sexpectation{D_{\theta_0} \log f(\xi \mid \theta)}{\theta_0}
+\end{align*}
+since we have an i.i.d. sum and we can apply the Weak Law of Large
+Numbers.  Because we assume we can exchange expectations and
+derivatives for any partial derivative 
+\begin{align*}
+\sexpectation{\frac{\partial}{\partial \theta_i} \log f(\xi_i \mid
+  \theta)}{\theta_0} &= \int \frac{\partial}{\partial \theta_i} \log f(x \mid
+  \theta) f(x \mid \theta_0) dx = \int \frac{\partial}{\partial \theta_i}  f(x \mid
+  \theta_0) \, dx = \frac{\partial}{\partial \theta_i} \int f(x \mid
+  \theta_0) \, dx = 0
+\end{align*}
+and thus we conclude $\frac{1}{n} D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) \toprob 0$.  We can also calculate the covariance matrix of the random variable
+$D_{\theta_0} \log f(\xi \mid \theta)$ as $\mathcal{I}_\xi(\theta_0)$.
+
+Now we simply apply the multivariate Central Limit Theorem and the
+Claim is proven.
+
+Claim 5: $ \frac{1}{\sqrt{n}} D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) -  \sqrt{n} \mathcal{I}_\xi(\theta_0) \cdot
+(\hat{\theta}_n - \theta_0) \toprob 0$
+
+We already know from Claim 2 that $ \frac{1}{\sqrt{n}} (D_{\theta_0} \ell_n(\sample{\xi}
+\mid \theta) + \Delta_n \cdot
+(\hat{\theta}_n - \theta_0)) \toprob 0$ so it suffices to show that $\frac{1}{\sqrt{n}}\Delta_n \cdot
+(\hat{\theta}_n - \theta_0) +  \sqrt{n} \mathcal{I}_\xi(\theta_0) \cdot
+(\hat{\theta}_n - \theta_0) \toprob 0$
+as well.  
+
+By Claim 4 and Lemma \ref{WeakConvergenceImpliesTight}, we know that 
+$ \frac{1}{\sqrt{n}} D_{\theta_0} \ell_n(\sample{\xi} \mid \theta)$ is
+tight.  Together with Claim 2 this tells us that $\frac{1}{\sqrt{n}}\Delta_n \cdot (\hat{\theta}_n -
+\theta_0)$ is $o_P(1) + O_P(1)$ hence is tight as well (Lemma
+\ref{AlgebraOfStochasticConvergence}).  
+Claim 3 and the invertibility of $\mathcal{I}_\xi(\theta_0)$ allows us
+to apply  Lemma \ref{InvertMatrixInProbability} to conclude that $\frac{1}{\sqrt{n}}\Delta_n \cdot (\hat{\theta}_n -
+\theta_0)$ is tight.
+Now by Claim 3 and Lemma
+\ref{AlgebraOfStochasticConvergence} we
+can conclude that $ (\frac{1}{n}\Delta_n + \mathcal{I}_\xi(\theta_0))
+\cdot \sqrt{n} (\hat{\theta}_n - \theta_0) \toprob 0$ as required.
+
+
+Now when we combine Claim 4 and Claim 5 with Slutsky's Lemma (Theorem
+\ref{Slutsky}) we conclude that $\mathcal{I}_\xi(\theta_0)
+\cdot \sqrt{n} (\hat{\theta}_n - \theta_0) \todist N(0,
+\mathcal{I}_\xi(\theta_0)^{-1})$.  Because $\mathcal{I}_\xi(\theta_0)$ is invertible and matrix multiplication is
+continuous, the Continuous Mapping Theorem allows us to conclude 
+$\sqrt{n} 
+(\hat{\theta}_n - \theta_0) \todist \mathcal{I}_\xi(\theta_0)^{-1}
+N(0, \mathcal{I}_\xi(\theta_0)) = N(0, \mathcal{I}_\xi(\theta_0)^{-1})$.
+and we are done.
+\end{proof}
+
+As a side effect of having shown that an MLE may be asymptotically
+normal we computed its asymptotic variance.  Now it is intuitively
+clear that given two estimators that are equal in every other way the
+one with a smaller variance is to be preferred.  So a natural question
+to ask is whether a variance of $\mathcal{I}_\xi(\theta)^{-1}$ is a good by some objective
+standard.  It is in fact optimal.
+
+\begin{thm}[Cramer-Rao Lower Bound]\label{CRLB}blah blah
+\end{thm}
+
+TODO: Binomial estimation
+Ideas:  Frequentist vs. Bayesian.  Two sampling approaches: sample
+fixed n vs. sequentially sample till n successes.  Same means but
+different variances in frequentist approaches (failure of the
+likelihood principle) but same in Bayesian.
+The normal approximation and confidence intervals.  Discuss issues
+with coverage.  Ratio of binomial (e.g. Koopman and the Bayesian approach).
+
+TODO: Maybe a good idea to cover logistic regression as an application
+of MLE.  Expressing regression as an MLE: requires a distribution
+assumption on the residual and then regression becomes a location
+scale family.  I don't see that the standard proofs of consistency and
+normality work in these cases though (since the observations now are
+independent but have differing distributions..)  I think this is an
+accurate state of affairs; there are direct proofs of MLE asymptotic
+properties for GLMs (and I suppose GAMs).  See also Hjort and Pollard,
+``Asymptotics for minimisers of convex processes''  As for intuition
+about why i.i.d. should not be necessary to prove asymptotic results
+recall that the Weak Law of Large Numbers doesn't require i.i.d. but
+only uniform integrability and that the Lindeberg C.L.T. applies
+without full blown i.i.d.  It'll be an interesting exercise to see how
+the asymptotic theory of logistic regression unfolds.
+
+\subsection{Logistic Regression}
+To motivate the logistic regression, assume that we have a binomial
+random variable $y \sim B(n,p)$ and consider the maximum likelihood
+estimate of the parameter $p$.  Introduce the log odds $\theta =
+logit(p) = \ln(p/(1-p))$ rewrite the binomial
+distribution in terms of $\theta$.
+\begin{align}
+\binom{n}{m}p^m(1-p)^{n-m} & = e^{\ln(\binom{n}{m})}
+e^{\ln(p^m)}e^{\ln((1-p)^{n-m}} \\
+& = e^{\ln(\binom{n}{m}) + m \ln(p/(1-p)) +
+  n \ln(1-p)} \\
+& = e^{\ln(\binom{n}{m}) + m \ln(p/(1-p)) -  n \ln(1 + p/(1-p))} \\
+& = e ^ {\ln(\binom{n}{m}) + m \theta - n \ln(1+e^\theta)}
+\end{align}
+This allows us to write the loglikelihood function in terms of the
+parameter $\theta$ as:
+$$
+l(\theta; y) = y\theta - n\ln(1+e^\theta) + \ln\binom{n}{y}
+$$
+and then it is easy to get the score and information functions
+\begin{align}
+s(\theta; y) & = \frac{\partial}{\partial \theta} l(\theta;y) = y -
+\frac{n e^\theta}{1+e^\theta}= y - np \\
+i(\theta; y) & = -\frac{\partial}{\partial \theta} s(\theta;y) = np(1-p)
+\end{align}

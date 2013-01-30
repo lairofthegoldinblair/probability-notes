@@ -1,0 +1,455 @@
+\section{Brownian Motion}
+We begin by studying the one dimensional version of Brownian motion.
+\begin{defn}A real-valued stochastic process $B_t$ on $[0, \infty)$ is said to be a
+  \emph{Brownian motion} at $x \in \reals$ if 
+\begin{itemize}
+\item[(i)]$B(0) = x$
+\item[(ii)]For all times $0 \leq t_1 \leq t_2 \leq \cdots \leq t_n$
+  the increments $B_{t_2} - B_{t_1}, B_{t_3} - B_{t_2}, \dots, B_{t_n}
+  - B_{t_{n-1}}$ are independent random variables
+\item[(iii)]For all $0 \leq s < t$, the increment $B_t - B_s$ is normally distributed with
+  expectation zero and variance $t - s$.
+\item[(iv)]Almost surely the sample path $B(t)$ is continuous.
+\end{itemize}
+\end{defn}
+
+The existence of Brownian motion is a non-trivial fact that was first
+proved by Norbert Weiner.  Here we present a construction by Paul Levy
+whose details are worth understanding because many properties of
+Brownian motion follow from them.
+\begin{thm}Standard Brownian motion exists.
+\end{thm}
+\begin{proof}
+Before we construct Brownian motion on the entire real line, we
+construct it on the interval $[0,1]$ (that is to say we only construct
+the values $B(t)$ for $t \in [0,1]$).  
+To motivate the construction of Brownian motion, we take as our
+driving goals the fact that we have to construct a continuous random
+path $B(x)$ for which the distribution of $B(x)$ for fixed $x \in
+[0,1]$ is $N(0, x)$.  The approach to the construction is to proceed
+iteratively such that at stage $n$ of the iteration we have a
+piecewise linear approximation $B_n(x)$ with the distribution of $B_n(x)$ being
+$N(0,x)$ at the points $x = 0, 1/2^n, \dots, 1$. The set of rational
+  numbers of the form $\frac{k}{2^n}$ for $n \geq 0$ and $0 \leq k
+  \leq 2^n$ is known as the \emph{dyadic rationals} in $[0,1]$.  We will sometime
+  have need for the notation
+\begin{align*}
+\mathcal{D}_n = \lbrace \frac{k}{2^n} \mid 0 \leq k \leq 2^n \rbrace
+\end{align*}
+and $\mathcal{D} = \cup_{n=0}^\infty \mathcal{D}_n$ when discussing
+the dyadic rationals.  To support the construction, we need a
+probability space which we assume to be $([0,1], \mathcal{B}([0,1]),
+\lambda)$.  As a concrete source of randomness, for
+each $d \in \mathcal{D}$ let $Z_d$ be an $N(0,1)$ random variable
+with the $Z_d$ independent (we may do this by Lemma
+\ref{ExistenceCountableIndependentRandomVariables}).
+
+It is worth walking through the first couple of iterations in rather
+gory detail to reinforce the idea and to convince the reader that the
+construction really is determined by the vague prescription given
+above.  So our first goal is to construct a random piecewise linear
+path that is constant at $x=0$ and has distribution $N(0,1)$ at
+$x=1$.  The simplest idea turns out to be the right one to get
+started: define $B_0(x) = x Z_1$.  Then $\variance{B_0(x)} = x^2$
+which is correct for $x \in \lbrace 0,1\rbrace $ but nowhere in between.  The critical
+point is the $x^2 < x$ for all $x \in (0,1)$ so we have \emph{too
+  little} variance.  Getting a bit more variance is easy whereas we'd
+be rather doomed if we already had too much.  
+
+So recall the next step was to get the correct variance at the points
+$\lbrace 0, 1/2, 1\rbrace$ not just at the points $\lbrace 0,1\rbrace$.  By the above,
+$\variance{B_0(1/2)} = 1/4$ but we require that $B_1(1/2) = 1/2$ so we
+need to add a random variable with distribution $N(0, 1/4)$ at $x=1/2$
+satisfy our goal.
+But since we had the
+correct variance at ${0,1}$ we have make sure not to add any more
+at either of those points.  This motivates the introduction of the function
+\begin{align*}
+\Delta(x) &= \begin{cases}
+2x & \text{for $0 \leq x \leq \frac{1}{2}$} \\
+2 - 2x & \text{for $\frac{1}{2} < x \leq 1$} \\
+0 & \text{otherwise} \\
+\end{cases}
+\end{align*}
+Now if we define $B_1(x) = B_0(x) + \frac{1}{2}\Delta(x) Z_{1/2}$
+the we see that $B_1(1/2)$ is a sum of two $N(0,1/4)$ random variables
+hence is $N(0,1/2)$ as desired.  Because $\Delta(0) = \Delta(1) =
+0$, we have $B_1(0) = B_0(0)$ and $B_1(1) = B_0(1)$ so these two are
+still in good shape.  
+
+TODO: Make the following into an exercise.
+Just to turn the crank one more time, by the definition of $B_1(x)$ we
+can easily see that since in general $B_1(x)$ is an $N(0, x^2 +
+\frac{1}{2}\Delta_{0,0}(x))$ random variable,
+\begin{align*}
+\variance{B_1(1/4)} &= \frac{1}{16} + \frac{1}{16} = 1/8 = 1/4 - 1/8 \\
+\variance{B_1(3/4)} &= \frac{9}{16} + \frac{1}{16} = 5/8 = 3/4 - 1/8 \\
+\end{align*}
+so in both cases we need to add a variance of $1/8$ at the points
+$\lbrace 1/4, 3/4 \rbrace$ without changing things at $\lbrace 0, 1/2,
+1\rbrace$.  Mimicing what we have already done, we now need a ``double
+sawtooth'' to modify $B_1(x)$ into $B_2(x)$.  For reasons that we'll
+explain later we actually break the modification into two pieces: one
+for the interval $(0, 1/2)$ and one for the interval $(1/2, 1)$.  So
+define,
+\begin{align*}
+\Delta_{1,0} (x) &= \Delta(2x) = \begin{cases}
+4x & \text{for $0 \leq x \leq \frac{1}{4}$} \\
+2 - 4x & \text{for $\frac{1}{4} < x \leq \frac{1}{2}$} \\
+0 & \text{otherwise} \\
+\end{cases}
+\end{align*}
+and
+\begin{align*}
+\Delta_{1,1} (x) &= \Delta(2x - 1) = \begin{cases}
+4x -2 & \text{for $\frac{1}{2} \leq x \leq \frac{3}{4}$} \\
+4 - 4x & \text{for $\frac{3}{4} < x \leq 1$} \\
+0 & \text{otherwise} \\
+\end{cases}
+\end{align*}
+Now if we define $B_2(x) = B_1(x) + \frac{1}{\sqrt{8}}
+(\Delta_{1,0}(x) Z_{/1/4} + \Delta_{1,1}(x) Z_{3/4})$, then we have
+  added the appropriate variance of $1/8$ at $x=1/4$ and $x=3/4$.
+
+To state the general construction, we first generalize the definition
+of our sawtooth functions.  For $n > 0$ and $k=0, \cdots, 2^n -1$, we
+define 
+\begin{align*}
+\Delta_{n,k} (x) &= \Delta(2^nx- k) = \begin{cases}
+2^{n+1}x -2k & \text{for $\frac{2k}{2^{n+1}} \leq x \leq \frac{2k+1}{2^{n+1}}$} \\
+2k + 2 - 2^{n+1}x & \text{for $\frac{2k+1}{2^{n+1}} < x \leq \frac{2k+2}{2^{n+1}}$} \\
+0 & \text{otherwise} \\
+\end{cases}
+\end{align*}
+With the definition we can complete the induction definition.  So our definition
+of $B_n(x)$ can be completed.  We point out that $\Delta_{0,0}(x) =
+\Delta(x)$ so the definition below is compatible with our definition
+of $B_1(x)$ and $B_2(x)$ above:
+\begin{align*} 
+B_0(x) &= x Z_1 \\
+B_n(x) &= B_{n-1}(x) + \frac{1}{\sqrt{2^{n+1}}} \sum_{k=0}^{2^{n-1} -1}
+\Delta_{n-1,k}(x) Z_{\frac{2k+1}{2^{n}}} \\
+&=B_0(x) + \sum_{j=0}^{n-1}\frac{1}{\sqrt{2^{j+2}}} \sum_{k=0}^{2^j -1}
+\Delta_{j,k}(x) Z_{\frac{2k+1}{2^{j+1}}} & & \text{for $n > 0$} 
+\end{align*}
+We will sometimes find it convenient to use the definition
+\begin{align*}
+F_n(x) &= \frac{1}{\sqrt{2^{n+2}}} \sum_{k=0}^{2^n -1}
+\Delta_{n,k}(x) Z_{\frac{2k+1}{2^{n+1}}} 
+\end{align*}
+so that we may write 
+\begin{align*}
+B_n(x) &= B_0(x) + \sum_{j=0}^{n-1} F_n(x) \\
+B(x) &= B_0(x) + \sum_{n=0}^\infty F_n(x)
+\end{align*}
+
+There are host of important facts about the $B_n(x)$ and $B(x)$ that
+proceed to prove.  No individual fact is difficult to prove but there
+are many of them to keep track of.
+
+\begin{lem}The following are true:
+\begin{itemize}
+\item[(i)] $B_n(x)$ is linear on every interval $[\frac{k}{2^n},
+\frac{k+1}{2^n}]$ for $k=0,\dots,2^n -1$.
+\item[(ii)]For every $n \geq 0$, and $0 < 2k+1 < 2^n$, 
+\begin{align*}
+B(\frac{2k+1}{2^n}) = \frac{1}{2} (B(\frac{2k}{2^n}) +
+B(\frac{2k+2}{2^n})) + \frac{1}{\sqrt{2^{n+1}}} Z_{\frac{2k+1}{2^n}}
+\end{align*}
+\item[(iii)]For every $n \geq 0$ and every pair $0 \leq j < k \leq 2^n$,
+$B(k/2^n) - B(j/2^n)$ is an $N(0, (k-j)/2^n)$ random variable.
+Furthermore for $0 \leq j < k \leq l < m \leq 2^n$, the increments
+$B(k/2^n) - B(j/2^n)$ and $B(m/2^n) - B(l/2^n)$ are independent.
+\end{itemize}
+\end{lem}
+\begin{proof}
+FIrst we prove (i).  This follows from a simple induction.  It is clear for $B_0(x)$.  For
+$B_{n+1}(x)$ we are adding multiples of the functions $\Delta_{n,k}(x)$ each of which is linear on intervals of the form $[\frac{k}{2^{n+1}},
+\frac{k+1}{2^{n+1}}]$.
+
+Next we prove (ii).  This follows from the fact that
+$B(\frac{2k+1}{2^n})=B_n(\frac{2k+1}{2^n})$, the definition of
+$B_n(x)$ and the linearity of $B_{n-1}(x)$ on the interval
+$[\frac{k}{2^{n-1}}, \frac{k+1}{2^{n-1}}]$.
+
+To see (iii) first note that it suffices to prove this for increments $j+1=k$ and
+$l+1=m$.  For if we have proven that then we can write a general
+increment as a sum of independent increments of the former form.  
+We proceed by induction on $n$.  The case $n=0$ is trivial
+because the only non-trivial increment is the $N(0,1)$ random variable
+$B(1) - B(0) = Z_1$.  Now consider the case for $n > 0$.  
+To see this first we consider ``adjacent'' increments of the form
+$B((2k+1)/2^n) - B(2k/2^n)$ and $B((2k+2)/2^n) - B((2k+1)/2^n)$.  Here
+we use the formula $B((2k+1)/2^n) = \frac{B((2k+2)/2^n) +
+  B(2k/2^n)}{2} + \frac{1}{\sqrt{2^{n+1}}} Z_{(2k+1)/2^n}$ to see 
+\begin{align*}
+B((2k+1)/2^n) - B(2k/2^n) &= \frac{B((2k+2)/2^n) -
+  B(2k/2^n)}{2} + \frac{1}{\sqrt{2^{n+1}}} Z_{(2k+1)/2^n} \\
+B((2k+2)/2^n) - B((2k+1)/2^n) &= \frac{B((2k+2)/2^n) -
+  B(2k/2^n)}{2} - \frac{1}{\sqrt{2^{n+1}}} Z_{(2k+1)/2^n} \\
+\end{align*}
+The random variables $B((2k+2)/2^n)$ and $B(2k/2^n)$ only depend on
+the $Z_d$ for $d \in \mathcal{D}_{n-1}$ and therefore $Z_{(2k+1)/2^n}$ is
+independent of both.  The induction hypothesis is that $B((2k+2)/2^n) -
+  B(2k/2^n)$ is an $N(0, \frac{1}{2^{n-1}})$ random variable therefore $ \frac{B((2k+2)/2^n) -
+  B(2k/2^n)}{2}$ is $N(0, \frac{1}{2^{n+1}})$.  But both $\pm
+\frac{1}{\sqrt{2^{n+1}}} Z_{(2k+1)/2^n}$ are also $N(0,
+\frac{1}{2^{n+1}})$ so we've expressed the increments as a sum of two independent
+$N(0, \frac{1}{2^{n+1}})$ random variable proving that each is $N(0,
+\frac{1}{2^n})$.  Furthermore the increments are independent.  Because
+we know they are normal it suffices to show they are uncorrelated
+which is a simple computation using the formulae above and the induction hypothesis
+\begin{align*}
+&\expectation{(B((2k+1)/2^n) - B(2k/2^n))(B((2k+2)/2^n) -
+  B((2k+1)/2^n))} \\
+&= \expectation{(\frac{B((2k+2)/2^n) -
+  B(2k/2^n)}{2} + \frac{1}{\sqrt{2^{n+1}}} Z_{(2k+1)/2^n} ) (\frac{B((2k+2)/2^n) -
+  B(2k/2^n)}{2} - \frac{1}{\sqrt{2^{n+1}}} Z_{(2k+1)/2^n})} \\
+&=\frac{1}{4}\expectation{(B((2k+2)/2^n) -  B(2k/2^n))^2} -
+\frac{1}{2^{n+1}} \\
+&=\frac{1}{4}\frac{1}{2^{n-1}} -  \frac{1}{2^{n+1}}  = 0
+\end{align*}
+
+It remains to show the independence of increments 
+$B((k+1)/2^n) - B(k/2^n)$ and $B((j+1)/2^n) - B(j/2^n)$ with $0 \leq j
+< k \leq 2^n$.  In a similar way to the case above we know that
+by using the result (ii) we can see that for $0 \leq k < 2^n$,
+\begin{align*}
+B((k+1)/2^n) - B(k/2^n) &= \begin{cases}
+\frac{B((k+1)/2^n) - B((k-1)/2^n)}{2} - \frac{1}{\sqrt{2^{n+1}}}
+Z_{k/2^n} & \text{$k$ is odd} \\
+\frac{B((k+2)/2^n) - B(k/2^n)}{2} + \frac{1}{\sqrt{2^{n+1}}}
+Z_{(k+1)/2^n} & \text{$k$ is even} \\
+\end{cases}
+\end{align*}
+If we assume that we are not in the case already proven then we are either
+assuming that $j+1 \neq k$ or $k$ is even. The upshot is that we can
+write each increment of length $\frac{1}{2^n}$ as a sum of an increment of
+length $\frac{1}{2^{n-1}}$ and an independent $N(0, \frac{1}{2^{n+1}})$
+ random variable.  The increments of length $\frac{1}{2^{n-1}}$ are
+ independent by the induction hypothesis and therefore the original
+ increments are seen to be independent.  TODO: Make this more precise.
+\end{proof}
+
+We make the following claim about $B_n(x)$: for $\frac{k}{2^n}
+\leq x \leq \frac{k+1}{2^n}$ and $0 \leq k < 2^n$, we have
+$\variance{B_n(x)} = 2^n(x - \frac{k}{2^n})^2 + \frac{k}{2^n}$.  We
+use an induction to prove the claim.  Note
+that the claim is easily seen to be true for $n=0$ (it reduces to
+earlier observation that $\variance{B_0(x)} = x^2$).  Now assuming that
+it is true for $n$ we extend to $n+1$.  Pick an interval
+$[\frac{k}{2^{n}}, \frac{k+1}{2^{n}}]$ and consider passing from
+$B_n(x)$ to $B_{n+1}(x)$ on the interval.  There are two subcases
+corresponding to the subinteval $[\frac{k}{2^{n}},
+\frac{2k+1}{2^{n+1}}]$ and the subinterval $[\frac{2k+1}{2^{n+1}},
+\frac{k+1}{2^{n}}]$.
+
+On the first subinterval, by the definition of $B_{n+1}(x)$ we are
+adding to $B_n(x)$ a normal random variable with variance
+$\left ( \frac{1}{\sqrt{2^{n+2}}} \Delta_{n,k}(x) \right)^2 = 2^n(x-\frac{k}{2^n})^2$.  So at such an $x$, $B_{n+1}(x)$ is normal
+with variance 
+\begin{align*}
+\variance{B_{n+1}(x)} &= \variance{B_{n}(x)}  +
+2^n(x-\frac{k}{2^n})^2  \\
+&= 2^n(x-\frac{k}{2^n})^2 + \frac{k}{2^n} + 2^n(x-\frac{k}{2^n})^2 \\
+&=
+2^{n+1} (x-\frac{k}{2^n})^2 + \frac{k}{2^n}
+\end{align*}
+
+On the second subinterval, by the definition of $B_{n+1}(x)$ we are
+adding to $B_n(x)$ a normal random variable with variance
+$2^n(x-\frac{k+1}{2^n})^2$.  So at such an $x$, $B_{n+1}(x)$ is normal
+with variance 
+\begin{align*}
+\variance{B_{n+1}(x)} &= \variance{B_{n}(x)}  +
+2^n(x-\frac{k+1}{2^n})^2  \\
+&= 2^n(x-\frac{k}{2^n})^2 + \frac{k}{2^n} + 2^n(x-\frac{k+1}{2^n})^2
+\\
+&=2^n \left[(x-\frac{2k+1}{2^{n+1}})^2 + \frac{1}{2^{n+1}}(x -
+  \frac{2k+1}{2^{n+1}}) + \frac{1}{2^{2n+2}}\right] + \\
+&2^n \left[(x-\frac{2k+1}{2^{n+1}})^2 - \frac{1}{2^{n+1}}(x -
+  \frac{2k+1}{2^{n+1}}) + \frac{1}{2^{2n+2}}\right] + \frac{k}{2^n} \\
+&=2^{n+1} (x-\frac{2k+1}{2^{n+1}})^2 + \frac{2k+1}{2^{n+1}}
+\end{align*}
+which verifies the claim.
+
+We reiterate the importance of this fact is that the approximate path
+$B_n(x)$ has the variance $x$ (the ``correct'' variance for a Brownian
+path) at all $x = 0, \frac{1}{2^n}, \dots,1$, so that as $n$ increases
+$B_n(x)$ has the correct variance on an increasing fine grid in
+$[0,1]$.  In between the points of the grid, the variance of $B_n(x)$
+is a quadratic function of $x$ that is strictly less than $x$.
+
+Having defined the series expansion of our candidate Brownian motion,
+the first order of business is to validate that it converges almost
+surely.  To show convergence we need to make sure
+that the increments we add at each $n$ get small fast enough; these increments are
+multiples of independent standard normal random variables.
+Convergence will follow if we can get an appropriate almost sure bound
+on a random sample from a sequence of independent standard normals.
+
+To see this we start with a tail bound for an $N(0,1)$ distribution.  
+\begin{align*}
+\probability{\abs{Z_d} \geq \lambda} &= \frac{2}{\sqrt{2\pi}} \int_\lambda^\infty
+e^{\frac{-u^2}{2}} \, du \\
+&\leq  \frac{2}{\sqrt{2\pi}} \int_\lambda^\infty
+\frac{u}{\lambda} e^{\frac{-u^2}{2}} \, du \\
+&= \frac{1}{\lambda\sqrt{2\pi}} e^{\frac{-\lambda^2}{2}}
+\end{align*}
+so if we pick any constant $c > 1$ and $n > 0$, then 
+\begin{align*}
+\probability{\abs{Z_d} \geq c \sqrt{n}} &\leq \frac{1}{c\sqrt{2\pi n}}
+e^{\frac{-c^2 n}{2}} \leq e^{\frac{-c^2 n}{2}}
+\end{align*}
+Now using this bound, we see that
+\begin{align*}
+\sum_{n=0}^\infty \probability{ \text {there exists $d \in
+    \mathcal{D}_n$ such that $\abs{Z_d} \geq c \sqrt{n}$}} &\leq
+\sum_{n=0}^\infty  \sum_{d \in \mathcal{D}_n} \probability{\abs{Z_d}
+  \geq c \sqrt{n}} \\
+&\leq \sum_{n=0}^\infty 2^n e^{\frac{-c^2 n}{2}} \\
+&= \sum_{n=0}^\infty
+e^{-n(c^2 - 2\ln2)/2} 
+\end{align*}
+which converges if $c > \sqrt{2\ln2}$.  Picking such a $c$, we apply
+the Borel Cantelli Theorem to conclude that 
+\begin{align*}
+\probability{ \text {there exists $d \in
+    \mathcal{D}_n$ such that $\abs{Z_d} \geq c \sqrt{n}$ i.o.}} &= 0
+\end{align*}
+and therefore for almost all $\omega \in \Omega$ there exists
+$N_\omega > 0$ such that $\abs{Z_d} < c \sqrt{n}$ for all $n >
+N_\omega$ and $d \in \mathcal{D}_n$ and by definition of $F_n(x)$, we
+have $\norm{F_n}_\infty \leq 2^{-(n+2)/2} c \sqrt{n}$ which shows that
+$\sum_{n=0}^\infty F_n(x)$ converges absolutely and uniformly in $x$.
+Because each $F_n(x)$ is a continuous function, uniform convergence of
+the series implies $B(x) = B_0(x) + \sum_{n=0}^\infty F_n(x)$ is continuous as
+well (Theorem \ref{UniformLimitContinuousFunctionsIsContinuous}).
+
+TODO: Show that for every $x \in [0,1]$, $B(x)$ is integrable and
+has finite variance.  Not sure we need this because we'll prove a
+stronger statement below.
+
+The next step is to validate that $B(x)$ has independent Gaussian increments.
+TODO: Show that we have Gaussian increments, independent increments,
+zero mean and proper variance/covariance.  The first step is to note
+that we have already proven that increments at dyadic rational numbers
+are independent and Gaussian.  But we have also shown that $B(x)$ is
+almost surely continuous so we may approximate arbitrary increments by
+those at dyadic rationals.
+
+Suppose we are given $0 \leq x_1 < x_2 < \cdots < x_n \leq 1$.  By the
+density of the dyadic rationals we can find sequences $x_{j,m}$ of
+dyadic rationals with $x_{j-1} < x_{j,m} \leq x_j$ such that $\lim_{m
+  \to \infty} x_{j,m}= x_j$ (in the case $j=1$, we only require $0
+\leq x_{1,m} \leq x_1$).  By almost sure continuity of $B(x)$ we know
+that $B(x_{j,m}) - B(x_{j-1,m})$ converges to $B(x_j) - B(x_{j-1})$
+for $1 < j \leq n$.  Moreover we know that 
+\begin{align*}
+\lim_{m \to \infty} \expectation{B(x_{j,m}) - B(x_{j-1,m})} &= 0
+\end{align*}
+and 
+\begin{align*}
+\lim_{m \to \infty} \textbf{Cov}\left ( B(x_{j,m}) - B(x_{j-1,m}), B(x_{i,m})
+  - B(x_{i-1,m}) \right) &= \delta_{i,j} \lim_{m \to \infty} (x_{i,m} -
+x_{i-1,m}) \\
+&= \delta_{i,j}  (x_i - x_{i-1})
+\end{align*}
+and therefore by Lemma \ref{LimitOfGaussianRandomVectors} we know that
+the $B(x_j) - B(x_{j-1})$ are independent $N(0, x_j - x_{j-1})$ random
+variables and we are done.
+\end{proof}
+TODO: Note the connection of the construction to wavelets.  What we
+are doing here is expressing the Brownian motion as a linear
+combination of integrals of the Haar wavelet basis (in some sense we
+are integrating ``white noise'' which is called an \emph{isonormal
+  process} in the mathematical literature these days).  Note that the
+such a form for a Brownian motion can be anticipated by examining the
+covariance of Brownian motion (see Steele).
+
+TODO: Modulus of continuity of Brownian paths; Holder continuity and
+nowhere differentiability.
+
+TODO: Some of these proofs use the specifics of the Levy construction
+of Brownian motion and not just the defining properties of Brownian
+motion.  In what way is this justified; i.e. to what extent is the
+Levy construction unique?  The answer to this question is that Wiener
+measure on $C[0,\infty)$ is uniquely defined by its finite dimensional
+distributions.
+
+\begin{thm}[Markov Property of Brownian motion]\label{BrownianMarkovProperty}Let $B_t$ be a Brownian motion starting at $x$ and let $s
+  \geq 0$.  Then $B_{t+s} - B_s$ is a Brownian motion starting at $0$
+  that is independent of $B_t$ for $0 \leq t \leq s$.
+\end{thm}
+\begin{proof}
+The fact that $B_{t+s} - B_s$ is a Brownian motion follows from the
+fact that increments of the translated process are increments of the
+original Brownian motion.  More precisely if we select $t_1 \leq
+\cdots \leq t_n$ then each $(B_{t_{i+1}+s} - B_s) - (B_{t_{i}+s} -
+B_s) = B_{t_{i+1}+s} - B_{t_i + s}$ and therefore they are we can
+conclude they are jointly independent Gaussian with variance $(t_{i+1}
+- s) - (t_i - s) = t_{i+1} - t_i$.
+
+The independence of the Brownian motion $B_{t+s} - B_s$ and $B_t$ for
+$0 \leq t \leq s$ follows from the property of independent
+increments.  Specifically, by Lemma TODO we know that it is sufficient
+to show independence for finite sets $\lbrace B_{{t_1}+s} - B_s,
+\dots ,B_{{t_n}+s} - B_s \rbrace$ and $\lbrace B_{s_1}, \dots,
+B_{s_m}\rbrace$ for $s_1 \leq \cdots \leq s_m \leq t_1 \leq \cdots \leq
+t_n$.  Observe that for any measurable random vectors $\xi_1, \dots ,
+\xi_n$ we have $\sigma(\xi_1, \xi_2 - \xi_1, \dots,\xi_n - \xi_1) =
+\sigma(\xi_1, \xi_2 - \xi_1, \dots,\xi_n - \xi_{n-1})$ (to see this
+note that every term on the left is a sum of terms on the right and
+vice versa).  In particular by independence of increments and Lemma
+\ref{IndependenceGrouping} we know that $\sigma(B_{{t_1}+s} - B_s,
+\dots ,B_{{t_n}+s} - B_{t_{n-1}})$ and $\sigma( B_{s_1} - B_0, \dots,
+B_{s_m} - B_{s_{m-1}})$ are independent
+which establishes the result by applying the previous observation.
+\end{proof}
+
+\subsection{Skorohod Embedding and Donsker's Theorem}
+
+TODO: Strong Markov Property
+
+TODO: Skorohod Embedding
+
+
+Donsker's Theorem states roughly that Brownian motion can be
+approximated in distribution by a suitably rescaled random walk.
+Moreover it states that essentially all possible random walks that one
+might expect could approximate Brownian motion in fact do.  This fact
+shows that Brownian motion is analogous to standard normal
+distributions and Donsker's Theorem is often referred to as the
+Functional Central Limit Theorem.
+
+\begin{thm}[Donsker's Invariance Principle]\label{DonskersTheorem}
+Suppose we are given an i.i.d. sequence of random variables $\xi_1,
+\xi_2, \dotsc$ such that $\expectation{\xi_n}=0$ and
+$\variance{\xi_n}=1$ for all $n \in \naturals$.  Define the random
+walk 
+\begin{align*}
+S_n &= \sum_{j=1}^n \xi_j
+\end{align*}
+its linear interpolation
+\begin{align*}
+S(t) &= S_{\floor{t}} + (t - \floor{t})(S_{\floor{t}+1} - S_{\floor{t}})
+\end{align*}
+and its rescaling from the interval $[0,n]$ to $[0,1]$
+\begin{align*}
+S_n^*(t) &= \frac{1}{\sqrt{n}} S(nt) & & \text{for $t\in [0,1]$}
+\end{align*}
+On the space $C[0,1]$ with the uniform norm, the sequence $S^*_n(t)$
+converges in distribution to the standard Brownian motion.
+\end{thm}
+
+\begin{proof}
+TODO
+\end{proof}
+
+TODO: Extension of Donsker's Theorem to convergence of errors of
+empirical distributions to Brownian bridge.  This may be harder
+because the convergence takes place not in the separable space
+$C[0,1]$ but rather the space of cadlag functions (which is only
+separable under the Skorohod topology).  The alternative here is
+presumably to use the generalized form of weak convergence from
+empirical process theory.

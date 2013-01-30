@@ -1,0 +1,751 @@
+\section{Characteristic Functions And Central Limit Theorem}
+In this section we study the weak convergence of random vectors more carefully.
+Our first goal is to develop just enough of the theory of
+characteristic functions in order to prove the classical Central Limit Theorem.
+After that we delve more deeply into theory of characteristic
+functions.  
+
+The motivation for the theory we are about to develop is the intuition
+that most of the behavior of a probability distribution on $\reals$ is
+captured by its moments.  If one could put the information about all
+of the distribution's moments into a single package simulataneously
+then the resulting package might characterize the probability
+distribution in a useful way.  A initial naive approach might be to
+use a \emph{generating function} methodology.  For example, one might
+try to define a function $f(t) = \sum_{n=0}^\infty M_n t^n$ where
+$M_n$ denotes the $n^{th}$ moment.  Alas, such a approach fails rather
+miserably as it is a very rare thing for moments to decrease quickly
+enough for the formal power series for $f(t)$ to ever converge and make a useful
+function object.  A better approach is to scale the moments to give
+the series a chance to converge.  For example, being a bit sloppy we
+could write
+\begin{align*}
+f(t) &= \int e^{tx} dP = \sum_{n=0}^\infty \frac{M_n}{n!} t^n
+\end{align*}
+This idea has a lot more merit and can be used effectively but it has
+the distinct disadvantage that it only works for distributions that
+have moments of all orders.
+
+The wonderful idea that we will be exploring in this chapter is that
+by passing into the domain of complex numbers we get a
+characterization of the distribution that is always defined and (at
+least conceptually) captures all moments in a generating function.
+Specifically, we define 
+\begin{align*}
+f(t) &= \int e^{itx} dP 
+\end{align*}
+which is the \emph{Fourier Transform} of the probability distribution
+and we get an object that uniquely determines the distribution and can
+often be much easier to work with.  In particular we we will see that
+convergence in distribution is described as pointwise convergence of
+characteristic functions and through that connection we will get
+another proof of the Central Limit Theorem.
+
+In this section we start to make use of integrals of complex valued
+measurable functions.  Let's establish the basic definitions and facts
+that we require.
+\begin{defn}A function $f : (\Omega, \mathcal{A}, \mu) \to \complexes$
+  is measurable if and only $f = h + i g$ where $h,g : (\Omega,
+  \mathcal{A}, \mu) \to \reals$ are measurable.  Equivalently,
+  $\complexes$ is given the Borel $\sigma$-algebra.
+\begin{itemize}
+\item[(i)] If $\mu(A) < \infty$, then $\abs{\int f \, d\mu} \leq \int
+  \abs{f} \, d\mu$.
+\end{itemize}
+\end{defn}
+\begin{proof}
+By the triangle inequality for the complex norm, we know that given
+any two $z,w \in \complexes$ and $t \in [0,1]$, $\abs{(1-t) z + t w}
+\leq (1-t) \abs{z} + t \abs{w}$ and therefore the complex norm is
+convex.  Then by Jensen's Inequality (Theorem \ref{Jensen}, $\abs{\int f \, d\mu} \leq \int
+\abs{f} \, d\mu$.
+\end{proof}
+
+\begin{defn}Let $\mu$ be a probability measure on $\reals^n$. Its
+  \emph{Fourier Transform} is denoted $\hat{\mu}$ and is the complex function on
+  $\reals^n$ defined by 
+\begin{align*}
+\hat{\mu}(u) &= \int e^{i\langle u,x \rangle} d \mu(x) = \int \cos(\langle u,x \rangle)
+\, d \mu(x) + i \int \sin(\langle u,x \rangle) \, d\mu(x)
+\end{align*}
+\end{defn}
+The first order of business is to establish the basic properties of
+the Fourier Transform of a probability measure including the fact that
+the definition makes sense.
+\begin{thm} \label{CharacteristicFunctionBoundedAndContinuous}Let $\mu$ be a probability measure, then $\hat{\mu}$
+  exists and is a bounded uniformly continuous function with
+  $\hat{\mu}(0) = 1$.
+\end{thm}
+\begin{proof}
+To see that $\hat{\mu}$ exists, use the representation
+\begin{align*}
+\hat{\mu}(u) &= \int \cos(\langle  u,x \rangle) \, d\mu(x)+ i \int \sin(\langle
+  u,x \rangle) \, d\mu(x)
+\end{align*} and use the facts that $\abs{\cos \theta } \leq 1$
+and $\abs {\sin \theta} \leq 1$ to conclude that both integrals are
+bounded.
+
+To see that $\hat{\mu}(0) = 1$, simply calculate
+\begin{align*}
+\hat{\mu}(0) &= \int \cos(\langle  0,x \rangle) \, d\mu(x)+ i \int \sin(\langle
+  0,x \rangle) \, d\mu(x) = \int d\mu(x) = 1
+\end{align*} 
+In a similar way, boundedness is a simple calculation
+\begin{align*}
+\abs{\hat{\mu}(u)} &\leq \int \abs{e^{i \langle u,x \rangle}} \, d\mu(x) =
+\int \, d\mu(x) = 1
+\end{align*}
+Lastly, to prove uniform continuity, first note that for any $u,v \in
+\reals^n$, we have
+\begin{align*}
+\abs{e^{i \langle  u,x \rangle} - e^{i \langle  v,x \rangle} }^2 &=
+\abs{e^{i \langle  u-v,x \rangle} - 1}^2 \\
+&= (\cos(\langle  u-v,x
+\rangle) - 1)^2 + \sin^2(\langle  u-v,x \rangle) \\
+&= 2(1 - \cos(\langle  u-v,x
+\rangle) \\
+&\leq \langle  u-v,x\rangle^2 & & \text{by Lemma
+  \ref{BasicExponentialInequalities}} \\
+&\leq \norm{u-v}^2_2 \norm{x}^2_2 & & \text{by Cauchy Schwartz}
+\end{align*}
+On the other hand, it is clear from the triangle inequality that
+\begin{align*}
+\abs{e^{i \langle  u,x \rangle} - e^{i \langle  u,x \rangle} } \leq
+\abs{e^{i \langle  u,x \rangle}} + \abs{e^{i \langle  u,x \rangle}  }
+\leq 2
+\end{align*}
+and therefore we have the bound $\abs{e^{i \langle  u,x \rangle} -
+  e^{i \langle  u,x \rangle} } \leq \norm{u-v}_2 \norm{x}_2 \wedge
+2$.  
+Note that pointwise in $x \in \reals^n$, $\lim_{n \to \infty}
+\frac{1}{n} \norm{x}_2 \wedge 2 = 0$ and trivially $\frac{1}{n}
+\norm{x}_2 \wedge 2 \leq 2$ so Dominated Convergence shows
+that $\lim_{n \to \infty} \int \frac{1}{n} \norm{x}_2 \wedge
+  2 \, d\mu(x) = 0$.  Given an $\epsilon >0$, pick $N > 0$ such that
+$\int \frac{1}{N} \norm{x}_2 \wedge
+  2 \, d\mu(x) < \epsilon$ then for  $\norm{u-v}_2
+\leq \frac{1}{N}$,
+\begin{align*}
+\abs{\hat{\mu}(u) - \hat{\mu}(v)} &\leq \int \abs{e^{i \langle  u,x \rangle} -
+  e^{i \langle  u,x \rangle}} \, d\mu(x) \\
+&\leq \int \norm{u-v}_2 \norm{x}_2 \wedge
+2  \, d\mu(x) \\
+&\leq \int \frac{1}{N} \norm{x}_2 \wedge 
+2  \, d\mu(x) < \epsilon
+\end{align*}
+proving uniform continuity.
+\end{proof}
+\begin{defn}Let $\xi$ be an $\reals^n$-valued random variable. Its
+  characteristic function is denoted $\varphi_\xi$ and is the complex
+  valued function on
+  $\reals^n$ defined by 
+\begin{align*}
+\varphi_\xi(u) &= \expectation{e^{i\langle u,\xi \rangle}} \\
+&= \int e^{i\langle u,x \rangle} \distribution{\xi}(dx) =
+\hat{\distribution{\xi}}(u) 
+\end{align*}
+\end{defn}
+
+We motivated the definition of the characteristic function by
+considering how we might encode information about the moments of a
+probability measure.  To make sure that we've succeeded we need to
+show how to extract moments from the characteristic function.  To see
+what we should expect, let's specialize to $\reals$ and suppose that
+we can write out a power series:
+\begin{align*}
+\hat{\mu}(t) &= \int e^{itx} \, d\mu = \sum_{n=0}^\infty \frac{i^n
+  M_n}{n!} t^n
+\end{align*}
+Still working formally, we see that we can differentiate the series with respect
+to $t$ to isolate each individual moment $M_n$
+\begin{align*}
+\frac{d^n}{dt^n} \hat{\mu}(0) &= i^n M_n
+\end{align*}
+The above computation was rather formal and we won't try to make the
+entire thing rigorous (specifically we won't consider the series
+expansions).  What we make rigorous in the next Theorem is the connection between
+moments of $\mu$ and derivatives of the characteristic function.
+\begin{thm}\label{MomentsAndDerivatives} Let $\mu$ be a probability measure on $\reals^n$ such that
+  $f(x) = \left| x \right| ^ m$ is integrable with respect to $\mu$.
+  Then $\hat{\mu}$ is has continuous partial derivatives up to order
+  $m$ and 
+\begin{equation*}
+ \frac{\partial^m \hat{\mu}} {\partial x_{j_1} \ldots \partial x_{j_m}}(u) =
+ i^m \int x_{j_1} \ldots x_{j_m}e^{i\langle u,x \rangle} \mu(dx)
+\end{equation*}
+\end{thm}
+\begin{proof}First we proceed with $m=1$.  Pick $1 \leq j \leq n$ and let $v \in \reals^n$ be the
+  vector with $v_j = 1$ and $v_i = 0$ for $i \neq j$.  Then for $u \in
+  \reals^n$ and $t > 0$,
+\begin{align*}
+\frac{\hat{\mu}(u + t v_j) - \hat{\mu}(u)}{t} &= \frac{1}{t} \int e^{i
+  \langle u + t v_j, x \rangle} - e^{i\langle u,x \rangle} d\mu(x) \\
+&= \frac{1}{t} \int e^{i\langle u,x \rangle} \left ( e^{i  t x_j} - 1 \right ) d \mu(x)
+\end{align*}
+But note that 
+\begin{align*}
+\abs{\frac{1}{t} e^{i\langle u,x \rangle} \left ( e^{i t x_j} - 1
+  \right )}^2 &= \abs{\frac{ e^{i  t x_j} - 1 }{t} }^2 \\
+&= \frac{\cos^2(t
+  x_j) - 2 \cos(t x_j) + 1 + \sin^2(t x_j)}{t^2} \\
+&= 2\left ( \frac{1 - \cos(t x_j)}{t^2} \right ) \\
+&\leq x_j^2 & & \text{by Lemma \ref{BasicExponentialInequalities}}
+\end{align*}
+But $\abs{x_j}$ is assumed to be integrable hence we can apply the
+Dominated Convergence Theorem to see 
+\begin{align*}
+\frac{\partial}{\partial x_j}  \int e^{i\langle u, x \rangle} d \mu(x)
+&= \lim_{t \to 0} \frac{1}{t} \int e^{i\langle u + t v_j, x \rangle} -
+e^{i\langle u, x \rangle} d \mu(x) \\
+&=  \int \lim_{t \to 0}  \frac{e^{i\langle u + t v_j, x \rangle} -
+e^{i\langle u, x \rangle}}{t} d \mu(x) \\
+&= i \int x_j e^{i\langle u, x \rangle} d \mu (x)
+\end{align*}
+
+Continuity of the derivative follows from the formula we just proved.
+Suppose that $u_n \to u \in \reals^n$.  Then we have shown that
+\begin{align*}
+\frac{\partial}{\partial x_j} \hat{\mu} (u_n)= i \int x_j e^{i\langle u_n, x \rangle} d \mu (x)
+\end{align*}
+and we have the bound on the integrands $\abs{x_j e^{i\langle u_n, x
+    \rangle}} < \abs{x_j}$ with $\abs{x_j}$ integrable by assumption.
+We apply Dominated Convergence to see that 
+\begin{align*}
+\lim_{n \to \infty} \frac{\partial}{\partial x_j} \hat{\mu} (u_n) &=  i \int \lim_{n\to \infty} x_j
+e^{i\langle u_n, x \rangle} d \mu (x) \\
+&= i \int x_j e^{i\langle u, x
+\rangle} d \mu (x) \\
+&= \frac{\partial}{\partial x_j} \hat{\mu}(u)
+\end{align*}
+
+TODO: Fill in the details of the induction step (it is pretty obvious
+that argument above IS the induction step).
+\end{proof}
+
+The key in unlocking the relationship between weak convergence and
+characteristic functions is a basic property of Fourier Transforms
+that is often called the Plancherel Theorem.  In our particular case
+the Plancherel Theorem shows that one may evaluate integrals of
+continuous functions against probability measures equally well using
+Fourier Transforms; in this way we'll see that the characteristic
+function of a probability measure is a faithful representation of the
+measure when viewed as a functional (the point of view implicit in
+the definition of weak convergence).
+\begin{thm}\label{PlancherelTheorem}Let 
+\begin{align*}
+\rho_\epsilon(x) &= \frac{1}{\epsilon\sqrt{2 \pi}}
+  e^{-\frac{x^2}{2\epsilon^2}}
+\end{align*}  be the Gaussian density with variance $\epsilon^2$.  Given a Borel probability measure
+  $(\reals, \mathcal{B}(\reals), \mu)$ and an integrable $f : \reals
+  \to \reals$, then for any $\epsilon > 0$,
+\begin{align*}
+\int_{-\infty}^\infty f * \rho_\epsilon (x) \, d\mu(x) &=
+\frac{1}{2\pi} \int_{-\infty}^\infty e^{-\frac{\epsilon^2 u^2}{2}} \hat{f}(u) \overline{\hat{\mu}(u)}\, du
+\end{align*}
+If in addition, $f \in C_b(\reals)$ and $\hat{f}(u)$ is integrable
+then
+\begin{align*}
+\int_{-\infty}^\infty f \, d\mu &= \frac{1}{2 \pi}
+\int_{-\infty}^\infty \hat{f}(u) \overline{\hat{\mu}(u)}\, du
+\end{align*}
+\end{thm}
+\begin{proof}
+This is a calculation using Fubini's Theorem (Theorem \ref{Fubini}) to
+the triple integral
+\begin{align*}
+\int \int \int e^{-\frac{\epsilon^2 u^2}{2}} f(x) e^{iux} e^{-iuy}
+\, d\mu(y) \, dx \, du
+\end{align*}
+Note that by Tonneli's Theorem, 
+\begin{align*}
+\int \int \int \abs{ e^{-\frac{\epsilon^2 u^2}{2}} f(x) e^{iux} e^{-iuy}}
+\, d\mu(y) \, dx \, du &= \int \int \int e^{-\frac{\epsilon^2 u^2}{2}} \abs{ f(x)} 
+\, d\mu(y) \, dx \, du \\
+&=\int \abs{ f(x)}  \, dx \int e^{-\frac{\epsilon^2 u^2}{2}} \, du < \infty
+\end{align*}
+and therefore we are justified in using using Fubini's Theorem to
+calculate via iterated integrals
+\begin{align*}
+ \frac{1}{2 \pi} \int_{-\infty}^\infty e^{-\frac{\epsilon^2 u^2}{2}} \hat{f}(u)
+ \overline{\hat{\mu}(u)}\, du &=  \frac{1}{2 \pi} \int_{-\infty}^\infty
+ e^{-\frac{\epsilon^2 u^2}{2}} \left( \int_{-\infty}^\infty f(x)e^{iux} \, dx \right )
+ \left (\int_{-\infty}^\infty e^{-iuy} \, d\mu(y) \right )\, du \\
+&=  \frac{1}{2 \pi} \int_{-\infty}^\infty f(x)
+\left( \int_{-\infty}^\infty 
+ \left (\int_{-\infty}^\infty e^{iu(x-y)}  e^{-\frac{\epsilon^2 u^2}{2}}
+   \, du \right ) \, d\mu(y) \right ) \, dx\\
+\end{align*}
+Now the inner integral is just the Fourier Transform of a Gaussian
+with mean $0$ and variance $\frac{1}{\epsilon^2}$ which we have calculated in Exercise \ref {FourierTransformGaussian},
+so we have by that calculation, another application of Fubini's
+Theorem and the definition of convolution,
+\begin{align*}
+&= \frac{1}{2 \pi} \int_{-\infty}^\infty f(x)
+\left( \int_{-\infty}^\infty \frac{\sqrt{2\pi}}{\epsilon}
+  e^{-(x-y)^2/2\epsilon^2} \, d\mu(y) \right ) \, dx\\
+&= \int_{-\infty}^\infty f(x)
+\left( \int_{-\infty}^\infty \rho_\epsilon(x -y) \, d\mu(y) \right ) \, dx\\
+&= \int_{-\infty}^\infty 
+\left( \int_{-\infty}^\infty f(x) \rho_\epsilon(x -y) \, dx \right )
+\, d\mu(y) \\
+&= \int_{-\infty}^\infty f * \rho_\epsilon(y) \, d\mu(y) \\
+\end{align*}
+
+The second part of the theorem is just an application of Lemma
+\ref{UniformApproximationByGaussians} and the first part of the
+Theorem.  By the Lemma, we know that for any $f \in C_c(\reals;
+\reals)$, we have $\lim_{\epsilon \to 0} \sup_x
+\abs{f*\rho_\epsilon (x) - f(x)} = 0$.  So we have, 
+\begin{align*}
+\lim_{\epsilon \to 0} \abs{\int_{-\infty}^\infty f - f*\rho_\epsilon
+  \, d\mu} &\leq \lim_{\epsilon \to 0} \int_{-\infty}^\infty \abs{ f -
+  f*\rho_\epsilon} \, d\mu &\leq \lim_{\epsilon \to 0} \sup_x \abs{ f -
+  f*\rho_\epsilon} = 0 \\
+\end{align*}
+and by integrability of $\hat{f}(u)$, the fact that
+$\abs{\hat{\mu}} \leq 1$ (Lemma \ref{CharacteristicFunctionBoundedAndContinuous}) we may use Dominated Convergence
+to see that 
+\begin{align*}
+\lim_{\epsilon \to 0} \int_{-\infty}^\infty f*\rho_\epsilon  \, d\mu
+&= \frac{1}{2\pi} \lim_{\epsilon \to 0} \int_{-\infty}^\infty
+e^{-\frac{1}{2}\epsilon^2 u^2} \hat{f}(u) \overline{\hat{\mu}(u)} \,
+du \\
+&= \frac{1}{2\pi}\int_{-\infty}^\infty  \lim_{\epsilon \to 0} 
+e^{-\frac{1}{2}\epsilon^2 u^2} \hat{f}(u) \overline{\hat{\mu}(u)} \,
+du \\
+&=\frac{1}{2\pi}\int_{-\infty}^\infty  \hat{f}(u)
+\overline{\hat{\mu}(u)} \, du 
+\end{align*}
+and therefore we have the result.
+\end{proof}
+As it turns out, we'll get a lot more mileage our the first statement
+of the Theorem above.  We won't really ever be in a position in which
+we have the required integrability of the Fourier Transform
+$\hat{f}(t)$ to use the second part.  However, the technique used in the proof
+of the second part of the Theorem will be replayed several times.
+First we show that the characteristic function completely
+characterizes probability measures.
+\begin{thm}\label{EqualCharacteristicFunctionEqualMeasures} Let $\mu$ and $\nu$ be a probability measures on
+  $\reals^n$ such that $\hat{\mu} = \hat{\nu}$, then $\mu=\nu$.
+\end{thm}
+\begin{proof}
+Let $f \in C_c(\reals)$, then we know by Lemma
+\ref{UniformApproximationByGaussians} that $\lim_{\epsilon \to 0}
+\norm{\rho_\epsilon * f - f}_\infty = 0$.  Then for each $\epsilon >
+0$, and using the Plancherel Theorem
+\begin{align*}
+\abs{\int f \, d\mu - \int f \, d\nu} &\leq \abs{\int \rho_\epsilon *
+  f \, d\mu - \int \rho_\epsilon * f \, d\nu} + \int \abs{\rho_\epsilon *
+  f  - f}\, d\mu + \int \abs{\rho_\epsilon *
+  f  - f}\, d\nu \\
+&\leq \abs{\frac{1}{2\pi} \int_{-\infty}^\infty e^{-\frac{\epsilon^2
+      u^2}{2}} \hat{f}(u) (\overline{\hat{\mu}(u)} - \overline{\hat{\nu}(u)})\, du}+ 2\norm{\rho_\epsilon *
+  f  - f}_\infty \\
+&=  2\norm{\rho_\epsilon *
+  f  - f}_\infty 
+\end{align*}
+Taking the limit as $\epsilon$ goes to $0$, we see that $\int f \,
+d\mu = \int f \, d\nu$ for all $f \in C_c(\reals)$.
+
+Now, take a finite interval $[a,b]$ and approximate
+$\characteristic{[a,b]}$ by the compactly supported continuous
+functions
+\begin{align*}
+f_n(x) &= \begin{cases}
+1 & \text{for $a \leq x \leq b$} \\
+0 & \text{for $x < a- \frac{1}{n}$ or $x > b + \frac{1}{n}$} \\
+n(x-a) + 1 & \text{for $a-\frac{1}{n} \leq x < a$} \\
+1 - n(x-b)& \text{for $b < x \leq b + \frac{1}{n}$} \\
+\end{cases}
+\end{align*}
+It is clear that $f_n(x)$ is decreasing in $n$ and $\lim_{n \to
+  \infty}f_n(x) = \characteristic{[a,b]}$ so by Monotone Convergence
+\begin{align*}
+\mu([a,b]) &= \lim_{n \to \infty} \int f_n \,
+d\mu = \lim_{n \to \infty} \int f_n \,
+d\nu = \nu([a,b])
+\end{align*}
+Since the Borel $\sigma$-algebra is generated by the closed intervals,
+we see that $\mu = \nu$.
+\end{proof}
+\begin{thm} Let $\xi = \left( \xi_1, \ldots , \xi_n \right)$ be an
+    $\reals^n$-valued random variable.  Then the $\reals$-valued
+    random variables $\xi_i$ are independent if and only if 
+\begin{equation*}
+\varphi_\xi(u_1, \ldots , u_n) = \prod_{j=1}^n \varphi_{\xi_j}(u_j)
+\end{equation*}
+\end{thm}
+\begin{proof}
+TODO: This is a simple corollary that follows by calculating the
+characteristic function of the product and then using the fact that
+the characteristic function uniquely defines the distribution.
+First suppose that the $\xi_i$ and independent.  Then we calculate
+\begin{align*}
+\varphi_\xi(u) &= \expectation{e^{i\langle u, \xi
+    \rangle}} = \expectation{\prod_{k=1}^ne^{i u_k \xi_k}}
+=\prod_{k=1}^n \expectation{e^{i u_k \xi_k}} = \prod_{k=1}^n \varphi_{\xi_k}(u_k) 
+\end{align*}
+Note that here we have used Lemma \ref{IndependenceExpectations} on
+a bounded complex valued function.
+TODO: Do the simple validation that the Lemma extends to this situation.
+
+On the other hand, if we assume that $\varphi_\xi(u_1, \ldots , u_n) =
+\prod_{j=1}^n \varphi_{\xi_j}(u_j)$, then we know that if we pick
+independent random variables $\eta_j$ where each $\eta_j$ has the same
+distribution as $\xi_j$ then by the above calculation $\varphi_\xi(u)
+= \varphi_\eta(u)$.
+By Theorem \ref{EqualCharacteristicFunctionEqualMeasures} we know
+that $\xi$ and $\eta$ have the same distribution.  Thus the $\xi_j$
+are also independent by Lemma \ref{IndependenceProductMeasures} and
+the equality of the distributions of each $\xi_j$ and $\eta_j$.
+\end{proof}
+\begin{lem}Let $\xi$ and $\eta$ be independent random vectors in
+  $\reals^n$.  Then $\varphi_{\xi + \eta}(u) = \varphi_\xi(u) \varphi_\eta(u)$.
+\end{lem}
+\begin{proof}
+This follows from the calculation 
+\begin{align*}
+\varphi_{\xi + \eta}(u) &= \expectation{e^{i\langle u, \xi + \eta
+    \rangle}} = \expectation{e^{i\langle u, \xi
+    \rangle}e^{i\langle u, \eta \rangle}} \\
+&=\expectation{e^{i\langle u, \xi
+    \rangle}} \expectation{e^{i\langle u, \eta \rangle}} =
+\varphi_{\xi }(u)\varphi_{\eta}(u)& & \text{by
+  Lemma \ref{IndependenceExpectations}}
+\end{align*}
+\end{proof}
+
+\begin{examp}\label{FourierTransformGaussian}Let $\xi$ be an $N(0,1)$ random variable.  Then
+  $\varphi_\xi(u) = e^{\frac{-u^2}{2}}$.  The least technical way of
+  seeing this requires a bit of a trick.  First note that because $\sin
+  ux$ is an odd function we have
+\begin{align*}
+\varphi_\xi(u) &= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{iux}
+e^{\frac{-x^2}{2}} \, dx \\
+&= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{\frac{-x^2}{2}}\cos ux
+\, dx + \frac{i}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{\frac{-x^2}{2}}\sin ux
+\, dx \\
+&=  \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{\frac{-x^2}{2}}\cos
+ux \, dx
+\end{align*}
+On the other hand by Lemma \ref{MomentsAndDerivatives} and the fact
+that $x \cos ux$ is an odd function we have 
+\begin{align*}
+\frac{d\varphi_\xi(u)}{du} &=
+\frac{i}{\sqrt{2\pi}}\int_{-\infty}^\infty x e^{iux}
+e^{\frac{-x^2}{2}} \, dx \\
+&= \frac{i}{\sqrt{2\pi}}\int_{-\infty}^\infty x e^{\frac{-x^2}{2}}\cos ux
+\, dx - \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty x e^{\frac{-x^2}{2}}\sin ux
+\, dx \\
+&=  \frac{-1}{\sqrt{2\pi}}\int_{-\infty}^\infty x e^{\frac{-x^2}{2}}\sin ux
+\, dx
+\end{align*}
+This last integral can be integrated by parts (let $df = x
+e^{\frac{-x^2}{2}} dx$ and $g = \sin ux$, hence $f =
+-e^{\frac{-x^2}{2}}$ and $dg = u\cos ux$) to yield
+\begin{align*}
+\frac{d\varphi_\xi(u)}{du} &=\frac{-u}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{\frac{-x^2}{2}}\cos
+ux \, dx
+\end{align*}
+and therefore we have shown that characteristic function satisfies the
+simple first order differential equation $\frac{d\varphi_\xi(u)}{du} =
+-u \varphi_\xi(u)$ which has the general solution $\varphi_\xi(u) = C
+e^\frac{-u^2}{2}$ for some constant $C$.  To determine the constant,
+we use Lemma
+\ref{CharacteristicFunctionBoundedAndContinuous} to see that
+$\varphi_\xi(0) = C = 1$ and we are done.
+\end{examp}
+
+To extend the previous example to arbitrary normal distributions, we
+prove the following result that has independent interest.
+\begin{lem}\label{CharacteristicFunctionOfAffineTransform}Let $\xi$ be a random vector in $\reals^N$ then for $a \in
+  \reals^M$ and $A$ an $M \times N$ matrix, we have
+\begin{align*}
+\varphi_{a + A\xi}(u) &= e^{i\langle a, u \rangle} \varphi_\xi(A^* u)
+\end{align*}
+where $A^*$ denotes the transpose of $A$.
+\end{lem}
+\begin{proof}
+This is a simple calculation
+\begin{align*}
+\varphi_{a + A\xi}(u) &= \expectation{e^{i \langle u, a + A \xi
+    \rangle}} = \expectation{e^{i \langle u, a \rangle} e^{i \langle u,  A \xi
+    \rangle}}
+= e^{i \langle u, a \rangle}\expectation{e^{i \langle A^* u,  \xi
+    \rangle}} = e^{i\langle a, u \rangle} \varphi_\xi(A^* u)
+\end{align*}
+where we have used the elementary fact from linear algebra that
+\begin{align*}
+\langle u,  Av \rangle &= u^*Av = (u^*Av)^* = v^* A^*u = \langle A^*u,  v \rangle
+\end{align*}
+\end{proof}
+
+\begin{examp}\label{FourierTransformGeneralGaussian}Let $\xi$ be an $N(\mu,\sigma^2)$ random variable.  Then
+  $\varphi_\xi(u) = e^{iu\mu - \frac{1}{2} u^2\sigma^2}$.  We know
+  that if $\eta$ is an $N(0,1)$ random variable then $\mu +
+  \sigma\eta$ is $N(\mu, \sigma^2)$, so by the previous Lemma
+  \ref{CharacteristicFunctionOfAffineTransform} and Example \ref{FourierTransformGaussian}
+\begin{align*}
+\varphi_\xi(u) &= e^{iu\mu} \varphi_\eta(\sigma u) = e^{iu\mu - \frac{1}{2} u^2\sigma^2}
+\end{align*}
+\end{examp}
+
+
+The last piece of the puzzle that we need to put into place before
+proving the Central Limit Theorem is a result that shows we can test
+convergence in distribution by looking at pointwise convergence of
+associated characteristic functions.
+\begin{thm}[Glivenko-Levy Continuity
+  Theorem]\label{GlivenkoLevyContinuity}If $\mu, \mu_1, \mu_2, \dots$
+  are probability measures on $(\reals^n, \mathcal{B}(\reals^n))$,
+  then $\mu_n$ converge weakly to $\mu$ if and only if $\hat{\mu}_n(u)$
+  converge to $\hat{\mu}(u)$ pointwise.
+\end{thm}
+\begin{proof}
+By Theorem \ref{WeakConvergenceWithSmoothTestFunctions} it suffices to
+show that for every $f \in C^\infty_c(\reals^n, \reals)$, we have $\lim_{n
+  \to \infty} \int f
+\, d\mu_n = \int f \, d\mu$.  By \ref{UniformApproximationByGaussians}
+we know that $\lim_{\epsilon \to 0}
+\norm{\rho_\epsilon * f - f}_\infty = 0$.  Pick $\delta > 0$ and find
+$\epsilon > 0$ such that $\norm{\rho_\epsilon * f - f}_\infty <
+\delta$.
+Now, 
+\begin{align*}
+\abs{\int f \, d\mu_n - \int f \, d\mu} &\leq \abs{\int (f - \rho_\epsilon * f) \, d\mu_n} + \abs{\int \rho_\epsilon * f \, d\mu_n -
+  \int \rho_\epsilon * f \, d\mu} + \abs{\int (\rho_\epsilon * f - f)
+  \, d\mu} \\
+&\leq \delta + \frac{1}{2\pi} \abs{\int \hat{f}(t)
+  e^{-\frac{1}{2}\epsilon^2t^2} (\hat{\mu}_n(t) - \hat{\mu}(t)) \, dt}
++ \delta 
+\end{align*}
+where we have used the Plancherel Theorem (Theorem
+\ref{PlancherelTheorem}) and the uniform
+approximation of $f$ by $\rho_\epsilon * f$ in going from the first to
+the second line.
+
+Because $f$ is compactly supported, we know that $\hat{f}(t) \leq
+\norm{f}_\infty$ and together with Lemma
+\ref{CharacteristicFunctionBoundedAndContinuous} we see that 
+\begin{align*}
+\abs{\hat{f}(t)
+  e^{-\frac{1}{2}\epsilon^2t^2} (\hat{\mu}_n(t) - \hat{\mu}(t))} \leq
+2\norm{f}_\infty e^{-\frac{1}{2}\epsilon^2t^2}
+\end{align*} where the upper bound
+is an integrable function of $t$.  Therefore by Dominated Convergence
+we see that $\limsup_{n \to \infty} \abs{\int f \, d\mu_n - \int f \,
+  d\mu}  \leq 2\delta$.  Since $\delta>0$ was arbitrary, we have $\int f \, d\mu_n = \int f \,  d\mu$.
+\end{proof}
+
+Note that part of the hypothesis in the above theorem is the fact that
+the pointwise limit of the characteristic functions is assumed to be
+the characteristic function of a probability measure.  There is a stronger form of the above theorem that
+characterizes when a pointwise limit of charactersistic functions is
+in fact the characteristic function of a probability measure.  That
+stronger result is not needed to prove the Central Limit Theorem so we
+postpone its statement and proof until later.
+
+\begin{thm}[Central Limit Theorem]\label{CentralLimitTheorem}Let
+  $\xi, \xi_1, \xi_2, \dots$ be i.i.d. random variables with $\mu =
+  \expectation{\xi}$ and 
+  $\sigma = \variance{\xi_n} < \infty$, then 
+\begin{align*}
+\sqrt{n} (\frac{1}{n}\sum_{i=1}^n \xi_i -  \mu) \todist N(0,\sigma^2)
+\end{align*}
+\end{thm}
+\begin{proof}
+The first thing to note is that by using the Theorem on $\frac{\xi_i -
+  \mu}{\sigma}$, it suffices to assume that $\mu = 0$
+and $\sigma = 1$.  Thus we only have to show that $\frac{1}{\sqrt{n}}
+\sum_{k=1}^n \xi_k \todist N(0,1)$.  
+
+Define $S_n = \sum_{k=1}^n \xi_k$.  By Theorem
+\ref{GlivenkoLevyContinuity} it suffices to show that 
+\begin{align*}
+\lim_{n \to \infty} \expectation{e^{itS_n/\sqrt{n}}} &= e^{t^2/2}
+\end{align*}
+To calculate the limit, first note that by independence and i.i.d. we
+have 
+\begin{align*}
+\expectation{e^{itS_n/\sqrt{n}}} &= \prod_{k=1}^n
+\expectation{e^{it\xi_k/\sqrt{n}}}  = \left[\expectation{e^{it\xi/\sqrt{n}}}\right]^n
+\end{align*}
+
+In order to evaluate the limit, we take the Taylor expansion of the exponential $e^{ix} = 1 + i x -
+\frac{1}{2}x^2 + R(x)$ where by Lagrange form of the remainder and the
+fact that $\abs{\frac{d}{dx} e^{ix}} \leq 1$, we
+see that $\abs{R(x)} \leq \frac{1}{6}\abs{x}^3$.  Note that this
+estimate isn't very good for large $\abs{x}$ but it is easy to do
+better for $\abs{x} > 1$ just using the triangle inequality
+\begin{align*}
+\abs{e^{ix} - 1 - ix + \frac{1}{2}x^2} &\leq 2 + \abs{x} +
+\frac{1}{2}x^2 \leq \frac{7}{2}x^2
+\end{align*}
+Therefore we have the bound $\abs{R(x)} \leq \frac{7}{2}(\abs{x}^3
+\wedge x^2)$.  Applying the Taylor expansion and using the zero mean
+and unit variance assumption, we get
+\begin{align*}
+\expectation{e^{itS_n/\sqrt{n}}} &= \left(1 - \frac{t^2}{2n} + \expectation{R(\frac{t\xi}{\sqrt{n}})}\right)^n
+\end{align*}
+By our estimate on the remainder term, we can see that
+\begin{align*}
+n \abs{\expectation{R(\frac{t\xi}{\sqrt{n}})}} &\leq
+\frac{7}{2}\expectation{\frac{t^3\abs{\xi}^3}{\sqrt{n}} \wedge t^2
+  \xi^2} \\
+&\leq \frac{7}{2} \expectation{ t^2
+  \xi^2} = \frac{7t^2}{2} 
+\end{align*}
+By the above inequalities and Dominated Convergence we can
+conclude that 
+\begin{align*}
+\lim_{n \to \infty} n
+\abs{\expectation{R(\frac{t\xi}{\sqrt{n}})}} = 0
+\end{align*}
+so if we define $\epsilon_n = \frac{2n}{t^2}
+\abs{\expectation{R(\frac{t\xi}{\sqrt{n}})}}$ then we have $\lim_{n
+  \to \infty} \epsilon_n = 0$ and 
+\begin{align*}
+\lim_{n \to \infty} \expectation{e^{itS_n/\sqrt{n}}} &= \lim_{n \to 
+  \infty} \left(1 - \frac{t^2}{2n} (1 + \epsilon_n) \right)^n =\lim_{n \to 
+  \infty}  e^{n \log(1 - \frac{t^2}{2n} (1 + \epsilon_n))} =
+e^{-t^2/2}
+\end{align*}
+\end{proof}
+
+\begin{thm}[Prokhorov's Theorem, special case]Let $\mu_n$ be a tight sequence of
+  measures on $\reals^n$.  Then there is a subsequence of that
+  converges in distribution.
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+ 
+TODO: Do the full Levy Continuity Theorem (and Prokhorov's Theorem) that shows a characteristic
+function that is continuous at $0$ is the characterisitic function of
+a probability measure (the basic point is that the pointwise limit of
+characteristic functions of probability measures is almost the
+characteristic function of a probability measure; the associated
+distribution function may not have the correct limits at $\pm
+\infty$.  If we assume continuity at $0$, then we can prove tightness
+which shows that the limits are $0,1$ as required of a distribution
+function.
+
+\subsection{Gaussian Random Vectors and the Multidimensional Central
+  Limit Theorem}
+There is a version of the Central Limit Theorem for random vectors in
+$\reals^N$ in which Gaussian distributions also occur.  The nature of
+Gaussians in this context is a bit more subtle than in the one
+dimensional case.  We lead with a definition
+\begin{defn}A random vector $\xi$ in $\reals^N$ is said to be a \emph{Gaussian random
+  vector} is for every $a \in \reals^N$, the random variable $\lbrace
+  a,\xi \rbrace$ is a univariate normal or is almost surely 0 (which
+  we take as the degenerate univariate normal $N(0,0)$).
+\end{defn}
+The first theorem that we prove gives an alternative characterization
+of the property in terms of characteristic functions.  This result is
+sometimes used as the definition of a Gaussian random vector; the only
+real benefit to the definition we've given is that it is more
+elementary.
+\begin{thm}\label{GaussianVectorCharacteristicFunction}A random vector
+  $\xi$ in $\reals^N$ is Gaussian if and only if there is a $\mu \in
+  \reals^N$ and a symmetric nonnegative semi-definite matrix $Q \in
+  \reals^{N\times N}$ such that 
+\begin{align*}
+\varphi_\xi(u) &= e^{i\langle u, \mu\rangle - \frac{1}{2}\langle u, Qu
+\rangle}
+\end{align*}
+For $\xi$ with characteristic function of this form, $\mu =
+\expectation{\xi}$ and $Q = \covariance{\xi}$; we say that $\xi$ is
+$N(\mu, Q)$.
+\end{thm}
+\begin{proof}
+First we assume that we have a characteristic function of the above
+form.  Let $a \in \reals^N$ and consider the random variable $\langle
+a, \xi \rangle$.  Notice that $\langle a, \xi \rangle = a^* \xi$ is a
+special case of an affine transformation so we
+can apply Lemma
+\ref{CharacteristicFunctionOfAffineTransform} to calculate
+\begin{align*}
+\varphi_{\langle a, \xi \rangle}(u) &= \varphi_\xi(a u) = e^{i u \langle
+  a, \mu\rangle - \frac{1}{2}\langle a, Q a\rangle u^2} 
+\end{align*}
+Now, by Example \ref{FourierTransformGeneralGaussian}
+we see that $\langle a, \xi \rangle$ is $N(\langle
+  a, \mu\rangle, \langle a, Q a\rangle)$.  Since $a$ was arbitrary,
+  this shows that $\xi$ is Gaussian.
+
+Now we assume that $\xi$ is Gaussian.  Let $\mu = (\mu_1, \dots,
+\mu_N) = \expectation{\xi}$ and let $Q = \covariance{\xi}$.  Pick $a
+\in \reals^N$ and note that 
+\begin{align*}
+\expectation{\langle a,\xi \rangle} &= \langle a, \mu \rangle \\
+\variance{\langle a,\xi \rangle} &= \expectation{(\langle a,\xi
+  \rangle - \expectation{\langle a,\xi \rangle})^2} \\
+&=  \expectation{(\langle a,\xi - \mu  \rangle)^2} \\
+&=  \expectation{a^* (\xi - \mu) (\xi - \mu)^* a} \\
+&= a^*\expectation{ (\xi - \mu) (\xi - \mu)^*}a = \langle a, Q a
+\rangle \\
+\end{align*}
+Now we know by our assumption and the expectation and variance
+calculation above  that $\langle a, \xi \rangle$ is
+$N(\langle a, \mu \rangle, \langle a, Q a \rangle)$ and by Example
+\ref{FourierTransformGeneralGaussian}, we have
+\begin{align*}
+\varphi_{\langle a, \xi \rangle}(u) &= e^{iu \langle a, \mu \rangle -
+  \frac{1}{2}\langle a, Q a \rangle u^2}
+\end{align*}
+As above we can apply Lemma
+\ref{CharacteristicFunctionOfAffineTransform}
+to see
+\begin{align*}
+\varphi_\xi(a) &= \varphi_{\langle a, \xi \rangle}(1) =  e^{i \langle a, \mu \rangle -  \frac{1}{2}\langle a, Q a \rangle}
+\end{align*}
+Together with the fact two measures with the same characteristic
+function must be equal (Theorem
+\ref{EqualCharacteristicFunctionEqualMeasures} ), this also proves the last part of the Theorem since we have shown by
+construction that $\mu = \expectation{\xi}$ and $Q = \covariance{\xi}$.
+\end{proof}
+
+\begin{examp}Let $\xi_1, \dots, \xi_N$ be independent random variables
+  with $\xi_i$ being normal $N(\mu_i, \sigma_i^2)$.  Then $\xi =
+  (\xi_1, \dots, \xi_N)$ is a Gaussian random vector.  In fact, if we
+  let $\mu = (\mu_1, \dots, \mu_N)$ and 
+\begin{align*}
+Q = \diag(\sigma_1^2, \dots, \sigma_N^2)
+\end{align*}
+then $\xi = N(\mu, Q)$.
+\end{examp}
+
+The characterization of Gaussian random vectors using characteristic
+functions allows us to see that limits of Gaussian random vectors are
+Gaussian random vectors.  We will need this result when we construct
+Brownian motion later on.
+\begin{lem}\label{LimitOfGaussianRandomVectors}Let $\xi_1, \xi_2, \dots$ be a sequence of random
+  vectors in $\reals^N$ with $\xi_n$ an $N(\mu_n, C_n)$ Gaussian
+  random vector.  Suppose that $\xi$ is a random vector such
+  that $\xi_n$ converges to $\xi$ almost surely.  If $\lim_{n \to
+    \infty} \expectation{\xi_n} = \mu$ and $\lim_{n \to \infty}
+  \covariance(\xi_n) = C$ then $\xi$ is a $N(\mu, C)$ Gaussian random vector.
+\end{lem}
+\begin{proof}
+Since $\xi_n$ converges almost surely to $\xi$ then it converges in
+distribution.  We know from Lemma
+\ref{GaussianVectorCharacteristicFunction} and the Glivenko-Levy
+Continuity Theorem (Theorem \ref{GlivenkoLevyContinuity}) we see
+\begin{align*}
+\varphi_\xi(u) &= \lim_{n \to \infty} \varphi_{\xi_n}(u) = \lim_{n \to
+  \infty} e^{i\langle u, \mu_n\rangle - \frac{1}{2}\langle u, C_n
+  y\rangle} = e^{i\langle<u, \mu\rangle - \frac{1}{2}\langle u, C
+  y\rangle} 
+\end{align*}
+where we have used continuity of $e^ix$.  Thus, using Lemma
+\ref{GaussianVectorCharacteristicFunction}
+again shows that $\xi$ is $N(\mu, C)$.
+\end{proof}
+
+TODO: Gaussian Random Variables in $\reals^n$ and the multidimensional
+CLT.
+TODO: Show that a
+given two independent Gaussian random variables their sum and
+difference are independent Gaussian (that probably doesn't require
+Gaussian random vectors).  Not sure we really need to call this out as a Lemma.

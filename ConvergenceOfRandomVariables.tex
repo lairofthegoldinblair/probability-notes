@@ -1,0 +1,2449 @@
+\section{Convergence of Random Variables}
+TODO: a.s. convergence, convergence in probability
+and weak convergence (convergence in distribution), tightness of
+distribution.
+\begin{defn}Let $(S,d)$ be a $\sigma$-compact metric space with the Borel
+  $\sigma$-algebra and let $\xi_n$ be a sequence of random elements in
+  $S$.  Let $\xi$ be a random element in $S$.
+\begin{itemize}
+\item[(i)] $\xi_n$ \emph{converges almost surely} to $\xi$ if for almost
+  every $\omega \in \Omega$, $\xi_n(\omega)$ converges to $\xi(\omega)$ in $S$.
+We write $\xi_n \toas \xi$ to denote almost sure convergence.
+\item[(ii)] $\xi_n$ \emph{converges in probability} to $\xi$ if for any
+  $\epsilon>0$ we have 
+\begin{equation*}
+\lim_{n \to \infty} \probability{ \lbrace \omega : d(\xi_n(\omega),
+      \xi(\omega)) >
+      \epsilon \rbrace } = 0
+\end{equation*}
+We write $\xi_n \toprob \xi$ to denote convergence in probability.
+\item[(iii)] $\xi_n$ \emph{converges in distribution} to $\xi$ if, for
+  every bounded continuous function $f:S \to \reals$, one has 
+\begin{equation*}
+\lim_{n \to \infty} \expectation{f(\xi_n)} = \expectation{f(\xi)}.
+\end{equation*} 
+We write $\xi_n \todist \xi$ to denote convergence in distribution.
+\item[(iv)] $\xi_n$ has a \emph{tight sequence of distributions} if, for
+  every $\epsilon>0$, there exists a compact subset $K$ of $S$ such
+  that $\probability{\xi_n \in K} \geq 1 - \epsilon$ for sufficiently
+  large $n$.
+\end{itemize}
+\end{defn}
+
+TODO: Note that convergence in distribution is really a property of
+the distribution of the random variables and not the random variables
+themselves.
+
+ For the case of random variables there is another strong form of
+convergence that is quite useful.
+\begin{defn}If $\xi, \xi_1, \xi_2, \dots$ are random variables then $\xi_n$ \emph{converges in $L^p$} to $\xi$ if 
+$\lim_{n \to \infty} \expectation{\abs{\xi_n - \xi}^p} = 0$.
+We write $\xi_n \tolp{p} \xi$ to denote convergence in $L^p$.  We may
+also call convergence in $L^p$ \emph{convergence in $p^{th}$ mean}.
+\end{defn}
+
+TODO: Motivation for concept of almost sure convergence via Law of
+Large Numbers.  Think of modeling coin tossing using random
+variables.  The $n^{th}$ coin flip is represented as a Bernoulli
+random variable $\xi_n$ where $\xi_n(\omega) = 1$ means that the coin
+lands with heads.  The \emph{empirical probability} of heads is in $n$
+trials is $S_n = \frac{1}{n} \sum_{k=1}^n \xi_k$.  Now our intuition
+is that $S_n$ converges to $1/2$ in some appropriate sense.  Now the
+simple minded notion of pointwise convergence that we used in the
+development of measure theory (e.g. in all of the limit theorems)
+is too strong for this scenario.  Clearly, it is theoretically
+possible for a person to toss a coin an infinite number of times and
+get only heads.  It is possible by extremely improbable; so improbable
+in fact that its probability is zero.
+
+TODO: Motivation for concept of convergence in probability.
+Motivation for convergence in mean is pretty clear.
+
+There is also some useful technical intuition around how one might
+prove that sequences converge almost surely.  The idea is implicit in
+the definitions but is useful to take the time to call it out and make
+it perfectly explicit; we will see it time and again.  If one looks at the contrapositive of almost
+sure convergence, it means that there is probability zero that a
+sequence of random elements does not converge.  The property of not
+converging is that there exists an $\epsilon >0$ such that for all $N
+> 0$, $d(\xi, \xi_n) \geq \epsilon$ for all $n > N$. Converting the
+logic in set operations, let $A_{N, \epsilon}$ be the event that 
+$d(\xi, \xi_n) \geq \epsilon$ for all $n > N$.  Convergence fails
+precisely on the event $\cup_{\epsilon > 0} \cap_{N=1}^\infty A_{N,
+  \epsilon}$, so almost sure convergence means that $\probability{\cup_{\epsilon > 0} \cap_{N=1}^\infty A_{N,
+  \epsilon}} = 0$.  TODO: Note that one can restrict $\epsilon$ to a
+countable subset of $\reals$ (e.g. $\rationals$ or $\frac{1}{n}$).  Note that the same reasoning applies when handling
+almost sure Cauchy sequences as well.
+
+Almost sure convergence is such a simple notion that it seems there
+may be nothing worth explaining about it.  However the following
+result ties in the definition of almost sure convergence with the
+idea of events happening infinitely often that we encountered when
+discussing indpedendence.  The connection proves to be quite powerful
+and we'll soon see that it make the Borel-Cantelli Lemma a useful tool
+for proving almost sure convergence.
+\begin{lem}\label{ConvergenceAlmostSureByInfinitelyOften}Let $\xi, \xi_1, \xi_2, \dots$ be random elements in the
+  metric space $(S,d)$, then $\xi_n \toas \xi$ if
+and only if for every $\epsilon > 0$, $\probability{d(\xi_n, \xi) \geq
+  \epsilon \text{ i.o.}}=0$ if and only if for every $\epsilon > 0$,
+$\lim_{n \to \infty} \probability{\sup_{m \geq n} d(\xi_m, \xi_n) > \epsilon}
+= 0$.  
+\end{lem}
+\begin{proof}
+By definition if $\xi_n \toas \xi$ there is a set $A \subset \Omega$
+such that $\probability{A} = 1$ and for all $\epsilon > 0$ and $\omega \in A$ there
+exists $N_{\epsilon, \omega}\geq 0$ such that $d(\xi_n(\omega), \xi(\omega)) <
+\epsilon$ when $n \geq
+N_{\epsilon, \omega}$.  In particular for $\omega \in A$, $d(\xi_n, \xi) \geq
+  \epsilon$ finitely often.  Therefore $\lbrace d(\xi_n, \xi) \geq
+  \epsilon \text{ i.o.} \rbrace \subset A^c$ and $\probability{d(\xi_n, \xi) \geq
+  \epsilon \text{ i.o.}} \leq \probability{A} = 0$.
+
+In the opposite direction, let $A_\epsilon = \lbrace d(\xi_n, \xi) \geq
+  \epsilon \text{ i.o.}\rbrace$ and by assumption
+  $\probability{A_\epsilon} = 0$.  The event that $\xi_n$ does not
+  converge to $\xi$ is precisely $A = \cup_{\epsilon > 0} A_\epsilon$
+  and we might think we are done.  Unfortunately $\cup_{\epsilon > 0}
+  A_\epsilon$ is an uncountable union and we can't conclude that
+  $\probability{A} = 0$.  
+  We resolve this by noting that in fact $A = \cup_n A_{\frac{1}{n}}$
+  which is a countable union of sets of measure zero; hence has
+  measure zero.
+
+TODO: Fix inconsistency in use of $\geq$ and $>$.
+
+To see the second equivalence, just unfold the definition of events
+happening infinitely often and use continuity of measure
+\begin{align*}
+\probability{d(\xi_n, \xi) >
+  \epsilon \text{ i.o.}} &= \probability{\cap_{n=1}^\infty
+  \cup_{m=n}^\infty \lbrace d(\xi_m, \xi) >
+  \epsilon\rbrace } \\
+&= \lim_{n \to \infty} \probability{\cup_{m=n}^\infty \lbrace d(\xi_m, \xi) >
+  \epsilon \rbrace } \\
+&= \lim_{n \to \infty} \probability{\sup_{m \geq n} d(\xi_m, \xi) >
+  \epsilon} \\
+\end{align*}
+\end{proof}
+
+\begin{lem}\label{ConvergenceAlmostSureImpliesInProbability}Let $\xi, \xi_1, \xi_2, \dots$ be random elements in the
+  metric space $(S,d)$.  If $\xi_n \toas \xi$ then $\xi_n \toprob \xi$.
+\end{lem}
+\begin{proof}
+By Lemma \ref{ConvergenceAlmostSureByInfinitelyOften} and continuity of measure, if $\xi_n \toas \xi$ then we know that for each
+$\epsilon > 0$, 
+\begin{align*} 
+0=\probability{d(\xi_n, \xi) \geq
+  \epsilon \text{ i.o.}}=\lim_{n \to \infty} \probability{\cup_{k\geq
+    n} {d(\xi_k, \xi) \geq
+  \epsilon}}
+\end{align*}
+Now clearly we have $\probability{d(\xi_n, \xi) \geq
+  \epsilon} \leq \probability{\cup_{k \geq n} d(\xi_k, \xi) \geq
+  \epsilon}$ so convergence in probability follows.
+
+Here is an alternative approach that currently has a hole in the
+argument.  Is it worth patching the hole?  Suppose there exists $\epsilon , \delta >
+0$ for which there is a subsequence $n_j \to \infty$ and
+$\probability{d(\xi_{n_j}, \xi) > \epsilon} \geq \delta > 0$.  We
+claim that $\probability{\cap_j \lbrace d(\xi_{n_j}, \xi) > \epsilon
+  \rbrace } > 0$ (is this really true?).  Note $\cap_j \lbrace d(\xi_{n_j}, \xi) > \epsilon \rbrace  \subset \{ \omega \mid \xi_{n_j}(\omega) \text{ does not converge
+  to }  \xi(\omega) \}$ hence $\xi_n$ does not converge on a set of
+positive measure.
+\end{proof}
+
+\begin{examp}\label{ConvergeProbabilityNotAlmostSure}[Sequence converging in probability but not almost
+  surely]Consider the $(\reals, \mathcal{B}(\reals))$ with Lebesgue
+  measure.  For a sequence of intervals $I_n \subset \reals$ observe
+  that $\characteristic{I_n} \toprob 0$ if and only if $\abs{I_n} \to
+  0$.  For every $n > 0$ consider the events $A_{n,j} =
+  [\frac{j-1}{n}, \frac{j}{n}]$ for $j=1, \dots, n$.  Now consider the
+  sequence of random variables obtained by taking the lexicographic
+  order of pairs $(n,j)$ for $n>0$ and $j=1,\dots, n$ and the
+  indicator functions $\characteristic{A_{n,j}}$; call the
+  resulting sequence $f_m$.  
+Note that $f_m
+\toprob 0$ by the
+above discussion.  On the the other hand, the sequence does not
+converge pointwise anywhere on $[0,1]$ because for every $x \in [0,1]$, we can
+see $\limsup_{m \to \infty} f_m(x) = 1$ but $\liminf_{m \to \infty} f_m(x) = 0$.
+\end{examp}
+
+\begin{lem}\label{ConvergenceInMeanImpliesInProbability}Let $\xi,
+  \xi_1, \xi_2, \dots$ be random variables, if $\xi_n \tolp{p} \xi$, then $\xi_n \toprob \xi$.
+\end{lem}
+\begin{proof}
+This is a simple application of Markov's Inequality (Lemma \ref{MarkovInequality})
+\begin{align*}
+\probability{\abs{\xi_n - \xi} > \epsilon} &= \probability{\abs{\xi_n
+    - \xi}^p > \epsilon^p} \leq \frac{\expectation{\abs{\xi_n
+    - \xi}^p}}{\epsilon^p}
+\end{align*}
+but the right hand side converges to $0$ by assumption.
+\end{proof}
+
+\begin{examp}[Sequence converging in probability but in mean]To see
+  that a sequence of random elements can converge in probability but
+  not in mean we can modify Example \ref
+  {ConvergeProbabilityNotAlmostSure}.  Using the notation from that
+  example, define the random variables $n\characteristic{A_{n,j}}$ and
+  order them lexicographically into the sequence $f_m$.  Note that
+  point behind rescaling is that we have arrange for
+  $\expectation{n\characteristic{A_{n,j}}} = 1$.  The argument
+  that the $f_m \toprob 0$ follows essentially unchanged;  convergence in probability is insensitive the rescaling of
+  the random variables.  On the other hand, it is clear that
+  $\expectation{f_m} = 1$ for all $m>0$ and therefore $f_m$ do not
+    converge in mean to $0$.
+\end{examp}
+
+There are few useful characterization of convergence in probability
+that are important tools to have.  The first provides a
+characterization of convergence in probability as a convergence of
+expectations.  Because of the previous example, we know that
+convergence in probability does not control the behavior of random
+elements on arbitrarily small sets hence it alone is not capable of
+controlling the values of expectations.  Adding in such control as an
+explicit extra condition we can tie the concepts together.
+\begin{lem}\label{ConvergenceInProbabilityAsConvergenceInExpectation}Let $\xi, \xi_1, \xi_2, \dots$ be random elements in the
+  metric space $(S,d)$.  $\xi_n \toprob \xi$ if and only if
+  $\lim_{n \to \infty} \expectation{d(\xi_n,\xi) \wedge 1} = 0$.
+\end{lem}
+\begin{proof}Suppose that $\xi_n \toprob \xi$.  We pick
+  $\epsilon > 0$ and $N > 0$ such that
+  $\probability{d(\xi_n,\xi) > \epsilon} < \epsilon$ for $n > N$.
+Now write
+\begin{align*}
+d(\xi_n,\xi) \wedge 1 &= d(\xi_n,\xi)
+  \wedge 1 \cdot \characteristic{d(\xi_n,\xi) > \epsilon} + d(\xi_n,\xi)
+  \wedge 1 \cdot \characteristic{d(\xi_n,\xi) \leq \epsilon} \\
+&\leq \characteristic{d(\xi_n,\xi) > \epsilon} + \epsilon
+\end{align*}
+Taking expectations we see
+\begin{align*}
+\expectation{d(\xi_n,\xi) \wedge 1} &\leq \probability{d(\xi_n,\xi) >
+  \epsilon} + \epsilon \leq 2\epsilon & & \text{for $n > N$.}
+\end{align*}
+
+Suppose that $\lim_{n \to \infty} \expectation{d(\xi_n,\xi) \wedge
+  1} = 0$.  First note that in proving convergence in probability, it
+suffices to consider $\epsilon < 1$ since for any $\epsilon <
+\epsilon^\prime$ we have $\probability{d(\xi_n, \xi) >
+  \epsilon^\prime)} \leq \probability{d(\xi_n, \xi) >
+  \epsilon)}$.  So pick $0 < \epsilon < 1$ and use Markov's Inequality
+(Lemma \ref{MarkovInequality}) to see
+\begin{align*}
+\lim_{n \to \infty} \probability{d(\xi_n, \xi) >
+  \epsilon)} &= \lim_{n \to \infty}\probability{d(\xi_n, \xi) \wedge 1 >
+  \epsilon)} \leq \lim_{n \to \infty} \frac{\expectation{d(\xi_n,\xi) \wedge
+  1}}{\epsilon} = 0
+\end{align*}
+\end{proof}
+
+As an example of how this Lemma is can be used, note that it provides a quick alternative proof to Lemma
+\ref{ConvergenceAlmostSureImpliesInProbability}:  If $\xi_n \toas \xi$
+then $d(\xi_n, \xi) \wedge 1 \toas 0$ and Dominated Convergence
+implies $\expectation{d(\xi_n, \xi) \wedge 1} \to 0$.
+
+The relationship between almost sure convergence and convergence in
+probability can be made even tighter than Lemma \ref{ConvergenceAlmostSureImpliesInProbability}.
+\begin{lem}\label{ConvergenceInProbabilityAlmostSureSubsequence}Suppose $(S,d)$ is a metric space and let $\xi,
+  \xi_1, \xi_2, \dots$ be random elements in $S$.  Then $\xi_n \toprob
+  \xi$ if and only for every subsequence $N^\prime \subset \naturals$ there is a
+  further subsequence $N^{\prime\prime} \subset N^\prime$ such that
+  $\lim_{n \in N^{\prime\prime}} \xi_n = \xi$ a.s.
+\end{lem}
+\begin{proof}
+Let $\xi_n \toprob \xi$.  By Lemma
+\ref{ConvergenceInProbabilityAsConvergenceInExpectation}, we know that
+$\lim_{n \to \infty} \expectation{d(\xi_n, \xi) \wedge 1}  = 0$.
+Thus we can pick $n_k > 0$ such that $\expectation{d(\xi_{n_k}, \xi)
+  \wedge 1} < \frac{1}{2^k}$.  Therefore  
+\begin{align*}\sum_{k=1}^\infty \expectation{d(\xi_{n_k}, \xi)
+  \wedge 1} = \expectation{\sum_{k=1}^\infty   d(\xi_{n_k}, \xi)
+  \wedge 1} < \infty
+\end{align*} where we have used Tonelli's Theorem
+\ref{TonelliIntegralSum}.  Finiteness of the second integral implies $\sum_{k=1}^\infty   d(\xi_{n_k}, \xi)
+  \wedge 1 < \infty$ almost surely and convergence of the sum implies
+  that the terms $d(\xi_{n_k}, \xi)  \wedge 1 \toas 0$ which in turn
+  implies  $d(\xi_{n_k}, \xi)  \toas 0$
+
+Here is an alternative proof of the first implication using Borel-Cantelli.  Pick a sequence $n_1,
+n_2, \dots$ such that $\probability{d(\xi_{n_k}, \xi) > \frac{1}{k}} <
+\frac{1}{2^k}$.  Then the sets $A_k=\{\omega \mid d(\xi_{n_k}(\omega),
+\xi(\omega)) > \frac{1}{k} \}$ satisfy $\sum_{k=1}^\infty \mu A_k <
+\infty$ and we can apply Borel-Cantelli to conclude that $\mu (A_k
+i.o.) = 0$.  Thus $\omega \notin A_k
+i.o. $ we pick $N_1 > 0$ such that $\omega \notin A_k$ for $k > N_1$
+and given $\epsilon >0$, we pick $N_2 >
+\frac{1}{\epsilon}$.  Then for $k > \max(N_1,N_2)$ we see that $d(\xi_{n_k}(\omega),
+\xi(\omega)) \leq \frac{1}{k} < \epsilon$ and we have shown that $\xi_{n_k} \toas \xi$.
+
+To prove the converse, suppose that $\xi_n$ does not converge in
+probability to $\xi$.  The definitions tell us that we can find
+$\epsilon > 0$, $\delta > 0$ and a subsequence $N^\prime$ such that
+$\probability{d(\xi_{n_k}, \xi) > \epsilon} > \delta$ for all $n \in
+N^\prime$.  We claim that there is no subsequence of $N^{\prime
+  \prime}$ for which $\xi_n \toas \xi$ along $N^{\prime \prime}$.  The
+claim is verified by using the fact (shown in the proof of Lemma
+\ref{ConvergenceAlmostSureImpliesInProbability}) that convergence
+almost surely means that $\probability{\cup_{k\geq n} \lbrace d(\xi_k,
+  \xi) > \epsilon \rbrace} \to 0$ for all $\epsilon > 0$.  For our
+chosen $\epsilon$, along any
+subsequence $N^{\prime \prime} \subset N^{\prime}$ every tail event
+$\cup_{k \in N^{\prime \prime}, k\geq n} \lbrace d(\xi_k,
+  \xi) > \epsilon \rbrace$ contains only events with probability greater
+  than $\delta$ hence cannot converge to $0$.
+\end{proof}
+
+The previous lemma has a nice side effect which is a proof that the
+property of convergence in probability does not actually depend on the
+choice of metric.
+\begin{cor}\label{ConvergenceInProbabilityIndependentOfMetric}Let $\xi, \xi_1, \xi_2, \dots$ be a random elements in a
+  metrizable space $S$.  The property $\xi_n \toprob \xi$ does not
+  depend on the choice of metric $d$.
+\end{cor}
+
+The previous lemma also gives us a very simply proof the extremely
+useful Continuous Mapping Theorem for convergence in probability.
+\begin{lem}\label{ContinuousMappingProbability}Let $\xi, \xi_1, \xi_2, \dots$ be a random elements in a
+  metric space $(S,d)$ such that $\xi_n \toprob \xi$.  Let
+  $(T,d^\prime)$ be a metric space and let $f : S \to
+  T$ be a continuous function, then $f(\xi_n) \toprob f(\xi)$.
+\end{lem}
+\begin{proof}
+Pick a subsequence $N^\prime \subset \naturals$ and note that by Lemma
+\ref{ConvergenceInProbabilityAlmostSureSubsequence} we know there
+exists a subsequence $N^{\prime \prime} \subset N^\prime$ such that
+$\xi_n \toas \xi$ along $N^{\prime \prime}$.  By the continuity of $f$,
+we know that $f(\xi_n) \toas f(\xi)$ along $N^{\prime \prime}$ hence
+another application of Lemma
+\ref{ConvergenceInProbabilityAlmostSureSubsequence}  shows that
+$f(\xi_n) \toprob f(\xi)$.
+\end{proof}
+The full power of the Continuous Mapping Theorem for convergence in
+probability is only fully appreciated in conjuction with the following
+useful characterization of convergence in probability in product
+spaces.  It is important to reinforce that the following Lemma fails
+in the case of convergence in distribution and one of the best uses of
+convergence in probability is a way of getting around that latter
+limitation.
+\begin{lem}\label{ConvergenceInProbabilityInProductSpaces}Let $\xi, \xi_1, \xi_2, \dots$ and $\eta, \eta_1, \eta_2,
+  \dots$ be random sequences in $(S,d)$ and $(T,d^\prime)$
+  respectively.  Then $(\xi_n, \eta_n) \toprob (\xi, \eta)$ if an only
+  if $\xi_n \toprob \xi$ and $\eta_n \toprob \eta$.
+\end{lem}
+\begin{proof}
+Note that by Corollary
+\ref{ConvergenceInProbabilityIndependentOfMetric} we may work with any
+metric on $S \times T$.  We choose the metric $d^{\prime\prime}((x,w), (y,z)) =
+d(x,y) + d^\prime(w,z)$.
+First we assume that $(\xi_n, \eta_n) \toprob (\xi, \eta)$.  Then we
+know that for every $\epsilon > 0$, we have
+\begin{align*}
+\lim_{n \to \infty} \probability{d^{\prime\prime}((\xi_n,\eta_n),
+  (\xi, \eta)) > \epsilon} &= 0
+\end{align*}
+By our choice of metric $d^{\prime\prime}$ we can see that $d(\xi_n,
+\xi) \leq d^{\prime\prime}((\xi_n,\eta_n),
+  (\xi, \eta))$ and $d^\prime(\eta_n,\eta) \leq d^{\prime\prime}((\xi_n,\eta_n),
+  (\xi, \eta))$ and therefore we can conclude that $\xi_n \toprob \xi$
+  and $\eta_n \toprob \eta$.  
+
+On the other hand if we assume that  $\xi_n \toprob \xi$ and $\eta_n
+\toprob \eta$ the for every $\epsilon > 0$ we have the union bound
+\begin{align*}
+\probability{d^{\prime\prime}((\xi_n,\eta_n),
+  (\xi, \eta)) > \epsilon} &\leq \probability{d(\xi_n,\xi) > \frac{\epsilon}{2}}
+  + \probability{d^\prime(\eta_n,\eta) > \frac{\epsilon}{2}}
+\end{align*}
+which shows the converse.
+\end{proof}
+\begin{cor}\label{ConvergenceInProbabilityAndAlgebraicOperations}Let $\xi, \xi_1, \xi_2, \dots$ and $\eta, \eta_1, \eta_2,
+  \dots$ be sequences of random variables such that $\xi_n \toprob
+  \xi$ and $\eta_n \toprob \eta$, then 
+\begin{itemize}
+\item[(i)] $\xi_n + \eta_n \toprob \xi + \eta$
+\item[(ii)] $\xi_n  \eta_n \toprob \xi \eta$
+\item[(iii)] $\xi_n / \eta_n \toprob \xi /\eta$ if $\eta \neq 0$ a.e.
+\end{itemize}
+\end{cor}
+\begin{proof}
+By Lemma \ref{ConvergenceInProbabilityInProductSpaces} we know that
+$(\xi_n, \eta_n) \toprob (\xi, \eta)$ in $\reals^2$.  By continuity of algebraic
+operations and the Continuous Mapping Theorem the result holds.
+\end{proof}
+
+
+\subsection{The Weak Law Of Large Numbers}
+
+\begin{thm}[Weak Law of Large Numbers]\label{WLLN} Let $\xi_1, \xi_2, \dots$ be independent and identically
+  distributed random variables with
+\begin{align*}
+\mu = \expectation{\xi_i} < \infty
+\end{align*}
+Then 
+\begin{align*}
+\frac{1}{n} \sum_{k=1}^n \xi_k \toprob \mu
+\end{align*}
+\end{thm}
+\begin{proof}
+If is worth first proving the result with the additional assumption of
+finite variance, so assume $\sigma^2 = \variance{\xi_j} < \infty$.
+The first thing to note is that it suffices to assume that $\mu =0$.
+For we can replace $\xi_j$ by $\xi_j - \mu$.  Now define $\hat{S}_n = \frac{1}{n} \sum_{k=1}^n \xi_k$ and note that by
+linearity of expectation, $\expectation{\hat{S}_n} = 0$ and by
+independence, 
+\begin{align*}
+\variance{\hat{S}_n} &= \frac{1}{n^2}  \sum_{k=1}^n
+\expectation{\xi_k^2} = \frac{\sigma^2}{n}
+\end{align*}
+Pick $\epsilon > 0$ and using Markov
+  Inequality (Lemma
+  \ref{MarkovInequality})
+\begin{align*}
+\probability{\abs{\hat{S}_n} > \epsilon} = \probability{\hat{S}_n^2 >
+  \epsilon^2} \leq \frac{\variance{\hat{S}_n}}{\epsilon^2} = \frac{\sigma^2}{n \epsilon^2}
+\end{align*}
+so $\lim_{n \to \infty} \probability{\abs{\hat{S}_n} > \epsilon}= 0$ and
+thus $\hat{S}_n \toprob 0$.
+
+Now to extend the result to eliminate the finite variance assumption
+we use a version of a \emph{truncation argument}.  One leverages the
+fact that by Lemma \ref{IndependenceExpectations}, independence of random variables is
+preserved under arbitrary measurable transformations.  In particular,
+for every $N > 0$, define $f_N(x) = x \cdot
+\characteristic{\abs{x}\leq N}$
+which is easily seen to be measurable and define 
+\begin{align*}
+\xi_{i,\leq N} &=
+f_{\leq N} \circ \xi_i \\
+\xi_{i, > N} &=  \xi_i - \xi_{i,\leq N}
+\end{align*}
+
+We first establish some simple facts about the behavior of the
+truncation sequences $\xi_{i,\leq N}$ and $\xi_{i,> N}$.  Since
+$\xi_i$ are integrable we have the bound 
+\begin{align*}
+\variance{\xi_{i,\leq N}} &= \expectation{\xi^2_{i,\leq N}} -
+\expectation{\xi_{i,\leq N}}^2 \leq \expectation{\xi^2_{i,\leq N}}
+\leq N \expectation{\abs{\xi_i}} < \infty
+\end{align*}
+which shows that $\xi_{i,\leq N}$ has finite variance.  Let $\mu_N = \expectation{\xi_{i,\leq N}}$.
+
+Next note that integrability of $\xi_i$ implies that $\abs{\xi_i} <
+\infty$ a.s. hence $\lim_{N \to \infty} \xi_{i,>N} = \lim_{N \to
+  \infty} \abs{\xi_{i,>N}}  = 0$ a.s.  Since
+$\abs{\xi_{i,>N}} < \abs {\xi_i}$, we can apply Dominated Convergence
+Theorem and linearity of expectation to see that 
+\begin{align*}
+\lim_{N \to \infty} \expectation{\xi_{i,>N}} &= \lim_{N \to \infty}
+\expectation{\abs{\xi_{i,>N}}}   = 0 \\
+\lim_{N \to \infty} \expectation{\xi_{i,\leq N}} &=
+\expectation{\xi_i} - \lim_{N \to
+  \infty} \expectation{\xi_{i,> N}} = \expectation{\xi_i}
+\end{align*}
+
+Now we stitch these observations together to provide the proof of the
+Weak Law of Large Numbers.  Suppose we are given $\epsilon >0$ and $\delta > 0$.  Pick $N$ large enough so that 
+\begin{align*}
+\abs{\expectation{\xi_{i,\leq N}} - \expectation{\xi_i}} &<
+\frac{\epsilon}{3} \\
+\expectation{\abs{\xi_{i,> N}}} &< \frac{\epsilon \delta}{3}
+\end{align*}
+It is important to note these two bounds depend only on the underlying
+distribution of $\xi_i$ and therefore by the identically distributed assumption
+on the $\xi_i$ if we pick $N$ so the above properties are satisified
+for a single $i$, in fact the properties are satisified uniformly for
+all $i > 0$.  
+
+Using the triangle inequality and a union bound (i.e. the general fact
+that $\lbrace \abs{a + b} \geq \epsilon \rbrace \subset \lbrace \abs{a} \geq \frac{\epsilon}{2} \rbrace  \cup \lbrace \abs{b} \geq \frac{\epsilon}{2} \rbrace$) we have
+\begin{align*}
+\probability{\abs{\frac{\sum_{i=1}^n \xi_i}{n} - \mu} \geq \epsilon}
+&= \probability{\abs{\frac{\sum_{i=1}^n \xi_{i,\leq N}}{n} - \mu_N +
+    \mu_N - \mu + \frac{\sum_{i=1}^n \xi_{i,> N}}{n}} \geq \epsilon} \\
+&\leq \probability{\abs{\frac{\sum_{i=1}^n \xi_{i,\leq N}}{n} - \mu_N} \geq \frac{\epsilon}{3}}  \\
+&+ \probability{\abs{\mu_N - \mu} \geq \frac{\epsilon}{3} } + \probability{\abs{\frac{\sum_{i=1}^n \xi_{i,> N}}{n}} \geq \frac{\epsilon}{3}} \\
+\end{align*}
+Consider each of the three terms in turn.  The first term we apply
+Chebyshev bounding
+\begin{align*}
+\probability{\abs{\frac{\sum_{i=1}^n \xi_{i,\leq N}}{n} - \mu_N} \geq
+  \frac{\epsilon}{3}} &\leq \frac{9 \variance{\frac{\sum_{i=1}^n
+      \xi_{i,\leq N}}{n}}}{\epsilon^2} \leq \frac{9 N
+  \expectation{\abs{\xi_1}}}{n\epsilon^2} < \delta
+\end{align*}
+provided we choose $n > \frac{9 N
+  \expectation{\abs{\xi_1}}}{\delta\epsilon^2}$.  
+The second term is $0$ since we have assumed $N$ large enough so that
+$\abs{\mu_N - \mu} < \frac{\epsilon}{3}$.  The third term we use a
+Markov bound
+\begin{align*}
+\probability{\abs{\frac{\sum_{i=1}^n \xi_{i,> N}}{n}} \geq
+  \frac{\epsilon}{3}}  &\leq \frac{3
+  \expectation{\abs{\frac{\sum_{i=1}^n \xi_{i,> N}}{n}}}}{\epsilon}
+\leq \frac{3 \expectation{\abs{\xi_{i,> N}}}}{\epsilon} < \delta
+\end{align*}
+\end{proof}
+
+It is worth examining the proof above to see that we didn't use the
+full strength of the identical distribution property.  Really all we
+used was the fact that were able to provide bounds on the expectation
+of the tails of the sequences \emph{uniformly}.  As an exercise, it is
+worth noting that the above proof goes through almost unchanged
+provided we merely assume that $\xi_n$ are independent and uniformly integrable.
+
+\begin{examp}\label{WLLNCounterExampleBoundedFirstMoment}The following is an example of a how the Weak Law of
+  Large Numbers can fail despite having a sequence of independent
+  random variables with bounded first moment.
+
+Let $\eta_n$ be a sequence of independent Bernoulli random variables
+with the rate of $\eta_n$ equal to $\frac{1}{2^n}$.  Now define $\xi_n
+= 2^n \eta_n$ and $S_n = \frac{1}{n}\sum_{k=1}^n \xi_k$.  It is
+helpful to think in Computer Science terms and consider $\sum_{k=1}^n
+\xi_k$ to be a random $n$-bit positive integer in which bit $k$ has
+probability $\frac{1}{2^k}$ of being set.  Note that
+$\expectation{\xi_n} = \expectation{\abs{\xi_n}}  = 1$ and therefore
+$\expectation{S_n} = 1$.  On the other hand we proceed to show that
+$S_n$ does not converge in probability to $1$.  We do this by
+constructing a subsequence $S_{n_k}$ such that 
+$\lim_{k \to \infty} \probability{ S_{n_k} < \frac{1}{2}} = 1$ (note
+the choice of the constant $\frac{1}{2}$ is somewhat arbitrary; any
+positive constant would do).
+
+Consider the subsequence $S_{2^k}$ and the complementary event 
+\begin{align*}
+\lbrace S_{2^k} \geq  \frac{1}{2} \rbrace &= \lbrace
+\sum_{n=1}^{2^k}\xi_n \geq  2^{k-1} \rbrace = \bigcup_{m=k-1}^{2^k}
+\lbrace \xi_m \neq 0 \rbrace
+\end{align*}
+Taking expectations, we get 
+\begin{align*}
+\probability{ S_{2^k} \geq  \frac{1}{2} } &\leq \sum_{m=k-1}^{2^k}
+\probability{ \xi_m \neq 0 } \\
+&= \sum_{m=k-1}^{2^k} \frac{1}{2^m} = \frac{1}{2^{k-1}} \cdot 2 \cdot
+(1 - 2^{2^k - k + 1}) < \frac{1}{2^{k-2}}
+\end{align*}
+which is enough to show by taking complements that $\lim_{k \to \infty} \probability{
+  S_{2^k} <  \frac{1}{2} } = 1$.
+
+TODO: Discussion about what is going on here.   Essentially, the
+averages here have a distribution which is peaking around 0 but has
+enough of a possibility of rare events happening (with exponentially
+large impact) to move the mean of
+the averages up to 1.  Thus the distribution is concentrating around 0
+which is NOT the mean!
+
+TODO: Question: does this sequence converge in distribution?  I'd
+guess is converges to the Dirac measure at 0.
+\end{examp}
+
+TODO: Other weak law ``counterexamples'' such as Cauchy
+distributions.  Varadhan mentions that one can tweak a Cauchy
+distribution so that it has no mean but the sequence of averages
+converges in probability.
+
+
+\subsection{The Strong Law Of Large Numbers}
+
+This is the most common approach to proving of the Strong Law of Large
+Numbers.  The proof requires the development of some tools for proving
+the almost sure converges of infinite sums of independent random
+variables.
+
+TODO: Observe how this next result is related to second moment bounds (Chebyshev
+applied to sums).
+
+\begin{lem}[Kolmogorov's Maximal Inequality]\label{KolmogorovMaximalInequality}Let
+  $\xi_1, \xi_2, \dots$ be independent random variables with
+  $\expectation{\xi_n^2} < \infty$ for all $n>0$.  The for every
+  $\epsilon > 0$, we have
+\begin{align*}
+\probability{\sup_n \abs{\sum_{k=1}^n \xi_k - \expectation{\xi_k}}
+  \geq \epsilon} < \frac{1}{\epsilon^2} \sum_{k=1}^\infty \variance{\xi_k}
+\end{align*}
+\end{lem}
+\begin{proof}
+It is clear we may assume that $\expectation{\xi_n} = 0$ for all $n >
+0$.  
+
+Before we start in on the result to be proven, we need an small
+observation.  To clean up notation a bit we define $S_n = \sum_{k=1}^n    \xi_k$.
+Pick $N > n > 0$ and observe $0 \leq (S_N-S_n)^2 =  S_N^2 - 2 S_N S_n + S_n^2
+= S_N^2 - S_n^2 - 2(S_N - S_n)S_n$ and therefore 
+$S_N^2 - S_n^2 \geq 2(S_N - S_n)S_n$.  Now using the fact that by Lemma
+\ref{IndependenceGrouping} we know $S_N - S_n$ is independent of
+$S_n$.  Therefore for any $A_n \in \sigma(S_n)$ we have
+\begin{align*}
+\expectation{S_N^2 - S_n^2 ; A_n} \geq 2\expectation{(S_N - S_n)S_n;
+  A_n} = 2\expectation{S_N - S_n}\expectation{S_n;  A_n} = 0
+\end{align*}
+which gives us 
+\begin{align*}
+\expectation{S_N^2; A_n} \geq \expectation{S_n^2;  A_n} 
+\end{align*}
+by linearity of expectation.  
+
+Now we start in on the inequality to be proven.  Note that by continuity of measure, we know that 
+\begin{align*}
+\probability{\sup_n \abs{S_n}  \geq \epsilon}  =
+\lim_{N \to \infty} \probability{\sup_{n \leq N} \abs{S_n}  \geq \epsilon}
+\end{align*}
+so it suffices to show for every $N > 0$ 
+\begin{align*}
+\probability{\sup_{n \leq N} \abs{S_n} \geq \epsilon} \leq
+\frac{1}{\epsilon^2} \sum_{k=1}^N \expectation{\xi_k^2} =
+\frac{1}{\epsilon^2} \expectation{S_N^2}
+\end{align*}
+
+Consider $\probability{\sup_{n \leq N} \abs{S_n} \geq
+  \epsilon}$.  Define the event $A_n = \lbrace \abs{S_k} < \epsilon
+\text{ for $1\leq k < n$ and } \abs{S_n} \geq
+  \epsilon$ and note that $A_n$ is $\sigma(\xi_n)$-measurable and we have the disjoint union 
+\begin{align*}
+\lbrace \sup_{n \leq N} \abs{S_n} \geq
+  \epsilon \rbrace &= A_1 \cup \cdots \cup A_N
+\end{align*}
+and therefore 
+\begin{align*}
+\probability{ \sup_{n \leq N} \abs{S_n} \geq
+  \epsilon } &= \sum_{k=1}^N \probability{A_k} & & \text{by additivity
+  of measure}\\
+&\leq
+\frac{1}{\epsilon^2}\sum_{k=1}^N \expectation{S_k^2 ; A_k} & & \text{$\abs{S_k}
+\geq \epsilon$ on the event $A_k$}\\
+&\leq \frac{1}{\epsilon^2}\sum_{k=1}^N \expectation{S_N^2 ; A_k} \\
+&= \frac{1}{\epsilon^2}\expectation{S_N^2 ; { \sup_{n \leq N} \abs{S_n} \geq
+  \epsilon }} & & \text{by additivity
+  of measure}\\
+&\leq \frac{1}{\epsilon^2}\expectation{S_N^2 } & & \text{positivity of $S_N^2$}
+\end{align*}
+and the result is proved.  
+\end{proof}
+
+The previous lemma gives us a criterion for almost sure convergence of
+sums of square integrable random variables with finite variance.
+\begin{lem}[Kolmogorov One-Series Criterion]\label{VarianceCriterionSeries}Let $\xi_1, \xi_2,\dots$ be independent square integrable
+  random variables.  If $\sum_{n=1}^\infty \variance{\xi_n} < \infty$
+  then $\sum_{n=1}^\infty \left (\xi_n - \expectation{\xi_n}\right )$
+  converges a.s.
+\end{lem}
+\begin{proof}
+We may clearly assume that $\expectation{\xi_n} = 0$ for all $n > 0$.
+Define $S_n = \sum_{k=1}^n \xi_k$.
+
+Before giving a proper proof, it might be worth looking a simple
+heuristic argument to give some intuition why this result should be
+true.  For every $N > 0$, 
+\begin{align*}
+\probability{\abs{\sum_{n=1}^\infty \xi_n} > N} &\leq
+\frac{\variance{\sum_{n=1}^\infty \xi_n}}{N^2} & & \text{by
+  Chebeshev's Inequality} \\
+&=\frac{\sum_{n=1}^\infty \expectation{\xi_n^2}}{N^2} & &\text{by
+  independence and zero mean}
+\end{align*}
+and therefore we know that 
+\begin{align*}
+\sum_{N=1}^\infty
+\probability{\abs{\sum_{n=1}^\infty \xi_n} > N} \leq \sum_{n=1}^\infty
+\expectation{\xi_n^2} \sum_{N=1}^\infty \frac{1}{N^2} < \infty
+\end{align*}
+so Borel Cantelli implies $\probability{\abs{\sum_{n=1}^\infty \xi_n}
+  > N \text{ i.o.}} = 0$ which implies almost
+sure convergence. The problem with this argument is that we have
+manipulated the series as if we knew it converged which is what we are
+trying to prove (is this really the problem, or is the problem that we
+are dealing with conditional convergence so showing the almost sure
+boundedness of the sum doesn't imply convergence; in that case this
+argument is completely irrelevant).  Kolmogorov's Maximal Inequality gives us a way to
+make a more rigorous argument.
+
+Pick $\epsilon > 0$ and for every $N > 0$ define $A_{N,\epsilon}= \lbrace
+\sup_{n > N} \abs{S_n - S_N} \geq \epsilon \rbrace$.  Applying Lemma \ref
+{KolmogorovMaximalInequality} to the sequence $\xi_n$ for $n=N+1, N+2,
+\dots$, we know that
+\begin{align*}
+\probability{A_{N,\epsilon}} = \probability{\sup_{n > N} \abs{S_n - S_N} \geq
+  \epsilon} \leq \frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2}
+\end{align*}
+and by the convergence of $\sum_{n=1}^\infty \expectation{\xi_n^2}$ we
+know that 
+\begin{align*}
+\lim_{N \to \infty} \probability{A_{N,\epsilon}} \leq \lim_{N\to \infty}
+\frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2} = 0
+\end{align*}
+which by subadditivity of measure tells us that $\probability{\cap_{N=1}^\infty
+  A_{N,\epsilon}} = 0$.  Now, for every $n>0$ define $B_n
+=\cap_{N=1}^\infty A_{N,\frac{1}{n}}$, define $B = \cup_n B_n$  and note that by
+countable additivity of measure, $\probability{B} = 0$.  
+
+We show that $S_n$ converges for all $\omega \notin B$.  Pick $\omega \notin
+B$ .  Assume we are
+given $\epsilon > 0$ and pick $n>0$ such that $\frac{1}{n} < \epsilon$.  We know $\omega \notin B_n$ and
+therefore for some $N>0$, $\omega \notin A_{N,\frac{1}{n}}$ which implies that  $\abs{S_k -
+  S_N} < \frac{1}{n} < \epsilon$ for all $k > N$.  This shows that
+$S_n(\omega)$ is a Cauchy sequence for every $\omega \notin B$ and by
+completeness of $\reals$ this shows that $S_n$ is almost surely convergent.
+
+Here is a more concise variant of the same basic argument.  Pick $\epsilon > 0$ and applying Lemma \ref
+{KolmogorovMaximalInequality} to the sequence $\xi_n$ for $n=N+1, N+2,
+\dots$, we know that
+\begin{align*}
+\probability{\sup_{n > N} \abs{S_n - S_N} \geq
+  \epsilon} \leq \frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2}
+\end{align*}
+and by the convergence of $\sum_{n=1}^\infty \expectation{\xi_n^2}$ we
+know that 
+\begin{align*}
+\lim_{N \to \infty} \probability{\sup_{n > N} \abs{S_n - S_N} \geq
+  \epsilon} \leq \lim_{N\to \infty}
+\frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2} = 0
+\end{align*}
+which shows that $\sup_{n > N} \abs{S_n - S_N} \toprob 0$.  Now by
+Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence} we know that a subsequence of $\sup_{n > N} \abs{S_n -
+  S_N}$ converges to $0$ a.s.  However, as $\sup_{n > N} \abs{S_n -
+  S_N}$ is nonincreasing in $N$ (TODO: I don't see this; in fact I
+don't think it is true without a positivity assumption), the almost sure converge of the subsequence
+implies the almost sure converge of the entire sequence.  The
+convergence $\sup_{n > N} \abs{S_n -  S_N} \toas 0$ is just the
+statement that $S_n$ is almost sure Cauchy which by completeness of
+$\reals$ says that $S_n$ converges almost surely.
+\end{proof}
+
+Having just proven a convergence criterion for a sequence of partial
+sums of independent random variables, we should ask ourselves how this
+can help us establish criteria for the sequence of averages that the
+Strong Law of Large Numbers refers to.  The key result here has
+nothing to do with probability.
+
+\begin{lem}\label{SummationByParts}Let $a_1, a_2, \dots$ and $b_1,
+  b_2, \dots$ be sequences of real numbers.  Define $\Delta a_n =
+  a_{n+1} - a_n$ and $\Delta b_n =
+  b_{n+1} - b_n$, then for every $n > m > 0$,
+\begin{align*}
+\sum_{k=m}^n a_k \Delta b_k = a_{n+1} b_{n+1} - a_m b_m - \sum_{k=m}^n
+b_{k+1} \Delta a_k
+\end{align*}
+\end{lem}
+\begin{proof}Note that we have the \emph{product rule}
+\begin{align*}
+\Delta (a\cdot b)_k &= a_{k+1}b_{k+1} - a_k b_k \\
+&= a_{k+1}b_{k+1} -
+a_{k}b_{k+1} + a_{k}b_{k+1} - a_k b_k \\
+&= a_k \Delta b_k +
+b_{k+1} \Delta a_k
+\end{align*}
+and therefore 
+\begin{align*}
+a_{n+1} b_{n+1} - a_m b_m &= \sum_{k=m}^n \Delta (a\cdot b)_k  \\
+&= \sum_{k=m}^n a_k \Delta b_k  + \sum_{k=m}^n b_{k+1} \Delta a_k
+\end{align*}
+\end{proof}
+
+\begin{lem}\label{SeriesAndAverages}Let $0=b_0 \leq b_1 \leq b_2 \leq \dots$ be a non-decreasing
+  sequence of positive real numers such that $\lim_{n \to \infty} b_n
+  = \infty$ and define $\beta_n = b_n - b_{n-1}$ for $n > 0$.  If
+  $s_1, s_2, \dots$ is a sequence of real numbers with $\lim_{n \to
+    \infty} s_n = s$ then
+\begin{align*}
+\lim_{n \to \infty} \frac{1}{b_n} \sum_{k=1}^n \beta_k s_k = s
+\end{align*}
+In particular, if $x_1, x_2, \dots$ are real numbers, then if $\sum_{n=1}^\infty
+\frac{x_n}{b_n} < \infty$ then $\lim_{n \to \infty}
+\frac{1}{b_n}\sum_{k=1}^n x_k < \infty$.
+\end{lem}
+\begin{proof}
+To see the first part of the Lemma, note that for any constant $s \in
+\reals$,  $\frac{1}{b_n}\sum_{k=1}^n \beta_k s = s$ and therefore we
+may assume that $s=0$.
+
+Pick an $\epsilon >0$ and then select $N_1 >0$ such that $\abs{s_k} <
+\frac{\epsilon}{2}$ for all $k \geq N_1$.  Define $M = \sup_{n\geq 1}
+\abs{s_n}$ and then because $\lim_{n \to \infty} b_n = \infty$ we can pick $N_2 >
+0$ such that $\frac{b_{N_1} M }{b_n} < \frac{\epsilon}{2}$ for all $n > N_2$.
+Now for every $n > \max(N_1, N_2)$,
+\begin{align*}
+\abs{\frac{1}{b_n} \sum_{k=1}^n \beta_k s_k} &\leq \abs{\frac{1}{b_n}
+  \sum_{k=1}^{N_1} \beta_k s_k} + \abs{\frac{1}{b_n}
+  \sum_{k=N_1+1}^n \beta_k s_k} \\
+&\leq \frac{b_{N_1} M }{b_n} + \frac{(b_n - b_{N_1})\epsilon }{2b_n} \leq \epsilon
+\end{align*}
+and we are done.
+
+To see the second part of the Lemma, define $s_0 = 0$ and $s_n =
+\sum_{k=1}^n \frac{x_k}{b_k}$, now apply summation by parts to see
+\begin{align*}
+\frac{1}{b_n} \sum_{k=1}^n \Delta b_{k-1} s_{k-1} &= \frac{1}{b_n}
+\left ( b_n s_n - b_0 s_0 - \sum_{k=1}^n b_k \Delta s_{k-1} \right )
+\\
+&= s_n - \frac{1}{b_n} \sum_{k=1}^n x_k
+\end{align*}
+so we can take limits and apply the first part of this Lemma to find
+\begin{align*}
+\lim_{n \to \infty} \frac{1}{b_n} \sum_{k=1}^n x_k
+&= \lim_{n \to \infty} s_n - \lim_{n \to \infty} \frac{1}{b_n}
+\sum_{k=1}^n \Delta b_{k-1} s_{k-1} \\
+&= s - s = 0
+\end{align*}
+\end{proof}
+
+\begin{cor}\label{KolmogorovSLLNL2}Assume that $0 \leq b_1 \leq b_2 \leq \cdots$ and $\lim_{n
+    \to \infty} b_n = \infty$ and let $\xi_1, \xi_2, \dots$ be
+    independent square integrable random variables.  If
+    $\sum_{n=1}^\infty \frac{\variance{\xi_n}}{b_n^2} < \infty$ then 
+\begin{align*}
+\frac{1}{b_n} \sum_{k=1}^n \left( \xi_k - \expectation{\xi_k} \right )
+\toas 0
+\end{align*}
+\end{cor}
+
+\begin{thm}[Strong Law of Large Numbers]\label{SLLN} Let $\xi, \xi_1, \xi_2, \dots$ be independent and identically
+  distributed random variables. Then if $\xi_1$ is integrable
+\begin{align*}
+\lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^n \xi_k &= \expectation{\xi} \quad \text{\emph{a.s.}}
+\end{align*}
+Conversely if $\frac{1}{n} \sum_{k=1}^n \xi_k$ converges on a set of
+positive measure, then $\xi_1$ is integrable.
+\end{thm}
+\begin{proof}
+First, one makes the standard reduction to the case in which
+$\expectation{\xi_n}= 0$ for all $n>0$.  
+
+Next we apply a truncation argument by defining 
+\begin{align*}
+\eta_n = \xi_{n, \leq  n} = \xi_n \cdot \characteristic{[0,n]}(\abs{\xi_n})
+\end{align*}
+Note
+\begin{align*}
+\sum_{n=1}^\infty \probability{\eta_n \neq \xi_n} &= \sum_{n=1}^\infty
+\probability{\abs{\xi_n} > n} \\
+&\leq \sum_{n=1}^\infty \int_{n-1}^n
+\probability{\abs{\xi_n} \geq \lambda } d\lambda & & \text{since
+  $\probability{\abs{\xi_n} \geq \lambda}$ is decreasing} \\
+&= \int_0^\infty \probability{\abs{\xi} \geq \lambda } d\lambda & &
+\text{by i.i.d. }\\
+&= \expectation{\abs{\xi}} < \infty & & \text{by Lemma \ref{TailsAndExpectations}}
+\end{align*}
+Now we apply Borel Cantelli to conclude that $\probability{\eta_n \neq
+  \xi_n \text{ i.o.}} = 0$.  Stated conversely,
+$\probability{\text{there exists $N>0$ such that $\xi_n \leq n$ for
+    all $n > N$}} = 1$.
+
+Next define $\overline{\eta}_n = \frac{1}{n}\sum_{k=1}^n \eta_k$ and
+$\overline{\xi}_n = \frac{1}{n}\sum_{k=1}^n \xi_k$.  We claim that
+$\lim_{n \to \infty} \overline{\eta}_n = 0$ a.s. if and only if
+$\lim_{n \to \infty} \overline{\xi}_n = 0$ a.s.
+
+For almost all $\omega \in \Omega$ we can pick
+$N_\omega > 0$ such that $\xi_n(\omega) = \eta_n(\omega)$ for all $n >
+N_\omega$.  Let $C_\omega = \sum_{k=1}^{N_\omega} \left (
+  \eta_k(\omega) - \xi_k(\omega) \right )$ so that for $n > N_\omega$,
+we have $\lim_{n \to \infty} \overline{\eta}_n(\omega) = \lim_{n \to \infty}
+\overline{\xi}_n(\omega) + \frac{C_\omega}{n}$ and therefore $\lim_{n
+  \to \infty} \overline{\eta}_n(\omega)  = \lim_{n \to \infty}
+\overline{\xi}_n(\omega) $.  
+
+Therefore it suffices to show $\lim_{n \to \infty} \overline{\eta}_n =
+0$ a.s.  Although we no longer have $\expectation{\eta_n} = 0$ because
+we have truncated $\xi_n$, the \emph{average} of the means of $\eta_n$
+is 0.  This follows from noting that $\lim_{n \to \infty} \xi_{ \leq n} =
+\xi$ and $\abs{\xi_{\leq n}} \leq \abs{\xi}$ so 
+\begin{align*}
+0 &=\expectation{\xi} \\
+&= \lim_{n \to \infty}\expectation{\xi_{\leq
+    n}} & & \text{by Dominated Convergence}\\
+&= \lim_{n \to \infty}\expectation{\xi_{n, \leq n}} & & \text{by i.i.d.} \\
+&= \lim_{n \to \infty}\expectation{\eta_n}
+\end{align*}
+and therefore by application of Lemma \ref{SeriesAndAverages}
+\begin{align*}
+\frac{1}{n} \sum_{k=1}^n \expectation{\eta_n} &= \lim_{n \to \infty}\expectation{\eta_n}=0\\
+\end{align*}
+Therefore if we can show that $\sum_{n=1}^\infty
+\frac{\variance{\eta_n}}{n^2} <\infty$, then by Corollary
+\ref{KolmogorovSLLNL2} we can conclude
+\begin{align*}
+\lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^n \eta_k = \lim_{n \to
+  \infty} \frac{1}{n} \sum_{k=1}^n \expectation{\eta_k} = 0 \text { a.s.}
+\end{align*}
+and we'll be done.
+
+To show the desired bound we'll need the elementary fact that $C =
+\sup_{n>0} n \sum_{k=n}^\infty \frac{1}{k^2} < \infty$.  This can be
+seen by viewing the sum as lower Riemann sum for an integral bounding
+\begin{align*}
+n \sum_{k=n}^\infty \frac{1}{k^2} &\leq n \int_{n-1}^\infty \frac{dx}{x^2}
+= \frac{n}{n-1}  \leq 2
+\end{align*}
+
+Now we can finish the proof
+\begin{align*}
+\sum_{n=1}^\infty \frac{\variance{\eta_n}}{n^2} &\leq
+\sum_{n=1}^\infty\frac{\expectation{\eta_n^2}}{n^2}  \\
+&= \sum_{n=1}^\infty\frac{\expectation{\xi_n^2;\abs{\xi_n} \leq n}}{n^2} \\
+&= \sum_{n=1}^\infty \sum_{k=1}^n \frac{\expectation{\xi^2;k-1 \leq \abs{\xi} \leq k}}{n^2} \\
+&= \sum_{k=1}^\infty \expectation{\xi^2;k-1 \leq \abs{\xi}
+    \leq k}\sum_{n=k}^\infty \frac{1}{n^2} \\
+&\leq  \sum_{k=1}^\infty \frac{C}{k}\expectation{\xi^2;k-1 \leq
+  \abs{\xi}\leq k} \\
+&\leq  C\sum_{k=1}^\infty \frac{k}{k}\expectation{\abs{\xi};k-1 \leq
+  \abs{\xi}\leq k} = C \expectation{\abs{\xi}} < \infty
+\end{align*}
+
+It remains to show the converse result; namely that if
+$\overline{\xi}_n$ converges on a set of positive measure then $\xi$
+is integrable.  First, note by Corollary \ref{AlmostSureAverages}, we
+know that $\overline{\xi}_n$ converges almost surely.
+
+\begin{align*}
+\lim_{n \to \infty} \frac{\xi_n}{n} &= \lim_{n \to \infty} \left (
+  \overline{\xi}_n - \frac{n-1}{n}   \overline{\xi}_{n-1} \right ) \\
+&= \lim_{n \to \infty} \overline{\xi}_n  - 1 \cdot \lim_{n \to \infty}
+\overline{\xi}_n = 0 \text{ a.s.}
+\end{align*}
+and therefore if we define $A_n = \lbrace \abs{\xi_n} \geq n \rbrace$
+then we know that $\probability{A_n \text{ i.o.}} = 0$ (in particular
+for each $\omega$ for which $\lim_{n \to \infty}
+\frac{\xi_n(\omega)}{n} = 0$ and any $\epsilon > 0$, we can find $N > 0$ such that
+$\abs{\xi_n(\omega)} < \epsilon n$ for all $n > N$; just choose
+$\epsilon < 1$).  But we also know that $\xi_n$ are independent and
+therefore by Lemma \ref{IndependenceComposition} the $A_n$ are
+independent so Borel Cantelli implies $\sum_{n=1}^\infty
+\probability{A_n} < \infty$.  But now we can apply a tail bound
+\begin{align*}
+\expectation{\abs{\xi}} &= \int_0^\infty \probability{\abs{\xi} \geq
+  \lambda} \, d\lambda & & \text{by Lemma \ref{TailsAndExpectations}}
+\\
+&\leq \sum_{n=0}^\infty \probability{\abs{\xi} \geq n} & &
+\text{bounding by an upper
+  Riemann sum} \\
+&= 1 + \sum_{n=1}^\infty \probability{A_n} < \infty & &\text { by i.i.d.}
+\end{align*}
+\end{proof}
+\begin{proof}The following proof uses a different truncation argument
+  (one closer to the WLLN argument we presented) and is
+  taken from Tao.
+
+TODO:  Understand that proof better and write it down completely.
+
+So to apply Borel Cantelli we need so find a sequence $N_j$ such that 
+\begin{align*}
+\sum_{j=1}^\infty n_j \probability{\xi > N_j} &< \infty \\
+\sum_{j=1}^\infty \frac{1}{n_j} \expectation{\xi_{\leq N_j}} &< \infty 
+\end{align*}
+We show that both sums are finite if we choose $N_j = n_j$.  In both
+cases this follows by establishing pointwise bounds in terms of
+$\xi$.  For the first sum we use Tonelli's Theorem to exchange sums
+and expectations
+\begin{align*}
+\sum_{j=1}^\infty n_j \probability{\xi > n_j} &= \sum_{j=1}^\infty n_j
+\expectation{\characteristic{\xi > n_j}}= 
+\expectation{\sum_{j=1}^\infty n_j\characteristic{\xi > n_j}} \\
+&=\expectation{\sum_{n_j < \xi}  n_j} 
+\end{align*}
+TODO: Fill this in.  Essentially the idea is that we have an
+approximately geometric series so the above is $O(\xi)$.
+
+For the second sum, 
+\begin{align*}
+\sum_{j=1}^\infty \frac{1}{n_j} \expectation{\xi_{\leq n_j}} &\leq
+\frac{1}{n_1} \expectation{\xi} \sum_{j=1}^\infty c^{-j} =
+\frac{c  \expectation{\xi}}{n_1(c-1)} < \infty
+\end{align*}
+\end{proof}
+
+\begin{thm}[Strong Law of Large Numbers (Finite Variance
+  Case)]\label{SLLNL2} Let $\xi_1, \xi_2, \dots$ be independent and identically
+  distributed random variables.  Let
+\begin{align*}
+\mu = \expectation{\xi_i} \text { and } \sigma^2 = \variance{\xi_j}^2
+< \infty
+\end{align*}
+Then 
+\begin{align*}
+\lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^n \xi_k &= \mu \quad \text{\emph{a.s.} and in $L^2$}
+\end{align*}
+\end{thm}
+\begin{proof}
+First note that by replacing $\xi_n$ with $\xi_n - \mu$ it suffices to
+prove the Theorem with $\mu = 0$.
+
+Next it is convenient to define the terms $S_n =  \sum_{k=1}^n \xi_k$
+and $\eta_n = \frac{S_n}{n}$.
+and observe that by linearity $\expectation{S_n} = \expectation{\eta_n} = 0$ and by
+independence 
+\begin{align*}
+\variance{\eta_n} &= \frac{1}{n^2} \sum_{j=1}^n \sum_{k=1}^n \expectation{\xi_j\xi_k} \\
+&= \frac{1}{n^2} \sum_{k=1}^n \expectation{\xi_k^2} = \frac{\sigma^2}{n}
+\end{align*}
+By taking the limit we see that $\lim_{n\to \infty} \variance{\eta_n} =
+0$ which implies that $\eta_n \to 0$ in $L^2$.  
+
+To see almost sure convergence we first pass to a subsequence.
+Consider the subsequence $\eta_{n^2}$ and note by the above
+variance calculation and Corollary \ref{TonelliIntegralSum} that 
+\begin{align*}
+\expectation{\sum_{n=1}^\infty \eta_{n^2}^2} &= \sum_{n=1}^\infty
+\expectation{\eta_{n^2}^2} = \sum_{n=1}^\infty \frac{\sigma^2}{n^2} < \infty
+\end{align*}
+Finiteness of the first expectation implies that $\sum_{n = 1}^\infty
+\eta_{n^2}^2  < \infty$ almost surely which in turn implies that $\lim_{n \to \infty}
+\eta_{n^2}^2 = 0$ and $\lim_{n \to \infty}
+\eta_{n^2} = 0$  almost surely .  It remains to prove almost sure
+convergence for the entire sequence.  
+
+Pick an arbitrary $n > 0$ and define $p(n) = \floor{\sqrt{n}}$ so that
+$p(n)$ is the integer satisfying $(p(n))^2 \leq n < (p(n) + 1)^2$.
+Then we have
+\begin{align*}
+\eta_n - \frac{p(n)^2}{n} \eta_{p(n)^2} &= \frac{1}{n}\sum_{k=p(n)^2 + 1}^n \xi_k
+\end{align*}
+and calculating variances as before,
+\begin{align*}
+\variance{\eta_n - \frac{p(n)^2}{n} \eta_{p(n)^2}} &=
+\expectation{\left ( \eta_n - \frac{p(n)^2}{n} \eta_{p(n)^2} \right
+  )^2} \\
+&=
+\frac{1}{n^2}\sum_{k=p(n)^2 + 1}^n \expectation{\xi_k^2} \\
+&= \frac{\sigma^2 (n - p(n)^2)}{n^2} \\
+&< \frac{\sigma^2 (2 p(n) + 1)}{n^2} \leq \frac{3\sigma^2}{n^\frac{3}{2}}
+\end{align*}
+This bound tells us that 
+\begin{align*}
+ \expectation{ \sum_{n=1}^\infty \left ( \eta_n - \frac{p(n)^2}{n} \eta_{p(n)^2} \right
+  )^2} = \sum_{n=1}^\infty \expectation{\left ( \eta_n - \frac{p(n)^2}{n} \eta_{p(n)^2} \right
+  )^2}  < \infty
+\end{align*}
+which as before tells us that 
+\begin{align*}
+\sum_{n=1}^\infty \left ( \eta_n - \frac{p(n)^2}{n} \eta_{p(n)^2} \right
+  )^2 < \infty 
+\end{align*}
+almost surely and 
+\begin{align*}
+\lim_{n\to \infty} \left ( \eta_n - \frac{p(n)^2}{n} \eta_{p(n)^2}
+\right ) = 0
+\end{align*}
+almost surely.
+
+Since we have already proven $\eta_{p(n)^2} \toas 0$ and we can see by
+definition that $0 < \frac{p(n)}{n} \leq 1$ we conclude that $\eta_n
+\toas 0$.
+\end{proof}
+
+\subsubsection{Empirical Distributions and the Glivenko-Cantelli Theorem}
+
+Here is a simple application of the Strong Law of Large Numbers that
+has important applications in statistics.  Consider the process of
+making a sequence of independent observations for purpose of inferring
+a statement about an underlying distribution of a random variable.  A
+basic statistical methodology is to use the distribution of ones
+sample as an approximation to the unknown distribution.  We aim to
+give a demonstration of why this methodology is sound.  First we make
+precise what we mean by the distribution of the sample.
+
+\begin{defn}Given independent random variables $\xi_1, \xi_2, \dots$,
+  for each $n > 0$  and $x \in \reals$, we define the \emph{empirical distribution
+    function} to be
+\begin{align*}
+\hat{F}_n(x, \omega) &= \frac{1}{n} \sum_{k=1}^n \characteristic{\xi_k \leq x}(\omega)
+\end{align*}
+\end{defn}
+Note that the empirical distribution function depends on both $x$ and
+$\omega \in \Omega$ but it is customary to omit mention of the
+argument $\omega$ and simply write $\hat{F}_n(x)$.  In general we will follow this custom but on
+occasion where we feel it is important enough for clarity we'll
+include it as we did in the definition.  In the statistical context we've alluded to each $\xi_k$ represents
+the value of the $k^{th}$ observation.  The empirical distribution of
+$n$ samples is the distribution function of the \emph{empirical
+  measure} obtained by placing an equally weighted point mass at the value of each observation.
+
+\begin{lem}\label{PointwiseConvergenceOfEmpiricalDistribution}Let $\xi_1, \xi_2, \dots$ be i.i.d. random variables with
+  distribution function $F(x)$ and empirical distribution functions
+  $\hat{F}_1(x), \hat{F}_2(x), \dots$.  Then for each $x \in \reals$,
+\begin{align*}
+\lim_{n \to \infty} \hat{F}_n(x) &= F(x) \text{ a.s.}
+\end{align*}
+and in addition
+\begin{align*}
+\lim_{n \to \infty} \lim_{y \to x^-}\hat{F}_n(y) &= \lim_{y \to x^-} F(y) \text{ a.s.}
+\end{align*}
+\end{lem}
+\begin{proof}
+This statement is a simple application of the Strong Law of Large
+Numbers.  First note that for every $x \in \reals$, by Lemma
+\ref{IndependenceComposition}, the functions 
+$\characteristic{\xi_n \leq x}$ are independent.  Because the $\xi_n$
+are identically distributed the same follows for
+$\characteristic{\xi_n \leq x}$.  Lastly, the functions
+$\characteristic{\xi_n \leq x}$ are bounded and therefore integrable
+so we can apply the Strong Law of Large Numbers to conclude that 
+\begin{align*}
+\lim_{n \to \infty} \hat{F}_n(x) &= \lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^n \characteristic{\xi_k
+  \leq x} = \expectation{\characteristic{\xi_1 \leq x}} = F(x) \text{ a.s.}
+\end{align*}
+
+To see the almost sure pointwise convergence of the left limits, first
+note that for every $x \in \reals$, we have 
+\begin{align*}
+\lim_{n\to \infty} \characteristic{(-\infty, x-\frac{1}{n}]}(y) &= \begin{cases}
+1 & \text{if $y < x$} \\
+0 & \text{if $y \geq x$}
+\end{cases} = \characteristic{(-\infty, x)}(y)
+\end{align*}
+Therefore, 
+\begin{align*}
+F(x-) &= \lim_{n \to \infty} F(x - \frac{1}{n}) & &\text{by the existence of left limits in $F(x)$}\\
+&= 
+\expectation{\characteristic{\xi \leq x-\frac{1}{n}}} \\
+&= \expectation{\lim_{n \to \infty}\characteristic{\xi \leq
+    x-\frac{1}{n}}} & & \text{by Dominated Convergence Theorem} \\
+&= \expectation{\characteristic{\xi < x}}
+\end{align*}
+
+By the same argument, 
+\begin{align*}
+\hat{F}_m(x-) &= \lim_{n \to \infty} \hat{F}_m (x - \frac{1}{n}) \\
+&= \lim_{n \to \infty} \frac{1}{m} \sum_{i=1}^m \characteristic{\xi_i
+  \leq x - \frac{1}{n}}\\
+&=\sum_{i=1}^m \characteristic{\xi_i  < x}
+\end{align*}
+As in the pointwise argument above, the family $\characteristic{\xi_i
+  < x}$ is an i.i.d. family of integrable random variables so using
+the above computations and the Strong Law of Large Numbers we see that
+\begin{align*}
+\lim_{n \to \infty} \hat{F}_n(x-) &= \lim_{n \to \infty} \sum_{i=1}^n
+\characteristic{\xi_i  < x} = \expectation{\characteristic{\xi  < x} }
+= F(x-) \text{ a.s.}
+\end{align*}
+\end{proof}
+
+In fact, with a little more work leveraging properties of distribution
+functions, we can prove that the empirical
+distribution function converges uniformly.
+\begin{thm}[Glivenko-Cantelli Theorem]\label{GlivenkoCantelli}Let $\xi_1, \xi_2, \dots$ be i.i.d. random variables with
+  distribution function $F(x)$ and empirical distribution functions
+  $\hat{F}_1(x), \hat{F}_2(x), \dots$.  Then,
+\begin{align*}
+\lim_{n \to \infty} \sup_x \abs{\hat{F}_n(x) - F(x)} &= 0 \text{ a.s.}
+\end{align*}
+\end{thm}
+\begin{proof} 
+TODO: Give an intuitive idea of the proof (the notation is messy and a
+bit opaque).  Essentially we use the properties of distribution
+functions (cadlag property and the compactness of the range) to
+establish that if two distrubtion functions are close at a carefully
+selected finite number of points then they are uniformly close.
+
+By leveraging the boundedness (compactness) of the range of the
+distribution function, we can get some nice uniform bounds on the
+growth of that distribution function.  Compare the following
+construction with Lemma \ref{LebesgueStieltjesMeasure}.
+Let 
+\begin{align*}
+G(y) = \inf \lbrace x \in \reals \mid F(x) \geq y \rbrace
+\end{align*}
+be the generalized left continuous inverse of $F(x)$.  For each positive integer $m >
+0$, consider the partition $x_{k,m} = G(\frac{k}{m})$ for $k=1, \dots,
+m-1$.  We observe the following facts: by the definition of $G(y)$, for $x < x_{k,m}$, we have $F(x) < \frac{k}{m}$
+and by right continuity of $F(x)$ and the definition of $G(y)$,
+$F(G(y)) \geq y$, so in particular $F(x_{k,m}) \geq \frac{k}{m}$.  These two facts provide the following statements
+
+\begin{align*}
+F(x_{k+1,m}-)  - F(x_{k,m}) &\leq \frac{1}{m} & &\text{for $1 \leq k <
+  m-1$} \\
+F(x_{1,m}-) &\leq \frac{1}{m} \\
+F(x_{m-1,m}) &\geq 1 - \frac{1}{m} \\
+\end{align*}
+
+Now, for each $m > 0$, $n > 0$ and $\omega \in \Omega$, define 
+\begin{align*}
+D_{n,m}(\omega) = \max(\max_{k} \abs{\hat{F}_n(x_{m,k}, \omega) -
+  F(x_{k,m})}, \max_k \abs{\hat{F}_n(x_{m,k}-, \omega) - F(x_{k,m}-)}
+)
+\end{align*}
+and we proceed to use this quantity to bound the distance between
+$\hat{F}_n(x, \omega)$ and $F(x)$.  
+
+First, observe the bound for $x < x_{k,m}$ for $1 \leq k \leq m-1$, 
+\begin{align*}
+\hat{F}_n(x, \omega) &\leq \hat{F}_n(x_{k,m}-, \omega) \\
+&\leq F(x_{k,m}-) + D_{n,m}(\omega) & &\text{by definition of
+  $D_{n,m}(\omega)$} \\
+&\leq F(x) + \frac{1}{m} + D_{n,m}(\omega)
+\end{align*}
+and for $x \geq x_{k,m}$ for $1 \leq k \leq m-1$
+\begin{align*}
+\hat{F}_n(x, \omega) &\geq \hat{F}_n(x_{k,m}, \omega) \\
+&\geq F(x_{k,m}) - D_{n,m}(\omega) \\
+&\geq F(x) - \frac{1}{m}  - D_{n,m}(\omega) 
+\end{align*}
+When we put these together for $x \in [x_{k,m}, x_{k+1,m})$ for $1\leq
+k < m-1$ and we have 
+\begin{align*}
+\sup_{x_{1,m} \leq x < x_{m-1,m}} \abs{\hat{F}_n(x, \omega) - F(x)} < \frac{1}{m} + D_{n,m}(\omega)
+\end{align*}
+
+It remains to complete the picture of what happens when $x < x_{1,m}$ and $x \geq
+x_{m-1,m}$.
+
+For $-\infty < x < x_{1,m}$, we have 
+\begin{align*}
+\hat{F}_n(x, \omega) & \geq 0 \\
+& \geq F(x) - \frac{1}{m} \\
+&  \geq F(x) - \frac{1}{m} - D_{n,m}(\omega)
+\end{align*}
+and lastly we have for $x \geq x_{m-1,m}$, 
+\begin{align*}
+\hat{F}_n(x, \omega) &\leq 1 \\
+&\leq F(x) + \frac{1}{m} \\
+&\leq F(x) + \frac{1}{m} + D_{n,m}(\omega)
+\end{align*}
+which allows us to extend for all $x \in \reals$,
+\begin{align*}
+\sup_{x} \abs{\hat{F}_n(x, \omega) - F(x)} < \frac{1}{m} + D_{n,m}(\omega)
+\end{align*}
+
+Now for each $m$, $\lim_{n \to \infty} D_{n,m} = 0$ a.s. by Lemma
+\ref{PointwiseConvergenceOfEmpiricalDistribution}
+and by taking a countable union of sets of probability zero, we have
+for all $m > 0$, $\lim_{n \to \infty} D_{n,m} = 0$ a.s.  Therefore by
+taking the limit as $m \to \infty$ and $n \to \infty$, we have result.
+\end{proof}
+
+We now take a short digression into statistics to show how the
+Glivenko-Cantelli Theorem can be used.  The approach taken in
+demonstrating the result below has far reaching generalizations;
+don't let the epsilons and deltas distract you from appreciating the
+conceptual framework.
+\begin{defn}Let $P$ be a Borel probability measure on $\reals$ with
+  distribution function $F(x) =
+  \expectation{\characteristic{(-\infty,x]}}$.  We define the
+    \emph{median} of $P$ to be $\median(P) = \inf_x \lbrace F(x) \geq
+    \frac{1}{2} \rbrace$.  If $\xi$ is a random variable then we will
+    often write $\median(\xi)$ for the median of the distribution of $\xi$.
+\end{defn}
+
+\begin{lem}Let $\xi_1, \xi_2, \dots$ be i.i.d. random variables and
+  distribution function $F(x)$.  Suppose that $F(x) > \frac{1}{2}$ for
+  all $x > \median{\xi}$.   The sample median $\lim_{n \to \infty}
+  \median(P_n) = \median(\xi)$ a.s.; one says that the sample median is a
+  \emph{strongly consistent} estimator of $\median(\xi)$.
+\end{lem}
+\begin{proof}
+The key to the proof is viewing the median as a functional on the
+space of distribution functions.  The Glivenko-Cantelli Theorem tells
+us that empirical distributions functions converge uniformly so what
+we need to prove convergence of the sample medians is a continuity
+property of the median functional.  We develop the required continuity
+property in bare handed way without talking about metric spaces or
+topologies.
+
+Suppose we have two Borel probability measures $P$ and $Q$ with
+distribution functions $F_P(x)$ and $F_Q(x)$ with $F_P(x) >
+\frac{1}{2}$ for $x > \median(P)$.  Given $\epsilon > 0$, pick 
+$\delta > 0$ such that 
+\begin{align*}
+F_P(\median(P) - \epsilon) &< \median(P) - \delta \\
+F_P(\median(P) + \epsilon) &> \median(P) + \delta \\
+\end{align*}
+We claim that if $Q$ satisfies $\sup_x \abs{F_P(x) - F_Q(x)} \leq
+\delta$ then $\abs{\median(P) - \median(Q)} \leq \epsilon$.
+
+To see this first note that 
+\begin{align*}
+F_P(\median(Q)) &\geq F_Q(\median(Q)) - \delta \geq \frac{1}{2} - \epsilon
+\end{align*}
+which implies that $\median(Q) \geq \median(P) - \epsilon$ by choice
+of $\delta$ and the increasing nature of $F_P(x)$.
+Secondly note that for any $x < \median(Q)$ we have
+\begin{align*}
+F_P(x) \leq F_Q(x) + \delta < \frac{1}{2} + \epsilon
+\end{align*}
+which implies $x < \median(P) + \epsilon$ and therefore by
+arbitraryness of $x$, we have $\median(Q) \leq \median(P) + \epsilon$
+and we are done with the claim.
+
+Now as per our plan we couple the continuity just proven with
+Glivenko-Cantelli to derive the result.
+\end{proof}
+
+Note that the value $\sup_x \abs{\hat{F}_n(x) - F(x)}$ is called the
+\emph{Kolmogorov-Smirnov statistic} and is used in the nonparametric
+\emph{Kolmogorov-Smirnov Test} for goodness of fit.  The
+Glivenko-Cantelli Theorem tells us that this is a consistent estimator
+of goodness of fit, however the test itself requires information on
+the rate of convergence.  The most common result in this area is
+\emph{Donsker's Theorem}.  Mention the DKW Inequality too; weak forms
+of this can be established using the Pollard proof of Glivenko
+Cantelli which the one that generalizes to Vapnik-Chervonenkis
+families.  We can develop that proof after we do some exponential inequalities.
+
+TODO: Mention that there are generalizations of these results in the
+closely related fields of Empirical Process Theory and Statistical
+Learning Theory.  One of the goals of such generalizations is to prove
+consistency of more general statistics derived from the empirical measure.
+
+\subsection{Convergence In Distribution}
+Our first goal is to establish that convergence in
+distribution is implied by convergence in probability.
+\begin{lem}\label{ConvergenceInProbabilityImpliesConvergenceInDistribution}Let $\xi, \xi_1, \xi_2, \dots$ be a random elements in a
+  metric space $(S,d)$ such that $\xi_n \toprob \xi$, then $\xi_n
+  \todist \xi$.
+\end{lem}
+\begin{proof}Pick a bounded continous function $f : S \to \reals$,
+  then $\expectation{f(\xi_n)}$.  By Lemma
+  \ref{ContinuousMappingProbability} we know that $f(\xi_n) \toprob
+  f(\xi)$.  Because $f$ is bounded, we know that $f(\xi_n)$ and
+  $f(\xi)$ are integrable and therefore $f(\xi_n) \tolp{1} f(\xi)$
+  which implies the result.
+\end{proof}
+
+\begin{examp}[Sequence converging in distribution but not in
+  probability]Consider the binary expansion of real numbers in
+  $[0,1]$, $x=0.\xi_1\xi_2\cdots$ and consider each $\xi_i$ as a
+  random variable on the probability space $([0,1],\mathcal{B}([0,1]),
+  \lambda)$.  We claim that $\xi_i$ converge in distribution to the
+  uniform distribution on $\lbrace 0,1 \rbrace$ but that the $\xi_i$ diverge
+  in probability.  We know from Lemma \ref{BernoulliSequence} that the $\xi_i$ are
+  i.i.d. Bernoulli random variables with rate $\frac{1}{2}$ so the
+  convergence in distribution follows.  If the $\xi_i$ converge in
+  probability, there is a subsequence that converges almost surely.
+
+By independence of the $\xi_i$, we know that for any $i \neq j$ 
+\begin{align*} 
+\probability{\xi_i \neq \xi_j} &= \probability{\xi_i=0 \text{ and }
+  \xi_j=1} + \probability{\xi_i=1 \text{ and }
+  \xi_j=0} \\
+&= \probability{\xi_i=0}
+  \probability{\xi_j=1} + \probability{\xi_i=1}
+  \probability{\xi_j=0}  = \frac{1}{2}
+\end{align*}
+and therefore for $i \neq j$, 
+\begin{align*}
+\expectation{d(\xi_i, \xi_j) \wedge 1} &= \expectation{d(\xi_i,
+  \xi_j)} = \probability{\xi_i \neq \xi_j} = \frac{1}{2}
+\end{align*}
+and we conclude that $\xi_i$ has no subsequence that is Cauchy in
+probability and hence $\xi_i$ does not converge in probability.
+\end{examp}
+
+\begin{examp}[Sequence converging in distribution but diverging in mean]
+Let $\xi_n$ be random variable which takes the value $n^2$ with
+probability $\frac{1}{n}$ and takes the value $0$ with probability
+$\frac{n-1}{n}$.  Note that $\lim_{n \to \infty} \xi_n = \lim_{n \to
+  \infty} n = \infty$.  On the other hand, if we let $f$ be a bounded
+continuous function then 
+\begin{align*}
+\lim_{n \to \infty} \expectation{f(\xi_n)} &= \lim_{n \to
+  \infty}\frac{n-1}{n} f(0) + \lim_{n \to \infty}\frac{1}{n} f(n^2) \\
+&= f(0)
+\end{align*}
+where we have used the boundedness of $f$.
+Therefore, $\xi_n \todist \delta_0$ even though it diverges in mean.
+\end{examp}
+
+\begin{lem}Let $\xi_n$ be a sequence of real valued random variables
+  that converge in distribution to a random variable $\xi$ that is
+  almost surely a constant, then $\xi_n$ converges to $\xi$ in probability
+  as well.
+\end{lem}
+\begin{proof}
+Suppose that $\xi_n$ converges in distribution to $c \in \reals$.
+Note that the function $f(x) = \abs{x-c} \wedge 1$ is bounded and
+continuous and therefore we know 
+\begin{align*}
+\lim_{n \to \infty} \expectation{\abs{\xi_n - c} \wedge 1} &=
+  \expectation{\abs{c - c} \wedge 1} = 0
+\end{align*}
+which, by Lemma
+\ref{ConvergenceInProbabilityAsConvergenceInExpectation}, shows that $\xi_n$ converges to $c$ in probability as well.
+\end{proof}
+
+The definition we have given for convergence in distribution has the
+advantage of applying to general random elements in metric spaces but
+that comes at the cost of being a bit abstract.  It is worth
+connecting the abstract definition with more direct criteria that
+apply for random variables.  
+
+In fact the first equivalence is for discrete random variables.  Given
+that our definition of convergence in distribution is in terms of
+metric spaces, we must be specific about the metric that we put on the
+range a discrete random variable.  For discussing convergence in
+distribution the primary feature that we are concerned with is the
+defintion of continuous functions.  If we put a metric 
+\begin{align*}
+d(x,y) &= \begin{cases}
+1 & \text{if $x \neq y$} \\
+0 & \text{if $x = y$} \\
+\end{cases}
+\end{align*}
+then all functions are continuous.  Note that the same is true if we
+consider the induced metric $\integers \subset \reals$.
+\begin{lem}\label{ConvergenceInDistributionAsConvergenceOfDistributionFunctionsDiscreteCase}
+Let $\xi, \xi_1, \xi_2, \dots$ be a sequence of discrete random
+variables with countable range $S$.  Then $\xi_n \todist \xi$ if and
+only if for every $x \in S$, we have $\lim_{n \to \infty}
+\probability{\xi_n = x} = \probability{\xi = x}$.
+\end{lem}
+\begin{proof}
+First let's assume that $\xi_n \todist \xi$.  From the discussion
+preceeding the Lemma, we know that for any bounded function $f : S \to
+\reals$, we have $\lim_{n \to \infty} \expectation{f(\xi_n)}  =
+\expectation{f(\xi)}$.  In particular, for each $x \in S$, we may take
+$f(y) = \characteristic{x}(y)$ in which case we have
+$\lim_{n \to \infty} \probability{\xi_n = x}  =
+\probability{\xi = x}$ as required.
+
+So now assume the converse.  In the following, it is helpful to label
+the elements of $S$ using the natural numbers.  Note that we can cast our assumption as
+saying that for every $x_j \in S$, 
+\begin{align*}
+\lim_{n \to \infty} \expectation{\characteristic{x_j}(\xi_n)}  =\expectation{\characteristic{x_j}(\xi)} 
+\end{align*}
+Furthermore, any bounded function can be written as a linear
+combination $f(y) = \sum_{j=1}^\infty f_j \cdot
+\characteristic{x_j}(y)$.  By linearity of expectation and our
+assumption it is trivial to see that for any finite linear combination $f_N(y) = \sum_{j=1}^N f_j \cdot
+\characteristic{x_j}(y)$, we in fact have
+\begin{align*}
+\lim_{n \to \infty} \expectation{f_N(\xi_n)}  =\expectation{f_N(\xi)} 
+\end{align*}
+and our task is to extend this to general infinite sums.   Let $M>0$
+be a bound for $f$ defined as above.  
+
+Pick an $\epsilon >0$.  Since $\sum_{j=1}^\infty \probability{ \xi
+  =x_j} =1$ we can find $J > 0$ such that $\sum_{j=1}^J \probability{ \xi
+  =x_j} > 1 - \epsilon$.  For each $j =1, \dots, J$ we can find $N_j >
+0$ such that $\abs{\probability{ \xi  = x_j} - \probability{ \xi  =
+    x_j}} < \frac{\epsilon}{J}$ for $n > N_j$.  Now take $N = \max(N_1,
+\dots, N_J)$ and then we have for all $n > N$, $\sum_{j=1}^J \probability{ \xi_n
+  =x_j} > 1 - 2\epsilon$. If we let $f_j = f(x_j)$ for each $x_j \in S$, then we
+have the following calculation
+\begin{align*}
+\abs{\expectation{f(\xi_n) - f(\xi)}} &\leq \sum_{j=1}^J f_j
+\abs{\probability{\xi_n = x_j} - \probability{\xi = x_j}} +
+\abs{\sum_{j=J+1}^\infty f_j \probability{\xi_n = x_j} } +
+\abs{\sum_{j=J+1}^\infty f_j \probability{\xi = x_j} } \\
+&\leq \sum_{j=1}^J\abs{f_j} \frac{\epsilon}{J}+ 2M\epsilon + M\epsilon <
+4M \epsilon
+\end{align*}
+Since $\epsilon>0$ was arbitrary we have $\lim_{n \to \infty}
+\expectation{f(\xi_n)} =\expectation{f(\xi)}$ and we are done.
+\end{proof}
+
+ In the case of general random variables, we can also characterize
+ convergence in distribution by looking at pointwise convergence of distribution
+ functions and using a proof similar in spirit to that used above for
+ discrete random variables, but it comes with a subtle twist.
+\begin{lem}\label{ConvergenceInDistributionAsConvergenceOfDistributionFunctions}Let $\xi, \xi_1, \xi_2, \dots$ be sequence of random
+  variables with distribution functions $F(x), F_1(x), F_2(x), \dots$.
+  If $\xi_n \todist \xi$ then $\lim_{n \to \infty} F_n(x) = F(x)$ for
+  all $x \in \reals$ such that $F$ is continuous at $x$.  Conversely,
+  if $\lim_{n \to \infty} F_n(x) = F(x)$ on a dense subset of $\reals$
+  then $\xi_n \to \xi$.
+\end{lem}
+\begin{proof}
+Let us first assume that $\xi_n \to \xi$.  Consider a function $\characteristic{(-\infty, x]}$ for $x \in
+\reals$ so that $F(x) = \expectation{\characteristic{(-\infty, \xi]}}$
+and $F_n(x) = \expectation{\characteristic{(-\infty, \xi_n]}}$.  Note
+that we cannot just apply the definition of convergence in
+distribution to derive the result because $\characteristic{(-\infty,
+  x]}$ is not continuous; so our goal is to extend to defining
+property of convergence in distribution to a particular class of
+discontinuous functions.  The way to do this is to approximate by
+continuous functions.  To this end, define for each integer $x \in \reals$,
+$m > 0$ the
+following bounded continuous approximations of the indicator function $\characteristic{(-\infty,
+  x]}$:
+\begin{align*}
+f^+_{x, m}(y) = \begin{cases}
+1 & \text{if $y \leq x$} \\
+m(x-y) + 1 & \text{if $x < y < x + \frac{1}{m}$} \\
+0 & \text{if $x + \frac{1}{m} \leq y$} \\
+\end{cases}
+\end{align*}
+and 
+\begin{align*}
+f^-_{x, m}(y) = \begin{cases}
+1 & \text{if $y \leq  x - \frac{1}{m} $} \\
+m(x-y) & \text{if $x - \frac{1}{m} < y < x $} \\
+0 & \text{if $x \leq y$} \\
+\end{cases}
+\end{align*}
+and note that $f^-_{x,m}(y) < \characteristic{(-\infty, x]} (y) <
+f^+_{x,m}(y)$ and 
+\begin{align*}
+\expectation{f^-_{x,m}(\xi)} &=
+\lim_{n \to \infty} \expectation{f^-_{x,m}(\xi_n)}\\
+&\leq \liminf_{n \to \infty} \expectation{\characteristic{(-\infty, x]} (\xi_n)}\\
+&=\liminf_{n \to \infty}  F_n(x) \\
+&\leq \limsup_{n \to \infty}  F_n(x) \\
+&= \limsup_{n \to \infty}  \expectation{\characteristic{(-\infty, x]} (\xi_n)} \\
+&\leq \limsup_{n \to \infty}  \expectation{f^+_{x,m}(\xi_n)} \\
+&=\lim_{n \to \infty} \expectation{f^+_{x,m}(\xi_n)} =
+\expectation{f^+_{x,m}(\xi)}  \\
+\end{align*}
+But we also can see that for every $x,y \in \reals$, $\lim_{m \to
+  \infty} f^-_{x,m}(y) = \characteristic{(-\infty, x)} (y)$ and $\lim_{m \to
+  \infty} f^+_{x,m}(y) = \characteristic{(-\infty, x]} (y)$.
+By application of Dominated Convergence, we see that $\lim_{m \to \infty}
+\expectation{f^-_{x,m}(\xi)} = F(x-)$ and $\lim_{m \to \infty}
+\expectation{f^+_{x,m}(\xi)} = F(x)$ so if $x$ is a point of
+continuity of $F$ then $F(x-)=F(x)$ which shows $\liminf_{n \to
+  \infty}  F_n(x) = \limsup_{n \to \infty}  F_n(x) = F(x)$.
+
+Now let's assume that we have a dense set $D \subset \reals$ with $\lim_{n \to \infty} F_n(x) = F(x)$ for all $x
+\in D$.  Pick a bounded continuous function $f: \reals \to \reals$ and
+we must show $\lim_{n \to \infty} \expectation{f(\xi_n)} \to
+\expectation{f(\xi)}$.  We will again make an approximation argument. To see how to proceed, recast our hypothesis
+as the statement that $\lim_{n \to \infty} \expectation{\characteristic{(-\infty,x]}(\xi_n)} \to
+\expectation{\characteristic{(-\infty,x]} (\xi)}$ for every $x \in D$
+and note that by taking sums of functions of the form
+$\characteristic{(-\infty,x]}(y)$ allows us to create step functions.
+So, the idea of the proof is to carefully approximate $f$ by step functions so
+that we may leverage our hypothesis.
+
+We pick $\epsilon > 0$.  First it is helpful to allow ourselves to concentrate on a finite
+subinterval of the reals.  As $F$ is a distribution function, we know
+$\lim_{x \to -\infty} F(x) = 0$ and $\lim_{n \to \infty} F(x) = 1$ and
+therefore by density of $D$ we may find $r,s \in D$ such that $F(r)
+\leq \frac{\epsilon}{2}$ and $F(s) \geq 1 - \frac{\epsilon}{2}$.
+Because $\lim_{n \to \infty} F_n(x) = F(x)$ for $x \in D$, we can find
+and $N_1 > 0$ such that $F_n(r)
+\leq \epsilon$ and $F_n(s) \geq 1 - \epsilon$ for
+$n>N_1$.
+
+Now we turn our attention to the approximation of $f$ and note that by compactness of $[r,s]$ we know that
+we can find a finite partition $r_0 = r < r_1 < \cdots < r_{m-1} <
+r_m=s$ such that $r_j \in D$ and $\abs{f(r_{j}) - f(r_{j-1})} \leq
+\epsilon$ for $1 \leq j \leq m$.  To see this we know that $f$ is
+uniformly continuous on $[r,s]$ and therefore there exists $\delta >
+0$ such that for any $x,y \in [r,s]$ with $\abs{x -y} < \delta$ we
+  have $\abs{f(x) - f(y)} < \epsilon$.   We construct $r_j$
+  inductively starting with $r_0 = r$.  Using uniform continuity as
+  above and the density of $D$, given $r_{j-1}$ we can find $r_j$ with
+  $r_{j-1}+\frac{\delta}{2} \leq r_j < r_{j-1} + \delta$ and we know
+  that $\abs{f(r_j) - f(r_{j-1})} < \epsilon$.  In less than $\lceil
+  \frac{2(s -r)}{\delta} \rceil$ steps we have $\abs{r_j - s} <
+  \delta$ and we terminate the construction.  Having constructed the
+  partition, define the step
+function 
+\begin{align*}
+g(y) &= \sum_{j=1}^m f(r_j) \left (\characteristic{(-\infty,
+    r_j]}(y) - \characteristic{(-\infty,    r_{j-1}]}(y) \right ) =
+\sum_{j=1}^m f(r_j) \characteristic{(r_{j-1}, r_j]}(y)
+\end{align*}
+and note that by construction we have $\abs{f(y) - g(y)} \leq \epsilon$
+for all $r \leq y \leq s$.  
+
+So now we estimate
+\begin{align*}
+\abs{\expectation{f(\xi_n)} - \expectation{f(\xi)}} &\leq
+\abs{\expectation{f(\xi_n)} - \expectation{g(\xi_n)}}  +
+\abs{\expectation{g(\xi_n)} - \expectation{g(\xi)}}  + \abs{\expectation{g(\xi)} - \expectation{f(\xi)}} 
+\end{align*}
+and consider each term on the left hand side.  By boundedness of $f$
+we pick $M > 0$ such that $f(x) \leq M$ for all $x \in \reals$ and
+note that since $g(y) = 0$ for $y\leq r$ and $y > s$,
+\begin{align*}
+\abs{\expectation{f(\xi_n)} - \expectation{g(\xi_n)}} &\leq
+\abs{\expectation{f(\xi_n); \xi_n \leq r} } +
+\abs{\expectation{f(\xi_n)-g(\xi_n); r < \xi_n \leq s} } +
+\abs{\expectation{f(\xi_n); \xi_n > s} } \\
+&\leq \epsilon M + \epsilon + \epsilon M = \epsilon (2M +1)
+\end{align*}
+and similarly, 
+\begin{align*}
+\abs{\expectation{f(\xi)} - \expectation{g(\xi)}} 
+&\leq \frac{\epsilon}{2} M + \epsilon + \frac{\epsilon}{2} M =
+\epsilon ( M + 1)
+\end{align*}
+
+Now leveraging the fact that $\lim_{n \to \infty} F_n(r_j) = F(r_j)$
+for every $0 \leq j \leq m$ and the finiteness of this set, we can
+pick $N_2 > 0$ such that $\abs{F_n(r_j) - F(r_j)} \leq \frac{\epsilon}{2mM}$ for
+all $n > N_2$ and all $0 \leq j \leq m$.  Using this fact and the
+definition of $g$, 
+\begin{align*}
+\abs{\expectation{g(\xi_n)} - \expectation{g(\xi)}} &= \abs{\sum_{j=1}^m f(r_j) \left (\expectation{\characteristic{(-\infty,
+    r_j]}(\xi_n)} - \expectation{\characteristic{(-\infty,
+    r_{j-1}]}(\xi_n)} - \expectation{\characteristic{(-\infty,
+    r_j]}(\xi)} + \expectation{\characteristic{(-\infty,
+    r_{j-1}]}(\xi)}\right )} \\
+&=  \abs{\sum_{j=1}^m f(r_j) \left (F_n(r_j) - F_n(r_{j-1}) - F(r_j)+
+    F(r_{j-1}) \right )}  \\
+&\leq \sum_{j=1}^m \abs{f(r_j)} \left( \abs{F_n(r_j) - F(r_j)} +
+  \abs{F_n(r_{j-1}) - F(r_{j-1})} \right )\\
+&\leq \epsilon
+\end{align*}
+for every $n > N_2$.  
+
+Putting these three bounds together we have for $n > N_1 \wedge N_2$,
+$\abs{\expectation{f(\xi_n)} - \expectation{f(\xi)}} \leq (3M + 3)
+\epsilon$ and we are done.
+\end{proof}
+
+\begin{examp}Let $\xi_n$ be a $U(-\frac{1}{n}, \frac{1}{n})$ random
+  variable and let $\xi = 0$ a.s., then $\xi_n \todist \xi$.  Note
+  that the distribution function of $\xi_n$ is 
+\begin{align*}
+F_n(x) &= \begin{cases}
+1 & \text{if $x \geq \frac{1}{n}$} \\
+\frac{1}{2}(nx + 1) & \text{if $-\frac{1}{n} < x < \frac{1}{n}$} \\
+0 & \text{if $x \leq \-\frac{1}{n}$} \\
+\end{cases}
+\end{align*}
+Then it is clear that $\lim_{n \to \infty} F_n(x) = 0$ for $x <
+0$ and  $\lim_{n \to \infty} F_n(x) = 1$ for $x >
+0$.   Since the distribution function of $\delta_0$ is
+$\characteristic{[0, \infty)}$ we apply Lemma
+\ref{ConvergenceInDistributionAsConvergenceOfDistributionFunctions} to
+conclude convergence in distribution.  Note that $\lim_{n \to \infty}
+F_n(0) = \frac{1}{2} \neq F(0) = 1$.  It is also worth noting that the
+pointwise limit of $F_n$ isn't actually a distribution function
+(e.g. is not right continuous at $0$).
+TODO: Is convergence in distribution easy to prove directly using the defintion?
+\end{examp}
+
+The theory of convergence in distribution is rather vast and can be
+studied at many different levels of generality and sophistication.
+For example, we have stated the basic definitions on general metric
+spaces and for some of most basic foundations it is no more difficult
+to prove things in metric spaces than in a more concrete case such as
+random variables or vectors.  However it soon becomes wise to
+temporarily drop the generality and concentrate on the special case of
+random vectors (e.g. to prove probably the most famous result of
+probability: the Central Limit Theorem).  At some point it becomes
+necessary to return to the general case but at that point one needs to
+be prepared to bring more powerful tools to the table as the theory
+becomes much more subtle.
+
+In this section we start the program and deal with those first
+results in the theory of weak convergence that can be simply dealt
+with in the context of general metric spaces.
+
+One of the key features of dealing with probability measures (and to
+a lesser extent measures in general) is that they are very \emph{well
+  behaved} when viewed as functionals (i.e. linear mappings from
+functions to $\reals$).  We've left that statement deliberately vague
+for the moment since is properly understood within the context of the
+general theory of distributions.  What we want to begin exploring is a
+side effect of this good behavior: namely that weak convergence of
+probability measures can be characterized by using many different
+classes of functions other than the bounded continuous ones.  In one
+direction one can prove results that tell us that to prove weak
+convergence it is not necessary to test with all bounded continuous
+functions but one only need use some subset of these. In fact, in the
+case of random variables and random vectors, it is
+only necessary to test with compactly supported
+infinitely differentiable functions (which we won't prove quite yet
+since we're still dealing with general metric spaces).
+In another direction, knowing that one has a weakly convergent
+sequence of probability measures one can extend the convergence with
+test functions to use statements about some classes of discontinuous functions
+(e.g. indicator functions).  Combining both directions, one can
+characterize weak convergence by testing against certain classes of
+discontinuous functions.  
+
+Our first foray into the plasticity of weak convergence of probability
+measures is the following set of conditions that characterize weak
+convergence of Borel probability measures on metric spaces.  Before we
+state the Theorem we need a couple of quick definitions.
+
+\begin{defn}Let $\mu$ be a Borel probability measure on a metric space
+  $S$.  We say that a subset $A \subset S$ is a $\mu$-continuity set
+  if $\mu(\partial A) = 0$.
+\end{defn}
+
+\begin{defn}Let $(S,d)$ and $(S^\prime,d^\prime)$ be metric spaces.
+  We say $f : S \to S^\prime$ is \emph{Lipschitz continuous} if there
+  exists a $C \geq 0$ such that $d(f(x), f(y)) \leq C d(x,y)$ for all
+  $x,y \in S$.  We often such a $C$ a \emph{Lipschitz constant}.  
+\end{defn}
+It is often convenient to refer to a Lipschitz continuous function as
+being Lipschitz.
+\begin{examp}As examples of continuous functions that fail to be Lipschitz
+  continous consider $f(x) = x^2$ on $\reals$ and $\sin(1/x)$ on $(0,
+  \infty)$.  Note that $x^2$ is Lipschitz on any compact set.  This
+  latter fact can be generalized to show that any continuously
+  differentiable function can be shown to be Lipschitz on any compact set.
+\end{examp}
+\begin{lem}A Lipschitz function $f$ is uniformly continuous.
+\end{lem}
+\begin{proof}Let $C$ be a Lipschitz constant for $f$.  The for
+  $\epsilon > 0$, let $\delta = \frac{\epsilon}{C}$.
+\end{proof}
+As an example of Lipschitz function that we'll make use of in the next
+Theorem, consider the following.
+\begin{lem}\label{DistanceToSetLipschitz}Let $F \subset S$ be a closed subset and define $f(x) =
+  d(x, F) = \inf_{y \in F} d(x,y)$.  Then $f(x)$ is Lipschitz with
+  Lipschitz constant $1$.
+\end{lem}
+\begin{proof}
+Let $\epsilon > 0$, $x,y \in S$ and pick a $z \in F$ such that $f(x)
+\leq d(x,z) \leq f(x) + \epsilon$.  By the triangle inequality, we
+have
+\begin{align*}
+f(y) &\leq d(y,z) \leq d(x,z) + d(x,y) \leq f(x) + d(x,y) + \epsilon
+\end{align*}
+The argument is symmetric in $x$ and $y$ so we also have that
+\begin{align*}
+f(x) &\leq  f(y) + d(x,y) + \epsilon
+\end{align*}
+and therefore $\abs{f(x) - f(y)} \leq d(x,y) + \epsilon$.
+Since $\epsilon$ was arbitrary let it go to $0$ and we are done.
+\end{proof}
+
+\begin{lem}\label{MaxMinOfLipschitz}Let $f,g : S \to \reals$ be Lipschitz with Lipschitz
+  constants $C_f$ and $C_g$ respectively.  Then both $f \wedge g$
+  and $f \vee g$ are Lipschitz with Lipschitz constants $C_f \vee C_g$.
+\end{lem}
+\begin{proof}
+The proof is elementary but long winded; we only do the case of $f
+\wedge g$.  Pick $x,y \in S$ and
+consider $\abs{(f \wedge g)(x) - (f \wedge g)(y)}$.  We break the analysis
+down into four cases.  
+
+Case (i): Suppose $(f \wedge g)(x) \geq (f \wedge g)(y)$ and $f(y) \leq g(y)$.
+\begin{align*}
+\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(x) - f(y) \leq
+f(x) - f(y) \leq C_f d(x,y)
+\end{align*}
+
+Case (ii): Suppose $(f \wedge g)(x) \geq (f \wedge g)(y)$ and $g(y) \leq f(y)$.
+\begin{align*}
+\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(x) - g(y) \leq
+g(x) - g(y) \leq C_g d(x,y)
+\end{align*}
+
+Case (iii): Suppose $(f \wedge g)(y) \geq (f \wedge g)(x)$ and $f(x) \leq g(x)$.
+\begin{align*}
+\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(y) - f(x) \leq
+f(y) - f(x) \leq C_f d(x,y)
+\end{align*}
+
+Case (iv): Suppose $(f \wedge g)(y) \geq (f \wedge g)(x)$ and $g(x) \leq f(x)$.
+\begin{align*}
+\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(y) - g(x) \leq
+g(y) - g(x) \leq C_g d(x,y)
+\end{align*}
+Thus we see $\abs{(f \wedge g)(x) - (f \wedge g)(y)} \leq (C_f \vee
+C_g) d(x,y)$.
+
+The case of $f \vee g$ follows in a similar way.
+\end{proof}
+
+\begin{thm}[Portmanteau Theorem]\label{PortmanteauTheorem}Let $\mu$ and $\mu_n$ be a sequence of
+ Borel probability measures on a metric space $S$.  The following are equivalent
+\begin{itemize}
+\item[(i)] $\mu_n$ converge in distribution to $\mu$.
+\item[(ii)] $\sexpectation{f}{n} \to \expectation{f}$
+  for all bounded Lipschitz functions $f$.
+\item[(iii)] $\limsup_{n \to \infty} \mu_n(C) \leq
+  \mu(C)$ for all closed sets $C$
+\item[(iv)] $\liminf_{n \to \infty} \mu_n(U) \geq
+  \mu(U)$ for all open sets $U$
+\item[(v)] $\lim_{n \to \infty} \mu_n(A) = \mu(A)$ for all
+  $\mu$-continuity sets $A$.
+\end{itemize}
+\end{thm}
+
+Before we begin the proof, we pay particular attention to the fact that one does not have
+equality in the case of indicator functions.  What this
+is saying is that mass can move out to the boundary during limiting
+processes of distributions.  In the case of open sets that mass can be lost (to the
+boundary) whereas in the case of closed sets, it can magically appear
+in the limit.  An example here is the limit of point masses
+$\delta_{\frac{1}{n}}$.  It is elementary that $\delta_{\frac{1}{n}} \todist
+\delta_0$ but if one considers the open set $(0,1)$, then
+$\delta_{\frac{1}{n}}(0,1) = 1$ but $\delta_0(0,1) = 0$.  In a similar
+way, take the closed set $\lbrace 0 \rbrace$ and we see $\delta_{\frac{1}{n}} \lbrace 0 \rbrace = 0$ but $\delta_0
+\lbrace 0 \rbrace = 1$.  The statement in (v) neatly captures the idea
+that the only way we fail to converge with indicator functions is when
+mass appears on the boundary of the set; if we rule out that
+possiblity assuming the set is a continuity set then we have
+convergence when the corresponding indicator function is used as the
+test function.
+
+\begin{proof}
+Note that (i) implies (ii) is trivial since a bounded Lipschitz
+function is also bounded and continuous.
+
+(ii) implies (iv): Suppose we have $U \subset S$ an open set.  Let
+$f_n(x) = (nd(x,U^c)) \wedge 1$.  By Lemma \ref{DistanceToSetLipschitz}
+and Lemma \ref{MaxMinOfLipschitz} we know that $f_n(x)$ is Lipschitz with
+constant $n$.  It is trivial to see that $f_n(x)$ is 
+increasing.  Furthermore $\lim_{n \to \infty}
+f_n(x) = \characteristic{U}(x)$.  This can be seen by noting that if $x \in U$, then by taking a
+ball $B(x,r) \subset U$, we know that $d(x, U^c) \geq r$ and therefore
+$f_n(x) = 1$ for $n \geq \frac{1}{r}$.  On the other hand, it is
+trivial that $f_n(x) = 0$ for all $x \in U^c$ and all $n$.  Armed with
+these facts we prove (iv)
+\begin{align*}
+\mu(U) &= \lim_{n \to  \infty}\expectation{f_n}  & & \text{by
+  Monotone Convergence Theorem}\\
+&= \lim_{n \to  \infty} \lim_{m \to  \infty} \sexpectation{f_n}{m} & &
+\text{by (ii)}\\
+&\leq \lim_{n \to  \infty} \liminf_{m \to  \infty}
+\sexpectation{\characteristic{U}}{m}  & & \text{since $f_n \leq \characteristic{U}$}\\
+&= \liminf_{m \to  \infty} \mu_m(U)\\
+\end{align*}
+
+(iii) is equivalent to (iv): Assume (iii) and use the fact $\liminf_{n \to \infty}
+f_n = -\limsup_{n \to \infty} -f_n$ and (iv) to calculate for an open set $U$,
+\begin{align*}
+\liminf_{n \to \infty} \mu_n(U) &= -\limsup_{n \to \infty} -\mu_n(U) = -\limsup_{n \to \infty} \mu_n(U^c) + 1 \geq -\mu(U^c) + 1 = \mu(U)
+\end{align*}
+The proof that (iv) implies (iii) follows in an analogous way.
+
+(iv) implies (i).  Suppose $f \geq 0$ continuous, then for every
+$\lambda \in \reals$, we know that $\lbrace f > \lambda \rbrace =
+f^{-1}((\lambda, \infty))$ is an open subset of $S$.  Because of that
+we we may use Lemma
+\ref{TailsAndExpectations}, Fatou's Lemma (Theorem \ref{Fatou}) and (iii) to see
+\begin{align*}
+\int f \, d\mu &= \int_0^\infty \sprobability{f > \lambda}{\mu} \,
+d\lambda \\
+&\leq \int_0^\infty \liminf_{n \to \infty} \sprobability{f > \lambda}{\mu_n} \, d\lambda \\
+&\leq \liminf_{n \to \infty} \int_0^\infty \sprobability{f >
+  \lambda}{\mu_n} \, d\lambda \\
+&= \liminf_{n \to \infty} \int f \, d\mu_n\\
+\end{align*}
+Now we play the same trick as in the proof of Dominated Convergence.
+Suppose $f$ is bounded and continuous and suppose $\abs{f} \leq c$.
+By what we have just shown,
+\begin{align*}
+\int f \, d\mu &= -c + \int (c+f) \, d\mu \leq -c + \liminf_{n \to
+  \infty} \int (c+ f) \, d\mu_n = \liminf_{n \to \infty} \int f \, d\mu_n \\
+-\int f\, d\mu &= -c + \int (c-f) \, d\mu \leq -c + \liminf_{n \to
+  \infty} \int (c- f) \, d\mu_n =  -\limsup_{n \to \infty} \int f \, d\mu_n
+\end{align*}
+Therefore 
+\begin{align*}
+\limsup_{n \to \infty} \int f \, d\mu_n &\leq \int f \, d\mu
+\leq \liminf_{n \to \infty} \int f \, d\mu_n
+\end{align*} which implies $\lim_{n
+  \to \infty} \int f \, d\mu_n = \int f \, d\mu$ and (i) is proven.
+
+ (iii) and (iv) imply (v).  Pick a $\mu$-continuity set $A$.  The first thing to
+note is that $\mu(A) = \mu(\overline{A}) = \mu(\interior(A))$ because
+they all differ by a subset of $\partial A$.   Now on
+the one hand, 
+\begin{align*}
+\liminf_{n \to \infty} \mu_n(A) &\geq \liminf_{n \to \infty} \mu_n(\interior(A)) \geq \mu(\interior(A)) = \mu(A)
+\end{align*}
+On the other hand, 
+\begin{align*}
+\limsup_{n \to \infty} \mu_n(A) &\leq \limsup_{n \to \infty}
+\mu_n(\overline{A}) \leq \mu(\overline{A}) = \mu(A)
+\end{align*}
+which shows that $\lim_{n \to \infty} \mu_n(A) = \mu(A)$.
+
+(v) implies (iii).  Pick a closed set and for every $\epsilon > 0$
+consider the closed $\epsilon$-neighborhood $F_\epsilon = \lbrace x \mid d(x,
+F) \leq  \epsilon \rbrace$.  Note that $\partial F_\epsilon \subset \lbrace x \mid d(x,
+F) =  \epsilon \rbrace$ since if $d(x,F) < \epsilon$ then by
+continuity of the function $f(y) = d(y,F)$ we can find a ball $B(x,r)$
+such that $d(y,F) < \epsilon$ for every $y \in B(x,r)$; thus proving
+$x$ is in the interior of $F_\epsilon$.  The fact that $\partial F_\epsilon \subset \lbrace x \mid d(x,
+F) =  \epsilon \rbrace$ shows that the $\partial F_\epsilon$ are disjoint.
+
+Next note that $\mu (\partial F_\epsilon) \neq 0$ for at most a
+countable number of $\epsilon$.  For every $n \geq 1$, there can only
+be a finite number $F_\epsilon$ with $\mu (\partial F_\epsilon) \geq
+\frac{1}{n}$ because of the disjointness of $F_\epsilon$ and the
+countable additivity of $\mu$.  So the set of all $\epsilon$ with $\mu
+(\partial F_\epsilon)  > 0$ is a countable union of finite set and
+therefore countable.  Now the complement of a countable set in
+$\reals$ is dense (Lemma \ref{ComplementOfCountableSetDense}) hence $F_\epsilon$ is a $\mu$-continuity set for a
+dense set of $\epsilon$.  
+
+Now deriving (iii) is easy.  Pick a decreasing sequence of $\epsilon_m$ such that
+$\lim_{m \to \infty} \epsilon_m = 0$ and each $F_{\epsilon_m}$ is a
+$\mu$-continuity set.  Therefore by subadditivity of measure and and our
+hypothesis, for each $m$
+\begin{align*}
+\limsup_{n \to \infty} \mu_n(F) &\leq \lim_{n \to \infty}
+\mu_n(F_{\epsilon_m}) = \mu(F_{\epsilon_m})
+\end{align*}
+However, by continuity of measure, we know
+that 
+\begin{align*}
+\limsup_{n \to \infty} \mu_n(F) &\leq \lim_{m \to \infty} \mu(F_{\epsilon_m}) = \mu_n(F)
+\end{align*}
+and we're done.
+\end{proof}
+
+\begin{defn} Given metric spaces $(S,d)$ and $(S^\prime, d^\prime)$ and a map $g: S \to S^\prime$,
+  the set of discontinuity points $D_g$ is the set of $x \in S$ such
+  that for every $\epsilon > 0$ and $\delta > 0$ there exists $y \in
+  S$ such that $d(x,y) < \delta$ and $d^\prime(g(x), g(y)) > \epsilon$.
+\end{defn}
+\begin{thm}[Continuous Mapping Theorem]\label{ContinuousMappingTheorem}Let $\xi_n$ and $\xi$ be random
+  elements in a metric space $S$.  Let $S'$ be a metric space such that
+  there exists a map $g: S \to S^\prime$ with the property that the
+  $\probability{\xi \in D_g} = 0$.  Then 
+\begin{itemize}
+\item[(i)] If $\xi_n$ converges in distribution to $\xi$ then
+  $g(\xi_n)$ converges in distribution to $g(\xi)$.
+\item[(ii)] If $\xi_n$ converges in probability to $\xi$ then
+  $g(\xi_n)$ converges in probability to $g(\xi)$.
+\item[(iii)] If $\xi_n$ converges a.s. to $\xi$ then
+  $g(\xi_n)$ converges a.s. to $g(\xi)$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+
+TODO: This proof makes the assumption that $g$ is continuous.  This is
+a big simplification for the distribution case in particular.  Provide
+the proof with the weaker assumption.
+
+To prove (i), suppose we are given a bounded continuous $f : S^\prime
+\to \reals$.  Then $f \circ g : S \to \reals$ is also bounded and
+continuous hence
+\begin{align*}
+\lim_{n \to \infty} \int f(g(\xi_n)) \, d\mu = \int f(g(\xi)) \, d\mu
+\end{align*}
+which shows that $g(\xi_n) \todist g(\xi)$.
+
+To prove (ii), for every $\epsilon, \delta > 0$, define 
+\begin{align*}
+B^\epsilon_\delta = \{ x \in S \mid \exists \, y \in S \text{ with }
+d(x,y) < \delta \text{ and } d^\prime(g(x), g(y)) \geq \epsilon\}
+\end{align*}
+Note that for $\delta^\prime < \delta$ and fixed $\epsilon$ we have
+$B^\epsilon_{\delta^\prime} \subset B^\epsilon_{\delta}$.  Continuity
+of $g$ implies that $\bigcap_{m=1}^\infty
+  B^\epsilon_{\frac{1}{m}} = \emptyset$; and therefore by continuity of
+  measure (Lemma
+\ref{ContinuityOfMeasure}) we know that $\lim_{m \to \infty} \probability{\xi \in B^\epsilon_{\frac{1}{m}}} = 0$.
+
+Now fix $\epsilon,\gamma >0$ and note that for all $n,m > 0$, we have
+the bound
+\begin{align*}
+\probability{d^\prime(g(\xi_n),
+  g(\xi)) \geq \epsilon} \leq \probability{d(\xi_n, \xi) \geq
+  \frac{1}{m}} + \probability{\xi \in B^\epsilon_{\frac{1}{m}}}
+\end{align*}
+
+By the previous observation, we can find an $m>0$ such that
+$\probability{\xi \in B^\epsilon_{\frac{1}{m}}} < \frac{\gamma}{2}$.
+Having picked such an $m>0$, since $\xi_i$ converges to $\xi$ in
+probability, we can find $N >0$ such that $\probability{d(\xi_n, \xi) \geq
+  \frac{1}{m}} < \frac{\gamma}{2}$ for all $n > N$.
+
+To prove (iii), simply note that by continuity of $g$, $\xi_n(\omega)
+\to \xi(\omega)$ implies $g(\xi_n(\omega)) \to g(\xi(\omega))$.
+\end{proof}
+
+The following result is a basic tool in the theory of asymptotic
+statistics.  We state and prove it here because it is a
+straightforward application of the Portmanteau Theorem, but we'll wait
+until we've proven the Central Limit Theorem to give examples of how
+it is applied.  
+\begin{thm}[Slutsky's Theorem]\label{Slutsky}Let $\xi_n$ and $\eta_n$ be two sequences of
+  random elements in $(S,d)$ such that $d(\xi_n,\eta_n) \toprob 0$.  
+If $\xi$ is a random element in $(S,d)$
+such that $\xi_n \todist \xi$ in distribution, then
+  $\eta_n \todist \xi$.
+\end{thm}
+\begin{proof}
+By the Portmanteau Theorem (Theorem \ref{PortmanteauTheorem}) it
+suffices to show $\expectation{f(\eta_n)} \to \expectation{f(\xi)}$
+for all bounded Lipschitz functions $f : S \to \reals$.  Pick such an
+$f$ and $M,K > 0$ such that $\abs{f(x)} \leq M$ and $\abs{f(x) - f(y)} \leq K
+d(x,y)$.  Then if we pick $\epsilon > 0$,
+\begin{align*}
+\lim_{n \to \infty} \abs{\expectation{f(\eta_n)} -
+  \expectation{f(\xi_n)}} &\leq \lim_{n \to \infty} \expectation{\abs{
+    f(\eta_n) - f(\xi_n)}} \\
+&\leq \lim_{n \to \infty} \expectation{\abs{
+    f(\eta_n) - f(\xi_n)}\characteristic{d(\eta_n, \xi_n) \leq
+    \epsilon}} +  \expectation{\abs{
+    f(\eta_n) - f(\xi_n)}\characteristic{d(\eta_n ,\xi_n) >
+    \epsilon} } \\
+&\leq \epsilon K +  2 M \lim_{n \to \infty} \probability{d(\eta_n ,\xi_n) >
+    \epsilon} \\
+&= \epsilon K 
+\end{align*}
+Since $\epsilon$ was arbitrary, we have $\lim_{n \to \infty}\expectation{f(\eta_n)} =
+\lim_{n \to \infty}\expectation{f(\xi_n)} = \expectation{f(\xi)}  $ and we are done.
+\end{proof}
+\begin{cor}[Slutsky's Theorem]Let $\xi_n$ and $\eta_n$ be two sequences of
+random elements in $(S,d)$.  If $\xi$ is a random element in $(S,d)$
+such that $\xi_n$ converges to $\xi$ in distribution and $c \in S$ is
+  a constant such that $\eta_n$ converges to $c$ in probability, then for
+  every continuous function $f$,
+  $f(\xi_n,\eta_n)$ also converges to $f(\xi,c)$ in distribution.
+\end{cor}
+\begin{proof}
+The critical observation here is that with the assumptions above the
+random element $(\xi_n,\eta_n)$ converges to $(\xi,c)$ in
+distribution.  Then we can apply the Continuous Mapping Theorem
+(Theorem \ref{ContinuousMappingTheorem}) to
+derive the result.  To see $(\xi_n,\eta_n) \todist (\xi,c)$, first
+note that $d((\xi_n, \eta_n), (\xi_n, c)) = d(\eta_n, c) \toprob 0$ by
+assumption.  Therefore by the previous lemma, it suffices to show that
+$(\xi_n, c) \todist (\xi,c)$.  Pick a continuous bounded function $f :
+S \times S \to \reals$ and note that $f(-,c) : S \to \reals$ is also
+continuous and bounded.  Therefore $\lim_{n \to \infty}
+\expectation{f(\xi_n, c)} = \expectation{f(\xi,c)}$.
+\end{proof}
+
+\subsection{Uniform Integrability}
+
+In this section we introduce the technical notion of uniform
+integrability of a family of random variables.  Informally uniform
+integrability is the property that the tails of the family of
+integrable random
+variables can be simultaneously bounded in expectation.  Practically
+one implication of this property is that one can use a single
+truncation parameter to approximate all of the random variables in a
+uniformly integrable family.  As an application of this fact we'll
+observe that the truncation argument proof of the Weak Law of Large
+Numbers extends from i.i.d. sequences of random variables to uniformly
+integrable sequences of random variables.  It also worth noting that
+the property of uniform integrability figures prominently in
+martingale theory.
+
+\begin{defn}A collection of random variables $\xi_t$ for $t \in T$ is
+  \emph{uniformly integrable} if and only if $\lim_{M \to \infty}
+  \sup_{t \in T} \expectation{\abs{\xi_t} ; \abs{\xi_t} > M} = 0$.
+\end{defn}
+
+\begin{examp}A sequence of identically distributed variables $\xi_n$ is
+  uniformly integrable.  This can be seen easily by defining $g(x) =
+  \abs{x}\characteristic{\abs{x}>M}$ and noting that 
+\begin{align*}
+\expectation{\abs{\xi_n} ; \abs{\xi_n} > M} = \expectation{g(\xi_n)} =
+\int g(x) \, d\xi_n
+\end{align*}
+by Lemma \ref{ChangeOfVariables} which shows that the expectation is
+independent of $n$ since $d\xi_n$ is independent of $n$.
+\end{examp}
+
+\begin{lem}\label{UniformIntegrabilityProperties}The random variables $\xi_t$ for $t \in T$ are uniformly
+  integrable if and only if
+\begin{itemize}
+\item[(i)] $\sup_{t \in T} \expectation{\abs{\xi_t}} < \infty$
+\item[(ii)] For every $\epsilon > 0$ there exists $\delta > 0$ such
+  that if $\probability{A} < \delta$ then $\expectation{\abs{\xi_t} ;
+    A} < \epsilon$ for all $t \in T$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+First we assume uniform integrability of $\xi_t$.  To prove (i), pick
+$M > 0$ such that $\expectation{\abs{\xi_t} ; \abs{\xi_t} > M} < 1$
+for all $t \in T$.  Then for $t \in T$,
+\begin{align*}
+\expectation{\abs{\xi_t}} &= \expectation{\abs{\xi_t};\abs{\xi_t} \leq  M
+} + \expectation{\abs{\xi_t}; \abs{\xi_t} > M} \\
+&\leq M + 1
+\end{align*}
+To show (ii), pick $\epsilon > 0$, $M >0 $ such that
+$\expectation{\abs{\xi_t} ; \abs{\xi_t} > M} < \frac{\epsilon}{2}$ and
+$\delta < \frac{\epsilon}{2M}$.
+Then
+\begin{align*}
+\expectation{\abs{\xi_t} ; A} &= \expectation{\abs{\xi_t} ; A \wedge
+  \abs{\xi_t} \leq M} + \expectation{\abs{\xi_t} ; A \wedge
+  \abs{\xi_t} > M} \\
+&\leq M \delta + \expectation{\abs{\xi_t} ;   \abs{\xi_t} > M} \leq \epsilon
+\end{align*}
+
+Now assume (i) and (ii).  Pick $\epsilon > 0$ and $\delta >0 $ as in
+(ii) and let $M > 0$ be such that $\expectation{\abs{\xi_t}} \leq M$ for all
+$t \in T$.  Pick $N > \frac{M}{\delta}$ and note that
+\begin{align*}
+\probability{\abs{\xi_t} > N} &\leq \frac{\expectation{\abs{\xi_t}
+  }}{N} \leq \frac{M}{N} < \delta
+\end{align*}
+so by (ii), $\expectation{\abs{\xi_t}; \abs{\xi_t} > N} < \epsilon$
+and uniform integrability is proven.
+\end{proof}
+
+Here is a simple result that illustrates how the conditions for
+uniform integrability in the previous Lemma can often be more
+convenient than the definition.
+
+\begin{lem}\label{SumsOfUniformlyIntegrable}Suppose $\abs{\xi_t}^p$ and $\abs{\eta_t}^p$ are both uniformly integrable
+  families of random variables.  Then for every $a,b \in \reals$,
+  $\abs{a\xi_t + b \eta_t}^p$ is uniformly integrable.
+\end{lem}
+\begin{proof}
+By Lemma \ref{UniformIntegrabilityProperties} we know that $\sup_t
+\expectation{\abs{\xi_t}^p} < \infty$ and $\sup_t
+\expectation{\abs{\eta_t}^p} < \infty$; equivalently $\sup_t \norm{\xi_t}_p <
+\infty$ and $\sup_t \norm{\eta_t}_p < \infty$.  Now by the triangle
+inequality/Minkowski's inequality $\sup_t \norm{a\xi_t + b \eta_t}_p
+\leq a \sup_t \norm{\xi_t}_p + b \sup_t \norm{\eta_t}_p < \infty$.
+Thus condition (i) of Lemma \ref{UniformIntegrabilityProperties} is shown.
+
+To see condition (ii) of Lemma \ref{UniformIntegrabilityProperties},
+suppose $\epsilon > 0$ is given.  By this same Lemma applied to
+$\abs{\xi_t}^p$ and $\abs{\eta_t}^p$ pick a $\delta > 0$ such that for
+all $A$ with $\probability{A} < \delta$ we have
+$\expectation{\abs{\xi_t}^p ; A} \leq \frac{\epsilon}{2^p a^p}$ and 
+$\expectation{\abs{\eta_t}^p ; A} \leq \frac{\epsilon}{2^p b^p}$ for all
+$t$.  Then
+we have
+\begin{align*}
+\expectation{\abs{a\xi_t + b \eta_t}^p; A} &= \norm{a \xi_t
+  \characteristic{A} + b \eta_t \characteristic{A}}_p^p \\
+&\leq \left( a\norm{\xi_t \characteristic{A}}_p + b \norm{\eta_t
+    \characteristic{A}}_p\right)^p \\
+&\leq \left ( a \frac{\epsilon^{1/p}}{2a} + b
+  \frac{\epsilon^{1/p}}{2b}\right )^p = \epsilon
+\end{align*}
+\end{proof}
+
+Here is an example that shows that the condition (i) of the previous
+Lemma is not sufficient to guarantee uniform integrability.
+\begin{examp}Here we demonstrate a sequence $\xi_n$ with $\sup_n \expectation{\abs{\xi_n}} <
+\infty$ but $\xi_n$ is not uniformly integrable.  Consider the sequence
+$\xi_n$ constructed in Example \ref
+{WLLNCounterExampleBoundedFirstMoment}.  Recall for that sequence,
+$\expectation{\abs{\xi_n}} = 1$ for all $n>0$.  On the other hand, for any $M > 0$ and $n > 0$
+we have
+\begin{align*}
+\expectation{\abs{\xi_n} ; \abs{\xi_n} > M} &= \begin{cases}
+0 & \text{if $2^n \leq M$} \\
+1 & \text{if $2^n > M$}
+\end{cases}
+\end{align*}
+and therefore for all $M > 0$ we have $\sup_n \expectation{\abs{\xi_n}
+  ; \abs{\xi_n} > M} = 1$.
+\end{examp}
+
+ TODO: Show convergence result for uniformly integrable sequences.
+
+While we have shown that convergence in probability is strictly weaker
+than convergence in mean, it turns out that adding the condition of
+uniform integrability is precisely what is needed to make them
+equivalent.  Before proving that result we have a Lemma that
+illustrates the connection between uniform integrability and
+convergence of means.
+\begin{lem}\label{UniformIntegrableAndMeans}Let $\xi, \xi_1, \xi_2, \dotsc$ be positive random variables such
+  that $\xi_n \todist \xi$, then $\expectation{\xi} \leq \liminf_{n \to
+    \infty} \expectation{\xi_n}$.  Moreover, $\expectation{\xi} = \lim_{n \to
+    \infty} \expectation{\xi_n} < \infty$ if and only if $\xi_n$ are uniformly integrable.
+\end{lem}
+\begin{proof}
+To see the first inequality, note that for any $R \geq 0$, the function
+\begin{align*}
+f_R(x) &= \begin{cases}
+R & \text{$x > R$} \\
+x & \text{$0 \leq x \leq R$} \\
+0 & \text{$x < 0$}
+\end{cases}
+\end{align*}
+ is bounded and continuous and for fixed $x$, $f_R(x)$ is increasing
+ in $R$.  The first inequality follows:
+\begin{align*}
+\expectation{\xi} &= \lim_{R \to \infty} \expectation{f_R(\xi)} & &
+\text{by Monotone Convergence Theorem} \\
+&= \lim_{R \to \infty} \lim_{n \to \infty} \expectation{f_R(\xi_n)}
+& & \text{because $\xi_n \todist \xi$}\\
+&\leq \liminf_n \expectation{\xi_n} & & \text{because $f_R(x) \leq x$
+  for all $x \geq 0$}\\
+\end{align*}
+An alternative derivation is:
+\begin{align*}
+\expectation{\xi} &= \int \probability{\xi > \lambda} \, d \lambda & &
+\text{by Lemma \ref{TailsAndExpectations}}\\
+&\leq \int \liminf_n \probability{\xi_n > \lambda} \, d\lambda & &
+\text{by Portmanteau Lemma \ref{PortmanteauTheorem}} \\
+&\leq \liminf_n \int \probability{\xi_n > \lambda} \, d\lambda & &
+\text{by Fatou's Lemma (Theorem \ref{Fatou})} \\
+&= \liminf_n \expectation{\xi_n} & & \text{by Lemma \ref{TailsAndExpectations}}
+\end{align*}
+
+Now assume that $\xi_n$ is uniformly integrable.  Then by what we have
+just proven and Lemma \ref{UniformIntegrabilityProperties} we have
+\begin{align*}
+\expectation{\xi} \leq \liminf_n \expectation{\xi_n}  \leq \sup_n
+\expectation{\xi_n} < \infty
+\end{align*}
+So now we use the triangle inequality to write
+\begin{align*}
+\abs{\expectation{\xi_n} - \expectation{\xi}} &\leq
+\abs{\expectation{\xi_n} - \expectation{f_R(\xi_n)}} +
+\abs{\expectation{f_R(\xi_n)} - \expectation{f_R(\xi)}} + \abs{\expectation{f_R(\xi)} - \expectation{\xi}}
+\end{align*}
+We take the limit as $n$ goes to infinity and then as $R$ goes to
+infinity and consider each term on the right side in turn.
+
+For the first term:
+\begin{align*}
+\lim_{R \to \infty} \limsup_n \abs{\expectation{\xi_n} -
+  \expectation{f_R(\xi_n)}} 
+&= \lim_{R \to \infty} \limsup_n \left ( 
+\expectation{\xi_n ; \xi_n > R} - R\probability{\xi_n > R} \right) \\
+&\leq \lim_{R \to \infty} \limsup_n \expectation{\xi_n ; \xi_n > R} -
+\lim_{R \to \infty} \liminf_n R\probability{\xi_n > R}  \\
+&= 0
+\end{align*}
+where in the last line we have used uniform integrability of $\xi_n$
+as well as the following
+\begin{align*}
+\lim_{R \to \infty} R \liminf_n \probability{\xi_n > R} &\leq \lim_{R \to \infty} R \sup_n \probability{\xi_n > R}  \leq \lim_{R \to \infty} \sup_n \expectation{\xi_n ; \xi_n > R} = 0
+\end{align*}
+
+The second term we have $\limsup_n \abs{\expectation{f_R(\xi_n)} -
+  \expectation{f_R(\xi)}}  = 0$ because $f_R$ is bounded continuous
+and $\xi_n \todist \xi$.  The third term we have $\lim_{R \to \infty}
+\abs{\expectation{f_R(\xi)} - \expectation{\xi}} = 0$ by Monotone
+Convergence.
+
+Putting the bounds on the three terms of the right hand side together
+we have $\limsup_{n \to \infty} \abs{\expectation{\xi_n} -
+  \expectation{\xi}} = 0$ which by positivity shows $\lim_{n \to \infty} \abs{\expectation{\xi_n} -
+  \expectation{\xi}} = 0$.
+
+TODO:  Here is an alternative proof of the same fact by approximating $x
+\characteristic{x \leq R}$ from above by continuous functions.  I
+might like this proof better (since I came up with it?)
+
+Now assume that $\lim_{n \to \infty} \expectation{\xi_n}  =
+\expectation{\xi} < \infty$ and we need to show uniform integrability
+of $\xi_n$.  The idea is to approximate $x \characteristic{x\geq R}$
+by a continuous function so that we can use the weak convergence of
+$\xi_n$.  The trick is that this function isn't bounded but is the
+difference between a bounded function and the function $f(x) =x$; the
+behavior of this latter function is covered by the hypothesis that the
+means converge.  To make all of this precise, define the following bounded continuous function
+\begin{align*}
+g_R(x) &= x \wedge (R - x)_+ = \begin{cases}
+0 & \text{if $x<0$ or $x > R$} \\
+x & \text{if $0 \leq x \leq \frac{R}{2}$} \\
+R - x & \text{if $\frac{R}{2} < x \leq R$} \\
+\end{cases}
+\end{align*}
+and note that 
+\begin{align*}
+x - g_R(x) &= \begin{cases}
+0 & \text{if $x<\frac{R}{2}$} \\
+2x -R & \text{if $\frac{R}{2} \leq x \leq R$} \\
+x & \text{if $R < x$} \\
+\end{cases}
+\end{align*}
+so $x \characteristic{x \geq R}  \leq x - g_R(x) \leq x$, and $\lim_{R
+  \to \infty}  x - g_R(x) = 0$.  Putting these facts together we see
+\begin{align*}
+&\lim_{R \to \infty} \limsup_{n \to \infty} \expectation{\xi_n ; \xi_n
+  \geq R} \\
+&\leq \lim_{R \to \infty} \limsup_{n \to \infty}
+\expectation{\xi_n - g_R(\xi_n)} \\
+&= \lim_{R \to \infty} \left (\lim_{n \to \infty}
+\expectation{\xi_n} - \lim_{n \to \infty} \expectation{g_R(\xi_n)} \right) \\
+&=\lim_{R \to \infty} \expectation{\xi} -  \expectation{g_R(\xi)} & &
+\text{by assumption and $\xi_n \todist \xi$}\\
+&=\lim_{R \to \infty} \expectation{\xi - g_R(\xi)} = 0 & & \text{by
+  Dominated Convergence}
+\end{align*}
+\end{proof}
+
+Converge in mean and convergence of means become equivalent in the
+presence of almost sure convergence.
+\begin{lem}\label{ConvergenceInMeanConvergenceOfMeans}Suppose $\xi,
+  \xi_1, \xi_2, \dotsc$ are random variables
+\begin{itemize}
+\item[(i)]$\xi_n \tolp{p} \xi$ implies $\norm{\xi_n}_p \to \norm{\xi}_p$
+\item[(ii)]If  $\xi_n \toas \xi$ and $\norm{\xi_n}_p \to \norm{\xi}_p$
+then $\xi_n \tolp{p} \xi$
+\end{itemize}
+\end{lem}
+\begin{proof}
+To see (i), suppose $\xi_n \tolp{p} \xi$ and note that by the triangle inequality, 
+\begin{align*}
+\lim_{n \to \infty} \norm{\xi_n}_p &\leq \lim_{n \to \infty}
+\norm{\xi_n - \xi}_p + \norm{\xi}_p = \norm{\xi}_p
+\end{align*}
+and
+\begin{align*}
+\norm{\xi}_p &\leq \lim_{n \to \infty}
+\norm{\xi_n - \xi}_p + \lim_{n\to \infty} \norm{\xi_n}_p = \lim_{n\to
+  \infty} \norm{\xi_n}_p
+\end{align*}
+therefore $\lim_{n\to  \infty} \norm{\xi_n}_p = \norm{\xi}_p$.
+
+To see (ii), if $\xi_n \toas \xi$ and $\norm{\xi_n}_p \to \norm{\xi}_p$ then we
+know that $\abs{\xi_n - \xi}^p \toas 0$ and we have the bound
+\begin{align*}
+\abs{\xi_n - \xi}^p &\leq \left( \abs{\xi_n} + \abs{\xi}\right )^p
+\leq 2^p \max(\abs{\xi_n}^p, \abs{\xi}^p) \leq 2^p \left(
+  \abs{\xi_n}^p +  \abs{\xi}^p\right)
+\end{align*}
+and our assumption tells us that $\lim_{n \to \infty} 2^p \expectation{
+  \abs{\xi_n}^p +  \abs{\xi}^p} = 2^{p+1} \norm{\xi}_p^p < \infty$.
+Therefore we can apply Dominated Convergence (Theorem \ref{DCT}) to conclude that $\lim_{n
+  \to \infty} \norm{\xi_n - \xi}_p = 0$.
+\end{proof}
+
+To summarize and complete the discussion, we have the following 
+
+TODO: Fix the statement here; this is taken from Kallenberg but it
+feels imprecise to me (e.g. the equivalence of (ii) and (iii) doesn't
+really require convergence in probability but only convergence in
+distribution; (i) implies convergence in probability (by Markov)).
+The only new content here is the extension of (ii) implies (i) to the
+context of almost sure convergence to convergence in probability by
+the argument along subsequences).
+\begin{lem}\label{LpConvergenceUniformIntegrability}Let $\xi, \xi_1, \xi_2, \dots$ be random variables in $L^p$
+  for $p > 0$ and suppose $\xi_n \toprob \xi$.  Then the following are
+  equivalent:
+\begin{itemize}
+\item[(i)] $\xi_n \tolp{p} \xi$
+\item[(ii)] $\norm{\xi_n}_p \to \norm{\xi}_p$
+\item[(iii)]The sequence of random variables $\abs{\xi_1}^p,
+  \abs{\xi_2}^p, \dots$ is uniformly integrable.
+\end{itemize}
+\end{lem}
+\begin{proof}
+To see (i) implies (ii), this is the first part of Lemma \ref{ConvergenceInMeanConvergenceOfMeans}.
+
+Note that since $\xi_n \toprob \xi$ implies $\xi_n \todist \xi$ we
+know that (ii) and (iii) are equivalent by Lemma \ref{UniformIntegrableAndMeans}.
+
+To see that (ii) implies (i), suppose that $\norm{\xi_n - \xi}_p$
+does not converge to zero.  They there exists an $\epsilon > 0$ and a subsequence $N^\prime
+\subset \naturals$ such that $\norm{\xi_n - \xi}_p \geq \epsilon$
+along $N^\prime$.  Since $\xi_n \toprob \xi$ by Lemma
+\ref{ConvergenceInProbabilityAlmostSureSubsequence} there is a further
+subsequence $N^{\prime \prime} \subset N^\prime$ such that $\xi_n
+\toas \xi$ along $N^{\prime \prime}$.  However, Lemma
+\ref{ConvergenceInMeanConvergenceOfMeans} tells us that $\norm{\xi_n -
+  \xi}_p$ converges to $0$ along $N^{\prime \prime}$ which is a
+contradiction.
+
+An alternative argument is to show that (iii) implies (i) directly.
+Since we have $\abs{\xi_n}^p$ is uniformly integrable and trivially the
+singleton collection $\abs{\xi}^p$ is uniformly integrable, it follows from
+Lemma \ref{SumsOfUniformlyIntegrable} that $\abs{\xi_n - \xi}^p$ is
+uniformly integrable.  Now suppose $\epsilon>0$ is given and take $R >
+\epsilon$ so that by use of convergence in probability and uniform
+integrability we get
+\begin{align*}
+\lim_{n \to \infty} \expectation{\abs{\xi_n - \xi}^p} &= \lim_{R \to
+  \infty} \limsup_{n \to \infty} \left( \expectation{\abs{\xi_n - \xi}^p;
+\abs{\xi_n - \xi}^p \leq \epsilon } + \expectation{\abs{\xi_n - \xi}^p;
+\epsilon < \abs{\xi_n - \xi}^p < R} + \expectation{\abs{\xi_n - \xi}^p;
+\abs{\xi_n - \xi}^p \geq R} \right)\\
+&\leq \epsilon + \lim_{R \to \infty} \lim_{n \to \infty} R \probability{\epsilon <
+  \abs{\xi_n - \xi}^p} + 
+\lim_{R \to \infty} \sup_n \expectation{\abs{\xi_n - \xi}^p;
+\abs{\xi_n - \xi}^p \geq R} \\
+&= \epsilon
+\end{align*}
+and since $\epsilon > 0$ was arbitrary, we have $\lim_{n \to \infty} \expectation{\abs{\xi_n - \xi}^p} =0$.
+\end{proof}
+
+TODO: Show how the proof of the Weak Law of Large Numbers applies to
+uniformly integrable sequences not just i.i.d.
+
+\begin{lem}$\xi_t$ is uniformly integrable if and only if there exists
+  a convex and increasing $f : \reals_+ \to \reals_+$ such that
+  $\lim_{x \to \infty} \frac{f(x)}{x} = \infty$ and $\sup_t
+  \expectation{f(\abs{\xi_t})} < \infty$.
+\end{lem}
+\begin{proof}
+Suppose we have $f : \reals_+ \to \reals_+$ such that $\lim_{x \to
+  \infty} \frac{f(x)}{x} = \infty$ and
+$\sup_t  \expectation{f(\abs{\xi_t})} < \infty$ (it doesn't have to be
+increasing or convex).  Let $\epsilon > 0$ be given and pick $R > 0$
+such that $\frac{f(x)}{x} \geq \frac{\sup_t \expectation{f(\abs{\xi_t})}}{\epsilon }$
+for $x \geq R$.  Then for all $t \in T$,
+\begin{align*}
+\expectation{\abs{\xi_t}; \abs{\xi_t} \geq R} &\leq
+\frac{\epsilon}{\sup_t \expectation{f(\abs{\xi_t})}}
+\expectation{f(\abs{\xi_t}); \abs{\xi_t} \geq R} 
+\leq \epsilon
+\end{align*}
+thus $\lim_{R \to \infty} \sup_t  \expectation{\abs{\xi_t};
+  \abs{\xi_t} \geq R} = 0$ and uniform integrability is shown.
+
+The key step to finding $f$ is the following observation.  Suppose we
+are given an increasing $f : \reals_+ \to \reals_+$, then if we use
+Lemma \ref{TailsAndExpectations} then for any positive $\xi$ we 
+\begin{align*}
+\expectation{f(\xi)} &= \int_0^\infty \probability{f(\xi) \geq \lambda} \, d\lambda =
+\int_{f^{-1}(0)}^{f^{-1}(\infty)} \probability{\xi \geq \eta} f^\prime(\eta) \, d\eta & &
+\text{letting $f(\eta) = \lambda$}
+\end{align*}
+so the problem of finding $f$ can be recast as finding a function $g$
+such that $\int \probability{\xi \geq \eta} g(\eta) \, d\eta < \infty$
+and $\lim_{x \to \infty} g(x) = \infty$.  Though the computation above
+isn't rigorous since we haven't justified the change of variables in
+the integral, this idea tells us that we
+should assume $f$ of the form $f(x) = \int_0^x g(y) \, dy$ and for
+such an $f$ we can rigorously calculate using Tonneli's Theorem
+\begin{align*}
+\expectation{f(\xi)} &= \expectation{\int_0^{\abs{\xi}} g(y) \, dy} =
+\expectation{\int_0^\infty g(y) \characteristic{\abs{\xi} \geq y} \,
+  dy} = \int_0^\infty g(y) \probability{\abs{\xi} \geq y}\,
+  dy < \infty
+\end{align*}
+Furthermore, 
+$\lim_{x \to \infty} \frac{f(x)}{x} = \infty$ by L'Hopital's Rule
+(TODO: can do this without differentiation)
+Moreover if $g(x)$ is increasing then we know that $f(x)$ is convex.
+
+So our goal is to find $g(x)$ such that $\lim_{x \to \infty} g(x) =
+\infty$ and $\sup_t \int_0^\infty \probability{\abs{\xi_t} \geq \eta}
+g(\eta) \, d\eta < \infty$.
+
+The existence of $g(x)$ for any positive integrable $\phi(x)$ can be
+established by the following explicit construction.  Let 
+\begin{align*}
+g(x) &=
+\frac{1}{\sqrt{\int_x^\infty \phi(x) \, dx}}
+\end{align*}
+and note that Dominated Convergence shows $\lim_{x \to \infty} g(x) =
+\infty$ and the Fundamental Theorem of Calculus (Theorem
+\ref{FundamentalTheoremOfCalculus}) shows that (TODO: this also requires the Chain Rule
+which isn't trivial in this context)
+\begin{align*}
+g(x) \phi(x)  &= -2 \frac{d}{dx} \sqrt{\int_x^\infty \phi(x) \, dx} \\
+\intertext{and therefore}
+\int_0^\infty g(x) \phi(x) \, dx &= 2 \sqrt{\int_0^\infty \phi(x) \,
+  dx} < \infty
+\end{align*}
+
+
+Now suppose that $\xi_t$ is uniformly integrable.
+\begin{align*}
+\expectation{\abs{\xi_t} ; \abs{\xi_t} \geq R} &= 
+\int_0^\infty \probability{\abs{\xi_t} \characteristic{\abs{\xi_t}
+    \geq R} \geq \lambda} \,
+d\lambda \\
+&= \int_R^\infty \probability{\abs{\xi_t} \geq \lambda} \,
+d\lambda + 
+\int_0^R \probability{\abs{\xi_t} \geq R} \, d\lambda \\
+&= \int_R^\infty \probability{\abs{\xi_t} \geq \lambda} \,
+d\lambda + 
+R \probability{\abs{\xi_t} \geq R} 
+\end{align*}
+and since $\lim_{R \to \infty} \sup_t \expectation{\abs{\xi_t} ;
+  \abs{\xi_t} \geq R} = 0$ we also get $\lim_{R \to \infty} \sup_t \int_R^\infty \probability{\abs{\xi_t} \geq \lambda} \,
+d\lambda = 0$
+which shows that if we define 
+\begin{align*}
+g(x) &= \frac{1}{\sqrt{\sup_t \int_x^\infty \probability{\abs{\xi_t} \geq \lambda} \,
+d\lambda}} \\
+\intertext{then we have}
+\lim_{x \to \infty} g(x) &= \infty \\
+\intertext{and moreover for any $t \in T$, }
+g(x) &\leq
+\frac{1}{\sqrt{\int_x^\infty \probability{\abs{\xi_t} \geq \lambda} \,
+    d\lambda}}\\
+\intertext{so by the previous construction we know that}
+\int_0^\infty \probability{\abs{\xi_t} \geq x} g(x) \, dx 
+&\leq \int_0^\infty \probability{\abs{\xi_t} \geq x} 
+\frac{1}{\sqrt{\int_x^\infty \probability{\abs{\xi_t} \geq \lambda} \,
+d\lambda}} \, dx < \infty
+\end{align*}
+TODO: Finish and address any issues related to the fact that we only
+have almost everywhere differentiability of an integral in Lebesgue
+theory (e.g. chain rule, u-substitution) (also is L'Hopital valid).
+\end{proof}

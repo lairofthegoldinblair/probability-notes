@@ -1,0 +1,1149 @@
+\section{Conditioning}
+
+\subsection{$L^p$ Spaces}
+Prior to discussing the general formulation of the notion of
+conditional probabilities we shall need to lay down some techniques of
+functional analysis pertaining to spaces of measurable (and
+integrable) random variables.
+
+\begin{defn}Given a measure space $(\Omega, \mathcal{A}, \mu)$ and $p
+  \geq 1$ we let $L^p(\Omega, \mathcal{A}, \mu)$ be the space of equivalence
+  classes of measurable functions such that $\int \abs{f}^p \, d\mu <
+  \infty$ under the equivalence relation of
+  almost everywhere equality.  For any element $f \in   L^p(\Omega,
+  \mathcal{A}, \mu)$ we define 
+\begin{align*}
+\norm{f}_p &= \left ( \int \abs{f}^p \, d\mu \right )^{\frac{1}{p}}
+\end{align*}
+\end{defn}
+
+It is clear that the spaces $L^p(\Omega, \mathcal{A}, \mu)$ but our first goal is to establish that each is a complete
+normed vector space (a.k.a. Banach space).  As our first step in that
+direction we need to prove the triangle inequality
+\begin{lem}[Minkowski Inequality]\label{MinkowskiInequality}Given $f,g
+  \in L^p(\Omega,  \mathcal{A}, \mu)$ then $f+g \in L^p(\Omega,
+  \mathcal{A}, \mu)$ and $\norm{f+g}_p \leq \norm{f}_p + \norm{g}_p$.
+\end{lem}
+\begin{proof}
+Note that it suffices to assume that $f \geq 0$ and $g \geq 0$ since
+if we have the inequality for positive elements then it follows for
+all elements by applying the ordinary triangle inequality on $\reals$
+and using the fact that $x^p$ is increasing to see
+\begin{align*}
+\norm{f+g}_p &\leq \norm{\abs{f}+\abs{g}}_p \leq
+\norm{\abs{f}}_p+\norm{\abs{g}}_p = \norm{f}_p+\norm{g}_p 
+\end{align*}
+The case $p=1$ follows immediately from linearity of integral (in fact
+we have equality).  
+
+For $1 < p < \infty$, first use the following
+crude pointwise bound to see that $f+g \in L^p(\Omega,  \mathcal{A}, \mu)$:
+\begin{align*}
+(f+g)^p &\leq (f \vee g + f \vee g)^p = 2^p f^p \vee g^p \leq 2^p (f^p
++ g^p)
+\end{align*}
+and therefore $\norm{f+g}_p^p \leq 2^p (\norm{f}_p^p + \norm{g}_p^p) <
+\infty$.  To see the triangle inequality, note that we can assume that
+$\norm{f+g}_p > 0$ for otherwise the triangle inequality follows by
+positivity of the norm.  Write
+\begin{align*}
+\norm{f+g}_p^p &= \int (f+g)^p \, d\mu = \int f (f+g)^{p-1} \, d\mu +
+\int g (f+g)^{p-1} \, d\mu \\
+\end{align*}
+Now we can apply the H\"{o}lder Inequality (Lemma
+\ref{Holder}) to each of the terms on the right hand side and use the
+fact that $\frac{1}{p} + \frac{1}{q}$ is equivalent to $q = (p-1)q$ to see
+\begin{align*}
+\int f (f+g)^{p-1} \, d\mu &\leq \left(\int f^p \,
+  d\mu\right)^\frac{1}{p}\left(\int (f+g)^{(p-1)q} \,
+  d\mu\right)^\frac{1}{q} =\norm{f}_p \norm{f+g}_q^{p/q}
+\end{align*}
+Applying this argument to the term $\int g (f+g)^{p-1} \, d\mu$ as
+well we get
+\begin{align*}
+\norm{f+g}_p^p &\leq  (\norm{f}_p + \norm{g}_p) \cdot
+\norm{f+g}_q^{p/q}
+\end{align*}
+and dividing through by $\norm{f+g}_p^{p/q}$ and using $p - \frac{p}{q}=1$ we get $\norm{f+g}_p \leq  \norm{f}_p + \norm{g}_p$.
+\end{proof}
+
+\begin{lem}\label{CompletenessOfLp}For $p \geq 1$ the normed vector
+  space $L^p(\Omega,  \mathcal{A}, \mu)$ is complete.
+\end{lem}
+\begin{proof}
+Let $f_n$ be a Cauchy sequence in $L^p(\Omega,  \mathcal{A}, \mu)$.
+The first step of the proof is to show that there is a subsequence of
+$f_n$ that converges almost everywhere to an element $f \in
+L^p(\Omega,  \mathcal{A}, \mu)$.
+
+By the Cauchy property, for each $j \in \naturals$ we can find an $n_j > 0$ such that
+$\norm{f_m - f_{n_j}}_p \leq \frac{1}{2^j}$ for all $m > n_j$.  In
+this way we get a subsequence $f_{n_j}$ such that $\norm{f_{n_{j+1}} -
+    f_{n_j}}_p \leq \frac{1}{2^j}$ for all $j \in \naturals$.  Now by
+  applying Monotone Convergence and the triangle inequality we have
+\begin{align*}
+\norm{\sum_{j=1}^\infty \abs{f_{n_{j+1}} - f_{n_j}} }_p &= \lim_{N \to
+  \infty} \norm{\sum_{j=1}^N \abs{f_{n_{j+1}} - f_{n_j}} }_p \\
+&\leq \lim_{N \to
+  \infty} \sum_{j=1}^N \norm{f_{n_{j+1}} - f_{n_j}}_p \\
+&\leq \lim_{N \to
+  \infty} \sum_{j=1}^N \frac{1}{2^j} < \infty
+\end{align*}
+and therefore we know that $\sum_{j=1}^\infty \abs{f_{n_{j+1}} -
+  f_{n_j}}$ is almost surely finite.  Anywhere this sum is finite it
+follows that $f_{n_j}$ is a Cauchy sequence in $\reals$.  To see this,
+suppose we are given
+$\epsilon > 0$ we pick $N > 0$ such that $\sum_{j=N}^\infty \abs{f_{n_{j+1}} -
+  f_{n_j}} < \epsilon$, then for any $k \geq j \geq N$ we have 
+\begin{align*}\abs{f_{n_k} -
+  f_{n_j}} = \abs{\sum_{m=j}^k (f_{n_{m+1}} -  f_{n_m})} \leq
+\sum_{m=j}^k \abs{ f_{n_{m+1}} -  f_{n_m}} < \epsilon
+\end{align*}
+
+We know that the set where $f_{n_j}$ converges is measurable (TODO:
+Where is this?) so we can
+define $f$ to be the limit of the Cauchy sequence $f_{n_j}$ where
+valid and define it to be zero elsewhere (a set of measure zero).
+
+To see that $f \in L^p(\Omega,  \mathcal{A}, \mu)$ and to show that
+$f_n$ converges to $f$, suppose $\epsilon > 0$ is given and pick $N
+\in \naturals$ such that for all $m,n \geq N$ we have
+$\norm{f_m-f_n}_p < \epsilon$.  Now we can use Fatou's
+Lemma (Theorem \ref{Fatou})  to see for any $n \geq N$, 
+\begin{align*}
+\int \abs{f-f_n}^p \, d\mu &\leq \liminf_{j \to \infty} \int
+\abs{f_{n_j} - f_n}^p \, d\mu \leq \sup_{m\geq n} \int
+\abs{f_{m} - f_n}^p \, d\mu < \epsilon^p
+\end{align*}
+Therefore by the Minkowski Inequality, we see that $f = f_n + (f -
+f_n)$ is in  $L^p(\Omega,  \mathcal{A}, \mu)$ and $f_n \tolp{p} f$.
+\end{proof}
+
+We know that measurable functions can be approximated by simple
+functions (Lemma \ref{PointwiseApproximationBySimple}) with pointwise
+convergence.  It is useful to extend this approximation to $L^p$ spaces.
+\begin{lem}\label{LpApproximationBySimple}Simple functions are dense in $L^p(\Omega, \mathcal{A}, \mu)$.
+\end{lem}
+\begin{proof}
+Let's assume for the moment that $\mu$ is a finite measure.  In that
+case, every simple function is in $L^p$.  Pick a positive function $f
+\in L^p(\Omega, \mathcal{A}, \mu)$ and sequence of simple functions
+such that $f_n \uparrow f$.  Then it is also true that $f_n^p \uparrow
+f^p$ and Monotone Convergence tells us that $\lim_{n \to \infty}
+\norm{f_n}_p  = \norm{f}_p$.  By Lemma \ref{ConvergenceInMeanConvergenceOfMeans} we conclude that $f_n
+\tolp{p} f$.
+
+To finish the proof, take an arbitrary $f$ and write it as $f = f_+ -
+f_-$ and use linearity.
+
+TODO: What about non-finite measures?  This argument clearly extends
+to $\sigma$-finite by restricting each $f_n$ to a finite subset.  In
+the general case we need to handle the fact that all simple functions
+are not in $L^p$.
+\end{proof}
+
+Note that for any $\sigma$-algebra $\mathcal{F} \subset \mathcal{A}$
+we can also consider the space $ L^p(\Omega,  \mathcal{F}, \mu)$.  
+As we shall soon see, it will become important to understand a bit
+about these spaces as $\mathcal{F}$ vary.  The first thing to note is
+that for $\mathcal{G} \subset \mathcal{F}$, $L^p(\Omega,  \mathcal{G},
+\mu)$ is a closed linear subspace of $L^p(\Omega,  \mathcal{F},
+\mu)$.  The inclusion is trivial since any $\mathcal{G}$-measurable
+function is also $\mathcal{F}$-measurable; closure follows from the
+completeness of the space $L^p(\Omega, \mathcal{G}, \mu)$ (Lemma
+\ref{CompletenessOfLp}).
+
+The following approximation result will be used only occasionaly.
+\begin{lem}\label{LpDensityUnionSubsigmaAlgebras}$\cup_n L^p(\Omega, \mathcal{F}_n, \mu)$ is dense in
+  $L^p(\Omega, \bigvee_n \mathcal{F}_n, \mu)$
+\end{lem}
+\begin{proof}The first thing to show the result for indicator
+  functions.  A general fact, suppose $V$ is a closed linear subspace of
+  $L^p$ and let $\mathcal{C} = \lbrace A \mid \characteristic{A} \in
+   V\rbrace$.  We claim that $\mathcal{C}$ is a $\lambda$-system.
+    Given $A, B \in \mathcal{C}$ with $A \subset B$, we have $B
+    \setminus A \in \mathcal{C}$ since $\characteristic{B \setminus A}
+    = \characteristic{B} - \characteristic{A}$ and $V$ is a linear
+    space.  Now assume that $A_1 \subset A_2 \subset \cdots \in
+    \mathcal{C}$.  We have that $\characteristic{A_n} \uparrow
+    \characteristic{A}$ and continuity of measure (Lemma
+    \ref{ContinuityOfMeasure}) tells us that
+    $\lim_{n \to \infty} \norm{\characteristic{A_n}}_p =
+    \norm{\characteristic{A}}_p$ so Lemma
+    \ref{ConvergenceInMeanConvergenceOfMeans} implies $\characteristic{A_n}
+    \tolp{p} \characteristic{A}$.  Since $V$ is closed we know
+    $\characteristic{A} \in V$.
+\end{proof}
+
+TODO: Develop inner product and projection for $L^2$ spaces.
+
+\subsection{Conditional Expectation}
+ Before getting into the technical details we want to get set the
+intuition for the problem and the form that solutions will take.
+Given a random element $\xi$ in $S$ and a random variable $\eta$, we want to
+formulate the notion of the expected value of $\eta$ given a value of
+$\xi$.  The immediate way to think of representing such an object is as a map from
+$S$ to $\reals$.  In practice the representation is expressed in a
+different but equivalent way.  Recall from Lemma
+\ref{FunctionalRepresentation} that any random variable
+$\gamma$ that is $\xi$-measurable can be factored as $f \circ
+\xi$ for some measurable $f : S \to \reals$.  In this way the
+conditional expectation may equally be considered as $\xi$-measurable
+random variable.  It is this latter representation that is most
+convenient for working with (and constructing) conditional
+expectations.  To remove matters a little further from the initial
+intuition, one often makes use of the fact that the conditional
+expection winds up only depending on the $\sigma$-field induced by
+$\xi$ and discusses conditioning with respect to arbitrary sub
+$\sigma$-fields.
+
+TODO: Elaborate on the three faces of conditional expectation:
+projection, density/Radon-Nikodym derivative and disintegration.
+
+Existence via Radon-Nikodym.  The Radon-Nikodym theorem (Theorem
+\ref{RadonNikodym}) can
+be given a martingale proof (hence derived in some sense from the
+existence of conditional expectations).  However, the standard proof
+for Radon-Nikodym using
+Hahn Decomposition does not depend on the existence of conditional
+expection and in fact, the Radon-Nikodym theorem can easily be used to
+prove the existence of conditional expectations.
+Given $\xi \geq 0$ and $\mathcal{F} \subset \mathcal{A}$, then define
+the probability measure $\nu(A) =
+\expectation{\xi \characteristic{A}}$.  Note that $\nu$ is absolutely
+continuous with respect to $\mu$ on $\mathcal{F}$.  Therefore, the Radon-Nikodym
+derivative with respect to $(\Omega, \mathcal{F})$ exists and
+satisfies 
+\begin{align*}
+\nu(A) = \expectation{\xi \characteristic{A}} =
+\expectation{\frac{d\nu}{d\mu} \characteristic{A}}
+\end{align*}
+for all $A \in \mathcal{F}$.  This equality shows that
+$\frac{d\nu}{d\mu}$ is a conditional expectation of $\xi$.  For
+general $\xi$, write $\xi=\xi_+ - \xi_-$ and proceed as above.
+ 
+TODO: Make sure we have covered the following:  Definition of $L^p$
+spaces, completeness of $L^p$ spaces, definition of Hilbert space,
+orthogonal projections in Hilbert spaces.  Density of $L^2$ in $L^1$.
+Unique extension of a bounded linear operator from a dense subspace
+of a complete normed linear space.
+
+On the other hand, there is very appealing construction of conditional
+expectation using function spaces that we provide here.  Recall that
+for a measurable space $(\Omega, \mathcal{A}, \mu)$ we have associated
+Banach spaces of $p$-integrable functions $L^p(\Omega, \mathcal{A}, \mu)$ with norm $\norm{f}_p =
+\left ( \int \abs{f}^p \, d \mu \right ) ^ \frac{1}{p}$.  In the
+special case $p=2$ we actually have a Hilbert space $L^2(\Omega,
+\mathcal{A}, \mu)$ with inner product $<f, g> = \int f g \, d \mu$.
+Suppose we have a sub $\sigma$-algebra $\mathcal{F} \subset
+\mathcal{A}$ and we have a canonical inclusion $L^p(\Omega, \mathcal{F},
+\mu) \subset L^p(\Omega, \mathcal{A},
+\mu)$ as a subspace.  In fact by the completeness of $L^p(\Omega,
+\mathcal{F},\mu)$, we know that this is a \emph{closed} subspace.
+Therefore if we specialize to the case of $L^2(\mathcal{F}) \subset
+L^2(\mathcal{A})$ then we have the orthogonal projection onto
+$L^2(\mathcal{F})$.  For square integrable random variables, this
+orthogonal projection defines the conditional expectation.  In the
+following, we extend this defintion to all integrable random variables
+and prove the basic properties.
+
+TODO: Elaborate on the ``a.s. uniqueness'' in the definition.
+
+\begin{thm}[Conditional Expectation]\label{ConditionalExpectation}For
+  any $\mathcal{F} \subset \mathcal{A}$ there exists a unique linear
+  operator $\cexpectationop{\mathcal{F}} : L^1 \to L^1(\mathcal{F})$
+  such that 
+\begin{itemize} 
+\item[(i)]$\expectation{\cexpectation{\mathcal{F}}{\xi} ; A} = \expectation{\xi ;
+    A}$ for all $\xi \in L^1$, $A \in \mathcal{F}$
+\end{itemize}
+The following properties also hold for $\xi, \eta \in L^1$,
+\begin{itemize}
+\item[(ii)]$\expectation{\abs{\cexpectation{\mathcal{F}}{\xi}}} \leq \expectation{\abs{\xi}}$ a.s.
+\item[(iii)]$\xi \geq 0$ implies $\cexpectation{\mathcal{F}}{\xi} \geq
+  0$ a.s.
+\item[(iv)]$0 \leq \xi_n \uparrow \xi$ implies
+  $\cexpectation{\mathcal{F}}{\xi_n}  \uparrow
+  \cexpectation{\mathcal{F}}{\xi}$ a.s.
+\item[(v)]$\cexpectation{\mathcal{F}}{\xi \eta} = \xi
+  \cexpectation{\mathcal{F}}{\eta}$ if $\xi$ is
+  $\mathcal{F}$-measurable and $\xi\eta,
+  \xi\cexpectation{\mathcal{F}}{\eta} \in L^1$
+\item[(vi)]$\expectation{\cexpectation{\mathcal{F}}{\xi}
+    \cdot \cexpectation{\mathcal{F}}{\eta}} = \expectation{\xi \cdot
+    \cexpectation{\mathcal{F}}{\eta}} = \expectation{
+    \cexpectation{\mathcal{F}}{\xi} \cdot \eta} $
+\item[(vii)]$\cexpectation{\mathcal{F}}{\cexpectation{\mathcal{G}}{\xi}}
+= \cexpectation{\mathcal{F}}{\xi}$ a.s. for all $\mathcal{F} \subset \mathcal{G}$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+Begin by defining $\cexpectationop{\mathcal{F}} : L^2 \to
+L^2(\mathcal{F})$ as orthogonal projection.  If we pick $A \in
+\mathcal{F}$, then $\characteristic{A} \in L^2(\mathcal{F})$ and
+therefore, $\xi - \cexpectation{\mathcal{F}}{\xi} \perp
+\characteristic{A}$ which shows
+\begin{align*}
+\expectation{\xi ; A} &= <\xi, \characteristic{A}> =
+<\cexpectation{\mathcal{F}}{\xi}, \characteristic{A}> =
+\expectation{\cexpectation{\mathcal{F}}{\xi} ; A}
+\end{align*}
+If we define $A = \lbrace \cexpectation{\mathcal{F}}{\xi} \geq 0
+\rbrace$ the above implies
+\begin{align*}
+\expectation{\abs{\cexpectation{\mathcal{F}}{\xi}}} &=
+\expectation{\cexpectation{\mathcal{F}}{\xi} ; A} -
+\expectation{\cexpectation{\mathcal{F}}{\xi} ; A^c} & & \text{by
+  linearity of expectation}\\
+&= \expectation{\xi ; A} - \expectation{\xi ; A^c} & &\text{by (i)} \\
+&\leq \expectation{\abs{\xi}; A} + \expectation{\abs{\xi}; A^c} & &
+\text{since $\xi \leq \abs{\xi}$ and 
+  $-\xi \leq \abs{\xi}$} \\
+&= \expectation{\abs{\xi}} & & \text{by linearity of expecation}
+\end{align*}
+This inequality shows us that the linear operator
+$\cexpectationop{\mathcal{F}}$ is bounded in the $L^1$ norm as well as
+in the $L^2$ norm.  On the other hand, we know that $L^2$ is dense in
+$L^1$ and $L^1$ is complete so there is a unique extension of $\cexpectationop{\mathcal{F}}$
+to a bounded linear operator $L^1 \to L^1{\mathcal{F}}$.  Concretely,
+for any $\xi \in L^1$, we pick a sequence $\xi_n \in L^2$ such that
+$\lim_{n \to \infty} \xi_n \to \xi$ in the $L^1$ norm and define
+$\cexpectation{\mathcal{F}}{\xi} = \lim_{n \to \infty}
+\cexpectation{\mathcal{F}}{\xi_n}$ where the limit is in the $L^1$
+norm.  Since the $L^1$ closure of $L^2(\mathcal{F})$ is
+$L^1(\mathcal{F})$, we see that the definition is plausible.  
+
+TODO: Show independence, linearity and boundedness of the extension.
+Perhaps factor this out into a separate Lemma; it is a generic
+construction.
+
+To see that the condition (i) uniquely defines
+$\cexpectation{\mathcal{F}}{\xi} $ a.s., suppose we had two
+$\mathcal{F}$-measurable random variables $\eta$ and $\rho$ for which
+$\expectation{\eta ; A} = \expectation{\rho ; A}$ for all $A \in
+\mathcal{F}$.  Let $A = \lbrace \eta > \rho \rbrace$ which is
+$\mathcal{F}$-measurable and so we have assumed
+$\expectation{\eta - \rho ; A} = 0$.  If we apply Lemma \ref{ZeroIntegralImpliesZeroFunction} we
+know that $(\eta - \rho)\characteristic{A} = 0$ a.s. which shows that
+$\probability{A} = 0$.   The same argument shows that
+$\rho > \eta$ with probability $0$, hence $\eta = \rho$ a.s.
+
+To see (iii), let $A = \lbrace \cexpectation{\mathcal{F}}{\xi} < 0 \rbrace$ and
+observe that 
+\begin{align*}
+0 &\leq \expectation{-\cexpectation{\mathcal{F}}{\xi} ; A} =
+\expectation{-\xi ; A} \leq 0
+\end{align*}
+and therefore $\expectation{-\cexpectation{\mathcal{F}}{\xi} ; A} = 0$
+which applying Lemma \ref{ZeroIntegralImpliesZeroFunction} implies
+$\probability{A}=0$.
+
+ To see (iv), suppose $0 \leq \xi_n \uparrow \xi$ a.s.  Then by Monotone
+ Convergence, $\lim_{n \to \infty} \expectation{\abs{\xi - \xi_n}} =
+ 0$.  Now by (ii) and linearity of conditional expection, 
+\begin{align*}
+0 \leq \lim_{n \to \infty} \expectation{\abs{\cexpectation{\mathcal{F}}{\xi}
+  - \cexpectation{\mathcal{F}}{\xi_n}} } \leq \lim_{n \to \infty} \expectation{\abs{\xi - \xi_n}} =
+ 0
+\end{align*}
+which shows that $\cexpectation{\mathcal{F}}{\xi_n}$ converges to
+$\cexpectation{\mathcal{F}}{\xi}$ in $L^1$.  Now by Lemma
+\ref{ConvergenceInMeanImpliesInProbability} this
+implies that the converges is in probability and by Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence} there is a
+subsequence that converges a.s.  By (iii) we know that $\cexpectation{\mathcal{F}}{\xi_n}$
+ is non-decreasing so we know by Lemma \ref{IncreasingSequenceWithConvergentSubsequence} that that almost sure convergence of the
+ subsequence extends to the almost sure convergence of the entire sequence.
+
+
+To see (v), note that if $\xi$ is $\mathcal{F}$-measurable then for
+every $\eta \in L^1$, we know $\xi\cexpectation{\mathcal{F}}{\eta}$ is
+$\mathcal{F}$-measurable and by simple calculation
+\begin{align*}
+\expectation{\xi\cexpectation{\mathcal{F}}{\eta}; A} &= \expectation{\xi\eta; A}
+\end{align*}
+by the apply the extension of the property (i) to the
+$\mathcal{F}$-measurable function
+$\xi\characteristic{A}$.  Now by (v) follows by applying (i) again.
+
+For the property (vi), by symmetry we only have to prove $\expectation{\cexpectation{\mathcal{F}}{\xi}
+    \cdot \cexpectation{\mathcal{F}}{\eta}} = \expectation{\xi \cdot
+    \cexpectation{\mathcal{F}}{\eta}}$.  To prove this first assume
+  that $\xi, \eta \in L^2$.  In that case, we know that
+  $\cexpectation{\mathcal{F}}{\eta}
+  \in L^2(\mathcal{F})$ and $\xi - \cexpectation{\mathcal{F}}{\xi}
+  \perp L^2(\mathcal{F})$, so 
+\begin{align*}
+\expectation{\cexpectation{\mathcal{F}}{\xi}
+    \cdot \cexpectation{\mathcal{F}}{\eta}} &= <\cexpectation{\mathcal{F}}{\xi}
+    ,\cexpectation{\mathcal{F}}{\eta}> \\
+&= <\cexpectation{\mathcal{F}}{\xi} - \xi, \cexpectation{\mathcal{F}}{\eta}> + <\xi, \cexpectation{\mathcal{F}}{\eta}>\\
+&= <\xi, \cexpectation{\mathcal{F}}{\eta}> = \expectation{\xi \cdot \cexpectation{\mathcal{F}}{\eta}}\\
+\end{align*}
+Now by the density of $L^2 \subset L^1$, for general $\xi, \eta \in
+L^1$ we pick $\xi_n \tolp{1} \xi$ and $\eta_n \tolp{1} \eta$ with
+$\xi_n, \eta_n \in L^2$.  By the above 
+Lastly, we prove (vii).  Suppose we are given $\sigma$-algebras
+$\mathcal{F} \subset \mathcal{G}$.  Then for $A \in \mathcal{F}
+\subset \mathcal{G}$,
+\begin{align*}
+\expectation{\cexpectation{\mathcal{G}}{\xi} ; A} &= \expectation{\xi
+  ; A} & & \text{by (i) applied to
+  $\cexpectation{\mathcal{G}}{\xi}$}\\
+&= \expectation{\cexpectation{\mathcal{F}}{\xi}
+  ; A} & & \text{by (i) applied to
+  $\cexpectation{\mathcal{F}}{\xi}$}\\
+\end{align*}
+where are the equalities are a.s.   By definition $\cexpectation{\mathcal{F}}{\xi}$ is
+$\mathcal{F}$-measurable which shows by (i) that
+$\cexpectation{\mathcal{F}}{\cexpectation{\mathcal{G}}{\xi}}
+= \cexpectation{\mathcal{F}}{\xi}$ a.s.
+\end{proof}
+
+When verifying the defining property of conditional expectation it is
+often useful to observe that it suffices to check indicator functions
+for sets in a generating $\pi$-system.
+\begin{lem}\label{ConditionalExpectationExtension}Suppose $\xi, \eta$ are integrable or non-negative random
+  variables and $\mathcal{F}$ is a $\pi$-system such that $\Omega \in
+  \mathcal{F}$ and for all $A
+  \in \mathcal{F}$, we have $\expectation{\xi ; A} = \expectation{
+    \eta; A}$.  Then we have $\expectation{\xi ; A} = \expectation{
+    \eta; A}$ for all $A \in \sigma(\mathcal{F})$.
+\end{lem}
+\begin{proof}We first let $\mathcal{G}$ be the set of all $A$ such that  $\expectation{\xi ; A} = \expectation{
+    \eta; A}$ and show that it is a $\lambda$-system.  If $A, B \in
+  \mathcal{G}$ and $B \supset A$ then
+\begin{align*}
+\expectation{ \xi ; B\setminus A} &= \expectation{\xi;B} -
+\expectation{\xi; A} = \expectation{\eta;B} -
+\expectation{\eta; A} = \expectation{ \eta ; B\setminus A}
+\end{align*}
+
+Now suppose that we have $A_1 \subset A_2 \subset \cdots \in
+\mathcal{G}$.  We claim that $\lim_{n \to \infty} \expectation{ \xi ;
+  A_n} = \expectation{ \xi ; \cup_n A_n}$ and similarly with $\eta$.
+In the case that we assume $\xi$ is integrable then we have $\abs{\xi
+  \characteristic{A_n}} \leq \abs{\xi}$, so we may use Dominated
+Convergence whereas in the case that $\xi$ is non-negative we may use
+Monotone Convergence.  In either case,
+\begin{align*}
+\expectation{ \xi ; \cup_n A_n} &= \lim_{n \to \infty} \expectation{ \xi ;
+  A_n} = \lim_{n \to \infty} \expectation{ \eta ;
+  A_n} = \expectation{ \eta ; \cup_n A_n}
+\end{align*}
+We have assumed that $\Omega \in \mathcal{G}$ therefore we have shown $\mathcal{G}$ is a $\lambda$-system and our
+assumption is that $\mathcal{F} \subset \mathcal{G}$ so we apply the
+$\pi$-$\lambda$ Theorem (Theorem \ref{MonotoneClassTheorem}) to get
+the result.
+\end{proof}
+
+Occasionally it can be useful to extend the defining property of
+conditional expectation beyond indicator functions.
+\begin{lem}Let $\xi \in L^1$ then for a $\sigma$-algebra $\mathcal{F}$
+  and all bounded $\eta \in L^1(\mathcal{F})$,
+  $\expectation{\cexpectation{\mathcal{F}}{\xi}\cdot\eta} = \expectation{\xi\cdot\eta} $.
+\end{lem}
+\begin{proof}
+This is a simple application of the standard machinery.
+Property (i) is exactly this statement for $\mathcal{F}$-measurable indicator functions.
+Linearity of expectation shows that the statement then holds for
+$\mathcal{F}$-measurable bounded simple functions.  For
+$\mathcal{F}$-measurable bounded $\eta \geq 0$, we pick an increasing
+approximation by bounded simple functions $\eta_n \uparrow \eta$.  First we
+assume that $\xi \geq 0$ as well and note by (iii) that
+$\cexpectation{\mathcal{F}}{\xi} \geq 0$ a.s. as well.  Now we can
+apply monotone convergence to the sequences
+$\cexpectation{\mathcal{F}}{\xi} \cdot \eta_n$ and $\xi \cdot \eta_n$,
+\begin{align*}
+\expectation{\xi \cdot \eta} &= \lim_{n \to \infty} \expectation{\xi
+  \cdot \eta_n} & & \text{by Monotone Convergence} \\
+&=\lim_{n \to \infty} \expectation{\cexpectation{\mathcal{F}}{\xi} 
+  \cdot \eta_n} \\
+&=\expectation{\cexpectation{\mathcal{F}}{\xi} 
+  \cdot \eta} & & \text{by Monotone Convergence} \\
+\end{align*}
+For general integrable $\xi$, we write $\xi = \xi_+ - \xi_-$ and use
+linearity of expectation and conditional expectation.  Lastly we
+extend to arbitrary bounded $\mathcal{F}$-measurable $\eta$ in a similar
+way.  
+
+
+TODO: Is there a shorter argument (that probably amounts to the
+same thing) using the density of $L^2$ in $L^1$?  TODO:  This
+statement is FALSE!  The product of integrable random variables is not
+necessarily integrable!  The above is true for BOUNDED random
+variables, but that isn't enough for our needs below.  Indeed it is
+better to prove these in $L^2$ and then take limits using (iv).
+\end{proof}
+
+TODO: Provide an example of conditional expectation and a dyadic
+$\sigma$-algebra.
+
+A last observation is that conditional expectations depend only 
+``local'' information in both the random variable and the
+$\sigma$-algebra.  This has an intuitive appeal as one can think of
+the $\sigma$-algebra against which the conditional expectation is
+taken as a specifying a coarser resolution of the random variable and
+this coarsening is obtained by averaging/integration.  So long as the
+domains over which we integrate are contained entirely inside of a
+set we are interested in, the conditional expectation should only
+depend on the $\sigma$-algebra restricted to that set and the values
+of the random variable on that set.  We proceed to make this idea more
+formal and give a proper proof.
+
+\begin{defn}Given $\sigma$-algebras $\mathcal{F}$, $\mathcal{G}$ and
+  $\mathcal{A}$ with $\mathcal{F} \subset \mathcal{A}$ and
+  $\mathcal{G} \subset \mathcal{A}$ and a set $A \in \mathcal{F} \cap
+  \mathcal{G}$, we way that $\mathcal{F}$ and $\mathcal{G}$
+  \emph{agree on $A$} if for every $B \subset A$, $B \in \mathcal{F}$
+  if and only if $B \in \mathcal{G}$.
+\end{defn}
+\begin{lem}Given $\sigma$-algebras $\mathcal{F}$, $\mathcal{G}$ and
+  $\mathcal{A}$ with $\mathcal{F} \subset \mathcal{A}$ and
+  $\mathcal{G} \subset \mathcal{A}$ and a set $A \in \mathcal{F} \cap
+  \mathcal{G}$ such that $\mathcal{F}$ and $\mathcal{G}$ agree on $A$
+  and random variables $\xi$ and $\eta$ such that $\xi$ and $\eta$
+  agree almost surely on $A$ then
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{\xi} &=
+\cexpectationlong{\mathcal{G}}{\eta} \text{ a.s. on $A$}
+\end{align*}
+\end{lem}
+\begin{proof}
+First note that because $A \in \mathcal{F} \cap \mathcal{G}$ and
+because $\characteristic{A}\xi = \characteristic{A}\eta$ a.s., we have
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{\xi}  &=
+\cexpectationlong{\mathcal{F}}{\characteristic{A}\xi} =
+\cexpectationlong{\mathcal{F}}{\characteristic{A}\eta} = \cexpectationlong{\mathcal{F}}{\eta} 
+\end{align*}
+so it suffices to show that $\cexpectationlong{\mathcal{F}}{\eta} =
+\cexpectationlong{\mathcal{G}}{\eta}$ a.s.
+\end{proof}
+
+The definition of conditional expectation as given is rather abstract
+but in the case of random variables with densities, we can make the
+concept more concrete.
+
+TODO: Where to put this?
+\begin{lem}Let $(\xi, \eta)$ be a random vector in $\reals^2$.
+  Suppose that $(\xi, \eta)$ has a density $f$, then 
+\begin{itemize}
+\item[(i)]Both  $\xi$ and $\eta$ have a densities given by the
+  formulas
+\begin{align*}
+f_{\xi}(y) = \int_{-\infty}^\infty f(y,z) \, dz & & f_{\eta}(z) = \int_{-\infty}^\infty f(y,z) \, dy
+\end{align*}
+\item[(ii)]$\xi$ and $\eta$ are independent if and only if $f(y,z) = f_{\xi}(y) f_{\eta}(z) $.
+\item[(iii)]For any $y \in \reals$ such that $f_{\xi}(y) \neq 0$, we
+  have the density
+\begin{align*}
+f_{\xi=y}(z) &= \frac{f(y,z)}{f_{\xi}(y)}
+\end{align*}
+\item[(iv)]If we define $h_{\eta}(y) = \int_{-\infty}^\infty z f_{\xi=y}(z)
+  \, dz$ then for every measurable $g : \reals \to \reals$ such that
+$g(\xi)$ is integrable, we have
+\begin{align*}
+\expectation{g(\xi) \cdot h_{\eta}(\xi)} &= \expectation{\xi \cdot \eta}
+\end{align*}
+\end{itemize}
+\end{lem}
+
+If we consider $\eta$ a random element in some $(T, \mathcal{T})$, $\xi$ an integrable random
+variable then we usually write $\cexpectationlong{\sigma(\eta)}{\xi} =
+\cexpectationlong{\eta}{\xi}$ and speak of the \emph{conditional
+  expectation of $\xi$ with respect to $\eta$}.  
+\begin{lem}There exists a measurable function $f : T \to \reals$ such
+  that $\cexpectationlong{\eta}{\xi} = f(\eta)$, furthermore such an
+  $f$ is unique almost surely $\pushforward{\eta}{P}$.  If we are
+  given another pair $\tilde{\xi}$ and $\tilde{\eta}$ such that $(\xi,
+  \eta) \eqdist (\tilde{\xi}, \tilde{\eta})$ then $\cexpectationlong{\tilde{\eta}}{\tilde{\xi}} = f(\tilde{\eta})$.
+\end{lem}
+\begin{proof}This is a simple corollary of Lemma
+  \ref{FunctionalRepresentation} and the almost sure uniqueness of
+  conditional expectations.
+\end{proof}
+
+Having defined $\cexpectationlong{\eta}{\xi}$ in terms of conditional
+expectation of $\xi$ with respect the $\sigma$-algebra $\sigma(\eta)$
+is natural to think of the latter as being the more general case.
+However note that if we are given $\mathcal{F}$ and define $\eta :
+(\Omega, \mathcal{A}) \to (\Omega, \mathcal{F})$ to be identity
+function then in fact we see the two notions are equivalent.  In some
+cases, authors (Kallenberg in particular) will refer to conditional
+expectation with respect to a $\sigma$-algebra as the special case.
+We'll try to avoid making statements about the relative level of
+generality of the two ideas but will try to avoid using the notation
+$\cexpectationlong{\eta}{\xi}$ when we know that $\eta$ is an
+identity map.
+
+\subsection{Conditional Independence}
+
+\begin{defn}Given $\sigma$-algebras $\mathcal{F}$, $\mathcal{G}$ and
+  $\mathcal{H}$ we say that $\mathcal{F}$ and $\mathcal{H}$ are
+  \emph{conditionally independent given} $\mathcal{G}$ if for all $F
+  \in \mathcal{F}$ and all $H \in \mathcal{H}$ we have 
+\begin{align*}
+\cprobability{\mathcal{G}}{F \cap H} &= \cprobability{\mathcal{G}}{F} \cprobability{\mathcal{G}}{H} 
+\end{align*}
+We often write $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}}$.
+\end{defn}
+
+A technical result that can be helpful when trying to prove
+conditional independence is the following analogue of Lemma
+\ref{IndependencePiSystem}
+\begin{lem}\label{ConditionalIndependencePiSystem}Suppose we are given
+  a $\sigma$-algebra $\mathcal{G}$ and two
+  $\pi$-systems $\mathcal{S}$ and $\mathcal{T}$ in a probability space
+  $(\Omega, \mathcal{A}, P)$ such that
+  $\cprobability{\mathcal{G}}{A \cap B} = \cprobability{\mathcal{G}}{A} \cprobability{\mathcal{G}}{B}$ for all
+  $A \in \mathcal{S}$ and $B \in \mathcal{T}$.  Then
+  $\sigma(\mathcal{S})$ and $\sigma(\mathcal{T})$ are conditionally independent
+  given $\mathcal{G}$.
+\end{lem}
+\begin{proof}
+TODO: A straightforward extension of the proof of Lemma
+\ref{IndependencePiSystem}.
+\end{proof}
+
+\begin{lem}\label{ConditionalIndependenceDoob}Given $\sigma$-algebras $\mathcal{F}$, $\mathcal{G}$ and
+  $\mathcal{H}$, then
+  $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}}$ if and only
+  if for all $H \in \mathcal{H}$, we have
+  $\cprobability{\mathcal{G}}{H} =
+  \cprobability{\mathcal{F},\mathcal{G}}{H}$.
+In particular, $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}}$
+if and only if $\cindependent{\left (\mathcal{F}, \mathcal{G} \right )}{\mathcal{H}}{\mathcal{G}}$
+\end{lem}
+\begin{proof}
+We first assume that
+$\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}}$.  Let $F \in
+\mathcal{F}$ and $G \in \mathcal{G}$ and calculate
+\begin{align*}
+\expectation{\characteristic{F}\characteristic{G}\characteristic{H}}
+&=
+\expectation{\cexpectationlong{\mathcal{G}}{\characteristic{F}\characteristic{G}\characteristic{H}}}
+\\
+&=
+\expectation{\characteristic{G}\cexpectationlong{\mathcal{G}}{\characteristic{F}\characteristic{H}}} \\
+&=
+\expectation{\characteristic{G}\cexpectationlong{\mathcal{G}}{\characteristic{F}}\cexpectationlong{\mathcal{G}}{\characteristic{H}}} \\
+&=
+\expectation{\cexpectationlong{\mathcal{G}}{\characteristic{F}\characteristic{G}}\cexpectationlong{\mathcal{G}}{\characteristic{H}}} \\
+&=
+\expectation{\characteristic{F}\characteristic{G}\cexpectationlong{\mathcal{G}}{\characteristic{H}}} \\
+\end{align*}
+Now note that set of all intersections $F \cap G$ is a $\pi$-system
+that contains $\Omega$ and therefore by Lemma
+\ref{ConditionalExpectationExtension} and the defining property of
+conditional expectation we have
+$\cexpectationlong{\mathcal{G}}{\characteristic{H}} =
+\cexpectationlong{\mathcal{F},\mathcal{G}}{\characteristic{H}}$.
+
+To show the converse, we take $F \in \mathcal{F}$ and $H \in
+\mathcal{H}$ and
+\begin{align*}
+\cexpectationlong{\mathcal{G}}{\characteristic{F}\characteristic{H}} &=
+\cexpectationlong{\mathcal{G}}{\cexpectationlong{\mathcal{F},
+    \mathcal{G}}{\characteristic{F}\characteristic{H}}} \\
+&= \cexpectationlong{\mathcal{G}}{\characteristic{F}\cexpectationlong{\mathcal{F},
+    \mathcal{G}}{\characteristic{H}}} \\
+&= \cexpectationlong{\mathcal{G}}{\characteristic{F}} \cexpectationlong{\mathcal{F},
+    \mathcal{G}}{\characteristic{H}}\\
+&= \cexpectationlong{\mathcal{G}}{\characteristic{F}} \cexpectationlong{\mathcal{G}}{\characteristic{H}}\\
+\end{align*}
+Now the last claim follows simply we have shown both
+statements are equivalent to the fact that
+$\cprobability{\mathcal{G}}{H} =
+\cprobability{\mathcal{F},\mathcal{G}}{H}$ for all $H \in \mathcal{H}$.
+\end{proof}
+
+\begin{lem}\label{ConditionalIndependenceChainRule}Given $\sigma$-algebras $\mathcal{G}$, $\mathcal{H}$ and
+  $\mathcal{F}_1, \mathcal{F}_2, \dots$, then
+  $\cindependent{\mathcal{H}}{\left( \mathcal{F}_1, \mathcal{F}_2,
+      \dots \right)}{\mathcal{G}}$ if and only if $\cindependent{\mathcal{H}}{ \mathcal{F}_{n+1}}{\left(  \mathcal{G},\mathcal{F}_1, \mathcal{F}_2,
+      \dots , \mathcal{F}_n\right)}$ for all $n \geq 0$.
+\end{lem}
+\begin{proof}
+If we assume the second property then we can conclude from Lemma
+\ref{ConditionalIndependenceDoob} and an induction on $n \geq 0$ that
+for every $H \in \mathcal{H}$,
+\begin{align*}
+\cprobability{\mathcal{G}}{H} &= 
+\cprobability{\mathcal{G}, \mathcal{F}_1}{H} = 
+\cprobability{\mathcal{G}, \mathcal{F}_1, \mathcal{F}_2}{H} = \cdots
+\end{align*}
+and therefore by another application of Lemma
+\ref{ConditionalIndependenceDoob}, we know that
+$\cindependent{\mathcal{H}}{\left (\mathcal{F}_1, \dots,
+    \mathcal{F}_n\right)}{\mathcal{G}}$ for every $n \geq 1$.  Now
+$\cup_n \sigma(\mathcal{F}_1, \dots, \mathcal{F}_n)$ is a $\pi$-system that generates
+$\sigma(\mathcal{F}_1, \mathcal{F}_2, \dots)$ and therefore
+application of Lemma \ref{ConditionalIndependencePiSystem} shows us
+that  $\cindependent{\mathcal{H}}{\left( \mathcal{F}_1, \mathcal{F}_2,
+      \dots \right)}{\mathcal{G}}$.
+
+On the other hand, if we assume $\cindependent{\mathcal{H}}{\left( \mathcal{F}_1, \mathcal{F}_2,
+      \dots \right)}{\mathcal{G}}$ then for any $n \geq 1$, and $H \in
+  \mathcal{H}$, we apply the telescoping rule, Lemma
+  \ref{ConditionalIndependenceDoob} and the pull out rule to get
+\begin{align*}
+\cprobability{\mathcal{G}, \mathcal{F}_1, \dots, \mathcal{F}_n}{H} &=
+\cexpectationlong{\mathcal{G}, \mathcal{F}_1, \dots,
+  \mathcal{F}_n}{\cprobability{\mathcal{G}, \mathcal{F}_1,
+    \mathcal{F}_2, \dots }{H}} \\
+&=\cexpectationlong{\mathcal{G}, \mathcal{F}_1, \dots,
+  \mathcal{F}_n}{\cprobability{\mathcal{G}}{H}} \\
+&=\cprobability{\mathcal{G}}{H}
+\end{align*}
+so in particular, for all $n \geq 0$,
+\begin{align*}
+\cprobability{\mathcal{G}, \mathcal{F}_1, \dots, \mathcal{F}_n}{H} &= \cprobability{\mathcal{G}, \mathcal{F}_1, \dots, \mathcal{F}_{n+1}}{H}
+\end{align*}
+Another application of Lemma \ref{ConditionalIndependenceDoob} shows
+that $\cindependent{\mathcal{H}}{ \mathcal{F}_{n+1}}{\left(  \mathcal{G},\mathcal{F}_1, \mathcal{F}_2,
+      \dots , \mathcal{F}_n\right)}$ for all $n \geq 0$.
+\end{proof}
+
+\begin{lem}Suppose $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}}$ and $\mathcal{A} \subset \mathcal{F}$,
+  then $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{A},\mathcal{G}}$.
+\end{lem}
+\begin{proof}
+By Lemma \ref{ConditionalIndependenceDoob}, we know for all $H \in
+\mathcal{H}$, 
+$\cprobability{\mathcal{G}}{H} =
+\cprobability{\mathcal{F},\mathcal{G}}{H}$. On the other hand, since
+$\mathcal{A} \subset \mathcal{F}$ we also have $\mathcal{G} \subset
+\sigma(\mathcal{A}, \mathcal{G}) \subset \sigma(\mathcal{F},
+\mathcal{G})$ and therefore we can conclude
+$\cprobability{\mathcal{F},\mathcal{G}}{H} = \cprobability{\mathcal{A},\mathcal{G}}{H}$.
+Since $\mathcal{A} \subset \mathcal{F}$ we know that $\sigma(\mathcal{A},
+\mathcal{F}, \mathcal{G}) = \sigma(\mathcal{F}, \mathcal{G})$ and we
+get $\cprobability{\mathcal{F},\mathcal{A},\mathcal{G}}{H} =
+\cprobability{\mathcal{A},\mathcal{G}}{H}$.
+Another application of Lemma \ref{ConditionalIndependenceDoob} tells
+us that $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{A},\mathcal{G}}$.
+\end{proof}
+
+\subsection{Conditional Distributions and Disintegration}
+Now for a more subtle concept in conditioning.  Consider a random
+element $\xi$ in a measurable space $(S,\mathcal{S})$ and a random
+element $\eta$ in a measurable space $(T,\mathcal{T})$.  We'd like to
+make sense of the conditional distribution of $\xi$ given a value of
+$\eta$.  Two things should occur to us.  First, such an object sounds
+like it should a mapping from $T$ to a space of measures on $S$.  Second, we
+expect that we'll actually define this object in terms of the
+conditional expectation and that it will likely wind up as an
+$\eta$-measurable random measure on $\Omega$.  A third thing might also
+occur to us: namely these two representations are equivalent.  As it
+turns out, due to the fact that conditional expectations are only
+defined up to almost sure equivalence, this last supposition is not true and we often must make
+additional assumptions to arrange for the existence of the mapping of
+$T$ to the space of measures on $S$. 
+
+\subsubsection{Probability Kernels}
+Before jumping into the development of conditional distributions
+proper we need to step back a bit and make sure we've laid a proper
+foundation for the discussion.  We wrote heuristically above about a
+mapping to a space of measures.  This is a concept that will come up in a variety of contexts from this point
+on and we glossed over the fact that we want such a mapping to have
+measurability properties.  There are a couple of equivalent ways of
+formulating the notion of a measurable family of measures;  we
+explore these now.
+To formalize, we have the following definition
+\begin{defn}
+Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable spaces.  A
+\emph{probability kernel} from $S$ to $T$ is a function $\mu : S
+\times \mathcal{T} \to [0,1]$ 
+such that for every fixed $s \in S$, $\mu(s, \cdot) : \mathcal{T} \to
+[0,1]$ is a probability measure and for every fixed $A \in
+\mathcal{T}$, $\mu(\cdot, A) : S \to [0,1]$ is Borel measurable.
+\end{defn}
+
+It is useful to have some alternative characterizations of the
+measurability properites of kernels but before we can state them we
+need another definition.
+\begin{defn}Given a measurable space $(S, \mathcal{S})$, then
+  $\mathcal{P}(S)$ is the space of probability measures on $S$ with
+  the $\sigma$-algebra generated by all sets of the form $\lbrace \mu
+  \mid \mu(A) \in B \rbrace$ for $A \in \mathcal{S}$ and $B \in
+  \mathcal{B}([0,1])$.  Alternatively, for each $A \in \mathcal{S}$,
+  define the evaluation map $\pi_A : \mathcal{P}(S) \to [0,1]$ by
+  $\pi_A(\mu) = \mu(A)$ and then take the $\sigma$-algebra generated
+  by all of the evaluation maps.
+\end{defn}
+
+As promised, we have the following lemma that gives a couple of
+alternative characterizations of the measurability condition of a
+kernel; including the obligatory monotone class argument.
+\begin{lem}\label{KernelMeasurability}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
+  spaces and $\mu_s$ be a family of probability measures on $T$.  Then
+  the following are equivalent
+\begin{itemize}
+\item[(i)]$\mu : S \times \mathcal{T} \to [0,1]$ is a probability kernel
+\item[(ii)]$\mu : S \to \mathcal{P}(T)$ is measurable
+\item[(iii)]$\mu(s, A) : S \to [0,1]$ is Borel measurable for every $A$
+  belonging to a $\pi$-system that generates $\mathcal{S}$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+First suppose that $\mu$ is a kernel, $A \in \mathcal{T}$
+and $B$ is a Borel
+measurable subset of $[0,1]$.  Then 
+\begin{align*}
+\mu^{-1}(\lbrace \nu \mid \nu(A)
+\in B \rbrace) &= \lbrace s \in S \mid \mu(s,A) \in B \rbrace =
+\mu(\cdot, A)^{-1}(B)
+\end{align*}
+which is measurable by the kernel property.  Since sets of the form $\lbrace \nu \mid \nu(A)
+\in B \rbrace$ generate the $\sigma$-algebra on $\mathcal{P}(T)$ we
+see that $\mu$ is measurable by Lemma \ref{MeasurableByGeneratingSet}.
+
+To see that (ii) implies (i), observe that for a fixed $A \in
+\mathcal{T}$ and let $\pi_A(\nu) = \nu(A)$ be the evaluation map.  By
+construction the $\pi_A$ are measurable.  For such a fixed $A$, we see
+that $\mu(s, A) = \pi_A(\mu)$ therefore as a composition of measurable
+maps we see that $\mu(s,A)$ is $\mathcal{S}$-measurable (Lemma
+\ref{CompositionOfMeasurable}).
+
+The implication (i) implies (iii) is immediate.  If we assume (iii)
+then we derive (i) by a monotone class argument.  By Theorem
+\ref{MonotoneClassTheorem} it suffices to show that $\mathcal{C} =
+\lbrace A \mid \mu(s, A) : S \to [0,1] \text { is measurable}\rbrace$
+is a $\lambda$-system.  If $A \subset B$ with $A,B \in \mathcal{C}$
+then $\mu(s, B \setminus A) = \mu(s, B) - \mu(s,A)$ is measurable.  If
+$A_1 \subset A_2 \subset \cdots$ with $A_n \in \mathcal{C}$ then by
+continuity of measure (Lemma \ref{ContinuityOfMeasure}) applied
+pointwise in $s$, we see $\mu(s, \cup_n A_n) = \lim_n \mu(s, A_n)$
+which shows measurability by Lemma \ref{LimitsOfMeasurable}.
+\end{proof}
+
+There is a useful generalization of the product measure construction
+involving kernels.  It is a type of ``twisted'' product construction.
+\begin{defn}Let $\mu : S \times \mathcal{T} \to [0,1]$ be a
+  probability kernel from $S$ to $T$ and $\nu : S \times T \times
+  \mathcal{U} \to [0,1]$ be a probability kernel from $S \times T$ to
+  $U$, we then define $\mu \otimes \nu : S \times \mathcal{T} \otimes
+  \mathcal{U} \to [0,1]$ by
+\begin{align*}
+\mu \otimes \nu(s, A) &= \int \int \characteristic{A}(t,u) \,
+d\nu(s,t,du) \, d\mu(s, dt)
+\end{align*}
+\end{defn}
+
+The fact that this construction defines a probability kernel is the
+content of the next Lemma.
+\begin{lem}Suppose $\mu : S \times \mathcal{T} \to [0,1]$ is a
+  probability kernel from $S$ to $T$ and $\nu : S \times T \times
+  \mathcal{U} \to [0,1]$ be a probability kernel from $S \times T$ to
+  $U$.  Let $f : S \times T \to \reals_+$ and $g
+  : S \times T \times \to U$  be measurable then 
+\begin{itemize}
+\item[(i)] $\int f (s, t) \, d\mu(s,dt)$ is a measurable function of $s \in S$.
+\item[(ii)] $\mu_s \circ (g(s, \cdot))^{-1}$ is a kernel from $S$ to $U$.
+\item[(iii)] $\mu \otimes \nu$ is a kernel from $S$ to $T \times U$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+To see (i), we apply the standard machinery.  First consider $f(s,t) = \characteristic{A\times B}(s,t)$
+for $A \in \mathcal{S}$ and $B \in \mathcal{T}$.  In this case, 
+\begin{align*}
+\int \characteristic{A \times B} (s, t) \, d\mu(s,dt) &=
+\characteristic{A} (s)\int \characteristic{B} (t) \, d\mu(s,dt)
+=\characteristic{A} (s) \mu(s,B)
+\end{align*}
+which is $\mathcal{S}$-measurable by measurability of $A$ and the fact
+that $\mu$ is a kernel.  We extend to the case of general characteristic
+functions by observing that products $A \times B$ are a generating
+$\pi$-system for the $\sigma$-algebra $\mathcal{S} \otimes
+\mathcal{T}$.  Additionally we must show that $\mathcal{C} = \lbrace C
+\in \mathcal{S} \otimes \mathcal{T} \mid \int \characteristic{A \times
+  B} (s, t) \, d\mu(s,dt) \text { is measurable} \rbrace$ is a
+$\lambda$-system.  To see this first assume that $A \subset B$ with
+$A,B \in \mathcal{C}$.  Then by linearity of integral, $\int
+\characteristic{B \setminus A} (s, t) \, d\mu(s,dt) = \int
+\characteristic{B} (s, t) \, d\mu(s,dt) - \int
+\characteristic{A} (s, t) \, d\mu(s,dt)$ which shows $B \setminus A \in
+\mathcal{C}$.  Secondly if $A_1 \subset A_2 \subset \cdots$ is a chain
+in $\mathcal{C}$ then by Monotone Convergence applied pointwise in
+$s$, we have $\int \characteristic{\cup_n A_n} (s, t) \, d\mu(s,dt) =
+\lim_{n\to \infty} \int \characteristic{A_n} (s, t) \, d\mu(s,dt)$
+which shows $\cup_n A_n \in \mathcal{C}$ because limits of measurable functions are measurable
+(Lemma \ref{LimitsOfMeasurable}).  Now an application of Theorem
+\ref{MonotoneClassTheorem} shows the result.
+
+By $\mathcal{S}$-measurability for characteristic functions and
+linearity of integral, we see that $\int f (s, t) \, d\mu(s,dt)$ is
+$\mathcal{S}$-measurable for simple functions and by definition of
+integral we see that for any positive measurable $f$ with an
+approximation by simple functions $f_n \uparrow f$ we note that for
+each fixed $s$, $f_n$ are simple functions of $t$ alone so $\int f (s,
+t) \, d\mu(s,dt) = \lim_{n} \int f_n (s,
+t) \, d\mu(s,dt)$ showing $\mathcal{S}$-measurability by another
+application of Lemma \ref{LimitsOfMeasurable}.  Lastly extending to
+general integrable $f$, write $f = f_+ - f_-$ and use linearity of
+integral.
+
+Having proven (i) we derive (ii) and (iii) from it.  To see (ii)
+assume that $A \in \mathcal{U}$ and note that for fixed $s$, if we
+denote the section of $g$ at $s$ by $g_s : T \to U$ then it is
+elementary that $\characteristic{g_s^{-1}(A)}(t) =
+\characteristic{g^{-1}(A)}(s,t)$ and thus
+\begin{align*}
+\mu_s \circ (g(s, \cdot))^{-1}(A) &= \mu(s, g^{-1}(s, A)) = \mu(s, g^{-1}(A)) 
+\end{align*}
+which we have shown is $\mathcal{S}$-measurable in (i).
+
+To see (iii), pick $A \in \mathcal{T} \otimes \mathcal{U}$ and recall
+that by definition
+\begin{align*}
+\mu \otimes \nu (A) (s) &= \int \int \characteristic{A}(t,u) \,
+d\nu(s,t,du) \, d\mu(s, dt)
+\end{align*}
+We know that $\characteristic{A}(t,u)$ is $\mathcal{T} \otimes
+\mathcal{U}$-measurable hence also $\mathcal{S} \otimes \mathcal{T} \otimes
+\mathcal{U}$-measurable.  Therefore we can apply (i) to conclude that $\int \characteristic{A}(t,u) \,
+d\nu(s,t,du)$ is $\mathcal{S} \otimes \mathcal{T}$-measurable.  Now
+apply (i) again to conclude that $\mu \otimes \nu (A) (s)$ is $\mathcal{S}$-measurable.
+\end{proof}
+
+\begin{thm}\label{ExistenceConditionalDistribution}Let $(S, \mathcal{S})$ be a Borel space and
+  $(T, \mathcal{T})$ be an arbitrary measuable space.  Let $\xi$ be a
+  random element in $S$ and $\eta$ be a random element in $T$.  There
+  is exists a probability kernel $\mu : T \times \mathcal{S} \to
+  \reals$ such that $\cprobability{\eta }{\xi \in A}(\omega) =
+  \mu(\eta(\omega), A)$ for all $A \in \mathcal{S}$ and $\omega \in
+  \Omega$.  Furthermore, if $\tilde{\mu}$ is another probability
+  kernel satisfying this property then $\mu = \tilde{\mu}$ almost
+  surely with respect to $\mathcal{L}(\eta)$.
+\end{thm}
+\begin{proof}
+TODO:  Reduce to the case of $S = \reals$ and use density of rationals
+and properties of distribution functions to create a regular version.
+\end{proof}
+
+\begin{thm}\label{Disintegration}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
+  spaces and let $\xi$ be a random element in $S$ and $\eta$ be a
+  random element in $T$.  Suppose $\cprobability{\mathcal{F}}{\xi \in
+    \cdot}$ has a regular version $\nu : \Omega \times \mathcal{S} \to
+  \reals$ and suppose $\eta$ is
+  $\mathcal{F}$-measurable.  Suppose $f : S \times T \to \reals$ is
+  measurable with either $f \geq 0$ or $\expectation{\abs{f(\xi, \eta)}}< \infty$.  Then 
+\begin{align*}
+\expectation{f(\xi, \eta)} &= \expectation{\int f(s, \eta) \, d\nu(s)}
+\end{align*}
+and moreover
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{f(\xi, \eta)} &= \int f(s, \eta) \, d\nu(s)
+\text{ a.s.}
+\end{align*}
+\end{thm}
+\begin{proof}
+The proof is an application of the standard machinery.
+To start with we assume that $f = \characteristic{A \times B}$ for $A
+\in \mathcal{S}$ and $B \in \mathcal{T}$.  
+Then 
+\begin{align*}
+\expectation{f(\xi, \eta)}  &= 
+\expectation{\characteristic{A}(\xi) \characteristic{B}(\eta)} \\
+&= \expectation{\cexpectationlong{\mathcal{F}}{\characteristic{A}(\xi)} \characteristic{B}(\eta) } \\
+&= \expectation{\nu(A) \characteristic{B}(\eta)} \\
+&= \expectation{\int \characteristic{A}(s) \characteristic{B}(\eta)
+  d\nu(s) } \\
+&= \expectation{\int f(s, \eta)  d\nu(s) } \\
+\end{align*}
+
+Now we extend to the set of all $C \in \mathcal{S}\otimes
+\mathcal{T}$ by using a Monotone Class Argument (Theorem
+\ref{MonotoneClassTheorem}).  Let $\mathcal{C} = \lbrace C \in \mathcal{S}\otimes
+\mathcal{T} \mid \expectation{\characteristic{C}(\xi, \eta)} = \expectation{\int
+  \characteristic{C}(s, \eta)  d\nu(s) } \rbrace$
+Since the set of all $A \times B$ is a $\pi$-system
+containing $S \times T$ it suffices to show that $\mathcal{C}$ is a $\lambda$-system.
+Suppose $C, D \in \mathcal{D}$ and $C \subset D$; then we see $D
+\setminus C \in \mathcal{C}$ by
+noting $\characteristic{D \setminus C} = \characteristic{D} -
+\characteristic{C}$ and applying linearity of expectation and
+integral.  If we assume $C_1 \subset C_2 \subset \cdots$ with $C_n \in
+\mathcal{C}$, then
+$\characteristic{\cup_n C_n} = \lim_{n \to \infty}
+\characteristic{C_n}$ and the Monotone Convergence Theorem implies
+$\expectation{\characteristic{\cup_n C_n}(\xi, \eta)} = \lim_{n \to
+  \infty}\expectation{\characteristic{C_n}(\xi, \eta)}$.  Similarly
+for fixed $\omega \in \Omega$, $\int \characteristic{\cup_n C_n}(s,
+\eta) \, d\nu(s) = \lim_{n \to \infty} \int \characteristic{C_n}(s,
+\eta) \, d\nu(s)$, moreover monotonicity of integral implies that $\int \characteristic{C_n}(s,
+\eta) \, d\nu(s)$
+is increasing in $n$.  Therefore we may apply Monotone Convergence a
+second time to conclude that
+\begin{align*}
+\expectation{\int \characteristic{\cup_n C_n}(s,\eta) \, d\nu(s) } &=
+\lim_{n\to \infty}\expectation{\int \characteristic{C_n}(s,\eta) \, d\nu(s) } 
+\end{align*}
+Therefore we see that $\cup_n C_n \in
+\mathcal{C}$.  
+
+Extending the result to simple functions is trivial since both sides
+are linear in $f$.
+
+Now we suppose that $f : S \times T \in \reals$ is positive
+measurable.  We pick an approximation of $f$ by an increasing sequence
+of positive simple functions $0 \leq f_n \uparrow f$.  Now $f_n(\xi,
+\eta)$ is an increasing sequence of positive simple functions with
+$\lim_{n \to \infty} f_n(\xi, \eta) = f(\xi, \eta)$ and therefore by
+definition of expectation, $\expectation{f(\xi, \eta)} = \lim_{n \to
+  \infty} \expectation{f_n(\xi, \eta)}$.  Similarly for fixed $\omega
+\in \Omega$ we have $f_n(s, \eta)$ are positive simple functions increasing to
+$f(s, \eta)$ and therefore $\int f(s, \eta) \, d\nu(s) = \lim_{n \to
+  \infty} \int f_n(s, \eta) \, d\nu(s)$.  Monotonicity of integral shows
+that  the sequence $\int f_n(s, \eta) \, d\nu(s)$ is positive and
+increasing and therefore we may apply Monotone Convergence and the
+fact that result holds for the $f_n$ to show
+that 
+\begin{align*}
+\expectation{\int f(s, \eta) \, d\nu(s)} &= \lim_{n \to
+  \infty} \expectation{\int f_n(s, \eta) \, d\nu(s)} = \lim_{n \to \infty} \expectation{f_n(\xi, \eta)} = \expectation{f(\xi, \eta)}
+\end{align*}  
+Therefore the
+result for positive measurable $f$.
+
+Lastly for general integrable $f$, we know by the result for positive
+$f$ that
+\begin{align*}
+\expectation{\int \abs{f(s, \eta)} \, d\nu(s)} &=
+\expectation{\abs{f(\xi, \eta)}} < \infty
+\end{align*}
+Which shows us that $\int \abs{f(s, \eta)} \, d\nu(s) < \infty$ almost
+surely.  Then we can write $f = f_+ - f_-$ and use the the result for
+postive $f$ and linearity.
+
+The last thing to do is to extend the result to the case of
+conditional expectations.  Let $f : S \times T \to \reals_+$ be
+positive and let $A \in \mathcal{F}$.  Consider $(\eta,
+\characteristic{A})$ as a random element of $T \times \lbrace 0,1\rbrace$.  Note that this
+random element is $\mathcal{F}$-measurable since $\eta$ is and $A \in
+\mathcal{F}$.  Therefore we can apply the case just proven to the
+function $\tilde{f} : S \times T \times \lbrace 0,1 \rbrace \to
+\reals_+$ given by $\tilde{f}(s,t,u) = u f(s,t)$ and the elements $\xi$
+and $(\eta, \characteristic{A})$ to get
+\begin{align*}
+\expectation{f(\xi, \eta) ; A} &= \expectation {\int f(s, \eta)
+  \characteristic{A} \, d\nu(s)} = \expectation {\int f(s, \eta)
+  \, d\nu(s) ; A}
+\end{align*}
+which shows that $\cexpectationlong{\mathcal{F}}{f(\xi,\eta)} = \int f(s, \eta)
+  \, d\nu(s)$ a.s. for $f \geq 0$.  The case of integrable $f$ follows as
+  usual by taking differences.
+\end{proof}
+
+Special case of random vectors with densities.  Suppose we are given
+$\xi : \Omega \to \reals^m$ and $\eta: \Omega \to \reals^n$ such that
+$(\xi,\eta)$ has density $f$ on $\reals^{m+n}$.  Then $\xi$ and $\eta$ have
+densities $f_{\xi}$ and $f_\eta$ called the marginal densities and we
+get a conditional densities $f(x,y)/f_\xi(x)$ and $f(x,y)/f_\eta(y)$.
+TODO: Tie this back to conditional distributions as defined in the
+general case (this is an exercise in Kallenberg for example).
+
+We've seen that given a specified distribution we can always find a
+random variable with that specfied distribution.  Moreover, we know
+that if we allow ourselves to to extend the probability space then we
+can construct such a random variable to be independent of any existing
+random elements (or $\sigma$-algebras).  We now turn our attention to
+the analogous problem space for conditional distributions.  The
+simplest such result shows that given a random element and a
+prescribed probability kernel we can always find a second random
+element whose conditional distribution is the kernel.
+\begin{lem}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
+  spaces, $\mu : T \times \mathcal{S} \to \reals$ be a
+  probability kernel and $\eta$ be a random element in $T$.  There
+  exists an extension $\hat{\Omega}$ and a random element $\xi$ in
+  $\hat{\Omega} \to S$
+  such that $\cprobability{\eta}{\xi \in \cdot} = \mu(\eta, \cdot)$
+  a.s.   and $\cindependent{\xi}{\zeta}{\eta}$ for every random element
+  $\zeta$ defined on $\Omega$.
+\end{lem}
+\begin{proof}
+The appropriate construction is thrust upon us by Theorem
+\ref{Disintegration}.  Note that if we succeed in constructing $\xi$
+then that result tells how to compute expectations on $\hat{\Omega}$.
+Following that lead, define
+$(\hat{\Omega}, \hat{\mathcal{A}}) = (S \times \Omega,
+\mathcal{S} \otimes \mathcal{A})$.  Define the probability measure 
+\begin{align*}
+\hat{P}(A) &= \expectation{\int \characteristic{A}(s,\omega) \,
+  d\mu(\eta, s)}
+\end{align*}
+Note that $\hat{P}$ is an extension since for $A \in \mathcal{A}$, 
+\begin{align*}
+\hat{P}(S \times A) &= \expectation{\int \characteristic{S}(s)\characteristic{A}(\omega) \,
+  d\mu(\eta, s)} = \expectation{\characteristic{A}(\omega)} = P(A)
+\end{align*}
+
+Now define $\xi(s, \omega) = s$ and note that for $A \in \mathcal{S}$
+and $B \in \mathcal{A}$, 
+\begin{align*}
+\hat{P}(\xi \in A ; B) &=  \expectation{\int \characteristic{A}(s)\characteristic{B}(\omega) \,
+  d\mu(\eta, s)} = \expectation{\mu(\eta, A) ; B}
+\end{align*}
+which shows $\cprobability{\mathcal{A}}{\xi \in A}= \mu(\eta, A)$ a.s. 
+by the defining property of conditional expectation (note that since
+$\mu(\eta, A)$ and $\characteristic{B}$ are both
+$\mathcal{A}$-measurable, their expectation with respect to $P$ is the
+same as their expectation with respect to $\hat{P}$).  In particular,
+since we know that $\mu(\eta, A)$ is $\eta$-measurable we also know
+that $\cprobability{\mathcal{A}}{\xi \in A}=\cprobability{\eta}{\xi \in A} = \mu(\eta, A)$.
+
+This last observation also shows $\cindependent{\xi}{\mathcal{A}}{\eta}$ by an application of Lemma \ref{ConditionalIndependenceDoob}.
+\end{proof}
+
+The next result is closely related but uses a different construction
+that shows how one may use a single uniform randomization variable.
+
+\begin{lem}Let $(S, \mathcal{S})$ be a Borel space and $(T, \mathcal{T})$ be 
+  a general measurable space.  Let $\xi$ be a random element in $S$
+  and let $\eta, \tilde{\eta}$ be random elements in $T$.  There
+  exists a measurable function $f : T \times [0,1] \to S$ such that if
+  $\vartheta$ is a uniform random variable with
+  $\cindependent{\vartheta}{\tilde{\eta}}{}$ and we define
+  $\tilde{\xi} = f(\tilde{\eta}, \vartheta)$ then $(\xi, \eta) \eqdist
+  (\tilde{\xi}, \tilde{\eta})$.
+\end{lem}
+\begin{proof}
+TODO: I believe in some applications of this Lemma it can be
+convenient to assume that $\xi, \eta$ and $\tilde{\xi}, \tilde{\eta}$
+live on different probability spaces.  Validate this fact and restate
+to make it clear that this is true.
+
+First assume $S = \reals$.  By Theorem
+\ref{ExistenceConditionalDistribution} we have a probability kernel
+$\mu : T \times \mathcal{S} \to \reals$ such that
+$\cprobability{\eta}{\xi \in \cdot} = \mu(\eta, \cdot)$.  
+
+Furthermore, we know by Lemma TODO:???  we can find measurable $f : T
+\times [0,1] \to S$ such that the distribution of $f(t, \vartheta)$ is
+$\mu(t)$.  Now define $\tilde{\xi} = f(\tilde{\eta}, \vartheta)$,
+assume we have a measurable $g : S \times T \to \reals_+$ and
+calculate
+\begin{align*}
+\expectation{g(\tilde{\xi}, \tilde{\eta})} &=
+\expectation{g(f(\tilde{\eta}, \vartheta), \tilde{\eta})} \\
+&= \expectation{\int_0^1 g(f(\tilde{\eta},x), \tilde{\eta}) \, dx} & &
+\text{by independence of $\tilde{\eta}$ and $\vartheta$}\\
+&= \expectation{\int_0^1 g(f(\eta,x), \eta) \, dx} & &
+\text{by $\eta \eqdist \tilde{\eta}$}\\
+&= \expectation{\int g(s, \eta) \, d\mu(\eta,s)} & & \text{by
+  Lemma \ref{ExpectationRule}} \\
+&= \expectation{g(\xi, \eta)} & & \text{by Theorem \ref{Disintegration}}
+\end{align*}
+\end{proof}
+
+\begin{thm}[Jensen's Inequality]\label{JensenConditionalExpectation}Let $\xi$ be a random vector and $\mathcal{F}$ be a
+  $\sigma$-algebra.  If $\varphi$ is a convex function then
+  $\varphi(\cexpectationlong{\mathcal{F}}{\xi}) \leq
+    \cexpectationlong{\mathcal{F}}{\varphi(\xi)}$ a.s.
+If $\varphi$ is strictly convex then $\varphi(\cexpectationlong{\mathcal{F}}{\xi}) =
+    \cexpectationlong{\mathcal{F}}{\varphi(\xi)}$ if and only if $\xi =
+      \cexpectationlong{\mathcal{F}}{\xi}$ a.s.
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
