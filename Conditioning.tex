@@ -439,40 +439,31 @@ the result.
 Occasionally it can be useful to extend the defining property of
 conditional expectation beyond indicator functions.
 \begin{lem}Let $\xi \in L^1$ then for a $\sigma$-algebra $\mathcal{F}$
-  and all bounded $\eta \in L^1(\mathcal{F})$,
+  and for any $\eta \in L^1(\mathcal{F})$ such that $\eta \xi$ and
+  $\eta \cexpectation{\mathcal{F}}{\xi}$ are both integrable, 
   $\expectation{\cexpectation{\mathcal{F}}{\xi}\cdot\eta} = \expectation{\xi\cdot\eta} $.
 \end{lem}
 \begin{proof}
 This is a simple application of the standard machinery.
 Property (i) is exactly this statement for $\mathcal{F}$-measurable indicator functions.
 Linearity of expectation shows that the statement then holds for
-$\mathcal{F}$-measurable bounded simple functions.  For
-$\mathcal{F}$-measurable bounded $\eta \geq 0$, we pick an increasing
-approximation by bounded simple functions $\eta_n \uparrow \eta$.  First we
-assume that $\xi \geq 0$ as well and note by (iii) that
-$\cexpectation{\mathcal{F}}{\xi} \geq 0$ a.s. as well.  Now we can
-apply monotone convergence to the sequences
+$\mathcal{F}$-measurable simple functions.  For
+$\mathcal{F}$-measurable $\eta \geq 0$ satisfying the requirements of
+the Lemma, we pick an increasing
+approximation by simple functions $\eta_n \uparrow \eta$.
+Now we can
+apply Dominated Convergence to the sequences
 $\cexpectation{\mathcal{F}}{\xi} \cdot \eta_n$ and $\xi \cdot \eta_n$,
 \begin{align*}
 \expectation{\xi \cdot \eta} &= \lim_{n \to \infty} \expectation{\xi
-  \cdot \eta_n} & & \text{by Monotone Convergence} \\
+  \cdot \eta_n} & & \text{by Dominated Convergence} \\
 &=\lim_{n \to \infty} \expectation{\cexpectation{\mathcal{F}}{\xi} 
   \cdot \eta_n} \\
 &=\expectation{\cexpectation{\mathcal{F}}{\xi} 
-  \cdot \eta} & & \text{by Monotone Convergence} \\
+  \cdot \eta} & & \text{by Dominated Convergence} \\
 \end{align*}
-For general integrable $\xi$, we write $\xi = \xi_+ - \xi_-$ and use
-linearity of expectation and conditional expectation.  Lastly we
-extend to arbitrary bounded $\mathcal{F}$-measurable $\eta$ in a similar
-way.  
-
-
-TODO: Is there a shorter argument (that probably amounts to the
-same thing) using the density of $L^2$ in $L^1$?  TODO:  This
-statement is FALSE!  The product of integrable random variables is not
-necessarily integrable!  The above is true for BOUNDED random
-variables, but that isn't enough for our needs below.  Indeed it is
-better to prove these in $L^2$ and then take limits using (iv).
+For general integrable $\eta$ split into its positive and negative
+parts $\eta = \eta_+ - \eta_-$ and use linearity of expectation.
 \end{proof}
 
 TODO: Provide an example of conditional expectation and a dyadic
@@ -772,6 +763,23 @@ need another definition.
   by all of the evaluation maps.
 \end{defn}
 
+\begin{examp}
+The following special case of a probability kernel is easy to
+understand and also comes up in the theory of finite Markov chains.
+Suppose $S$ and $T$ are two finite probability spaces with the power
+set sigma algebra.  In this case a probability measure on $T$ is just
+a set of non-negative real numbers $p_t$ for $t \in T$ such $\sum_{t
+  \in T} p_t = 1$.  Therefore a probablity kernel from $S$ to $T$ is
+just a set of such vectors for each $s \in S$.   It is customary in
+the theory of finite Markov chains to view probabilities on $T$ as row
+vectors and thus view a probability kernel $\mu$ as an $S \times T$ matrix
+$\mu_{s,t}$ such that $\mu_{s,t} \geq 0$ and for each fixed $s \in S$
+we have $\sum_{t \in T} \mu_{s,t} = 1$.  Such a matrix with row sums
+equal to $1$ is sometimes called a \emph{stochastic matrix}.
+
+TODO: Is there anything to say about the measurability condition here?
+\end{examp}
+
 As promised, we have the following lemma that gives a couple of
 alternative characterizations of the measurability condition of a
 kernel; including the obligatory monotone class argument.
@@ -817,6 +825,27 @@ pointwise in $s$, we see $\mu(s, \cup_n A_n) = \lim_n \mu(s, A_n)$
 which shows measurability by Lemma \ref{LimitsOfMeasurable}.
 \end{proof}
 
+A point that shall occasionally come up is the fact that we shall use
+the previous lemma to shift interpretations of a kernel: sometimes
+thinking of it as a map $\mu : S \times \mathcal{T} \to [0,1]$ and
+sometimes as a map $\mu : S \to \mathcal{P}(T)$.  Often we will make
+such transitions between these perspectives without  comment but there
+are times in which we may use the notation $\mu(s,A)$ when thinking of
+the first realization and $\mu(s)$ when thinking of the second.  It is
+also the case that the notation for integrals with respect to kernels
+needs to be considered.  Up to this point we have notation $\int f \,
+d\mu$ for integrals and in those cases in which we wanted to make it
+clear what the integration variable is we might right $\int f(x) \,
+d\mu(x)$.  In a world with kernels the latter notation is unfortunate
+as become difficult to construe wheter the $x$ dependence indicated
+for the measure means an integration variable or whether it may
+indicate that the measure is a kernel with $x$ dependence.  To resolve
+this issue we shall adopt a different convention when discussing
+integrals against kernels and write $\int f(x) \, \mu(dx)$ to denote
+that $x$ is the integration variable.  This notation allows us to
+capture both integration variables and measure dependence in
+expressions such as $\int f(x) \, \mu(s, dx)$.
+
 There is a useful generalization of the product measure construction
 involving kernels.  It is a type of ``twisted'' product construction.
 \begin{defn}Let $\mu : S \times \mathcal{T} \to [0,1]$ be a
@@ -825,7 +854,7 @@ involving kernels.  It is a type of ``twisted'' product construction.
   $U$, we then define $\mu \otimes \nu : S \times \mathcal{T} \otimes
   \mathcal{U} \to [0,1]$ by
 \begin{align*}
-\mu \otimes \nu(s, A) &= \int \int \characteristic{A}(t,u) \,
+\mu \otimes \nu(s, A) &= \iint \characteristic{A}(t,u) \,
 d\nu(s,t,du) \, d\mu(s, dt)
 \end{align*}
 \end{defn}
@@ -896,7 +925,7 @@ which we have shown is $\mathcal{S}$-measurable in (i).
 To see (iii), pick $A \in \mathcal{T} \otimes \mathcal{U}$ and recall
 that by definition
 \begin{align*}
-\mu \otimes \nu (A) (s) &= \int \int \characteristic{A}(t,u) \,
+\mu \otimes \nu (A) (s) &= \iint \characteristic{A}(t,u) \,
 d\nu(s,t,du) \, d\mu(s, dt)
 \end{align*}
 We know that $\characteristic{A}(t,u)$ is $\mathcal{T} \otimes
@@ -905,6 +934,17 @@ We know that $\characteristic{A}(t,u)$ is $\mathcal{T} \otimes
 d\nu(s,t,du)$ is $\mathcal{S} \otimes \mathcal{T}$-measurable.  Now
 apply (i) again to conclude that $\mu \otimes \nu (A) (s)$ is $\mathcal{S}$-measurable.
 \end{proof}
+
+\begin{examp}
+For finite probability spaces $S$, $T$ and $U$ a probability kernel
+$\mu : S  \to \mathcal{P}(T)$ is a stochastic matrix $\mu_{s,t}$ and a
+probability kernel $\nu : S \times T \to \mathcal{P}(U)$ is a $(S
+\times T) \times U$
+stochastic matrix $\nu_{s,t, u}$ where we consider the pair $(s,t)$ to
+the row index.  If we now identify $(t,u)$ as column index in the 
+$S \times (T \times U)$ matrix $\mu \otimes \nu$ then $(\mu \otimes
+\nu)_{s,t,u} = \mu_s \nu_{s,t,u}$.
+\end{examp}
 
 \begin{thm}\label{ExistenceConditionalDistribution}Let $(S, \mathcal{S})$ be a Borel space and
   $(T, \mathcal{T})$ be an arbitrary measuable space.  Let $\xi$ be a
@@ -923,18 +963,22 @@ and properties of distribution functions to create a regular version.
 
 \begin{thm}\label{Disintegration}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
   spaces and let $\xi$ be a random element in $S$ and $\eta$ be a
-  random element in $T$.  Suppose $\cprobability{\mathcal{F}}{\xi \in
+  random element in $T$.  Suppose 
+\begin{itemize}
+\item[(i)] $\cprobability{\mathcal{F}}{\xi \in
     \cdot}$ has a regular version $\nu : \Omega \times \mathcal{S} \to
-  \reals$ and suppose $\eta$ is
-  $\mathcal{F}$-measurable.  Suppose $f : S \times T \to \reals$ is
-  measurable with either $f \geq 0$ or $\expectation{\abs{f(\xi, \eta)}}< \infty$.  Then 
+  \reals$ 
+\item[(ii)] $\eta$ is  $\mathcal{F}$-measurable 
+\item[(iii)] $f : S \times T \to \reals$ is
+  measurable with either $f \geq 0$ or $\expectation{\abs{f(\xi,
+      \eta)}}< \infty$
+\end{itemize}
+Then 
 \begin{align*}
-\expectation{f(\xi, \eta)} &= \expectation{\int f(s, \eta) \, d\nu(s)}
-\end{align*}
-and moreover
-\begin{align*}
+\expectation{f(\xi, \eta)} &= \expectation{\int f(s, \eta) \, d\nu(s)}\\
+\intertext{and moreover}
 \cexpectationlong{\mathcal{F}}{f(\xi, \eta)} &= \int f(s, \eta) \, d\nu(s)
-\text{ a.s.}
+\text{ a.s.} \\
 \end{align*}
 \end{thm}
 \begin{proof}
@@ -1035,6 +1079,55 @@ which shows that $\cexpectationlong{\mathcal{F}}{f(\xi,\eta)} = \int f(s, \eta)
   usual by taking differences.
 \end{proof}
 
+\begin{thm}[Jensen's Inequality]\label{JensenConditionalExpectation}Let $\xi$ be a random vector and $\mathcal{F}$ be a
+  $\sigma$-algebra.  If $\varphi$ is a convex function then
+  $\varphi(\cexpectationlong{\mathcal{F}}{\xi}) \leq
+    \cexpectationlong{\mathcal{F}}{\varphi(\xi)}$ a.s.
+If $\varphi$ is strictly convex then $\varphi(\cexpectationlong{\mathcal{F}}{\xi}) =
+    \cexpectationlong{\mathcal{F}}{\varphi(\xi)}$ if and only if $\xi =
+      \cexpectationlong{\mathcal{F}}{\xi}$ a.s.
+\end{thm}
+\begin{proof}
+Since $\reals^n$ is Borel by Theorem
+\ref{ExistenceConditionalDistribution} we know
+$\cprobability{\mathcal{F}}{\xi \in \cdot}$ has regular version
+$\mu$.  Now by Theorem \ref{Disintegration} and the ordinary Jensen
+Inequality (Lemma \ref{Jensen}) applied pointwise we know that 
+\begin{align*}
+\varphi(\cexpectationlong{\mathcal{F}}{\xi}) &= 
+\varphi \left( \int f(s) \, \mu(ds) \right) \leq \int \varphi (f(s))
+\, \mu(ds) = \cexpectationlong{\mathcal{F}}{\varphi(f(\xi))}
+\end{align*}
+
+TODO: The strictly convex/equality case
+\end{proof}
+
+As another application of Theorem \ref{Disintegration} we give a
+little result about the interaction between conditional indpendence
+and conditional expectations.
+\begin{cor}Let $\xi$ be a random element in $S$ such that
+  $\cprobability{\mathcal{G}}{\xi  \in \cdot}$
+has a regular version.  Then if
+$\cindependent{\xi}{\mathcal{G}}{\mathcal{F}}$ and $f : S \to \reals$ is
+measurable then
+$\cexpectationlong{\mathcal{G}}{f(\xi)} = \cexpectationlong{\mathcal{F}, \mathcal{G}}{f(\xi)}$.
+\end{cor}
+\begin{proof}
+Let $\mu$ be a regular version of $\cprobability{\mathcal{G}}{\xi  \in
+  \cdot}$ .  By Lemma \ref{ConditionalIndependenceDoob} we know that
+$\cprobability{\mathcal{G}}{\xi  \in \cdot} =
+\cprobability{\mathcal{F}, \mathcal{G}}{\xi  \in \cdot}$ and therefore
+$\mu$ is a regular version for $\cprobability{\mathcal{F}, \mathcal{G}}{\xi  \in \cdot}$ as well and
+by Theorem \ref{Disintegration}
+\begin{align*}
+\cexpectationlong{\mathcal{G}}{f(\xi)} &= \int f(s) \, \mu(ds) =
+\cexpectationlong{\mathcal{F}, \mathcal{G}}{f(\xi)} \text { a.s.}
+\end{align*}
+
+TODO: Is there a proof of this result that doesn't require the
+existence of regular versions?
+\end{proof}
+ 
 Special case of random vectors with densities.  Suppose we are given
 $\xi : \Omega \to \reals^m$ and $\eta: \Omega \to \reals^n$ such that
 $(\xi,\eta)$ has density $f$ on $\reals^{m+n}$.  Then $\xi$ and $\eta$ have
@@ -1136,14 +1229,4 @@ calculate
 \end{align*}
 \end{proof}
 
-\begin{thm}[Jensen's Inequality]\label{JensenConditionalExpectation}Let $\xi$ be a random vector and $\mathcal{F}$ be a
-  $\sigma$-algebra.  If $\varphi$ is a convex function then
-  $\varphi(\cexpectationlong{\mathcal{F}}{\xi}) \leq
-    \cexpectationlong{\mathcal{F}}{\varphi(\xi)}$ a.s.
-If $\varphi$ is strictly convex then $\varphi(\cexpectationlong{\mathcal{F}}{\xi}) =
-    \cexpectationlong{\mathcal{F}}{\varphi(\xi)}$ if and only if $\xi =
-      \cexpectationlong{\mathcal{F}}{\xi}$ a.s.
-\end{thm}
-\begin{proof}
-TODO:
-\end{proof}
+

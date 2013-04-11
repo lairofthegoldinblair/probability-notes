@@ -392,10 +392,10 @@ conclude they are jointly independent Gaussian with variance $(t_{i+1}
 
 The independence of the Brownian motion $B_{t+s} - B_s$ and $B_t$ for
 $0 \leq t \leq s$ follows from the property of independent
-increments.  Specifically, by Lemma TODO we know that it is sufficient
+increments.  Specifically, by the montone class argument of Lemma \ref{IndependenceFinitary} we know that it is sufficient
 to show independence for finite sets $\lbrace B_{{t_1}+s} - B_s,
 \dots ,B_{{t_n}+s} - B_s \rbrace$ and $\lbrace B_{s_1}, \dots,
-B_{s_m}\rbrace$ for $s_1 \leq \cdots \leq s_m \leq t_1 \leq \cdots \leq
+B_{s_m}\rbrace$ for all finite sequence of times $s_1 \leq \cdots \leq s_m \leq s$ and $0 \leq t_1 \leq \cdots \leq
 t_n$.  Observe that for any measurable random vectors $\xi_1, \dots ,
 \xi_n$ we have $\sigma(\xi_1, \xi_2 - \xi_1, \dots,\xi_n - \xi_1) =
 \sigma(\xi_1, \xi_2 - \xi_1, \dots,\xi_n - \xi_{n-1})$ (to see this
@@ -408,8 +408,71 @@ which establishes the result by applying the previous observation.
 \end{proof}
 
 \subsection{Skorohod Embedding and Donsker's Theorem}
+TODO: Clarify what we mean when we say a Brownian motion is
+independent of a $\sigma$-algebra.
+
+TODO: Introduce the right continuous filtration $\mathcal{F}^+_t$
 
 TODO: Strong Markov Property
+
+\begin{thm}[Markov  Property]\label{MarkovPropertyBrownianMotion}Let $B_t$ be a
+  Brownian motion then for any $s \geq 0$ the process $B^*_t = B_{t + s} -
+  B_s$ is a standard Brownian motion independent of $\lbrace B_t \mid
+  0 \leq t \leq s \rbrace$.
+\end{thm}
+\begin{proof}
+We simply walk through the defining properties of Brownian motion:
+\begin{itemize}
+\item[(i)] Clearly $B^*_0 = B_s - B_s = 0$.
+\item[(ii)] For any $0 \leq t_1 \leq \cdots \leq t_n$ the increment
+  $B^*_{t_j} - B^*_{t_{j-1}} = B^*_{s+ t_j} - B^*_{s+ t_{j-1}}$
+  therefore the independence of the increments $B^*_{t_2} -
+  B^*_{t_1}, \dotsc, B^*_{t_n} - B^*_{t_{n-1}}$ follows from the fact
+  that $B_t$ is a Brownian motion
+\item[(iii)]By the same argument as in (ii), for any $t_1 < t_2$ we
+  have $B^*_{t_2} -  B^*_{t_1} = B_{s+t_2} -  B_{s+t_1}$ is normallly
+  distributed with mean $0$ and variance $(s + t_2) - (s+t_1) = t_2 -
+  t_1$.
+\item[(iv)]The paths $B^*_t = B_{s+t}$ are almost surely continuous
+  because $B_t$ is a Brownian motion
+\end{itemize}
+
+To see the independence statement pick $0 \leq t_1 \leq \cdots \leq
+t_n$ and $0 \leq s_1 \leq \cdots \leq s_m \leq s$ 
+
+TODO: Finish
+\end{proof}
+
+\begin{thm}[Strong Markov
+  Property]\label{StrongMarkovPropertyBrownianMotion}Let $B_t$ be a
+  Brownian motion and let $\tau$ be an almost surely finite $\mathcal{F}^+$-optional
+  time, then $B^*_t = B_{\tau + t} - B_\tau$ is a standard Brownian
+  motion independent of $\mathcal{F}^+_\tau$.
+\end{thm}
+\begin{proof}
+\end{proof}
+
+The following corollary of the strong Markov property turns out to be
+a very useful tool in calculating the distributions of various
+functions of Brownian motion.  It is called the reflection principle
+because it shows that if one runs a Brownian motion up to an optional
+time $\tau$ and then reverses the sign of all subsequent increments
+(reflecting the graph of the Brownian motion with respect to the line
+$y=\tau$) then the resulting process has same distribution.  TODO: Draw a picture illustrating the
+geometry of reflection.
+\begin{lem}[Reflection Principle]\label{ReflectionPrinciple}Let $B_t$ be a Brownian motion and let $\tau$ be an
+  optional time then 
+\begin{align*}
+B^\prime_t &= B_{\tau \wedge t} - (B_t - B_{\tau \wedge t}) = \begin{cases}
+B_t & \text{when $t \leq \tau$} \\
+2 B_\tau - B_t & \text{when $t > \tau$}
+\end{cases}
+\end{align*}
+is a Brownian motion with the same distribution as $B_t$.
+\end{lem}
+\begin{proof}
+
+\end{proof}
 
 TODO: Skorohod Embedding
 

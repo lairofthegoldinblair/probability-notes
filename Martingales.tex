@@ -16,7 +16,7 @@ which we rather quickly specialize.
   \mathcal{S} \rbrace\right )
 \end{align*}
 \end{defn}
-Measurability with respect to the $\sigma$-algebra has a useful
+Measurability with respect to the $\sigma$-algebra $\mathcal{S}^T$ has a useful
 alternative characterization.  First we establish some notation.  If
 we consider a set function $X : \Omega \to S^T$ then can equivalently
 view this as a set function $\tilde{X} : \Omega \times T \to S$ via the
@@ -25,7 +25,7 @@ transforming $\tilde{X}$ to $X$  is called
 \emph{currying} in computer science).  We can also curry $X$ on $\Omega$
  to get an element $\hat{X} : T \to S^\Omega$.  It is customary to
 write $\hat{X}(t)$ as $X_t$.
-\begin{lem}Suppose one has a probability space $(\Omega,
+\begin{lem}\label{ProcessMeasurableProjections}Suppose one has a probability space $(\Omega,
   \mathcal{A})$, a measurable space $(S, \mathcal{S})$, an
   index set $T$ and a subset $U \subset S^T$.  Then $X : \Omega \to U$
   is $U \cap \mathcal{S}^T$-measurable if and only if $X_t : \Omega
@@ -56,6 +56,33 @@ shows that $X$ is measurable.
   \mathcal{S}^T$-measurable $X : \Omega \to U$ is called a
   \emph{stochastic process}.
 \end{defn}
+
+According to this definition, a stochastic process is simply a random
+element in a path space $(S^T, \mathcal{S}^T)$.  As such it has a
+distribution $\pushforward{X}{\mu}$ which is a measure on path space; as usual we will say
+that two stochastic processes $X$ and $Y$ are equal in distribution
+when their laws are equal.  Because of the nature of the
+$\sigma$-algebra on $\mathcal{S}^T$ there is a simple way to measure
+whether two processes are equal in distribution.
+
+\begin{lem}Let $X$ be a stochastic process then for every $t_1,
+  \dotsc, t_n$ then $(X_{t_1}, \dotsc, X_{t_n}) \in S^n$ is
+  $\mathcal{S}^{\otimes n}$-measurable and the measures
+  $\pushforward{(X_{t_1}, \dotsc, X_{t_n})}{\mu}$ are called the
+  \emph{finite dimensional distributions} of $X$.   If $X$ and $Y$ are
+  two stochastic processes then $X \eqdist Y$ if and only if their
+  finite dimensional distributions are equal.
+\end{lem}
+\begin{proof}
+The $\mathcal{S}^{\otimes n}$-measurability of $(X_{t_1}, \dotsc,
+X_{t_n})$ is consequence of Lemma \ref{ProcessMeasurableProjections}
+and the fact that a function in a product $\sigma$-algebra is
+measurable if and only if its coordinate projections are.
+
+If we suppose that $X \eqdist Y$ 
+TODO: Finish
+\end{proof}
+
 
 There are a great many things to be said about stochastic processes in
 general, however we will wait a bit to travel that road and instead begin to

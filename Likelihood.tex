@@ -20,46 +20,84 @@ TODO:
 As a quick motivation for where maximum likelihood estimation comes
 from, consider the following measure of distance between two
 probability distributions that was motivated by information theory.
-\begin{defn}Suppose $\mu$ and $\nu$ such that $\nu << \mu$.  The the \emph{Kullback-Liebler divergence} or \emph{relative
+\begin{defn}Suppose $\mu$ and $\nu$ such that $\mu << \nu$.  The the \emph{Kullback-Liebler divergence} or \emph{relative
     entropy} of $\mu$ and $\nu$ is defined as
 \begin{align*}
-\kldiv{\mu}{\nu} &= -\sexpectation{\log \frac{d\nu}{d\mu}}{\mu}
+\kldiv{\mu}{\nu} &= \sexpectation{\log \frac{d\mu}{d\nu}}{\mu}
 \end{align*}
-If $\nu$ is not absolutely continuous with respect to $\mu$ then by
+If $\mu$ is not absolutely continuous with respect to $\nu$ then by
 convention $\kldiv{\mu}{\nu} = \infty$.
 \end{defn}
 
 \begin{examp}
 Suppose $\mu$ and $\nu$ are probability measures that are both
 absolutely continuous with respect to a third measure $\lambda$ and
-furthermore $\nu << \mu$.  Then we may write $\mu = f \cdot \lambda$
+furthermore $\mu << \nu$.  Then we may write $\mu = f \cdot \lambda$
 and $\nu = g \cdot \lambda$ where we assume that $\lambda$- almost
-surely $f=0$ implies $g=0$.  In this case we can make sense of the
-ratio $\frac{g}{f}$ if we agree that $\frac{0}{0} = 0$ and in this
-case $\frac{d\nu}{d\mu} = \frac{g}{f}$.
+surely $g=0$ implies $f=0$ (otherwise the event $A=\lbrace g=0; f>0 \rbrace$
+satisfies $\nu(A)=0$ but $\mu(A)\neq 0$).  In this case we can make sense of the
+ratio $\frac{f}{g}$ if we agree that $\frac{0}{0} = 0$ and then $\frac{d\mu}{d\nu} = \frac{f}{g}$.
 
 In this case we get the formula 
 \begin{align*}
-\kldiv{\mu}{\nu} &= -\int \log(\frac{g}{f}) f \, d\lambda = \int \log(\frac{f}{g}) f \, d\lambda
+\kldiv{\mu}{\nu} &= \int \log(\frac{f}{g}) f \, d\lambda
 \end{align*}
-that the user may have encounter before.
+that the user may have encountered before.
+\end{examp}
+
+\begin{examp}One interpretation of relative entropy is that is the
+  number of bits of information that one gains updating ones that
+  belief that a probability distribution is $\nu$ to a belief that a
+  probability distribtuion is $\mu$.  The following simple example
+  illustrates the point.  In what follows we interpret $\log$ to be
+  the base 2 logarithm as opposed to the standard assumption that it
+  represents the natural logarithm.  Suppose you believe that a coin is fair.  In
+  this case you believe that the distribution is $\nu(H) = \nu(T) =
+  1/2$.  If someone tells you that the coin is a trick coin that only
+  lands with heads up then you change belief to $\mu(H) = 1$ and
+  $\mu(T)=0$.  It is easy to see that $\mu <<  \nu$ and using the formula for relative entropy in terms of
+  densities in the previous example we compute
+\begin{align*}
+\kldiv{\mu}{\nu} &= \log(\frac{1}{1/2}) \cdot 1 + \log
+(\frac{0}{1/2}) \cdot 0 = \log 2 = 1
+\end{align*}
+Thus one has gained $1$ bit of information; which is intuitively
+correct because on updating one's view of the probability distribution
+one has learned the outcome of a single binary trial.
+
+It is also instructive to consider the example with the roles of $\mu$
+and $\nu$ reversed.  In this case $\mu(T) = 0$ but $\nu(T) \neq 0$
+hence $\nu$ is not absolutely continuous with respect $\mu$ and
+therefore we have agreed that the relative entropy is infinite.  The convention
+is corroborated by the heuristic calculation
+\begin{align*}
+\kldiv{\nu}{\mu} &= \log(\frac{1/2}{1}) \cdot \frac{1}{2} + \log
+(\frac{1/2}{0}) \cdot \frac{1}{2} = \infty
+\end{align*}
+The intuition here is that in going from $\mu$ to $\nu$ we are
+learning that something that was formerly thought to be impossible is
+in fact possible and that the information gained from this is
+infinitely large.  Along the lines of this example one will often hear
+the relative entropy referred to as \emph{information gain} :
+particularly in the machine learning literature.
 \end{examp}
 
 \begin{lem}[Gibbs Inequality]\label{GibbsInequality}For all
   probability distributions $\mu$ and $\nu$, $\kldiv{\mu}{\nu} \geq 0$
   with equality if and only if $\mu$ and $\nu$ agree except on a set
-  of measure zero with respect to $\mu$.
+  of measure zero with respect to $\nu$.
 \end{lem}
 \begin{proof}
-It suffices to handle the case in which $\mu << \nu$.  In this case we
-can simply use the strict concavity of $\log$ and apply Jensen's inequality
+It suffices to handle the case in which $\nu << \mu$.  In this case we
+can simply use the strict convexity of $x \log x$ and apply Jensen's
+inequality and the definition of the Radon-Nikodym derivative to see
 \begin{align*}
-\kldiv{\mu}{\nu} &= -\sexpectation{\log \frac{d\nu}{d\mu}}{\mu} \geq
--\log \sexpectation{\frac{d\nu}{d\mu}}{\mu} = \log
-\sexpectation{1}{\nu} = 0
+\kldiv{\mu}{\nu} &= \sexpectation{\log \frac{d\mu}{d\nu}}{\mu} = \sexpectation{\frac{d\mu}{d\nu}\log \frac{d\mu}{d\nu}}{\nu} \geq
+\sexpectation{\frac{d\mu}{d\nu}}{\nu} \log \sexpectation{\frac{d\mu}{d\mu}}{\nu} = 
+\sexpectation{1}{\mu} \log \sexpectation{1}{\mu} = 0
 \end{align*}
-By strictness, we have equality if and only if $\frac{d\nu}{d\mu}$ is
-almost surely (with respect to $\mu$) a constant.  This constant must be $1$ because $\mu$ and
+By strict convexity of $x \log x$, we have equality if and only if $\frac{d\mu}{d\nu}$ is
+almost surely (with respect to $\nu$) a constant.  This constant must be $1$ because $\mu$ and
 $\nu$ are both probability measures.  
 \end{proof}
 
@@ -70,7 +108,7 @@ $\nu$ are both probability measures.
   $\lambda$.  The problems of (parametric) statistical estimation generally start
   with such an assumption and and assume there is distinguished
   \emph{true} value $\theta_0$ from among the elements of the set
-  $\Theta$.  The Gibbs Inequality suggests a potential path.  We know
+  $\Theta$.  Lemma \ref{GibbsInequality} suggests a potential path.  We know
   from the previous example that 
 \begin{align*}
 \kldiv{\theta_0}{\theta} &= \sexpectation{ \log( \frac{f(x \mid \theta_0)}{f(x
@@ -90,10 +128,8 @@ defined by the density such as one defined by sampling and consider
 contexts in which we maximize the function $f(x \mid \theta)$
 considered as a function of $\theta$.  This insight leads to the
 method of maximum likelihood which we shall study in some detail in
-the following chapter.
+the following chapter.  
 \end{examp}
-TODO: Bayesian interpretation as information gain upon changing
-belief.
 
 Now we apply this idea in the context of parametric estimation.  If we
 suppose that we are given a parametric family of densities $f(x;
@@ -615,7 +651,7 @@ expectation.  To the extent that the empirical measure converges we
 may hope that the estimator converges as well.  Less abstractly, we
 know from the Strong Law of Large Numbers that
 $\frac{1}{n}\sum_{i=1}^n \log f(\xi_i \mid \theta) \toas
-\sexpectation{\frac{1}{n}\sum_{i=1}^n \log f(\xi \mid
+\sexpectation{ \log f(x \mid
   \theta)}{\theta_0}$ so thinking of this as convergence of functions
 of $\theta$ we may hope that the convergence is strong enough so that
 the maxima converge.
@@ -815,9 +851,15 @@ Z(U_\theta, x) &= \inf_{\psi > \frac{\theta + \theta_0}{2}} \frac{f(x
 therefore $\sexpectation{Z(U_\theta, x)}{\theta_0} > 0$.
 
 If we pick $\theta < \theta_0$ then pick $U_\theta = (\theta/2,
-\infty)$ and note that $Z(U_\theta, x)$ is $+infty$ on $(\theta/2,
-\theta)$ and therefore $\sexpectation{Z(U_\theta, x)}{\theta_0} =
-+\infty$.
+\frac{\theta + \theta_0}{2})$ and note that 
+\begin{align*}
+Z(U_\theta, x) &= \begin{cases}
+\log \frac{\theta}{2\theta_0} & \text{if $x \leq \frac{\theta}{2}$} \\
+\log \frac{x}{\theta_0} & \text{if $\frac{\theta}{2} < x < \frac{\theta + \theta_0}{2}$} \\
++\infty & \text{if $\frac{\theta + \theta_0}{2} \leq x \leq \theta_0$}
+\end{cases}
+\end{align*} 
+and therefore $\sexpectation{Z(U_\theta, x)}{\theta_0} = +\infty$.
 
 Lastly we have to find a compact set $K$ such that
 $\sexpectation{Z(\reals_+ \setminus K, x)}{\theta_0} > 0$.  Pick $a >
@@ -834,10 +876,70 @@ so integrating,
   x)}{\theta_0} &= 
 \frac{1}{\theta_0} \int_0^{\frac{\theta_0}{a}} \log \frac{x}{\theta_0}
 \, dx
-+ \frac{\theta_0 - \frac{\theta_0}{a}}{\theta_0} \log a
++ \frac{\theta_0 - \frac{\theta_0}{a}}{\theta_0} \log a \\
+&=(\frac{1}{a} \log \frac{1}{a} - \frac{\theta_0}{a}) + \frac{\theta_0 - \frac{\theta_0}{a}}{\theta_0} \log a \\
 \end{align*}
+Note that the first term goes to $0$ as $a$ goes to $\infty$ and the
+second term goes to $\infty$ as $a$ goes to $\infty$ and therefore for
+sufficiently large $a$ we have $\sexpectation{Z(\reals_+ \setminus [\theta_0/a, a\theta_0],
+  x)}{\theta_0} > 0$.
 
-TODO:  Wait a minute, the first integral is $-\infty$!!!!!!
+Note also that as $a$ approaches $1$ the expectation approaches
+$-\theta_0 \leq 0$.  In this specific sense if we allow
+ourselves to consider regions of parameter space like $(\theta,
+\theta_0+\epsilon)$ for $\epsilon > 0$ small, then under sampling we expect the there
+is an estimate that is better (more likely) than the true parameter
+value.  TODO: Think more carefully about this fact and how to
+interpret it; should this disturb us?  Perhaps this shouldn't disturb
+us because the thing that allows us to create these regions on which 
+$\sexpectation{Z(U, x)}{\theta_0} < 0$ is precisely the fact that we
+are allowing ourselves to include $\theta_0 \in U$; without allowing
+that we can't create such a set.
+
+The basic
+phenomenon in this example can be summarized as:
+\begin{itemize}
+\item[(i)] Given a single observation $x$ then the
+MLE is $x$ with likelihood $1/x$; any $\theta > x$ has strictly smaller
+likelihood $1/\theta$ while any $\theta < x$ has likelihood $0$.
+\item[(ii)] For any $\theta \geq \theta_0$ we know that $\theta_0$ is
+  always a better estimator since we can only observe $x \leq
+  \theta_0$ and for these observations $\theta_0$ is always better.
+\item[(iii)] For any $\theta < \theta_0$ for any observations $x \leq
+  \theta$ we know that $\theta$ is a better estimator than $\theta_0$
+  by a finite factor, however for $\theta < x \leq \theta_0$ then
+  $\theta_0$ is a infinitely better estimator than $\theta$.
+\end{itemize}
+\end{examp}
+
+\begin{examp}
+This example illustrates the difficulties that can arise in applying
+the above results to conclude that an MLE is consistent when the
+parameter space is not compact.  Consider a
+normal family with parameter $\Theta = \lbrace (\mu, \sigma) \mid
+\sigma > 0 \rbrace$ given by
+$\frac{1}{\sqrt{2 \pi}\sigma} e^{-(x - \mu)^2/2\sigma}$.  We show that
+for any compact $K \subset \reals^2$ we have $\sexpectation{Z(K^c, x)}{\theta_0}
+= -\infty$ and therefore Theorem \ref{AsymptoticConsistencyMLE} does
+not apply.  In fact we show that for any compact $K$ we have $Z(K^c,
+x) = -\infty$.  This follows by noting that any compact $K$ is bounded
+hence there exists a value of $\mu$ such that $\lbrace (\mu, \sigma)
+\mid \sigma > 0\rbrace \subset K^c$.  Now we see that for such a
+$\mu$, 
+\begin{align*}
+\lim_{\sigma \to 0^+} \frac{f(x\mid \mu_0, \sigma_0)}{f(x \mid \mu,
+  \sigma)} &= \lim_{\sigma \to 0^+} \left( \log \sigma - \log \sigma_0
+  - \frac{(x - \mu_0)^2}{2\sigma_0} + \frac{(x - \mu)^2}{2\sigma}
+\right ) \neq -\infty
+\end{align*}
+TODO: Fix this argument; it is broken.  The limit is only negative
+infinity when $x$ is large enough so that $\lbrace (x, \sigma) \mid
+\sigma > 0 \rbrace \subset \Theta \setminus K$.  That should be enough
+if we can show that the integral over the rest of the domain is not $+\infty$.
+
+On the other hand, one can compute the MLE explicitly in this case and
+verify that it is asymptotically consistent so we have shown that
+conditions of the theorem are sufficient but not necessary.
 \end{examp}
 
 TODO: The following Theorem only requires upper semi-continuity.

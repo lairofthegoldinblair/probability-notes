@@ -3,6 +3,44 @@ Holding area for more advanced topics in real analysis that are
 eventually required (and in some cases there may be some topics that I
 am just interested in).
 \subsection{Topological Spaces}
+\begin{lem}\label{OpenAlternative}A set $U \subset X$ is open if and only if for every $x \in
+  U$ there is an open set $V \subset U$ such that $x \in V$.
+\end{lem}
+\begin{proof}
+Suppose $U$ is open and $x \in U$, then let $V = U$.
+
+Suppose for every $x \in U$ there exist an open set $V_x$ such that $x
+\in V_x \subset U$.  Note that $\cup_x V_x \subset U$ because each
+$V_x \subset U$ and on the other hand $\cup_x V_x \supset U$ since
+every $x \in U$ satisfies $x \in V_x$.  Thus $U = \cup_x V_x$ which
+shows that $U$ is open.
+\end{proof}
+\begin{defn}A mapping $f : X \to Y$ between topological spaces is said
+  to be \emph{continuous} if and only if $f^{-1}(V)$ is open in $X$
+  for every $V$ open in $Y$.
+\end{defn}
+\begin{defn}A mapping $f : X \to Y$ between topological spaces is said
+  to be \emph{continuous at x} if and only if for every $V$ open in
+  $Y$ such that $f(x) \in V$, there exists an open set $U$ in $X$ with $x \in U$ and $f(U)
+  \subset V$.
+\end{defn}
+\begin{lem}A mapping $f : X \to Y$ between topological spaces is
+  continuous if and only if it is continuous at $x$ for every $x \in X$.
+\end{lem}
+\begin{proof}
+Suppose $f$ is continuous and let $x \in X$ and $V$ be open in $Y$
+with $f(x) \in V$.  By continuity of $f$, we know that $f^{-1}(V)$ is
+open in $X$ and $x \in f^{-1}(V)$.  By Lemma \ref{OpenAlternative} we
+can pick an open set $U$ such that $x \in U$ and $U \subset
+f^{-1}(V)$.  It follows that $f(U) \subset V$.
+
+Now suppose $f$ is continuous at every $x \in X$ and let $V$ be open
+in $Y$.  If $x \in f^{-1}(V)$ then $f$ is continuous at $x$ hence
+there exists and open $U$ such that $x \in U$ and $f(U) \subset V$.
+It follows that $U \subset f^{-1}(V)$ and by Lemma
+\ref{OpenAlternative}  we have shown that $f^{-1}(V)$ is open.
+\end{proof}
+
 \begin{defn}
 \begin{itemize}
 \item[(i)]A topological space is said to be \emph{separable} if and
@@ -21,6 +59,66 @@ outline of proof is to pick a countable dense subset $\lbrace x_n
 \rbrace$ and then pick the open balls $B(x_n; \frac{1}{m})$ for $m \in
 \naturals$.  Show this is a base of the topology.
 \end{proof}
+
+TODO: The goal of the next set of results is to show that separable
+complete metric spaces are Borel.
+
+
+The following appears in Royden as Theorem 8.11 (with proof delgated
+to exercises)
+\begin{lem}Let $X$ be a Hausdorff topological space, $Y$ be a
+  complete metric space and $Z \subset X$ be a dense subset.  If $f :
+  Z \to X$ is a homeomorphism then $Z$ is a countable intersection of
+  open sets.
+\end{lem}
+\begin{proof}
+For each $n$ let 
+\begin{align*}
+O_n &= \lbrace x \in X \mid \text{there exists $U$
+  open with $x \in U$ and $\diam(f(U \cap Z)) < \frac{1}{n}$} \rbrace
+\end{align*}
+Note that $O_n$ is open because for any $x \in O_n$ by definition we
+have the open set $U$ that provides the evidence that $x \in O_n$;
+$U$ also provides the evidence that proves that every $y \in U$
+belongs to $O_n$.  Also
+note that $Z \subset O_n$ since for any $n$, by continuity of $f$ at $x \in Z$ and Lemma
+\ref{OpenAlternative}  we
+can find an open $U \subset X$ such that $x \in U \cap Z$ and $f(U \cap Z) \subset B(f(x),
+\frac{1}{2n})$ (sets of the form $U \cap Z$ being precisely the open
+sets in $Z$).
+
+Now define $E = \cap_n O_n$.  As noted we know $Z \subset E$ so we
+will be done if we can show $E
+\subset Z$ as well.  Let $x \in E$; we will construct $z \in Z$
+such that $x = z$.  For each $n$ pick $U_n$ such $x \in U_n$ and $\diam(f(U_n \cap Z)) <
+\frac{1}{n}$ and let $x_n$ be an arbitrary point in $\cap_{j=1}^n
+U_j \cap Z$ (the intersection is non-empty because $Z$ is dense in
+$X$).  
+For every $n$ and $m \geq n$ we have by construction that $x_n
+\in U_n$ and $x_m \in U_n$ hence $d(f(x_n), f(x_m)) < \frac{1}{n}$.
+Therefore $f(x_n)$ is Cauchy in
+$Y$ and by completeness of $Y$ we know that $f(x_n)$ converges to a
+value $y \in Y$ with $d(y, f(x_n)) \leq \frac{1}{n}$.  
+Because $f$ is a homeomorphism we know that 
+there is a unique $z \in Z$ such that $f(z) = y$; we claim that $x =
+z$.  Suppose that $x
+\neq z$, then by the Hausdorff property on $X$ we can pick open sets $U$ and
+$V$ such that $U \cap V = \emptyset$, $x \in U$ and $z \in V$.  Since
+$f$ is a homeomorphism, we know $f(Z \cap V)$ is open and contains
+$f(z)$ hence for sufficiently large $n$, $f^{-1}(B(f(z), \frac{1}{n}))
+\subset Z \cap V \subset V$.  On
+the other hand, by the definition of $x$ we have $U_{2n}$ open such that
+$x \in U_{2n}$ and $\diam(f(Z \cap U_{2n})) < \frac{1}{2n}$.  By openness of
+$U \cap U_{2n}$ and density of $Z$ we know there is a $w \in U \cap
+U_{2n} \cap Z$.  Putting these observations together we have
+\begin{align*}
+d(f(w), f(z)) &\leq  d(f(w), f(x_{2n})) + d(f(x_{2n}), f(z)) 
+< \frac{1}{2n} + \frac{1}{2n} = \frac{1}{n}
+\end{align*}
+which implies $w \in V$ providing a contradiction of $U \cap V =
+\emptyset$ hence we conclude $x = z$.
+\end{proof}
+
 \begin{defn}Given a topological space $(X, \mathcal{T})$ the Baire
   $\sigma$-algebra is smallest $\sigma$-algebra for which all bounded
   continuous functions are measurable.  Equivalently 
@@ -32,7 +130,7 @@ Ba(X,\mathcal{T}) &= \sigma(\lbrace f^{-1}(U) \mid U \subset \reals
 \begin{lem}For every topological space $(X, \mathcal{T})$, $Ba(X)
   \subset \mathcal{B}(X)$.  For a metric space $(S,d)$, $Ba(S) = \mathcal{B}(S)$.
 \end{lem}
-\begin{lem}
+\begin{proof}
 To see the inclusion $Ba(X)
   \subset \mathcal{B}(X)$, note that by continuity of $f \in
   C_b(X;\reals)$, every set $f^{-1}(U)$ is open.
@@ -46,7 +144,7 @@ that $g(x) = d(x, F)$ is continuous (in fact Lipschitz) and by Lemma
 \ref{MaxMinOfLipschitz} we know that $f(x) = d(x, F) \wedge 1$ is also
 Lipschitz and therefore $f(x) \in C_b(S; \reals)$.  Because $F$ is
 closed we also know that $F = f^{-1}(\lbrace 0 \rbrace)$ and we are done.
-\end{lem}
+\end{proof}
 
 TODO: How much this stuff on regularity can be extended to outer
 measures????  I want to understand the overlap with the results in

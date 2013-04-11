@@ -1,5 +1,8 @@
 \section{Markov Processes}
 
+TODO: Thinking about Markov processes as dynamical/deterministic systems with noise.
+
+\subsection{Markov Processes}
 \begin{defn}Let $X$ be a process in $(S, \mathcal{S})$ with time scale
   $T$ which is adapted to a filtration $\mathcal{F}_t$.  We say that
   $X$ has the \emph{Markov property} if 
@@ -8,8 +11,8 @@ $\cindependent{\mathcal{F}_s}{X_t}{X_s}$ for all $s \leq t \in T$.
 Given any process that satisfies the Markov property it is not hard to
 show using properties of conditional independence that it
 automatically satisfies a seemingly stronger condition
-\begin{lem}[Extended Markov Property]\label{Extended Markov
-    Property}Let $X$ be a process that satsifies the Markov property
+\begin{lem}[Extended Markov Property]\label{ExtendedMarkovProperty}
+Let $X$ be a process that satsifies the Markov property
   then $\cindependent{\mathcal{F}_t}{\sigma(\bigvee_{u \geq t}
     X_u)}{X_t}$ for all $t \in T$.
 \end{lem}
@@ -52,22 +55,96 @@ We let $\nu_t$ denote the distribution of $X_t$.
 These conditional distributions characterize the distribution of the
 process $X$ itself.  In particular we have the following nice formula
 for finite dimensional distributions of the process.
-\begin{lem}\label{MarkovDistributions}Let $X$ be a Markov process with
+\begin{lem}\label{MarkovDistributions}Let $X$ be a stochastic process
+  on a time scale $T \subset \reals_+$ that has the Markov property,
   one dimensional distributions $\nu_t$ and transition kernels
-  $\mu_{s,t}$, then for all $t_0 \leq \cdots \leq t_n$ and $A \in
+  $\mu_{s,t}$.  Then for all $t_0 \leq \cdots \leq t_n$ and $A \in
   \mathcal{S}^{\otimes n}$ we have
 \begin{align*}
-\probability{(X_{t_1}, \dots, X_{t_n}) \in A} &= \nu_{t_1} \otimes
-\mu_{t_1, t_2} \otimes \cdots \mu_{t_{n-1},t_n}(A) \\
-\cprobability{\mathcal{F}_{t_0}}{(X_{t_1}, \dots, X_{t_n}) \in A}(\omega) &= \mu_{t_0, t_1} \otimes \cdots \mu_{t_{n-1},t_n}(\omega,A) \\
+\probability{(X_{t_1}, \dots, X_{t_n}) \in A} 
+&= \nu_{t_1} \otimes
+\mu_{t_1, t_2} \otimes \cdots \otimes \mu_{t_{n-1},t_n}(A) \\
+\cprobability{\mathcal{F}_{t_0}}{(X_{t_1}, \dots, X_{t_n}) \in
+  A}(\omega) 
+&= \mu_{t_0, t_1} \otimes \cdots \otimes \mu_{t_{n-1},t_n}(X_{t_0}(\omega),A) \\
 \end{align*}
 \end{lem}
 \begin{proof}
-TODO
+We begin by proving the first equality via induction.  The case $n=0$
+is true by definition.  The induction step is 
+really just a specific case of Theorem 
+\ref{Disintegration} applied to the Markov transition kernels.  Let $A
+\in \otimes_{i=0}^n \mathcal{S}$ then 
+\begin{align*}
+&\probability{(X_{t_0}, \cdots, X_{t_n}) \in A} \\
+&=\expectation{\characteristic{A}(X_{t_0}, \cdots, X_{t_n})} \\
+&=\expectation{\int \characteristic{A}(X_{t_0}, \cdots, X_{t_{n-1}},s)
+  \, \mu_{t_{n-1}, t_n} (X_{n-1}, ds)} \\
+&=\int \left [ \int \characteristic{A}(u_0, \cdots,u_{n-1}, s)   \,
+  \mu_{t_{n-1}, t_n} (X_{n-1}, ds) \right ] \nu_{t_0} \otimes \cdots \otimes
+  \mu_{t_{n-2}, t_{n-1}}(du_0, \dotsc, du_{n-1})\\
+&=\nu_{t_0} \otimes \cdots \otimes  \mu_{t_{n-1}, t_{n}}(A)
+\end{align*}
+
+The second equality is derived from the first.  Suppose we have $A \in
+\mathcal{S}$ and $B \in \mathcal{S}^{\otimes n}$.  Then we can compute
+\begin{align*}
+&\expectation{\characteristic{A}(X_{t_0}) \characteristic{B}(X_{t_1},
+  \dotsc, X_{t_n})}  \\
+&= \nu_{t_0} \otimes \mu_{t_0, t_1} \otimes \cdots \otimes  \mu_{t_{n-1},
+  t_{n}}(A \times B) \\
+&= \int \left [ \int \characteristic{B}(u_1, \dotsc, u_n) \mu_{t_0,
+    t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n} (u_0, du_1, \dotsc, du_n) \right ]
+\characteristic{A}(u_0) \nu_{t_0}(u_0) \\
+&=\expectation{\mu_{t_0, t_1} \otimes \cdots \otimes \mu_{t_{n-1},
+    t_n}(X_0, B) \characteristic{A}(X_0)}
+\end{align*}
+Now the $\sigma(X_{t_0})$-measurability of $\mu_{t_0, t_1} \otimes \cdots \otimes \mu_{t_{n-1},
+    t_n}(X_0, B)$ tells us that 
+\begin{align*}
+\cprobability{X_{t_0}}{(X_{t_1},\dotsc, X_{t_n}) \in B} 
+&= \mu_{t_0, t_1} \otimes \cdots \otimes \mu_{t_{n-1},    t_n}(X_0, B)
+\end{align*}
+
+The last thing is to show that
+$\cprobability{X_{t_0}}{(X_{t_1},\dotsc, X_{t_n}) \in B} =
+\cprobability{\mathcal{F}_{t_0}}{(X_{t_1},\dotsc, X_{t_n}) \in B}$
+a.s.  This follows from Lemma \ref{ExtendedMarkovProperty} since by
+the tower property of conditional expectations and that result 
+for any $A \in \mathcal{S}^{\otimes n}$ and $B \in \mathcal{F}_{t_0}$
+\begin{align*}
+\probability{(X_{t_1}, \dotsc, X_{t_n}) \in A ; B} 
+&=\expectation{\cprobability{X_{t_0}}{(X_{t_1}, \dotsc, X_{t_n}) \in A ;  B}} \\
+&=\expectation{\cprobability{X_{t_0}}{(X_{t_1}, \dotsc, X_{t_n}) \in A}
+\cprobability{X_{t_0}}{B}} \\
+&=\expectation{\cprobability{X_{t_0}}{(X_{t_1}, \dotsc, X_{t_n}) \in A}
+\characteristic{B}} \\
+\end{align*}
+so the $\mathcal{F}_{t_0}$-measurability of
+$\cprobability{X_{t_0}}{(X_{t_1}, \dotsc, X_{t_n}) \in A}$ gives the
+result by the defining property of conditional expectations.
 \end{proof}
 A special case of the relations above should be called out as it
 motivates a property that will assume as part of the definition of a
-Markov process.
+Markov process.  But first we need a definition.
+\begin{defn}Let $\mu$ and $\nu$ be probability kernels from $S$ to
+  $S$.  Then we define the probability kernel $\mu \nu$ from $S$ to
+  $S$ by
+\begin{align*}
+\mu \nu (s, A) &= (\mu \otimes \nu)(s, A \times S)
+\end{align*}
+for all $s \in S$ and $A \in \mathcal{S}$.
+\end{defn}
+\begin{examp}
+Let $S$ be a finite set and view $\mu$ and $\nu$ as $S \times S$
+matrices.  Then $\mu \nu$ is just matrix multiplication:
+\begin{align*}
+\mu \nu (s, \lbrace t \rbrace) 
+&= \iint \characteristic{\lbrace t  \rbrace \times S}(u,v) \nu(u, dv) \mu(s, du) 
+=\int \nu(u, \lbrace t \rbrace) \mu(s,du) 
+=\sum_{u \in S} \nu_{u, t} \mu_{s, u}
+\end{align*}
+\end{examp}
 \begin{cor}[Chapman-Kolmogorov
   Relations]\label{ChapmanKolmogorovWeak}Let $X$ be a stochastic
   process on a time scale $T \subset \reals$ with values in Borel
@@ -78,6 +155,62 @@ Markov process.
 \mu_{s,t} \mu_{t,u} &= \mu_{s,u} \text{ a.s. $\nu_s$}
 \end{align*}
 \end{cor}
+\begin{proof}
+Since we have assume $S$ is a Borel space we know from Theorem \ref{ExistenceConditionalDistribution} that regular
+versions $\mu_{s,t}$ exist.  By definition of $\mu_{s,t} \mu_{t,u}$, Lemma
+\ref{MarkovDistributions} and the uniqueness clause of Theorem \ref{ExistenceConditionalDistribution}
+\begin{align*}
+\mu_{s,t} \mu_{t,u}(x, A) &= 
+(\mu_{s,t} \otimes \mu_{t,u})(x, S \times A) \\
+&= \cprobability{\mathcal{F}_s}{(X_t, X_u) \in S \times A} \\
+&=\cprobability{\mathcal{F}_s}{ X_u \in A} \\
+&=\cprobability{X_s}{ X_u \in A} \\
+&= \mu_{s,u}(x, A) \text{  a.s. $\nu_s$}
+\end{align*}
+\end{proof}
+
+The ability to derive the almost sure version of the
+Chapman-Kolmogorov relations is really just motivational for our
+purposes.  In fact we will want to assume they hold identically in
+what follows.  Absent a workable set of conditions from which we can
+derive this fact, we build into our definitions.  Collecting all of
+the conditional independence and regularity properties we've
+identified we finally make the formal definition of a Markov process.
+\begin{defn}
+A \emph{Markov Process} is a stochastic process $X_t$ on a time scale $T
+\subset \reals_+$ and a state space $(S, \mathcal{S})$ such that 
+\begin{itemize}
+\item[(i)]$\cindependent{\mathcal{F}_s}{X_t}{X_s}$ for all $s \leq t$
+\item[(ii)]there exists a regular version $\mu_{s,t} :
+  S \times \mathcal{S} \to [0,1]$ of $\cprobability{\mathcal{F}_s}{X_t
+    \in \cdot}$ for each $s \leq t$.
+\item[(iii)]$\mu_{s,t} \mu_{t,u} = \mu_{s,u}$ everywhere on $S$ for
+  each $s \leq t \leq u$.
+\end{itemize}
+\end{defn}
+
+In lieu of general techinique for proving that a process is Markov
+from general principle, we give a result that shows that we can
+construct them from a set of transition kernels that obey the Chapman-Kolmogorov relations.
+\begin{thm}\label{ExistenceMarkovProcess}Suppose we are given
+\begin{itemize}
+\item[(i)] a  time scale starting at $0$, $T \subset \reals_+$ 
+\item[(ii)]a Borel space $(S, \mathcal{S})$ 
+\item[(iii)]a probability distribution $\nu$ on $(S, \mathcal{S})$
+\item[(iv)]probability kernels $\mu_{s,t} : S \times
+  \mathcal{S} \to [0,1]$ for each $s \leq t \in T$ such that 
+\begin{align*}
+\mu_{s,t} \mu_{t,u} &= \mu_{s,u} \text{ for all $s\leq
+  t\leq u \in T$}
+\end{align*}
+then there exists a Markov process $X_t$ with initial distribution
+$\nu$ and transition kernels $\mu_{s,t}$.
+\end{itemize} 
+\end{thm}
+\begin{proof}
+TODO: Define FDDs, show consistency and use Kolmogorov extension theorem
+\end{proof}
+
 \begin{defn}Suppose that a family of transition kernels $\mu_{s,t}$ is
   given.  For a distribution $\nu$ on $(S, \mathcal{S})$, let
   $\sprobabilityop{\nu}$ denote the distribution on $S^T$ of the
@@ -85,7 +218,7 @@ Markov process.
   for some $x \in S$ then it is customary to write
   $\sprobabilityop{x}$ instead of $\sprobabilityop{\delta_x}$.
 \end{defn}
-\begin{lem}The family $\sprobabilityop{x}$ is a kernel from $S$ to
+\begin{lem}\label{MarkovMixtures}The family $\sprobabilityop{x}$ is a kernel from $S$ to
   $S$.  Futhermore, given an initial distribution $\nu$
 \begin{align*}
 \sprobability{A}{\nu} = \int \sprobability{A}{x} \, d\nu(x)
@@ -119,11 +252,388 @@ are uniquely determined by their values on a generating $\pi$-system
 (Lemma \ref{UniquenessOfMeasure}).
 \end{proof}
 
-\begin{lem}Let $X$ be a Markov process and let $\tau$ be an optional
+\subsection{Homogeneous Markov Processes}
+
+We have described a relatively general version of Markov processes
+compared to what it needed in many applications and the goal of this
+section is to define the assumptions that lead to useful
+simplifications and to understand how to look at these simplifying
+assumptions from a couple of points of view.
+
+\begin{defn}Suppose $(S, \mathcal{S})$ is a measurable Abelian group
+  and $\mu : S \times \mathcal{S} \to [0,1]$ is a kernel.  We say
+  $\mu$ is \emph{homogeneous} if for every $s \in S$ and
+  $A\in \mathcal{S}$ we have $\mu(0, A) = \mu(s, A+s)$.
+\end{defn}
+
+A useful observation for computing conditional expectations is that
+integrals are invariant under certain changes of variables.
+\begin{lem}\label{HomogeneousKernelExpectationRule}Let $(S, \mathcal{S})$ be a measurable Abelian group with a
+  homogeneous kernel $\mu : S \times \mathcal{S} \to [0,1]$, then for
+  each $y,z \in S$ and integrable $f : S \to \reals$,
+\begin{align*}
+\int f(x + y) \, \mu(z, dx) &= \int f(x) \, \mu(y+z, dx)
+\end{align*}
+\end{lem}
+\begin{proof}
+For $y \in S$, let $t_y : S \to S$ be translation by $y$: $t_y(x) = x
++ y$.  Thinking of the kernel as a measurable measure
+valued map (which we denote $\mu(z)$) we compute the pushforward of $\mu(z)$ under $t_y$
+using homogeneity
+\begin{align*}
+\pushforward {t_y}{\mu(z)}(A) &= \mu(z, t_y^{-1}(A)) = \mu(z, A
+- y) = \mu(z+y, A)
+\end{align*}
+thus showing $\pushforward {t_y}{\mu(z)} = \mu(y+z)$.
+Now we can apply the Expectation Rule (Lemma \ref{ExpectationRule}) to
+see that 
+\begin{align*}
+\int f(x + y) \, \mu(z, dx) &= \int f(x) \, d\left [ \pushforward {t_y}{\mu(z)} \right] = \int f(x) \, \mu(y+z, dx)
+\end{align*}
+\end{proof}
+
+A Markov process with homogeneous kernels is said to be
+\emph{space-homogeneous}; intuitively the probability of starting out
+in a set $A$ at time $s$ and winding up in set $B$ at time $t$ only
+depends on the relative positions of $A$ and $B$ (under translations).
+\begin{defn}Suppose $(S, \mathcal{S})$ is a measurable Abelian group
+  and let $X_t$ be a Markov process with transition kernels
+  $\mu_{s,t}$.  Then $X_t$ is \emph{space-homogeneous} if and only if
+  $\mu_{s,t}$ is homogeneous for every $s \leq t$.
+\end{defn}
+
+\begin{lem}\label{SpaceHomogeneousMarkovDistributions}Let $\mu_{s,t}$
+  be a family of space homogeneous transition kernels on a
+  measurable Abelian group, then for every $A \in \mathcal{S}^T$ and $x \in S$,
+  $\sprobability{A}{x} = \sprobability{A-x}{0}$.
+\end{lem}
+\begin{proof}
+TODO: This proof only seems to require space homogeneity of the
+kernels $\mu_{0,t}$; is this a mistake (or does Chapman Kolmogorov
+imply the rest of the kernels are space homogeneous as well...)
+
+We begin by establishing the result for sets of the form $\lbrace (X_{t_1},
+\dotsc, X_{t_n}) \in A \rbrace$ for $A \in \mathcal{S}^{\otimes n}$ and $t_1 \leq
+\cdots \leq t_n$.  The key point is that we know from the proof of
+Lemma \ref{MarkovMixtures} that $\sprobability{(X_{t_1},
+\dotsc, X_{t_n}) \in A }{x} = \mu_{0, t_1} \otimes \dotsc \otimes
+\mu_{t_{n-1}, t_n}(x, A)$, so in particular the case $n=1$ follows
+directly from the assumption that each $\mu_{0, t}$ is homogeneous.
+To see the result for $n > 1$ we calculate using Lemma \ref{HomogeneousKernelExpectationRule}
+\begin{align*}
+&\sprobability{(X_{t_1},\dotsc, X_{t_n}) \in A }{x} \\
+&= \mu_{0, t_1} \otimes \dotsc \otimes \mu_{t_{n-1}, t_n}(x, A) \\
+&= \int \int \characteristic{A}(x_1, x_2, \dotsc, x_n) \mu_{t_1, t_2} \otimes \cdots \otimes \mu_{t_{n-1},
+  t_n}(x_1, dx_2, \dotsc, dx_n) \, \mu_{0,t_1}(x, dy) \\
+&= \int \int \characteristic{A}(x_1+x, x_2, \dotsc, x_n) \mu_{t_1, t_2} \otimes \cdots \otimes \mu_{t_{n-1},
+  t_n}(x_1, dx_2, \dotsc, dx_n) \, \mu_{0,t_1}(0, dy) \\
+&= \int \int \characteristic{A-x}(x_1, x_2, \dotsc, x_n) \mu_{t_1, t_2} \otimes \cdots \otimes \mu_{t_{n-1},
+  t_n}(x_1, dx_2, \dotsc, dx_n) \, \mu_{0,t_1}(0, dy) \\
+&= \mu_{0, t_1} \otimes \dotsc \otimes \mu_{t_{n-1}, t_n}(0, A-x) \\
+&=\sprobability{(X_{t_1},\dotsc, X_{t_n}) \in A - x}{0} \\
+\end{align*}
+
+Now we complete the result by a monotone class argument.  We know that
+sets of the form $\lbrace (X_{t_1}, \dotsc, X_{t_n}) \in A \rbrace$
+are a generating $\pi$-system so by the $\pi$-$\lambda$ Theorem
+(Theorem \ref{MonotoneClassTheorem}) it suffices to show that $\mathcal{C}
+= \lbrace A \mid \sprobability{A}{x} = \sprobability{A-x}{0} \rbrace$ is a
+$\lambda$-system. If $A,B \in \mathcal{C}$ with $A \subset B$ then 
+\begin{align*}
+\sprobability{B\setminus A}{x} &= \sprobability{B}{x} -
+\sprobability{A}{x} = \sprobability{B-x}{0} - \sprobability{A-x}{0} =
+\sprobability{B\setminus A-x}{0} 
+\end{align*}
+where we have used the elementary fact that $B\setminus A - x =
+(B-x)\setminus(A-x)$ (let $y \in B$ and $y \notin A$ then clearly $y-x
+\in B-x$ and $y-x \notin A-x$).  Similarly if $A_n \in \mathcal{C}$
+for $n \in \naturals$ with $A_1 \subset A_2 \subset \cdots$ then it is
+also true that $A_1 -x  \subset A_2-x \subset \cdots$ and continuity
+of measure (Lemma \ref{ContinuityOfMeasure}) shows
+\begin{align*}
+\sprobability{\cup_n A_n}{x} &=
+\lim_{n \to \infty}\sprobability{A_n}{x} = 
+\lim_{n \to \infty}\sprobability{A_n-x}{0} = 
+\sprobability{\cup_n A_n-x}{0} 
+\end{align*}
+\end{proof}
+
+There is another way of thinking about the space-homogeneous Markov
+processes.  We know that for any $s \leq t$, given the value of $X_s$ the probability
+distribution of $X_t$ is independent of the history of $X$ up to
+$s$.  Space homogeneity tells us that moreover that the probability
+distribution $X_t$ only depends on the \emph{increment} $X_t - X_s$.
+Putting these two observations together we should expect that $X_t -
+X_s$ is independent (not just conditionally independent) of the
+history of $X$ up to $s$.  In fact this provides an equivalent
+characterisation of space homogeneous Markov processes as we prove in
+the following result.
+
+\begin{defn}Let $(S, \mathcal{S})$ be a measurable Abelian group with a
+  time scale $T \subset \reals_+$, a filtration $\mathcal{F}_t$ and an
+ $S$-valued $\mathcal{F}$-adapted process $X_t$. We say that $X_t$ has
+ $\mathcal{F}$-independent increments if and only if $X_t - X_s$ is
+ independent of $\mathcal{F}_s$ for all $s \leq t$.
+\end{defn}
+
+\begin{lem}\label{IndependentIncrements}Let $(S, \mathcal{S})$ be a measurable Abelian group with a
+  time scale $T \subset \reals_+$, a filtration $\mathcal{F}_t$ and an
+ $S$-valued $\mathcal{F}$-adapted process $X_t$.  The $X_t$ has
+$\mathcal{F}$-independent increments if and only if $X_t$ is a space-homogeneous
+ Markov process.  In this case the transition kernels of $X_t$ are
+ given by
+\begin{align*}
+\mu_{s, t}(x, A) &= \probability{X_t - X_s \in A - x} \text{ for $x
+  \in S$, $A \in \mathcal{S}$ and $s \leq t \in T$}
+\end{align*}
+TODO: The proof actually requires regular versions of
+$\cprobability{\mathcal{F}_s}{X_t}$; do we need to assume that
+$G$ is Borel or something?  Also we've defined a Markov process as
+satisfying the Chapman Kolmogorov relations identically; can that be derived?
+\end{lem}
+\begin{proof}
+Suppose that $X_t$ is a space homogeneous Markov Process with
+transition kernels $\mu_{s,t}$.  Then for every $s\leq t$ and $A \in \mathcal{S}$,
+\begin{align*}
+\cprobability{\mathcal{F}_s}{X_t - X_s \in A} &= 
+\int \characteristic{A}(x - X_s) \, \mu_{s,t}(X_s, dx) & & \text{by
+  Theorem \ref{Disintegration}} \\
+&=\int \characteristic{A}(x) \, \mu_{s,t}(0, dx) & & \text{by Lemma
+  \ref{HomogeneousKernelExpectationRule}} \\
+&= \mu_{s,t}(0,A)
+\end{align*}
+which shows that $\cprobability{\mathcal{F}_s}{X_t - X_s \in A}$ is
+almost surely constant hence $\cindependent{X_t -
+  X_s}{\mathcal{F}_s}{}$.  Moreover by the tower rule we also know
+that $\probability{X_t - X_s \in A}=\cprobability{\mathcal{F}_s}{X_t -
+  X_s \in A}=\mu_{s,t}(0,A)$ and therefore by another application of
+space homogeneity, $\mu_{s, t}(x, A) = \mu_{s,t}(0, A-x) = \probability{X_t - X_s \in A}$.
+
+Suppose that $X_t$ has independent increments.  The key point is that
+this property determines the conditional distributions 
+\begin{align*}
+\mu_{s,t}(x, A) &= \probability{X_t - X_s \in A - x}
+\end{align*}
+and moreover this form is a regular version.  First note that $\probability{X_t - X_s \in A - x}$ is a probability
+kernel since for fixed $A$ it is measurable in $x$ by Lemma
+\ref{MeasurableSections} and for fixed $x$ it is just the distribution
+of the measurable random element $X_t - X_s -x$.  
+
+Showing that $\probability{X_t - X_s \in A - x}$ is a version of
+$\cprobability{\mathcal{F}_s}{X_t \in A}$ is not hard but requires a
+bit of care because the random element $X_s$ plays two different roles
+in the calculation and it is worth making this fact explicit.
+We start by defining 
+$\tilde{\mu}_{s,t}(x, A) = \probability{X_t - X_s \in A}$ and observing
+that because $\cindependent{X_t - X_s}{\mathcal{F}_s}{}$,
+$\tilde{\mu}_{s,t}$ is a kernel for $\cprobability{\mathcal{F}_s}{X_t
+  - X_s \in \cdot}$.  With this fact and the $\mathcal{F}$-adaptedness
+of $X$, we can apply Theorem
+\ref{Disintegration} (using the function $f(x,y) =
+\characteristic{A-y}(x)$ evaluated at $(X_t - X_s, X_s)$) to conclude
+\begin{align*}
+\cprobability{\mathcal{F}_s}{X_t \in A} &= 
+\cprobability{\mathcal{F}_s}{X_t - X_s \in A - X_s} \\
+&=\int \characteristic{A - X_s}(x) \, \tilde{\mu}_{s,t}(dx) \\
+&=\tilde{\mu}_{s,t}(A - X_s) \\
+&=\mu_{s,t}(X_s, A)
+\end{align*}
+Now note that $\mu_{s,t}(X_s, A)$ is $X_s$-measurable hence we have
+$\cprobability{\mathcal{F}_s}{X_t \in A} = \cprobability{X_s}{X_t
+  \in A} $ for all $A \in \mathcal{S}$ thus the Markov property
+holds by Lemma \ref{ConditionalIndependenceDoob}.  
+Using the explicit form of the kernel we calculate
+\begin{align*}
+\mu_{s,t}(x, A) &=  \probability{X_t - X_s \in A-x} = \mu_{s,t}(0, A-x) 
+\end{align*}
+demonstrating space homogeneity.
+\end{proof}
+
+Here is what the proof that space homogeneous Markov implies
+independent increments looks like in elementary probability theory
+(discrete time countable state space).
+\begin{proof}
+Space homogeneity means that $\cprobability{X_{n-1} = y}{X_n = x} =
+\cprobability{X_{n-1} = 0}{X_n = x-y}$.  This implies that for any
+$y\in S$ we have
+$\probability{X_n - X_{n-1} = z} = \cprobability{X_{n-1} = y}{X_n =
+  z+y}$:
+\begin{align*}
+\probability{X_n - X_{n-1} = z} &= \sum_x \probability{X_n - X_{n-1} =
+  z ; X_{n-1}=x} \\
+& =\sum_x \cprobability {X_{n-1}=x}{X_n - X_{n-1} =  z} \probability
+{X_{n-1}=x} \\
+& =\sum_x \cprobability {X_{n-1}=x}{X_n =  z+x} \probability
+{X_{n-1}=x} \\
+& =\cprobability {X_{n-1}=y}{X_n =  z+y} \sum_x \probability
+{X_{n-1}=x} \\
+&= \cprobability {X_{n-1}=y}{X_n =  z+y} 
+\end{align*}
+Now we use this fact along with the Markov property to see
+\begin{align*}
+&\probability{X_n - X_{n-1} = z; X_1=x_1 ; \cdots ; X_{n-1}=x_{n-1}} \\
+&=\probability{X_n = z+x_{n-1}; X_1=x_1 ; \cdots ; X_{n-1}=x_{n-1}} \\
+&=\cprobability{X_1=x_1 ; \cdots ; X_{n-1}=x_{n-1}}{X_n = z+x_{n-1}} 
+\probability{X_1=x_1 ; \cdots ; X_{n-1}=x_{n-1}}\\
+&=\cprobability{X_{n-1}=x_{n-1}}{X_n = z+x_{n-1}} 
+\probability{X_1=x_1 ; \cdots ; X_{n-1}=x_{n-1}}\\
+&=\probability{X_n = z} 
+\probability{X_1=x_1 ; \cdots ; X_{n-1}=x_{n-1}}\\
+\end{align*}
+\end{proof}
+
+TODO: Motivate time homogeneity by thinking about discrete time and
+the fact that you can generate everything from the unit time
+transitions.  Time homogeneity is the property that all of these
+transition kernels are the same and therefore the Markov process is
+determined by a single kernel (and the initial distribution).
+
+\begin{defn}A time homogenous Markov process ... TODO
+\end{defn}
+
+TODO: Show that a time homogenous Markov process is a dynamical system
+with noise.
+
+\subsection{Strong Markov Property}
+
+\begin{lem}Let $X$ be a time homogeneous Markov process and let $\tau$ be an optional
   time with at most countably many values.  Then for every measurable
   $A \subset S^T$,
 \begin{align*}
-\cexpectationlong{\mathcal{F}_\tau}{\theta_\tau X \in A} &=
-\sprobability{A}{X_\tau} & & \text{on $\lbrace \tau < \infty \rbrace$}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A}(\omega) &=
+\sprobability{A}{X_\tau(\omega)} \text{ for all $\omega$ such that $\tau(\omega) < \infty$}
 \end{align*}
 \end{lem}
+\begin{proof}
+We first prove the result for deterministic times and extend to
+countably valued optional times.  Note that the content of result is
+vacuous for an infinite deterministic time, so pick a finite
+deterministic time $t$ and let $t_1
+\leq \cdots \leq t_n$ and $A \in \mathcal{S}^{\otimes n}$ and
+calculate using Lemma \ref{MarkovDistributions}, time homogeneity and Lemma \ref{MarkovMixtures}
+\begin{align*}
+\cprobability{\mathcal{F}_t}{((\theta_t X)_{t_1}, \dotsc,
+  (\theta_t X)_{t_n}) \in A} &= \cprobability{\mathcal{F}_t}{(X_{t
+    + t_1}, \dotsc, X_{t+ t_n}) \in A} \\
+&= \mu_{t, t + t_1} \otimes \cdots \otimes \mu_{t+t_{n-1}, t+t_n}(X_t,
+A) \\
+&=\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(X_t, A) \\
+&= \sprobability {A}{X_t}
+\end{align*}
+Now we know that sets of the form 
+$\lbrace ((\theta_t X)_{t_1}, \dotsc,  (\theta_t X)_{t_n}) \in A \rbrace$ are a
+generating $\pi$-system for the $\sigma$-algebra $\mathcal{S}^T$ and
+the full result for deterministic times $t$ follows from a monotone
+class argument.
+
+To see this we simply show that the set of $A$ such that
+$\cprobability{\mathcal{F}_t}{\theta_t X \in A} =
+\sprobability{A}{X_t}$ a.s. is a $\lambda$-system.  The case for $B
+\setminus A$ follows from linearity of conditional expectation and
+finite additivity of measure and the case $A_1 \subset A_2 \subset
+\cdots$ follows from monotone convergence for conditional expectations
+and continuity of measure.
+
+Now we extend to the case of countably valued optional times.  Let $A
+\in \mathcal{S}^T$ and $B \in \mathcal{F}_\tau$ and calculate
+\begin{align*}
+\expectation{\characteristic{A}(\theta_\tau X) ; B} &= \sum_t
+\expectation{\characteristic{A}(\theta_t X) ; \lbrace \tau = t \rbrace
+  \cap B} \\
+&= \sum_t \expectation{\sprobability{A}{X_t} ; \lbrace \tau = t \rbrace
+  \cap B} \\
+&= \expectation{\sprobability{A}{X_\tau} ; B} 
+\end{align*}
+so the result follows by the definition of conditional expectation. 
+
+TODO: What about the $\mathcal{F}_\tau$-measurability of
+$\sprobability{A}{X_\tau}$?  Note that this is a consequence of result
+since we haven't assumed $X$ is progressive(see Lemma
+\ref{StrongIndependentIncrements} below where we make this implication explicit).  Double check that we
+don't assume it in the proof above.
+
+TODO: Some comments about the well-definedness of the expressions on
+$\lbrace \tau < \infty\rbrace$; this boils down to the locality of
+conditional expectation.
+\end{proof}
+
+In the case of a space homogeneous Markov process the strong Markov
+property can be expressed more concisely as an extension of the
+independent increments characterization of Lemma
+\ref{IndependentIncrements} to optional times.  In many scenarios it
+is more convenient to use these properties.  Note that the Lemma does
+not require the countable range assumption.
+\begin{lem}\label{StrongIndependentIncrements}Let $S$ be a measurable
+  Abelian group with a filtration $\mathcal{F}$, $X$ be a time
+  homogeneous and space homogeneous $S$-
+  valued Markov process and $\tau$ be an almost surely finite optional time.  
+Then 
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A} &= \sprobability{A}{X_\tau}
+\end{align*}
+if and only if $X_\tau$ is $\mathcal{F}_\tau$-measurable, $\cindependent{\theta_\tau X -
+  X_\tau}{\mathcal{F}_\tau}{}$ and $X - X_0 \eqdist \theta_\tau X - X_\tau$
+\end{lem}
+\begin{proof}
+Assume that $X$ satisfies $\cprobability{\mathcal{F}_\tau}{\theta_\tau
+  X \in A} = \sprobability{A}{X_\tau}$ for all $A \in \mathcal{S}^T$.  To see that $X_\tau$ is
+$\mathcal{F}_\tau$-measurable observe that if we let $\pi_0 : S^T \to
+S$ be
+evaluation at time $0$, then for any $B \in \mathcal{S}$ and $x \in S$,
+\begin{align*}
+\sprobability{\pi_0^{-1}B}{x} &= \begin{cases}
+1 & \text{if $x \in B$} \\
+0 & \text{if $x \notin B$}
+\end{cases}
+\end{align*}
+therefore we have
+\begin{align*}
+\characteristic{X_\tau \in B} &=
+\sprobability{\pi_0^{-1}B}{X_\tau} =
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in \pi_0^{-1} B}
+\end{align*}
+which shows that $\lbrace X_\tau \in B \rbrace \in \mathcal{F}_\tau$.
+
+Having established $\mathcal{F}_\tau$-measurability of $X_\tau$ we
+know that $P_{X_\tau}$ is a not just a \emph{regular} version for
+$\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in \cdot}$ and we can
+apply Theorem \ref{Disintegration} and space homogeneity of
+$\probabilityop_x$ (Lemma \ref{SpaceHomogeneousMarkovDistributions})
+to calculate for $A \in \mathcal{S}^T$ (using $f: S^T \times S \to
+\reals_+$ given by $f(x,y) = \characteristic{A+y}(x)$ in the disintegration) 
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X - X_\tau \in A} &= 
+\int \characteristic{A + X_\tau} (x) \,
+\probabilityop_{X_\tau}(dx) 
+=\sprobability{A + X_\tau}{X_\tau}
+=\sprobability{A}{0} \text{ a.s.}
+\end{align*}
+which is almost surely constant and therefore independence is proven.
+This also shows that the distribution of $\theta_\tau X - X_\tau$ is
+equal to $\probabilityop_0$ and letting $\tau = 0$ shows $\theta_\tau
+X - X_\tau \eqdist X - X_0$.
+
+To prove the converse, note that $X - X_0$ is has
+initial distribution $\delta_0$ hence using our independence and
+equidistribution assumptions and the definition of the measure
+$\probabilityop_0$ we get for any $A \in \mathcal{S}^T$,
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X - X_\tau \in A} &=
+\probability{\theta_\tau X - X_\tau \in A} 
+=\probability{X - X_0 \in A} 
+=\sprobability{A}{0}
+\end{align*}
+which provides us with a regular version for
+$\cprobability{\mathcal{F}_\tau}{\theta_\tau X - X_\tau \in \cdot}$.
+Now by the $\mathcal{F}_\tau$-measurability of $X_\tau$ we can apply
+Theorem \ref{Disintegration} and Lemma
+\ref{SpaceHomogeneousMarkovDistributions} to get
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A}
+&=\cprobability{\mathcal{F}_\tau}{\theta_\tau X - X_\tau \in A-X_\tau}\\
+&= \int \characteristic{A-X_\tau}(x) \, \probabilityop_0(dx) \\
+&=\sprobability{0}{A - X_\tau} \\
+&=\sprobability{X_\tau}{A }
+\end{align*}
+and we are done.
+\end{proof}
