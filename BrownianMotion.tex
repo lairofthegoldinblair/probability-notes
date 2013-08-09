@@ -139,8 +139,8 @@ F_n(x) &= \frac{1}{\sqrt{2^{n+2}}} \sum_{k=0}^{2^n -1}
 \end{align*}
 so that we may write 
 \begin{align*}
-B_n(x) &= B_0(x) + \sum_{j=0}^{n-1} F_n(x) \\
-B(x) &= B_0(x) + \sum_{n=0}^\infty F_n(x)
+B_n(x) &= B_0(x) + \sum_{j=0}^{n-1} F_j(x) \\
+B(x) &= B_0(x) + \sum_{j=0}^\infty F_j(x)
 \end{align*}
 
 There are host of important facts about the $B_n(x)$ and $B(x)$ that
@@ -319,8 +319,12 @@ the Borel Cantelli Theorem to conclude that
 \end{align*}
 and therefore for almost all $\omega \in \Omega$ there exists
 $N_\omega > 0$ such that $\abs{Z_d} < c \sqrt{n}$ for all $n >
-N_\omega$ and $d \in \mathcal{D}_n$ and by definition of $F_n(x)$, we
-have $\norm{F_n}_\infty \leq 2^{-(n+2)/2} c \sqrt{n}$ which shows that
+N_\omega$ and $d \in \mathcal{D}_n$.  Using this result with the definition of
+$F_n(x)=\sum_{k=0}^{2^n-1}
+\frac{1}{\sqrt{2^{n+2}}}Z_{\frac{2k+1}{2^{n+1}}} \Delta_{n,k}(x)$, the
+disjointness of the support of $\Delta_{n,k}(x)$ for fixed $n$ and the
+fact that $\abs{\Delta_{n,k}(x)} \leq 1$ we
+have $\norm{F_n}_\infty \leq 2^{-(n+2)/2} c \sqrt{n+1}$ which shows that
 $\sum_{n=0}^\infty F_n(x)$ converges absolutely and uniformly in $x$.
 Because each $F_n(x)$ is a continuous function, uniform convergence of
 the series implies $B(x) = B_0(x) + \sum_{n=0}^\infty F_n(x)$ is continuous as
@@ -376,6 +380,468 @@ motion.  In what way is this justified; i.e. to what extent is the
 Levy construction unique?  The answer to this question is that Wiener
 measure on $C[0,\infty)$ is uniquely defined by its finite dimensional
 distributions.
+
+\begin{defn}A function $f : (S, d) \to (T, d^\prime)$ between metric
+  spaces is said to be \emph{H\"older continuous} with exponent
+  $\alpha$ if there exists a constant $C > 0$ such that
+  $d^\prime(f(x), f(y)) \leq C d(x,y)^\alpha$ for all $x, y \in S$.  
+\end{defn}
+\begin{lem}\label{HaarWaveletCoefficientHolderContinuity}Let $f : [0,1] \to \reals$ be continuous with $f(x) = c_0 +
+  \sum_{n=0}^\infty \sum_{k=0}^{2^n -1} c_{n,k} \Delta_{n,k}(x)$.  Suppose $\abs{c_{n,k}} \leq
+  2^{-\alpha n}$ for some $0 < \alpha < 1$ then $f \in C^{\alpha}[0,1]$.
+\end{lem}
+\begin{proof}
+Since the condition for H\"older continuity only depends on
+differences between a function we may assume that $c_0 = 0$.  Pick
+$s,t \in [0,1]$ and use the triangle inequality to conclude 
+\begin{align*}
+\abs{f(s) - f(t)} &\leq \sum_{n=0}^\infty \abs{\sum_{k=0}^{2^n -1}
+  c_{n,k} \left ( \Delta_{n,k}(s) - \Delta_{n,k}(t) \right) }
+\end{align*}
+To clean up our notation a bit we define 
+\begin{align*}
+D_n(s,t) &= 
+\sum_{k=0}^{2^n -1}  c_{n,k} \left ( \Delta_{n,k}(s) - \Delta_{n,k}(t) \right)
+\end{align*}
+for $n\geq 0$ and we work on getting a bound on $\abs{D_n}$.  Since we have a very
+concrete description of the $\Delta_{n,k}$ elementary (but detailed)
+tools can be used.  Because the support of $\Delta_{n,k}$ for fixed
+$n$ are disjoint $\Delta_{n,k}(s)$ is non-zero for at most one $k$ and
+similarly with $\Delta_{n,k}(t)$.  Let $0 \leq k_s < 2^n$ be an
+integer such that $k_s/2^{n} \leq s \leq (k_s+1)2^n$ and similarly with
+$k_t$ (there is ambiguity in the choice for $s,t = k/2^n$ but it
+doesn't matter since the $\Delta_{n,k}$ all vanish at such points);
+with these choices, $D_n(s,t) = c_{n,k_s} \Delta_{n,k_s}(s) - c_{n, k_t}
+  \Delta_{n,k_t}(t)$.  Each function $\Delta_{n,k}$ is
+piecewise linear and comprises two line segments with slope $\pm
+2^{n+1}$ and it is geometrically clear that $\Delta_{n,k_s}(s)$ and
+$\Delta_{n,k_t}(t)$ can be no farther than if they are on the same
+such line : hence $\abs{\Delta_{n,k_s}(s) - \Delta_{n,k_t}(t)} \leq
+\abs{s-t} 2^{n+1}$ and by the bounds we have on the coefficients
+$c_{n,k}$ we get
+\begin{align*}
+\abs{D_n(s,t)} &\leq \left( \abs{c_{n,k_s}} \vee \abs{c_{n,k_t}}
+\right) \abs{\Delta_{n,k_s}(s) - \Delta_{n,k_t}(t)}  \leq 2^{-\alpha
+  n} \abs{s-t} 2^{n+1}
+\end{align*}
+This is a good bound when $s,t$ are close (in fact it is a tight bound
+when $k_s=k_t$ and $s,t$ are on the same line segment).  However, as
+$s,t$ get farther apart we can do better just by using the fact that
+$0 \leq \Delta_{n,k} \leq 1$.  Indeed by the triangle inequality
+\begin{align*}
+\abs{D_n(s,t)} &= \abs{c_{n,k_s} \Delta_{n,k_s}(s)} + \abs{c_{n,k_t}
+  \Delta_{n,k_t}(t)} \leq \abs{c_{n,k_s}} + \abs{c_{n,k_t}} \leq
+2^{-\alpha n + 1}
+\end{align*}
+and therefore we have the two bounds
+\begin{align*}
+D_n(s,t) &\leq 2^{-\alpha  n} \abs{s-t} 2^{n+1} \wedge 2^{-\alpha n + 1}
+\end{align*}
+As mentioned, the first of these bounds is a better estimate when $s,t$ are closer
+that $2^{-n}$ and the latter is better otherwise.  So with $s,t$
+given pick $N \geq 0$ such that $2^{-N -1} \leq \abs{s -t} < 2^{-N}$
+and use the appropriate mix of the two estimates
+\begin{align*}
+\abs{f(s) - f(t)} &\leq \sum_{n=0}^N \abs{\sum_{k=0}^{2^n -1}
+  c_{n,k} \left ( \Delta_{n,k}(s) - \Delta_{n,k}(t) \right) } + \sum_{n=N+1}^\infty \abs{\sum_{k=0}^{2^n -1}
+  c_{n,k} \left ( \Delta_{n,k}(s) - \Delta_{n,k}(t) \right) } \\
+&\leq \sum_{n=0}^N 2^{-\alpha  n} \abs{s-t} 2^{n+1} + 
+\sum_{n=N+1}^\infty 2^{-\alpha n + 1} \\
+&= 2 \abs{s - t} \frac{2^{(1 -\alpha)(N+1)} - 1}{2^{1 - \alpha} -1} + 2 \cdot 2^{-\alpha(N+1)} \cdot \frac{1}{1 - 2^{-\alpha}} \\
+&\leq \frac{2}{2^{1 - \alpha} -1} \abs{s-t}^\alpha - \frac{2}{2^{1 -
+    \alpha} -1}\abs{s-t} + \frac{2}{1 - 2^{-\alpha}} \abs{s - t}^\alpha \\
+&\leq \left( \frac{2}{2^{1 - \alpha} -1} + \frac{2}{1 - 2^{-\alpha}}
+\right ) \abs{s-t}^\alpha
+\end{align*}
+where we have used the assumption that $0 < \alpha < 1$ to determine
+the sign of coefficients in the estimates (e.g. to conclude
+that $\frac{2}{2^{1 - \alpha} -1}\abs{s-t} > 0$ so that this term may
+be dropped from the estimate).
+\end{proof}
+
+A corollary of this result and our construction of Brownian motion is
+the fact that Brownian paths are H\"older continuous with any exponent
+less that $1/2$.
+\begin{thm}[H\"older Continuity of Brownian
+  Paths]\label{BrownianHolderContinuous}Let $B_t$ be a standard
+  Brownian motion then almost surely $B_t$ is H\"older continuous for
+  any exponent $\alpha < 1/2$.  Furthermore there exists a constant $C
+  > 0$ (independent of $\omega$) such that almost surely there exists
+  a constant $\epsilon > 0$ (depending on $\omega$) such that for all
+  $0 \leq h \leq \epsilon$ and $0 \leq t \leq 1-h$ we have 
+\begin{align*}
+\abs{B_{t+h} - B_t} \leq C \sqrt{h \log(1/h)}
+\end{align*}
+\end{thm}
+\begin{proof}
+From our construction of Brownian motion recall that we had the
+representation
+\begin{align*}
+B_t &= t Z_0 + \sum_{n=0}^\infty \frac{1}{\sqrt{2^{n+2}}}
+\sum_{k=0}^{2^n -1} \Delta_{n,k}(t) Z_{\frac{2k+1}{2^{n+1}}}
+\end{align*}
+and moreover we have shown during the construction of Brownian motion
+for $c > \sqrt{2 \ln 2}$ almost surely there is an $N>0$ such that 
+\begin{align*}
+\abs{Z_{\frac{2k+1}{2^{n+1}}}} \leq c \sqrt{n+1}
+\end{align*}
+for all $n \geq N$.  Note that we can ignore the leading term $t Z_0$ since is clearly
+H\"older continuous, so to apply Lemma
+\ref{HaarWaveletCoefficientHolderContinuity}
+it suffices to observe that we have coefficients $c_{n,k} =
+\frac{1}{\sqrt{2^{n+2}}}Z_{\frac{2k+1}{2^{n+1}}}$ with the bound
+\begin{align*}
+\abs{c_{n,k}} &\leq \frac{c\sqrt{n+1}}{\sqrt{2^{n+2}}} \leq 2^{-\alpha n}
+\end{align*}
+for $n$ sufficiently large.  TODO: In the previous Lemma we need to
+rephrase things to note that it suffices to have the bound hold
+eventually.
+
+TODO:  Extend the estimates from the prior Lemma to yield the simple upper bound for
+modulus of continuity.  Following the proof of the prior Lemma and
+using our estimate on the $c_{n,k}$ directly instead of the derived
+bound $\abs{c_{n,k}} \leq 2^{-\alpha n}$ we get by picking $2^{-M-2}
+< \abs{s-t} \leq 2^{-M-1}$ (so that $M+1 \leq \log_2(1/\abs{s-t})$)
+\begin{align*}
+\abs{B_s - B_t} &\leq \sum_{n=0}^{N-1} \max_{0 \leq k < 2^n}
+\abs{c_{n,k}} \abs{s-t} 2^{n+1} +
+\sum_{n=N}^M \abs{s-t} 2^{n+1} \frac{c\sqrt{n+1}}{2^{(n+2)/2}} + 
+2 \sum_{n=M+1}^\infty  \frac{c\sqrt{n+1}}{2^{(n+2)/2}}
+\end{align*}
+For the first term, we use the fact that $\lim_{\epsilon \to 0^+}
+\epsilon/\sqrt{\epsilon \log(1/\epsilon)} = 0$ to find $\epsilon$ 
+(depending on $\omega$) sufficiently small so that provided $\abs{s-t} \leq
+\epsilon$ we have 
+\begin{align*}
+\sum_{n=0}^{N-1} \max_{0 \leq k < 2^n}
+\abs{c_{n,k}} \abs{s-t} 2^{n+1} \leq \sqrt{\abs{s-t}
+  \log(1/\abs{s-t})}
+\end{align*}
+For the second term, by choice of $M$ we get
+\begin{align*}
+\sum_{n=N}^M \abs{s-t} 2^{n+1} \frac{c\sqrt{n+1}}{2^{(n+2)/2}} 
+&\leq c \abs{s-t} \sum_{n=0}^M 2^{n/2} \sqrt{n+1} \\
+&\leq  c \abs{s-t}   \sqrt{M+1} \frac{2^{(M+1)/2}-1}{\sqrt{2}-1}\\
+&\leq \frac{c}{\sqrt{2}-1}
+  \sqrt{\abs{s-t} \log_2(1/\abs{s-t})}
+\end{align*}
+For the third term by choice of $M$ we get
+\begin{align*}
+2 \sum_{n=M+1}^\infty  \frac{c\sqrt{n+1}}{2^{(n+2)/2}}
+&\leq \sqrt{M+1} \frac{c}{2^{(M+1)/2}} \sum_{n=0}^\infty
+\sqrt{\frac{n+M+1}{M+1}} \frac{1}{2^{n/2}} \\
+&\leq \sqrt{M+1} \frac{c}{2^{(M+1)/2}} \sum_{n=0}^\infty
+\sqrt{n+1} \frac{1}{2^{n/2}} \\
+&\leq C_2 \sqrt{\abs{s-t}\log_2(1/\abs{s-t})}
+\end{align*}
+where the constant $C_2$ depends only on the value of the convergent
+series and the choice of $c$.
+\end{proof}
+
+TODO: Levy's modulus of continuity Lemmas
+\begin{thm}Almost surely 
+\begin{align*}
+\limsup_{h \downarrow 0} \sup_{0 \leq t \leq 1-h} \frac{\abs{B_{t+h} -
+    B_t}}{\sqrt{2h\log(1/h)}} &= 1
+\end{align*}
+(TODO: Is this $\log_e$ or $\log_2$?)
+\end{thm}
+\begin{proof}
+My notes on the proof from Peres and Morters
+Fix a $c > \sqrt{2}$ and pick $0 < \epsilon < 1/2$.  For this $\epsilon$,
+by Lemma ? we pick $m>0$ such that for every $[s,t] \subset [0,1]$ we
+get $[s^\prime,t^\prime] \in \Lambda(m)$ such that $\abs{t - t^\prime}
+< \epsilon (t -s)$ and  $\abs{s - s^\prime}
+< \epsilon (t -s)$.  Now by Lemma ? we choose $N > 0$ such that for
+all $n \geq N$, almost surely for every $[s^\prime, t^\prime] \in
+\Lambda_n(m)$
+\begin{align*}
+\abs{B_{t^\prime} - B_{s^\prime}} &\leq c \sqrt{(t^\prime - s^\prime)
+  \log(1/(t^\prime -s^\prime))}
+\end{align*}
+(we want this to be true for the approximating $[s^\prime, t^\prime]$:
+how do we know that $[s^\prime, t^\prime] \in \Lambda_n(m)$ for
+sufficiently large $n$; I think it is true that $\Lambda_n(m) \subset
+\Lambda_{2n}(m)$?  No I think we make the assumption that $t-s < 2^{-N}$).
+But we also have Theorem \ref{BrownianHolderContinuous} (TODO: Does
+this work; this result gives the bound for $h$ smaller than a
+\emph{random} constant but here it seems we are assuming that it is
+not random) so we can
+estimate
+\begin{align*}
+\abs{B_{t} - B_{s}} &\leq \abs{B_{t} -
+  B_{t^\prime}} + \abs{B_{t^\prime} - B_{s^\prime}} +
+\abs{B_{s^\prime} - B_{s}} \\
+&\leq C \sqrt{\abs{t - t^\prime} \log(1/\abs{t - t^\prime})} + 
+c \sqrt{(t^\prime - s^\prime)  \log(1/(t^\prime -s^\prime))} +
+C \sqrt{\abs{s - s^\prime} \log(1/\abs{s - s^\prime})}
+\end{align*}
+The function $x \log(1/x)$ is increasing for $0\leq x \leq 1/2$ (here
+we are using $\log_2$; otherwise $1/e$) therefore if we assume $t -s <
+\epsilon$ then $\abs{t - t^\prime} < \epsilon (t-s) < 1/4$ so we get
+the estimate
+\begin{align*}
+C \sqrt{\abs{t - t^\prime} \log(1/\abs{t - t^\prime})} &\leq C
+\sqrt{\epsilon(t-s)\log(1/\epsilon(t-s))} \\
+&\leq C\sqrt{\epsilon(t-s)\log(1/(t-s)^2)} \\
+&= \sqrt{2 \epsilon} C \sqrt{(t-s)\log(1/(t-s))}
+\end{align*}
+and similarly with the term involving $\abs{s- s^\prime}$.  As for the
+middle term, we have by choice of $[s^\prime, t^\prime]$ that $(1 -
+2\epsilon)(t -s) \leq (t^\prime - s^\prime) \leq (1+2 \epsilon)(t-s)$
+and by assumption $\log(1/(t-s)) > 1$ therefore
+\begin{align*}
+c \sqrt{(t^\prime - s^\prime)  \log\frac{1}{t^\prime -s^\prime}} &\leq c
+\sqrt{(1 + 2\epsilon) (t - s)  \log\frac{1}{(1-2\epsilon) (t -s)}} \\
+&= c\sqrt{(1 + 2\epsilon) (t - s)  (\log\frac{1}{(1-2\epsilon) }
++ \log\frac{1}{ (t -s)})} \\
+&\leq c\sqrt{(1 + 2\epsilon) (t - s)  \log\frac{1}{ (t -s)} (1- \log(1-2\epsilon))} 
+\end{align*}
+Now since $\epsilon > 0$ was arbitrary, we can put all three estimates
+together conclude for any $0 < h < \epsilon$, 
+\begin{align*}
+\sup_{0 \leq t \leq 1-h} \abs{B_{t+h} - B_t} &\leq \left ( 2\sqrt{2\epsilon}C
+  +  c\sqrt{(1 + 2\epsilon) (1- \log(1-2\epsilon)) } \right) \sqrt{h\log(1/h)}
+\end{align*}
+and thus 
+\begin{align*}
+\limsup_{h \downarrow 0} \sup_{0 \leq t \leq 1-h} \frac{\abs{B_{t+h} - B_t}}{\sqrt{h\log(1/h)}} &\leq  2\sqrt{2\epsilon}C
+  +  c\sqrt{(1 + 2\epsilon) (1- \log(1-2\epsilon))} 
+\end{align*}
+Now since $0 < \epsilon < 1/2$ was arbitrary and $c > \sqrt{2}$ was
+arbitrary we can let $\epsilon \downarrow 0$ and then $c \downarrow
+\sqrt{2}$ to conclude the result.
+\end{proof}
+
+The approach above to studying the sample path properties of Brownian
+motion is based on examing the (random) coefficients of the expression
+of the Brownian motion in the Schauder basis.  This has advantages and
+disadvantages.  The obvious advantage is a certain concreteness that
+is appealing.  The disadvantage is that the analysis is less general
+than it can be.  Here we provide a classical alternative to the
+construction of Brownian motion and the analysis of sample paths that
+relies on tools that are more general.  It is critical to have these
+more general tools at hand when discussing larger classes of
+stochastic process.
+
+\begin{thm}[Kolmogorov-Centsov]Let $X_t$ be a stochastic process on
+  $[0,T]^d$ with values in a complete metric space $(S,d)$ and suppose
+  that there exist constant $C, \alpha, \beta$ such that 
+\begin{align*}
+\expectation{d(X_s, X_t)^\alpha} &\leq \abs{s-t}^{d + \beta} \text{
+  for all $s,t \in \reals^d$}
+\end{align*}
+then $X_t$ has a continuous modification $\tilde{X}_t$ and furthermore
+the paths of $\tilde{X}_t$ are almost surely H\"older continuous with
+exponent $\gamma$ for every $0 < \gamma < \beta/\alpha$.
+\end{thm}
+\begin{proof}
+We do the proof with $T=1$ and $d=1$.  
+
+The basic idea of the proof is that via Markov bounding, the moment
+condition controls the variations of $X_t$ pointwise; furthermore by careful
+selection of constants we can extend this to uniform continuity of $X_t$ on a
+countable subset of $[0,T]^d$.  By chosing a countable dense subset of
+$[0,T]^d$ we will then be in position to create the modification.
+
+For each $n \geq 0$, let $\mathcal{D}_n = \lbrace k/2^n \mid 0 \leq k
+\leq 2^n \rbrace$ be the dyadic rationals with scale $n$ and consider
+the behavior of $X_t$ on the grid $\mathcal{D}_n^d \subset [0,1]^d$.
+To begin bound the variation on adjacent points in the grid using a
+union bound and a Markov bound (TODO: Fix up the sum below for the
+case $d>1$)
+\begin{align*}
+\probability{\max_{0 < k \leq 2^n} d(X_{k/2^n}, X_{(k-1)/2^n}) \geq  \epsilon}
+&\leq \sum_{k=1}^{2^n} \probability{d(X_{k/2^n}, X_{(k-1)/2^n}) \geq \epsilon} \\
+&\leq \sum_{k=1}^{2^n} 2^{-n(d+\beta)}/\epsilon^\alpha = 2^{-n\beta} \epsilon^{-\alpha}
+\end{align*}
+So if we pick $0 < \gamma < \beta/\alpha$ and $\epsilon=2^{-n\gamma}$
+then we have the bound 
+\begin{align*}
+\sum_{n=0}^\infty \probability{\max_{0 < k \leq 2^n} d(X_{k/2^n}, X_{(k-1)/2^n}) \geq
+  2^{-n\gamma}} \leq \sum_{n=1}^\infty  2^{-n(\beta - \gamma\alpha)} < \infty
+\end{align*}
+and Borel Cantelli tells us that there is an event $A \subset \Omega$
+with $\probability{A}=1$ and for each $\omega \in A$ there exists an
+$N(\omega)$ such that 
+\begin{align*}
+d(X_{k/2^n}(\omega),
+X_{(k-1)/2^n}(\omega)) &< 2^{-n\gamma} \text{ for all $n \geq
+  N(\omega)$ and $0 < k \leq 2^n$}
+\end{align*}
+
+We have gained some control on the behavior of $X_t$ on a sequence of
+successively finer dyadic grids but what we need is to translate this into
+control of $X_t$ simultaneously over the union of all grids (to see
+what we are lacking at this point realise that we have an almost sure
+bound on a term like $d(X_{k/2^n}, X_{(k-1)/2^n})$ with $k/2^n -
+(k-1)/2^n = 1/2^n$ but we don't yet have a bound on a term like
+$d(X_{(2k+1)/2^n}, X_{(2k-1)/2^n})$ with $(2k+1)/2^{n+1} -
+(2k-1)/2^{n+1} = 1/2^n$).  
+
+Claim: For every $n \geq N(\omega)$ and every $m > n$ we have 
+\begin{align*}
+d(X_t(\omega), X_s(\omega)) &\leq 2\sum_{k=n+1}^m 2^{-k\gamma} \text{
+  for $s,t \in \mathcal{D}_m$ with $0 < \abs{s-t} < 2^{-n}$}
+\end{align*}
+
+The proof of the claim is by induction.  For $m=n+1$ the only way for
+$0 < \abs{s-t} < 2^{-n}$ when $s,t \in \mathcal{D}_{n+1}$ is when
+$s=(k-1)/2^{n+1}$ and $t=k/2^{n+1}$ and therefore by what we have
+already shown $d(X_t(\omega), X_s(\omega)) \leq 2^{-(n+1)\gamma}$ so
+the result holds in this case.  Now assume that the result holds for
+all $n+1, \dotsc, m$ and we show it for $m+1$.  Assume without loss of
+generality that $s < t$ define $s^* = \ceil{2^m s}/2^m$ and $t^* =
+\floor{2^m t}/2^m$ (that is to say round $s$ up
+to nearest point on the grid $\mathcal{D}_m$ and round $t$ down to the
+nearest point on the grid $\mathcal{D}_m$).  Then the following are
+easily seen to be true
+\begin{itemize}
+\item[(i)] $s^*, t^* \in \mathcal{D}_m$
+\item[(ii)] $s \leq s^* \leq t^*\leq t$
+\item[(iii)] $0 \leq s^* - s \leq 1/2^{m+1}$
+\item[(iv)] $0 \leq t - t^* \leq 1/2^{m+1}$
+\item[(v)] $0 \leq t^* - s^* < 1/2^n$
+\end{itemize}
+Now by the triangle inequality, the induction hypothesis and the result for adjacent points in
+the grid $\mathcal{D}_{m+1}$ we get
+\begin{align*}
+d(X_t, X_s) &\leq d(X_t, X_{t^*}) + d(X_{t^*}, X_{s^*}) + d(X_{s^*},
+X_s)  \\
+&\leq 2^{-(m+1)\gamma} + 2 \sum_{k=n+1}^m 2^{-k\gamma} +
+2^{-(m+1)\gamma}  = 2 \sum_{k=n+1}^{m+1} 2^{-k\gamma}
+\end{align*} 
+and we are done with the claim.
+
+The claim establishes the local H\"older continuity of $X_t(\omega)$
+on $\mathcal{D} = \cup_{n=1}^\infty \mathcal{D}_n$ (hence uniform
+continuity).  To see this, pick $s,t \in \mathcal{D}$ such that
+$\abs{s-t} < 2^{-N(\omega)}$ and find $n > N(\omega)$ such that
+$2^{-(n+1)} \leq \abs{s-t} < 2^{-n}$, then $s,t \in \mathcal{D}_m$ for all
+$m$ large enough and so
+\begin{align*}
+d(X_t(\omega), X_s(\omega)) &\leq 2 \sum_{k=n+1}^m 2^{-k\gamma} \leq
+2^{-(n+1)\gamma} \frac{2}{1 - 2^{-\gamma}}  \leq \abs{s-t}^\gamma \frac{2}{1 - 2^{-\gamma}}
+\end{align*}
+
+Since $X_t$ is almost surely H\"older continuous on $\mathcal{D}^d$
+which is a dense subset of $[0,1]^d$ we know that $X_t$ has a unique
+extension $\tilde{X}_t$ to a continuous function on $[0,1]^d$ and that
+the extension is H\"older continuous with the same exponent and
+constant.  Define $\tilde{X}_t = 0$ for $\omega \notin A$.  
+
+It remains to show that $\tilde{X}_t$ defined in this way is a
+modification of $X_t$.
+Assume $\epsilon
+> 0$ and apply a Markov bound 
+\begin{align*}
+\probability{d(X_t, X_s) > \epsilon} &\leq \frac{\expectation{d(X_t,
+    X_s)^\alpha}}{\epsilon^\alpha} \leq \frac{\abs{s-t}^{d + \beta}}{\epsilon^\alpha}
+\end{align*}
+which shows that for every $s \in [0,1]^d$ we have $X_t \toprob X_s$
+as $t \to s$.
+
+TODO: Finish the argument that this is a modification.
+\end{proof}
+
+The flip side of the positive results showing that Brownian paths are
+H\"older continuous is the following result showing that a sea change
+occurs at $\alpha = 1/2$.  As we'll note, in particular this shows
+that Brownian paths are almost surely nowhere differentiable.
+
+\begin{thm}\label{BrownianNotHolderContinuous}For every $\alpha > 1/2$ almost surely a Brownian path has
+  no point that is locally H\"older continuous with exponent $\alpha$.
+\end{thm}
+\begin{proof}
+Pick an $\alpha > 1/2$, $C > 0$, $\epsilon > 0$ and define
+\begin{align*}
+G(\alpha, C, \epsilon) &= \lbrace \omega \mid \text{ there exists } s
+\in [0,1] \text{ such that } \abs{B_t(\omega) - B_s(\omega)} <
+C\abs{t-s} \text{ for every } t \in [0,1] \text{ with }
+\abs{t-s}<\epsilon \rbrace
+\end{align*}
+The set $G(\alpha,C, \epsilon)$ is not necessarily measurable so it
+doesn't make sense to show that it has measure zero; however we will
+show that it is contained in a set of a measure zero.  The trick to
+doing this is the observation that the $\alpha$-H\"older continuity of
+$B_s(\omega)$ from the definition of $G(\alpha,C,\epsilon)$ implies an
+arbitrarily large number of independent increments to be small.  By
+the Gaussian nature of the increments and a very crude tail
+probability estimate we'll be able to conclude that the
+probability of the increments all being small can be sent to zero.  At
+the risk of being pedantic, note that while the positive results on
+H\"older continuity relied on bounds showing it is unlike that a
+collection of independent Gaussians will simulaneously be large, this
+result requires a bound showing it is unlikely that a collection of
+independent Gaussians will simultaneously be small.
+
+To make this precise, pick an $\omega \in G(\alpha, C,\epsilon)$ and
+let $s \in [0,1]$ be an appropriate H\"older continuous point.  Now
+define $U = [0,1] \cap (s - \epsilon, s + \epsilon)$ so that the
+diameter is at least $\epsilon$.  Now for any $m >0$ there is an
+$N_{m,\epsilon}$ (roughly speaking $N_{m,\epsilon} = 2m/ \epsilon$)
+such that for all $n \geq N_{m,\epsilon}$ there exists a $k$ with $0
+\leq k < n-m$ such that for all $0\leq i < m$, $[\frac{k+i}{n},
+\frac{k+i+1}{n}] \subset U$ and either $s \in [\frac{k}{n},
+\frac{k+1}{n}]$ or $s \in [\frac{k+m-1}{n},\frac{k+m}{n}]$ (we only
+need the last option when $s =1$).  Now using the fact that the
+diameter of $U$ is less that $\epsilon$, the triangle inequality and
+the H\"older continuity at $s$ we see for every $0 \leq i < m$,
+\begin{align*}
+\abs{B_{\frac{k+i+1}{n}}(\omega) - B_{\frac{k+i}{n}}(\omega)} &\leq
+\abs{B_{\frac{k+i+1}{n}}(\omega) - B_{s}(\omega)} + \abs{B_{s}(\omega)
+  - B_{\frac{k+i}{n}}(\omega)} \leq 2 C \left( \frac{m}{n} \right)^\alpha
+\end{align*}
+From this argument we conclude that for every $m > 0$ and every $n
+\geq N_{m, \epsilon}$
+\begin{align*}
+G(\alpha, C, \epsilon) &\subset \cup_{k=0}^{n-m-1} \cap_{i=0}^{m-1}
+\lbrace \omega \mid \abs{B_{\frac{k+i+1}{n}}(\omega) -
+  B_{\frac{k+i}{n}}(\omega)} \leq 2 C \left( \frac{m}{n}
+\right)^\alpha \rbrace
+\end{align*}
+We know that each increment $B_{\frac{k+i+1}{n}}(\omega) -
+  B_{\frac{k+i}{n}}(\omega)$ is Gaussian with variance $1/n$.  Thus
+ we can apply the simple bound for a $N(0,1)$ random
+  variable $Z$,
+\begin{align*}
+\probability{\abs{Z} \leq \lambda} &= \frac{1}{\sqrt{2\pi}}
+\int_{-\lambda}^\lambda e^{-x^2/2} \, dx \leq \frac{1}{\sqrt{2\pi}}
+\int_{-\lambda}^\lambda \, dx = \frac{2\lambda}{\sqrt{2\pi}}
+\end{align*}
+to conclude 
+\begin{align*}
+\probability{\abs{B_{\frac{k+i+1}{n}}(\omega) -
+  B_{\frac{k+i}{n}}(\omega)} \leq 2 C \left( \frac{m}{n}
+\right)^\alpha} &\leq \frac{4 C \sqrt{n}}{\sqrt{2\pi}}\left( \frac{m}{n}
+\right)^\alpha
+\end{align*}
+By a union bound and the independence of Brownian increments we know
+that 
+\begin{align*}
+&\probability{\cup_{k=0}^{n-m-1} \cap_{i=0}^{m-1}
+\lbrace \omega \mid \abs{B_{\frac{k+i+1}{n}}(\omega) -
+  B_{\frac{k+i}{n}}(\omega)} \leq 2 C \left( \frac{m}{n}
+\right)^\alpha \rbrace} \\
+&\leq n \left( \frac{4 C \sqrt{n}}{\sqrt{2\pi}}\left( \frac{m}{n}
+\right)^\alpha\right)^m =\left( \frac{4 C m^\alpha}{\sqrt{2\pi}}\right)^m n^{1 + (\frac{1}{2}-\alpha)m}
+\end{align*}
+The important point is if we choose any value of $m > \frac{1}{\alpha
+  - 1/2}$ (possible since $\alpha > 1/2$) then the exponent $1 +
+(\frac{1}{2}-\alpha)m < 0$ and taking the limit as $n \to \infty$ we
+see that $G(\alpha, C, \epsilon)$ is contained in a set of measure
+zero.
+
+The proof of the Theorem is completed by taking the countable union 
+over all rational $C$ and rational $\epsilon$ and noting that this is
+also contained in a set of measure zero.
+\end{proof}
+
+\begin{cor}[Nondifferentiability of Brownian Motion]Almost sure a
+  Brownian path is nowhere differentiable.  
+\end{cor}
+\begin{proof}Take $\alpha = 1$ in the Theorem \ref{BrownianNotHolderContinuous}
+\end{proof}
 
 \begin{thm}[Markov Property of Brownian motion]\label{BrownianMarkovProperty}Let $B_t$ be a Brownian motion starting at $x$ and let $s
   \geq 0$.  Then $B_{t+s} - B_s$ is a Brownian motion starting at $0$
@@ -471,11 +937,144 @@ B_t & \text{when $t \leq \tau$} \\
 is a Brownian motion with the same distribution as $B_t$.
 \end{lem}
 \begin{proof}
+TODO:
+\end{proof}
 
+\begin{lem}\label{BrownianMaximumProcessLaw}Let $M_t = \sup_{0 \leq s \leq t}
+  B_s$ be the maximal process associated with a standard Brownian
+  motion then $M_t \eqdist \abs{B_t}$.
+\end{lem}
+\begin{proof}
+TODO:
 \end{proof}
 
 TODO: Skorohod Embedding
 
+\begin{thm}[Law of Iterated Logarithm]\label{LILBrownianMotion}Let
+  $B_t$ be a standard Brownian motion then 
+\begin{align*}
+\limsup_{t \to \infty} \frac{B_t}{\sqrt{2t\log \log t}} &= 1 \text{ a.s.}
+\end{align*}
+\end{thm}
+\begin{proof}
+The basic idea of the proof is to examine the behavior of Brownian
+paths sampled along the values of a geometric sequence $q^n$ for some
+number $q > 1$.  Because we need to interpolate between sampling
+points we must consider segments of the Brownian path between sampling
+points.
+
+To get started pick a number $q \in \rationals$ such that $q >1$ and
+pick an $\epsilon > 0$ that we will later send to zero.  To clean up
+the notation a bit define $\psi(t) = \sqrt{2t\log \log t}$ and let
+$A_n = \lbrace \sup_{0 \leq t \leq q^n} B_t \geq (1+\epsilon)\psi(q^n)
+\rbrace$.  By Lemma \ref{BrownianMaximumProcessLaw}, rescaling to a
+standard normal random variable and the Gaussian tail bounds from
+Lemma \ref{GaussianTailsElementary} we know that 
+\begin{align*}
+\probability{A_n} &= 
+\probability{\abs{B_{q^n}} \geq (1 + \epsilon)  \psi(q^n)} \\
+&=\probability{\frac{\abs{B_{q^n}}}{\sqrt{q^n}} \geq \frac{(1 + \epsilon)  \psi(q^n)}{\sqrt{q^n}}} \\
+&\leq \frac {\sqrt{q^n}}{(1 + \epsilon)  \psi(q^n)} e^{-(1+\epsilon)^2
+  \psi^2(q^n)/2q^n} \\
+&=\frac {1}{(1 + \epsilon)  \sqrt{2\log \log (q^n)}} e^{-(1+\epsilon)^2
+  \log \log (q^n)} 
+\end{align*}
+and there exists an $N_q$ depending only on $q$ such that the leading
+constant is less than $1$ for $n \geq N_q$, so we have
+\begin{align*}
+\probability{A_n} &\leq \frac{1}{(n \log q)^{(1+\epsilon)^2}} 
+\text{ for $n \geq N_q$}
+\end{align*}
+which shows that $\sum_{n=1}^\infty \probability{A_n} < \infty$. The
+Borel Cantelli Theorem implies that almost surely at most finitely
+many $A_n$ occur.  Thus almost surely there is an $N_\omega$ such that
+$\abs{B_{q^n}} < (1 + \epsilon)  \psi(q^n)$ for all $n \geq N_\omega$.
+
+Now for the other direction, again pick $q > 1$ and consider the
+events
+\begin{align*}
+D_n &= \lbrace B_{q^n} - B_{q^{n-1}} \geq \psi(q^n - q^{n-1}) \rbrace
+\end{align*}
+We know that since $q \leq q^2 \leq \cdots$ so the $D_n$ are
+independent events and $(B_{q^n} - B_{q^{n-1}})/\sqrt{q^n - q^{n-1}}$ is
+$N(0,1)$ so we can apply Lemma \ref{GaussianTailsElementary} to see
+that
+for any $x \geq x_0$ we have
+\begin{align*}
+\probability{(B_{q^n} - B_{q^{n-1}})/\sqrt{q^n -  q^{n-1}} \geq x} \geq
+\frac{x}{x^2+1} e^{-x^2/2} \geq \frac{x_0^2}{x_0^2+1} \frac{1}{x} e^{-x^2/2} 
+\end{align*}
+so if we let $c_1 =
+\frac{2 \log \log q}{2 \log \log q+1}$ then 
+\begin{align*}
+\probability{D_n} &= \probability{(B_{q^n} - B_{q^{n-1}})/\sqrt{q^n -
+  q^{n-1}} \geq \psi(q^n - q^{n-1})/\sqrt{q^n - q^{n-1}} } \\
+&\geq c_1 \frac{e^{-\log \log (q^n - q^{n-1})}}{\sqrt{2 \log \log (q^n -
+    q^{n-1})}}
+\geq c_1 \frac{e^{-\log \log q^n}}{\sqrt{2 \log \log q^n}} \geq
+\frac{c_2}{n \log n}
+\end{align*}
+so by the integral test we see that $\sum_{n=1}^\infty
+\probability{D_n} = \infty$.  By Borel Cantelli we know that almost
+surely there exists $N_1$ such that $B_{q^n} \geq B_{q^{n-1}} + \psi(q^n
+- q^{n-1})$ for all $n \geq N_1$ (where $N_1$ depends on $q$ and $\omega
+\in \Omega$).  To turn this into a lower bound on $B_{q^n}$ alone we
+use the fact $-B_t$ is also a Brownian motion so we know from the
+upper bound that we have already proven
+\begin{align*}
+\liminf_{t \to \infty} \frac{B_t}{\psi(t)} &= -\limsup_{t \to \infty}
+\frac{-B_t}{\psi(t)} \geq -1 \text{ a.s.}
+\end{align*}
+If we pick an arbitrary $\epsilon > 0$ then almost surely there exists
+$N_2$ such that for all $n \geq N_2$
+$B_{q^n} \geq -(1 + \epsilon) \psi(q^n)$.  Therefore we have for all
+$n \geq N_1 \wedge N_2$,
+\begin{align*}
+\frac{B_{q^n}}{\psi(q^n)} \geq \frac{B_{q^{n-1}} + \psi(q^n
+- q^{n-1}) }{\psi(q^n)}
+\geq \frac{-(1 + \epsilon) \psi(q^{n-1}) + \psi(q^n- q^{n-1})}{\psi(q^n)}
+\end{align*}
+Now we can provide lower bounds for $\psi(t)$ in the expressions
+above.  Using the fact that $\psi(t)/\sqrt{t}$ is increasing (for
+large $t$ TODO: make this precise)) we have
+\begin{align*}
+\frac{\psi(q^{n-1})}{\psi(q^n)} &=
+\frac{\psi(q^{n-1})}{\sqrt{q^{n-1}}}
+\frac{\sqrt{q^n}}{\psi(q^n)}\frac{1}{\sqrt{q}} \leq \frac{1}{\sqrt{q}} 
+\end{align*}
+and using the fact that $\psi(t)/t$ is increasing we have 
+\begin{align*}
+\frac{\psi(q^n- q^{n-1})}{\psi(q^n)} &\geq \frac{q^n - q^{n-1}}{q^n} =
+1 - \frac{1}{q}
+\end{align*}
+so putting these facts together we get 
+\begin{align*}
+\limsup_{t \to \infty} \frac{B_t}{\psi(t)} &\geq \limsup_{n \to
+  \infty} \frac{B_{q^n}}{\psi(q^n)} \geq
+\frac{-(1+\epsilon)}{\sqrt{q}} + 1 - \frac{1}{q} \text{ a.s.}
+\end{align*}
+Now taking the intersection of countably many events of probability
+$1$ over all $q \in \rationals$ this bound exists almost surely for
+all rational numbers $q > 1$ so we may take the limit as $q \to
+\infty$ and conclude that $\limsup_{t \to \infty} \frac{B_t}{\psi(t)}
+\geq 1$.
+\end{proof}
+An additional scaling argument allows us to get a Law of Iterated
+Logarithm for the limit as $t \to 0$,
+\begin{cor}Let $B_t$ be a standard Brownian motion then 
+\begin{align*}
+\limsup_{t \to 0} \frac{B_t}{\sqrt{2 t \log \log (1/t)}} &= 1
+\end{align*}
+\end{cor}
+\begin{proof}
+We know that the rescaled process $X_t = t B_{1/t}$ for $t > 0$ is a
+standard Brownian motion.  Therefore letting $h = 1/t$,
+\begin{align*}
+1 &= \limsup_{h \to \infty} \frac{X_h}{\sqrt{2 h \log \log (h)}} =
+\limsup_{t \to 0} \frac{X_{1/t}}{\sqrt{2/t \log \log (1/t)}} =
+\limsup_{t \to 0} \frac{B_t}{\sqrt{2 t \log \log (1/t)}}
+\end{align*}
+\end{proof}
 
 Donsker's Theorem states roughly that Brownian motion can be
 approximated in distribution by a suitably rescaled random walk.

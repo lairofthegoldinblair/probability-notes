@@ -488,7 +488,7 @@ formal and give a proper proof.
   \emph{agree on $A$} if for every $B \subset A$, $B \in \mathcal{F}$
   if and only if $B \in \mathcal{G}$.
 \end{defn}
-\begin{lem}Given $\sigma$-algebras $\mathcal{F}$, $\mathcal{G}$ and
+\begin{lem}\label{ConditionalExpectationIsLocal}Given $\sigma$-algebras $\mathcal{F}$, $\mathcal{G}$ and
   $\mathcal{A}$ with $\mathcal{F} \subset \mathcal{A}$ and
   $\mathcal{G} \subset \mathcal{A}$ and a set $A \in \mathcal{F} \cap
   \mathcal{G}$ such that $\mathcal{F}$ and $\mathcal{G}$ agree on $A$
@@ -779,6 +779,55 @@ equal to $1$ is sometimes called a \emph{stochastic matrix}.
 
 TODO: Is there anything to say about the measurability condition here?
 \end{examp}
+
+Many mappings on the space of probability measures are measurable.
+\begin{lem}\label{MeasurableMappingsOfMeasures}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
+  spaces then the following mappings are measurable:
+\begin{itemize}
+\item[(i)]$\mu \mapsto \mu_A$ for every $A \in \mathcal{S}$.
+\item[(ii)]$\mu \mapsto \int f \, d\mu$ for every measurable function $f: S \to \reals$.
+\item[(iii)]$(\mu,\nu) \mapsto \mu \otimes \nu$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+To see (i) simply note that for every $B \in \mathcal{S}$ and $C \in
+\mathcal{B}(\reals)$, we have $\lbrace \mu \mid \mu_A(B) \in C \rbrace
+= \lbrace \mu \mid \mu(A \cap B) \in C \rbrace$ which is
+measurable since $A \cap B \in \mathcal{S}$.
+
+For (ii) note that for $f=\characteristic{A}$ an indicator function we have $\int f \,
+d\mu = \mu(A)$ is a measurable function of $\mu$ be definition of the
+$\sigma$-algebra on $\mathcal{P}(S)$.  By Lemma
+\ref{ArithmeticCombinationsOfMeasurableFunctions} we then see that
+$\int f \, d\mu$ is measurable for simple functions.  For positive
+functions $f$ we take an increasing sequence of simple functions $f_n
+\uparrow f$ so that $\int f \, d\mu = \lim_{n \to \infty} \int f_n \,
+d\mu$ which is measurable by Lemma \ref{LimitsOfMeasurable}.  For
+general $f$ we write $f = f_+ - f_-$ and use Lemma
+\ref{ArithmeticCombinationsOfMeasurableFunctions} again.
+
+To see (iii) we first note that for $A \in \mathcal{S}$ and $B \in
+\mathcal{T}$ we have $(\mu \otimes \nu)(A \times B) = \mu(A)\nu(B)$
+which is measurable by definition of the $\sigma$-algebras on
+$\mathcal{P}(S)$
+and $\mathcal{P}(T)$ and the product $\sigma$-algebra.  Now we extend
+to general $A \in \mathcal{S} \otimes \mathcal{T}$ by a monotone class
+argument.  Let $\mathcal{C} = \lbrace A \in \mathcal{S} \otimes
+\mathcal{T} \mid \mu \otimes \nu(A) \text{ is a measurable function of
+} (\mu, \nu) \rbrace$.  We claim that $\mathcal{C}$ is a
+$\lambda$-system.  If $A,B \in \mathcal{C}$ such that $A \subset B$
+then $(\mu \otimes \nu)(B \setminus A) = (\mu \otimes \nu)(B) - (\mu
+\otimes \nu)(A)$ which is measurable by Lemma
+\ref{ArithmeticCombinationsOfMeasurableFunctions}.  If $A_1 \subset
+A_2 \subset \cdots$ with $A_n \in \mathcal{C}$ for $n = 1, 2, \dotsc$ then by continuity of
+measure (Lemma \ref{ContinuityOfMeasure}) we have $(\mu \otimes
+\nu)(A) = \lim_{n \to \infty} (\mu \otimes \nu)(A_n)$ which is
+measurable by Lemma \ref{LimitsOfMeasurable}.  Since the sets of the
+form $A \times B$ are a $\pi$-system generating $\mathcal{S} \otimes
+\mathcal{T}$ we can apply the $\pi$-$\lambda$ Theorem (Theorem
+\ref{MonotoneClassTheorem}) to conclude $\mathcal{S} \otimes
+\mathcal{T} \subset \mathcal{C}$ and we are done.
+\end{proof}
 
 As promised, we have the following lemma that gives a couple of
 alternative characterizations of the measurability condition of a

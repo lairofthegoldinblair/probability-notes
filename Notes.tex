@@ -641,7 +641,7 @@ that we have constructed a finite subcover for $C_k$ which is a contradiction.
   $d(x,y) < \delta$ implies $d^\prime(f(x), f(y)) < \epsilon$.
 \end{defn}
 
-\begin{thm}Let $f : (S,d) \to (T, d^\prime)$ be a continuous function, if $S$ is
+\begin{thm}\label{UniformContinuityOnCompactSets} Let $f : (S,d) \to (T, d^\prime)$ be a continuous function, if $S$ is
   compact then $f$ is uniformly continuous.
 \end{thm}
 \begin{proof}
@@ -667,6 +667,16 @@ d^\prime(f(x_{n_j}), f(x)) + d^\prime(f(x), f(y)) + d^\prime(f(y), f(y_{n_j})) =
 which is the desired contradiction.
 \end{proof}
 
+\begin{lem}\label{IntersectionOfNestedCompactSets}Let $K_1 \supset K_2
+  \supset \cdots$ be a nested collection of non-empty compact sets,
+  then $\cap_{n=1}^\infty K_n$ is nonempty.
+\end{lem}
+\begin{proof}Pick $x_n \in K_n$ and note that by compactness there is
+  a convergent subsequence.  Let $x$ be the limit of that convergent
+  subsequence.  By nestedness and closedness of each $K_n$ we conclude
+  that $x \in K_n$ for every $n$.
+\end{proof}
+
 \begin{thm}Let $f : S \to \reals^n$ be a continuous function, if $S$ is
   compact then $f$ is bounded.
 \end{thm}
@@ -683,10 +693,10 @@ A related notion is that of uniform convergence of functions.
 
 One of the most important points about uniform convergence is that a
 uniform limit of continuous functions is continuous.
-\begin{defn}\label{UniformLimitContinuousFunctionsIsContinuous}Let $f, f_n : (S,d) \to (S^\prime, d^\prime)$ be a sequence
+\begin{lem}\label{UniformLimitContinuousFunctionsIsContinuous}Let $f, f_n : (S,d) \to (S^\prime, d^\prime)$ be a sequence
   of functions where $f_n$ are continuous.  If the $f_n$ converge
   to $f$ uniformly then $f$ is continuous.
-\end{defn}
+\end{lem}
 \begin{proof}
 Suppose we are given an $\epsilon > 0$ and let $x \in S$.  By uniform
 convergence of $f_n$ we may find an $N > 0$ such that
@@ -703,12 +713,121 @@ f_N(y)) + d^\prime(f_N(y), f(y)) < \epsilon
 
 \subsection{Stone Weierstrass Theorem}
 
-\begin{thm}Let $X$ be a compact Hausdorff space and let $A \subset
+\begin{lem}\label{ApproximationOfLatticeInfimum}Let $L$ be a lattice of continuous functions on a compact Hausdorff
+  space $X$ and suppose that the pointwise infimum $g(x) = \inf_{f \in
+    L} f(x)$ is continuous.  Then for every $\epsilon > 0$ there
+  exists $f \in L$ such that $0 \leq \sup \lbrace x \in X \mid f(x) - g(x)
+  \rbrace < \epsilon$.
+\end{lem}
+\begin{proof}
+For every $x \in X$ we can find an $f_x \in L$ such that $f_x(x) - g(x) <
+\epsilon/3$.  By continuity of $f_x$ and $g$ we can find an open
+neighborhood  $U_x$ of $x$ such that $\abs{f_x(x) - f_x(y)} < \epsilon/3$
+and $\abs{g(x) - g(y)} < \epsilon/3$.  By the triangle inequality it
+follows that $f_x(y) - g(y) < \epsilon$ for all $y \in U_x$.  The
+$U_x$ are an open cover of $X$ so by compactness we may take a finite
+subcover $U_{x_1}, \dotsc, U_{x_n}$.  Let $f = f_{x_1} \wedge \cdots
+\wedge f_{x_n}$ then for every $x \in X$ we have $x \in U_{x_j}$ for
+some $x_j$ and 
+\begin{align*}
+f(x) - g(x) &\leq f_{x_j}(x) - g(x) < \epsilon
+\end{align*}
+\end{proof}
+
+\begin{lem}Let $L$ be a lattice of continuous functions on a compact
+  Hausdorff space $X$ such that 
+\begin{itemize}
+\item[(i)]$L$ separates points (i.e. for every $x \neq y \in X$ there
+  exists $f \in L$ such that $f(x) \neq f(y)$)
+\item[(ii)]If $f \in L$ then for every $c \in \reals$ we have $cf \in
+  L$ and $f + c \in L$.
+\end{itemize}
+Then for every continuous function $g$ on $X$ and $\epsilon > 0$ there
+exists $f \in L$ such $0 \leq \sup \lbrace x \in X \mid f(x) - g(x)
+\rbrace < \epsilon$.
+\end{lem}
+\begin{proof}
+The first thing is to observe that for the lattice $L$ we have
+complete control over the values of the function that separates points.
+
+Claim 1: Suppose $x \neq y \in X$ and $a \neq b \in \reals$ then
+there exists $f \in L$ such that $f(x) = a$ and $f(y) = b$.
+
+To see the claim because $L$ separates points we have an $h \in L$
+such that $h(x) \neq h(y)$.  Now it suffices to define
+\begin{align*}
+f(z) &= \frac{a -b}{h(x) - h(y)} h(z) + \frac{b h(x) -a h(y) }{h(x) - h(y)} 
+\end{align*}
+and note that by (ii) we have $f \in L$.
+
+Claim 2: For any closed set $F \subset X$, $y \notin F$ and $a \leq b
+\in \reals$ we can find $f \in L$ such that $f \geq a$, $f(y) = a$ and
+$f(x) > b$ for all $x \in F$.
+
+Pick an $x \in F$ then by Claim 1, we can find $f_x$ such that $f_x(x)
+= b+1$ and $f_x(y) = a$.  By continuity of $f_x$ we have an open
+neighborhood $U_x$ of $x$ such that $f(y) > b$ for all $y \in U_x$.
+Clearly the $U_x$ form an open cover of $F$.
+Since $F$ is closed and $X$ is compact Hausdorff we know that $F$ is
+also compact hence we can extract a finite open cover $U_{x_1},
+\dotsc,U_{x_n}$ of $F$.  Define
+\begin{align*}
+f &= (f_{x_1} \vee \cdots \vee f_{x_n}) \wedge a
+\end{align*}
+and observe that $f \in L$ since $L$ is a lattice and by (ii) $L$
+contains the constant functions.
+
+Now we can prove the Lemma proper.  With $g$ selected, let $L_g =
+\lbrace f \in L \mid g \leq f \rbrace$.  Clearly $L_g$ is a lattice so
+the result follows from Lemma \ref{ApproximationOfLatticeInfimum} if
+we can show $g = \inf_{f \in L_g} f$.  Pick an $\delta > 0$ and a $y
+\in X$, we try
+to find $f \in L_g$ such that $f(y) - g(y) 
+\leq \delta$.  First we find
+such and $f \in L$ and then show that in fact $f \in L_g$.  Let $F =
+\lbrace x\in X \mid g(x) + \delta \rbrace$ which is closed by
+continuity of $g$.  By compactness of $X$ and continuity of $g$ we
+know that $g$ has a maximum value $M$.  Using Claim 2 we know that we
+can find $f \in L$ such that $g(y) +\delta \geq f(x)$ for all $x \in
+X$, $g(y) + \delta = f(y)$ and $f(x) > M$ for all $x \in F$.  To see
+that $f \in L_g$, note that by definition of $F$ and construction of $f$  for all $x \in X
+\setminus F$ we have 
+$g(x) < g(y) + \delta \leq f(x)$ and for all $x \in F$ we have $g(x)
+\leq M < f(x)$.
+\end{proof}
+
+The Stone Weierstrass Theorem concerns the approximation properties of
+subalgebras of $C(X)$ but we have been describing the approximation
+properties of lattices of continuous functions.  The connection will
+rely on the fact that we can uniformly approximate the absolute value
+function by a polynomial on a compact interval.  We record that fact
+as the following 
+\begin{lem}For every $\epsilon > 0$ there exists a polynomial $p(x)$
+  such that 
+\begin{align*}
+\sup \lbrace x \in [-1,1] \mid \abs{p(x) - \abs{x}}
+  \rbrace < \epsilon
+\end{align*}
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{thm}[Stone Weierstrass Theorem]\label{StoneWeierstrassApproximation}Let $X$ be a compact Hausdorff space and let $A \subset
   C(X;\reals)$ be a subalgebra which contains a non-zero constant
   function.  The $A$ is dense in $C(X;\reals)$ if and only if $A$
   separates points.
 \end{thm}
-\begin{proof}TODO:
+\begin{proof}
+Let $\overline{A}$ be the uniform closure of $A$ (that is to say the
+set of $f$ such that for every $\epsilon > 0$ there exists $g \in A$
+such that $\sup \lbrace x \in X \mid \abs{g(x) - f(x)} \rbrace <
+\epsilon$.  By Lemma \ref{UniformLimitContinuousFunctionsIsContinuous}
+any such limit is continuous hence $\overline{A} \subset C(X)$. (TODO: The referenced result is stated
+for a metric space domain however the proof clearly works for a domain
+that is a general topological space).
+
+TODO: Finish
 \end{proof}
 
 \begin{cor}[Fourier Series Approximation]\label{FourierSeries}For
@@ -722,7 +841,7 @@ $d_{j,k}$ such that
 \end{align*}
 \end{cor}
 \begin{proof}First we observe that there is a bijection between
-  periodic function as in they hypothesis and functions on the
+  periodic function as in the hypothesis and functions on the
   topological space $T^n = S^1 \times \cdots \times S^1$ (the $n$-torus).
 Observe that if one has a uniform approximation to a function
 viewed as having a domain $T^n$ then the uniform approximation applies
@@ -1159,7 +1278,7 @@ with $f_n^{-1}(n) = f^{-1} [n,\infty)$ and Lemma \ref{SimpleFunctions}.
 \end{proof}
 
 As an application of approximation by simple functions, 
-\begin{lem}
+\begin{lem}\label{ArithmeticCombinationsOfMeasurableFunctions}
 Let $f,g : (\Omega, \mathcal{A}) \to \reals$ be measurable functions
 and let $a,b \in \reals$.  Then $af + bg$ and $fg$ are measurable and
 $f/g$ is measurable when $g \neq 0$ on $\Omega$.
@@ -1239,9 +1358,10 @@ theoretic results.
 \begin{defn}A class $\mathcal{C}$ of subsets of a set $\Omega$ is called a $\lambda$-system if
 \begin{itemize}
 \item[(i)] $\Omega \in \mathcal{C} $.
-\item[(ii)] For all $A,B \in \mathcal{C}$ such that $A \subset B$,
+\item[(ii)] for all $A,B \in \mathcal{C}$ if $A \subset B$, then
   $B \setminus A \in \mathcal{C}$.
-\item[(iii)] $A_n \uparrow A$ for $A_n \in \mathcal{C}$ the $A \in \mathcal{C}$.
+\item[(iii)] for all $A_n \in
+  \mathcal{C}$ if $A_1 \subset A_2 \subset \cdots$ and $A_n \uparrow A$, then $A \in \mathcal{C}$.
 \end{itemize}
 \end{defn}
 \begin{defn}A class $\mathcal{C}$ of subsets of a set $\Omega$ is
@@ -3597,6 +3717,14 @@ set of $X$.
 \end{proof}
 Note that in fact the set of sets in the previous Lemma is the Borel
 $\sigma$-algebra of $A$ with the induced topology.
+By virtue of the above Lemma we will refer to the $\sigma$-ring of
+Borel sets on $\reals$ that do not contain $0$ as $\mathcal{B}(\reals
+\setminus \lbrace 0 \rbrace)$.  This is at the risk of potential
+confusion about whether we are considering this a $\sigma$-ring of
+subsets of $\reals$ or a $\sigma$-algebra of subsets of $\reals
+\setminus \lbrace 0 \rbrace$; pretty much we always have the former
+interpretation in mind.  Our first order of business is to establish a
+simple generating set for Borel $\sigma$-ring on $\reals$.
 
 \begin{lem}\label{IntervalsGenerateBorelPunctured}The $\sigma$-ring of Borel sets of $\reals$ that do not
   contain $0$ is generated by intervals $(-\infty, -c)$ and $(c,
@@ -3616,6 +3744,35 @@ contains $0$.  Now one can adapt the proof of Lemma
 \ref{IntervalsGenerateBorel} to get the result.
 \end{proof}
 
+One of the most often used facts from measure theory is the fact that
+measurable functions may be approximated by simple functions (Lemma
+\ref{PointwiseApproximationBySimple}).  We need a small refinement of
+that Lemma that applies with $\sigma$-rings.
+\begin{lem}\label{PointwiseApproximationBySimpleSigmaRing}For any
+  function $f : \Omega \to \overline{\reals}_+$ 
+measurable with respect to a $\sigma$-ring $\mathcal{R}$, there exist a sequence of simple 
+  functions $f_1, f_2, \dots$ measurable with respect to $\mathcal{R}$
+  such that $0 \leq f_n \uparrow f$.
+\end{lem}
+\begin{proof}
+Recalling the proof of \ref{PointwiseApproximationBySimple}, define
+\begin{align*}
+f_n(\omega) = 
+\begin{cases}k2^{-n} & \text{if $k2^{-n} \leq f(\omega) < (k+1)2^{-n}$
+    and $0 \leq k \leq n2^n -1$.} \\
+n & \text{if $f(\omega) \geq n$.}
+\end{cases}
+\end{align*}
+and we know that $f_n$ are simple functions $f_n \uparrow f$.  The
+only thing to prove is that the $f_n$ are $\mathcal{R}$-measurable;
+this follows because each preimage of $f_n$ is either of the form
+$f^{-1}([k2^{-n}, (k+1)2^{-n}))$, for $k =0, \dotsc, n2^n -1$ or
+$f^{-1}([n, \infty))$ and $f_n=0$ precisely on $f^{-1}([0,1/2^n))$.
+Therefore every preimage of a set in $\mathcal{B}(\reals \setminus
+\lbrace 0 \rbrace)$ is a union of sets $f^{-1}([k2^{-n}, (k+1)2^{-n}))$, for $k =1, \dotsc, n2^n -1$ or
+$f^{-1}([n, \infty))$ and is therefore in $\mathcal{R}$ by the
+$\mathcal{R}$-measurability of $f$.
+\end{proof}
 
 TODO:  Introduce notation for the $\sigma$-ring generated by a
 set of sets.
@@ -3812,20 +3969,102 @@ this measure in an appropriate way to construct the measure that
 generates an integral equivalent to $I$.
 
 \begin{thm}\label{Zaanen}Let $\mathcal{L}$ be a vector lattice of
-  functions on a set $\Omega$ with a pre-integral $I$.  For any $f, g \in \mathcal{L}$ such
+  functions on a set $S$ with a pre-integral $I$.  For any $f, g \in \mathcal{L}$ such
   that $f \leq g$ we define
 \begin{align*}
-[f, g) &= \lbrace (\omega, t) \in \Omega \times \reals \mid f(\omega)
-\leq t < g(\omega) \rbrace
+[f, g) &= \lbrace (s, t) \in S \times \reals \mid f(s)
+\leq t < g(s) \rbrace
 \end{align*}
 , $\mathcal{D} = \lbrace [f,g) \mid f,g \in \mathcal{L}
 \text{ such that } f\leq g\rbrace$ and $\nu([f,g)) = I(g - f)$.  Then
-$\nu$ is countably additive and extends to a measure on the
+$\nu$ is countably additive on $\mathcal{D}$ and extends to a measure on the
 $\sigma$-algebra generated by $\mathcal{D}$.
+
+For every $c > 0$, we let $M_c : S \times \reals \to S \times
+\reals$ be the mapping $M_c(s,t) = (s, ct)$.  Then $M_c^{-1} : 2^{S
+  \times \reals} \to 2^{S \times \reals}$ restricts to a bijection on
+the $\sigma$-algebra generated by $\mathcal{D}$ and furthermore for
+every set $A \in \sigma(\mathcal{D})$ and $c >0$ we have $c
+\nu(M_c^{-1} A) = \nu(A)$.
 \end{thm}
 \begin{proof}
 The proof proceeds by showing that $\mathcal{D}$ is a semiring, that
 $\nu$ is countably additive on $\mathcal{D}$ and by applying Lemma (TODO:).
+
+Let $c > 0$ and consider the mapping $M_c(s,t) = (s, ct)$.  
+
+Claim 1: $M_c^{-1}(\sigma(\mathcal{D})) = \sigma(\mathcal{D})$.
+
+Since $M_c$ is a bijection it follows that $M_c^{-1} : 2^{S \times \reals}
+\to 2^{S \times \reals}$ is also a bijection.  Furthermore if we
+consider a set of the form $[f,g)$ then 
+\begin{align*}
+M_c^{-1}([f,g)) &= \lbrace (s,t) \in S \times \reals \mid f(s) \leq ct
+< g(s) \rbrace \\
+&= \lbrace (s,t) \in S \times \reals \mid (f/c)(s) \leq t
+< (g/c)(s) \rbrace = [f/c, g/c)
+\end{align*}
+So if $[f,g) \in \mathcal{D}$ then it follows from the fact that
+$\mathcal{L}$ is a vector space that $M_c^{-1}$ is bijection of
+$\mathcal{D}$
+to itself.  In particular, we know that $M_c^{-1}
+(\sigma(\mathcal{D}))$ is a $\sigma$-algebra containing $\mathcal{D}$
+  and therefore $M_c^{-1}
+(\sigma(\mathcal{D})) \supset \sigma(\mathcal{D})$.  On the other
+  hand, $(M_c)_*(\sigma(\mathcal{D})) = \lbrace A \subset S \times
+  \reals \mid M_c^{-1}(A) \in \sigma(\mathcal{D}) \rbrace$ is also
+  $\sigma$-algebra (Lemma \ref{SigmaAlgebraPullback}) containing
+  $\mathcal{D}$; hence $\sigma(\mathcal{D}) \subset
+  (M_c)_*(\sigma(\mathcal{D}))$ which implies
+  $M_c^{-1}(\sigma(\mathcal{D})) \subset \sigma(\mathcal{D})$.
+
+Claim 2: For any $A \in \sigma(\mathcal{D})$ and $c > 0$ we have $c
+\nu(M_c^{-1}(A)) = \nu(A)$.
+
+We start with considering $[f,g) \in \mathcal{D}$.  We have already
+seen that $M_c^{-1}([f,g)) = [f/c, g/c)$ so we can just apply the
+definition to see the claim holds.
+\begin{align*}
+c \nu(M_c^{-1}([f,g))) &= c \nu([f/c,g/c)) = c I(f/c-g/c) = I(f-g) =
+\nu([f,g))
+\end{align*}
+To extend to the ring $\mathcal{R}$ generated by $\mathcal{D}$ we note that every
+element of the ring is a disjoint union of elements in $\mathcal{D}$.
+Furthermore $M_c^{-1}$ preserves the Boolean algebra structure on
+$2^{S \times \reals}$ (Lemma \ref{SetOperationsUnderPullback})
+therefore 
+we have
+\begin{align*}
+c \nu(M_c^{-1}(\cup_{i=1}^n [f_i, g_i))) &= c \nu(\cup_{i=1}^n
+M_c^{-1}([f_i, g_i))) = c \sum_{i=1}^n \nu(M_c^{-1}([f_i,g_i))) \\
+&= \sum_{i=1}^n \nu([f_i,g_i)) = \nu(\cup_{i=1}^n [f_i, g_i))
+\end{align*}
+To extend to all of $\sigma(\mathcal{D})$ we use the fact that $\nu$
+is defined as its associated outer measure $\nu(A) = \inf \lbrace
+\nu(B) \mid B \supset A \text{ and } B \in \mathcal{R}\rbrace$.
+Consider $A \in \sigma(\mathcal{D})$ and let $\epsilon > 0$.  By
+definition we can find $B \in \mathcal{R}$ such that $B \supset A$ and
+$\nu(B) \leq \nu(A) + \epsilon$.  Again applying Lemma
+\ref{SetOperationsUnderPullback} we see that $M_c^{-1} (B) \in
+\mathcal{R}$ and $M_c^{-1}(B) \supset M_c^{-1}(A)$ and therefore
+\begin{align*}
+c \nu(M_c^{-1}(A)) & c \leq M_c^{-1}(B) = \nu(B) \leq \nu(A) +\epsilon
+\end{align*}
+Since $\epsilon>0$ was arbitrary we conclude that $c \nu(M_c^{-1}(A))
+\leq \nu(A)$.  In the opposite direction for every $\epsilon > 0$ we
+can find $M_c^{-1}(B) \supset M_c^{-1}(A)$ such that $\nu(M_c^{-1}(B)
+\leq \nu(M_c^{-1}(A)) + \epsilon$.  We know that $B \supset A$ and
+therefore
+\begin{align*}
+\nu(A) &\leq \nu(B) = c \nu(M_c^{-1}(B) \leq c \nu(M_c^{-1}(A)) + \epsilon
+\end{align*}
+so letting $\epsilon$ go to zero we conclude $\nu(A) \leq c
+\nu(M_c^{-1}(A))$ and we are done.
+
+TODO: In the proof we use the fact that $M_c^{-1}$ is a bijection on
+$\mathcal{R}$ which is a simple consequence of the fact $M_c^{-1}$ is
+a bijection on $\mathcal{D}$ and Lemma \ref{SetOperationsUnderPullback};
+find the correct place to note this fact explicitly.
 \end{proof}
 
 \begin{thm}\label{DaniellStoneTheorem}Let $I$ be a pre-integral on a Stone vector lattice
@@ -3907,7 +4146,52 @@ so we can extend $\mu$ to the $\sigma$-algebra $\mathcal{R} \cup
 Now we show how to compute integrals of functions $f \in \mathcal{L}$
 with respect to $\mu$ and show that they agree with the pre-integral
 $I$.
-Claim 3:
+Claim 3: For every $\mathcal{R}/\mathcal{B}(\reals \setminus \lbrace 0
+\rbrace)$ simple function $f \geq 0$ of the form $f = \sum_{i=1}^n c_i
+\characteristic{A_i}$ we have $\int f \, d\mu = \nu([0,f))$.
+
+To see this we know by Theorem \ref{Zaanen} that for every $c > 0$ and
+$B \in \mathcal{A}$ we have $c \nu(M_c^{-1}(B) = \nu(B)$.  We have
+shown that for every $A \in \mathcal{R}$, we have $A \times [0,c) \in
+\mathcal{A}$ and by definition $M_c^{-1}(A \times [0,c)) = A \times
+[0,1)$; therefore $\nu(A \times [0,c)) = c \nu(A \times [0,1)) = c
+\mu(A)$. It is also easy to see that $A \times [0,c) = [0,
+c\characteristic{A})$, so we have for scalar multiples of
+characteristic functions $\int f \, d\mu = \nu([0,f))$.  As for simple
+functions, each can be expressed as a sum $f = \sum_{i=1}^n c_i
+\characteristic{A_i}$ with $A_i \in \mathcal{R}$ and the $A_i$
+disjoint.  Once again by definition we can see that $[0,f) =
+\cup_{i=1}^n [0, c \characteristic{A_i})$ where the disjointness of
+the $A_i$ implies that the sets $ [0, c \characteristic{A_i})$ are
+disjoint.  Now by definition of the integral for a simple function and
+the additivity of the measure $\nu$ we get
+\begin{align*}
+\int f \, d \mu &= \sum_{i=1}^n c_i \mu(A_i) = \sum_{i=1}^n \nu([0,c_i
+\characteristic{A_i})) = \nu([0,f))
+\end{align*}
+
+Claim 4: For every $\mathcal{R}/\mathcal{B}(\reals \setminus \lbrace 0
+\rbrace)$-measurable function $f \geq 0$ we have $\int f \, d\mu =
+\nu([0,f))$.
+
+We take a sequence of positive simple functions $f_n \uparrow f$ which
+exists by Lemma \ref{PointwiseApproximationBySimpleSigmaRing}.
+Since $[0,f_n) \uparrow [0,f)$ we can use the definition of integral
+with respect to $\mu$, continuity of measure with respect to $\nu$ and
+Claim 3 to see
+\begin{align*}
+\int f \, d \mu &= \lim_{n \to \infty} \int f_n \, d\mu = \lim_{n \to
+  \infty} \nu([0,f_n)) = \nu([0,f))
+\end{align*}
+
+By definition we have arranged for all $f \in
+\mathcal{L}$ to be $\mathcal{R}/\mathcal{B}(\reals \setminus \lbrace 0
+\rbrace)$-measurable so by Claim 4 and the definition of $\nu$, for $f
+\in \mathcal{L}$ with $f \geq 0$ we have $\int f \, d \mu = \nu([0,f))
+= I(f)$.  For arbitrary $f \in \mathcal{L}$ we write $f = f_+ - f_-$
+with $f_+, f_- \in \mathcal{L}$ and $f_+, f_- \geq 0$ and use
+linearity of integral and pre-integral to conclude that $\int f \, d
+\mu = \int f_+ \, d\mu - \int f_- \, d\mu = I(f_+) - I(f_-) = I(f)$.
 \end{proof}
 
 It should be remarked that one can develop a good deal of measure an
@@ -6387,4 +6671,21 @@ that one might need to take a different approach and use Lemma
 Lemma \ref{SubgaussianEquivalence}.
 
 TODO: Passing from $L^p$ convergence to almost sure convergence.
+
+\subsection{Proving Inequalities}
+\subsubsection{Using Calculus}
+If one wants to show that $f(x) \geq 0$ on an interval $[a,b]$ one of
+the easiest ways to show the inequality is to find the minimum of
+$f(x)$ on $[a,b]$ and to show this value is bigger than zero.  Finding
+the minimum is a lot easier if $f(x)$ is differentiable.  A common
+special case one can easily show $f(a) \geq 0$ and $f(b) \geq
+0$ and show that $f(x)$ is increasing or decreasing on $[a,b]$ by
+showing $f^{\prime}(x)$ is positive or negative.  The problem with
+this technique is that it is really a proof technique and requires
+that one knows the answer beforehand (e.g. one usually wants to show
+$g(x) \leq h(x)$ and the bound $h(x)$ is what you are trying to figure
+out).  Sometimes the technique can be
+used to guess the answer by taking a simpler known inequality and
+antidifferentiating (see Lemma \ref{GaussianTailsElementary} for a non-trivial example).
+
 \end{document}

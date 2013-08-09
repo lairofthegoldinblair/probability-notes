@@ -400,6 +400,34 @@ that it shows stopped processes can be represented as martingale transforms.
 TODO
 \end{proof}
 
+The $\sigma$-algebra maybe thought of as being constructed by patching
+together the individual $\sigma$-algebras $\mathcal{F}_t$ of the
+filtration; many arguments make use of this idea.  A precise statement
+that allows localization of conditional expectations with respect to
+$\mathcal{F}_\tau$ is given here.  The reader should translate the
+following lemma into the intuitively obvious prose assertion that ``given
+that an event $A$ happens when $\tau = t$, the event $A$ happens before
+$\tau$ if and only if $A$ happens before $t$''.
+\begin{lem}\label{LocalizationOfStoppedFiltration}Given a filtration $\mathcal{F}_t$ and an
+  $\mathcal{F}$-optional time $\tau$, for every $t \in T$, the $\sigma$-algebras
+  $\mathcal{F}_t$ and $\mathcal{F}_\tau$ agree on the set $\lbrace
+  \tau = t\rbrace$.
+\end{lem}
+\begin{proof}
+Suppose $A \in \mathcal{F}_\tau$ and $A \subset \lbrace \tau = t
+\rbrace$.  Then by definition of $\mathcal{F}_\tau$ we know that $A = A
+\cap \lbrace \tau \leq t \rbrace \in \mathcal{F}_t$.  On the other
+hand, if $A \in \mathcal{F}_t$ we know that for all $s \in T$,
+\begin{align*}
+A \cap \lbrace \tau \leq s \rbrace &= A \cap \lbrace \tau = t
+\rbrace \cap\lbrace \tau \leq s \rbrace = \begin{cases}
+A & \text{if $s \geq t$} \\
+\emptyset & \text{if $s < t$}
+\end{cases}
+\in \mathcal{F}_s
+\end{align*}
+\end{proof}
+
 \subsection{Discrete Time Martingales}
 For the special case of index set $T = \integers_+$, we often call a
 martingale a \emph{discrete time martingale}.  Discrete martingales are well
@@ -484,6 +512,12 @@ time.  This latter case is just a simple induction on $n$.
   \tau}
 \text{ a.s.}
 \end{align*}
+TODO: The assumption that $\sigma$ is bounded can be removed (see
+Kallenberg's proof for a demonstration of that).  How to fix up the
+proof below or amend them?
+
+TODO: This result assumes that we have a martingale on $\integers$;
+the result holds with arbitrary countable index sets.
 \end{thm}
 \begin{proof}
 We warn the reader that the following proof is a bit longer than many
@@ -545,6 +579,30 @@ $A \cap \lbrace \sigma=n\rbrace \in \mathcal{F}_n$ for all $0 \leq n
 \end{align*}
 and therefore by the defining property of conditional expectations we
 are done.
+
+Here is another rather direct proof that seems quite transparent and
+is completely self contained.
+Suppose $\sigma, \tau \leq N$.  Pick $A \in \mathcal{F}_\sigma$ and
+compute
+\begin{align*}
+\expectation{X_\tau ; A} &= \sum_{n=0}^N \sum_{m=0}^N \expectation{X_n
+  ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma = m\rbrace} \\
+&=\sum_{n=0}^{N-1} \sum_{m=n+1}^N \expectation{X_n
+  ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma = m\rbrace} + \sum_{n=0}^{N} \sum_{m=n}^N \expectation{X_m
+  ; A \cap \lbrace \tau = m \rbrace \cap \lbrace \sigma = n\rbrace}\\
+&=\sum_{n=0}^{N-1} \expectation{X_n
+  ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma > n\rbrace} + \sum_{n=0}^{N} \sum_{m=n}^N \expectation{X_N
+  ; A \cap \lbrace \tau = m \rbrace \cap \lbrace \sigma = n\rbrace}\\
+&=\sum_{n=0}^{N-1} \expectation{X_n ; A \cap \lbrace \tau = n \rbrace
+  \cap \lbrace \sigma > n\rbrace} + 
+\sum_{n=0}^{N} \expectation{X_N  ; A \cap \lbrace \tau \geq n \rbrace \cap \lbrace \sigma = n\rbrace}\\
+&=\sum_{n=0}^{N-1} \expectation{X_n ; A \cap \lbrace \tau = n \rbrace
+  \cap \lbrace \sigma > n\rbrace} + 
+\sum_{n=0}^{N} \expectation{X_n  ; A \cap \lbrace \tau \geq n \rbrace
+  \cap \lbrace \sigma = n\rbrace}\\
+&=\sum_{n=0}^{N} \expectation{X_n  ; A \cap \lbrace \tau \wedge \sigma = n \rbrace}\\
+&=\expectation{X_{\tau \wedge \sigma} ; A}
+\end{align*}
 \end{proof}
 
 \begin{cor}Let $M_n$ be a martingale and let $\tau$ be an optional
@@ -575,7 +633,7 @@ fact that $\lbrace \tau \geq n \rbrace = \lbrace \tau \leq n-1
 
 \begin{lem}[Doob Decomposition]\label{DoobDecompositionDiscrete}Let
   $X_n$ be a submartingale, then there exists a martingale $M_n$ and
-  an almost surely increasing $\mathcal{F}$-previsible process $A_n$ such that $X_n
+  an almost surely increasing non-negative $\mathcal{F}$-previsible process $A_n$ such that $X_n
   = X_0 + M_n + A_n$.
 \end{lem}
 \begin{proof}
@@ -610,14 +668,20 @@ so that
 A_n - A_{n-1} &= \cexpectationlong{\mathcal{F}_{n-1}}{X_n} - X_{n-1}
 \geq 0 \text{ a.s.}
 \end{align*}
-by the submartingale property of $X_n$.
+by the submartingale property of $X_n$.  Non-negativity of $A_n$
+follows from the facts that $A_n$ is increasing and $A_0 = 0$.
 \end{proof}
 
-The Doob Decomposition allows us to carry over the optional
+The Doob Decomposition is generally a useful tool to transfer results
+about martingales over to submartingales.  As a first illustration we
+present the following optional
 stopping theorem to submartingales
 \begin{cor}\label{OptionalStoppingSubmartingaleDiscrete}Let $X_n$ be a submartingale and let $\sigma$ and $\tau$ be
   bounded optional times, then
-  $\cexpectationlong{\mathcal{F}_\sigma}{X_\tau} \geq X_\sigma$ a.s.
+  $\cexpectationlong{\mathcal{F}_\sigma}{X_\tau} \geq X_{\sigma \wedge
+    \tau}$ a.s.
+
+TODO: See comments about relaxing boundedness hypotheses.
 \end{cor}
 \begin{proof}
 We write $X_n = M_n + A_n + X_0$ with $M_n$ a martingale and $A_n$ positive
@@ -649,56 +713,138 @@ expectation we get
 and we are done.
 \end{proof}
 
+There are other decomposition results that are of use.  While the Doob
+Decomposition shows that a submartingale is bounded below by a
+martingale the following shows that an $L^1$-bounded submartingale is
+bounded above by a martingale as well.
+\begin{lem}[Krickeberg
+  Decomposition]\label{KrickebergDecompositionDiscrete}Let $X_n$ be an
+  $L^1$-bounded submartingale then there exists an $L^1$-bounded martingale $M_n$ and
+  a nonnegative $L^1$-bounded supermartingale $A_n$ such that $X_n = M_n - A_n$.
+\end{lem}
+\begin{proof}Fix an $m \geq 0$ and for every $n\geq m$ define $M_{n,m}
+  = \cexpectationlong{\mathcal{F}_m}{X_n}$.  Note that by the
+  submartingale property
+\begin{align*}
+M_{n,m} &= \cexpectationlong{\mathcal{F}_m}{X_n}  \leq
+\cexpectationlong{\mathcal{F}_m}{\cexpectationlong{\mathcal{F}_n}
+  {X_{n+1}}} = \cexpectationlong{\mathcal{F}_m}
+  {X_{n+1}} = M_{n+1,m} \text{ a.s.}
+\end{align*}
+and therefore we can define $M_m = \lim_{n \to \infty} M_{n,m}$.
+Furthermore we know that 
+\begin{align*}
+\expectation{\abs{M_{n,m}}} &\leq
+\expectation{\cexpectationlong{\mathcal{F}_m}{\abs{X_n}}} 
+=\expectation{\abs{X_n}} \leq \sup_n \expectation{\abs{X_n}} < \infty
+\end{align*}
+and therefore we can apply the Monotone Convergence Theorem to
+conclude $\expectation{\abs{M_m}} < \infty$ so $M_m$ are integrable.
+Clearly by definition of conditional expectation, each $M_{n,m}$ is $\mathcal{F}_m$-measurable and
+therefore by Lemma \ref{LimitsOfMeasurable} we know that $M_m$ is
+$\mathcal{F}_m$-measurable showing $M_m$ is $\mathcal{F}$-adapted.
+Lastly applying the monotone convergence property of conditional
+expectation and the tower rule 
+for conditional expectation we get
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{m}}{M_{m+1}} &= \lim_{n \to \infty}
+\cexpectationlong{\mathcal{F}_{m}}{\cexpectationlong{\mathcal{F}_{m+1}}{X_n}}
+= \lim_{n \to \infty}\cexpectationlong{\mathcal{F}_{m}}{X_n} = M_m
+\end{align*}
+which shows that $M_m$ is indeed a non-negative martingale.
+$L^1$-boundedness of $M_m$ follows from the argument that showed $M_m$
+was integrable.
+
+Now define $A_n = M_n - X_n$ and note that 
+\begin{align*}
+A_n = \lim_{m \to \infty} \cexpectationlong{\mathcal{F}_n}{X_m} - X_n \geq
+0 \text{ a.s.}
+\end{align*}
+by the submartingale property of $X_n$.  To see that $A_n$ is an $L^1$-bounded
+supermartingale, note that integrability and $L^1$-boundedness of $A_n$ follow by the
+triangle inequality and the corresponding properties of $X_n$ and $M_n$, $\mathcal{F}$-adaptedness follows from the
+$\mathcal{F}$-adaptedness of $X_n$ and $M_n$ and the supermartingale
+property follows using the submartingale and martingale properties of
+$X_n$ and $M_n$ respectively
+\begin{align*}
+\cexpectationlong{\mathcal{F}_n}{A_{n+1}} &=
+\cexpectationlong{\mathcal{F}_n}{M_{n+1}} -
+\cexpectationlong{\mathcal{F}_n}{X_{n+1}} \leq M_n - X_n = A_n
+\end{align*}
+\end{proof}
+
+\begin{lem}Let $M_n$ be an $L^1$-bounded martingale then there exist
+  non-negative martingales $Y_n^+$ and $Y_n^-$ such that $M_n = Y_n^+
+  - Y_n^-$ a.s. and $\norm{Y_n^\pm}_1 \leq \norm{M_n}_1$.
+\end{lem}
+\begin{proof}
+This is a corollary of the proof of Lemma
+\ref{KrickebergDecompositionDiscrete}.  If we apply that construction
+to each of the submartingales $M_n^\pm$ we get that $Y_n^\pm = \lim_{m
+  \to \infty} \cexpectationlong{\mathcal{F}_m}{M_m^\pm}$ defines a
+pair of nonnegative martingales.  By linearity of conditional
+expectation and the martingale property of $M_n$ we see that
+\begin{align*}
+Y_n^+ - Y_n^- = \lim_{m \to \infty}
+\cexpectationlong{\mathcal{F}_n}{M_m^+ - M_m^-} = M_n^+ - M_n^- = M_n
+\text{ a.s.}
+\end{align*}
+\end{proof}
+
 \subsubsection{Martingale Inequalities}
 Intuitively one thinks of martingales as being essentially constant
 and submartingales as essentially increasing.  These intuitions can be
 helpful when thinking of the types of properties that martingales
-should have.  There are several fundamental inequalities that describe
-these ideas  in a precise way.  The first result we prove is a maximal
+should have.  Probably the most important such property is that
+boundedness of  a martingale or submartingale implies convergence (analogous
+to the fact that a bounded increasing sequence in $\reals$ must converge).  
+
+There are several fundamental inequalities that describe
+these intuitions in a precise way.  The first result we prove is a maximal
 inequality that can be viewed as an analogue of Kolmogorov's Maximal
 Inequality (Lemma \ref{KolmogorovMaximalInequality}) for a special
-case of dependent random variables.
+class of dependent random variables.
 \begin{lem}[Doob's Maximal
-  Inequality]\label{DoobMaximalInequalityDiscrete}Let $M_t$ be a
+  Inequality]\label{DoobMaximalInequalityDiscrete}Let $X_t$ be a
   submartingale on a countable index set $T$, then for every $\lambda > 0$, 
 \begin{align*}
-\lambda \probability{\sup_{s \leq t} M_s \geq \lambda} &\leq
-\expectation{M_t ; \sup_{s \leq t} M_s  \geq \lambda} \leq \expectation{M_t^+}
+\lambda \probability{\sup_{s \leq t} X_s \geq \lambda} &\leq
+\expectation{X_t ; \sup_{s \leq t} X_s  \geq \lambda} \leq \expectation{X_t^+}
 \end{align*}
-where $M_t^+ = M_t \vee 0$.
+where $X_t^+ = X_t \vee 0$.
 \end{lem}
 \begin{proof}
 First we assume that $T$ is a finite set.  By reindexing we may as
 well assume that $T = \lbrace n \mid n \leq N \text{ and } n \in
 \integers_+ \rbrace$ for some $N \geq 0$.  Now pick an $n \in T$.
-The first thing to note is that for any submartingale $M_n$, $n\geq m$ and $A_m
-\in \mathcal{F}_m$, $\expectation{M_n ; A_m} =
-\expectation{\cexpectationlong{\mathcal{F}_m}{M_n} ; A_m}
-\geq \expectation{M_m ; A_m}$.
+The first thing to note is that for any submartingale $X_n$, $n\geq m$ and $A_m
+\in \mathcal{F}_m$, $\expectation{X_n ; A_m} =
+\expectation{\cexpectationlong{\mathcal{F}_m}{X_n} ; A_m}
+\geq \expectation{X_m ; A_m}$.
 
-Now the event $\lbrace \sup_{0 \leq k \leq n} M_k \geq \lambda
+Now the event $\lbrace \sup_{0 \leq k \leq n} X_k \geq \lambda
 \rbrace$ can be nicely reexpressed in terms of optional times.  Define
 \begin{align*}
-\tau &= \min \lbrace  n \mid M_n \geq \lambda \rbrace
+\tau &= \min \lbrace  n \mid X_n \geq \lambda \rbrace
 \end{align*}
 where we assume the minimum of the empty set is positive infinity. 
-Note that $\lbrace \sup_{0 \leq k \leq n} M_k \geq \lambda
+Note that $\lbrace \sup_{0 \leq k \leq n} X_k \geq \lambda
 \rbrace = \lbrace \tau \leq n \rbrace$.  If we consider the stopped
-process $M_\tau \characteristic{\tau \leq n} = \sum_{m=0}^n M_m
+process $X_\tau \characteristic{\tau \leq n} = \sum_{m=0}^n X_m
 \characteristic{\tau = m}$, take expectations and use the initial
 observation,
-$\expectation{M_\tau \characteristic{\tau \leq n}} \leq \sum_{m=0}^n
-\expectation{M_n \characteristic{\tau = m}} = \expectation {M_n
+$\expectation{X_\tau \characteristic{\tau \leq n}} \leq \sum_{m=0}^n
+\expectation{X_n \characteristic{\tau = m}} = \expectation {X_n
   \characteristic{\tau \leq n}}$.  But on the other hand, by defintion
-of $\tau$, we know that $\expectation{M_\tau \characteristic{\tau \leq
+of $\tau$, we know that $\expectation{X_\tau \characteristic{\tau \leq
     n}} \geq \lambda \expectation{\characteristic{\tau \leq n}} =
-\lambda \probability{\sup_{0 \leq k \leq n} M_k \geq \lambda}$ which
+\lambda \probability{\sup_{0 \leq k \leq n} X_k \geq \lambda}$ which
 shows the first inequality.
 
-The second inequality is true because nonnegativity of $M_n^+$ implies 
+The second inequality is true because nonnegativity of $X_n^+$ implies 
 \begin{align*}
-0 \leq M_n
-\characteristic{\sup_{0 \leq k \leq n} M_k \geq \lambda} \leq M_n^+
+0 \leq X_n
+\characteristic{\sup_{0 \leq k \leq n} X_k \geq \lambda} \leq X_n^+
 \end{align*} so we can apply
 monotonicity of expectation.
 
@@ -708,28 +854,66 @@ finite subsets of $T$.  Now note that for any finite subsets $T^\prime
 \subset T^{\prime\prime}$ such that $t \in T^\prime$ we have 
 \begin{align*}
 \lbrace \sup_{\substack{s \leq t\\
-s \in T^\prime}} M_s \geq \lambda  \rbrace &\subset
+s \in T^\prime}} X_s \geq \lambda  \rbrace &\subset
 \lbrace \sup_{\substack{s \leq t\\
-s \in T^{\prime\prime}}} M_s \geq \lambda  \rbrace
+s \in T^{\prime\prime}}} X_s \geq \lambda  \rbrace
 \end{align*}
 so if we write $T$ as an increasing union of finite sets $T_0 \subset
 T_1 \subset \cdots$ then by continuity of measure (Lemma
 \ref{ContinuityOfMeasure}) we have 
 \begin{align*}
-\probability{\sup_{\substack{s \leq t \\ s \in T}} M_s \geq \lambda}
+\probability{\sup_{\substack{s \leq t \\ s \in T}} X_s \geq \lambda}
 &= 
 \lim_{m \to \infty} \probability{\sup_{\substack{s \leq t \\
-s \in T_m}}  M_s \geq \lambda} 
+s \in T_m}}  X_s \geq \lambda} 
 \end{align*}
 and by Dominated Convergence 
 \begin{align*}
-\expectation{M_t ; \sup_{\substack{s \leq t \\ s \in T}} M_s  \geq \lambda} &= 
-\lim_{m \to \infty} \expectation{M_t ; \sup_{\substack{s \leq t \\ s
-      \in T_m}} M_s  \geq \lambda}
+\expectation{X_t ; \sup_{\substack{s \leq t \\ s \in T}} X_s  \geq \lambda} &= 
+\lim_{m \to \infty} \expectation{X_t ; \sup_{\substack{s \leq t \\ s
+      \in T_m}} X_s  \geq \lambda}
 \end{align*}
 proving the result for countable $T$.
 \end{proof}
 
+A lesser known inequality is
+\begin{lem}[Doob's Minimal
+  Inequality]\label{DoobMinimalInequalityDiscrete}Let $X_t$ be a
+  submartingale on a countable index set $T$, then for every every
+  interval $[s,t] \subset T$ and $\lambda > 0$, 
+\begin{align*}
+\lambda \probability{\inf_{s \leq q \leq t} X_q \leq -\lambda} &\leq
+\expectation{X_t^+} - \expectation{X_s}
+\end{align*}
+where $X_t^+ = X_t \vee 0$.
+\end{lem}
+\begin{proof}
+We start by assuming that $T$ is finite and as in the proof of the
+Maximal inequality we assume that $T = \lbrace 0, \dots, n \rbrace$.
+Let $\tau = \min \lbrace k \mid X_k \leq -\lambda \rbrace$ be the
+hitting time for the interval $(-\infty, -\lambda]$ and note that it
+is an optional time.  Furthermore we have by this definition $\lbrace \min_{0
+  \leq k \leq n} X_k \leq -\lambda \rbrace=\lbrace \tau \leq n\rbrace$.  By
+Optional Stopping Theorem \ref{OptionalStoppingDiscrete} we know that 
+\begin{align*}
+\expectation{X_0} &\leq \expectation{X_{\tau \wedge n}}
+\end{align*}
+We write $X_{\tau \wedge n} = X_\tau \characteristic{\tau \leq n}
++ X_n \characteristic{\tau > n}$ and note that $ X_n \characteristic{\tau
+  > n} \leq  X_n^+ \characteristic{\tau > n} \leq X_n^+$.  Putting
+these facts together,
+\begin{align*}
+\expectation{X_0} &\leq \expectation{X_{\tau \wedge n}} \\
+&=\expectation{X_{\tau} ; \tau \leq n} + \expectation{X_n ; \tau > n}
+\\
+&\leq -\lambda \probability{\tau \leq n} + \expectation{X_n^+} 
+\end{align*}
+and the result is proven.
+
+TODO: Extend from finite to countable as in the proof of the Maximal
+Inequality Lemma \ref{DoobMaximalInequalityDiscrete}.
+\end{proof}
+ 
 Having proven a tail inequality it is often a good idea to see what it
 might say about expectations via Lemma \ref{TailsAndExpectations}.  In
 this case, with a bit of care we get the following result of Doob that
@@ -789,15 +973,15 @@ finite index sets.
 Now to extend the result to arbitrary countable index sets $T$, simply
 observe if $t \in T^\prime \subset T^{\prime \prime}$ then 
 \begin{align*}
-\sup_{\substack{s \leq t \\ s \in T^\prime }} M_s &\leq
-\sup_{\substack{s \leq t \\ s \in T^{\prime \prime}}} M_s
+\sup_{\substack{s \leq t \\ s \in T^\prime }} X_s &\leq
+\sup_{\substack{s \leq t \\ s \in T^{\prime \prime}}} X_s
 \end{align*}
 so we may take finite sets $T_0 \subset T_1 \subset \cdots$ such that
 $t \in T_0$ and $\cup_n T_n = T$ and use Monotone Convergence to
 conclude 
 \begin{align*}
-\expectation{\sup_{\substack{s \leq t \\ s \in T }} M_s} &= 
-\lim_{n \to    \infty} \expectation{\sup_{\substack{s \leq t \\ s \in T_n }} M_s} \leq 
+\expectation{\sup_{\substack{s \leq t \\ s \in T }} X_s} &= 
+\lim_{n \to    \infty} \expectation{\sup_{\substack{s \leq t \\ s \in T_n }} X_s} \leq 
 \frac{p}{p-1}\norm{X_t}_p
 \end{align*}
 \end{proof}
@@ -899,8 +1083,8 @@ $\expectation{X_{\tau_0 \wedge n}}\geq 0$ and because $\sigma_j \geq
 \begin{align*}
 \expectation{X_{\sigma_j \wedge n} - X_{\tau_j    \wedge n} } &=
 \expectation{\cexpectationlong{\mathcal{F}_{\tau_j}}{X_{\sigma_j \wedge n}
-    - X_{\tau_j    \wedge n}}} \\
-&\geq \expectation{X_{\tau_j \wedge n}
+    - X_{\tau_j    \wedge n}}} 
+\geq \expectation{X_{\tau_j \wedge n}
     - X_{\tau_j    \wedge n}} = 0\\
 \end{align*}
 and similarly $\expectation{X_{\tau_{j+1} \wedge n} - X_{\sigma_j
@@ -918,16 +1102,19 @@ and therefore the result is proved.
 TODO: Add comments about the result that $\expectation{X_{\sigma_j
     \wedge n} - X_{\tau_j    \wedge n} }\geq 0$.  Given the definition
 of $\sigma_j$ and $\tau_j$ this result might seem a bit
-counterintuitive.  The explanation for how this result can hold is
+counterintuitive since one is expecting $X_{\sigma_j} \leq a < b \leq X_{\tau_j}$.  The explanation for how this result can hold is
 that in fact is very unlikely that $\sigma_j < n$; with high
-probability $\sigma_j \geq n$ and $X_{\sigma_j    \wedge n} = X_n \geq
-X_{\tau_j \wedge n}$.  This explanation is completely consistent with
+probability $\sigma_j \geq n$ and moreover $X_{\sigma_j    \wedge n} = X_n \geq
+X_{\tau_j \wedge n}$ and not $X_{\sigma_j    \wedge n} = X_{\sigma_j}
+\leq a$.  This explanation is completely consistent with
 the conceptual model that submartingales are not oscillating much and
 is really one of the two main points of the result (the other main point
 being the fact that a lower bound for the terms
 $\expectation{X_{\tau_{j+1} \wedge n} - X_{\sigma_j   \wedge n}}$ is given by $(b-a) U_a^b(n)$).
 
-\begin{thm}\label{MartingaleConvergenceBoundedL1Discrete}Let $X_n$ be a submartingale with $\sup_n \norm{X_n}_1 <
+The Upcrossing Lemma leads immediately to a proof that $L^1$-bounded
+submartingales have almost sure limits.
+\begin{thm}[$L^1$ Submartingale Convergence Theorem]\label{MartingaleConvergenceBoundedL1Discrete}Let $X_n$ be a submartingale with $\sup_n \norm{X_n}_1 <
   \infty$ then there exists and integrable random variable $X$ such
   that $X_n \toas X$.
 \end{thm}
@@ -989,19 +1176,18 @@ convergence is $L^1$.
 TODO: Provide example of a non-uniformly integrable martingale with
 almost sure but not $L^1$ convergence.
 
-
 In the martingale case we can characterize the conditions under which
 the convergence to a limit is in $L^1$.  Furthermore in this case, the
 martingale is closed (see Lemma \ref{ClosedMartingales} for the
 definition of closed martingales).
-\begin{thm}\label{L1MartingaleConvergenceTheoremDiscrete}Let $X_n$ be a martingale then the following are equivalent
+\begin{thm}[Martingale Closure Theorem]\label{L1MartingaleConvergenceTheoremDiscrete}Let $X_n$ be a martingale then the following are equivalent
 \begin{itemize}
 \item[(i)]$X_n$ is uniformly
   integrable
 \item[(ii)]there exists an integrable $X$  such that
   $X_n \tolp{1} X$
 \item[(iii)]there exists an integrable $X$ such that
-  $X_n = \cexpectation{\mathcal{F}_n}{X}$ almost surely.
+  $X_n = \cexpectationlong{\mathcal{F}_n}{X}$ almost surely.
 \end{itemize}
 \end{thm}
 \begin{proof}
@@ -1107,6 +1293,67 @@ since we can find $N>0$ such that $\norm{M_n}_p \leq \norm{M}_p +
 for $L^p$ norms of the $M_n$.
 \end{proof}
 
+Martingale convergence also allows us to extend the optional stopping
+theorem to unbounded optional times.
+\begin{lem}Let $M_n$ be a uniformly integrable martingale and let
+  $\sigma$ and $\tau$ be optional times, then $M_\tau$ is integrable
+  and $\cexpectationlong{\mathcal{F}_\sigma}{M_\tau} = M_{\sigma
+    \wedge \tau}$.
+\end{lem}
+\begin{proof}
+To see integrability of $M_\tau$ we use the Martingale Convergence
+Theorem \ref{L1MartingaleConvergenceTheoremDiscrete} to conclude that
+there exists integrable $M_\infty$ such that $M_n =
+\cexpectationlong{\mathcal{F}_n}{M_\infty}$.  By Lemma
+\ref{ConditionalExpectationIsLocal} and Lemma
+\ref{LocalizationOfStoppedFiltration} for every $n$ we can compute
+\begin{align*}
+M_\tau &= M_n = \cexpectationlong{\mathcal{F}_n}{M_\infty} =
+\cexpectationlong{\mathcal{F}_\tau}{M_\infty} \text{ on
+  $\lbrace \tau = n \rbrace$}
+\end{align*}
+and therefore $M_\tau = \cexpectationlong{\mathcal{F}_\tau}{M_\infty}
+$ proving integrability.  Note that this was proven for arbitrary
+optional times so in particular $M_{\tau \wedge \sigma}$ is integrable
+as well.
+
+To show the optional stopping equality we first observe by the result
+in the bounded case that for every $n$, $\cexpectationlong{\mathcal{F}_\sigma}{M_{\tau
+    \wedge n}} = M_{\sigma
+    \wedge \tau \wedge n}$ and we just need to justify taking limits
+  in the equality.  Pick $A \in
+  \mathcal{F}_\sigma$.  We know that $M_n \toas M_\infty$ as well and therefore 
+we have $M_{\tau
+  \wedge n} \characteristic{A} \toas M_\tau \characteristic{A}$ and $M_{\tau
+  \wedge \sigma \wedge n} \characteristic{A} \toas M_{\tau \wedge \sigma} \characteristic{A}$.  To
+show 
+\begin{align*}
+\expectation{M_\tau \characteristic{A}} 
+&= \lim_{n\to \infty} \expectation{M_{\tau
+  \wedge n} \characteristic{A}} = \lim_{n\to \infty} \expectation{M_{\tau
+  \wedge \sigma \wedge n} \characteristic{A}} 
+= \expectation{M_{\tau \wedge \sigma} \characteristic{A}}
+\end{align*} 
+it will suffice to show that $M_{\tau \wedge n}$
+is uniformly integrable for an arbitrary optional time $\tau$.  Suppose $\epsilon > 0$ is given.  By the
+integrability of $M_\tau$ we can find $R_1 > 0$ such that
+$\expectation{\abs{M_\tau}; \abs{M_\tau} > R_1} < \epsilon/2$ and by
+uniform integrability of $M_n$ we can find $R_2 > 0$ such that $\sup_n
+\expectation{\abs{M_n} ; \abs{M_n} > R_2} < \epsilon/2$.  Now let $R =
+R_1 \vee R_2$ and compute
+\begin{align*}
+\sup_n \expectation{\abs{M_{\tau \wedge n}} ; \abs{M_{\tau \wedge n}}
+  > R} &= \sup_n \expectation{\abs{M_{\tau \wedge n}} ; \abs{M_{\tau \wedge n}}
+  > R \text{ and } \tau \leq n} + \\
+&\sup_n \expectation{\abs{M_{\tau \wedge n}} ; \abs{M_{\tau \wedge n}}
+  > R \text{ and } \tau > n} \\
+&\leq \expectation{\abs{M_{\tau}} ; \abs{M_{\tau}}
+  > R } + \sup_n \expectation{\abs{M_{n}} ; \abs{M_{n}}
+  > R } \\
+&< \epsilon
+\end{align*}
+\end{proof}
+
 We now give a result that we'll use in the transition to continuous
 time.
 \begin{thm}\label{JessenConditioningLimits}Let $\xi$ be an integrable
@@ -1170,7 +1417,8 @@ First goal is to validate the following claim:
   along the way claiming that we may assume $\xi \geq 0$.  I don't
   understand how to validate his claim about the positivity assumption
   and I am stuck trying to use
-  Doob's Maximal Inequality as we've stated it but it is easy to adapt the proof of the
+  Doob's Maximal Inequality as we've stated it. However it is easy to
+  rescue the situation by adapting the proof of the
   Maximal Inequality to prove the above as you'll see}.
 We first prove the claim for a finite index set.  Since we 
 know from Lemma \ref{ClosedMartingales} that
@@ -1236,13 +1484,7 @@ that
   \cexpectationlong{\mathcal{F}_k}{\xi} \geq \lambda} &\leq
 \expectation{\xi; \sup_{k}\cexpectationlong{\mathcal{F}_k}{\xi} \geq \lambda}
 \end{align*}
-TODO: Is this result only used to show uniform integrability?
 \emph{End result from Stroock}
-
-Since we know that the family $\cexpectationlong{\mathcal{F}_n}{\xi}$
-is uniformly integrable by Corollary
-\ref{ConditionalExpectationsUniformlyIntegrable} it suffices to show
-that $\cexpectationlong{\mathcal{F}_n}{\xi} \toas \xi$.
 
 To show almost sure convergence, we let $\mathcal{G}$ denote the set
 of all integrable $\xi$ such that
@@ -1274,27 +1516,37 @@ L^1(\Omega, \mathcal{F}_n, \mu)$ is dense in $L^1(\Omega, \bigvee_n
 \end{split}
 \end{align*}
 where the first term is bounded by our claim at the beginning of
-proof applied to $\xi_n - \xi$, the second term goes to zero as $m$ goes to infinity by our assumption that
-$\xi_n \in \mathcal{G}$ and Lemma
-\ref{ConvergenceAlmostSureByInfinitelyOften} and the third term is
+proof applied to $\xi_n - \xi$ and the third term is
 bounded by the Markov Inequality (Lemma
 \ref{MarkovInequality}).
 
 Taking the limit as $m$ goes to infinity and using our assumption that
-$\xi_n \in \mathcal{G}$ and Lemma
-\ref{ConvergenceAlmostSureByInfinitelyOften} we get
+$\xi_n \in \mathcal{G}$ and the characterization of almost sure
+convergence from Lemma
+\ref{ConvergenceAlmostSureByInfinitelyOften} we see that $\lim_{m \to
+  \infty} \probability{\sup_{k \geq m}
+  \abs{\cexpectationlong{\mathcal{F}_k}{\xi_n} - \xi_n} >
+  \frac{\epsilon}{3}} = 0$.  
+Therefore
 \begin{align*}
 \lim_{m \to \infty} \probability{\sup_{k \geq m} \abs{\cexpectationlong{\mathcal{F}_k}{\xi} - \xi} >
   \epsilon} &\leq \frac{6}{\epsilon} \expectation{\abs{\xi - \xi_n} }
 \\
 \end{align*}
-and then taking the limit as $n$ goes to infinity we get
+and by taking the limit as $n$ goes to infinity we get
 \begin{align*}
-\probability{\sup_{k \geq m} \abs{\cexpectationlong{\mathcal{F}_k}{\xi} - \xi} >
+\lim_{m \to \infty} \probability{\sup_{k \geq m} \abs{\cexpectationlong{\mathcal{F}_k}{\xi} - \xi} >
   \epsilon}&=0
 \end{align*}
- so the result it proved.
+ so $\cexpectationlong{\mathcal{F}_n}{\xi} \toas \xi$ by another application of Lemma \ref{ConvergenceAlmostSureByInfinitelyOften}.
+
+Since we know that the family $\cexpectationlong{\mathcal{F}_n}{\xi}$
+is uniformly integrable by Corollary
+\ref{ConditionalExpectationsUniformlyIntegrable},
+$\cexpectationlong{\mathcal{F}_n}{\xi} \tolp{1} \xi$ follows from the
+almost sure convergence and Lemma \ref{LpConvergenceUniformIntegrability}.
 \end{proof}
+
 \subsection {Continuous Time Martingales and Weakly Optional Times}
 
 Our next goal is to extend the theory we've developed to a continuous
@@ -1445,7 +1697,7 @@ If we have approximation scheme for an optional time we may also want
 to understand how the associated $\sigma$-algebras behave.  For the
 decreasing approximation of the previous lemma, part (ii) of the
 following gives us the answer.
-\begin{lem}If we have a finite or countable collection of optional
+\begin{lem}\label{InfSupStoppedFiltration}If we have a finite or countable collection of optional
   times $\tau_n$ then $\sup_n \tau_n$ is an optional time.  If we have
   a finite or countable collection of weakly optional times $\tau_n$
   then $\tau = \inf_n \tau_n$ is a weakly optional time and
@@ -1520,6 +1772,113 @@ so the claim is verified.
 By the Claim 1 and the countable index set maximal inequality (Lemma
 \ref{DoobMaximalInequalityDiscrete}) we get the first result.  By
 Claim 1 and the countable index set $L^p$ inequality we get the second result.
+\end{proof}
+
+Extending Optional Stopping to continuous time is a bit more work than
+the other results and requires a preliminary lemma.  
+\begin{lem}\label{BackwardSubmartingaleBoundedUniformlyIntegrable}Let $X_n$ be an $\mathcal{F}$-submartingale on
+  $\integers_-$, then $X_n$ is $L^1$ bounded if and only if $X_n$ is
+  uniformly integrable.
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{thm}\label{OptionalStoppingContinuous}Let $X_t$ be an $\mathcal{F}$-submartingale on $\reals_+$
+  with $X_t$ and $\mathcal{F}$ right continuous, let $\sigma$ and
+  $\tau$ be optional times with $\tau$ bounded, then $X_\tau$ is
+  integrable and
+\begin{align*}
+\cexpectationlong{\mathcal{F}_\sigma}{X_\tau} &= X_{\tau \wedge
+  \sigma} \text{ a.s.}
+\end{align*}
+\end{thm}
+\begin{proof}
+For each $n>0$, restrict $X$ to the dyadic rationals $X_{k/2^n}$ on the
+filtration $\mathcal{F}_{k/2^n}$.  Is is immediate that this is a
+discrete submartingale.
+
+Define the discrete approximations of optional times $\tau_n =
+\frac{1}{2^n} \floor{2^n \tau + 1}$ and $\sigma_n = \frac{1}{2^n}
+\floor{2^n \sigma + 1}$ so that $\tau_n$ and $\sigma_n$ are optional
+times such that $\tau_n \downarrow \tau$ and $\sigma_n \downarrow
+\sigma$ (Lemma \ref{DiscreteApproximationOptionalTimes}) and
+furthermore $\mathcal{F}_\sigma = \cap_n \mathcal{F}_{\sigma_n}$ (Lemma
+\ref{InfSupStoppedFiltration} and right
+continuity of $\mathcal{F}$).
+We can now apply the Optional Stopping Theorem Corollary
+\ref{OptionalStoppingSubmartingaleDiscrete} to conclude that for each
+$m,n>0$,
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{\sigma_m}}{X_{\tau_n}} &\geq X_{\tau_n \wedge
+  \sigma_m} \text{ a.s.}
+\end{align*}
+Now holding $n$ fixed we note that since $\sigma_m$ is decreasing in
+$m$ we have $\mathcal{F}_{\sigma_1} \supset
+\mathcal{F}_{\sigma_{2}} \supset \cdots$ and therefore we can apply
+the downward Levy-Jessen Theorem \ref {JessenConditioningLimits} and
+right continuity of $X_t$ to
+conclude 
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{\sigma}}{X_{\tau_n}} &=\lim_{m \to
+  \infty} \cexpectationlong{\mathcal{F}_{\sigma_m}}{X_{\tau_n}}  \geq
+\lim_{m \to \infty} X_{\tau_n \wedge  \sigma_m} 
+= X_{\tau_n \wedge \sigma} \text{ a.s.}
+\end{align*}
+
+Now we need to justify taking the limit $n \to \infty$.  To do this,
+we claim that the sequence of random variable $X_{\tau_n \wedge
+  \sigma}$ is a backward submartingale; that is to say if we consider
+$X_{\tau_{-n}}$ and the filtration
+$\mathcal{F}_{\tau_{-n}}$ for every $n < 0$
+then $X_{\tau_{-n}}$ is an $\mathcal{F}_{\tau_{-n}}$-submartingale on
+$\integers_-$.  The fact that $X_{\tau_{-n}}$ is a submartingale
+follows from the fact that $\tau_n$ is decreasing and Optional
+Stopping (Corollary \ref{OptionalStoppingSubmartingaleDiscrete})
+together
+with our awkward indexing
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{\tau_{-(n-1)}}}{X_{\tau_{-n}}} &\geq
+X_{\tau_{-(n-1)}} \text{ a.s.}
+\end{align*}
+Furthermore we can show that $\expectation{X_{\tau_n}}$ is bounded
+because $\tau$ is bounded.
+If we pick $T > 0$ such that $0 \leq \tau \leq T$ then we have an upper bound
+\begin{align*}
+\expectation{X_{\tau_{n}}}
+&=\expectation{\cexpectationlong{\mathcal{F}_{\tau_n}}{X_{T}}} =
+\expectation{X_T} < \infty
+\end{align*}
+and a lower bound from 
+\begin{align*}
+-\infty &< \expectation{X_0} \leq
+\expectation{\cexpectationlong{\mathcal{F}_0}{X_{\tau_n}}} = \expectation{X_{\tau_n}}
+\end{align*}
+By Lemma \ref{BackwardSubmartingaleBoundedUniformlyIntegrable} we can
+now conclude that $X_{\tau_{n}}$ is uniformly integrable.
+So now we pick $A \in \mathcal{F}_{\sigma}$ and by right continuity of
+$X_t$ we have
+\begin{align*}
+\lim_{n \to \infty} X_{\tau_n} \characteristic{A} = X_\tau
+\characteristic{A} \text{ a.s.}
+\end{align*}
+and
+\begin{align*}
+\lim_{n \to \infty} X_{\tau_n \wedge \sigma} \characteristic{A} =
+X_{\tau \wedge \sigma}
+\characteristic{A} \text{ a.s.}
+\end{align*}
+and therefore by uniform integrability and Lemma
+\ref{LpConvergenceUniformIntegrability} we get
+\begin{align*}
+\expectation{X_\tau ; A} &= \lim_{n \to \infty}
+\expectation{X_{\tau_n} ; A} \geq 
+\lim_{n \to \infty} \expectation{X_{\tau_n \wedge \sigma} ; A} =
+\expectation{X_{\tau \wedge \sigma} ; A}
+\end{align*}
+which shows $\cexpectationlong{\mathcal{F}_\sigma}{X_\tau} \geq
+X_{\tau \wedge \sigma}$ a.s. by the defining property and monotonicity
+of conditional expectation.
 \end{proof}
 
 \subsection{Progressive Measurability}

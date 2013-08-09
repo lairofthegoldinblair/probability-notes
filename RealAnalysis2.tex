@@ -41,6 +41,44 @@ It follows that $U \subset f^{-1}(V)$ and by Lemma
 \ref{OpenAlternative}  we have shown that $f^{-1}(V)$ is open.
 \end{proof}
 
+\begin{defn}A \emph{base} of a topology $\mathcal{T}$ at a point $x
+  \in X$ is a collection
+  of sets $\mathcal{B}$ such that for every open set $U \in
+  \mathcal{T}$ such that $x \in U$ there exists a $B \in \mathcal{B}$ such
+  that $x \in B \subset U$.  A base of a topology is a collection of
+  sets that is a base at all points $x \in X$.
+\end{defn}
+
+\begin{lem}A set $\mathcal{B}$ of sets $B \subset X$ is a base of a
+  topology if and only if for every $x \in X$ there exists $B \in
+  \mathcal{B}$ such that $x \in B$ and for every $A, B \in
+  \mathcal{B}$ and $x \in A \cap B$ there exists $C \in \mathcal{B}$
+  such that $x \in C \subset A \cap B$.
+\end{lem}
+\begin{proof}
+Suppose $\mathcal{B}$ satisfies the hypothesized conditions and let
+\begin{align*}
+\tau &= \lbrace U \subset X \mid \text { for every } x \in U \text{
+  there exists } B \in \mathcal{B} \text{ such that } x \in B \subset
+U \rbrace
+\end{align*}
+It is certainly the case that $\mathcal{B}\subset \tau$ and we claim that $\tau$ is a topology.  Certainly $\emptyset \in \tau$.
+Let $U_\alpha$ for $\alpha \in \Lambda$ are sets in $\tau$.
+Then if $x \in \cup_{\alpha \in \Lambda} U_\alpha$ there exists an
+$\alpha \in \Lambda$ such that $x \in U_\alpha$ and by hypothesis we
+pick $B$ such that $x \in B \subset U_\alpha \subset  \cup_{\alpha \in
+  \Lambda} U_\alpha$.  If $U_1, \dotsc, U_n \in \tau$ and $x \in U_1
+\cap \dotsc \cap U_n$ then there exists $B_1, \dotsc, B_n$ such that
+$x \in B_j \subset U_j$ for $j = 1, \dotsc, n$ and therefore $x \in
+B_1 \cap \dotsc \cap B_n \subset U_1 \cap \dotsc \cap U_n$.  A simple
+induction on the hypothesis shows that $B_1 \cap \dotsc \cap B_n \in \mathcal{B}$.
+Because $\mathcal{B}$ is cover of $X$ we have $X = \cup_{B \in
+  \mathcal{B}} B \in \tau$ and therefore $\tau$ is a topology.  By the
+definition of $\tau$ it is immediate that $\mathcal{B}$ is a base of
+the topology.
+\end{proof}
+
+
 \begin{defn}
 \begin{itemize}
 \item[(i)]A topological space is said to be \emph{separable} if and
@@ -310,6 +348,185 @@ To finish the result we claim $\mu(S \setminus K) < \epsilon$:
 &< \epsilon
 \end{align*}
 \end{proof}
+
+\begin{lem}Let $(S,d)$ be a separable metric space, then $X$ is
+  homeomorphic to a subset of $[0,1]^{\integers_+}$.
+\end{lem}
+\begin{proof}
+Pick a countable dense subset $x_1, x_2, \dotsc$ of $S$ and define 
+$f : S \in [0,1]^{\integers_+}$ by 
+\begin{align*}
+f(x) &= \left ( \frac{d(x_1, x)}{1 + d(x_1, x)}, \frac{d(x_2, x)}{1 +
+    d(x_2, x)}, \dotsc \right )
+\end{align*}
+For any $z \neq y$ we find $\epsilon > 0$ such that $B(z ; \epsilon)
+\cap B( y ; \epsilon) = \emptyset$ and then using density of $x_1,
+x_2, \dotsc$ to pick an $x_n$ such that $d(z,x_n) < \epsilon$ and
+$d(y, x_n) \geq \epsilon$ showing $f(z) \neq f(y)$.  
+
+TODO: Finish
+\end{proof}
+
+\begin{lem}For $f,g \in C([0,\infty) ; \reals)$ define
+\begin{align*}
+\rho(f,g) &= \sum_{n=1}^\infty \frac{1}{2^n} \sup_{0 \leq t \leq n}
+(\abs{f(t) - g(t)} \wedge 1)
+\end{align*}
+then $\rho$ is a metric on $C([0,\infty) ; \reals)$ and $C([0,\infty);
+\reals)$ is complete and separable with respect to this metric.
+\end{lem}
+\begin{proof}
+It is clear that $\rho(f,f) = 0$ and furthermore if $\rho(f,g) = 0$
+then $f = g$ on every interval $[0,n]$ and therefore $f = g$.
+Symmetry and the triangle inequality of $\rho$ is immediate from the
+corresponding properties of the absolute value (TODO: OK the triangle
+inequality may need a bit more of an argument).
+
+We claim that the set of polynomials with rational coefficients is
+dense in $C([0,\infty); \reals)$.  Pick $f \in C([0,\infty); \reals)$
+and let $\epsilon > 0$ be given.  Now take $m > 0$ sufficiently large
+so that $1/2^m < \epsilon / 2$ and by the Stone Weierstrass Theorem \label{StoneWeierstrassApproximation} we
+pick a polynomial with rational coefficients $p$ such that $\sup_{0
+  \leq t \leq m} \abs{f(t) - p(t)} < \epsilon/2$ then we have
+\begin{align*}
+\rho(f,p) &\leq \sum_{n=1}^m\frac{1}{2^n} \sup_{0 \leq t \leq n}
+\abs{f(t) - p(t)} + \sum_{n=m+1}^\infty \frac{1}{2^n} \\
+&\leq \sup_{0 \leq t \leq m}
+\abs{f(t) - p(t)} \sum_{n=1}^m\frac{1}{2^n} + \epsilon/2 <\epsilon
+\end{align*}
+
+Completeness follows from arguing over intervals $[0,n]$.  Suppose
+$f_n$ is a Cauchy sequence in $C([0,\infty); \reals)$.  Given
+$\epsilon > 0$ and $n > 0$ we can find $N > 0$ such that $\rho(f_m,
+f_N) < \epsilon/2^n$ for all $m \geq N$.  Thus $\sup_{0 \leq t \leq n}
+\abs{f_m(t) - f_N(t)} < \epsilon$ for all $m \geq N$ so we see that
+$f_n$ is uniformly  Cauchy on every interval $[0,n]$.  By completeness
+of $C([0,n];\reals)$ we know that the pointwise limit of $f_n$ exists
+on every $[0,n]$ and is a continuous function.  Therefore we have a
+limit $f$ defined on $[0,\infty)$ and since continuity is a local
+property $f \in C([0,\infty); \reals)$.  It remains to show that $f_n$
+converges to $f$ in the metric $\rho$.  This follows arguing as we
+have above.  Let $\epsilon > 0$ be given and choose $n > 0$ such that
+$\frac{1}{2^n} < \epsilon/2$ and choose $N > 0$ such that $\sup_{0 \leq t \leq n}
+\abs{f_m(t) - f_N(t)} < \epsilon/2$ and then observe
+\begin{align*}
+\rho(f_m, f_N) &\leq \sum_{k=1}^n \frac{1}{2^k} \sup_{0 \leq t \leq k}
+\abs{f_m(t) - f_N(t)} + \sum_{k=n+1}^\infty \frac{1}{2^k}  < \epsilon
+\end{align*}
+\end{proof}
+
+\begin{defn}Given a function $f : [0,T] \to \reals$ the \emph{modulus
+    of continuity} is the function
+\begin{align*}
+m(T, f, \delta) &= \sup_{\substack{\abs{s - t} < \delta \\
+0 \leq s,t \leq T}} \abs{f(s) - f(t)}
+\end{align*}
+\end{defn}
+
+\begin{lem}For fixed $T > 0$ and $\delta > 0$, $m(T, f, \delta)$ is a
+  continuous function on $C([0,\infty); \reals)$.  For fixed $T > 0$
+  and function $f : \reals \to \reals$, $m(T,f,\delta)$ is
+  nonincreasing in $\delta$ and 
+\begin{align*}
+\lim_{\delta \to 0} m(T, f, \delta) = 0
+\end{align*}
+provided $f \in C([0,\infty); \reals)$.
+\end{lem}
+\begin{proof}
+To see continuity on $C([0,\infty); \reals)$ let $f \in C([0,\infty);
+\reals)$, $T > 0$, $\delta > 0$ and $\epsilon > 0$ be given and pick $g$ that $\rho(f,g) <
+\epsilon/2^{\ceil{T}+1}$.
+From the definition of the metric $\rho$ for any $n > 0$, $\sup_{0 \leq t \leq n} \abs{f(t) - g(t)} \wedge
+1 \leq 2^n \epsilon$, so for any $T > 0$, 
+\begin{align*}
+\sup_{0 \leq t \leq T} \abs{f(t) - g(t)} \wedge
+1 &\leq \sup_{0 \leq t \leq \ceil{T}} \abs{f(t) - g(t)} \wedge
+1 \leq \epsilon/2
+\end{align*}  
+Therefore by the triangle inequality,
+\begin{align*}
+\sup_{\substack{
+\abs{s -t} < \delta \\
+0 \leq s,t \leq T}} \abs{g(s) - g(t)} \wedge 1 
+&\leq 
+\sup_{\substack{
+\abs{s -t} < \delta \\
+0 \leq s,t \leq T}} \left ( \abs{g(s) - f(s)} + \abs{f(s) - f(t)} + \abs{f(t)
+- g(t)} \right ) \wedge 1 \\
+&\leq \epsilon/2 + 
+\sup_{\substack{
+\abs{s -t} < \delta \\
+0 \leq s,t \leq T}} \abs{f(s) - f(t)} \wedge 1 + \epsilon/2
+\end{align*}
+and therefore arguing with the roles of $f$ and $g$ reversed shows 
+$\abs{m(T, f, \delta) - m(T, g, \delta) } \leq \epsilon$.
+
+The fact that $m(T, f, \delta)$ is descreasing in $\delta$ is clear
+because the definition shows that for $\delta_1 \leq \delta_2$ we
+have 
+\begin{align*}
+\lbrace \abs{f(t) - f(s) } \mid 0 \leq s,t \leq T \text{ and }
+  \abs{s-t} < \delta_1 \rbrace 
+&\subset 
+\lbrace \abs{f(t) - f(s) } \mid 0 \leq s,t \leq T \text{ and }
+  \abs{s-t} < \delta_2 \rbrace
+\end{align*} and therefore $m(T, f, \delta_2) \leq
+  m(T, f, \delta_1)$.
+
+Lastly if we suppose $f \in C([0,\infty); \reals)$ then $f$ is
+uniformly continuous on $[0,T]$ for every $T > 0$ (Theorem
+\ref{UniformContinuityOnCompactSets}).  Thus given an $\epsilon > 0$
+there exists $\delta>0$ such that 
+\begin{align*}
+\sup_{\substack{
+\abs{s -t} < \delta \\
+0 \leq s,t \leq T}} \abs{f(s) - f(t)} < \epsilon
+\end{align*}
+which shows $\lim_{\delta \to 0} m(T, f, \delta) = 0$.
+\end{proof}
+The following Theorem is a version of the Arzela-Ascoli Theorem of
+real analysis.
+\begin{thm}[Arzela-Ascoli Theorem]\label{ArzelaAscoliTheorem}A set $A
+  \subset C([0,\infty); \reals)$ is relatively compact if and only if 
+\begin{itemize}
+\item[(i)]$\sup_{f \in A} \abs{f(0)} < \infty$
+\item[(ii)]$\lim_{\delta \to 0} \sup_{f \in A} m(T, f, \delta) = 0$
+  for all $T > 0$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+To see the necessity of condition (i), observe that $\overline{A}$ is
+compact and by completeness of $C([0,\infty); \reals)$ we know that
+$\overline{A}$ comprises continuous functions.  Therefore we know that
+$A \subset \overline{A} \subset \cup_{n=1}^\infty \lbrace f \in
+C([0,\infty) \mid
+\abs{f(0)} < n\rbrace$.  Since each $\lbrace f \in
+C([0,\infty) \mid
+\abs{f(0)} < n\rbrace$ is easily seen to be an open set, by
+compactness of $\overline{A}$ we have a finite subcover which implies
+there exists an $N$ such that $A \subset \overline{A} \subset \lbrace f \in
+C([0,\infty) \mid
+\abs{f(0)} < N\rbrace$.
+
+To see the necessity of condition (ii), fix $\epsilon > 0$, $T > 0$
+and define for each $\delta > 0$ the set 
+\begin{align*}
+F_\delta &= \lbrace f \in \overline{A} \mid m(T, f, \delta) \geq
+\epsilon \rbrace
+\end{align*}
+By continuity of $m(T, f, \delta)$ we know that $F_\delta$ is closed.
+Since $F_\delta \subset \overline{A}$ with $\overline{A}$ compact we
+conclude that $F_\delta$ is compact.  Furthermore since for fixed $f
+\in \overline{A}$ continuity (more specifically uniform continuity on compact
+sets) implies $\lim_{\delta \to 0} m(T,f,\delta) = 0$, we know that
+$\cap_{\delta > 0} F_\delta = \emptyset$.  By nestedness and
+compactness of the
+$F_\delta$ we know that there is some specific $\delta>0$ for which $F_\delta =
+\emptyset$ (Lemma \ref{IntersectionOfNestedCompactSets}) and (ii) is established.
+
+To see the sufficiency of conditions (i) and (ii).
+\end{proof}
+
 \subsection{Riesz Representation}
 
 \begin{defn}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a

@@ -2447,3 +2447,114 @@ TODO: Finish and address any issues related to the fact that we only
 have almost everywhere differentiability of an integral in Lebesgue
 theory (e.g. chain rule, u-substitution) (also is L'Hopital valid).
 \end{proof}
+
+\subsection{Topology of Weak Convergence}
+We have defined convergence of a sequence of probability measures but
+have skirted describing the topology underlying this notion of
+convergence. 
+
+\begin{defn}Given a metric space $(S,d)$ a subset $A \subset S$ and
+$\epsilon > 0$ define
+\begin{align*}
+A^\epsilon &= \lbrace x \in S \mid \inf_{y \in A} d(x,y) < \epsilon \rbrace
+\end{align*}
+\end{defn} 
+
+\begin{lem}For any set $A \subset S$ we have 
+\begin{itemize}
+\item[(i)]$A^\epsilon$ is an open set.
+\item[(ii)]$A^\epsilon = (\overline{A})^\epsilon$.
+\item[(iii)]$(A^\epsilon)^\delta \subset A^{\epsilon + \delta}$
+\end{itemize}
+\end{lem}
+\begin{proof}
+To see (i) pick an $x \in A^\epsilon$ and pick $y \in A$ such that
+$d(x,y) < \epsilon$.  Then by the triangle inequality for all $z \in
+S$ such that $d(x,z) < (\epsilon - d(x,y))/2$ we have
+\begin{align*}
+d(y,z) &\leq d(x,y) + d(x,z) < (\epsilon + d(x,y))/2 < \epsilon
+\end{align*}
+showing $z \in A^\epsilon$.
+
+To see (ii), it is clear from the definition that $A^\epsilon \subset
+(\overline{A})^\epsilon$ since $A \subset \overline{A}$.  To see the
+opposite inclusion suppose $x \in (\overline{A})^\epsilon$ and pick $y
+\in \overline{A}$ such that $d(x,y) < \epsilon$ then by density of $A$
+in $\overline{A}$ pick $z \in A$ such that $d(y,z) < (\epsilon -
+d(x,y))/2$.  The triangle inequality as before shows $d(z,x) < \epsilon$ and
+therefore $x \in A^\epsilon$.
+
+To see (iii) suppose $z \in (A^\epsilon)^\delta$ and pick $y \in
+A^\epsilon$ such that $d(z,y) < \delta$.  Now pick $x \in A$ such that
+$d(x,y) < \epsilon$ and use the triangle inequality to conclude
+\begin{align*}
+d(x,z) &\leq d(x,y) + d(y,z) < \epsilon + \delta
+\end{align*}
+\end{proof}
+
+\begin{lem}[Levy-Prohorov Metric]\label{LevyProhorovMetric}Let $(S,d)$ be a metric space and let $\mathcal{P}(S)$
+  denote the set of probability measures.  Define 
+\begin{align*}
+\rho(\mu, \nu) &= \inf \lbrace \epsilon > 0 \mid \mu(F) \leq
+\nu(F^\epsilon) + \epsilon \text{ for all closed subsets } F \subset S \rbrace
+\end{align*}
+Then in fact 
+\begin{align*}
+\rho(\mu, \nu) &= \inf \lbrace \epsilon > 0 \mid \mu(A) \leq
+\nu(A^\epsilon) + \epsilon \text{ for all Borel  subsets } A \subset S \rbrace
+\end{align*}
+and furthermore $\rho$ is a metric on $\mathcal{P}(S)$.
+\end{lem}
+\begin{proof}
+Claim 1: For every $\alpha, \beta > 0$ if $\mu(F) \leq \nu(F^\alpha) +
+\beta$ for all closed subsets $F \subset S$ then $\nu(F) \leq \mu(F^\alpha) +
+\beta$ for all closed subsets $F \subset S$.
+
+The proof of the claim relies on the observation that $F \subset
+(((F^\alpha)^c)^\alpha)^c$.
+To see the observation note that if $x \in F$ and $x \in
+((F^\alpha)^c)^\alpha$ then we can find $y \notin F^\alpha$ such that
+$d(x, y)  < \alpha$ which contradicts the definition of $F^\alpha$.
+The claim follows by using inclusion in the observation in addition to
+the fact that $F^\alpha$ is open (hence
+$(F^\alpha)^c$ is closed) so
+\begin{align*}
+\nu(F) &\leq \nu((((F^\alpha)^c)^\alpha)^c) = 1 -
+\nu(((F^\alpha)^c)^\alpha) \leq 1 - \mu((F^\alpha)^c) + \beta =
+\mu(F^\alpha) + \beta
+\end{align*}
+
+With Claim 1 in hand symmetry of $\rho$ now follows as the sets
+$\lbrace \epsilon > 0 \mid \mu(F) < \nu(F^\epsilon) + \epsilon 
+\rbrace$ and $\lbrace \epsilon > 0 \mid \nu(F) < \mu(F^\epsilon) + \epsilon
+\rbrace$ are equal a fortiori the infimum are equal.
+
+Clearly by continuity of measure (Lemma \ref{ContinuityOfMeasure}) we
+have $\mu(A) = \lim_{\epsilon \to 0} \mu(A^\epsilon)$ and therefore
+$\rho(\mu, \mu) = 0$.  Conversely if $\rho(\mu, \nu) = 0$ then we pick
+a closed set $F$ and for every $\epsilon > 0$ we have $\mu(F) <
+\nu(F^\epsilon) + \epsilon$.  Again using continuity of measure we can
+conclude that $\mu(F) \leq \nu(F)$.  By symmetry of $\rho$ that we
+have already proven we can conclude $\nu(F) \leq \mu(F)$ and there
+$\mu(F) = \nu(F)$ for all closed set $F \subset S$.  Since closed sets
+are a $\pi$-system that generate the Borel subsets of $S$ we conclude
+that $\mu = \nu$ by a monotone class argument (Lemma
+\ref{UniquenessOfMeasure}).
+
+To show the triangle inequality let $\mu, \nu, \zeta$ be probability
+measures and suppose $\epsilon > 0$ is such that $\mu(F) <
+\nu(F^\epsilon) + \epsilon$ and $\delta > 0$ is such that $\nu(F) <
+\zeta(F^\delta) + \delta$ for all closed sets $F \subset S$.  Now
+choose a particular $F \subset S$ be closed then
+\begin{align*}
+\mu(F) 
+&\leq \nu(F^\epsilon) + \epsilon 
+\leq \nu(\overline{F^\epsilon})+ \epsilon 
+\leq \zeta((\overline{F^\epsilon})^\delta)+ \epsilon + \delta \\
+&=\zeta((F^\epsilon)^\delta)+ \epsilon + \delta 
+\leq \zeta(F^{\epsilon+\delta})+ \epsilon + \delta
+\end{align*}
+Thus $\rho(\mu, \zeta) \leq \rho(\mu, \nu) + \rho(\nu, \zeta)$.  TODO:
+This last conclusion is more or less obvious but there are some minor details that
+could be filled in here.
+\end{proof}

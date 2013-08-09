@@ -749,3 +749,52 @@ TODO: Show that a
 given two independent Gaussian random variables their sum and
 difference are independent Gaussian (that probably doesn't require
 Gaussian random vectors).  Not sure we really need to call this out as a Lemma.
+
+One last thing we need in the sequel are estimates on the tails of
+normal random variables.  These results are not required yet nor do
+they add anything significant to the conceptual picture so the
+reader can safely skip over them and return to them when they are
+referenced.
+
+\begin{lem}\label{GaussianTailsElementary}Given an $N(0,1)$ random
+  variable $\xi$ we have for all $\lambda > 0$, 
+\begin{align*}
+\frac{\lambda}{\sqrt{2\pi}(1+\lambda^2)} e^{-\lambda^2/2}&\leq \probability{\xi \geq
+    \lambda} \leq \frac{1}{\sqrt{2\pi} \lambda} e^{-\lambda^2/2}
+\end{align*}
+\end{lem}
+\begin{proof}
+We start by showing the upper bound 
+\begin{align*}
+\probability{\xi \geq \lambda} &= \frac{1}{\sqrt{2\pi}} \int_\lambda^\infty
+e^{\frac{-x^2}{2}} \, dx 
+\leq  \frac{1}{\sqrt{2\pi}} \int_\lambda^\infty
+\frac{x}{\lambda} e^{\frac{-x^2}{2}} \, dx 
+= \frac{1}{\sqrt{2\pi}\lambda} e^{\frac{-\lambda^2}{2}}
+\end{align*}
+Interestingly, the lower bound follows from the upper bound.  Define 
+\begin{align*}
+f(\lambda) &= \lambda e^{-\lambda^2/2} - (1 + \lambda^2)
+\int_\lambda^\infty e^{-x^2/2} \, dx
+\end{align*}
+and notice that $f(0) = -\int_0^\infty e^{-x^2/2} \, dx =
+-\frac{\sqrt{2\pi}}{2} < 0$.  Furthermore if we use the upper bound
+just proven
+\begin{align*}
+\lim_{\lambda \to \infty} f(\lambda)
+&= \lim_{\lambda \to \infty} \lambda^2 \int_\lambda^\infty e^{-x^2/2}
+\, dx \leq \lim_{\lambda \to \infty} \lambda e^{-\lambda^2/2} = 0
+\end{align*}
+and therefore $\lim_{\lambda \to \infty} f(\lambda) = 0$.  In addition
+we have for $\lambda \geq 0$,
+\begin{align*}
+\frac{d}{d\lambda} f(\lambda) &= e^{-\lambda^2/2} - \lambda^2
+e^{-\lambda^2/2} + (1+\lambda^2) e^{-\lambda^2/2} -2\lambda
+\int_\lambda^\infty e^{-x^2/2} \, dx \\
+&=2\lambda \left(\frac{1}{\lambda}e^{-\lambda^2/2} -
+  \int_\lambda^\infty e^{-x^2/2} \, dx \right ) \geq 0
+\end{align*}
+where the last inequality follows from the upper bound just proven.
+This shows that $f(\lambda) \geq 0$ for all $\lambda \geq 0$ and we
+are done.
+\end{proof}
