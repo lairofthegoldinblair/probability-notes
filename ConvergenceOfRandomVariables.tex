@@ -1285,7 +1285,33 @@ Learning Theory.  One of the goals of such generalizations is to prove
 consistency of more general statistics derived from the empirical measure.
 
 \subsection{Convergence In Distribution}
-Our first goal is to establish that convergence in
+As we have already remarked convergence in distribution is really a
+property of the laws of a sequence of random variables and therefore
+the limit of a sequence of random variables that converge in
+distribution can only be expected to be unique up to equality in
+distribution.
+\begin{lem}\label{UniquenessOfConvergenceInDistribution}$\eta, \xi, \xi_1, \xi_2, \dots$ be a random elements in a
+  metric space $(S,d)$ such that $\xi_n \todist \xi$ and $\xi_n
+  \todist \eta$, then $\eta \eqdist \xi$.
+\end{lem}
+\begin{proof}
+Let $F$ be a closed set in $S$ and define $f_n(x) = nd(x,F) \wedge
+1$.  Then the $f_n$ are bounded and continuous (look forward to Lemma
+\ref{DistanceToSetLipschitz} for a proof of a stronger result) and
+$f_n \downarrow \characteristic{F}$ thus by Monotone Convergence,
+\begin{align*}
+\probability {\xi \in F} &= \lim_{n \to \infty} \expectation{f_n(\xi)}=
+\lim_{n \to \infty} \lim_{m \to \infty} \expectation{f_n(\xi_m)} =  \lim_{n \to \infty} \expectation{f_n(\eta)}=\probability {\eta \in F} 
+\end{align*}
+Since the closed sets are a $\pi$-system that generate the Borel
+$\sigma$-algebra on $S$ we have $\xi \eqdist \eta$ by montone classes
+(specifically Lemma \ref{UniquenessOfMeasure}).
+\end{proof}
+This result will also follow from the fact that weak convergence of
+probability measures corresponds to convergence in a metric topology on the space
+of probability measures (proven later in this chapter).
+
+Our next goal is to establish that convergence in
 distribution is implied by convergence in probability.
 \begin{lem}\label{ConvergenceInProbabilityImpliesConvergenceInDistribution}Let $\xi, \xi_1, \xi_2, \dots$ be a random elements in a
   metric space $(S,d)$ such that $\xi_n \toprob \xi$, then $\xi_n
@@ -2451,7 +2477,27 @@ theory (e.g. chain rule, u-substitution) (also is L'Hopital valid).
 \subsection{Topology of Weak Convergence}
 We have defined convergence of a sequence of probability measures but
 have skirted describing the topology underlying this notion of
-convergence. 
+convergence. An intuitively appealing approach would be to define a
+metric on the space of probability measures such that two measures are
+close if their values on some chosen collection of sets are close.  A
+moments reflection on the Portmanteau Theorem \ref{PortmanteauTheorem}
+tells us that such a condition is likely to be too strong.  For
+example, if we pick a closed set $F$ then we know that it is possible
+for $\mu_n \toweak \mu$ but to have $\mu(F)$ strictly larger than all
+of the $\mu_n(F)$; even more precisely by considering the standard
+delta mass example it is possible for $\mu(F)$ to be equal to one but
+for all $\mu_n(F)$ to be zero.  
+
+As it turns out the intuitive idea can be rescued with a small
+modification.  Again thinking about the delta mass example, we can see
+that while $\mu_n(F)$ remains zero for all $n$ the mass of $\mu_n$ get
+arbitrary close to $F$ so that we can potentially measure how close
+$\mu$ and $\mu_n$ are by looking at how much we have to \emph{thicken}
+the set $F$ to capture the mass of $\mu_n$.  Generalizing we may want
+to say that $\mu$ and $\nu$ are close if for every set $A$ in some
+collection we don't have to thicken $A$ very much for the $\mu(A)$ and
+$\nu(A)$ to be close; in fact the amount of thickening required may be a
+quantitative measure of closeness.  We now proceed to make this idea precise.
 
 \begin{defn}Given a metric space $(S,d)$ a subset $A \subset S$ and
 $\epsilon > 0$ define

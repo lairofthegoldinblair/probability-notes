@@ -9,6 +9,7 @@
 \DeclareMathOperator*{\diag}{Diag}
 \DeclareMathOperator*{\interior}{int}
 \DeclareMathOperator*{\diam}{diam}
+\DeclareMathOperator*{\sgn}{sgn}
 
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{cor}[thm]{Corollary}
@@ -62,7 +63,9 @@
 \newcommand{\toprob}{\overset{P}\to}
 \newcommand{\toas}{\overset{a.s.}\to}
 \newcommand{\todist}{\overset{d}\to}
+\newcommand{\toweak}{\overset{w}\to}
 \newcommand{\tolp}[1]{\overset{L^#1}\to}
+\newcommand{\eqfdd}{\overset{f.d.d.}=}
 \newcommand{\eqdist}{\overset{d}=}
 \newcommand{\kldiv}[2]{D\left( #1 \mid\mid #2 \right)}
 \newcommand{\sample}[1]{\boldsymbol{#1}}
@@ -693,7 +696,8 @@ A related notion is that of uniform convergence of functions.
 
 One of the most important points about uniform convergence is that a
 uniform limit of continuous functions is continuous.
-\begin{lem}\label{UniformLimitContinuousFunctionsIsContinuous}Let $f, f_n : (S,d) \to (S^\prime, d^\prime)$ be a sequence
+\begin{lem}\label{UniformLimitContinuousFunctionsIsContinuous}Let $f,
+  f_n : (S,d) \to (S^\prime, d^\prime)$ be a sequence
   of functions where $f_n$ are continuous.  If the $f_n$ converge
   to $f$ uniformly then $f$ is continuous.
 \end{lem}

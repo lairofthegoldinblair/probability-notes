@@ -22,7 +22,7 @@ we consider a set function $X : \Omega \to S^T$ then can equivalently
 view this as a set function $\tilde{X} : \Omega \times T \to S$ via the
 identification $\tilde{X}(\omega, t) = X(\omega)(t)$ (the process of
 transforming $\tilde{X}$ to $X$  is called
-\emph{currying} in computer science).  We can also curry $X$ on $\Omega$
+\emph{currying} in computer science).  We can also curry $\tilde{X}$ on $\Omega$
  to get an element $\hat{X} : T \to S^\Omega$.  It is customary to
 write $\hat{X}(t)$ as $X_t$.
 \begin{lem}\label{ProcessMeasurableProjections}Suppose one has a probability space $(\Omega,
@@ -35,7 +35,8 @@ write $\hat{X}(t)$ as $X_t$.
 We know by definition of $\mathcal{S}^T$ that every projection $\pi_t
 : S^T \to S$ is measurable.  Moreover, we know that $X_t = \pi_t \circ
 X$.  Therefore if we assume $X$ is
-$\mathcal{S}^T$-measurable then it follows from Lemma
+$\mathcal{S}^T$-measurable then $X_t$ is a composition of measurable
+functions and it follows from Lemma
 \ref{CompositionOfMeasurable} that $X_t$ is measurable.
 
 In the opposite direction, assume that each $X_t$ is measurable.  Let
@@ -58,29 +59,151 @@ shows that $X$ is measurable.
 \end{defn}
 
 According to this definition, a stochastic process is simply a random
-element in a path space $(S^T, \mathcal{S}^T)$.  As such it has a
-distribution $\pushforward{X}{\mu}$ which is a measure on path space; as usual we will say
+element in subset of a path space $(U, U \cap \mathcal{S}^T)$.  As such it has a
+distribution $\pushforward{X}{\mu}$ which is a measure on $U$; as usual we will say
 that two stochastic processes $X$ and $Y$ are equal in distribution
 when their laws are equal.  Because of the nature of the
 $\sigma$-algebra on $\mathcal{S}^T$ there is a simple way to measure
 whether two processes are equal in distribution.
 
-\begin{lem}Let $X$ be a stochastic process then for every $t_1,
-  \dotsc, t_n$ then $(X_{t_1}, \dotsc, X_{t_n}) \in S^n$ is
-  $\mathcal{S}^{\otimes n}$-measurable and the measures
-  $\pushforward{(X_{t_1}, \dotsc, X_{t_n})}{\mu}$ are called the
-  \emph{finite dimensional distributions} of $X$.   If $X$ and $Y$ are
-  two stochastic processes then $X \eqdist Y$ if and only if their
-  finite dimensional distributions are equal.
+TODO: Build some intuition about the definition of a process.  In
+particular, the reason for considering subsets $U \subset S^T$ is
+clear because $S^T$ is just too big.  It is very rare for one to be
+interested in arbitrary set functions; almost always one wants some
+kind of condition to be imposed such as continuity or at least some
+restriction on the discontinuities that can occur (e.g. allowing jump
+discontinuities but outlawing
+oscillatory discontinuities is common in stochastic processes).  These
+subsets very often come with additional structure that either implies or constrains their measure theoretic
+structure (e.g. a metric topology that implies a Borel
+$\sigma$-algebra).  A subtle point that shall come up is that one will
+want the implied measure theoretic structure be compatible with the
+measure theoretic structure of the general definition.
+TODO: Is there something deep about the use of the product
+$\sigma$-algebra in this context or is a technical convenience/least
+common denominator that allow one to prove general results?
+
+\begin{lem}\label{RestrictionOfSigmaAlgebra}Let $(S, \mathcal{S})$ be a measurable space an let $U
+  \subset S$ be a (not necessarily measurable) subset, then $U
+  \cap \mathcal{S}$ is a $\sigma$-algebra on $U$.  Furthermore if
+  $\mathcal{C} \subset 2^S$ is a set of subsets of $S$ that
+  generates $\mathcal{S}$ then $\mathcal{D} = \lbrace U \cap C \mid C
+  \in \mathcal{C} \rbrace$ generates $U \cap \mathcal{S}$.  Lastly
+  given a measurable space $(T, \mathcal{T})$ and an $\mathcal{S}/\mathcal{T}$-measurable
+  function $f : S \to T$, the restriction $f \vert_U : U \to T$ is $U
+  \cap \mathcal{S}/\mathcal{T}$-measurable.
 \end{lem}
 \begin{proof}
-The $\mathcal{S}^{\otimes n}$-measurability of $(X_{t_1}, \dotsc,
-X_{t_n})$ is consequence of Lemma \ref{ProcessMeasurableProjections}
-and the fact that a function in a product $\sigma$-algebra is
-measurable if and only if its coordinate projections are.
+The fact that $U \cap \mathcal{S}$ is a $\sigma$-algebra follows
+easily from the fact that $\mathcal{S}$ is a $\sigma$-algebra and the set theoretic identities $\cap_{i=1} (U \cap A_i) = U
+\cap \cap_{i=1} A_i$ and $U \setminus (U \cap A) = U \cap (U \cap A)^c
+= U \cap A^c$.
 
-If we suppose that $X \eqdist Y$ 
-TODO: Finish
+Given the generating set $\mathcal{C}$ for $\mathcal{S}$ and
+$\mathcal{D}$ defined as above it is immediate from the fact that
+$\mathcal{C} \subset \mathcal{S}$ that we have $\mathcal{D} \subset U
+\cap \mathcal{S}$.  As we have just proven that $U \cap \mathcal{S}$
+is a $\sigma$-algebra it follows that $\sigma(\mathcal{D}) \subset U
+\cap \mathcal{S}$.  
+
+On the other hand, let $\mathcal{E} = \lbrace A
+\subset S \mid U \cap A \in \sigma(\mathcal{D}) \rbrace$.  We
+claim that $\mathcal{E}$ is a $\sigma$-algebra.  Indeed if $A, A_1, A_2,
+\dotsc \in \mathcal{E}$ then we have $U \cap \cup_{i=1}^\infty A_i =
+\cup_{i=1}^\infty U \cap A_i \in \sigma(\mathcal{D})$ which implies
+$\cup_{i=1}^\infty A_i \in \mathcal{E}$ and $U \cap A^c
+= (U \cap U^c) \cup (U \cap A^c) = U \cap (U \cap A)^c \in
+\mathcal{D}$ which implies $A^c \in \mathcal{E}$.  By the definition
+of $\mathcal{D}$, we know
+$\mathcal{C} \subset \mathcal{E}$ and therefore $\mathcal{S} =
+\sigma(\mathcal{C}) \subset \sigma(\mathcal{E}) = \mathcal{E}$.  Thus we have shown the
+reverse inclusion $U \cap
+\mathcal{S} \subset \sigma(\mathcal{D})$ and we have $U \cap
+\mathcal{S} = \sigma(\mathcal{D})$.
+
+Lastly, $U \cap \mathcal{S}/\mathcal{T}$-measurability of the
+restriction of a
+$\mathcal{S}/mathcal{T}$-measurable $f$ follows from the identity
+$(f\vert_U)^{-1}(A) = \lbrace s \in S \mid f(s) \in A \text{ and } s
+\in U \rbrace = U \cap f^{-1}(A)$ which shows $(f\vert_U)^{-1}(A) \in U \cap
+\mathcal{S}$ whenever $f^{-1}(A) \in \mathcal{S}$.
+\end{proof}
+
+\begin{lem}\label{ProcessLawsAndFDDs}   Let $X$ be a stochastic process
+  with values in $U \subset S^T$, then for every $t_1,
+  \dotsc, t_n \in T$ then $(X_{t_1}, \dotsc, X_{t_n}) \in S^n$ is
+  $\mathcal{S}^{\otimes n}$-measurable and the measures
+  $\pushforward{(X_{t_1}, \dotsc, X_{t_n})}{\mu}$ are called the
+  \emph{finite dimensional distributions} of $X$. Given $U \subset
+  S^T$ then any two probability measures on $(U, U \cap
+  \mathcal{S}^T)$ are equal if and only if their finite
+  dimensional distributions are equal.  In particular, if $X$ and $Y$ are
+  two stochastic processes with values in $U \subset S^T$ then $X \eqdist Y$ if and only if their
+  finite dimensional distributions are equal (written $X \eqfdd Y$).
+  It is also that the case that $X \eqfdd Y$ if and only if
+  $\pushforward{(X_{t_1}, \dotsc, X_{t_n})}{\mu} =
+  \pushforward{(Y_{t_1}, \dotsc, Y_{t_n})}{\mu}$ for all $t_1, \dotsc,
+  t_n \in T$ with the $t_j$ distinct.
+\end{lem}
+\begin{proof}
+Suppose that $t_1, \dotsc, t_n$ are given and define the $n$-dimensional projection
+$(\pi_{t_1}, \dotsc, \pi_{t_n}) : S^T \to S^n$.   We claim that 
+$(\pi_{t_1}, \dotsc, \pi_{t_n})$ is 
+$\mathcal{S}^T/\mathcal{S}^{\otimes n}$ measurable.  Indeed if we let $A_1 \times \dotsb \times A_n \in
+\mathcal{S}^{\otimes n}$ then $(\pi_{t_1}, \dotsc, \pi_{t_n})^{-1}(A_1
+\times \dotsb \times A_n) = 
+\pi_{t_1}^{-1}(A_1) \cap \dotsb \cap \pi_{t_n}^{-1}(A_n) $, hence $(\pi_{t_1}, \dotsc, \pi_{t_n})^{-1}(A_1
+\times \dotsb \times A_n) \in
+\mathcal{S}^T$ by the measurability of each $\pi_{t_j}^{-1}(A_j)$ for
+$j=1, \dotsc, n$.  Since sets of the form $A_1 \times \dotsb \times
+A_n$ generate $\mathcal{S}^{\otimes n}$ 
+we see that $(\pi_{t_1}, \dotsc, \pi_{t_n})$ is measurable by
+application of Lemma \ref{MeasurableByGeneratingSet}.
+
+The $\mathcal{S}^{\otimes n}$-measurability of $(X_{t_1}, \dotsc,
+X_{t_n})$ now follows directly from Lemma
+\ref{CompositionOfMeasurable} and \ref{RestrictionOfSigmaAlgebra} since we can write $(X_{t_1}, \dotsc,
+X_{t_n}) = (\pi_{t_1}, \dotsc, \pi_{t_n}) \circ X$ as a composition of
+a $U \cap \mathcal{S}^T/\mathcal{S}^{\otimes n}$-measurable function
+$(\pi_{t_1}, \dotsc, \pi_{t_n})\vert_U$ and $U \cap \mathcal{S}^T$-measurable function $X$.
+
+Suppose that $\mu$ and $\nu$ are probability measures on $(U, U \cap
+\mathcal{S}^T)$ whose finite dimensional projections are equal; that
+is to say for every $t_1, \dotsc, t_n \in T$ we have 
+$\pushforward{(\pi_{t_1},\dotsc, \pi_{t_n})}{\mu} =
+\pushforward{(\pi_{t_1},\dotsc, \pi_{t_n})}{\nu}$.  This fact that
+shows that $\mu$ and $\nu$ agree on all sets of the form
+$(\pi_{t_1},\dotsc, \pi_{t_n})^{-1}(A)$ where $n > 0$, $t_1, \dotsc,
+t_n \in T$ and $A \subset \mathcal{S}^{\otimes n}$.  Let the
+set of sets of this form be called $\mathcal{C}$.  We claim
+$\mathcal{C}$ generates $U \cap \mathcal{S}^T$.  Indeed it is the case
+that sets of the form $\pi_t^{-1}(A)$ for $t \in T$ and $A \subset
+\mathcal{S}$ generate $U \cap \mathcal{S}^T$.  One can see this by
+observing that $\pi_t^{-1}(A) = U \cap \tilde{\pi}_t^{-1}(A)$ where
+$\tilde{\pi}_t : S^T \to S$ is the evaluation map extended to the entireity of $S^T$.  By
+definition $\mathcal{S}^T$ is generated by the sets
+$\tilde{\pi}^{-1}(A)$ and therefore by Lemma
+\ref{RestrictionOfSigmaAlgebra} we conclude $U \cap \mathcal{S}^T$ is
+generated by sets of the form $U \cap \tilde{\pi}_t^{-1}(A) =
+\pi_t^{-1}(A)$.
+
+Next we claim that $\mathcal{C}$ is a $\pi$-system.  This follows
+immediately as we can write $(\pi_{t_1},\dotsc, \pi_{t_n})^{-1}(A)
+\cap (\pi_{s_1},\dotsc, \pi_{s_m})^{-1}(B) = (\pi_{t_1},\dotsc,
+\pi_{t_n}, \pi_{s_1},\dotsc, \pi_{s_m})^{-1}(A \times B)$.  Now we may
+conclude $\mu = \nu$
+by a monotone class argument (specifically Lemma \ref{UniquenessOfMeasure}).
+
+The statement about stochastic processes follows by applying the fact just proven the laws
+of $X$ and $Y$.
+
+It is trivial that if $X \eqdist Y$ then the finite dimensional
+distributions with distinct $t_j$ are equal.  To see the converse note
+that the projection $(\pi_{t_1},\dotsc,  \pi_{t_n})$ for not necessarily distinct $t_j$ may be written
+as a composition $i \circ (\pi_{s_1}, \dotsc, \pi_{s_m})$ with $s_1,
+\dotsc, s_m$ the set of distinct $t_j$ and $i : S^m \to S_n$ that
+depends only on the $t_j$.  Now the result follows from functoriality
+of the pushforward of a measure.
 \end{proof}
 
 
