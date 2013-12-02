@@ -496,37 +496,58 @@ with noise.
 
 \subsection{Strong Markov Property}
 
-\begin{lem}Let $X$ be a time homogeneous Markov process and let $\tau$ be an optional
+\begin{lem}Let $X$ be a time homogeneous Markov process on
+  $\integers_+$ or $\reals_+$ and let $\tau$ be an optional
   time with at most countably many values.  Then for every measurable
   $A \subset S^T$,
 \begin{align*}
 \cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A}(\omega) &=
-\sprobability{A}{X_\tau(\omega)} \text{ for all $\omega$ such that $\tau(\omega) < \infty$}
+\sprobability{A}{X_\tau(\omega)} \text{ for almost all $\omega$ such that $\tau(\omega) < \infty$}
 \end{align*}
 \end{lem}
 \begin{proof}
+Before starting on the proof we first need to make some remarks about
+the well-definedness of the quantities in the result.  Specifically we
+have not defined $\theta_\tau X$ nor $\sprobability{A}{X_\tau}$ when $\tau = \infty$ but neither have
+we assumed that $\tau$ is almost surely finite.  The first point is that we
+can extend $\sprobability{A}{X_\tau}$ can be defined to be an
+arbitrary value on $\lbrace \tau = \infty \rbrace$ without affecting
+the values of $\sprobability{A}{X_\tau}$ on $\lbrace \tau < \infty
+\rbrace$ hence the assertion of the result.  By locality of
+conditional expectation (Lemma \ref{ConditionalExpectationIsLocal})
+and the $\mathcal{F}_\tau$-measurability of
+$\tau$ (Lemma
+\ref{StoppedFiltration}) we can define $\theta_\tau X$ arbitrarily on $\lbrace \tau =
+\infty \rbrace$ without affecting the values of
+$\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A}$ on $\lbrace \tau < \infty
+\rbrace$ hence the assertion of the result.  Therefore the result
+makes sense assuming that such extensions have made and is independent
+of the extensions chosen.
+
 We first prove the result for deterministic times and extend to
 countably valued optional times.  Note that the content of result is
 vacuous for an infinite deterministic time, so pick a finite
-deterministic time $t$ and let $t_1
-\leq \cdots \leq t_n$ and $A \in \mathcal{S}^{\otimes n}$ and
-calculate using Lemma \ref{MarkovDistributions}, time homogeneity and Lemma \ref{MarkovMixtures}
+deterministic time $t$, $t_1
+\leq \cdots \leq t_n$, $B \in \mathcal{S}^{\otimes n}$, $A =
+(\pi_{t_1}, \dotsc, \pi_{t_n})^{-1}(B)$ and
+calculate using Lemma \ref{MarkovDistributions}, time homogeneity and
+the proof of Lemma \ref{MarkovMixtures}
 \begin{align*}
+\cprobability{\mathcal{F}_t}{\theta_t X \in A} &=
 \cprobability{\mathcal{F}_t}{((\theta_t X)_{t_1}, \dotsc,
-  (\theta_t X)_{t_n}) \in A} &= \cprobability{\mathcal{F}_t}{(X_{t
-    + t_1}, \dotsc, X_{t+ t_n}) \in A} \\
+  (\theta_t X)_{t_n}) \in B} \\
+&= \cprobability{\mathcal{F}_t}{(X_{t
+    + t_1}, \dotsc, X_{t+ t_n}) \in B} \\
 &= \mu_{t, t + t_1} \otimes \cdots \otimes \mu_{t+t_{n-1}, t+t_n}(X_t,
-A) \\
-&=\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(X_t, A) \\
+B) \\
+&=\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(X_t, B) \\
 &= \sprobability {A}{X_t}
 \end{align*}
 Now we know that sets of the form 
-$\lbrace ((\theta_t X)_{t_1}, \dotsc,  (\theta_t X)_{t_n}) \in A \rbrace$ are a
-generating $\pi$-system for the $\sigma$-algebra $\mathcal{S}^T$ and
+$(\pi_{t_1}, \dotsc, \pi_{t_n})^{-1}(B)$ are a
+generating $\pi$-system for the $\sigma$-algebra $\mathcal{S}^T$,
 the full result for deterministic times $t$ follows from a monotone
-class argument.
-
-To see this we simply show that the set of $A$ such that
+class argument.  Specifically, we simply show that the set of $A$ such that
 $\cprobability{\mathcal{F}_t}{\theta_t X \in A} =
 \sprobability{A}{X_t}$ a.s. is a $\lambda$-system.  The case for $B
 \setminus A$ follows from linearity of conditional expectation and
@@ -535,7 +556,8 @@ finite additivity of measure and the case $A_1 \subset A_2 \subset
 and continuity of measure.
 
 Now we extend to the case of countably valued optional times.  Let $A
-\in \mathcal{S}^T$ and $B \in \mathcal{F}_\tau$ and calculate
+\in \mathcal{S}^T$ and $B \in \mathcal{F}_\tau$ and calculate using
+Monotone Convergence and the result for deterministic times
 \begin{align*}
 \expectation{\characteristic{A}(\theta_\tau X) ; B} &= \sum_t
 \expectation{\characteristic{A}(\theta_t X) ; \lbrace \tau = t \rbrace
@@ -546,15 +568,29 @@ Now we extend to the case of countably valued optional times.  Let $A
 \end{align*}
 so the result follows by the definition of conditional expectation. 
 
+An alternative argument that extends the case of deterministic times
+to countable optional times uses the localization of the stopped
+filtration Lemma \ref{LocalizationOfStoppedFiltration} and the local
+property of conditional expectations Lemma
+\ref{ConditionalExpectationIsLocal}.  Let $t$ be a value in the range
+of $\tau$, combining these two results and
+using the result for deterministic times we
+know that on the set $\lbrace \tau = t \rbrace$ we have
+\begin{align*}
+\cprobability{\mathcal{F}_{\tau}}{\theta_\tau X \in A} &=
+\cprobability{\mathcal{F}_t}{\theta_t X \in A} = \sprobability{A}{X_t}
+ = \sprobability{A}{X_\tau} \text{ a.s.}
+\end{align*}
+Let the set where the above inequality fails be called $N_t$.  Since
+we have assumed the set of values of $\tau$ is countable, the union of
+the $N_t$ is also a null set and the result holds off of this null
+set.
+
 TODO: What about the $\mathcal{F}_\tau$-measurability of
 $\sprobability{A}{X_\tau}$?  Note that this is a consequence of result
 since we haven't assumed $X$ is progressive(see Lemma
 \ref{StrongIndependentIncrements} below where we make this implication explicit).  Double check that we
 don't assume it in the proof above.
-
-TODO: Some comments about the well-definedness of the expressions on
-$\lbrace \tau < \infty\rbrace$; this boils down to the locality of
-conditional expectation.
 \end{proof}
 
 In the case of a space homogeneous Markov process the strong Markov

@@ -67,6 +67,47 @@ they are equal everywhere by the uniqueness of product measure proved
 in Theorem \ref{Fubini}.
 \end{proof}
 
+Having proven that the joint distribution of independent random
+elements is a product measure we can apply Fubini's Theorem to compute
+expectations of functions of independent random elements as iterated
+integrals.  We make that statement precise in the following result.
+Note that there is an important generalization of this fact that
+eliminates the assumption of independence but requires the development
+of the notion of a conditional distribution (see Theorem
+\ref{Disintegration}).  The result is much simpler than the notation
+required to state it.
+
+\begin{lem}\label{DisintegrationIndependentLaws}Let $\xi$ and $\eta$ be
+  independent random elements in measurable spaces $(S, \mathcal{S})$
+  and $(T, \mathcal{T})$ respectively.  Let $f : S \times T \to
+  \reals$ be a measurable function and define 
+  $g(s) = \expectation{f(s, \eta)}$ and 
+  $h(s) = \expectation{\abs{f(s, \eta)}}$. Suppose that either $f$ is
+  non-negative or $h(\xi)$ is integrable, then
+$\expectation{f(\xi, \eta)} = \expectation{g(\xi)} =
+\expectation{\expectation{f(s, \eta)}\mid_{s=\xi}} $.
+\end{lem}
+\begin{proof}
+Let $\mu$ be the distribution of $\xi$ and $\nu$ be the distribution
+of $\eta$; by Lemma \ref{IndependenceProductMeasures} we know that the
+joint distribution of $(\xi, \eta)$ is $\mu \otimes \nu$.  Suppose
+that $f$ is non-negative and use the Expectation Rule (Lemma \ref{ExpectationRule}) and
+Tonelli's Theorem \ref{Fubini} to calculate
+\begin{align*}
+\expectation{f(\xi, \eta)} &= \int f(x,y) \, d(\mu \otimes \nu)(x,y)
+\\
+&=
+\int \left [ \int f(x, y) \, d\nu(y) \right ] \, d\mu(x) = \int g(x)
+\, d\mu(x) = \expectation{g(\xi)}
+\end{align*}
+
+If instead assuming $f \geq 0$, we assume that $h(\xi)$ is integrable.
+Applying the result just proven for the non-negative case to $\abs{f}$
+shows that in fact $\expectation{ \abs{f(\xi, \eta)}} < \infty$ so we
+may replay the same argument for $f$ without the absolute value using Fubini's Theorem
+\ref{Fubini} in place of Tonelli's Theorem.
+\end{proof}
+
 The fact that the joint distribution of indpendent random variables
 only depends on the distribution of the underlying random variables
 has the important consequence that the distribution of \emph{sums} of
@@ -259,6 +300,37 @@ the independence of the $\mathcal{A}_t$ for all $t \in T$ shows that
 the $\mathcal{C}_S$ are independent $\pi$-systems by
 associativity of finite intersection of sets and multiplication in $\reals$.
 Thus Lemma \ref{IndependencePiSystem} shows the result.
+\end{proof}
+
+In order to prove independence of a countable collection of
+$\sigma$-algebras it can be useful to reduce the task to showing a
+sequence of pairwise independent relationships as in the following
+Lemma.
+\begin{lem}\label{IndependenceByPairwiseIndependence}Let
+  $\mathcal{A}_1, \mathcal{A}_2, \dotsc$ be $\sigma$-algebras, then
+  they are independent if and only if $\bigvee_{k=1}^n \mathcal{A}_k$
+  is independent of $\mathcal{A}_{n+1}$ for all $n \geq 1$.
+\end{lem}
+\begin{proof}
+The only if direction is an application of Lemma
+\ref{IndependenceGrouping}.  The if direction will be shown by
+induction.  To set notation, suppose that $A_{k_1} \in
+\mathcal{A}_{k_1}, \dotsc, A_{k_m} \in \mathcal{A}_{k_m}$ are chosen
+and we must show $\probability{A_{k_1} \cap \dotsb \cap A_{k_m}} = 
+\probability{A_{k_1} } \dotsb \probability{ A_{k_m}} $ where without
+log of generality we assume $1 \geq k_1 < \dotsb < k_m$.  If we let $n
+= k_1 \vee \dotsb \vee k_m=k_m$ the induction variable is $n$.  The case
+of $n=1$ is trivial as there is nothing to prove, so suppose the
+result is true for $n-1$ and we are given $A_{k_1} \in
+\mathcal{A}_{k_1}, \dotsc, A_{k_m} \in \mathcal{A}_{k_m}$ with $k_m =
+n$.  Using the hypothesis, the fact that $k_{m-1} < n$ and induction
+hypothesis we know that 
+\begin{align*}
+\probability{A_{k_1} \cap \dotsb \cap A_{k_m}} &= \probability{A_{k_1}
+  \cap \dotsb \cap A_{k_{m-1}}} \probability{A_{k_m}} \\
+&=\probability{A_{k_1}} \dotsb \probability{A_{k_m}}
+\end{align*}
+and the result is proven.
 \end{proof}
 
 Note that the previous lemma can be taken as demonstrating that

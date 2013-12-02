@@ -1212,6 +1212,32 @@ and the measurability of $\sup$ and $\inf$ already shown implies the
 measurability of $\liminf$ and $\limsup$.
 \end{proof}
 
+From the measurability of limits of real valued functions we can also
+generalize to measurability of limits in arbitrary metric spaces.
+\begin{lem} \label{LimitsOfMeasurableMetricSpace}Let $(S,d)$ be a metric space and let
+  $f_1, f_2, \dotsc$ be
+  measurable functions  $(\Omega, \mathcal{A})$ to $(S,
+  \mathcal{B}(S)$, then $\lim_{n \to \infty} f_n$ is measurable if it
+  exists.
+\end{lem}
+\begin{proof}
+Let $g : S \to \reals$ be an arbitrary continuous function.  Then $g$
+is Borel measurable and therefore $g \circ f_n$ are Borel measurable
+real valued functions.  Moreover by continuity of $g$ we know that
+$\lim_{n \to \infty} g \circ f_n  = g \circ f$.  Therefore by Lemma
+\ref{LimitsOfMeasurable} we can conclude that $g \circ f$ is Borel
+measurable for all continuous $g : S \to \reals$.  
+
+Now let $U \subset S$ be an open set and define $g_n(s) = n d(s,U^c)
+\wedge 1$ so that $g_n$ are continuous functions such that $g_n
+\uparrow \characteristic{U}$.  We know that $g_n \circ f$ are Borel
+measurable hence if follows that $\characteristic{U} \circ f$ is Borel
+measurable by another application of Lemma
+\ref{LimitsOfMeasurable} which shows that $\lbrace f \in U \rbrace$ is
+measurable.  Measurability of $f$ follows from the fact that open sets generate the Borel
+$\sigma$-algebra and application of Lemma \ref{MeasurableByGeneratingSet}.
+\end{proof}
+
 We now introduce an extremely important class of measurable
 functions.  Simple measurable functions will be used to approximate
 arbitrary measurable functions and in particular, will serve as the
@@ -4324,7 +4350,7 @@ F(x_1, \dots, x_n) = \probability {\cap_{i=1}^n \left ( \xi_i \leq x_i
     \right ) }
 \end{align*}
 \end{defn}
-\begin{lem}Let $\xi$ and $\eta$ be random vectors in $\reals^n$ with
+\begin{lem}\label{DistributionFunctionCharacterizeProbability}Let $\xi$ and $\eta$ be random vectors in $\reals^n$ with
   distribution functions $F$ and $G$, then
   $\xi \eqdist \eta$ if and only if $F = G$.
 \end{lem}
@@ -6551,6 +6577,42 @@ up the sum properly,
 &= M^\xi_{\sigma \wedge \tau} = \cexpectationlong{\mathcal{F}_{\sigma
     \wedge \tau}}{\xi}
 \end{align*}
+\end{proof}
+
+\begin{ex}\label{SumOfOptionalTimes}Let $\sigma$ and $\tau$ be $\mathcal{F}$-optional times on
+  either $\integers_+$ or $\reals_+$.
+  Show that $\sigma + \tau$ is $\mathcal{F}$-optional.
+\end{ex}
+\begin{proof}
+For the case of $\integers_+$ valued optional times we pick $n \geq 0$
+and note that
+\begin{align*}
+\lbrace \sigma + \tau = n \rbrace = \cup_{m=0}^n \lbrace \sigma = m
+\rbrace \cap \lbrace \tau = n-m \rbrace
+\end{align*}
+which is in $\mathcal{F}_n$ since for $0 \leq m \leq n$ we have
+$\lbrace \sigma = m \rbrace \in \mathcal{F}_m \subset \mathcal{F}_n$
+and $\lbrace \tau = n - m \rbrace \in \mathcal{F}_{n-m} \subset
+\mathcal{F}_n$.
+
+Pick $t \in $ and note that it suffices to show
+\begin{align*}
+\lbrace \sigma + \tau > t \rbrace &= \lbrace \sigma > t \rbrace \cup \cup_{\substack{q < t \\ q \in
+    \rationals}} \lbrace \sigma > q \rbrace \cap \lbrace \tau > t - q \rbrace
+\end{align*}
+by reasoning similar to the discrete case.  To see this equality for
+one inclusion note
+that for all $q \in \rationals$ we have $\lbrace \sigma > q \rbrace
+\cap \lbrace \tau > t - q \rbrace \subset \lbrace \sigma + \tau > t
+\rbrace$.  By positivity of $\tau$ we know that $ \lbrace \sigma > t
+\rbrace \subset \lbrace \sigma + \tau > t \rbrace $.
+
+For the other inclusion suppose $\sigma(\omega) + \tau(\omega) > t$.
+If $\sigma(\omega) \leq t$ then by density of rationals we can pick $q \in
+\rationals$ such that $t - \tau(\omega) < q < \sigma(\omega) \leq t$ and
+we have $\omega \in \lbrace \sigma > q \rbrace \cap \lbrace \tau > t -
+q\rbrace$.  If $\sigma(\omega) > t$ then it follows that $\omega \in
+\lbrace \sigma > t \rbrace$ so we are done.
 \end{proof}
 
 \begin{ex}Show that a random variable $\xi$ has subexponential tails

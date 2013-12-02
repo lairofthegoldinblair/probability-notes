@@ -51,6 +51,25 @@ $\pi_t^{-1}(A)$ generate $\mathcal{S}^T$ application of Lemma \ref{MeasurableByG
 shows that $X$ is measurable.
 \end{proof}
 
+It can be useful to know what operations on set functions are
+measurable with respect to the product topology on $S^T$.  Here we
+record a simple fact that we will uses.
+\begin{lem}\label{MeasurableFunctionGroup}Let $G$ be a measurable
+  group and $T$ be an index set, with group operations defined pointwise, $(G^T, \mathcal{G}^T)$ is a  measurable group.
+\end{lem}
+\begin{proof}
+With the identity defined by the constant function $f(t) = e$, the
+fact that $G^T$ is a group is immediate.  To see measurability of the
+group operation, let $A \in \mathcal{G}$ and pick $t \in T$.  Note
+that $(\pi_t, \pi_t) : \mathcal{G}^T \otimes \mathcal{G}^T / \mathcal{G} \otimes \mathcal{G}$ - measurable by
+definition of the product $\sigma$-algebra (both on $G^T$ and
+generically) and we know the group operation is $\mathcal{G} \otimes
+\mathcal{G}/\mathcal{G}$-measurable therefore $\lbrace (f,g) \mid (f
+\cdot g)(t) \in A \rbrace$ is $\mathcal{G}^T \otimes
+\mathcal{G}^T$-measurable.  The proof for the inverse operation
+follows similarly.
+\end{proof}
+
 \begin{defn}Suppose one has a probability space $(\Omega,
   \mathcal{A}, \mu)$, a measurable space $(S, \mathcal{S})$, an
   index set $T$ and a subset $U \subset S^T$.  A $U \cap
@@ -419,7 +438,7 @@ F_\tau &= \lbrace
 
  Note that we have not taken the generated $\sigma$-algebra in the
 above definition, because of the following.
-\begin{lem}Given an optional time $\tau$, $\mathcal{F}_\tau$ is a
+\begin{lem}\label{StoppedFiltration}Given an optional time $\tau$, $\mathcal{F}_\tau$ is a
   $\sigma$-algebra.  Furthermore, $\tau$ is $\mathcal{F}_\tau$-measurable.
 \end{lem}
 \begin{proof}Since $\Omega \cap \lbrace \tau \leq t \rbrace  = \lbrace
@@ -629,9 +648,9 @@ time.  This latter case is just a simple induction on $n$.
 
 \begin{thm}[Optional Stopping Theorem]\label{OptionalStoppingDiscrete}Let $\sigma$ and $\tau$ be bounded
   $\mathcal{F}$-optional times and
-  let $X_n$ be a martingale, then 
+  let $M_n$ be a martingale, then 
 \begin{align*}
-\cexpectationlong{\mathcal{F}_\sigma}{X_\tau} &\geq X_{\sigma \wedge
+\cexpectationlong{\mathcal{F}_\sigma}{M_\tau} &\geq M_{\sigma \wedge
   \tau}
 \text{ a.s.}
 \end{align*}
@@ -648,23 +667,23 @@ you'll see in the literature.  It intentionally avoids any of the
 tricks that make for short proofs in hopes of making a clearer
 explanation for why the result is in fact true.
 
-We first begin with a simple special case that captures the essence of
+We first begin with a simple special case with $\sigma$ deterministic that captures the essence of
 the result.  Suppose $\tau$ is $\mathcal{F}$-optional and there exist
 constants $k, m$ such that $k \leq \tau \leq m$.  We need to prove
-that $\cexpectationlong{\mathcal{F}_k}{X_\tau} = X_k$.  We do this by
+that $\cexpectationlong{\mathcal{F}_k}{M_\tau} = M_k$.  We do this by
 induction on $m-k$.  For $m-k=0$, the result is trivial since in this
-case $X_\tau = X_k$.  For the induction step suppose we have $k \leq
+case $M_\tau = M_k$.  For the induction step suppose we have $k \leq
 \tau \leq m$ with $m-k >0$ and note that we can use the induction
 hypothesis on the stopping time $k+1 \leq \tau\vee k+1 \leq m$.  We
 get
 \begin{align*}
-\cexpectationlong{\mathcal{F}_k}{X_\tau} &=
-\cexpectationlong{\mathcal{F}_k}{X_{\tau \vee k+1}} +
-\cexpectationlong{\mathcal{F}_k}{(X_k-X_{k+1})\characteristic{\tau=k}}
+\cexpectationlong{\mathcal{F}_k}{M_\tau} &=
+\cexpectationlong{\mathcal{F}_k}{M_{\tau \vee k+1}} +
+\cexpectationlong{\mathcal{F}_k}{(M_k-M_{k+1})\characteristic{\tau=k}}
 \\
-&=\cexpectationlong{\mathcal{F}_k}{\cexpectationlong{\mathcal{F}_{k+1}}{X_{\tau
+&=\cexpectationlong{\mathcal{F}_k}{\cexpectationlong{\mathcal{F}_{k+1}}{M_{\tau
       \vee k+1}} } +
-\characteristic{\tau=k}\cexpectationlong{\mathcal{F}_k}{(X_k-X_{k+1})}
+\characteristic{\tau=k}\cexpectationlong{\mathcal{F}_k}{(M_k-M_{k+1})}
 \\
 &=\cexpectationlong{\mathcal{F}_k}{M_{k+1}} + 0 = M_k
 \end{align*}
@@ -676,29 +695,29 @@ can write $A = \cup_{n=0}^N A \cap \lbrace \sigma=n\rbrace$ where
 $A \cap \lbrace \sigma=n\rbrace \in \mathcal{F}_n$ for all $0 \leq n
 \leq N$.
 \begin{align*}
-\expectation{X_\tau ; A} &= \sum_{n=0}^N \sum_{m=0}^N \expectation{X_n
+\expectation{M_\tau ; A} &= \sum_{n=0}^N \sum_{m=0}^N \expectation{M_n
   \characteristic{\tau=n} \characteristic{\sigma=m}
   \characteristic{A}} \\
 &= \sum_{n=0}^N \left (
-\sum_{m=n}^N \expectation{X_m
+\sum_{m=n}^N \expectation{M_m
   \characteristic{\tau=m} \characteristic{\sigma=n} \characteristic{A}}+
-\sum_{m=n+1}^N \expectation{X_n
+\sum_{m=n+1}^N \expectation{M_n
   \characteristic{\tau=n} \characteristic{\sigma=m}\characteristic{A}}
 \right) \\
-&=\sum_{n=0}^N \expectation{(X_{\tau \vee n} - X_n
+&=\sum_{n=0}^N \expectation{(M_{\tau \vee n} - M_n
   \characteristic{\tau < n})\characteristic{\sigma=n}
   \characteristic{A}} + 
-\expectation{X_n
+\expectation{M_n
   \characteristic{\tau=n} \characteristic{\sigma \geq
     n+1}\characteristic{A}} \\
-&=\sum_{n=0}^N \expectation{X_n  \characteristic{\tau\geq n}\characteristic{\sigma=n}
+&=\sum_{n=0}^N \expectation{M_n  \characteristic{\tau\geq n}\characteristic{\sigma=n}
   \characteristic{A}} + 
-\expectation{X_n
+\expectation{M_n
   \characteristic{\tau=n} \characteristic{\sigma \geq
     n+1}\characteristic{A}} \\
-&=\sum_{n=0}^N \expectation{X_n \characteristic{\tau \wedge \sigma =
+&=\sum_{n=0}^N \expectation{M_n \characteristic{\tau \wedge \sigma =
     n}  \characteristic{A}} \\
-&= \expectation{X_{\tau \wedge \sigma} ; A}
+&= \expectation{M_{\tau \wedge \sigma} ; A}
 \end{align*}
 and therefore by the defining property of conditional expectations we
 are done.
@@ -708,23 +727,23 @@ is completely self contained.
 Suppose $\sigma, \tau \leq N$.  Pick $A \in \mathcal{F}_\sigma$ and
 compute
 \begin{align*}
-\expectation{X_\tau ; A} &= \sum_{n=0}^N \sum_{m=0}^N \expectation{X_n
+\expectation{M_\tau ; A} &= \sum_{n=0}^N \sum_{m=0}^N \expectation{M_n
   ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma = m\rbrace} \\
-&=\sum_{n=0}^{N-1} \sum_{m=n+1}^N \expectation{X_n
-  ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma = m\rbrace} + \sum_{n=0}^{N} \sum_{m=n}^N \expectation{X_m
+&=\sum_{n=0}^{N-1} \sum_{m=n+1}^N \expectation{M_n
+  ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma = m\rbrace} + \sum_{n=0}^{N} \sum_{m=n}^N \expectation{M_m
   ; A \cap \lbrace \tau = m \rbrace \cap \lbrace \sigma = n\rbrace}\\
-&=\sum_{n=0}^{N-1} \expectation{X_n
-  ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma > n\rbrace} + \sum_{n=0}^{N} \sum_{m=n}^N \expectation{X_N
+&=\sum_{n=0}^{N-1} \expectation{M_n
+  ; A \cap \lbrace \tau = n \rbrace \cap \lbrace \sigma > n\rbrace} + \sum_{n=0}^{N} \sum_{m=n}^N \expectation{M_N
   ; A \cap \lbrace \tau = m \rbrace \cap \lbrace \sigma = n\rbrace}\\
-&=\sum_{n=0}^{N-1} \expectation{X_n ; A \cap \lbrace \tau = n \rbrace
+&=\sum_{n=0}^{N-1} \expectation{M_n ; A \cap \lbrace \tau = n \rbrace
   \cap \lbrace \sigma > n\rbrace} + 
-\sum_{n=0}^{N} \expectation{X_N  ; A \cap \lbrace \tau \geq n \rbrace \cap \lbrace \sigma = n\rbrace}\\
-&=\sum_{n=0}^{N-1} \expectation{X_n ; A \cap \lbrace \tau = n \rbrace
+\sum_{n=0}^{N} \expectation{M_N  ; A \cap \lbrace \tau \geq n \rbrace \cap \lbrace \sigma = n\rbrace}\\
+&=\sum_{n=0}^{N-1} \expectation{M_n ; A \cap \lbrace \tau = n \rbrace
   \cap \lbrace \sigma > n\rbrace} + 
-\sum_{n=0}^{N} \expectation{X_n  ; A \cap \lbrace \tau \geq n \rbrace
+\sum_{n=0}^{N} \expectation{M_n  ; A \cap \lbrace \tau \geq n \rbrace
   \cap \lbrace \sigma = n\rbrace}\\
-&=\sum_{n=0}^{N} \expectation{X_n  ; A \cap \lbrace \tau \wedge \sigma = n \rbrace}\\
-&=\expectation{X_{\tau \wedge \sigma} ; A}
+&=\sum_{n=0}^{N} \expectation{M_n  ; A \cap \lbrace \tau \wedge \sigma = n \rbrace}\\
+&=\expectation{M_{\tau \wedge \sigma} ; A}
 \end{align*}
 \end{proof}
 
@@ -1781,6 +1800,44 @@ true if and only if $A \cap \lbrace \tau \leq t
 \rbrace\in \mathcal{F}^+_t$ for all $t \in T$ so we are done.
 \end{proof}
 
+In the previous section we identified a useful class of optional times
+that we called hitting times.  Hitting times can be defined in
+continuous time but there are more stringent requirements on when they
+are optional times.
+\begin{lem}\label{HittingTimesContinuous}Let $\mathcal{F}$ be a
+  filtration on $\reals_+$, let $X_t$ be an $\mathcal{F}$-adapted
+  process with values in a measurable space $(S, \mathcal{S})$ where
+  $S$ is topological and $\mathcal{S}$ contains the Borel $\sigma$-algebra, 
+  $B \in \mathcal{S}$ and $\tau_B = \inf \lbrace t > 0 \mid X_t \in
+  B\rbrace$.  Then if $S$ is a metric space, $B$ is closed and $X_t$ is continuous
+$\tau_B$ is $\mathcal{F}$-optional and if $B$ is open and $X_t$ is right continuous then $\tau_B$ is weakly $\mathcal{F}$-option.
+\end{lem}
+\begin{proof}
+To see the first case, by the countability and density of the
+rationals in $\reals_+$, continuity of $X_t$ and closedness of $B$ we
+know that $X_{\tau_B} \in B$ and therefore $\tau_B \leq t$ if and only if there is an $0 < s \leq t$
+such that $X_s \in B$.  This latter statement is true if and only if there is an
+integer $m>0$ and points $X_q$ with
+$q \in \rationals$ and $1/m \leq q \leq t$ that are arbitrarily close to
+$B$.  Translating this observation into set operations we get
+\begin{align*}
+\lbrace \tau_B \leq t \rbrace &= \cup_{m=1}^\infty \cap_{n =1}^\infty \cup_{\substack{1/m
+    \leq q \leq t \\ q \in \rationals}} \lbrace d(X_q, B) < \frac{1}{n}
+  \rbrace \in \mathcal{F}_t
+\end{align*}
+because each $\lbrace x \in S \mid d(x, B) < \frac{1}{n}  \rbrace$ is
+open and thus $\lbrace d(X_q, B) < \frac{1}{n}  \rbrace \in
+\mathcal{F}_t$ because $X$ is $\mathcal{F}$-adapted.
+To see the second case note that by similar considerations $\tau_B < t$ if and only if there
+exists a $q \in \rationals$ such that $0 \leq q < t$ with $X_q \in B$
+thus
+\begin{align*}
+\lbrace \tau_B \leq t \rbrace &= \cup_{\substack{0 \leq q < t \\ q \in
+    \rationals}} \lbrace X_q \in B \rbrace \in \mathcal{F}_t
+\end{align*}
+
+\end{proof}
+
 When passing from discrete time results to continuous time results it
 is often useful to approximate an optional time on a continuous domain
 by a discrete one.  The following approximation scheme is so useful it
@@ -2021,6 +2078,42 @@ For the special case of processes indexed by $\reals_+$ we can discuss
 measurability, continuity and even differentiability of sample paths.
 For the moment, there is a
 very mild restriction that we make.
+
+\begin{defn}Let $(\Omega, \mathcal{A})$, $(S, \mathcal{S})$  and
+  $(T, \mathcal{T})$  be measurable spaces.  A process $X$ on $T$ with
+  values in $S$ is said to be \emph{jointly
+    measurable} or simply \emph{measurable} if $X : \Omega \times T
+  \to S$ is $\mathcal{A} \otimes \mathcal{T}/\mathcal{S}$ measurable.
+\end{defn}
+
+\begin{lem}\label{JointMeasurabilityOfSampleContinuous}Let $S$ be a metric space and let $T$ be a separable metric
+  space both given the Borel $\sigma$-algebra.  Suppose a process $X$
+  on $T$ with values in $S$ has continuous sample paths, the $X$ is
+  jointly measurable.
+\end{lem}
+\begin{proof}
+Let $\lbrace t_n \rbrace$ be a countable dense set of points in $T$.
+We use this dense set to provide a sequence of approximations to $X$.
+To this end for each $n\geq 1$ and $k \geq 1$ define
+\begin{align*}
+B_{n,k} &= \lbrace t \in T \mid d(t, t_k) < 1/n \rbrace \\
+V_{n,k} &= B_{n,k} \setminus \cup_{j=1}^{k-1} B_{n,j}
+\end{align*}
+Clearly the $V_{n,k}$ are Borel measurable since the $B_{n,k}$ are open.
+By construction they are disjoint and by density of the $t_k$ they
+cover $T$.  Define
+\begin{align*}
+X^n_t (\omega) &= X_{t_k}(\omega) \text{ for $\omega in V_{n,k}$}
+\end{align*}
+Since for any $A \in \mathcal{B}(S)$ we have $\lbrace (\omega, t) \mid
+X^n_{t}(\omega) \in A \rbrace = \cup_{k=1}^\infty V_{n,k} \times \lbrace
+X_{t_k} \in A \rbrace$ we see that $X^n$ is jointly measurable.
+
+Now by density of $X^n$ and the continuity of sample paths of $X$ we
+have $\lim_{n \to \infty} X^n = X$ and joint measurability of $X$
+follows from Lemma \ref{LimitsOfMeasurableMetricSpace}.
+\end{proof}
+
 \begin{defn}A process $X$ is said to be \emph{progressively
     measurable} or simply \emph{progressive} if for every $t$, the restriction of $X$ to the time
   interval $[0,t]$, $X : \Omega \times [0,t] \to S$ is
@@ -2038,7 +2131,9 @@ very mild restriction that we make.
 
 \begin{lem}The set $\mathcal{P}\mathcal{M}$ is a sub $\sigma$-algebra
   of $\mathcal{A} \otimes \mathcal{B}(\reals_+)$.  A process $X :
-  \Omega \times \reals_+ \to S$ is progressive if and only if $X$ is  $\mathcal{P}\mathcal{M}$-measurable.
+  \Omega \times \reals_+ \to S$ is progressive if and only if $X$ is
+  $\mathcal{P}\mathcal{M}$-measurable, in particular a progressive
+  process is jointly measurable.
 \end{lem}
 \begin{proof}
 Since for all $t\geq 0$, $\Omega \times \reals_+ \cap \Omega \times
@@ -2127,3 +2222,40 @@ Note that because sections are measurable (Lemma
 \ref{MeasurableSections}) a progressively measurable process is
 adapted.
 
+\begin{lem}\label{ContinuityAndProgressiveMeasurability}Let $X$ be a process on $\reals_+$ adapated to a filtration
+  $\mathcal{F}$.  Suppose $X$ has left or right continuous sample
+  paths, then $X$ is $\mathcal{F}$-progressively measurable.
+\end{lem}
+\begin{proof}
+The proof is similar to Lemma \ref{JointMeasurabilityOfSampleContinuous}.
+TODO:
+\end{proof}
+
+\begin{lem}\label{StoppedProgressivelyMeasurableProcess}Let $X$ be an $\mathcal{F}$-progressively measurable process on
+  $\reals_+$ with values in a measurable space $(S, \mathcal{S})$ and
+  let $\tau$ be an $\mathcal{F}$-optional time, then $X_\tau$ is
+  $\mathcal{F}_\tau$-measurable.  Moreover, $X_{\tau \wedge t}$ is
+  $\mathcal{F}_t$ measurable for all $t \geq 0$.
+\end{lem}
+\begin{proof}
+We first claim that if we can prove $X_{\tau \wedge t}$ is
+$\mathcal{F}_t$-measurable for all $t \geq 0$ then it follows that
+$X_\tau$ is $\mathcal{F}_\tau$-measurable.  This follows from picking
+a measurable set $A \in \mathcal{S}$ and noting that
+\begin{align*}
+\lbrace \tau \leq t \rbrace \cap \lbrace X_\tau \in A \rbrace &=
+\lbrace \tau \leq t \rbrace \cap \lbrace X_{\tau \wedge t} \in A \rbrace
+\end{align*}
+which is $\mathcal{F}_t$ since $\tau$ is $\mathcal{F}$-optional and we
+have assumed $\lbrace X_{\tau \wedge t} \in A \rbrace \in
+\mathcal{F}_t$.
+
+To see that $X_{\tau \wedge t}$ is $\mathcal{F}_t$-measurable note
+that we can factor $X_{\tau \wedge t} = X \circ (id, \tau \wedge t)$ where
+$(id, \tau \wedge t) : \Omega \to \Omega \times [0,t]$ is
+$\mathcal{F}_t / \mathcal{F}_t \otimes \mathcal{B}([0,t])$-measurable
+by $\mathcal{F}$-optionality of $\tau$ and $X :  \Omega \times [0,t]
+\to S$ is $\mathcal{F}_t \otimes
+\mathcal{B}([0,t])/\mathcal{S}$-measurable by progressive
+measurability of $X$.  Thus the claim follows from Lemma \ref{CompositionOfMeasurable}.
+\end{proof}
