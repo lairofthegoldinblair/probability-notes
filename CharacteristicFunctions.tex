@@ -626,9 +626,16 @@ a probability measure (the basic point is that the pointwise limit of
 characteristic functions of probability measures is almost the
 characteristic function of a probability measure; the associated
 distribution function may not have the correct limits at $\pm
-\infty$.  If we assume continuity at $0$, then we can prove tightness
-which shows that the limits are $0,1$ as required of a distribution
-function.
+\infty$ due to mass escaping to infinity.  If we assume continuity at $0$, then we can prove tightness
+which keeps the mass from escaping and shows that the limits are $0,1$ as required of a distribution
+function.  Note that the pointwise limit of a sequence of
+characteristic functions is the characteristic function of a measure
+(though not necessarily a probability measure); this fact is often
+know as the Helly Selection Theorem.  It can be restated in terms of a
+topology on the space of locally finite measures called the vague
+topology and the Helly Selection Theorem can be restated as saying
+that the space of probability measures is relatively sequentially
+compact in the vague topology on the locally finite measures on $\reals^n$.
 
 \subsection{Gaussian Random Vectors and the Multidimensional Central
   Limit Theorem}
@@ -637,8 +644,8 @@ $\reals^N$ in which Gaussian distributions also occur.  The nature of
 Gaussians in this context is a bit more subtle than in the one
 dimensional case.  We lead with a definition
 \begin{defn}A random vector $\xi$ in $\reals^N$ is said to be a \emph{Gaussian random
-  vector} is for every $a \in \reals^N$, the random variable $\lbrace
-  a,\xi \rbrace$ is a univariate normal or is almost surely 0 (which
+  vector} is for every $a \in \reals^N$, the random variable $\langle
+  a,\xi \rangle$ is a univariate normal or is almost surely 0 (which
   we take as the degenerate univariate normal $N(0,0)$).
 \end{defn}
 The first theorem that we prove gives an alternative characterization
@@ -735,10 +742,10 @@ Continuity Theorem (Theorem \ref{GlivenkoLevyContinuity}) we see
 \begin{align*}
 \varphi_\xi(u) &= \lim_{n \to \infty} \varphi_{\xi_n}(u) = \lim_{n \to
   \infty} e^{i\langle u, \mu_n\rangle - \frac{1}{2}\langle u, C_n
-  y\rangle} = e^{i\langle<u, \mu\rangle - \frac{1}{2}\langle u, C
+  y\rangle} = e^{i\langle u, \mu\rangle - \frac{1}{2}\langle u, C
   y\rangle} 
 \end{align*}
-where we have used continuity of $e^ix$.  Thus, using Lemma
+where we have used continuity of $e^{ix}$.  Thus, using Lemma
 \ref{GaussianVectorCharacteristicFunction}
 again shows that $\xi$ is $N(\mu, C)$.
 \end{proof}
@@ -797,4 +804,199 @@ e^{-\lambda^2/2} + (1+\lambda^2) e^{-\lambda^2/2} -2\lambda
 where the last inequality follows from the upper bound just proven.
 This shows that $f(\lambda) \geq 0$ for all $\lambda \geq 0$ and we
 are done.
+\end{proof}
+
+\subsection{Laplace Transforms}
+It turns out to be useful to specialize characteristic functions for
+the case in which we have a measure that is supported on the positive
+orthant $\reals^n_+$.  
+
+\begin{defn}Let $\mu$ be a probability measure on $\reals^n_+$. Its
+  \emph{Laplace Transform} is denoted $\tilde{\mu}$ and is the function on
+  $\reals^n_+$ defined by 
+\begin{align*}
+\tilde{\mu}(u) &= \int e^{-\langle u,x \rangle} d \mu(x)
+\end{align*}
+\end{defn}
+
+Next we observe that the behavior of the Laplace transform near zero
+corresponds to the behavior of the measure near infinity.
+\begin{lem}\label{LaplaceTailEstimate}Let $\mu$ be a probability
+  measure on $\reals^n_+$ and let $\mathds{1}=(1, \dotsc, 1) \in
+  \reals^n_+$.  Then for each $r > 0$ we have
+\begin{align*}
+\mu\lbrace \abs{x} \geq r\rbrace &\leq 2(1 - \tilde{\mu}(\mathds{1}/r))
+\end{align*}
+\end{lem}
+\begin{proof}
+In order to see how simple the estimate is, first assume that $n=1$.
+Observe that because $e^{-ux}$ is a decreasing function of $x$ for $u
+> 0$ we have $e^{-ux}  \leq e^{-1} < 1/2$ for all $x
+\geq 1/u$ and $e^{-ux} \leq 1$ for all $x \geq 0$.  Therefore for a fixed $r > 0$,
+\begin{align*}
+\tilde{\mu}(r) &= \int e^{-rx} \, d\mu(x) = \int \characteristic{[0,1/r)}(x)  e^{-rx}
+\, d\mu(x)  + \int \characteristic{[1/r,\infty)}(x)  e^{-rx} \,
+d\mu(x)  \\
+&\leq \mu[0,1/r) + \frac{1}{2} \mu[1/r, \infty) = 1 - \frac{1}{2} \mu[1/r, \infty) 
+\end{align*}
+
+To extend to the case of general $n$, we need a little bit more
+information.  Note that minimum value of
+$\langle \mathds{1}, x\rangle = \sum_{j=1}^n x_j$ on $\reals^n_+ \cap \lbrace \abs{x} \geq u \rbrace$ is
+$u$ (it occurs at the points $(0, \dotsc, 0,u,0, \dotsc,0)$).  TODO:
+Show this...
+Therefore we know that for all fixed $r \in \reals_+$ we have $e^{-\langle r
+\mathds{1}, x \rangle} \leq e^{-1} < 1/2$ for all $x \in \reals^n_+$
+with $\abs{x} \geq 1/r$.  Now we can playback the same argument as the
+case $n=1$:
+\begin{align*}
+\tilde{\mu}(r \cdot \mathds{1}) &= \int e^{-r\langle \mathds{1}, x \rangle}
+\, d\mu(x) \\
+&= \int \characteristic{\abs{x} < 1/r}(x)  e^{-r\langle \mathds{1}, x \rangle}
+\, d\mu(x)  + \int \characteristic{\abs{x} \geq 1/r}(x)  e^{-r\langle \mathds{1}, x \rangle} \,
+d\mu(x)  \\
+&\leq \mu \lbrace \abs{x} < 1/r \rbrace + \frac{1}{2} \mu \lbrace
+\abs{x} \geq 1/r \rbrace = 1 - \frac{1}{2} \mu \lbrace \abs{x} \geq
+1/r \rbrace
+\end{align*}
+\end{proof}
+
+\begin{lem}\label{LaplaceEquicontinuityAndTightness}Let $\lbrace
+  \mu_\alpha \rbrace$
+  be a family of probability measures on $\reals^n_+$, then the family
+  $\lbrace \mu_\alpha \rbrace$ is tight if and only if the family
+  $\lbrace \tilde{\mu}_\alpha \rbrace$ is equicontinuous at $0$.  If
+  this is true then $\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on all of $\reals^n_+$.
+\end{lem}
+\begin{proof}
+First we assume that the family $\lbrace \mu_\alpha \rbrace$ is
+equicontinuous and show tightness.  To do this, note that if $\epsilon
+> 0$ is given,
+ then by equicontinuity we can find
+$\delta>0$ such that $1 - \tilde{\mu}_\alpha(u \mathds{1}) < \epsilon/2$ for all
+$0 \leq u < \delta$ and all $\alpha$.  By Lemma
+\ref{LaplaceTailEstimate} we get for every $r > 1/\delta$ 
+\begin{align*}
+\mu_\alpha\lbrace \abs{x} \geq r \rbrace &\leq 2 (1 - \tilde{\mu_\alpha}(\mathds{1}/r)) < \epsilon
+\end{align*}
+and therefore tightness is proven. 
+
+Now assume that the family $\lbrace \tilde{\mu}_\alpha \rbrace$ is
+tight.  For each $\alpha$ let $\xi_\alpha$ be a random vector with
+distribution $\mu_\alpha$.  Using the elementary bound $\abs{e^{-x} - e^{-y}} \leq \abs{x
+  -y} \wedge 1$ for $0 \leq x,y < \infty$ and Cauchy-Schwartz (Lemma
+\ref{CauchySchwartz}) we see that for any
+$0 < \epsilon < 2$,
+\begin{align*}
+\abs{\tilde{\mu}_\alpha(u) - \tilde{\mu}_\alpha(v)} &=
+\abs{\expectation{ e^{-\langle u, \xi_\alpha \rangle} - e^{-\langle v,
+      \xi_\alpha}}} \\ 
+&\leq
+\expectation{\abs{ e^{-\langle u, \xi_\alpha \rangle} - e^{-\langle v,
+      \xi_\alpha \rangle}}} \\ 
+&\leq \expectation{\abs{\langle u-v, \xi_\alpha \rangle} \wedge 1} \\ 
+&= \expectation{\abs{\langle u-v, \xi_\alpha \rangle} \wedge 1 ;
+  \langle u-v, \xi_\alpha \rangle < \epsilon/2}  + 
+\expectation{\abs{\langle u-v, \xi_\alpha \rangle} \wedge 1 ;
+  \langle u-v, \xi_\alpha \rangle \geq \epsilon/2} \\ 
+&\leq \epsilon/2 + 
+\probability{\langle u-v, \xi_\alpha \rangle \geq \epsilon/2} \\ 
+&\leq \epsilon/2 + 
+\probability{\abs{\xi_\alpha } \geq \frac{\epsilon}{2\abs{u-v}}} \\ 
+\end{align*}
+Thus by tightness for all $u,v \in \reals^n_+$ with $\abs{u-v}$
+sufficiently small we have $\abs{\tilde{\mu}_\alpha(u) -
+  \tilde{\mu}_\alpha(v)} < \epsilon$ uniformly in $\alpha$.  Thus we see that
+the family
+$\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on
+all of $\reals^n_+$ and in particular at $0$.
+\end{proof}
+
+The following result is analogous to the Glivenko-Levy Continuity
+Theorem \ref{GlivenkoLevyContinuity} for characteristic functions.  As
+with that result, here we point out that the assumption that $\mu_n$
+converge to probability measure is critical and we will return to the
+question of how to remove the assumption (using the notion of tightness) later on.
+\begin{thm}[Glivenko-Levy Continuity
+  Theorem]\label{GlivenkoLevyContinuityLaplace}If $\mu, \mu_1, \mu_2, \dots$
+  are probability measures on $(\reals^n_+, \mathcal{B}(\reals^n_+))$,
+  then $\mu_n$ converge weakly to $\mu$ if and only if $\tilde{\mu}_n(u)$
+  converge to $\tilde{\mu}(u)$ pointwise.  Moreover if this is true
+  then the convergence is uniform on bounded sets.
+\end{thm}
+\begin{proof}
+Since $\mu_n$ converge to $\mu$ weakly and $e^{-\langle u,x \rangle}$
+is bounded and continuous we know that $\tilde{\mu}_n(u) \to
+\tilde{\mu}(u)$ pointwise.  In fact, by Lemma
+\ref{WeakConvergenceImpliesTight} we know that the family $\mu_n$
+is tight and therefore by Lemma
+\ref{LaplaceEquicontinuityAndTightness} it is uniformly equicontinuous
+on $\reals^n_+$.  this convergence is uniform on
+every bounded set.
+
+Now we assume that $\tilde{\mu}_n(u)$converges to $\tilde{\mu}(u)$ for
+every $u \in \reals^n_+$.  We now want to approximate general bounded
+continuous functions by functions $e^{-\langle u,x \rangle}$ in order
+derive weak convergence.  To do this, we will consider $[0,\infty]^n$
+which is a compact Hausdorff space and therefore amenable to
+application of the Stone Weierstrass Theorem
+\ref{StoneWeierstrassApproximation}.  To use an approximation of
+functions on $[0,\infty]^n$ derive an effective approximation on
+$\reals^n_+$ is going to require that we are able to control behavior
+of the measures $\mu_n$ at infinity and therefore we first show that
+$\mu_n$ is a tight family.  Suppose $\epsilon > 0$ is given and use
+the continuity of $\tilde{\mu}(u)$ and the fact that
+$\tilde{\mu}(0)=1$ to find $r_0 > 0$ such that $1 - \mu(\mathds{1}/r_0) <
+\epsilon/2$.  By pointwise convergence $\mu_n(\mathds{1}/r_0) \to \mu(\mathds{1}/r_0)$ we
+can find an $N > 0$ such that $1 - \tilde{\mu_n}(\mathds{1}/r_0) < \epsilon$ for all $n
+\geq N$ and therefore by Lemma \ref{LaplaceTailEstimate}, $\mu_n(\abs{x} \geq r)  \leq 1 - \mu_n(\mathds{1}/r_0) <
+\epsilon$.  For each $n = 1, \dotsc, N-1$ by continuity of measure  we
+can find $r_n > 0$ such that $\mu_n\lbrace \abs{x} \geq r_n \rbrace <
+\epsilon$.  Therefore taking the maximum $r = r_0 \vee r_1 \vee \dotsb \vee
+r_{N-1}$ we get $\mu_n\lbrace \abs{x} \geq r \rbrace <
+\epsilon$ for all $n$ and we have shown $\mu_n$ is tight.
+
+Suppose that $\epsilon > 0$ is given and
+pick $r > 0$ such that $\mu_n(\reals^n_+ \setminus B(0, r)) <
+\epsilon$ and $\mu(\reals^n_+ \setminus B(0, r)) < \epsilon$.
+
+Having shown that $\mu_n$ is tight we return to the task of creating
+an approximation.  Since $e^{-\langle u,x \rangle}$
+has limits (either $0$ or $1$) as $x \to \infty$ we can extend each
+such function to
+a continuous function on $[0,\infty]^n$.  Note also that the family $e^{-\langle k, x
+  \rangle}$ for $k \in \integers^n_+$ contains the constant functions
+and separates points therefore we can apply the Stone Weierstrass
+Theorem to conclude that any
+continuous function on $[0,\infty]^n$ can be uniformly approximated by
+a linear combination of $e^{-\langle k, x  \rangle}$. 
+
+Given a bounded continuous function $f : \reals^n_+ \to \reals$ such
+that $\abs{f(x)} \leq M$ we
+apply a continuous cutoff $1 - d(x,B(0,r)) \vee 0$ to create a function $\hat{f} : \reals^n_+
+\to \reals$ such that $\hat{f}(x) \leq M$ for all $x \in \reals^n_+$, $f(x) = \hat{f}(x)$ for $x \in B(0,r)$ and
+$\hat{f}(x) = 0$ for $\abs{x} > 2r$.  Note that for every $n$ we have
+\begin{align*}
+\int \abs{f - \hat{f}} \, d\mu_n &= 
+\int_{\abs{x} < r} \abs{f -  \hat{f}} \, d\mu_n + 
+\int_{\abs{x} \geq r} \abs{f -  \hat{f}} \, d\mu_n < 2 M \epsilon
+\end{align*}
+and similarly for $\mu$.
+
+The function $\hat{f}$ can be
+extended by zero to define a continuous function on $[0,\infty]^n$ and
+therefore we can find some finite linear combination $g = \sum_k c_k
+e^{-\langle k, x \rangle}$ such that $\abs{\hat{f}(x) - g(x)}<
+\epsilon$ for all $x \in [0, \infty]^n$ so \emph{a fortiori} for all $x \in \reals^n_+$.  Therefore
+\begin{align*}
+&\abs{\int f \, d\mu_n - \int f \, d \mu} \\
+&\leq \int \abs{f - \hat{f}}
+\, d\mu_n + \int \abs{\hat{f} - g}\, d\mu_n + \abs{\int  g\, d\mu_n -
+  \int g \, d\mu} + \int \abs{\hat{f} - g}\, d\mu + \int \abs{f - \hat{f}}
+\, d\mu \\
+&\leq 2M \epsilon + \epsilon + abs{\sum_k c_k ( \mu_n(k) - \mu(k))} +
+\epsilon + 2M \epsilon
+\end{align*}
+Now take the limit as $n \to \infty$ and use the fact that $\mu_n \to \mu$ pointwise (recall that the sum
+over $k$ is finite) and then let $\epsilon \to 0$.
 \end{proof}

@@ -381,7 +381,7 @@ the strategy as providing the amount that a gambler will bet.  Of
 interest is that we allow the gambler to ``short'' the bet (i.e. bet a
 negative amount).  It turns out that under reasonable conditions
 betting strategies alone cannot alter the fairness of a game.
-\begin{lem}Let $M_n$ be a martingale and let $A_n$ be an
+\begin{lem}\label{DiscreteTimeMartingaleTransform}Let $M_n$ be a martingale and let $A_n$ be an
   $\mathcal{F}$-previsible process with each $A_n$ bounded and $A_0 =
   1$.  
 Define the \emph{martingale transform}
@@ -626,7 +626,7 @@ and note that by $\mathcal{F}$-adaptedness of $X$, we have $\lbrace X_m
 \in A \rbrace \in \mathcal{F}_m \subset \mathcal{F}_n$.
 \end{proof}
 
-\begin{lem}Let $M_n$ be a martingale and let $\tau$ be an optional
+\begin{lem}\label{ExpectationStoppedMartingaleDiscrete}Let $M_n$ be a martingale and let $\tau$ be an optional
   time such that $\tau \leq C < \infty$, then $\expectation{M_\tau} =
   \expectation{M_0}$.
 \end{lem}

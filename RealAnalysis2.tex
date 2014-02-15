@@ -1510,6 +1510,368 @@ where the last inequality follows Lemma \ref
   \lambda}$ and tightness is shown.
 \end{proof}
 
+\subsection{Skorohod Space}
+TODO: Currently going through this.  
+
+Question 1:  In the definition of the $J_1$ topology on $D([0,\infty);
+S)$ given a time shift $\lambda(t)$ we define $d(f,g,\lambda, u) = \sup_{t \geq 0} q(f(t \wedge u),
+g(\lambda(t) \wedge u))$ and take the distance given the time shift as
+$\int_0^\infty e^{-u} d(f,g,\lambda,u) \, du$.  Why is $d$ defined
+this way and not as  $d(f,g,\lambda, u) = \sup_{0 \leq t \leq u} q(f(t),
+g(\lambda(t)))$?  Would the latter fail to define a metric or would it
+fail to be complete?
+
+Question 2: Given a cadlag function $f : [0,1] \to S$, we know that
+$f$ has only countably many jump discontinuities; is there some notion
+of uniform continuity that can be preserved?  E.g. can we say that
+given $\epsilon > 0$ for
+all points of continuity $x$ of $f$  there exists a uniform $\delta > 0$
+such that $\abs{x-y} < \delta$ implies $q(f(x), f(y)) < \epsilon$?
+
+\begin{lem}\label{CadlagCountableDiscontinuitySet}If $x \in D([0,T];
+  S)$ or $x \in D([0,\infty); S)$ then $x$ is continuous at all but a
+  countable number of points.
+\end{lem}
+\begin{proof}
+We begin by considering the case of $x \in D([0,t]; S)$.  Pick an
+$\epsilon > 0$ and define
+\begin{align*}
+A_\epsilon &= \lbrace 0 \leq t \leq T \mid r(x(t-), x(t)) \geq
+\epsilon \rbrace
+\end{align*}
+
+Claim: $A_\epsilon$ is finite.
+
+Suppose otherwise, then by compactness of $[0,T]$ there is an
+accumulation point $t$ of $A_\epsilon$.  By passing to a further
+subsequence we can assume that we have a sequence $t_n$ such that $t_n
+\in A_\epsilon$ and
+either $t_n \downarrow t$ or $t_n \uparrow t$.  First consider the
+case $t_n \downarrow t$.  For every $n$ by the existence of the left
+limit $x(t_n-)$ we can find $t_n^\prime$ such that $t_{n+1} >
+t_n^\prime > t_n$ and $r(x(t_n), x(t_n^\prime)) > \epsilon/2$.  Now by
+construction we
+know that $t_n^\prime \downarrow t$ and by right continuity we get
+$\lim_{n \to \infty} x(t_n) = \lim_{n \to \infty} x(t_n) = x(t)$.  
+However this is a contradiction since we can find $N > 0$ such that
+$r(x(t), x(t_N)) < \epsilon/4$ and $r(x(t), x(t_N^\prime) <
+\epsilon/4$ which yields $r(x(t_N), x(t_N^\prime)) < \epsilon/2$.  If
+$t_n \uparrow t$ we argue similarly construction a sequence
+$t_n^\prime$ such that $t_{n-1} < t_n^\prime < t_n$ and $r(x(t_n),
+x(t_n^\prime)) > \epsilon/2$.  By existence of left limits, we know that $\lim_{n \to \infty}
+x(t_n^\prime) = \lim_{n \to \infty} x(t_n) = x(t-)$ and this gives a
+contradiction as before.
+
+Now simply note that the set of
+discontinuities of $x$ is $\cup_{n=1}^\infty A_{1/n}$ and is therefore
+countable.  In a similar way we see that the set of discontinuities
+for $x \in D([0,\infty); S)$ is countable since it is equal to the
+union of the discontinuities of $x$ restricted to $[0,n]$ for $n \in \naturals$.
+\end{proof}
+
+\begin{defn}Let $\Lambda$ denote the set of all $\lambda : [0,T] \to
+  [0,T]$ such that $\lambda$ is continuous, strictly increasing and
+  bijective.  Then for each $\lambda \in \Lambda$ we define 
+\begin{align*}
+\rho(x,y,\lambda) &= \abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
+\end{align*}
+and define $\rho : D([0,T]; E) \times D([0,T]; E) \to  reals$ by 
+\begin{align*}
+\rho(x,y) &= \inf_{\lambda \in \Lambda} \rho(x,y,\lambda)
+= \inf_{\lambda \in \Lambda} \sup_{t \in [0,T]}
+\abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
+\end{align*}
+\end{defn}
+
+\begin{lem}\label{SkorohodJ1RhoMetric}$\rho$ is a metric on $D([0,T];E)$.
+\end{lem}
+\begin{proof}
+It is clear that $\rho(x,y) \geq 0$, now suppose that $\rho(x,y) =
+0$.  By definition we can find a sequence $\lambda_n \in \Lambda$ such
+that $\sup_{t \in [0,T]} \abs{\lambda_n(t) - t} < 1/n$ and $\sup_{t
+  \in [0,T]} r(x(t), y(\lambda_n(t)) < 1/n$.  From the former
+inequality we see that $\lim_{n \to \infty} \lambda_n(t) = t$ and the second
+inequality we see that $\lim_{n \to \infty} y(\lambda_n(t) = x(t)$.
+By the cadlag nature of $y$ shows that either $x(t) = y(t)$ or $x(t) =
+y(t-)$; so in particular, $x(t) = y(t)$ at all continuity points of
+$y(t)$.  However, since the set of discontinuity points is countable
+it follows that the set of continuity points is dense in $[0,T]$ and
+therefore for every $t \in T$ we can find a set of continuity points
+$t_n$ such that $t_n \downarrow t$ and therefore by right continuity
+of $y$ we conclude $x(t) = y(t)$.
+
+To see symmetry of $\rho$ we first note that $\lambda \in \Lambda$
+implies $\lambda^{-1} \in \Lambda$.   To see this, it is first off
+clear that $\lambda^{-1}$ exists because $\lambda$ is a bijection.
+The fact that $\lambda^{-1}$ is strictly increasing follows because
+if $0 \leq t < s \leq T$ and $0 \leq \lambda^{-1}(s) \leq lambda^{-1}(t) \leq T$ then strictly
+increasing and bijective nature of $\lambda$ tells $s \leq t$ which is
+contradiction.  To see that $\lambda^{-1}$ is continuous, pick $0 < t
+< T$ and let $\epsilon > 0$ be given such that $0 < \lambda^{-1}(t) -
+\epsilon < \lambda^{-1}(t)  < \lambda^{-1}(t) + \epsilon < T$.  By strict increasingness
+and bijectivity 
+of $\lambda$ we know that $0 < \lambda(\lambda^{-1}(t) -
+\epsilon) < t < \lambda(\lambda^{-1}(t) + \epsilon) < T$.  Let 
+\begin{align*}
+\delta &< ( t -  \lambda(\lambda^{-1}(t) -\epsilon)) \wedge (
+\lambda(\lambda^{-1}(t) +\epsilon) -t)
+\end{align*}
+and note by the strict increasingness of $\lambda^{-1}$ we have
+\begin{align*}
+0 &< \lambda^{-1}(t) -\epsilon < \lambda^{-1}(t - \delta) <
+\lambda^{-1}(t) < \lambda^{-1}(t + \delta) < \lambda^{-1}(t) + \epsilon
+< T
+\end{align*}
+Now by the bijectivity of $\lambda$ we know that by a change of variables
+\begin{align*}
+\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} &= \sup_{0 \leq s \leq T} \abs{s - \lambda^{-1}(s)} \\
+\sup_{0 \leq t \leq T} r(x(t), y(\lambda(t))) &= \sup_{0 \leq s \leq
+  T} r(x(\lambda^{-1}(s)), y(s)) = 
+\sup_{0 \leq s \leq  T} r(y(s), x(\lambda^{-1}(s)))\\
+\end{align*}
+and therefore $\rho(x,y,\lambda) = \rho(y,x,\lambda^{-1}$.  Because
+inversion is a bijection on $\Lambda$ we then get
+\begin{align*}
+\rho(x,y) &= \inf_{\lambda \in \Lambda} \rho(x,y,\lambda) =
+\inf_{\lambda \in \Lambda} \rho(y,x,\lambda^{-1}) = \inf_{\lambda^{-1}
+  \in \Lambda} \rho(y,x,\lambda^{-1}) = \rho(y,x)
+\end{align*}
+\end{proof}
+
+The metric $\rho$ defines the Skorohod $J_1$ topology on the space
+$D([0,T];E)$.  We emphasize here that we are actually interested in
+the underlying topology as much as the metric space structure itself
+since $\rho$ is not a complete metric.
+
+\begin{examp}\label{NoncompletenessSkorohod}Let $f_n =
+  \characteristic{[1/2, 1/2 + 1/(n+2))}$ for $n >0$ be a sequence in
+  $D([0,1];\reals)$.  We show that $f_n$ is a Cauchy sequence with
+  respect to $\rho$ but $f_n$ does not converge in the $J_1$ topology.
+To see that $f_n$ is Cauchy, let $n > 0$ be given and suppose $m \geq
+n$.  Define 
+\begin{align*}
+\lambda_{n,m}(t) &= \begin{cases}
+t & \text{if $0 \leq t \leq 1/2$} \\
+\frac{n+m+2}{n+2}(t - 1/2) + 1/2 & \text{if $1/2 \leq t < 1/2 +
+  1/(n+m+2)$} \\
+\frac{\frac{1}{2} - \frac{1}{n}}{\frac{1}{2} - \frac{1}{n+m+2}}(t - \frac{1}{2} - \frac{1}{n+m+2}) + \frac{1}{2} + \frac{1}{n} & \text{if $1/2 +
+  1/(n+m+2) \leq t \leq 1$} \\
+\end{cases}
+\end{align*}
+so that $f_{n+m} (t) = f_{n}(\lambda_{m+n}(t))$ for all $t \in [0,1]$
+and $\sup_{0 \leq t \leq 1} \abs{\lambda_{m+n}(t) - t} = \frac{1}{n} -
+\frac{1}{n+m+2} < \frac{1}{n}$ which shows $\rho(f_n, f_{n+m}) < \frac{1}{n}$.
+
+Claim: If $f_n$ converges in then it must converge to $0$.
+
+Suppose that $f_n$ converges to some $f \in D([0,1];\reals)$.  Then
+there exist $\lambda_n \in \Lambda$ such that $\lim_{n \to \infty} \sup_{0 \leq t \leq 1}
+\abs{\lambda_n(t) - t} = 0$ and 
+$\lim_{n \to \infty} \sup_{0 \leq t \leq 1}\abs{f_n(t) -
+  f(\lambda_n(t))} = 0$.  Therefore for each $0 \leq t \leq 1$ that is
+a point of continuity of $f$ we have 
+$\lim_{n \to \infty} f_n(t) = \lim_{n \to \infty} f(\lambda_n(t)) =
+f(t)$.  By definition of $f_n(t)$ and Lemma
+\ref{CadlagCountableDiscontinuitySet} we see that $f(t) = 0$ for all
+but a countable number of $0 \leq t \leq 1$.  Therefore by right
+continuity and the existence of left limits we conclude $f(t) = 0$ for
+all $0 \leq t \leq 1$.  Since $f(\lambda(t))$ is identically zero for
+all $\lambda \in \Lambda$ we conclude that $\rho(f_n, 0) = 1$ hence
+$f_n$ does not converge.
+\end{examp}
+
+\begin{defn}Given $f \in D([0,T];E)$ the function
+\begin{align*}
+w(f,\delta) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_n = T \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t))
+\end{align*}
+is called the modulus of continuity.
+\end{defn}
+
+\begin{lem}\label{SkorohodJ1ModulusOfContinuity}If $f \in D([0,T];E)$ then $\lim_{\delta \to 0} w(f,\delta)
+  = 0$.
+\end{lem}
+\begin{proof}
+First note that for fixed $f$ the function $w(f, \delta)$ is a
+non-decreasing function of $\delta$.  This is simply because any
+candidate partition $0 = t_0 < t_1 < \dotsb < t_n=T$ with $\min_{1
+  \leq i \leq n} (t_i - t_{i-1}) > \delta$ is also a candidate for any
+smaller value of $\delta$.  Thus the set of candidate partitions gets
+larger as $\delta$ shrinks and the infimum over the set of candiates
+shrinks.
+
+Let $\epsilon > 0$ be given.  Define $t_0 = 0$ then so long as
+$t_{i-1} < T$ we inductively define
+$t_i = \inf \lbrace t > t_{i-1} \mid r(f(t), f(t_{i-1})) > \epsilon \rbrace \wedge T$.  We claim that
+there exists $n$ such $t_n = T$.  First, note that the sequence $t_i$
+is strictly increasing while $t_i < T$ by the right continuity of
+$f$.  If there are an infinite number of $t_i < T$ then by compactness
+of $[0,T]$ there is a limit point $0 \leq t \leq T$.  However the
+existence of the left limit $f(t-)$ says
+exists $\delta > 0$ such that for all $0 < t - s < \delta$ we have
+$r(f(s), f(t-)) < \epsilon/3$.
+This is a contradiction since we can find an $n > 0$ such that for all
+$i \geq n$ we have $t - t_i < \delta$.  By definition of the
+$t_i$ for any $i \geq n+1$ we can pick
+$t_i \leq s < t$ such that $r(f(s), f(t_{i-1})) >
+\epsilon$ which provides us with $0 < t -s < \delta$ and 
+\begin{align*}
+r(f(s),f(t-)) &> r(f(s), f(t_{i-1})) - r(f(t_{i-1}), f(t-)) > \epsilon -
+\epsilon/2 = \epsilon/2
+\end{align*}
+
+Thus we have constructed a sequence $0 =t_0 < t_1 < \dotsb < t_n = T$
+such that $\max_{1 \leq i \leq n} \sup_{t_{i-1} < s < t < t_i}
+r(f(s),f(t)) < 2 \epsilon$ so it we define $\delta = \frac{1}{2} \min_{1 \leq i
+  \leq n} (t_i - t_{i-1})$ we have shown $w(f, \delta) \leq 2
+\epsilon$.  Since $\epsilon$ was arbitrary and $w(f,\delta)$ is a
+non-decreasing function of $\delta$ we are done.
+\end{proof}
+
+Even though the metric $\rho$ is not complete, the underlying topology
+is Polish because we can define an equivalent metric that is
+complete.  To repair the incompleteness of $\rho$ we have to be a bit
+more strict about the types of time changes that are allowed; more
+specifically we have to prevent time changes are asymptotically flat
+(or by considering taking the inverse of a time change prevent time
+changes that are asymptotically vertical).  The following is a way of
+quantifying such a requirement.
+\begin{defn}For every $\lambda \in \Lambda$ define 
+\begin{align*}
+\gamma(\lambda) =
+  \sup_{0 \leq s < t \leq T} \abs{\log \frac{\lambda(t) -
+      \lambda(s)}{t-s}}
+\end{align*}
+For every $x,y \in D([0,T]; E)$ define 
+\begin{align*}
+d(x,y) = \inf_{\substack{\lambda \in \Lambda \\ \gamma(\lambda) <
+    \infty}} \gamma(\lambda) \vee \sup_{0 \leq t \leq T} r(x(t) ,y(\lambda(t)))
+\end{align*}
+\end{defn}
+
+The main goal is to prove
+\begin{lem}\label{SkorohodJ1Metric}$d$ is a metric on $D([0,T];E)$ that is equivalent to
+  $\rho$.
+\end{lem}
+Before proving the result we need a few simple facts about $\gamma$.
+\begin{lem}\label{SkorohodJ1GammaFacts}$\gamma(\lambda) = \gamma(\lambda^{-1})$ and
+  $\gamma(\lambda_1 \circ \lambda_2) \leq \gamma(\lambda_1) +
+  \gamma(\lambda_2)$.
+\end{lem} 
+\begin{proof}
+These both follow from reparameterizations using the fact that
+$\lambda^{-1}$ is a strictly increasing bijection.  For the first
+\begin{align*}
+\gamma(\lambda) &= 
+\sup_{0 \leq s < t \leq T} \abs{\log  \frac{\lambda(t) -
+    \lambda(s)}{t-s}} \\
+&=\sup_{0 \leq \lambda^{-1}(s) < \lambda^{-1}(t) \leq T} \abs{\log
+  \frac{\lambda(\lambda^{-1}(t)) -
+    \lambda(\lambda^{-1}(s))}{\lambda^{-1}(t)-\lambda^{-1}(s)}} \\
+&= \sup_{0 \leq s < t \leq T} \abs{\log  \frac{\lambda^{-1}(t) - \lambda^{-1}(s)}{t-s}} 
+\end{align*}
+and for the second
+\begin{align*}
+\gamma(\lambda) &= 
+\sup_{0 \leq s < t \leq T} \abs{\log  \frac{\lambda_2(\lambda_1(t)) -
+    \lambda_2(\lambda_1(s))}{t-s}} \\
+&\leq \sup_{0 \leq s < t \leq T} \abs{\log  \frac{\lambda_2(\lambda_1(t)) -
+    \lambda_2(\lambda_1(s))}{\lambda_1(t)-\lambda_1(s)}} +
+\sup_{0 \leq s < t \leq T} \abs{\log  \frac{\lambda_1(t) -
+    \lambda_1(s)}{t-s}} \\
+&\leq \sup_{0 \leq s < t \leq T} \abs{\log  \frac{\lambda_2(t) -
+    \lambda_2(s)}{t-s}} +
+\sup_{0 \leq s < t \leq T} \abs{\log  \frac{\lambda_1(t) -
+    \lambda_1(s)}{t-s}} \\
+&=\gamma(\lambda_2) + \gamma(\lambda_1)
+\end{align*}
+\end{proof}
+
+\begin{lem}\label{SkorohodEquivalenceA}For all $\lambda$ such that $\gamma(\lambda) < 1/2$ we have
+  $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} \leq
+  2T\gamma(\lambda)$.  For all $f,g \in D([0,T]; S)$ such that $d(f,g) < 1/2$ we
+  have $d(f,g) \leq 2T\rho(f,g)$.
+\end{lem}
+\begin{proof}
+From the inequality $1+x \leq e^x$ we have
+$\log(1+2x) \leq 2x$ for all $x > -1/2$ and therefore for $0 < x <
+1/2$ we have $\log(1-2x) \leq -2x < -x < 0$.  
+Similarly we have
+$\log(1-2x) \leq -2x$ for all $x < 1/2$ and therefore for $0 < x <
+1/2$ we have $\log(1-2x) \leq -2x < -x < 0$ for $0 < x < 1/2$.  On the
+other hand, we see that $\frac{d}{dx} \left ( \log(1+2x) - x \right) =
+\frac{2}{1+2x} - 1$ is positive for $0 < x < 1/2$ and therefore we
+conclude 
+\begin{align*}
+\log(1-2x) &< -x < 0 < x < \log(1+2x) \text{ for } 0 < x < 1/2
+\end{align*}
+
+Suppose $\gamma(\lambda) < 1/2$ and let $0 \leq t \leq T$.  By definition and the
+fact that $\lambda(0) = 0$ we have
+\begin{align*}
+\abs{\log \frac{\lambda(t)}{t}} &\leq \sup_{0 \leq s < t \leq
+  T}\abs{\log \frac{\lambda(t) - \lambda(s)}{t-s}} = \gamma(\lambda) 
+\end{align*}
+and therefore we get
+\begin{align*}
+\log(1-2\gamma(\lambda)) &< -\gamma(\lambda) < \log \frac{\lambda(t)}{t} < \gamma(\lambda) < \log(1+2\gamma(\lambda))
+\end{align*}
+and exponentiating
+\begin{align*}
+1 - 2\gamma(\lambda) < \frac{\lambda(t)}{t} < 1 + 2 \gamma(\lambda)
+\end{align*}
+which shows $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} < 2 T \gamma(\lambda)$.  
+
+Now suppose we have $d(f,g) < 1/2$.  Let $\epsilon$ be given and
+select $\lambda \in \Lambda$ such that $\gamma(\lambda) < 1/2 \wedge
+(d(f,g) + \epsilon)$ and $\sup_{0 \leq t \leq T} r(f(t),
+g(\lambda(t))) < d(f,g) + \epsilon$.  By what we have just shown, we
+get that $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} < 2 T
+\gamma(\lambda) < 2T(d(f,g) + \epsilon)$ and therefore $\rho(f,g) <
+2T(d(f,g) + \epsilon)$.  Now let $\epsilon \to 0$.
+\end{proof}
+
+\begin{proof}
+The fact that $d(f,g) \geq 0$ is immediate. Suppose $d(f,g)$ and pick $\lambda_n$ such that
+$\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq
+  T} r(f(t), g(\lambda_n(t))) = 0$.  By Lemma
+\ref{SkorohodEquivalenceA}  we know that $\lim_{n \to \infty} \sup_{0
+  \leq t \leq T} \abs{\lambda_n(t) - t} = 0$ as well and therefore we
+can repeat the argument of Lemma \ref{SkorohodJ1RhoMetric} to conclude $f=g$.
+
+To see symmetry just note that by reparametrizing and Lemma \ref{SkorohodJ1GammaFacts}
+\begin{align*}
+d(f,g) &= \inf_{\substack{\lambda \in \Lambda \\ \gamma(\lambda) <
+    \infty}} \gamma(\lambda) \vee \sup_{0 \leq t \leq T} r(f(t),
+g(\lambda(t))) \\
+&= \inf_{\substack{\lambda \in \Lambda \\ \gamma(\lambda) <
+    \infty}} \gamma(\lambda^{-1}) \vee \sup_{0 \leq \lambda^{-1}(t) \leq T}
+r(g(t), f(\lambda^{-1}(t))) = d(g,f)
+\end{align*}
+and similarly with the triangle inequality.
+
+TODO: Write out the triangle inequality part.
+\end{proof}
+
+The goal in introducing $d$ was to provide a complete metric; a useful
+thing to check first is that $d$ fixes the example which showed $\rho$
+was not a complete metric.
+\begin{examp}Here we continue the Example
+  \ref{NoncompletenessSkorohod} by showing directly that $f_n$ is not
+  Cauchy in the metric $d$.  Because $f_n$ are indicator functions it
+  follows that $\sup_{0 \leq t \leq 1} \abs{f_{n+m}(t) - f_{n}(\lambda(t))}$ is
+  either $0$ or $1$.  Therefore if $f_n$ is Cauchy then we can find
+  $\lambda_{nm}(t)$ such that $\sup_{0 \leq t \leq 1} \abs{f_{n+m}(t) -
+    f_{n}(\lambda_{nm}(t))} = 0$.  By definition this tells us that
+  $\lambda_{nm}([1/2,1/2 + 1/n+m+2]) =  [1/2,1/2+1/n]$ 
+(of course $\lambda_{nm}([0,1/2]) = [0,1/2]$ and
+$\lambda_{nm}([1/2 + 1/n+m+2, 1]) = [1/2 + 1/n,1]$ as well).  
+From this fact we see that $\gamma(\lambda_{mn}) \geq
+\frac{n+m+2}{n+2} > 1$ which shows that $d(f_n, f_{n+m}) \geq 1$ so
+$f_n$ is not Cauchy with respect to $d$.
+\end{examp}
+
 \subsection{Riesz Representation}
 
 \begin{defn}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
