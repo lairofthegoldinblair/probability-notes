@@ -1,0 +1,77 @@
+\section{Stochastic Integration}
+The process of defining stochastic integrals follows the standard path of defining integrals for a subclass of integrands for which the definition and existence of the associated integral is easy to see.  Then one uses approximations to extend the class of integrands.  Thus our first order of business is to define that initial subclass of integrands and define integrals of them with respect to an arbitrary martingale.
+\begin{defn}Let $\tau_1 \leq \tau_2 \leq \dotsb \leq \tau_n$ be optional times and let $\eta_1, \dotsc, \eta_n$ be bounded random variables and assume $\eta_k$ is  $\mathcal{F}_{\tau_k}$-measurable.  Then we say that 
+\begin{align*}
+V_t &= \sum_{k=1}^n \eta_k \characteristic{\tau_{k} > t}
+\end{align*}
+is a \emph{predictable step process}.  Given a predictable step process and a process $M$ we define the \emph{elementary stochastic integral}
+\begin{align*}
+\int_0^t V_s \, dM_s &= \sum_{k=1}^n \eta_k \left (M_t - M_{\tau_k \wedge t} \right)
+\end{align*}
+\end{defn}
+TODO: Do we assume that $\tau_k$ is countably valued???
+The first order of business is to establish conditions under which an elementary stochastic integral is a martingale.  To do this we need the following characterization of the martingale property.  
+\begin{lem}\label{MartingaleOptionalTimeCriterion}Let $M_t$ be an integrable adapted process on an index set $T$.  Then $M$ is a martingale if and only if $\expectation{M_\sigma} = \expectation{M_\tau}$ for all $T$-valued optional times $\sigma$ and $\tau$ that take at most two values.
+\end{lem}
+\begin{proof}
+Restricting $M_t$ to the union of the ranges of $\tau$ and $\sigma$ we can apply Lemma \ref{ExpectationStoppedMartingaleDiscrete} to conclude $\expectation{M_\sigma} = M_0 = \expectation{M_\tau}$.  In the other direction, let $s,t \in T$ with $s < t$.  Let $A \in \mathcal{F}_s$ and define $\sigma = s \characteristic{A^c} + t \characteristic{A}$ and note that $\sigma$ is an optional time.  Now, applying our hypothesis to the optional time $\sigma$ and the deterministic optional time $s$,  we get $\expectation{M_t ; A} = \expectation{M_\sigma} - \expectation{M_s; A^c}  = \expectation{M_s} - \expectation{M_s; A^c}  = \expectation{M_s; A}$ which shows $\cexpectationlong{\mathcal{F}_s}{M_t} = M_s$ a.s.
+\end{proof}
+
+\begin{lem}Suppose $\mathcal{F}$ is a filtration,  $\tau_1 \leq \tau_2 \leq \dotsb \leq \tau_n$ are bounded $\mathcal{F}$-optional times, $M_t$ is a martingale
+and either 
+\begin{itemize}
+\item[(i)] each $\tau_k$ is countably valued
+\item[(ii)]$\mathcal{F}$ and $M$ are right continuous
+\end{itemize}
+Then if
+\begin{align*}
+V_t &= \sum_{k=1}^n \eta_k \characteristic{\tau_{k} > t}
+\end{align*}
+is a predictable step process then $\int_0^t V_s \, dM_s$ is a martingale.
+\end{lem}
+\begin{proof}
+By definition of elementary stochastic integral and linearity, it suffices to show that $N_t = \eta \left (M_t - M_{\tau \wedge t} \right)$ is a martingale whenever either $\tau$ is a countably valued optional time or $\mathcal{F}$ and $M$ are right continuous and $\eta$ is a bounded $\mathcal{F}_\tau$-measurable random variable.  In the first case, by restricting $M_t$ to the range of $\tau$ we can apply the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} to the bounded optional time $\tau \wedge t$ to conclude that $M_{\tau \wedge t}$ is integrable and in the second case we can apply the continuous time Optional Stopping Theorem \ref{OptionalStoppingContinuous} to conclude that $M_{\tau \wedge t}$ is integrable.  This together with the integrability of $M_t$ and boundedness of $\eta$ shows that $N_t$ is integrable.  If we note that $N_t = \eta \characteristic{ \tau \leq t} \left (M_t - M_{\tau \wedge t} \right)$ then because $ \eta \characteristic{ \tau \leq t}$ and $M_t$ are $\mathcal{F}_t$-measurable and $M_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable (hence $\mathcal{F}_t$-measurable) we see that $N_t$ is adapted.  Lastly let $\sigma$ be an countably valued optional time then by the $\mathcal{F}_\tau$-measurability of $\eta$ we have and either the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} or the Optional Stopping Theorem \ref{OptionalStoppingContinuous} we get
+\begin{align*}
+\cexpectationlong{\mathcal{F}_\tau}{N_\sigma} &= \eta \cexpectationlong{\mathcal{F}_\tau}{M_\sigma - M_{\tau \wedge \sigma}} = \eta \left(M_{\tau \wedge \sigma} - M_{\tau \wedge \sigma} \right) = 0
+\end{align*}
+and by the tower property of conditional expectations we get $\expectation{N_\sigma} = 0$.  Now by Lemma \ref{MartingaleOptionalTimeCriterion} we see that $N_t$ is a martingale.
+\end{proof}
+
+
+\subsection{Quadratic Variation}
+The crux of the problem in defining stochastic integrals is the fact that sample paths of continuous martingales almost surely have infinite total variation and therefore Lebesgue-Stieltjes integrals cannot be defined.   
+
+\begin{thm}Let $M$ and $N$ be continuous local martingales, there exists an almost surely unique continuous process $[M,N]$ of locally finite variation such that $[M,N]_0 = 0$ and $MN - [M,N]$ is a local martingale.
+\end{thm}
+\begin{proof}
+We first consider the case when $M=N$ and we first assume that $M$ is a bounded martingale such that $M_0=0$.  To motivate the construction recall the basic fact that for a function $f$ of bounded variation we have the Lebesgue-Stieltjes integral $f^2 = 2 \int f \, df$.  We know that in a stochastic setting such an identity can't quite work (because the Stieltjes doesn't work) but what does turn out to be true is that once we have defined a stochastic integral, $M^2 - 2 \int M \, dM = [M]$.  Of course our plan is to use the quadratic variation to define the stochastic integrals so this reasoning is getting pretty circular here; nonetheless if we suspend belief for moment and define something that \emph{looks like} it could be $\int M \, dM$ then we might get the right answer.  Motivated by these observations, our first step is to come up with an approximation of $M$ by predictable step processes so we can create an approximation of $\int M \, dM$.  For each $n > 0$ define the sequence of optional times $\tau^n_0, \tau^n_1, \dotsc$ by $\tau^n_0 = 0$ and 
+\begin{align*} 
+\tau^n_k = \inf \lbrace t > \tau^n_{k-1} \mid \abs{M_t - M_{\tau^n_{k-1}}} = 2^{-n} \rbrace \text{ for $k > 0$}
+\end{align*}
+and define 
+\begin{align*}
+V^n_t &= \sum_{k=0}^\infty M_{\tau^n_{k}} \characteristic{(\tau^n_{k}, \tau^n_{k+1}]}(t)
+\end{align*}
+where we don't have to worry about convergence since for any fixed $t$ the sum is finite.  Clearly, each $V^n$ is a bounded predictable step process and it is also clear that $V^n$ is an approximation of $M$ (though we won't yet belabor the exact sense in which this is true).  Pick $t \geq 0$ and let $K$ be the random index such that $\tau^n_{K} < t \leq \tau^n_{K+1}$ then we can compute using high school algebra and the fact that $M_{\tau^n_0} = M_0 = 0$
+\begin{align*}
+2 \left( \int V^n \, dM \right)_t &= 2 \sum_{k=0}^\infty M_{\tau^n_{k}} \left ( M_{t \wedge \tau^n_{k+1}} - M_{t \wedge \tau^n_k} \right ) \\
+&=2 M_{\tau^n_K} M_t - 2 M_{\tau^n_K}^2 + 2 \sum_{k=0}^{K-1} M_{\tau^n_k} M_{\tau^n_{k+1}} - 2 \sum_{k=0}^{K-1} M^2_{\tau^n_k} \\
+&=2 M_{\tau^n_K} M_t -  M_{\tau^n_K}^2 + 2 \sum_{k=0}^{K-1} M_{\tau^n_k} M_{\tau^n_{k+1}} - \sum_{k=0}^{K-1} M^2_{\tau^n_k}  - \sum_{k=0}^{K-1} M^2_{\tau^n_{k+1}} \\
+&=2 M_{\tau^n_K} M_t -  M_{\tau^n_K}^2 - \sum_{k=0}^{K-1} \left (M_{\tau^n_{k+1}}  - M_{\tau^n_k}\right)^2 \\
+&=M_t^2 - \left( M_t - M_{\tau^n_K} \right)^2 - \sum_{k=0}^{K-1} \left (M_{t \wedge \tau^n_{k+1}}  - M_{t \wedge \tau^n_k}\right)^2 \\
+&=M_t^2 - \sum_{k=0}^\infty \left (M_{t \wedge \tau^n_{k+1}}  - M_{t \wedge \tau^n_k}\right)^2 \\
+\end{align*}
+So if we define 
+\begin{align*}
+Q^n_t = \sum_{k=0}^\infty \left (M_{t \wedge \tau^n_{k+1}}  - M_{t \wedge \tau^n_k}\right)^2 
+\end{align*}
+we have the identity
+\begin{align*}
+M^2_t &= 2 \left( \int V^n \, dM \right)_t + Q^n_t
+\end{align*}
+We know that $\int V^n \, dM$ is a continuous martingale and furthermore we have
+\begin{align*}
+\norm{\int V^n \, dM - \int V^m \, dM}_2 
+\end{align*}
+which shows that $\int V^n \, dM$ is a Cauchy sequence in $\mathcal{M}$.  By completeness of $\mathcal{M}$ we can find a limit $\xi$.
+\end{proof}
