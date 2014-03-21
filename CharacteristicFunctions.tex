@@ -809,11 +809,11 @@ are done.
 \subsection{Laplace Transforms}
 It turns out to be useful to specialize characteristic functions for
 the case in which we have a measure that is supported on the positive
-orthant $\reals^n_+$.  
+orthant $\reals^N_+$.  
 
-\begin{defn}Let $\mu$ be a probability measure on $\reals^n_+$. Its
+\begin{defn}Let $\mu$ be a probability measure on $\reals^N_+$. Its
   \emph{Laplace Transform} is denoted $\tilde{\mu}$ and is the function on
-  $\reals^n_+$ defined by 
+  $\reals^N_+$ defined by 
 \begin{align*}
 \tilde{\mu}(u) &= \int e^{-\langle u,x \rangle} d \mu(x)
 \end{align*}
@@ -822,14 +822,14 @@ orthant $\reals^n_+$.
 Next we observe that the behavior of the Laplace transform near zero
 corresponds to the behavior of the measure near infinity.
 \begin{lem}\label{LaplaceTailEstimate}Let $\mu$ be a probability
-  measure on $\reals^n_+$ and let $\mathds{1}=(1, \dotsc, 1) \in
-  \reals^n_+$.  Then for each $r > 0$ we have
+  measure on $\reals^N_+$ and let $\mathds{1}=(1, \dotsc, 1) \in
+  \reals^N_+$.  Then for each $r > 0$ we have
 \begin{align*}
 \mu\lbrace \abs{x} \geq r\rbrace &\leq 2(1 - \tilde{\mu}(\mathds{1}/r))
 \end{align*}
 \end{lem}
 \begin{proof}
-In order to see how simple the estimate is, first assume that $n=1$.
+In order to see how simple the estimate is, first assume that $N=1$.
 Observe that because $e^{-ux}$ is a decreasing function of $x$ for $u
 > 0$ we have $e^{-ux}  \leq e^{-1} < 1/2$ for all $x
 \geq 1/u$ and $e^{-ux} \leq 1$ for all $x \geq 0$.  Therefore for a fixed $r > 0$,
@@ -840,15 +840,15 @@ d\mu(x)  \\
 &\leq \mu[0,1/r) + \frac{1}{2} \mu[1/r, \infty) = 1 - \frac{1}{2} \mu[1/r, \infty) 
 \end{align*}
 
-To extend to the case of general $n$, we need a little bit more
+To extend to the case of general $N$, we need a little bit more
 information.  Note that minimum value of
-$\langle \mathds{1}, x\rangle = \sum_{j=1}^n x_j$ on $\reals^n_+ \cap \lbrace \abs{x} \geq u \rbrace$ is
+$\langle \mathds{1}, x\rangle = \sum_{j=1}^N x_j$ on $\reals^N_+ \cap \lbrace \abs{x} \geq u \rbrace$ is
 $u$ (it occurs at the points $(0, \dotsc, 0,u,0, \dotsc,0)$).  TODO:
 Show this...
 Therefore we know that for all fixed $r \in \reals_+$ we have $e^{-\langle r
-\mathds{1}, x \rangle} \leq e^{-1} < 1/2$ for all $x \in \reals^n_+$
+\mathds{1}, x \rangle} \leq e^{-1} < 1/2$ for all $x \in \reals^N_+$
 with $\abs{x} \geq 1/r$.  Now we can playback the same argument as the
-case $n=1$:
+case $N=1$:
 \begin{align*}
 \tilde{\mu}(r \cdot \mathds{1}) &= \int e^{-r\langle \mathds{1}, x \rangle}
 \, d\mu(x) \\
@@ -863,10 +863,10 @@ d\mu(x)  \\
 
 \begin{lem}\label{LaplaceEquicontinuityAndTightness}Let $\lbrace
   \mu_\alpha \rbrace$
-  be a family of probability measures on $\reals^n_+$, then the family
+  be a family of probability measures on $\reals^N_+$, then the family
   $\lbrace \mu_\alpha \rbrace$ is tight if and only if the family
   $\lbrace \tilde{\mu}_\alpha \rbrace$ is equicontinuous at $0$.  If
-  this is true then $\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on all of $\reals^n_+$.
+  this is true then $\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on all of $\reals^N_+$.
 \end{lem}
 \begin{proof}
 First we assume that the family $\lbrace \mu_\alpha \rbrace$ is
@@ -904,12 +904,12 @@ $0 < \epsilon < 2$,
 &\leq \epsilon/2 + 
 \probability{\abs{\xi_\alpha } \geq \frac{\epsilon}{2\abs{u-v}}} \\ 
 \end{align*}
-Thus by tightness for all $u,v \in \reals^n_+$ with $\abs{u-v}$
+Thus by tightness for all $u,v \in \reals^N_+$ with $\abs{u-v}$
 sufficiently small we have $\abs{\tilde{\mu}_\alpha(u) -
   \tilde{\mu}_\alpha(v)} < \epsilon$ uniformly in $\alpha$.  Thus we see that
 the family
 $\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on
-all of $\reals^n_+$ and in particular at $0$.
+all of $\reals^N_+$ and in particular at $0$.
 \end{proof}
 
 The following result is analogous to the Glivenko-Levy Continuity
@@ -919,7 +919,7 @@ converge to probability measure is critical and we will return to the
 question of how to remove the assumption (using the notion of tightness) later on.
 \begin{thm}[Glivenko-Levy Continuity
   Theorem]\label{GlivenkoLevyContinuityLaplace}If $\mu, \mu_1, \mu_2, \dots$
-  are probability measures on $(\reals^n_+, \mathcal{B}(\reals^n_+))$,
+  are probability measures on $(\reals^N_+, \mathcal{B}(\reals^N_+))$,
   then $\mu_n$ converge weakly to $\mu$ if and only if $\tilde{\mu}_n(u)$
   converge to $\tilde{\mu}(u)$ pointwise.  Moreover if this is true
   then the convergence is uniform on bounded sets.
@@ -931,18 +931,18 @@ is bounded and continuous we know that $\tilde{\mu}_n(u) \to
 \ref{WeakConvergenceImpliesTight} we know that the family $\mu_n$
 is tight and therefore by Lemma
 \ref{LaplaceEquicontinuityAndTightness} it is uniformly equicontinuous
-on $\reals^n_+$.  this convergence is uniform on
+on $\reals^N_+$.  this convergence is uniform on
 every bounded set.
 
 Now we assume that $\tilde{\mu}_n(u)$converges to $\tilde{\mu}(u)$ for
-every $u \in \reals^n_+$.  We now want to approximate general bounded
+every $u \in \reals^N_+$.  We now want to approximate general bounded
 continuous functions by functions $e^{-\langle u,x \rangle}$ in order
 derive weak convergence.  To do this, we will consider $[0,\infty]^n$
 which is a compact Hausdorff space and therefore amenable to
 application of the Stone Weierstrass Theorem
 \ref{StoneWeierstrassApproximation}.  To use an approximation of
 functions on $[0,\infty]^n$ derive an effective approximation on
-$\reals^n_+$ is going to require that we are able to control behavior
+$\reals^N_+$ is going to require that we are able to control behavior
 of the measures $\mu_n$ at infinity and therefore we first show that
 $\mu_n$ is a tight family.  Suppose $\epsilon > 0$ is given and use
 the continuity of $\tilde{\mu}(u)$ and the fact that
@@ -957,8 +957,8 @@ r_{N-1}$ we get $\mu_n\lbrace \abs{x} \geq r \rbrace <
 \epsilon$ for all $n$ and we have shown $\mu_n$ is tight.
 
 Suppose that $\epsilon > 0$ is given and
-pick $r > 0$ such that $\mu_n(\reals^n_+ \setminus B(0, r)) <
-\epsilon$ and $\mu(\reals^n_+ \setminus B(0, r)) < \epsilon$.
+pick $r > 0$ such that $\mu_n(\reals^N_+ \setminus B(0, r)) <
+\epsilon$ and $\mu(\reals^N_+ \setminus B(0, r)) < \epsilon$.
 
 Having shown that $\mu_n$ is tight we return to the task of creating
 an approximation.  Since $e^{-\langle u,x \rangle}$
@@ -971,10 +971,10 @@ Theorem to conclude that any
 continuous function on $[0,\infty]^n$ can be uniformly approximated by
 a linear combination of $e^{-\langle k, x  \rangle}$. 
 
-Given a bounded continuous function $f : \reals^n_+ \to \reals$ such
+Given a bounded continuous function $f : \reals^N_+ \to \reals$ such
 that $\abs{f(x)} \leq M$ we
-apply a continuous cutoff $1 - d(x,B(0,r)) \vee 0$ to create a function $\hat{f} : \reals^n_+
-\to \reals$ such that $\hat{f}(x) \leq M$ for all $x \in \reals^n_+$, $f(x) = \hat{f}(x)$ for $x \in B(0,r)$ and
+apply a continuous cutoff $1 - d(x,B(0,r)) \vee 0$ to create a function $\hat{f} : \reals^N_+
+\to \reals$ such that $\hat{f}(x) \leq M$ for all $x \in \reals^N_+$, $f(x) = \hat{f}(x)$ for $x \in B(0,r)$ and
 $\hat{f}(x) = 0$ for $\abs{x} > 2r$.  Note that for every $n$ we have
 \begin{align*}
 \int \abs{f - \hat{f}} \, d\mu_n &= 
@@ -987,16 +987,32 @@ The function $\hat{f}$ can be
 extended by zero to define a continuous function on $[0,\infty]^n$ and
 therefore we can find some finite linear combination $g = \sum_k c_k
 e^{-\langle k, x \rangle}$ such that $\abs{\hat{f}(x) - g(x)}<
-\epsilon$ for all $x \in [0, \infty]^n$ so \emph{a fortiori} for all $x \in \reals^n_+$.  Therefore
+\epsilon$ for all $x \in [0, \infty]^n$ so \emph{a fortiori} for all $x \in \reals^N_+$.  Therefore
 \begin{align*}
 &\abs{\int f \, d\mu_n - \int f \, d \mu} \\
 &\leq \int \abs{f - \hat{f}}
 \, d\mu_n + \int \abs{\hat{f} - g}\, d\mu_n + \abs{\int  g\, d\mu_n -
   \int g \, d\mu} + \int \abs{\hat{f} - g}\, d\mu + \int \abs{f - \hat{f}}
 \, d\mu \\
-&\leq 2M \epsilon + \epsilon + abs{\sum_k c_k ( \mu_n(k) - \mu(k))} +
+&\leq 2M \epsilon + \epsilon + \abs{\sum_k c_k ( \mu_n(k) - \mu(k))} +
 \epsilon + 2M \epsilon
 \end{align*}
-Now take the limit as $n \to \infty$ and use the fact that $\mu_n \to \mu$ pointwise (recall that the sum
+Now take the limit as $n \to \infty$ and use the fact that $\mu_n \to
+\mu$ pointwise (recall that the above sum
 over $k$ is finite) and then let $\epsilon \to 0$.
+\end{proof}
+
+The Cramer-Wold device for Laplace transforms is a simple corollary.
+\begin{cor}[Cramer Wold Device]\label{CramerWoldDeviceLaplace}Let $\xi, \xi_1, \xi_2, \dotsc$ be 
+  random vectors in $\reals^N_+$.  If $\langle c, \xi_n \rangle
+  \todist \langle c, \xi \rangle$ for all $c \in \reals^N_+$ then it
+  follows that $\xi_n \todist \xi$.
+\end{cor}
+\begin{proof}
+Since  $\langle c, \xi_n \rangle  \todist \langle c, \xi \rangle$ we
+know that that $\expectation {e^{-\langle c, \xi_n \rangle } } \to
+\expectation{e^{-\langle c, \xi \rangle}}$ for all $c \in \reals^N_+$
+by definition of weak convergence
+and therefore by Theorem \ref{GlivenkoLevyContinuityLaplace} we
+conclude $\xi_n \todist \xi$.
 \end{proof}

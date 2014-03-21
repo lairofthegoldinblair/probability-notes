@@ -1,8 +1,20 @@
 \section{Markov Processes}
 
-TODO: Thinking about Markov processes as dynamical/deterministic systems with noise.
+TODO: Thinking about Markov processes as dynamical/deterministic
+systems with (transduced) noise.
 
 \subsection{Markov Processes}
+The basic intuition of what a Markov process comprises is that it is a
+stochastic process $X$ on a time scale $T$ such that for every time $t \in
+T$ the future behavior of $X_u$ for $u \geq t$ only depends on the
+past through the current value of $X_t$.  Alas, in practice the types
+of problems that we concern ourselves with Markov process leads us to
+a definition of a significantly more complicated object.  Rather than
+pummel the reader with the definition we take the approach of starting
+from simple intuition and building in the complexity by stages.  Some
+readers may prefer to first jump to the end of this section to peer at
+the final defintion so that it can be kept in mind during the journey.
+
 \begin{defn}Let $X$ be a process in $(S, \mathcal{S})$ with time scale
   $T$ which is adapted to a filtration $\mathcal{F}_t$.  We say that
   $X$ has the \emph{Markov property} if 
@@ -173,11 +185,11 @@ The ability to derive the almost sure version of the
 Chapman-Kolmogorov relations is really just motivational for our
 purposes.  In fact we will want to assume they hold identically in
 what follows.  Absent a workable set of conditions from which we can
-derive this fact, we build into our definitions.  Collecting all of
+derive this fact, we build it into our definitions.  Collecting all of
 the conditional independence and regularity properties we've
 identified we finally make the formal definition of a Markov process.
 \begin{defn}
-A \emph{Markov Process} is a stochastic process $X_t$ on a time scale $T
+A \emph{Markov process} is a stochastic process $X_t$ on a time scale $T
 \subset \reals_+$ and a state space $(S, \mathcal{S})$ such that 
 \begin{itemize}
 \item[(i)]$\cindependent{\mathcal{F}_s}{X_t}{X_s}$ for all $s \leq t$
@@ -189,9 +201,19 @@ A \emph{Markov Process} is a stochastic process $X_t$ on a time scale $T
 \end{itemize}
 \end{defn}
 
+TODO: Note that in the discrete (or countable?) state space case we
+can in fact assume that Chapman-Kolmogorov are satisfied identically.
+
 In lieu of general techinique for proving that a process is Markov
-from general principle, we give a result that shows that we can
-construct them from a set of transition kernels that obey the Chapman-Kolmogorov relations.
+from general principles, we give a result that shows that we can
+construct them from a set of transition kernels that obey the
+Chapman-Kolmogorov relations.
+
+TODO: There are other ways of proving a process is Markov : the
+semigroup approach, the stochastic differential equation approach and
+the martingale problem approach.  These are things we'll get to but
+not quite yet!
+
 \begin{thm}\label{ExistenceMarkovProcess}Suppose we are given
 \begin{itemize}
 \item[(i)] a  time scale starting at $0$, $T \subset \reals_+$ 
@@ -219,7 +241,7 @@ TODO: Define FDDs, show consistency and use Kolmogorov extension theorem
   $\sprobabilityop{x}$ instead of $\sprobabilityop{\delta_x}$.
 \end{defn}
 \begin{lem}\label{MarkovMixtures}The family $\sprobabilityop{x}$ is a kernel from $S$ to
-  $S$.  Futhermore, given an initial distribution $\nu$
+  $S^T$.  Futhermore, given an initial distribution $\nu$
 \begin{align*}
 \sprobability{A}{\nu} = \int \sprobability{A}{x} \, d\nu(x)
 \end{align*}
@@ -229,18 +251,20 @@ First assume that $A = (\pi_{t_1}, \dots, \pi_{t_n})^{-1}(B)$ for some
 $B \in \mathcal{S}^{\otimes n}$.  We can use Lemma \ref{MarkovDistributions} to compute for
 any $\nu$,
 \begin{align*}
-\sprobability{A}{\nu} &= \sprobability{(\pi_0, \pi_{t_1}, \dots,
-  \pi_{t_n})^{-1}(S \times B)}{x} \\
-&=\nu \otimes \mu_{0, t_1} \otimes \cdots \mu_{t_{n-1}, t_n}(S \times
+\sprobability{A}{\nu} &= \probability{(\pi_0, \pi_{t_1}, \dots,
+  \pi_{t_n})^{-1}(S \times B)} \\
+&=\nu \otimes \mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(S \times
 B) \\
-&= \int \mu_{0, t_1} \otimes \cdots \mu_{t_{n-1}, t_n}(x,B) \, d\nu(x)
+&= \int \mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(x,B) \, d\nu(x)
 \end{align*}
 In particular, for $\nu = \delta_x$ we get
 \begin{align*}
-\sprobability{A}{x} &=\mu_{0, t_1} \otimes \cdots \mu_{t_{n-1},
+\sprobability{A}{x} &=\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1},
   t_n}(x,B)
 \end{align*}
-which shows both that $\sprobability{A}{x}$ is measurable and that
+which shows both that $\sprobability{A}{x}$ is a measurable function
+of $x$ for fixed $A$ (Lemma
+\ref{KernelTensorProductMeasurability}) and that
 $\sprobability{A}{\nu} = \int \sprobability{A}{x} \, d\nu(x)$.
 
 To extend to general measurable sets, we note that the set of $A$ of
@@ -251,6 +275,70 @@ kernel.  Similarly we may conclude that $\sprobability{A}{\nu} = \int
 are uniquely determined by their values on a generating $\pi$-system
 (Lemma \ref{UniquenessOfMeasure}).
 \end{proof}
+
+TODO:  This may not be the correct definition of a Markov process to
+settle on.   We may want to select the picture of a Markov process as
+being a single stochastic process with a family of probability
+measures $\probabilityop_x$ for $x \in S$ such that under $\probabilityop_x$ the
+stochastic process is Markov (as above) starting at $x$.  This
+definition assumes that we have a kernel property (so Lemma
+\ref{MarkovMixtures} proves such a kernel property
+holds in the ``canonical'' case).  The work we have done to this point
+shows that a set of transition kernels gives rise to a Markov process
+with on the canonical space $S^T$.  The interpretation as a family of measures
+without assuming the probability space is $S^T$ is apparently useful (e.g. when we want to
+assume randomization variables exist for some construction).  I still find the variety of
+interpretations of what a Markov process is to be very confusing.
+Perhaps we should define this latter concept as a Markov family and
+keep the current notion as a Markov process (I think Karatzas and
+Shreve do this).  In the Karatzas and Shreve definition we wind up
+with an interesting new concept which is that the kernel
+$\probabilityop_x$ in a Markov family is only assumed to be \emph{universally measurable}
+which is a looser condition than Borel measurability (the universal
+$\sigma$-algebra being the intersection of the completions of the
+Borel $\sigma$-algebra under all probability measures; hence being a
+superset of the Borel $\sigma$-algebra).  This loosening
+seems to come up as important in the context of stochastic control.  I
+am not at all clear on how important it is in the context of Markov
+processes as we are likely to develop it; it seems from Karatzas and
+Shreve that this loosening comes up in Markov process theory when
+trying to find a right-continuous complete filtration with respect to which a
+Markov process (in particular Brownian motion) gives us a Markov
+family.  So, we have shown that a by Kolmogorov existence we can
+construct a Markov family given a set of transition kernels however
+the filtration is not right continuous or complete and this
+construction results in a Borel measurable kernel $\probabilityop_x$.
+However if one tries to modify the construction to get a
+right-continuous complete filtration (usual conditions) then one has
+to give up Borel measurability in the kernel and make due with
+universal measurability.
+
+\begin{defn}
+A \emph{Markov family} is a stochastic process $X_t$ with a
+probability space $(\Omega, \mathcal{A})$, a time scale $T
+\subset \reals_+$ and a state space $(S, \mathcal{S})$ and a family of
+probability measures $\probabilityop_x$ on $\Omega$ for $x \in S$ such that 
+\begin{itemize}
+\item[(i)]$\probabilityop_x$ is a (universally measurable?) kernel
+  from $S$ to $\Omega$.
+\item[(ii)]$\sprobability{X_0 = x}{x} = 1$ for all $x \in S$.
+\item[(iii)]$\cindependent{\mathcal{F}_s}{X_t}{X_s}$ under
+  $\probabilityop_x$ for all $s \leq
+  t$ and $x \in S$ (i.e. for all $x \in S$, $A \in \mathcal{S}$ and $s \leq t$ we have
+  $\csexpectationlong{\mathcal{F}_s}{X_t \in A}{x} =
+  \csexpectationlong{X_s}{X_t \in A}{x}$ $\probabilityop_x$-a.s.)
+\item[(iv)]there exists a regular version $\mu^x_{s,t} :
+  S \times \mathcal{S} \to [0,1]$ of $\csprobability{\mathcal{F}_s}{X_t
+    \in \cdot}{x}$ for each $s \leq t$ and $x \in S$ (is there any coherence
+  requirement with respect to $x \in S$ here???).
+\end{itemize}
+\end{defn}
+
+Question:  Given a Markov family as above then given an arbitrary
+initial distribution $\nu$ on $S$ we can define $\probabilityop_\nu$
+by $\sprobability{A}{\nu} = \int \sprobability{A}{x} \, d\nu(x)$.  Is
+$X$ a Markov process with initial distribution $\nu$ under
+$\probabilityop_\nu$?
 
 \subsection{Homogeneous Markov Processes}
 
@@ -488,13 +576,180 @@ transitions.  Time homogeneity is the property that all of these
 transition kernels are the same and therefore the Markov process is
 determined by a single kernel (and the initial distribution).
 
-\begin{defn}A time homogenous Markov process ... TODO
+\begin{defn}A Markov process on $\integers_+$ or $\reals_+$ is said to
+  be \emph{time homogeneous} if and only for all $s,t,u \in T$ and $B
+  \in \mathcal{S}^T$ we have
+  $\cexpectationlong{\mathcal{F}_s}{X_t \in B} = \cexpectationlong{\mathcal{F}_{s+u}}{X_{t+u} \in B}$.
 \end{defn}
 
 TODO: Show that a time homogenous Markov process is a dynamical system
 with noise.
 
 \subsection{Strong Markov Property}
+
+In dealing with Markov processes we make a lot of use of constructions
+that involve the following
+\begin{defn}If $T$ is equal to $\integers_+$ or $\reals_+$, for each
+  $t \in T$ we define
+  the \emph{shift operator}  $\theta_t : S^T \to S^T$ by $\theta_t f
+  (s) = f(s +t)$.
+\end{defn}
+
+It is clear that for a fixed $t \in T$ the shift operator $\theta_t$
+is measurable but we often need a stronger property the requires some
+more assumptions.
+\begin{lem}\label{MeasurabilityOfShiftOperator}For any fixed $t \in T$ the shift operator $\theta_t : S^T
+  \to S^T$ is measurable. If $U$ is equal to $S^\infty$, $C(T; S)$ or
+  $D(T; S)$, then $\theta_t X$ defines a measurable function $\theta : U \cap S^T \times
+  T \to U \cap S^T$.  
+\end{lem}
+\begin{proof}
+First let $t \in T$ be fixed pick $s \in T$ and $A \in \mathcal{S}$.
+Then $\theta_t^{-1} \lbrace f(s) \in A \rbrace = \lbrace f(s+t) \in A
+\rbrace \in \mathcal{S}^T$.  Therefore since sets of the form $\lbrace f(s) \in A \rbrace$ generate
+$\mathcal{S}^T$, we see that $\theta_t$ is measurable by Lemma
+\ref{MeasurableByGeneratingSet}.
+
+Now let $U$ be as above.  It is clear that the shift operator
+preserves the necessary continuity and limit properties and thus is
+well defined as a function $\theta : U \cap S^T \times T \to U \cap S^T$.  To
+see measurability of $\theta$, first note that the evaluation map $\pi : U \cap S^T \times
+T \to S$ given by $\pi(f,t) = f(t)$ is measurable (e.g. this follows
+by considering the process defined by the identity $U
+\cap S^T \to U \cap S^T$ and using Lemma
+\ref{ContinuityAndProgressiveMeasurability} to see that it is jointly
+measurable).
+Now let $s \in T$ and $A
+\in \mathcal{S}$ as before and calculate
+\begin{align*}
+\lbrace (f, t) \mid \theta_t f \in \pi_s^{-1} A \rbrace
+&=
+\lbrace (f, t) \mid \theta_t f(s) \in  A \rbrace 
+=\lbrace (f, t) \mid \theta_s f(t) \in  A \rbrace \\
+&= (\theta_s, id)^{-1} \lbrace (f, t) \mid f(t) \in  A \rbrace
+= (\theta_s, id)^{-1} \pi^{-1} A
+\end{align*}
+which is measurable by the joint measurability of $\pi$ noted above
+and the measurability of $\theta_s$ for fixed $s \in T$.
+\end{proof}
+
+When considering Markov processes on the canonical space there is a
+very useful construction of time shifting optional times.  Intuitively
+the construction is that given two optional times $\sigma$ and $\tau$
+one constructs the random time which is ``the first time $\tau$
+happens after $\sigma$ happens''.  The following Lemma makes the
+construction precise and shows that under some assumption on the path
+space that the construction gives us a weak optional time.
+\begin{lem}\label{TimeShiftOptionalTimes}Let $S$ be a metric space and
+  let $\sigma$ and $\tau$ be weakly optional times on any of the canonical
+  spaces $S^\infty$, $C([0,\infty); S)$ or $D([0,\infty); S)$ provided
+  with the canonical filtration $\mathcal{F}$.   Then 
+\begin{align*}
+\gamma &= \begin{cases}
+\sigma + \tau  \circ \theta_\sigma & \text{when $\sigma<\infty$} \\
+\infty & \text{when $\sigma=\infty$}
+\end{cases}
+\end{align*}
+is also weakly $\mathcal{F}$-optional.
+\end{lem}
+\begin{proof}
+Let $X$ be the canonical process (i.e. $X_t$ is the evaluation
+function $\pi_t$).  
+
+First we claim that $\gamma$ is measurable.  This follows by noting
+that $\theta_\sigma$ is measurable by writing it as $\theta \circ (id,
+\sigma)$ and using by Lemma \ref{MeasurabilityOfShiftOperator}.
+Therefore $\gamma$ is measurable by the measurability of
+$\theta_\sigma$, $\sigma$
+and $\tau$ and application of Lemma \ref{CompositionOfMeasurable} and
+Lemma \ref{ArithmeticCombinationsOfMeasurableFunctions}.
+
+Next we claim that if we pull back $\mathcal{F}_t$ by $\theta_\sigma$
+then result should only depend on values  $X_s$ for $\sigma \leq s
+\leq \sigma + t$ hence should be $\mathcal{F}^+_{\sigma +
+  t}$-measurable.  We have to be a bit careful with this claim, because $\sigma$
+can be infinite in which case $\theta_\sigma$ isn't defined.  To make
+the claim precise and to prove it pick $n \geq 0$ and note that by either discreteness or by continuity of sample
+paths together with Lemma
+\ref{ContinuityAndProgressiveMeasurability} we know that $X$ is $\mathcal{F}$-progressively measurable. 
+By $\mathcal{F}^+$-optionality of $\sigma \wedge n$ and Lemma
+\ref{StoppedProgressivelyMeasurableProcess} we know that
+$X_{\sigma \wedge n +s} = X_s \circ \theta_{\sigma \wedge n}$ is
+$\mathcal{F}^+_{\sigma \wedge n+s}$-measurable for all $s \geq 0$.
+Now fix $t \geq 0$ then for $0 \leq s \leq t$, pick a measurable set $B
+\in \mathcal{S}$
+and let $A = \lbrace X_s \in B \rbrace$; we note that
+ $\theta_{\sigma \wedge n}^{-1} A = (X_s \circ \theta_{\sigma \wedge n})^{-1}(B) =
+X_{\sigma \wedge n+s}^{-1}(B) \in \mathcal{F}^+_{\sigma \wedge n+s} \subset
+\mathcal{F}^+_{\sigma \wedge n+t} $.  
+Since $\lbrace A \mid \theta_{\sigma \wedge n}^{-1} A \in
+\mathcal{F}^+_{\sigma \wedge n+t} \rbrace$ is a $\sigma$-algebra (Lemma
+\ref{SigmaAlgebraPullback}) and sets of the form $\lbrace X_s \in B
+\rbrace$ for $0 \leq s \leq t$ generate $\mathcal{F}_t$, we know that
+$\theta_{\sigma \wedge n}^{-1} \mathcal{F}_t \subset
+\mathcal{F}^+_{\sigma \wedge n +t}$ for all $t \geq 0$ and $n \geq 0$.
+
+Now fix $0 \leq t < \infty$, let $n = \floor{t}+1$
+and note that
+\begin{align*}
+\lbrace \gamma < t \rbrace &= \cup_{\substack{0 < r < t\\r \in
+    \rationals}} \lbrace \sigma < r ; \tau \circ \theta_\sigma < t -
+r\rbrace \\
+&=\cup_{\substack{0 < r < t\\r \in
+    \rationals}} \lbrace \sigma  \wedge n < r ; \tau \circ
+\theta_{\sigma \wedge n} < t - r\rbrace
+\end{align*}
+Since $\tau$ is weakly $\mathcal{F}$-optional we know that $\lbrace
+\tau < t-r\rbrace \in \mathcal{F}_{t-r}$ hence $\theta_{\sigma \wedge n}^{-1}
+\lbrace \tau < t-r \rbrace \in \mathcal{F}^+_{\sigma \wedge n + t -r}$ and
+therefore using Lemma \ref{WeaklyOptionalCharacterization} applied to
+the stopped $\sigma$-algebra $\mathcal{F}^+_{\sigma  \wedge n + t -r}$ we get
+\begin{align*}
+\lbrace \sigma \wedge n < r ; \tau \circ \theta_{\sigma \wedge n}< t - r\rbrace &=
+\lbrace \sigma \wedge n +t -r < t \rbrace \cap \theta_{\sigma \wedge n}^{-1} \lbrace \tau
+< t -r\rbrace \in \mathcal{F}_t
+\end{align*}
+and therefore $\gamma$ is weakly $\mathcal{F}$-optional.
+\end{proof}
+
+Note: Kallenberg's proof of the above Lemma is a little bit different and
+from what I can tell has a small error.  He first
+proves the result for $\sigma$ bounded, and then claims that
+$\gamma_n = \sigma \wedge n + \tau \circ \theta_{\sigma \wedge n} \uparrow \gamma$ enabling us to apply the result for
+the bounded case to
+$\gamma_n$ and to conclude that $\gamma = \sup_n \gamma_n$ is weakly
+$\mathcal{F}$-optional via Lemma
+\ref{InfSupStoppedFiltration}.  The problem is that $\gamma_n$ as
+defined is not increasing.  To see a counter example let $S = \lbrace
+H,T \rbrace$ and consider the result for $S^\infty$ (here time is $\integers_+$).  Define 
+\begin{align*}
+\tau &= \min \lbrace n \mid n \text{ is even and } X_n = H \rbrace
+\end{align*}
+It is easy to see that $\tau$ is a stopping time as 
+\begin{align*}
+\lbrace \tau = n \rbrace  &= 
+\begin{cases}
+\lbrace X_0 =  H \rbrace & \text{for $n = 0$} \\
+\lbrace X_n = H \rbrace \cap \lbrace X_{n-2} = T \rbrace \cap \dotsb
+\cap \lbrace X_0 = T \rbrace & \text{if $n$ is even and $n > 0$} \\
+\emptyset & \text{if $n$ is odd}
+\end{cases} 
+\end{align*}
+Now let $\sigma$ be
+a suitably large deterministic time (say $\sigma = 2$) so that for $n \leq
+2$ we have $\gamma_n = n + \tau \circ \theta_n$.  Consider
+$\omega = (T,H,H,H,\dotsc) \in S^\infty$.  Note that $\tau(\omega)
+= 2$ thus $\gamma_0(\omega) = 2$ but $\tau(\theta_1(\omega)) = 0$ and
+therefore $\gamma_1(\omega) = 1 < \gamma_0(\omega)$. 
+
+It is worth noting that even when we are not considering the canonical
+case many optional times of interest (in particular hitting times) are
+pull backs of optional times on the path space (i.e. are of the form
+$\tau \circ X$ where $\tau$ is an optional time defined on $S^T$).  If
+we are given a pair of these optional times then we can
+apply the time shift construction of the optional times on the path
+space and pull back (i.e. forming $\sigma \circ X + \tau \circ
+\theta_{\sigma \circ X} \circ X$).  
 
 \begin{lem}Let $X$ be a time homogeneous Markov process on
   $\integers_+$ or $\reals_+$ and let $\tau$ be an optional
@@ -672,4 +927,286 @@ Theorem \ref{Disintegration} and Lemma
 &=\sprobability{X_\tau}{A }
 \end{align*}
 and we are done.
+\end{proof}
+
+\subsection{Pure Jump-Type Markov Processes}
+In this section we discuss a simple subclass of time homogeneous
+Markov Processes on $\reals_+$.
+\begin{defn}A time homogenous Markov process on $\reals_+$ with values
+  in a metric (topological?) space $(S, \mathcal{B}(S))$ is said to be \emph{pure
+    jump-type} if almost surely its sample paths are piecewise
+  constant with isolated jump discontinuities.
+\end{defn}
+
+The first goal is to get a more constructive description of the class
+of pure jump-type Markov processes.  The key idea in achieving that goal
+is to study the random time to the jumps of the process; in fact these
+random times are optional with respect to the right continuous
+filtration generated by the process.
+
+\begin{defn}Let $X$ be a pure jump-type Markov process then the
+  \emph{first jump time} is the random time
+\begin{align*}
+\tau_1 &=\inf \lbrace t \geq 0 \mid X_t \neq X_0 \rbrace
+\end{align*}
+ the \emph{$n^{th}$ jump time} is defined to be 
+\begin{align*}
+\tau_n &= \tau_{n-1} + \tau_1 \circ \theta_{\tau_{n-1}} = \inf \lbrace
+t \geq \tau_{n-1} \mid X_t \neq X_{\tau_{n-1}} \rbrace \text{ for $n > 1$}
+\end{align*}
+and the \emph{$0^{th}$ jump time} is $\tau_0 = 0$.
+\end{defn}
+
+\begin{lem}Let $X$ be a pure jump-type Markov process then
+$\tau_n$ is a weakly $\mathcal{F}$-optional time for all $n \geq 0$.
+\end{lem}
+\begin{proof}
+The case $\tau_0$ is trivial as it is a deterministic time.
+For each $n \in \naturals$, define $\sigma_n = \min \lbrace k/2^n \mid
+X_{k/2^n} \neq X_0 \rbrace$.  Note that because of the right
+continuity of sample paths of $X$ we have $\sigma_n \downarrow
+\tau_1$.  Moreover we have
+\begin{align*}
+\lbrace \sigma_n \leq t \rbrace &= \cup_{k=0}^{\floor{2^n t}}
+\lbrace X_{k/2^n} \neq X_0 \rbrace 
+\in \mathcal{F}_{\floor{2^n t}/2^n} \subset \mathcal{F}_t
+\end{align*}
+and therefore $\sigma_n$ is $\mathcal{F}$-optional.  Therefore by
+Lemma \ref{InfSupStoppedFiltration} we see that $\tau_1 = \lim_{n
+  \to\infty} \sigma_n = \inf_n \sigma_n$ is weakly
+$\mathcal{F}$-optional.
+
+The fact that $\tau_{n}$ is weakly optional follows by induction using
+Lemma
+\ref{TimeShiftOptionalTimes} applied to the expression $\tau_n =
+\tau_{n-1} + \tau_1 \circ \theta_{\tau_{n-1}}$.
+\end{proof}
+
+\begin{lem}\label{PureJumpFirstJumpTime}Let $X$ be a pure jump-type Markov process and let $x \in
+  S$ be nonabsorbing, then under $\probabilityop_x$ the optional time
+  $\tau_1$ is exponentially distributed and independent of $\theta_{\tau_1}X$.
+\end{lem}
+\begin{proof}
+To see that $\tau_1$ is exponentially distributed note that
+\begin{align*}
+\sprobability{\tau_1 > t+s}{x} &= \sprobability{\tau_1 > s; \tau_1
+  \circ \theta_s > t}{x} = \sprobability{\tau_1 > s}{x} \sprobability{\tau_1 > t}{x} 
+\end{align*}
+If we let $\sprobability{\tau_1 > 1}{x} = e^{-c}$ for some $c \in [0,
+\infty]$, then from this functional equation we immediately see that for every $n \in
+\naturals$, $\sprobability{\tau_1 > n}{x} = e^{-cn}$ and then for all
+positive rationals $p/q \in \rationals_+$ we have
+$\sprobability{\tau_1 > p/q}{x} = e^{-cp/q}$.  Now since
+$\sprobability{\tau_1 > t}{x}$ is non-decreasing we can conclude that
+$\sprobability{\tau_1 > t}{x} = e^{-ct}$ for all $0 \leq t < \infty$.
+By our assumption that $x$ is nonabsorbing we know that $\tau_1 > 0$
+a.s. and therefore $c < \infty$; thus we have shown that $\tau_1$ is
+exponentially distributed.
+
+Recall from Lemma
+\ref{HittingTimesContinuous} that when restricted to
+$D([0,\infty);S)$, one can think of $\tau_1$
+as being a composition of the process $X$ with a measurable function on
+$S^{[0,\infty)}$ which by abuse of notation we also call $\tau_1$
+(of course in the canonical case there is no abuse of notation as
+these two interpretations of $\tau_1$ are exactly the same).  
+Moreover, note that the random variable $\theta_{\tau_1 }X$
+can be written as a composition of $X$ and the measurable function
+$\phi : D([0,\infty) ; S) \to \reals$ defined by $\phi(f,t) =
+\characteristic{B}(\theta_{\tau_1(f)}f)$. Measurability of $\phi$
+follows from writing it as the composition 
+\begin{align*}
+D([0,\infty) ; S) \overset{(id, \tau_1)}  \to D([0,\infty) ; S) \times
+[0, \infty)
+\overset{\theta} \to D([0,\infty) ; S) \overset{\characteristic{B}}
+\to \reals
+\end{align*}
+(recall that $\theta$ as above is measurable by Lemma \ref{MeasurabilityOfShiftOperator}).
+
+Let $\tau^t_1 = \inf \lbrace s \geq
+t \mid X_s \neq x \rbrace$ and note that $\tau^t_1(X) =
+\tau_1(\theta_t X) + t$.   From this we get
+\begin{align*}
+\left( \theta_{\tau^t_1}X \right)_s &= X(\tau^t_1(X) + s) =
+X(\tau_1(\theta_tX) + t + s) = \left(\theta_{\tau_1(\theta_t X)} \circ \theta_tX
+\right)_s
+\end{align*} 
+Now we can compute (in rather excruciating detail I might add)
+\begin{align*}
+\probability{\tau_1 > t ; \theta_{\tau_1}X \in B}
+&=
+\probability{\tau_1 > t ; \theta_{\tau^t_1}X \in B}\\
+&=
+\probability{\tau_1 > t ;
+  \cexpectationlong{\mathcal{F}_t}{\theta_{\tau_1(\theta_t X)}\circ \theta_t X \in B}}\\
+&=
+\probability{\tau_1 > t ;
+  \cexpectationlong{\mathcal{F}_t}{\phi(\theta_t X)}}\\
+&=
+\probability{\tau_1 > t ;
+  \sexpectation{\phi}{X_t}}\\
+&= \probability{\tau_1 > t } \sexpectation{\phi}{x}\\
+&= \probability{\tau_1 > t } \probability{\phi(X)}\\
+&= \probability{\tau_1 > t } \probability{\theta_{\tau_1} X \in B}\\
+\end{align*}
+
+\end{proof}
+
+Based on the previous result we see that the distribution of the first
+jump of a pure
+jump type Markov process boils down to two independent distributions:
+the first being an exponential distribution that describes when a jump
+happens and the second being a general distribution that describes
+where the jump goes to.  This observation can be used to give us a
+nice description of the entire process.  Before providing the
+construction we settle on some terminology.
+
+
+\begin{defn}Given a pure jump Markov process $X$ with a first jump
+  time $\tau_1$ we define the \emph{rate function} to be 
+\begin{align*}
+c(x) &=\begin{cases}
+  1/\sexpectation{\tau_1}{x} & \text{if $x$ is non-absorbing}\\
+0 & \text{if $x$ is absorbing}
+\end{cases}
+\end{align*}
+ the \emph{jump transition kernel} to be
+  $\mu(x,B) = \sprobability{\theta_{\tau_1}X \in B}{x}$ and the \emph{rate
+    kernel} to be $\alpha(x,B) = c(x) \mu(x,B)$.  
+\end{defn}
+Note that in the above definition we are thinking of the Markov
+process as the family of measures $\probabilityop_x$ on
+$S^{[0,\infty)}$ and interpreting $\tau_1$ as a
+function from $S^{[0,\infty)}$ to $\reals_+$.
+
+Before proceeeding to our structure theory for pure jump type Markov
+processes we establish the basic measurability properties of the
+functions just defined.
+\begin{lem}The rate function $c(x)$ is a measurable function on $S$
+  and the jump transition kernel and rate kernel are both kernels from
+  $S$ to $S^{[0,\infty)}$.  The rate kernel is a measurable function
+  of the jump transition kernel.
+\end{lem}
+\begin{proof}
+We know that $\probabilityop_x$ is a kernel by Lemma
+\ref{MarkovMixtures} and therefore $\sexpectation{\tau_1}{x}$ is a
+measurable function of $x$ by Lemma
+\ref{KernelTensorProductMeasurability}.  Lastly we see that 
+\begin{align*}
+\lbrace x \text{ is non-absorbing} \rbrace &= \sprobability{\tau_1 <
+  \infty}{x}
+\end{align*}
+is measurable because $\probabilityop_x$ is a kernel; thus $c(x)$ is measurable.
+
+The fact that $\mu(x,B)$ is a measurable function of $x$ for fixed $B$
+follows from the fact $\probabilityop_x$ is a kernel.  The fact that
+for fixed $\mu(x,B)$ is a probability measure for fixed $x$ follows
+from measurability of the mapping taking $X$ to $\theta_{\tau_1}X$ and
+Lemma \ref{PushforwardMeasure}.
+
+To see that $\mu(x,B)$ is a measurable function of $\alpha(x,B)$ just
+observe that 
+\begin{align*}
+\mu(x,B) &= \begin{cases}
+\alpha(x,B)/\alpha(x, S^{[0,\infty)}) & \text{if $\alpha(x, \cdot)
+  \neq 0$} \\
+\delta_x(B) & \text{if $\alpha(x, \cdot) = 0$}
+\end{cases}
+\end{align*}
+\end{proof}
+
+Extending these ideas further we see that every pure jump-type Markov
+process decomposes into a discrete time Markov chain that describes
+the jumps that occur and a sequence of independent exponential random
+variables that describe the time between jumps.   This make intuitive sense given the
+last lemma and the Strong Markov property: our process begins by
+waiting for an exponentially distributed time then makes an
+independent jump to a new state; by the Strong Markov property the
+process starts afresh in the new state waits for another independent
+exponentially distributed time and makes another independent jump and
+so on.  The subtlety arises because the heuristic argument just given
+ignores the fact that our process may jump into an absorbing state.
+Handling that problem and making things precise is the job of the
+next theorem.
+
+\begin{thm}Let $X$ be a pure jump Markov process with rate kernel
+  $\alpha=c\mu$, then there is a Markov process $Y$ on $\integers_+$ with $Y$ has transition kernel $\mu$
+  and a
+  sequence of i.i.d. exponential random variables $\gamma_0, \gamma_1,
+  \dotsc$ of rate $1$ that are independent of $Y$ such that
+\begin{align*}
+\tau_n &= \begin{cases}
+\sum_{k=0}^{n-1} \frac{\gamma_k}{c(Y_k)} &\text{when $c(Y_k)
+  \neq 0$ for all $k=0, \dotsc, n-1$} \\
+\infty & \text{when $c(Y_k) = 0$ for some $k=0, \dotsc, n-1$}
+\end{cases}
+\end{align*}
+and
+\begin{align*}
+X_t &= Y_n  \text{ a.s. for $\tau_n \leq t < \tau_{n+1}$}
+\end{align*} 
+when $\tau_n < \infty$.  If $\tau_n = \infty$ for some $n$ then let
+$N = \max \lbrace n \mid \tau_n < \infty \rbrace$, then we have $Y_n =
+Y_{N-1} = X_{\tau_{N}}$ for all $n > N$.
+\end{thm}
+\begin{proof}
+To simply notation, in the case in which $\tau_n = \infty$ for some
+$n$, let $X_\infty = X_{\tau_N}$ where $N$ is defined in the statement
+of the Theorem (it is the position of $X$ after its last jump). With
+that definition in hand we know that the result of the Theorem
+requires that we define $Y_n = X_{\tau_n}$.  The work is in
+constructing the $\gamma_n$ and validating the Markov property.
+
+Our first real task is to understand the relationship between the condition
+$\lbrace \tau_n < \infty \rbrace$ and the condition $\lbrace c(Y_{n-1})
+\neq 0 \rbrace$ in order to make proper sense of the expression for
+$\tau_n$.  One of the critical facts in these calculation is the fact
+that 
+\begin{align}\label{AbsorbingDichotomy}
+\sprobability{\tau_1 < \infty} {x} &= \begin{cases}
+0 & \text{when $c(x) = 0$ } \\
+1 & \text{when $c(x) \neq 0$}
+\end{cases}
+\end{align}
+which is a consequence of Lemma \ref{PureJumpFirstJumpTime} and the
+definition of $c(x)$.
+
+Claim: $\tau_n < \infty$ almost surely when $c(Y_{n-1}) \neq 0$ and
+$\tau_{n-1} < \infty$
+(i.e. $\probability{\tau_n < \infty;c(Y_{n-1}) \neq 0; \tau_{n-1} < \infty} =
+\probability{c(Y_{n-1}) \neq 0; \tau_{n-1} < \infty}$).
+
+First note that for any $x \in S$, by definition $c(x) \neq 0$ implies
+that $\sexpectation{\tau_1}{x} < \infty$ which certainly implies that
+$\sprobability{\tau_1 < \infty}{x} =1$.  Now for all $n \geq 1$ we can
+calculate using the tower property and pullout property of conditional
+expectations and the Strong Markov property
+\begin{align*}
+&\probability{\tau_n < \infty;c(Y_{n-1}) \neq 0; \tau_{n-1} < \infty} \\
+&=\expectation{\cprobability{\mathcal{F}_{\tau_{n-1}}}{\tau_n <
+    \infty;c(Y_{n-1}) \neq 0; \tau_{n-1} < \infty}} \\
+&=\expectation{\cprobability{\mathcal{F}_{\tau_{n-1}}}{\tau_1(\theta_{\tau_{n-1}(X)}X) <
+    \infty};c(Y_{n-1}) \neq 0; \tau_{n-1} < \infty} \\
+&=\expectation{\sprobability{\tau_1 <
+    \infty}{Y_{n-1}};c(Y_{n-1}) \neq 0; \tau_{n-1} < \infty} \\
+&=\probability{c(Y_{n-1}) \neq 0; \tau_{n-1} < \infty} \\
+\end{align*}
+and the claim is proved.
+
+Claim: $\lbrace c(Y_{n-1}) = 0 \rbrace$ = $\lbrace \tau_n = \infty
+\rbrace$ a.s.
+
+What does this mean?  I think $\probability{\lbrace c(Y_{n-1}) = 0
+  \rbrace \triangle \lbrace \tau_n = \infty\rbrace} = 0$.
+Calculate
+\begin{align*}
+&\probability{c(Y_{n-1}) = 0; \tau_n < \infty} \\
+&=
+\probability{c(Y_{n-1}) = 0; \tau_{n-1} < \infty;
+  \tau_1(\theta_{\tau_{n-1}(X)}(X)) < \infty } \\
+&= \probability{c(Y_{n-1}) = 0; \tau_{n-1} < \infty;
+  \cprobability{\mathcal{F}_{\tau_{n-1}}}{\tau_1(\theta_{\tau_{n-1}(X)}(X)) < \infty }} \\
+&= \probability{c(Y_{n-1}) = 0; \tau_{n-1} < \infty;
+  \sprobability{\tau_1 < \infty }{Y_{n-1}}} = 0 \text{ by \eqref{AbsorbingDichotomy}}\\
+\end{align*}
 \end{proof}

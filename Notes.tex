@@ -30,7 +30,6 @@
 \begin{document}
 
 
-\section{\LaTeX Examples}
 \newcommand{\Independent}{\perp \! \! \! \perp}
 \newcommand{\cindependent}[3]{#1 \Independent_{#3} #2}
 \newcommand{\mymacro}{This text was produced by a macro}
@@ -41,6 +40,7 @@
 \newcommand{\cexpectationop}[1]{\textbf{E}^#1} 
 \newcommand{\cexpectation}[2]{\textbf{E}^{#1} #2} 
 \newcommand{\cexpectationlong}[2]{\textbf{E}\left[ #2 \mid #1 \right]} 
+\newcommand{\csexpectationlong}[3]{\textbf{E}_{#3}\left[ #2 \mid #1 \right]} 
 \newcommand{\variance}[1]{\textbf{Var} \left (#1 \right )} 
 \newcommand{\covariance}[1]{\textbf{Cov} \left (#1 \right )} 
 \newcommand{\scovariance}[2]{\textbf{Cov} \left (#1, #2 \right )} 
@@ -49,6 +49,7 @@
 \newcommand{\sprobability}[2]{\textbf{P}_{#2}\{#1\}} 
 \newcommand{\sprobabilityop}[1]{\textbf{P}_{#1}} 
 \newcommand{\cprobability}[2]{\textbf{P}\{#2 \mid #1\}} 
+\newcommand{\csprobability}[3]{\textbf{P}_{#3}\{#2 \mid #1\}} 
 \newcommand{\characteristic}[1]{\textbf{1}_{#1}} 
 \newcommand{\pushforward}[2]{#2 \circ #1^{-1}} 
 \newcommand{\complexes}{\mathbb{C}} 
@@ -6306,7 +6307,10 @@ First it is worth clarifying the question.  Since we have assume $S$
 is Borel then by Theorem \ref{ExistenceConditionalDistribution} be may
 assume that $\eta$ is an $\mathcal{F}$-measurable random measure on
 $S$.  We are asked to show conditional independence of $\xi$ and
-$\mathcal{F}$ relative to this random measure.
+$\mathcal{F}$ relative to this random measure.  Conceptually, the
+conditional distribution captures all of the dependence between a
+random element and a $\sigma$-algebra (think of the case $\mathcal{F}
+= \sigma(\zeta)$ for a random element $\zeta$ to make this even more concrete).  
 
 By Lemma \ref{ConditionalIndependenceDoob} it will suffice to show for
 every $A \in \mathcal{S}$, 
@@ -6348,6 +6352,68 @@ $\cindependent{\xi}{\zeta}{\eta, \gamma}$
 hence implies $\cindependent{\xi}{\zeta}{\eta, \gamma}$.
 \end{proof}
 
+\begin{ex}Suppose we have $\sigma$-algebras $\mathcal{F}$,
+  $\mathcal{G}_1$, $\mathcal{G}_2$, $\mathcal{H}$ with $\mathcal{G}_1
+  \subset \mathcal{G}_2$.  If
+  $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}_1}$
+is it true that $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}_2}$?
+Prove or give a counterexample.
+\end{ex}
+\begin{proof}
+Here is a counterexample in which $\mathcal{G}_1$ is the trivial
+$\sigma$-algebra.  Perform two independent Bernoulli trials with rate
+$1/2$.  Thus we have sample space $\Omega = \lbrace HH, HT, TT, TH
+\rbrace$ with the uniform distribution.  Let $A = \lbrace HH, HT
+\rbrace$ (and let $\mathcal{F} = \lbrace \emptyset, \Omega, A, A^c
+\rbrace$) and let $B = \lbrace HT, TT \rbrace$ (and let $\mathcal{H} =
+\lbrace \emptyset , \Omega, B, B^c \rbrace$).  Note that $A$ and $B$
+are independent.  Now let $C = \lbrace HH, TT \rbrace$ (and let
+$\mathcal{G}_2 = \lbrace \emptyset, \Omega, C, C^c \rbrace$ and note
+that $A$ and $B$ are not conditionally independent given $C$ because
+$\cprobability{C}{A \cap B} = 0$ whereas $\cprobability{C}{A} = 1/2$
+and $\cprobability{C}{B} = 1/2$.
+
+Note
+that primary conceptual point here is that given two independent
+events (here ``first toss is heads'' and ``second toss is tails'') one
+can condition that there is a relationship between them (here ``first toss
+equals the second toss'') and destroy independence.  
+\end{proof}
+
+\begin{ex}Suppose $\mathcal{F}$ is independent of $\mathcal{G}$ and
+  $\mathcal{H}$, is it true that $\mathcal{F}$ is independent of
+  $\sigma(\mathcal{G}, \mathcal{H})$?  Prove or give a counterexample.
+\end{ex}
+\begin{proof}
+Note that $\mathcal{F}$ is independent of
+  $\sigma(\mathcal{G}, \mathcal{H})$ if and only if
+  $\cindependent{\mathcal{F}}{\mathcal{G}}{}$
+and $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}}$.  Because
+of this equivalence the previous exercise is a counterexample here as
+well.  Using the
+notation of the previous exercise, let $\mathcal{F} = \sigma(A)$ and
+let $\mathcal{G} = \sigma(C)$ and note that $A$ and $C$ are
+independent
+by direct calculation (this is also intuitively clear).  We also saw
+in the previous exercise that $A$ and $B$ are independent and that $A$
+is not conditionally independent of $B$ given $C$; hence $A$ is not
+indepndent of $\sigma(B,C)$.
+
+Note that we can also show this directly without using the Lemma. A
+little work shows that $\sigma(B,C) = 2^\Omega$; it suffices to
+note that $B \cap C = \lbrace TT \rbrace$,  $B^c \cap C^c = \lbrace TH
+\rbrace$, $B \cap C^c = \lbrace HT \rbrace$ and $B^c \cap C = \lbrace HH
+\rbrace$.  Given this fact
+it is easy to see that $A$ is not independent of $\sigma(B,C)$ by noting that, because
+$P(A) = 1/2$, it is not independent of itself.
+
+Note also that the the key to the failure here is the fact that $A$, $B$
+and $C$ are not jointly independent (they are pairwise independent),
+otherwise we could appeal to Lemma \ref{IndependenceGrouping}.
+To see the lack of joint independence consider $\probability {A \cap B
+\cap C} = 0$.
+\end{proof}
+
 \begin{ex}Suppose we are given random elements such that $(\xi, \eta,
   \zeta) \eqdist (\tilde{\xi}, \tilde{\eta}, \tilde{\zeta})$, then
   $\cindependent{\xi}{\zeta}{\eta}$ if and only if $\cindependent{\tilde{\xi}}{\tilde{\zeta}}{\tilde{\eta}}$.
@@ -6358,7 +6424,6 @@ First we
 \
 \end{align*}
 \end{proof}
-
 
 \begin{ex}Suppose $\tau$ and $\sigma$ are discrete optional
   times with respect the filtration $\mathcal{F}_0 \subset
@@ -6625,62 +6690,6 @@ q\rbrace$.  If $\sigma(\omega) > t$ then it follows that $\omega \in
 \end{ex}
 \begin{proof}
 TODO: Mimic the proof of Lemma \ref{SubgaussianEquivalence}.
-\end{proof}
-
-\begin{ex}Suppose we have $\sigma$-algebras $\mathcal{F}$,
-  $\mathcal{G}_1$, $\mathcal{G}_2$, $\mathcal{H}$ with $\mathcal{G}_1
-  \subset \mathcal{G}_2$.  If
-  $\cindependent{\mathcal{F}}{\mathcal{G}_1}{\mathcal{H}}$
-is it true that $\cindependent{\mathcal{F}}{\mathcal{G}_2}{\mathcal{H}}$?
-Prove or give a counterexample.
-\end{ex}
-\begin{proof}
-Here is a counterexample in which $\mathcal{G}_1$ is the trivial
-$\sigma$-algebra.  Perform two independent Bernoulli trials with rate
-$1/2$.  Thus we have sample space $\Omega = \lbrace HH, HT, TT, TH
-\rbrace$ with the uniform distribution.  Let $A = \lbrace HH, HT
-\rbrace$ (and let $\mathcal{F} = \lbrace \emptyset, \Omega, A, A^c
-\rbrace$) and let $B = \lbrace HT, TT \rbrace$ (and let $\mathcal{H} =
-\lbrace \emptyset , \Omega, B, B^c \rbrace$).  Note that $A$ and $B$
-are independent.  Now let $C = \lbrace HH, TT \rbrace$ (and let
-$\mathcal{G}_2 = \lbrace \emptyset, \Omega, C, C^c \rbrace$ and note
-that $A$ and $B$ are not conditionally independent given $C$ because
-$\cprobability{C}{A \cap B} = 0$ whereas $\cprobability{C}{A} = 1/2$
-and $\cprobability{C}{B} = 1/2$
-\end{proof}
-
-\begin{ex}Suppose $\mathcal{F}$ is independent of $\mathcal{G}$ and
-  $\mathcal{H}$, is it true that $\mathcal{F}$ is independent of
-  $\sigma(\mathcal{G}, \mathcal{H})$?  Prove or give a counterexample.
-\end{ex}
-\begin{proof}
-Note that $\mathcal{F}$ is independent of
-  $\sigma(\mathcal{G}, \mathcal{H})$ if and only if
-  $\cindependent{\mathcal{F}}{\mathcal{G}}{}$
-and $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}}$.  Because
-of this equivalence the previous exercise is a counterexample here as
-well.  Using the
-notation of the previous exercise, let $\mathcal{F} = \sigma(A)$ and
-let $\mathcal{G} = \sigma(C)$ and note that $A$ and $C$ are
-independent
-by direct calculation (this is also intuitively clear).  We also saw
-in the previous exercise that $A$ and $B$ are independent and that $A$
-is not conditionally independent of $B$ given $C$; hence $A$ is not
-indepndent of $\sigma(B,C)$.
-
-Note that we can also show this directly without using the Lemma. A
-little work shows that $\sigma(B,C) = 2^\Omega$; it suffices to
-note that $B \cap C = \lbrace TT \rbrace$,  $B^c \cap C^c = \lbrace TH
-\rbrace$, $B \cap C^c = \lbrace HT \rbrace$ and $B^c \cap C = \lbrace HH
-\rbrace$.  Given this fact
-it is easy to see that $A$ is not independent of $\sigma(B,C)$ by noting that, because
-$P(A) = 1/2$, it is not independent of itself.
-
-Note also that the the key to the failure here is the fact that $A$, $B$
-and $C$ are not jointly independent (they are pairwise independent),
-otherwise we could appeal to Lemma \ref{IndependenceGrouping}.
-To see the lack of joint independence consider $\probability {A \cap B
-\cap C} = 0$.
 \end{proof}
 
 \section{Techniques}
