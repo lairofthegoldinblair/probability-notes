@@ -36,6 +36,7 @@
 \newcommand{\withparams}[2]{This text was produced by a macro with two
   parameters #1, #2}
 \newcommand{\expectation}[1]{\textbf{E}\left[#1\right]} 
+\newcommand{\expectationop}{\textbf{E}}
 \newcommand{\sexpectation}[2]{\textbf{E}_{#2}[#1]} 
 \newcommand{\cexpectationop}[1]{\textbf{E}^#1} 
 \newcommand{\cexpectation}[2]{\textbf{E}^{#1} #2} 
@@ -1064,7 +1065,7 @@ and this shows that $B^c,f^{-1} \bigcap_n B_n, f^{-1} \bigcap_n B_n
 \in \mathcal{T}^\prime$.
 \end{proof}
 
-\begin{lem}Let $f : S \to T$ be a set function and $f^{-1} : 2^T \to
+\begin{lem}\label{BijectivityOfInducedSetMap}Let $f : S \to T$ be a set function and $f^{-1} : 2^T \to
   2^S$ be the induced function on sets.
 \begin{itemize}
 \item[(i)]$f^{-1}$ is surjective if and only if $f$ is injective
@@ -1171,7 +1172,7 @@ $\mathcal{S}/\mathcal{T}$ measurable.
   \circ f :(S,\mathcal{S}) \to (U,\mathcal{U})$ is measurable.
 \end{lem}
 \begin{proof}This follows simply from the fact that $(g \circ
-  f)^{-1}(B) = g^{-1}(f^{-1}(B))$ and the measurability of $f$ and $g$.
+  f)^{-1}(B) = f^{-1}(g^{-1}(B))$ and the measurability of $f$ and $g$.
 \end{proof}
 Note, from this point forward, when we refer to $\reals$ as a
 measurable space, it should be assumed that we are referring to
@@ -1347,21 +1348,46 @@ Measurability follows from noting that each
   $\sigma(f) \subset \sigma(g)$.
 \end{defn}
 
+TODO: Where is the right place to introduce this concept?
+While the basic results of measure theory can be formulated in terms
+of general measurable spaces certain more advanced results require
+topological assumptions that prevent the wildness of set theory from
+taking over.  For the results of this nature in which we are
+interested what is required is that the measure space look
+sufficiently like the Borel algebra on the $\reals$.  Somewhat
+surprisingly such a constraint isn't too severe (as we will show
+later) and for the purposes of these notes (and following the lead
+of Kallenberg) we will settle on the following definitions to capture
+these restrictions.
+
+\begin{defn}Two measure spaces $(S, \mathcal{S})$ and $(T,
+  \mathcal{T})$ are said to be \emph{Borel isomorphic} if there exists
+  a bijection $f : S \to T$ such that both $f$ and $f^{-1}$ are measurable.
+\end{defn}
+
+\begin{defn}A measurable space $(S, \mathcal{S})$ is said to be a
+  \emph{Borel space} if it is Borel isomorphic to a Borel subset of $[0,1]$.
+\end{defn}
+
 The following lemma is extremely useful both conceptually and
 practically.  In addition it's proof is a paradigmatic example of a
-common measure theoretic argument.
-\begin{lem}\label{FunctionalRepresentation}Let $f : (\Omega, \mathcal{A}) \to \reals$ and $g :
+common measure theoretic argument and gives us a chance to show how
+results may carry over from $\reals$ to general Borel spaces.
+\begin{lem}\label{FunctionalRepresentation}Let $(S, \mathcal{S})$ be a
+  Borel space and let $f : (\Omega, \mathcal{A}) \to S$ and $g :
   (\Omega, \mathcal{A}) \to (T,\mathcal{T})$ be measurable.  Then $f$
   is $g$-measurable if and only if there exists measurable $h :
-  (T,\mathcal{T}) \to \reals$ such that $f = h \circ g$.
+  T  \to S$ such that $f = h \circ g$.
 \end{lem}
 \begin{proof}
 For the if direction, assume $f = h \circ g$.  Then for $B \in
-\mathcal{B}(\reals)$, we have $f^{-1}(B) = g^{-1}(h^{-1}(B))$.  Now we know
+\mathcal{B}([0,1])$, we have $f^{-1}(B) = g^{-1}(h^{-1}(B))$.  Now we know
 that $h^{-1}(B) \in \mathcal{T}$ and therefore, $f^{-1}(B) \in
 \sigma(g)$.
 
-For the only if direction, first assume that $f$ is an indicator
+For the only if direction, we first assume that $(S, \mathcal{S})
+=([0,1], \mathcal{B}([0,1]))$.  
+Assume $f$ is an indicator
 function $\characteristic{A}$.  Our assumption of $g$-measurability
 means that there exists $B \in \mathcal{T}$ such that $A =
 g^{-1}(B)$.  If we define $h = \characteristic{B}$, then we have $f =
@@ -1382,7 +1408,33 @@ h(g(\omega)) = \limsup_n h_n(g(\omega)) = \limsup_n f_n(\omega) =
 \end{align*}
 Lastly, for arbitrary $f$, we write $f = f_+ - f_{-}$ where $f_{\pm}
 \geq 0$ and are both $g$-measurable (e.g. $f_{\pm} = (\pm f) \wedge 0$).
-We find $h_{\pm}$ such that $f_{\pm} = h_{\pm} \circ g$ and define $h = h_+ - h_{-}$.
+We find $h_{\pm}$ such that $f_{\pm} = h_{\pm} \circ g$ and define $h
+= h_+ - h_{-}$.
+
+Now let us assume that $S$ is a Borel subset of $[0,1]$ and note that
+every measurable subset of $S$ is over the form $A \cap S$ for a Borel
+subset $A \subset [0,1]$ and thus $f$ is also
+$g$-measurable when considered as a function from $\Omega$ to $[0,1]$.  
+By what we have just proven applied to
+$f$, we get $\tilde{h} : T \to [0,1]$ such that $\tilde{h}
+\circ g = f$.  Because of the latter identity, we know that
+$\tilde{h}(g(\Omega)) \subset S$ however it is not necessarily the
+case that $tilde{h}(T) \subset S$.  Since $S$ is a Borel subset of
+$[0,1]$, we know that $\tilde{h}^{-1}(S)$ is $\mathcal{T}$-measurable
+and therefore we can pick an arbitrary point $s_0 \in S$ and define
+\begin{align*}
+h(t) &= \begin{cases}
+\tilde{h}(t) & \text{if $t \in \tilde{h}^{-1}(S)$} \\
+s_0 & \text{otherwise}
+\end{cases}
+\end{align*}
+and note that we now have $h : T \to S$ and $f = h \circ g$.
+
+It remains to extend the argument to general Borel spaces $S$.  Assume
+that $j : S \to A \subset [0,1]$ is a Borel isomorphism to a Borel
+subset $A$.  We can define $\tilde{h}: T \to A$ such that $j \circ f =
+h \circ g$ by the above argument.  Now let $h = j^{-1} \circ
+\tilde{h}$ so we have $h : T \to S$ and $f = h \circ g$.
 \end{proof}
 
 The following definitions and lemma may seem merely technical, but in fact are
@@ -2734,7 +2786,14 @@ $\reals$ is not a Boolean algebra.
 \end{itemize}
 \end{defn}
 
-\begin{examp}The set of intervals $(a,b]$ is a semiring.
+\begin{examp}The set of intervals $(a,b]$ with $a \leq b$ is a
+  semiring.  To be excruciatingly explicit we have the formulae
+\begin{align*}
+(a,b] \cap (c,d] &= (a\vee c, (b \wedge d) \vee a \vee c]
+\intertext{and}
+(a,b] \setminus (c,d] &= (a \wedge c, (a \vee c) \wedge b \wedge d]
+\cup a \vee c \vee (b \wedge d), c \vee d]
+\end{align*}
 \end{examp}
 
 TODO: Other constructions of semirings (e.g. products)
@@ -2748,7 +2807,7 @@ TODO: Other constructions of semirings (e.g. products)
 \end{itemize}
 \end{defn}
 
-\begin{lem}If $\mathcal{D}$ is a semiring then $\mathcal{R} = \lbrace
+\begin{lem}\label{RingFromSemiring}If $\mathcal{D}$ is a semiring then $\mathcal{R} = \lbrace
   \cup_{j=1}^n C_j \mid C_j \in \mathcal{D} \text{ and the $C_j$ are
     disjoint} \rbrace$ is a ring.  Furthermore it is the smallest ring
   containing $\mathcal{D}$.
@@ -2786,6 +2845,20 @@ $\mathcal{D}$ must contain all of the finite disjoint unions of
 elements in $\mathcal{D}$.
 \end{proof}
 
+\begin{examp}\label{RingOfDisjointUnionHalfOpenIntervals}The set of disjoint unions of intervals $(a,b]$ with $a \leq b$ is a
+  ring.  This follows from the general result Lemma
+  \ref{RingFromSemiring} but later on we shall have some use for the
+  explicit formula
+\begin{align*}
+&(a,b] \cup (c,d] \\
+&= (a \wedge c, (a \vee c) \wedge b \wedge d] \cup (a \vee c, (b
+\wedge d) \vee a \vee c]
+\cup a \vee c \vee (b \wedge d), c \vee d]
+\end{align*}
+which decomposes a union of half open intervals into a disjoint union
+of half open intervals.
+\end{examp}
+ 
 To connect up the concept of rings with that of Boolean algebras we
 have the following result.
 \begin{lem}Let $\mathcal{R}$ be a ring and define $\mathcal{R}^c =
@@ -3514,6 +3587,374 @@ Now $\delta > 0$ was arbitrary so we see that $\lambda A_\epsilon =
 almost everywhere on $A$ since the set of points where $F^\prime \neq
 0$ is a countable union of $A_\epsilon$ (e.g. take $\bigcup_n A_{\frac{1}{n}}$).
 \end{proof}
+
+\subsubsection{Functions of Bounded Variation}
+Recall that we have define $x_+ = x \vee 0$ and $x_- = \abs{x} -
+x_+ = -(x \wedge 0)$.  Given a real valued function $F$ on $[a,b]$ we consider a partition $a=x_0
+< x_1 < \dotsb < x_n=b$ and define 
+\begin{align*}
+p &= \sum_{j=1}^n (F(x_j) - F(x_{j-1}))_+ \\
+n &= \sum_{j=1}^n (F(x_j) - F(x_{j-1}))_- \\
+v &= \sum_{j=1}^n \abs{F(x_j) - F(x_{j-1})}\\
+\end{align*}
+and note that $p+n = v$ and $p - n = F(b) - F(a)$.  We define the
+\emph{positive}, \emph{negative} and \emph{total variation} of $F$ on
+$[a,b]$ to be the supremum of the above over all partitions of
+$[a,b]$:
+\begin{align*}
+P_a^b(F) &= \sup_{\substack{n \geq 1 \\ a=x_0 < x_1 < \dotsb x_n=b}} \sum_{j=1}^n (F(x_j) - F(x_{j-1}))_+ \\
+N_a^b(F) &= \sup_{\substack{n \geq 1 \\ a=x_0 < x_1 < \dotsb x_n=b}} \sum_{j=1}^n (F(x_j) - F(x_{j-1}))_- \\
+TV_a^b(F) &= \sup_{\substack{n \geq 1 \\ a=x_0 < x_1 < \dotsb x_n=b}} \sum_{j=1}^n \abs{F(x_j) - F(x_{j-1})}\\
+\end{align*}
+
+
+\begin{lem}\label{ElementaryVariationInequalities}For any function $F$ defined on $[a,b]$ we have 
+\begin{align*}
+P_a^b(F) \vee N_a^b(F) &\leq TV_a^b(F) \\
+\intertext{and}
+TV_a^b(F) &\leq P_a^b(F) + N_a^b(F)
+\end{align*}
+\end{lem}
+\begin{proof}
+For any partition $a=x_0 < x_1 < \dotsb < x_n=b$ we noted above $p + n
+\leq v$ and therefore $p \leq v$ which implies by taking the supremum on
+the right $p \leq TV_a^b(F)$ and then by taking the supremum on the
+left $P_a^b(F) \leq TV_a^b(F)$.  The argument to show $N_a^b(F) \leq
+TV_a^b(F)$ is identical.  Similarly from $v = p + n$, we can take two
+different suprema on the right to see that $v \leq P_a^b(F) +
+N_a^b(F)$ and then taking the supremum on the left we get $TV_a^b(F)
+\leq P_a^b(F) \leq TV_a^b(F)$.
+\end{proof}
+
+\begin{defn}We say that  function $F$ defined on $[a,b]$ has
+  \emph{bounded variation} on $[a,b]$ if $TV_a^b(F) < \infty$.
+\end{defn}
+
+\begin{lem}\label{TotalVariationAsSumOfPositiveAndNegativeVariation}If $F$ has bounded variation on $[a,b]$ then 
+\begin{align*}
+TV_a^b(F) &= P_a^b(F) + N_a^b(F) \\
+\intertext{and}
+F(b) - F(a) &=  P_a^b(F) - N_a^b(F) 
+\end{align*}
+\end{lem}
+\begin{proof}
+From \ref{ElementaryVariationInequalities}, we know that $F$ being of
+bounded variation implies that both the positive and negative
+variation are finite.  Now with a fixed $a=x_0 < x_1 < \dotsb < x_n=b$
+we had $p  = n + F(b) - F(a)$, so taking supremum on the right we get
+$p  \leq N_a^b(F) + F(b) - F(a)$
+and the taking suspremum on the left we get $P_a^b(F)  \leq N_a^b(F) +
+F(b) - F(a)$.  As noted the negative variation is finite and therefore
+we conclude $P_a^b(F)  - N_a^b(F) \leq
+F(b) - F(a)$. Similarly we get from applying the same steps to $n = p
++ F(a) - F(b)$
+that $N_a^b(F) \leq P_a^b(F) + F(a) - F(b)$ which gives us $F(b) -F(a)
+\leq P_a^b(F)  - N_a^b(F)$ and therefore we conclude that $F(b) -F(a)
+= P_a^b(F)  - N_a^b(F)$.
+
+Now arguing from $p + n = v$ and taking the supremum on the right we
+have using $F(b) - F(a) = p -n$,
+\begin{align*}
+TV_a^b(F) \geq p+n = 2p + F(a) - F(b) = 2p + N_a^b(F) - P_a^b(F)
+\end{align*}
+which upon taking another supremum gives
+\begin{align*}
+TV_a^b(F) \geq 2P_a^b(F) + N_a^b(F) - P_a^b(F) = P_a^b(F) + N_a^b(F)
+\end{align*}
+
+Note a more hands on way of proving the this result is to note
+that we have a triangle inequality $(x+y)_+ leq x_+ + y_+$ and therefore
+if we are given a partition $a=x_0 < x_1 < \dotsb < x_n=b$ and
+refine the partition by adding a new point then to create a new
+partition $a=\tilde{x}_0 < \tilde{x}_1 < \dotsb < \tilde{x}_n=b$ then
+we have
+\begin{align*}
+\sum_{j=1}^n (F(x_j) - F(x_{j-1}))_+ &\leq \sum_{j=1}^{n+1} (F(\tilde{x}_j) - F(\tilde{x}_{j-1}))_+
+\end{align*}
+and similarly with the negative variation.  Now let $\epsilon > 0$ be
+chosen and find partitions $a=x_0 < x_1 < \dotsb < x_n=b$ such that 
+\begin{align*}
+P_a^b(F) - \epsilon/2 &< \sum_{j=1}^n (F(x_j) - F(x_{j-1}))_+  \leq P_a^b(F) 
+\end{align*}
+and $a=y_0 < y_1 < \dotsb < y_m=b$ such that
+\begin{align*}
+N_a^b(F) - \epsilon/2 &< \sum_{j=1}^m (F(y_j) - F(y_{j-1}))_+  \leq N_a^b(F) 
+\end{align*}
+By the above argument, both inequalities continue to hold if we take
+the common refinement of both partitions so we may in fact assume that
+$n=m$ and $x_j=y_j$ for $j=0, \dotsc, n$.  Therefore by adding we get
+\begin{align*}
+P_a^b(F)  + N_a^b(F) - \epsilon &< \sum_{j=1}^n  (F(x_j) -
+F(x_{j-1}))_+ +  (F(x_j) - F(x_{j-1}))_- \\
+&= \sum_{j=1}^n  \abs{F(x_j) - 
+F(x_{j-1})} \leq TV_a^b(F)
+\end{align*}
+and the result follows by taking the limit as $\epsilon$ goes to $0$.
+\end{proof}
+
+\begin{thm}\label{BoundedVariationAsDifferenceOfMonotone}A function on $[a,b]$ is of bounded variation if an only if
+  it is the difference of to non-decreasing functions.
+\end{thm}
+\begin{proof}
+First we show that a function of bounded variation is a difference of
+monotone functions.  Consider a point $a \leq x \leq b$ and note that since every partition
+of $[a,x]$ can be extended to a partiton of $[a,b]$ we have $P_a^x(F)
+\leq P_a^b(F) \leq TV_a^b(F) < \infty$ and similarly with $N_a^x(F)$.
+The same argument for any pair $a \leq x \leq y \leq b$ shows that
+$P_a^x(F) \leq P_a^y(F)$ and similarly $N_a^x(F) \leq N_a^y(F)$.
+Therefore $P_a^x(F)$ and $N_a^x(F)$ are both non-decreasing functions
+and applying Lemma
+\ref{TotalVariationAsSumOfPositiveAndNegativeVariation} on the
+interval $[a,x]$ we get $F(x) = P_a^x(F) - N_a^x(F) - F(a)$.  Since
+$N_a^x(F) - F(a)$ is also a non-decreasing function we are done with
+this direction.
+
+Now if $F(x) = G(x) - H(x)$ with both $G$ and $H$ monotone then for
+any partition $a=x_0 < x_1 < \dotsb < x_n=b$ we have
+\begin{align*}
+\sum_{j=1}^n \abs{F(x_j) - F(x_{j-1})} &= \sum_{j=1}^n \abs{G(x_j) -
+  G(x_{j-1}) - H(x_j) + H(x_{j-1})} \\
+&\leq \sum_{j=1}^n (G(x_j) -
+  G(x_{j-1})) + \sum_{j=1}^n( H(x_{j-1}) + H(x_{j})) = G(b) - G(a) +
+  H(a) - H(b)
+\end{align*}
+\end{proof}
+
+\begin{lem}\label{AdditivityOfTotalVariation}Let $f$ be a function of
+  bounded variation on $[a,b]$, then for every $a < x < b$, $TV_a^x(f)
+  + TV_x^b(f) = TV_a^b(f)$.
+\end{lem}
+\begin{proof}Pick partitions $a=x_0 < \dotsb < x_n=x$ of $[a,x]$ and $x=y_0 <
+  \dotsb < y_m=b$ of $[x,b]$ and note that $a=x_0 < \dotsb < x_n=y_0 < y_1 < \dotsb <
+  y_m=b$ is a partition of $[a,b]$.  Therefore
+\begin{align*}
+\sum_{j=1}^n \abs{f(x_j) - f(x_{j-1})} + \sum_{j=1}^m \abs{f(y_j) -
+  f(y_{j-1})} &\leq TV_a^b(f)
+\end{align*}
+which upon taking suprema over partitions of $[a,x]$ and $[x,b]$ shows
+$TV_a^x(f) + TV_x^b(f) \leq TV_a^b(f)$.  
+
+On the other hand, let $a=x_0 < \dotsb < x_n=b$ be a partition of
+$[a,b]$.  First assume that there exists an $0 < m < n$ such that $x_m
+= x$.  It then follows that $a=x_0 < \dotsb < x_m=x$ is a partition of
+$[a,x]$ and $x = x_m < \dotsb < x_n=b$ is a partition of $[x,b]$ and
+therefore
+\begin{align*}
+\sum_{j=1}^n \abs{f(x_j) - f(x_{j-1})} &= \sum_{j=1}^m \abs{f(x_j) -
+  f(x_{j-1})} + \sum_{j=m+1}^n \abs{f(x_j) - f(x_{j-1})} \leq
+TV_a^x(f)  + TV_x^b(f)
+\end{align*}
+On the other hand, if $x$ is not a member of the partition then we may
+add it and by the triangle inequality that can only increase the
+variation of the partition so the inequality still holds.  Thus we may
+take the supremum over all partitions of $[a,b]$ and we get $TV_a^b(f)
+\leq TV_a^x(f)  + TV_x^b(f)$ and the result is proven.
+\end{proof}
+
+\begin{lem}\label{ContinuityOfTotalVariation}Let $f$ be a left
+  continuous function with bounded variation on $[a,b]$, then
+  $TV_a^x(f)$ is a left continuous function of $x$.  Similarly if $f$
+  is right continuous (resp. continuous) then  $TV_a^x(f)$ is a right
+  continuous (resp. continuous).
+\end{lem}
+\begin{proof}
+We first suppose that $f$ is left continuous and show that $TV_a^x(f)$
+is left continuous at $x$.  Pick $\epsilon > 0$ and select a partion
+$a=x_0 < x_1 < \dotsb < x_n=x$ such that $\sum_{j=1}^n \abs{f(x_j) -
+  f(x_{j-1})} > TV_a^x(f) - \epsilon/2$.  By left continuity of $f$ at $x$
+we can pick a $\delta>0$ such that $\abs{f(x) - f(y)} < \epsilon/2$
+for all $x-\delta < y < x$. Without loss of generality we may also
+assume that $\delta < x - x_{n-1}$.  For any such $y$ we
+define a new partition by adding the point $y$ to the existing
+partition $x_0, \dotsc, x_n$; precisely define 
+\begin{align*}
+\tilde{x}_j &= \begin{cases}
+x_j & \text{for $j=0, \dotsc, n-1$} \\
+y & \text{for $j=n$} \\
+x & \text{for $j=n+1$}
+\end{cases}
+\end{align*}
+and note that by the triangle inequality, 
+\begin{align*}
+TV_a^x(f) - \epsilon/2 &< \sum_{j=1}^n \abs{f(x_j) -
+  f(x_{j-1})} \leq \sum_{j=1}^{n+1} \abs{f(\tilde{x}_j) -
+  f(\tilde{x}_{j-1})} \leq TV_a^x(f)
+\end{align*}
+If restrict our attention to the partition $a = \tilde{x}_0 < \dotsb <
+\tilde{x}_n = y$, by monotonicity of total variation and the choice of $y$ we have
+\begin{align*}
+TV_a^x(f) &\geq TV_a^y(f) \geq \sum_{j=1}^{n} \abs{f(\tilde{x}_j) -
+  f(\tilde{x}_{j-1})} \\
+&> TV_a^x(f) - \epsilon/2 - \abs{f(x) - f(y)} > TV_a^x(f) - \epsilon
+\end{align*}
+which shows left continuity of $TV_a^x(f)$.
+
+One could prove the case of right continuous $f$ by an analogous
+argument that shows $TV_x^b(f)$ is a right continuous function of $x$
+and then observing $TV_a^x(f) = TV_a^b(f) - TV_x^b(f)$ Lemma
+\ref{AdditivityOfTotalVariation} (do this as an exercise!).  Here we take a slightly different
+approach and derive the case of right continuity from the case of left
+continuity.  Given $f$ a function on $[a,b]$, define the function
+$\tilde{f}(x) = f(b+a-x)$ on $[a,b]$.  Note that $f$ is right
+continuous if and only if $\tilde{f}$ is left continuous.  Note also
+that the transformation $x \mapsto b+a-x$ is a bijection of $[a,y]$
+and $[b+a-y,b]$ for every $a \leq y \leq b$
+and therefore is a bijection of partitions of $[a,y]$ and $[b+a-y,b]$
+for every such $y$.  From this it follows that $TV_a^y(f) =
+TV_{b+a-y}^b(\tilde{f})$ for every $a \leq y \leq b$.  In particular
+taking $y=b$,
+$f$ is of bounded variation on $[a,b]$ if and only if $\tilde{f}$ is.
+Stitching all of these observations together, if $f$ is right
+continuous, then $\tilde{f}$ is left continuous and therefore by the
+first part of the Lemma and Lemma \ref{AdditivityOfTotalVariation} we
+know that $TV_{y}^b(\tilde{f}) = TV_a^b(\tilde{f}) -
+TV_a^{y} (\tilde{f})$ is a left continuous function of $y$.  From this
+it follows that $TV_a^y(f) = TV_{b+a-y}^b(\tilde{f})$ is a right
+continuous function of $y$.
+
+The case of $f$ continuous follows immediately as a function is
+continuous if and only if it is both right continuous and left continuous.
+\end{proof}
+
+As an exercise, one should show that continuity of a function not only
+implies the continuity of the total variation but also the positive
+and negative variations (all we needed positivity and the triangle
+inequality of the absolute value; properties that are shared by the
+positive and negative part functions).  (TODO: Can we instead derive the
+positive and negative variation cases from right continuity of total
+variation and $f$?)
+If we assume that we are given a right continuous function $f$ of bounded
+variation, then by Lemma \ref{ContinuityOfTotalVariation} we know that
+positive and negative variations are right continuous and therefore by
+Theorem \ref{BoundedVariationAsDifferenceOfMonotone} we see that $f$
+is a difference of monotone right continuous functions.  By the
+construction of Lebesgue-Stieltjes measures this allows us to
+associate locally finite (signed) measures to $f$.  
+
+TODO: Define all of the measures involved and observe that $dF = dF_+ - dF_-$
+is the Jordon decompostiion of the signed measure $dF$ and that $dTV_a^s(F)$ is the
+absolute value of the signed measure $dF$.
+
+\begin{lem}\label{AbsoluteValueOfStieltjes}Let $F$ be a function of bounded variation of $[a,b]$ and
+  let $g$ be a measurable function then $\abs{ \int g \, dF} \leq \int
+  \abs{g} \abs{dF}$.
+\end{lem}
+\begin{proof}
+This is just a computation using the definitions and the triangle inequality
+\begin{align*}
+\abs{\int g \, dF} &= \abs{\int g \, dF_+ - \int g \, dF_-} \leq
+\abs{\int g \, dF_+}  + \abs{ \int g \, dF_-} \\
+&\leq\int \abs{ g} \,
+dF_++ \int \abs{ g} \, dF_- = \int \abs{g} \, \abs{dF}
+\end{align*}
+\end{proof}
+
+In addition to functions of bounded variation providing signed
+measures via the construction of Stieltjes measures integrals also
+provide a source of functions of bounded variation.
+
+\begin{defn}A function $F$ is \emph{absolutely continuous} on an
+  interval $[a,b]$ if for every $\epsilon > 0$ there exists $\delta>0$
+  such that for every $n > 0$ and every set of disjoint intervals $(a_j, b_j] \subset
+  (a,b]$ for $j=1, \dotsc, n$ with $\sum_{j=1}^n (b_j-a_j) < \delta$
+  we have $\sum_{j=1}^n \abs{F(b_j)-F(a_j)} < \epsilon$.
+\end{defn}
+
+\begin{lem}\label{AbsoluteContinuityImpliesContinuousBoundedVariation}If $F$ is absolutely continuous on $[a,b]$ then $F$ is
+ uniformly continuous on $[a,b]$ and has bounded variation on $[a,b]$.
+\end{lem}
+\begin{proof}
+The fact that $F$ is uniformly continuous is immediate by considering a single
+subinterval of $[a,b]$.  Seeing that $F$ has bounded variation is
+conceptually simple but notationally a little ugly.  The idea is simply
+that any sufficiently fine partition of $[a,b]$ can be decomposed into
+a union of subpartitions of a subinterval of length less than any
+desired $\delta$; this is enough to bound the total variation. To see
+the details, pick
+$N > 0$ so that  $\sum_{j=1}^n (b_j-a_j) < (b-a)/N$ implies
+$\sum_{j=1}^n \abs{F(b_j)-F(a_j)} < 1$.  First assume that we have a
+partition $a=x_0 < x_1 < \dotsb < x_n=b$ such that for each $k=0,
+\dotsc, N$ there is an $n_k$ with $x_{n_k} = (b-a)*k/N$. Then we
+have $\sum_{j=n_{k-1}+1}^{n_k} (x_j - x_{j-1}) < \delta$ for
+each $k$ and therefore
+\begin{align*}
+\sum_{j=1}^n \abs{F(b_j)-F(a_j)} &= \sum_{k=1}^{(b-a)/N}\sum_{j=n_{k-1}+1}^{n_k}
+\abs{F(b_j)-F(a_j)} < (b-a) /N < \infty
+\end{align*}
+The assumption that $x_{n_k} = (b-a)*k/N$ can be arranged for by refining
+an arbitrary partition and noting that the total variation can only increase by
+doing so.
+\end{proof}
+
+To construct a general construction of absolutely continuous functions
+from Stieltjes measures we first prove the
+following fact about integrals on general measurable spaces.
+
+\begin{lem}\label{LimitOfIntegralAsMeasureGoesToZero}Let $(S, \mathcal{S}, \mu)$ be a measure space and
+  integrable function $f:S \to \reals$, then for
+  every $\epsilon>0$ there exists a $\delta>0$ such that for all $A
+  \in \mathcal{S}$ such that $\mu(A) < \delta$ we have $\abs{\int_A f\,
+  d\mu} < \epsilon$.
+\end{lem}
+\begin{proof}
+First assume that $f$ is a positive integrable function.  For each $n
+> 0$ define $f_n = f \wedge n$ and note that $f_n \uparrow f$;
+moreover $f_n \characteristic{A} \uparrow f \characteristic{A}$ for
+every $A \in \mathcal{S}$.  By
+Monotone Convergence we know that $\int_A f_n \, d\mu \uparrow \int_A
+f \, d\mu$.  Let $\epsilon > 0$ be given and choose $N > 0$ such that
+$\int f \, d\mu - \epsilon/2 < \int f_N \, d\mu \leq \int f \, d\mu$.
+Choose $\delta = \epsilon/2*N$ and note that if $\mu(A) < \delta$ then
+\begin{align*}
+\int_A f \, d\mu &= \int_A f_N \, d\mu + \int_A (f-f_N) \, d\mu \leq N
+\mu(A) + \int (f-f_N) \, d\mu < \epsilon
+\end{align*}
+
+For general integrable $f$ simply note that $\abs{\int_A f \, d\mu}
+\leq \int_A \abs{f} \, d\mu$ and apply the result just proved for
+positive integrable functions.
+\end{proof}
+
+Specializing to the case of locally finite signed measures on $\reals$ we get
+\begin{cor}\label{StieltjesIntegralBoundedVariationAndContinuous}Let $F$ be a right continuous function of bounded variation and let $g$ be a
+  measurable function that is integrable with respect to $F$ then
+  $\int_{-\infty}^t g \, dF$ has bounded variation.  If $F$ is also
+  continuous then $\int_{-\infty}^t g \, dF$ is continuous.
+\end{cor}
+\begin{proof}
+First assume that $F$ is
+non-decreasing and right continuous.  If $g$ is integrable with respect to $F$ then
+$\int_{-\infty}^t g_\pm \, dF$ is non-decreasing by monotonicity of integral and therefore
+$\int_{-\infty}^t g \, dF = \int_{-\infty}^t g_+ \, dF -
+\int_{-\infty}^t g_- \, dF$ is a difference of non-decreasing
+functions and therefore is of bounded variation by Theorem \ref{BoundedVariationAsDifferenceOfMonotone}.  To extend to $F$ of
+bounded variation, write 
+\begin{align*}
+\int_{-\infty}^t g \, dF &= \int_{-\infty}^t g_+ \, dF_+ +
+\int_{-\infty}^t g_- dF_- -
+\int_{-\infty}^t g_- \, dF_+ - \int_{-\infty}^t g_+ \, dF_-
+\end{align*}
+and apply Theorem  \ref{BoundedVariationAsDifferenceOfMonotone}.
+
+Now suppose that $F$ is continuous and non-decreasing.  For $\epsilon > 0$, pick $\delta>0$ as in Lemma
+\ref{LimitOfIntegralAsMeasureGoesToZero} and then as any union of
+intervals is measurable we get $\sum_{j=1}^n (F(b_j)-F(a_j)) < \delta$
+implies $\abs{\sum_{j=1}^n \int_{a_j}^{b_j} g \, dF} < \epsilon$.
+Let $t$ be given and by continuity of $F$ pick $\rho > 0$ such that
+$\abs{s - t} < \rho$ implies $\abs{F(s) - F(t)} < \delta$ and
+therefore 
+\begin{align*}
+\abs{\int_{-\infty}^t g \, dF - \int_{-\infty}^s g \, dF} &=
+\abs{\int_s^t g \, dF} < \epsilon
+\end{align*}
+and continuity at $t$ is proven.
+\end{proof}
+
+NOTE:  It is not the case that every continuous function of bounded
+variation is absolutely continous.  For that to be true we need to add
+the \emph{Lusin N property} that says every the image of every Lebesgue
+null set is a null set.  It turns out that absolute continuity is
+equivalent to continuity, bounded variation and the Lusin property.
 
 \subsection{Approximation By Smooth Functions}
 In this section we discuss a technique for approximating arbitrary
@@ -4364,7 +4805,7 @@ F(x_1, \dots, x_n) = \probability {\cap_{i=1}^n \left ( \xi_i \leq x_i
 \end{proof}
 
 The construction of Lebesgue-Stieltjes measure shows that every
-Borel measure on $\reals$ is determined uniquely by its distribution function.
+Borel probability measure on $\reals$ is determined uniquely by its distribution function.
 \begin{lem}Probability measures of $(\reals, \mathcal{B}(\reals))$ are
   in one to one correspondence with $F : \reals \to \reals$ that are
   right continuous, nondecreasing such that $\lim_{x \to -\infty} F(x)

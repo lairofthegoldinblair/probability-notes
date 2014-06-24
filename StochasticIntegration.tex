@@ -1,15 +1,200 @@
 \section{Stochastic Integration}
-The process of defining stochastic integrals follows the standard path of defining integrals for a subclass of integrands for which the definition and existence of the associated integral is easy to see.  Then one uses approximations to extend the class of integrands.  Thus our first order of business is to define that initial subclass of integrands and define integrals of them with respect to an arbitrary martingale.
-\begin{defn}Let $\tau_1 \leq \tau_2 \leq \dotsb \leq \tau_n$ be optional times and let $\eta_1, \dotsc, \eta_n$ be bounded random variables and assume $\eta_k$ is  $\mathcal{F}_{\tau_k}$-measurable.  Then we say that 
+
+\subsection{Local Martingales}
+
+\begin{defn}Let $M_t$ be an $\mathcal{F}$-adapted process, we say $M$ is a \emph{local martingale} if there exists a sequence of optional times $\tau_n$ such that $\tau_n \uparrow \infty$ a.s. and $M^{\tau_n} - M_0$ is an $\mathcal{F}$-martingale for all $n$.  We say that $\tau_n$ is a \emph{localizing sequence} for $M$.
+\end{defn}
+
+
+A useful fact is that continuous local martingales can always be localized to bounded martingales.
+\begin{lem}\label{ContinuousLocalMartingaleLocalizeToBounded}Let $M$ be a continuous local martingale and for each $n \in \integers_+$ let $\tau_n = \inf \lbrace t \geq 0 \mid \abs{M_t} \geq n \rbrace$ then $\tau_n$ is a localizing sequence for $M$.
+\end{lem}
+\begin{proof}
+By continuity and $\mathcal{F}$-adaptedness of $M$ and the fact that $[t, \infty)$ is closed we know that $\tau_n$ is an optional time (Lemma \ref{HittingTimesContinuous}). It is clear that $\abs{M_t} \geq n$ implies $\abs{M_t} \geq n-1$ and therefore $\tau_n$ is an increasing sequence.  By continuity of $M$ we know that $M$ is bounded on bounded intervals and therefore $\tau_n \uparrow \infty$ a.s.  
+
+It remains to show that $(M - M_0)^{\tau_n}$ is a martingale for every $n \in \integers_+$.   Let $\sigma_m$ be a localizing sequence for $M$.  From Optional Stopping we know that $(M - M_0)^{\tau_n \wedge \sigma_m} = ((M-M_0)^{\sigma_m})^{\tau_n}$ is a martingale for every $m,n \in \integers_+$.  Furthermore for fixed $n$ and every $m \in \integers_+$ since $\sigma_m \uparrow \infty$ a.s. we know that $(M-M_0)^{\tau_n \wedge \sigma_m}_t \toas (M-M_0)^{\tau_n}_t$.  Morever $\abs{(M-M_0)^{\tau_n \wedge \sigma_m}_t } = \abs{M_{\tau_n \wedge \sigma_m \wedge t} - M_0} \leq \abs{M_0} + n$.  Since $M_0$ is integrable (TODO: Do we really know this with the Kallenberg definition of a local martingale?; if not what replaces it do we define $\tau_n = \inf \lbrace t \geq 0 \mid \abs{M_t - M_0} \geq n \rbrace$?) so that by Dominated Convergence we get $(M-M_0)^{\tau_n \wedge \sigma_m}_t \tolp{1} (M-M_0)^{\tau_n}_t$ as well. Using both forms of convergence and the martingale property of $M^{\tau_n \wedge \sigma_m}$, for each $s < t$ we get the equality
 \begin{align*}
-V_t &= \sum_{k=1}^n \eta_k \characteristic{\tau_{k} > t}
+\cexpectationlong{\mathcal{F}_s}{(M - M_0)^{\tau_n}_t} &= \lim_{m \to \infty} \cexpectationlong{\mathcal{F}_s}{(M - M_0)^{\tau_n \wedge \sigma_m }_t} \\
+&= \lim_{m \to \infty} (M - M_0)^{\tau_n \wedge \sigma_m }_s =  (M - M_0)^{\tau_n }_s \text{ a.s.}
+\end{align*}
+which shows that $M^{\tau_n}$ is a martingale.
+\end{proof}
+
+\begin{lem}Let $\mathcal{F}$ be a right continuous filtration, $M$ be a cadlag $\mathcal{F}$-local martingale with localizing sequence $\tau_n$ and let $\sigma_n$ be an arbitrary sequence of bounded optional times such that $\sigma_n \uparrow \infty$, then $\tau_n \wedge \sigma_n$ is a localizing sequence for $M$.  In particular the space of cadlag $\mathcal{F}$-local martingales is a linear space.
+\end{lem}
+\begin{proof}
+First we claim that every local martingale $M$ has localizing sequence of bounded optional times.  This follows from picking an arbitrary localizing sequence $\tau_n$ and then noting that $\tau_n \wedge n$ is also a localizing sequence as $\tau_n \wedge n \uparrow \infty$ a.s. and $M^{\tau_n \wedge n} -M_0 = (M^{\tau_n})^n - M_0$ is a martingale from Optional Stopping (Theorem \ref{OptionalStoppingContinuous}) since $M^{\tau_n}$ is a cadlag martingale, $\mathcal{F}$ is right continuous and $n$ is a bounded optional time.
+
+Given $\tau_n$ and $\sigma_n$ as in the hypothesis and by our first claim we assume that each $\tau_n$ and $\sigma_n$ is bounded.  It is clear that $\tau_n \wedge \sigma_n$ is a sequence of optional times such that $\tau_n \wedge \sigma_n \uparrow \infty$ and again applying Optional Stopping we see that $M^{\tau_n \wedge \sigma_n} -M_0 = (M^{\tau_n})^{\sigma_n} - M_0$ is a martingale.  
+
+Lastly if we are given $M$ and $N$ local martingales, take $\tau_n$ and $\sigma_n$ to be bounded localizing sequences for $M$ and $N$ respectively and by the previous claim, we know that $\tau_n \wedge \sigma_n$ is a joint localizing sequence for $M$ and $N$.   Therefore $(aM + bN)^{\tau_n \wedge \sigma_n} - a M_0 - b N_0$ is a martingale for all $n \geq 0$.
+\end{proof}
+
+\begin{lem}\label{LocalMartingaleLocalProperty}Let $\tau_n$ be a sequence of optional times such that $\tau_n \uparrow \infty$ a.s.  and let $M$ be an $\mathcal{F}$-adapted process.  Then $M$ is a local martingale if an only if $M^{\tau_n}$ is for all $n\geq 0$.
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{lem}\label{ContinuousLocalMartingaleBoundedVariation}Let $M$ be a continuous local martingale with locally bounded variation then $M = M_0$ a.s.
+\end{lem}
+\begin{proof}
+We first reduce to the case in which $M$ is a martingale with locally bounded variation and $M_0=0$.  Let $\tau_n$ be a localizing sequence for $M$ then if we can show that $M_{\tau_n \wedge t} - M_0=0$ a.s. for all $n \geq 0$ and $t \geq 0$ then as $\tau_n \to \infty$ we can conclude that $M_t = M_0$ a.s. for all $t \geq 0$.
+
+Next note that since $M$ is locally of bounded variation we have optional times $\tau_n$ such that $\tau_n \uparrow \infty$ such that $M^{\tau_n}$ is of bounded variation.  This implies that $M$ is of bounded variation on every interval $[0,t]$.  Therefore we can define the total variation process $V_t = TV_0^t(M)$.  Since $M$ is continuous, $V_t$ is continuous (Lemma \ref{ContinuityOfTotalVariation}) and by defintion of total variation it is clear that $V_t$ is $\mathcal{F}$-adapted.  Now define $\sigma_n = \inf \lbrace t \geq 0 \mid V_t = n \rbrace$; we know by continuity of $V_t$ that $\sigma_n$ is an optional time (Lemma \ref{HittingTimesContinuous}) and that $M_{\sigma_n \wedge t}$ is a continuous martingale.  Since $M$ is of locally finite variation we know that $\sigma_n \uparrow \infty$ and as before if we can show that $M_{\sigma_n \wedge t}=0$ a.s. for all $n \geq 0$ and $t \geq 0$ then it will follow that $M_t = 0$ for all $t \geq 0$.
+
+Now we have reduced to the case in which $M$ is a continuous martingale with $M_0=0$ and bounded variation.  So fix $t > 0$ and define the partition $t_{n,k} = kt/n$ for all $n>0$ and $k=0, 1, \dotsc, n$.  If we define
+\begin{align*}
+\zeta_n &= \sum_{k=1}^n \left(M_{t_{n,k}} - M_{t_{n,k-1}}\right)^2 \leq V_t \max_{1 \leq k \leq n} \abs{M_{t_{n,k}} - M_{t_{n,k-1}}}
+\end{align*}
+then using the continuity of $M$ we know that $M$ is uniformly continuous on $[0,t]$ and therefore we have $\lim_{n \to \infty} \zeta_n = 0$ a.s.  Moreover we have
+\begin{align*}
+\zeta_n &\leq \sum_{k=1}^n \sum_{j=1}^n \abs{M_{t_{n,k}} - M_{t_{n,k-1}}} \abs{M_{t_{n,j}} - M_{t_{n,j-1}}} = V_t^2
+\end{align*}
+Since $V_t$ is bounded we can apply Dominated Convergence, the martingale property of $M_t$ and the fact that $M_0=0$ to conclude
+\begin{align*}
+0 &= \lim_{n \to \infty} \expectation{\zeta_n} = \sum_{k=1}^n \expectation{M_{t_{n,k}}^2} - \expectation{M_{t_{n,k-1}}^2} = \expectation{M_t^2}
+\end{align*}
+and from this we conclude that $M_t = 0$ a.s.  Taking the union of a countable number of sets of probability zero we see that almost surely $M_q = 0$ for all $q \in \rationals_+$.  Since $M_t$ is continuous we conclude that almost surely $M_t = 0$ for all $t \in \reals_+$.
+\end{proof}
+
+\subsection{Stieltjes Integrals}
+
+There are a few simple facts about Stieltjes integrals that we want to describe in the stochastic setting as they will play a part in the general theory of stochastic integration.  First we record the formula for the restriction of a Lebesgue-Stieltjes measure to an interval.
+\begin{lem}\label{RestrictionOfLebesgueStieltjesMeasure}Let $F$ be a right continuous function of bounded variation on $[a,b]$, let $[c,d] \subset [a,b]$.  If we let $\mu_F$ denote the signed Lebesgue-Stieltjes measure associated with $F$ and we let
+\begin{align*}
+F^{[c,d]}(s) &=
+F((s \wedge d) \vee c) = 
+\begin{cases}
+F(c) & \text{if $s < c$}\\
+F(s) & \text{if $c \leq s \leq d$} \\
+F(d) & \text{if $d < s$} \\
+\end{cases}
+\end{align*}
+then $F^{[c,d]}$ is right continuous of bounded variation on $[a,b]$ and $\mu_F \mid_{[c,d]} = \mu_{F^{[c,d]}}$.  
+\end{lem}
+\begin{proof}
+First suppose that $F$ is non-decreasing and right continuous.  It is elementary that $F^{[c,d]}$ is also non-decreasing and right continuous.  For any half open interval $(x,y] \subset [a,b]$ we have 
+\begin{align*}
+\mu_F\mid_{[c,d]}((x,y]) &= \mu_F ([c,d] \cap (x,y]) = \mu_F ((d \wedge x) \vee c, (d \wedge y) \vee c]) \\
+&= F((d \wedge y) \vee c) - F((d \wedge x) \vee c) = F^{[c,d]}(y) - F^{[c,d]}(x) = \mu_{F^{[c,d]}}((x,y])
+\end{align*}
+and as we know that $\mu_F \mid_{[c,d]}$ is locally finite, by Lemma \ref{LebesgueStieltjesMeasure} we get $\mu_F\mid_{[c,d]} = \mu_{F^{[c,d]}}$.
+
+In the case of $F$ is right continuous  of bounded variation, then if we write $F = F_+ - F_-$ as a difference of right continuous non-decreasing functions then it is also true $F^{[c,d]} = F^{[c,d]}_+ - F^{[c,d]}_-$ and clearly each $F^{[c,d]}_\pm$ is non-descreasing which show us that $F^{[c,d]}$ is of bounded variation.  Moreover, using the result for non-descreasing functions
+\begin{align*}
+\mu_F\mid_{[c,d]} &= \mu_{F_+}\mid_{[c,d]} - \mu_{F_-} \mid_{[c,d]} = \mu_{F^{[c,d]}_+} - \mu_{F^{[c,d]}_-} = \mu_{F^{[c,d]}}
+\end{align*}
+and we are done.
+\end{proof}
+
+The simplest type of stochastic integral arises for a process that has right continuous paths with locally finite variation.  In this case, we can just apply the ordinary theory of Lebesgue-Stieltjes integrals pointwise to the process.  
+\begin{defn}Let $F$ be an cadlag adapted process and locally finite variation and let $V$ be a jointly measurable process then we define a new process $\int V_s \, dF_s$ by
+\begin{align*}
+\left(\int V_s \, dF_s\right)_t(\omega) &= \int_0^t V_s(\omega) \, dF(\omega)_s && \text{for all $t \geq 0$ and $\omega \in \Omega$}
+\end{align*}
+We usually write $\left(\int V_s \, dF_s\right)_t = \int_0^t V_s \, dF_s$.
+\end{defn}
+
+The fact that the integral defined as above is actually a process requires verification.  In addition we show that when $V$ is progressive then the resulting process is adapted.
+\begin{lem}\label{StochasticStieltjesIntegral}If $F$ is a cadlag process of locally finite variation (not necessarily adapted) and $V$ is a jointly measurable process then $\int_0^t V_s \, dF_s$ is a cadlag process of locally finite variation.  If in addition $F$ is $\mathcal{F}$-adapted and $V$ is $\mathcal{F}$ - progressively measurable then $\int_0^t V_s \, dF_s$ is $\mathcal{F}$-adapted.
+\end{lem}
+\begin{proof}
+If we denote by $\mu_F$ the signed Lebesgue-Stieltjes measure constructed from $F$ and let $\cup_{j=1}^n (a_j, b_j]$ be a disjoint union of intervals, then we have by finite additivity $\mu_F(\cup_{j=1}^n (a_j, b_j]) = \sum_{j=1}^n (F(b_j) - F(a_j))$ which measurable by the measurability of $F$.  As the set of disjoint unions of half open intervals is a ring (Example \ref{RingOfDisjointUnionHalfOpenIntervals}) and therefore a $\pi$-system that generates the Borel $\sigma$-algebra we know $\mu_F$ is a kernel by monotone classes (specifically Lemma \ref{KernelMeasurability}).  If $V$ is jointly measurable then the same is true of $\characteristic{[0,t]} V$ for every $t \geq 0$ and therefore $\int_0^t V_s \, dF_s$ is measurable by Lemma \ref{KernelTensorProductMeasurability}.  The fact that $\int_0^t V_s \, dF_s$ is cadlag and has locally finite variation follow pointwise from Corollary \ref{StieltjesIntegralBoundedVariationAndContinuous}.
+
+Note also that for any $t \geq 0$ we have by Lemma \ref{ChainRuleDensity} and Lemma \ref{RestrictionOfLebesgueStieltjesMeasure} 
+\begin{align*}
+\int_0^t V_s \, dF_s &= \int_0^\infty \characteristic{[0,t]} V_s \, dF_s = \int_0^\infty V^t_s \, dF\mid_{[0,t]}(s) = \int_0^\infty V^t_s \, dF^t_s  
+\end{align*} 
+where $F^t(s) = F(t \wedge s)$ and $V^t_s = V_{t \wedge s}$. If we assume that $F$ is adapted it follows that $F_s^t$ is $\mathcal{F}_t$ measurable for all $s \geq 0$ and by the argument above we see that $\mu_{F^t}$ is an $\mathcal{F}_t$-measurable kernel.  If $V$ is progressive then by writing $V^t(\omega, s) = V \mid_{\Omega \times [0,t]}(\omega, s \wedge t)$ which shows that $V^t$ is $\mathcal{F}_t \otimes \mathcal{B}([0,\infty))$-measurable.  Now applying Lemma \ref{KernelTensorProductMeasurability} we get $\mathcal{F}_t$-measurability of $\int_0^t V_s \, dF_s$.
+\end{proof}
+
+Because of the previous result we make the following definition for the space of integrands that we'll initially concern ourselves with.
+\begin{defn}If $F$ is a cadlag process of locally finite variation then let $L(F)$ be the space of progressive processes $V$ that are pointwise integrable with respect to $F$.
+\end{defn}
+
+Because we use stochastic Stieltjes integrals in defining general stochastic integrals we record the following simple facts.  Both of these facts have analogues for general stochastic integrals as well.
+\begin{lem}\label{ChainRuleStieltjes}Let $F$ be a cadlag process of locally finite variation, let $V \in L(F)$ and let $U$ be a progressive process.  $U \in L(\int V \, dF)$ if and only if $UV \in L(F)$ and moreover
+\begin{align*}
+\int_0^t U_s V_s \, dF_s &= \int_0^t U_s \, d\int V_s \, dF_s
+\end{align*}
+\end{lem}
+\begin{proof}
+Initially assume that $U$ and $V$ are both positive.  Note that by definition of the Lebesgue-Stieltjes measure we have pointwise for any finite interval $(a,b]$,
+\begin{align*}
+\mu_{\int V_s \, dF_s}((a,b]) &= \int_0^b V_s \, dF_s - \int_0^a V_s \, dF_s = \int_0^\infty \characteristic{(a,b]} V_s \, dF_s
+\end{align*}
+and therefore we have $\mu_{\int V_s \, dF_s} = V \cdot \mu_F$ (i.e. $V$ is a $\mu_F$-density of $\mu_{\int V_s \, dF_s}$); the result now follows from Lemma \ref{ChainRuleDensity}.  The rest of the result follows from writing $U = U_+ - U_-$ and $V = V_+ - V_-$ and using linearity.
+\end{proof}
+
+We also want to record the behavior of a stochastic Stieltjes integral under stopping.
+\begin{lem}\label{StoppingStieltjes}Let $F$ be a cadlag process of locally finite variation, let $V \in L(F)$ and let $\tau$ be an optional time then
+\begin{align*}
+\int_0^{t \wedge \tau} V_s \, dF_s &= \int_0^t \characteristic{[0,\tau]} V_s \, dF_s = \int_0^t V_s \, F^{\tau}_s
+\end{align*}
+\end{lem}
+\begin{proof}
+This follows immediately by writing $\int_0^\infty \characteristic{[0,t]} \characteristic{[0,\tau]} V_s \, dF_s$ and pointwise using the fact that $\mu_F \mid_{[0, \tau]} = \mu_{F^\tau}$ (Lemma \ref{RestrictionOfLebesgueStieltjesMeasure}).
+\end{proof}
+
+\subsection{Stochastic Integrals}
+
+The process of defining stochastic integrals follows the standard path of defining integrals for a subclass of integrands for which the definition and existence of the associated integral is easy to see.  Then one uses approximations to extend the class of integrands.  We begin by defining that initial subclass of integrands and define integrals of them with respect to an arbitrary martingale.
+\begin{defn}Let $\tau_1 \leq \tau_2 \leq \dotsb$ be optional times, let $\xi_1, \xi_2, \dotsc$ be bounded random variables and assume $\xi_k$ is  $\mathcal{F}_{\tau_k}$-measurable.  Then we say that 
+\begin{align*}
+V_t &= \sum_{k=1}^\infty \xi_k \characteristic{\tau_{k} > t}
 \end{align*}
 is a \emph{predictable step process}.  Given a predictable step process and a process $M$ we define the \emph{elementary stochastic integral}
 \begin{align*}
-\int_0^t V_s \, dM_s &= \sum_{k=1}^n \eta_k \left (M_t - M_{\tau_k \wedge t} \right)
+\int_0^t V \, dM &= \sum_{k=1}^\infty \xi_k \left (M_t - M_{\tau_k \wedge t} \right)
 \end{align*}
+In case $\tau_n = \tau_{n+1} = \dotsb$ and $\xi_n = \xi_{n+1} = \dotsb$ we say that $V$ is a \emph{finite predictable step process}.
 \end{defn}
-TODO: Do we assume that $\tau_k$ is countably valued???
+Note that in the definition of a stochastic integral for a predictable step process there is no need to consider convergence questions since for each $t \geq 0$ the sum that defines the integral has only finitely many non-zero terms.
+
+TODO: The definition of the elementary stochastic integral isn't quite justified as we haven't shown that it only depends on $V$ and not a particular representation of $V_t = \sum_{k=1}^\infty \xi_k \characteristic{\tau_{k} > t}$.  To show this it seems like it would be helpful to have a canonical representation for a predictable step process.  At some point we also may need the fact that the space of such processes (at least the finite linear combinations) is a vector space or algebra (as per Rogers and Williams).
+
+If one defines the vector space spanned by $\xi \characteristic{(\sigma, \tau]}$ then there is a standard (but not unique) form $\sum_{j=1}^n \xi_j \characteristic{(\sigma_j, \tau_j]}$ where $\sigma_j$ and $\tau_j$ are optional times satisfying $\sigma_1 \leq \tau_1 \leq \sigma_2 \leq \tau_2 \leq \dotsb \leq \sigma_n \leq \tau_n$.  To see this we first need a simple preliminary fact.  If $\sigma$ and $\tau$ are optional times and $\xi$ is either $\mathcal{F}_\sigma$-measurable then $\xi \characteristic{\sigma < \tau}$ is $\mathcal{F}_{\sigma \wedge \tau}$-measurable.  This follows from noting that for all $t \in \reals$, 
+\begin{align*}
+\lbrace \xi \characteristic{\sigma < \tau} \leq t \rbrace = 
+\begin{cases}
+\lbrace \sigma \geq \tau \rbrace \cup ( \lbrace \xi \leq t \rbrace \cap \lbrace \sigma < \tau \rbrace) & \text{if $t \geq 0$} \\
+\lbrace \xi \leq t \rbrace \cap \lbrace \sigma < \tau \rbrace & \text{if $t < 0$} \\
+\end{cases}
+\end{align*}
+and since $\lbrace \sigma \geq \tau \rbrace$ is $\mathcal{F}_{\sigma \wedge \tau}$-measurable it suffices to show that $\lbrace \xi \leq t \rbrace \cap \lbrace \sigma < \tau \rbrace \in \mathcal{F}_{\sigma \wedge \tau}$ for all $t \in \reals$.  Thus pick $s \in \reals$ and using the $\mathcal{F}_\sigma$-measurability of $\xi$ and the $\mathcal{F}_{\sigma \wedge \tau}$-measurability of $\lbrace \sigma < \tau \rbrace$ we get
+\begin{align*}
+\lbrace \xi \leq t \rbrace \cap \lbrace \sigma < \tau \rbrace \cap \lbrace \sigma \wedge \tau \leq s \rbrace = 
+\lbrace \xi \leq t \rbrace \cap \lbrace \sigma \leq s \rbrace \cap \lbrace \sigma < \tau \rbrace \cap \lbrace \sigma \wedge \tau \leq s \rbrace \in \mathcal{F}_s
+\end{align*}
+
+Now considering the decomposition of the intersection of two half open intervals in $\reals$ into 3 disjoint parts we see
+\begin{align*}
+&\xi_1 \characteristic{(\sigma_1, \tau_1]} + \xi_2 \characteristic{(\sigma_2, \tau_2]}  = \\
+&(\xi_1 \characteristic{\sigma_1 < \sigma_2} + \xi_2 \characteristic{\sigma_2 < \sigma_1} ) \characteristic{(\sigma_1 \wedge \sigma_2 , (\sigma_1 \vee \sigma_2) \wedge \tau_1 \wedge \tau_2]} + \\
+&(\xi_1 + \xi_2) \characteristic{(\sigma_1 \vee \sigma_2, \tau_1 \wedge \tau_2 \vee \sigma_1 \vee \sigma_2]} + \\
+&(\xi_1 \characteristic{\tau_1 > \tau_2} + \xi_2 \characteristic{\tau_2 > \tau_1}) \characteristic{(\sigma_1 \vee \sigma_2 \vee (\tau_1 \wedge \tau_2), \tau_1 \vee \tau_2 ]}
+\end{align*}
+By our claim above get that $\xi_1 \characteristic{\sigma_1 < \sigma_2} + \xi_2 \characteristic{\sigma_2 < \sigma_1}$ is $\mathcal{F}_{\sigma \wedge \tau}$-measurable.  By $\mathcal{F}_{\sigma_1}$-measurability of $\xi_1$ and $\mathcal{F}_{\sigma_2}$-measurability of $\xi_2$  we get $\mathcal{F}_{\sigma_1 \vee \sigma_2}$-measurability of $\xi_1 + \xi_2$.  Lastly we know also that $\lbrace \tau_1 > \tau_2 \rbrace$ and  $\lbrace \tau_2 > \tau_1 \rbrace$ are $\mathcal{F}_{\tau_1 \wedge \tau_2}$-measurable so $\xi_1 \characteristic{\tau_1 > \tau_2} + \xi_2 \characteristic{\tau_2 > \tau_1}$ is $\mathcal{F}_{\sigma_1 \vee \sigma_2 \vee (\tau_1 \wedge \tau_2)}$-measurable.  Moreover it is clear that we have the inequalities
+\begin{align*}
+\sigma_1 \wedge \sigma_2 &\leq (\sigma_1 \vee \sigma_2) \wedge \tau_1 \wedge \tau_2 \leq 
+\sigma_1 \vee \sigma_2 \leq \tau_1 \wedge \tau_2 \vee \sigma_1 \vee \sigma_2 \leq 
+\sigma_1 \vee \sigma_2 \vee (\tau_1 \wedge \tau_2) \leq \tau_1 \vee \tau_2
+\end{align*}
+and therefore the result is shown.
+
+The representation for a predictable step process we have given in the definition is occasionally not the most convenient one.  Given $V_t = \sum_{k=1}^\infty \xi_k \characteristic{\tau_{k} > t}$ if we define $\eta_n = \sum_{k=1}^n \xi_k$ and therefore 
+\begin{align*}
+V_t &= \sum_{k=1}^\infty \xi_k \characteristic{t > \tau_k} = \sum_{k=1}^\infty \xi_k \sum_{j=k}^\infty \characteristic{(\tau_j, \tau_{j+1}]}(t)  \\
+&= \sum_{j=1}^\infty \sum_{k=1}^j \xi_k \characteristic{(\tau_j, \tau_{j+1}]}(t)  = \sum_{j=1}^\infty \eta_j \characteristic{(\tau_j, \tau_{j+1}]}(t)  \\
+\end{align*}
+and 
+\begin{align*}
+\int_0^t V \, dM &= \sum_{k=1}^\infty \xi_k \left(M_{t} - M_{\tau_k \wedge t} \right) = \sum_{k=1}^\infty \xi_k \sum_{j=k}^\infty \left(M_{\tau_{j+1} \wedge t} - M_{\tau_j \wedge t} \right)  \\
+&= \sum_{j=1}^\infty \sum_{k=1}^j \xi_k \left(M_{\tau_{j+1} \wedge t} - M_{\tau_j \wedge t} \right) = \sum_{j=1}^\infty \eta_j \left(M_{\tau_{j+1} \wedge t} - M_{\tau_j \wedge t} \right)
+\end{align*}
+In what follows we will feel free to switch between these representations without comment.
+
 The first order of business is to establish conditions under which an elementary stochastic integral is a martingale.  To do this we need the following characterization of the martingale property.  
 \begin{lem}\label{MartingaleOptionalTimeCriterion}Let $M_t$ be an integrable adapted process on an index set $T$.  Then $M$ is a martingale if and only if $\expectation{M_\sigma} = \expectation{M_\tau}$ for all $T$-valued optional times $\sigma$ and $\tau$ that take at most two values.
 \end{lem}
@@ -17,7 +202,7 @@ The first order of business is to establish conditions under which an elementary
 Restricting $M_t$ to the union of the ranges of $\tau$ and $\sigma$ we can apply Lemma \ref{ExpectationStoppedMartingaleDiscrete} to conclude $\expectation{M_\sigma} = M_0 = \expectation{M_\tau}$.  In the other direction, let $s,t \in T$ with $s < t$.  Let $A \in \mathcal{F}_s$ and define $\sigma = s \characteristic{A^c} + t \characteristic{A}$ and note that $\sigma$ is an optional time.  Now, applying our hypothesis to the optional time $\sigma$ and the deterministic optional time $s$,  we get $\expectation{M_t ; A} = \expectation{M_\sigma} - \expectation{M_s; A^c}  = \expectation{M_s} - \expectation{M_s; A^c}  = \expectation{M_s; A}$ which shows $\cexpectationlong{\mathcal{F}_s}{M_t} = M_s$ a.s.
 \end{proof}
 
-\begin{lem}Suppose $\mathcal{F}$ is a filtration,  $\tau_1 \leq \tau_2 \leq \dotsb \leq \tau_n$ are bounded $\mathcal{F}$-optional times, $M_t$ is a martingale
+\begin{lem}\label{StochasticIntegralFinitePredictableStepProcess}Suppose $\mathcal{F}$ is a filtration,  $\tau_1 \leq \tau_2 \leq \dotsb \leq \tau_n$ are bounded $\mathcal{F}$-optional times, $M_t$ is a martingale
 and either 
 \begin{itemize}
 \item[(i)] each $\tau_k$ is countably valued
@@ -25,36 +210,130 @@ and either
 \end{itemize}
 Then if
 \begin{align*}
-V_t &= \sum_{k=1}^n \eta_k \characteristic{\tau_{k} > t}
+V_t &= \sum_{k=1}^n \xi_k \characteristic{\tau_{k} > t}
 \end{align*}
-is a predictable step process then $\int_0^t V_s \, dM_s$ is a martingale.
+is a finite predictable step process then $\int_0^t V \, dM$ is a martingale.  If we assume that $M$ is a local martingale then $\int_0^t V \, dM$ is a local martingale.
 \end{lem}
 \begin{proof}
-By definition of elementary stochastic integral and linearity, it suffices to show that $N_t = \eta \left (M_t - M_{\tau \wedge t} \right)$ is a martingale whenever either $\tau$ is a countably valued optional time or $\mathcal{F}$ and $M$ are right continuous and $\eta$ is a bounded $\mathcal{F}_\tau$-measurable random variable.  In the first case, by restricting $M_t$ to the range of $\tau$ we can apply the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} to the bounded optional time $\tau \wedge t$ to conclude that $M_{\tau \wedge t}$ is integrable and in the second case we can apply the continuous time Optional Stopping Theorem \ref{OptionalStoppingContinuous} to conclude that $M_{\tau \wedge t}$ is integrable.  This together with the integrability of $M_t$ and boundedness of $\eta$ shows that $N_t$ is integrable.  If we note that $N_t = \eta \characteristic{ \tau \leq t} \left (M_t - M_{\tau \wedge t} \right)$ then because $ \eta \characteristic{ \tau \leq t}$ and $M_t$ are $\mathcal{F}_t$-measurable and $M_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable (hence $\mathcal{F}_t$-measurable) we see that $N_t$ is adapted.  Lastly let $\sigma$ be an countably valued optional time then by the $\mathcal{F}_\tau$-measurability of $\eta$ we have and either the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} or the Optional Stopping Theorem \ref{OptionalStoppingContinuous} we get
+By definition of elementary stochastic integral and linearity, it suffices to show that $N_t = \xi \left (M_t - M_{\tau \wedge t} \right)$ is a martingale whenever either $\tau$ is a countably valued optional time or $\mathcal{F}$ and $M$ are right continuous and $\xi$ is a bounded $\mathcal{F}_\tau$-measurable random variable.  In the first case, by restricting $M_t$ to the range of $\tau$ we can apply the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} to the bounded optional time $\tau \wedge t$ to conclude that $M_{\tau \wedge t}$ is integrable and in the second case we can apply the continuous time Optional Stopping Theorem \ref{OptionalStoppingContinuous} to conclude that $M_{\tau \wedge t}$ is integrable.  This together with the integrability of $M_t$ and boundedness of $\xi$ shows that $N_t$ is integrable.  If we note that $N_t = \xi \characteristic{ \tau \leq t} \left (M_t - M_{\tau \wedge t} \right)$ then because $ \xi \characteristic{ \tau \leq t}$ and $M_t$ are $\mathcal{F}_t$-measurable and $M_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable (hence $\mathcal{F}_t$-measurable) we see that $N_t$ is adapted.  Lastly let $\sigma$ be an countably valued optional time then by the $\mathcal{F}_\tau$-measurability of $\xi$ we have and either the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} or the Optional Stopping Theorem \ref{OptionalStoppingContinuous} we get
 \begin{align*}
-\cexpectationlong{\mathcal{F}_\tau}{N_\sigma} &= \eta \cexpectationlong{\mathcal{F}_\tau}{M_\sigma - M_{\tau \wedge \sigma}} = \eta \left(M_{\tau \wedge \sigma} - M_{\tau \wedge \sigma} \right) = 0
+\cexpectationlong{\mathcal{F}_\tau}{N_\sigma} &= \xi \cexpectationlong{\mathcal{F}_\tau}{M_\sigma - M_{\tau \wedge \sigma}} = \xi \left(M_{\tau \wedge \sigma} - M_{\tau \wedge \sigma} \right) = 0
 \end{align*}
 and by the tower property of conditional expectations we get $\expectation{N_\sigma} = 0$.  Now by Lemma \ref{MartingaleOptionalTimeCriterion} we see that $N_t$ is a martingale.
+
+Now let us assume that $M$ is a local martingale.  To see that $\int_0^t V \, dM$ is a local martingale let $\sigma_n$ be a localizing sequence and note that
+\begin{align*}
+\left( \int_0^t V \, dM\right)^{\sigma_n} &= \sum_{k=1}^n \xi_k \left( M_{\sigma_n \wedge t} - M_{\sigma_n \wedge\tau_k \wedge t} \right) = \int_0^t V \, dM^{\sigma_n}
+\end{align*}
+is a martingale with localizing sequence $\sigma_n$  by the first part of the Lemma.
 \end{proof}
 
+\begin{lem}\label{StochasticIntegralPredictableStepProcess}Suppose $\mathcal{F}$ is a filtration,  $\tau_1 \leq \tau_2 \leq \dotsb \leq \dotsb$ are bounded $\mathcal{F}$-optional times with $\tau_n \uparrow \infty$, $M_t$ is an $L^2$ martingale with $M_0$, $V_t$ is a predictable step process with $\abs{V_t} \leq 1$ and either
+\begin{itemize}
+\item[(i)] each $\tau_k$ is countably valued
+\item[(ii)]$\mathcal{F}$ and $M$ are right continuous
+\end{itemize}
+then $\int_0^t V \, dM$ is an $L^2$-martingale and $\expectation{\left(\int_0^t V \, dM\right)^2} \leq \expectation{M^2_t}$.
+\end{lem}
+\begin{proof}
+We let $V_t = \sum_{k=1}^\infty \eta_k \characteristic{(\tau_k, \tau_{k+1}]}$.  We start by taking an arbitrary $n >0$ and defining $V^n_t =  \sum_{k=1}^n \eta_k \characteristic{(\tau_k, \tau_{k+1}]}$ so that $V^n$ is a finite predictable step process.  By Lemma \ref{StochasticIntegralFinitePredictableStepProcess} shows that $\int_0^t V^n \, dM$ is a martingale.  The $L^2$ bound for $V^n$ follows from Optional Stopping (Theorem \ref{OptionalStoppingDiscrete} or Theorem \ref{OptionalStoppingContinuous} depending on which hypothesis we choose).  The critical point is that for any $1 \leq k < j \leq n$ we have for each cross term term of the stochastic integral
+\begin{align*}
+&\expectation{\eta_j \eta_k \left (M_{\tau_{j+1} \wedge t} - M_{\tau_j \wedge t} \right)  \left (M_{\tau_{k+1} \wedge t} - M_{\tau_k \wedge t} \right)} \\
+&=\expectation{\eta_j \eta_k \left (M_{\tau_{j+1} \wedge t} - M_{\tau_j} \right)  \left (M_{\tau_{k+1} } - M_{\tau_k} \right) ; t > \tau_j} \\
+&=\expectation{ \eta_j \eta_k \cexpectationlong{\mathcal{F}_{\tau_j}}{M_{\tau_{j+1} \wedge t} - M_{\tau_j }}  \left(M_{\tau_{k+1} } - M_{\tau_k} \right) ; t > \tau_j} =0
+\end{align*}
+and 
+\begin{align*}
+\expectation{ \left (M_{\tau_{k+1} \wedge t} - M_{\tau_k \wedge t} \right)^2} &= \expectation{M^2_{\tau_{k+1} \wedge t}} - 2\expectation{M_{\tau_{k+1} \wedge t}M_{\tau_{k} \wedge t}} + 
+\expectation{M^2_{\tau_k \wedge t}} \\
+&=\expectation{M^2_{\tau_{k+1} \wedge t}} - 2\expectation{\cexpectationlong{\mathcal{F}_{\tau_k \wedge t}}{M_{\tau_{k+1} \wedge t}}M_{\tau_{k} \wedge t}} + 
+\expectation{M^2_{\tau_k \wedge t}} \\
+&= \expectation{M^2_{\tau_{k+1} \wedge t}} - \expectation{M^2_{\tau_k \wedge t}}
+\end{align*}
+Using the above facts, the fact that $M_0 = 0$ and the bound on $V$ 
+\begin{align*}
+\expectationop \left( \int_0^t V^n \, dM \right)^2 &= \expectationop \sum_{k=1}^n \eta^2_k \left (M_{\tau_{k+1} \wedge t} - M_{\tau_k \wedge t} \right)^2 \\
+&\leq \expectationop \sum_{k=1}^n \left (M_{\tau_{k+1} \wedge t} - M_{\tau_k \wedge t} \right)^2 \\
+&= \sum_{k=1}^n \expectation{M^2_{\tau_{k+1} \wedge t}} - \expectation{M^2_{\tau_k \wedge t}} \\
+&\leq \sum_{k=1}^\infty \expectation{M^2_{\tau_{k+1} \wedge t}} - \expectation{M^2_{\tau_k \wedge t}} \\
+&=  \lim_{n \to \infty} \expectation{M^2_{\tau_n \wedge t}} = \expectation{M^2_t}
+\end{align*}
+
+Now in the general case, we get the $L^2$ bound by Fatou's Lemma Theorem \ref{Fatou}
+\begin{align*}
+\expectationop \left( \int_0^t V \, dM \right)^2 &= \liminf_{n \to \infty} \expectationop  \left( \int_0^t V^n \, dM \right)^2 \leq \expectation{M^2_t}
+\end{align*}
+In addition, the $L^2$ bound shows that the family $\int_0^t V \, dM, \int_0^t V^1 \, dM, \int_0^t V^2 \, dM, \dotsc$ is uniformly integrable (Lemma \ref{BoundedLpImpliesUniformlyIntegrable}) and therefore for every $t \geq 0$ and the martingale property of $\int_0^t V^n \, dM$ we get for $u < t$,
+\begin{align*}
+\cexpectationlong{\mathcal{F}_u}{\int_0^t V \, dM} &= \cexpectationlong{\mathcal{F}_u}{\lim_{n \to \infty} \int_0^t V^n \, dM} \\
+&= \lim_{n \to \infty} \cexpectationlong{\mathcal{F}_u}{ \int_0^t V^n \, dM} \\
+&= \lim_{n \to \infty} \int_0^u V^n \, dM = \int_0^u V \, dM 
+\end{align*}
+(to exchange the limits with the conditional expectation, use the fact that for each $A \in \mathcal{F}_u$ we can see that $\characteristic{A} \int_0^t V^n \, dM$ is uniformly integrable then use Theorem \ref{LpConvergenceUniformIntegrability})
+showing $\int_0^t V \, dM$ is an $L^2$-martingale.
+\end{proof}
+
+\begin{defn}Fix a probability space $(\Omega, \mathcal{A}, P)$ and suppose $\mathcal{F}$ is a right continuous and complete filtration.  Let $\mathcal{M}^2$ be the space of $L^2$ bounded continuous $\mathcal{F}$-martingales such that $M_0 = 0$ a.s.  That is to say that for all $M \in \mathcal{M}^2$ there exists $C \geq 0$ such that for all $0 \leq t < \infty$ we have $\norm{M_t}_2 \leq C$.  For $M, N \in \mathcal{M}^2$, define $\langle M, N \rangle = \langle M_\infty, N_\infty \rangle = \expectation{M_\infty N_\infty }$.
+\end{defn}
+\begin{lem}\label{ContinuousL2MartingalesHilbert}The space $\mathcal{M}^2$ is a Hilbert space.
+\end{lem}
+\begin{proof}
+The fact that $\mathcal{M}^2$ is a vector space follows immediately from linearity of conditional expectation, the linearity of the space $C([0,\infty); \reals)$ and the triangle inequality of the $L^2$ norm on $C([0,\infty); \reals)$. 
+ 
+To  see that we have an inner product on $\mathcal{M}^2$, first observe that if $\langle M, M \rangle = \norm{M_\infty}^2_2 = 0$ then $M_\infty = 0$ a.s. hence since $M$ is closable it follows that $M_t = \cexpectationlong{\mathcal{F}_t}{M_\infty} = 0$ a.s.  for all $0 \leq t < \infty$.  Since $M$ is continuous it follows that $M=0$ a.s.  Symmetry of $\langle \cdot,\cdot \rangle$ follows immediately from symmetry of the $L^2$ inner product on $C([0,\infty); \reals)$.  Supposing $M$ and $N$ are both $L^2$ bounded continuous martingales we know they are closable hence $M_t = \cexpectationlong{\mathcal{F}_t}{M_\infty}$ and similarly for $N$.  It then follows from linearity of conditional expectation that $(aM + bN)_\infty = aM_\infty + bN_\infty$ for any $a,b \in \reals$.  From this fact we see that  for all $M,N,R \in \mathcal{M}^2$ and $a,b \in \reals$ we have $\langle aM + bN, R \rangle = \langle aM_\infty + bN_\infty, R_\infty \rangle = a \langle M, R \rangle + b \langle N, R \rangle$. 
+
+We now show that $\mathcal{M}^2$ is complete.  Suppose $M^1, M^2, \dotsc$ is Cauchy in $\mathcal{M}^2$, then $M^1_\infty, M^2_\infty, \dotsc$ is Cauchy in $L^2$ and therefore has a limit $\xi$ in $L^2$ that is $\mathcal{F}_\infty$-measurable.  Define $M_t = \cexpectationlong{\mathcal{F}_t}{\xi}$ so we know that $M_t$ is a martingale and $M_\infty = \xi$ a.s.  TODO: Do we know at this point that $M$ is $L^2$ bounded?  Now by the Doob $L^2$ inequality Lemma \ref{DoobLpInequalityContinuous} applied to the closed martingale $M_t$ on $[0,\infty]$ we have $\norm{\sup_{0 \leq s \leq \infty} (M_s^n - M_s)}_2 \leq 2 \norm{M^n_\infty - M_\infty}_2$.  From this we get that $\lim_{n \to \infty} \norm{\sup_{0 \leq s \leq \infty} (M_s^n - M_s)}_2 = 0$ hence $\sup_{0 \leq s \leq \infty} (M_s^n - M_s) \toprob 0$ (Lemma \ref{ConvergenceInMeanImpliesInProbability}) and therefore $\sup_{0 \leq s \leq \infty} (M_s^n - M_s) \toas 0$ along a subsequence (Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence}) which shows that $M$ is has almost surely continuous sample paths (Lemma \ref{UniformLimitContinuousFunctionsIsContinuous}).
+\end{proof}
 
 \subsection{Quadratic Variation}
 The crux of the problem in defining stochastic integrals is the fact that sample paths of continuous martingales almost surely have infinite total variation and therefore Lebesgue-Stieltjes integrals cannot be defined.   
 
-\begin{thm}Let $M$ and $N$ be continuous local martingales, there exists an almost surely unique continuous process $[M,N]$ of locally finite variation such that $[M,N]_0 = 0$ and $MN - [M,N]$ is a local martingale.
+\begin{lem}Let $M$ and $N$ be continuous local martingales and let $\tau$ be an optional time, then $M^\tau \left( N - N^\tau \right)$ is a local martingale.
+\end{lem}
+\begin{proof}
+First let us assume that $N$ is a martingale, $\tau$ is an optional time and $\eta$ is an $\mathcal{F}_\tau$-measurable bounded random variable.  We claim that $\eta(N_t - N^\tau_t)$ is a martingale.  By the Optional Stopping Theorem \ref{OptionalStoppingContinuous} we know that $\tau \wedge t$ is a bounded optional time hence $N_{\tau \wedge t}$ is integrable and therefore by boundedness of $\eta$ we know that $\eta(N_t - N_{\tau \wedge t})$ is integrable.  To see adaptedness, note that $\eta(N_t - N_{\tau \wedge t}) = \eta \characteristic{\tau \leq t} (N_t - N_{\tau \wedge t})$ so that by $\mathcal{F}_\tau$-measurability of $\eta$ we also have $\mathcal{F}_t$-measurability of $\eta \characteristic{\tau \leq t}$.  Furthermore, $N_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable and since $\tau \wedge t \leq t$ we see that it is also $\mathcal{F}_t$-measurable.  To see that $\eta (N_t - N_{\tau \wedge t})$ is a martingale we let $\sigma$ be any bounded optional time and then note by Optional Sampling, the tower and pullout properties of conditional expectation 
+\begin{align*}
+\expectation{\eta (N_\sigma - N_{\tau \wedge \sigma})} &= \expectation{\eta \cexpectationlong{\mathcal{F}_\tau}{ (N_\sigma - N_{\tau \wedge \sigma})}} = \expectation{\eta  (N_{\tau \wedge \sigma} - N_{\tau \wedge \sigma})} = 0
+\end{align*}
+which independent of $\sigma$ hence we can apply Lemma \ref{MartingaleOptionalTimeCriterion} to conclude that $\eta(N - N^\tau)$ is a martingale.
+
+TODO: Finish
+\end{proof}
+
+TODO: We used continuity of the local martingale $M$ to reduce ourselves to the case of bounded martingales which was used to obtain integrability.  Do general local martingales localize to $L^2$ bounded martingales or something else that would allow us to get integrability?
+
+\begin{thm}[Quadratic Covariation]\label{OptionalQuadraticCovariation}Let $M$ and $N$ be continuous local martingales, there exists an almost surely unique continuous process $[M,N]$ of locally finite variation such that $[M,N]_0 = 0$ and $MN - [M,N]$ is a local martingale.  The pairing $[M,N]$ is bilinear and symmetric and for every optional time $\tau$ satisfies
+\begin{align*}
+[M,N]^\tau = [M^\tau, N^\tau] = [M^\tau, N] \text{ a.s.}
+\end{align*}
+If we define $[M] = [M,M]$ then it is the case that $[M]$ is almost surely non-decreasing.  The process $[M,N]$ is called the \emph{quadratic covariation} of $M$ and $N$ and the process $[M]$ is called the \emph{quadratic variation} of $M$.
 \end{thm}
 \begin{proof}
-We first consider the case when $M=N$ and we first assume that $M$ is a bounded martingale such that $M_0=0$.  To motivate the construction recall the basic fact that for a function $f$ of bounded variation we have the Lebesgue-Stieltjes integral $f^2 = 2 \int f \, df$.  We know that in a stochastic setting such an identity can't quite work (because the Stieltjes doesn't work) but what does turn out to be true is that once we have defined a stochastic integral, $M^2 - 2 \int M \, dM = [M]$.  Of course our plan is to use the quadratic variation to define the stochastic integrals so this reasoning is getting pretty circular here; nonetheless if we suspend belief for moment and define something that \emph{looks like} it could be $\int M \, dM$ then we might get the right answer.  Motivated by these observations, our first step is to come up with an approximation of $M$ by predictable step processes so we can create an approximation of $\int M \, dM$.  For each $n > 0$ define the sequence of optional times $\tau^n_0, \tau^n_1, \dotsc$ by $\tau^n_0 = 0$ and 
+We first consider the case when $M=N$ and we first assume that $M$ is a bounded martingale such that $M_0=0$ and $\abs{M_t} \leq C$ for some deterministic constant $C > 0$.  To motivate the construction recall the basic fact that for a function $f$ of bounded variation we have the Lebesgue-Stieltjes integral $f^2 = 2 \int f \, df$.  We suspect that in a stochastic setting such an identity won't quite work (because the Stieltjes integral doesn't work).  That suspicion is correct and what does turn out to be true is that once we have defined a stochastic integral, $M^2 - 2 \int M \, dM = [M]$.  Of course our plan is to use the quadratic variation to define stochastic integrals so this reasoning is getting pretty circular here; nonetheless if we suspend belief for moment and define something that \emph{looks like} it could be $\int M \, dM$ then we might get the right definition for quadratic variation.  Motivated by these observations, our first step is to come up with an approximation of $M$ by predictable step processes so we can create an approximation of $\int M \, dM$.  For each $n > 0$ define the sequence of optional times $\tau^n_0, \tau^n_1, \dotsc$ by $\tau^n_0 = 0$ and 
 \begin{align*} 
-\tau^n_k = \inf \lbrace t > \tau^n_{k-1} \mid \abs{M_t - M_{\tau^n_{k-1}}} = 2^{-n} \rbrace \text{ for $k > 0$}
+\tau^n_k &= \inf \lbrace t > \tau^n_{k-1} \mid \abs{M_t - M_{\tau^n_{k-1}}} = 2^{-n} \rbrace \text{ for $k > 0$} \\
+&=\tau^n_{k-1} + \tau^n_1 \circ \theta_{\tau^n_{k-1}}
 \end{align*}
-and define 
+
+Claim: Either $\tau^n_k = \infty$ or $M_{\tau^n_k} = j/2^n$ for some random $j \in \integers$.
+
+This is a simple induction on $k$ for each $n$ using continuity of $M_t$, the fact that $M_0 = 0$ and $\tau^n_0=0$.
+
+Claim: Suppose $M_t = j/2^n$ for some $n \geq 0$ and $k \geq 0$ and let $K = \max \lbrace k \mid \tau^n_k \leq t$, then $M_{\tau^n_K} = j/2^n$.
+
+The claim is trivially true if $\tau^n_K = t$.  If this is not true by the previous claim we have $i \in \integers$ such that $M_{\tau^n_k} = i/2^n$.  By definition of $K$, we have $\tau^n_K < t < \tau^n_{K+1}$ and by definition of $\tau^n_{K+1}$, continuity of $M_t$ and the intermediate value theorem we know that $\abs{M_t - M_{\tau^n_K}} = \abs{i-j}2^{-n}< 2^{-n}$.  Thus $i=j$ and the claim is verified.
+
+Claim: For every $n \geq 0$ and $k \geq 0$ there exists a random integer $l \geq 0$ such that $\tau^n_k = \tau^{n+1}_l$.
+
+We proceed by induction on $k$ with the case $k=0$ being true because $\tau^n_0 = 0$ for all $n \geq 0$.  Having assumed $M_0 = 0$ we see that we can pick $0 \leq j < \infty$ such that $M_{\tau^n_k} = j/2^n$. (TODO: what to say when $\tau^n_k = \infty$; not clear that we can assert some $\tau^{n+1}_l=\infty$ since we may be oscillating with small enough amplitude?)  Let $i$ be the largest index such that $\tau^{n+1}_i \leq \tau^n_k$.  Since $M_{\tau^n_k} = j/2^n = 2j/2^{n+1}$ we can apply the previous claim to see that $M_{\tau^{n+1}_i}  = M_{\tau^n_k}$.  By the intermediate value theorem we know that $M_{\tau^n_{k-1}} < M_{\tau^{n+1}_i}  \leq M_{\tau^n_k}$. Because $\abs{M_{\tau^{n+1}_i} - M_{\tau^n_{k-1}}} = \abs{M_{\tau^{n}_k} - M_{\tau^n_{k-1}}} = 2^{-n}$ by definition of $\tau^n_k$ we know that $\tau^{n+1}_i \geq \tau^n_k$ and therefore $\tau^{n+1}_i = \tau^n_k$.
+
+Define 
 \begin{align*}
 V^n_t &= \sum_{k=0}^\infty M_{\tau^n_{k}} \characteristic{(\tau^n_{k}, \tau^n_{k+1}]}(t)
 \end{align*}
-where we don't have to worry about convergence since for any fixed $t$ the sum is finite.  Clearly, each $V^n$ is a bounded predictable step process and it is also clear that $V^n$ is an approximation of $M$ (though we won't yet belabor the exact sense in which this is true).  Pick $t \geq 0$ and let $K$ be the random index such that $\tau^n_{K} < t \leq \tau^n_{K+1}$ then we can compute using high school algebra and the fact that $M_{\tau^n_0} = M_0 = 0$
+where despite the fact that we have written an infinite sum we don't have to worry about convergence since for any fixed $t$ the sum is finite.  Clearly, each $V^n$ is a bounded predictable step process and it is also clear that $V^n$ is an approximation of $M$ (though we won't yet belabor the exact sense in which this is true).  Pick $t \geq 0$ and let $K$ be the random index such that $\tau^n_{K} < t \leq \tau^n_{K+1}$ then we can compute using high school algebra and the fact that $M_{\tau^n_0} = M_0 = 0$
 \begin{align*}
-2 \left( \int V^n \, dM \right)_t &= 2 \sum_{k=0}^\infty M_{\tau^n_{k}} \left ( M_{t \wedge \tau^n_{k+1}} - M_{t \wedge \tau^n_k} \right ) \\
+2 \int_0^t V^n \, dM &= 2 \sum_{k=0}^\infty M_{\tau^n_{k}} \left ( M_{t \wedge \tau^n_{k+1}} - M_{t \wedge \tau^n_k} \right ) \\
 &=2 M_{\tau^n_K} M_t - 2 M_{\tau^n_K}^2 + 2 \sum_{k=0}^{K-1} M_{\tau^n_k} M_{\tau^n_{k+1}} - 2 \sum_{k=0}^{K-1} M^2_{\tau^n_k} \\
 &=2 M_{\tau^n_K} M_t -  M_{\tau^n_K}^2 + 2 \sum_{k=0}^{K-1} M_{\tau^n_k} M_{\tau^n_{k+1}} - \sum_{k=0}^{K-1} M^2_{\tau^n_k}  - \sum_{k=0}^{K-1} M^2_{\tau^n_{k+1}} \\
 &=2 M_{\tau^n_K} M_t -  M_{\tau^n_K}^2 - \sum_{k=0}^{K-1} \left (M_{\tau^n_{k+1}}  - M_{\tau^n_k}\right)^2 \\
@@ -67,11 +346,536 @@ Q^n_t = \sum_{k=0}^\infty \left (M_{t \wedge \tau^n_{k+1}}  - M_{t \wedge \tau^n
 \end{align*}
 we have the identity
 \begin{align*}
-M^2_t &= 2 \left( \int V^n \, dM \right)_t + Q^n_t
+M^2_t &= 2 \int_0^t V^n \, dM + Q^n_t
 \end{align*}
-We know that $\int V^n \, dM$ is a continuous martingale and furthermore we have
+Since $V^n$ is a bounded predictable step process and $M$ is an $L^2$ continuous martingale, we know that $\int V^n \, dM$ is a continuous $L^2$ martingale (Lemma \ref{StochasticIntegralPredictableStepProcess}).   Furthermore by construction we have $\sup_{0 \leq t < \infty} \abs{V^n_t - M_t} < 2^{-n}$ and therefore $\sup_{0 \leq t < \infty} \abs{V^n_t - V^m_t} < 2^{-n+1}$ for all $n \leq m$.  
 \begin{align*}
-\norm{\int V^n \, dM - \int V^m \, dM}_2 
+\norm{\int V^n \, dM - \int V^m \, dM}_2 &=\norm{\int (V^n - V^m )\, dM }_2 \\
+&=\norm{\lim_{t \to \infty} \int_0^t (V^n - V^m )\, dM }_2\\
+&\leq \lim_{t \to \infty} \norm{\int_0^t (V^n - V^m )\, dM }_2 && \text{ by Fatou's Lemma}\\
+&\leq \lim_{t \to \infty} 2^{-n+1} \norm{M_t}_2 && \text{ by Lemma \ref{StochasticIntegralPredictableStepProcess}}\\
+&= 2^{-n + 1} \norm{M_\infty}_2 = 2^{-n+1} \norm{M}_2 && \text{ since $M_t \tolp{2} M_\infty$}
 \end{align*}
-which shows that $\int V^n \, dM$ is a Cauchy sequence in $\mathcal{M}$.  By completeness of $\mathcal{M}$ we can find a limit $\xi$.
+which shows that $\int V^n \, dM_s$ is a Cauchy sequence in $\mathcal{M}^2$.  (TODO: I am almost certain that we know $\int (V^n - V^m) \, dM$ is a bounded $L^2$ martingale so that in fact we have $\int_0^t (V^n - V^m) \, dM \tolp{2} \int_0^\infty (V^n - V^m) \, dM$ and we don't need Fatou above, we have equality).  By completeness of $\mathcal{M}^2$ (Lemma \ref{ContinuousL2MartingalesHilbert}) there is $N \in \mathcal{M}^2$ such that $\int V_s^n \, dM_s$ converges to $N$.  Define $[M] = M^2 - 2N$ and use the Doob $L^2$ inequality $\sup_{0 \leq t \leq \infty} \abs{N_t - \int_0^t V^n\, dM} \leq 2 \norm{N - \int V^n\, dM} \to 0$ to get
+\begin{align*}
+\sup_{0 \leq t < \infty} \abs{Q^n_t - [M]_t} &=\sup_{0 \leq t < \infty} \abs{Q^n_t - M^2_t + 2N_t} \\
+&= 2 \sup_{0 \leq t < \infty} \abs{N_t - \int_0^t V^n \, dM} \toprob 0
+\end{align*}
+Therefore $\sup_{0 \leq t < \infty} \abs{Q^n_t - [M]_t} \toas 0$ along a subsequence (Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence}).  Define the random set $T = \lbrace \tau^n_k \mid n,k \in \naturals \rbrace$.  We have shown above that for any two elements $s < t \in T$ for sufficiently large $n$ such that $s = \tau^n_k$ and $t = \tau^n_j$ for appropriate $k,j \in \integers_+$ (where $k$ and $j$ depend on $n$ of course).  From the definition of $Q^n_t$ it follows that $Q^n_s \leq Q^n_t$ for all such $n$; thus $[M]$ is almost surely non-decreasing on $T$.  By continuity of $[M]$ we can extend this to conclude that almost surely $[M]$ is non-decreasing on the closure $\overline{T}$.  To see that $[M]$ is non-decreasing everywhere, we know that $\reals_+ \setminus \overline{T}$ is a countable union of open intervals so it suffices to show that $[M]$ is constant on any open interval $(a,b) \subset \reals_+ \setminus \overline{T}$.  If $[M]$ is not constant on $(a,b)$ then we can find suitable $s,t$ such that $a < s < t < b$ and $X_s = k/2^n$ and $X_t = (k+1)/2^n$ or $X_t = (k-1)/2^n$ for some $k,n \in \integers$.  Pick the largest $i$ such that $\tau^n_i \leq s$.  As $(a,b) \cap \overline{T} = \emptyset$ we know that $\tau^n_i < s$.  By our previous claim we know that $X_{\tau^n_i} = X_s$ and therefore $\abs{X_t - X_{\tau^n_i}} = \abs{X_t - X_s} = 2^{-n}$ which implies $\tau^n_i < s < \tau^n_{i+1} \leq t$ which contradicts $(a,b) \cap \overline{T} = \emptyset$.
+
+Now we need to extend the definition of the quadratic variation to unbounded martingales $M$.  Let $\tau_n = \inf \lbrace t \geq 0 \mid \abs{M_t} = n \rbrace$ which is an optional time by continuity of sample paths of $M$ and Lemma \ref{HittingTimesContinuous}.  By what we have proven, we know that $[M^{\tau_n}]$ exists and is almost surely non-decreasing.
+TODO: Finish the result by extending to the unbounded case.
+
+Having defined the quadratic variation $[M]$, we now extend it to the quadratic covariation $[M,N]$ for general local martingales $M$ and $N$.  First we establish the uniqueness.  Note that if we are given processes of locally bounded variation $Q$ and $R$ such that $Q_0 = R_0 = 0$ and $MN - Q$ and $MN - R$ are local martingales, then $Q-R = (MN -R) - (MN -Q)$ is a local martingale of locally bounded variation and Lemma \ref{ContinuousLocalMartingaleBoundedVariation} implies that $Q - R = Q_0 - R_0 = 0$ a.s.  From the uniqueness we immediately see that $[M,N]$ is bilinear and symmetric.
+
+Now we reduce the definition of $[M,N]$ to the case $[M]$ with $M_0 = 0$ by a pair of reductions.
+
+Claim: $[M-M_0,N-N_0] = [M,N]$ a.s.
+
+Simply note that 
+\begin{align*}
+MN - (M-M_0)(N-N_0) &= M_0 N_0 + M_0 N + N_0 M
+\end{align*}
+is a local martingale and therefore $(M-M_0)(N-N_0) - [M,N] = -(MN - (M-M_0)(N-N_0) ) + MN - [M,N]$ is a local martingale.
+
+Claim: $[M,N] = \frac{1}{4} ([M+N] - [M-N])$
+
+Note that 
+\begin{align*}
+4 MN - [M+N] + [M-N] &= ((M+N)^2 - [M+N]) - ((M-N)^2 - [M-N])
+\end{align*}
+is a local martingale.
+
+Lastly we prove the behavior of localization under optional times.
+Claim: Let $\tau$ be an optional time, then $[M,N]^\tau = [M^\tau, N^\tau] = [M^\tau,N]$ a.s.
+
+For the first reduction, suppose that $\tau$ is an optional time then we know that
+\begin{align*}
+(MN - [M,N])^\tau &= M^\tau N^\tau - [M,N]^\tau
+\end{align*}
+which is a local martingale by Lemma \ref{LocalMartingaleLocalProperty} and moreover $[M,N]^\tau$ is of locally finite variation therefore we see $[M^\tau,N^\tau] = [M,N]^\tau$ a.s.  We also know that $M^\tau (N^\tau -N)$ is a local martingale (TODO:this is supposed to follow for martingales from optional stopping (doesn't that actually show $M_\tau(N - N^\tau)$ is a martingale) then given a localizing sequence $\tau_n$ for $M$ and $\sigma_n$ for $N$ we know that $\tau_n \wedge \sigma_n$ is a localizing sequence for both $M$ and $N$) and therefore 
+\begin{align*}
+M^\tau N - [M,N]^\tau &= M^\tau (N - N^\tau)  + M^\tau N^\tau - [M,N]^\tau
+\end{align*}
+is a local martingale which shows that $[M,N]= [M^\tau,N]$ a.s.
+
+TODO: This proof does not make it clear that when $M$ is a martingale we know $M^2 - [M]$ is in fact a martingale (is that always true?  According to Rogers and Williams we know that $[M]$ is a uniformly integrable martingale whenever $M$ is $L^2$-bounded).  Here is an argument that may too complicated but shows that if $[M]$ exists for bounded martingales $M$ then $[M]$ exists for $L^2$ bounded martingales $M$ and $M^2 - [M]$ is a uniformly integrable martingale.
+
+By $L^2$ boundedness we know that for every optional time $\tau$ we have $\abs{M^2_\tau} \leq (M^*)^2$ and moreover by Doob's inequality $\expectation{(M^*)^2} \leq 2 \norm{M} < \infty$ so $\lbrace M^2_\tau \mid \tau \text{ is an optional time}\rbrace$ is a uniformly integrable family (Example \ref{DominatedImpliesUniformlyIntegrable}).  Therefore by Lemma \ref{LpConvergenceUniformIntegrability} for any sequence of optional times $\tau_n$ such that $\tau_n \uparrow \infty$ a.s. we have not only $M^2_{\tau_n} \toas M^2_\infty$ but also $M_{\tau_n} \tolp{2} M_\infty$.
+
+Now, define $\tau_n = \inf \lbrace t \geq 0 \mid M_t = n \rbrace$ which is an optional time by Lemma \ref{HittingTimesContinuous}.  TODO: Show $\tau_n \uparrow \infty$ a.s.  As in the proof above we know that $[M^{\tau_m}] = [M^{\tau_n}]$ on $[0,\tau_m]$ for any $m \leq n$ and therefore we can define $[M] = \lim_{n \to \infty} [M^{\tau_n}]$ and we have $[M]^{\tau_n} = [M^{\tau_n}]$ on $[0,\tau_n]$.  Moreover, since each $[M^{\tau_n}]$ is increasing we know that $[M^{\tau_n}]_\infty = [M^{\tau_n}]_{\tau_n} \uparrow [M]_\infty$ and therefore we can apply Monotone Convergence to conclude $[M^{\tau_n}]_\infty \tolp{1} [M]_\infty$.  TODO: Finish.
+\end{proof}
+
+\begin{lem}\label{QuadraticCovariationAndContinuity}Let $M_n$ be a sequence of continuous local martingales, then $M_n^* \toprob 0$ if and only if $[M_n]_\infty \toprob 0$.
+\end{lem}
+\begin{proof}
+First we assume that $M_n^* \toprob 0$.  Let $\epsilon > 0$ be given and define $\tau_n = \inf \lbrace t \geq 0 \mid (M_n)_t > \epsilon \rbrace$ which is an optional time because of the continuity of $M_n$.  Moreover, we know that $M^{\tau_n}_n$ is a bounded continuous martingale and therefore $(M^2_n - [M_n])^{\tau_n} = (M^{\tau_n}_n)^2 - [M^{\tau_n}_n]$ is a martingale starting at zero which shows that for all $t \geq 0$,
+\begin{align*}
+\expectation{[M^{\tau_n}_n]_t} &=  \expectation{(M^{\tau_n}_n)_t^2} \leq \epsilon^2
+\end{align*}
+Now we can use a Markov bound to see that
+\begin{align*}
+\probability{[M_n]_\infty > \epsilon} &\leq \probability{[M_n]_\infty > \epsilon; \tau_n < \infty } + \probability{[M_n]_\infty > \epsilon; \tau_n = \infty } \\
+&\leq \probability{ \tau_n < \infty } + \probability{[M_n]_{\tau_n} > \epsilon} \\
+&\leq \probability{ M^*_n > \epsilon } + \epsilon^{-1} \expectation{[M_n]_{\tau_n}} \\
+&\leq \probability{ M^*_n > \epsilon } + \epsilon
+\end{align*}
+To see that this shows convergence in probability, first note that by our assumption that $M^*_n \toprob 0$ we have $\lim_{n \to \infty} \probability{[M_n]_\infty > \epsilon} \leq \epsilon$.  But now note that the left hand limit is a decreasing function of $\epsilon$ and therefore 
+\begin{align*}
+\lim_{n \to \infty} \probability{[M_n]_\infty > \epsilon} &\leq \lim_{\epsilon \to 0^+} \lim_{n \to \infty} \probability{[M_n]_\infty > \epsilon} \leq \lim_{\epsilon \to 0^+} \epsilon
+\end{align*}
+thus as $\epsilon > 0$ was arbitrary we have shown $[M_n]_\infty \toprob 0$.
+
+Now we assume that $[M_n]_\infty \toprob 0$.  As before let $\epsilon > 0$ be given and this time define $\tau_n = \inf \lbrace t \geq 0 \mid [M_n]_t > \epsilon^2$ which is an optional time by continuity of $[M_n]$.  
+
+Claim: Let $N$ be a continuous local martingale with $N_0 = 0$ and $\expectation{[N]_\infty} < \infty$, the $N$ is in fact an $L^2$ bounded martingale.
+
+To see the claim, pick $\sigma_n = \inf \lbrace t \geq 0 \mid \abs{N_t} > n \rbrace$ and we have seen that $\sigma_n$ is a localizing sequence for $N$ such that $N^{\sigma_n}$ is a bounded martingale.  Therefore $(N^{\sigma_n})_t^2 - [N^{\sigma_n}]$ is a martingale starting at zero and for all $t \geq 0$ because $[N]_t$ is increasing
+\begin{align*}
+\expectation {(N^{\sigma_n})_t^2} &= \expectation{[N^{\sigma_n}]_t} \leq \expectation{[N]_\infty} < \infty
+\end{align*}
+Therefore for fixed $t \geq 0$, the sequence $(N^{\sigma_n})^2_t$ is $L^2$ bounded and therefore the sequence $N^{\sigma_n}_t$ is uniformly integrable (Lemma \ref{BoundedLpImpliesUniformlyIntegrable}) which shows us that 
+\begin{align*}
+\cexpectation{\mathcal{F}_s}{N_t}   &= \lim_{n \to \infty} \cexpectation{\mathcal{F}_s}{N^{\sigma_n}_t} = \lim_{n \to \infty} N^{\sigma_n}_s = N_s
+\end{align*}
+and by Fatou's Lemma we have 
+\begin{align*}
+\expectation{N_t^2} &\leq \liminf_{n \to \infty} \expectation { (N^{\sigma_n})_t^2} \leq \expectation{[N]_\infty}
+\end{align*}
+which shows that $N$ is an $L^2$ bounded martingale.
+
+Now we can apply the claim to the local martingale $M^{\tau_n}_n$ for which by definition of $\tau_n$ we have $[M^{\tau_n}_n]_\infty = [M_n]_{\tau_n} \leq \epsilon^2$ and therefore a fortiori $\expectation {[M^{\tau_n}_n]_\infty} < \infty$.  Thus we conclude that $M^{\tau_n}_n$ is an $L^2$-bounded martingale and therefore $(M^{\tau_n}_n)^2 - [M^{\tau_n}_n]$ is a uniformly integrable martingale starting at zero.  We are now in a position to mimic the first part of the proof.   By the martingale property and the defintion of $\tau_n$ we have for all $0 \leq t \leq \infty$,
+\begin{align*}
+\expectation{(M^{\tau_n}_n)_t^2} &= \expectation{ [M^{\tau_n}_n]_t } = \expectation{ [M_n]_{\tau_n \wedge t} } \leq \epsilon^2
+\end{align*}
+and by a Markov bound and Doob's $L^2$ inequality applied to the $L^2$ bounded martingale $M^{\tau_n}_n$ we get,
+\begin{align*}
+\probability{M^*_n \geq \epsilon} &\leq \probability{M^*_n \geq \epsilon; \tau_n < \infty }  + \probability{M^*_n \geq \epsilon ; \tau_n = \infty} \\
+&\leq \probability{\tau_n < \infty }  + \probability{(M^{\tau_n}_n)^* \geq \epsilon} \\
+&\leq \probability{\tau_n < \infty }  + \epsilon^{-1} \expectation{(M^{\tau_n}_n)^*} \\
+&\leq \probability{[M_n]_\infty > \epsilon^2 }  + 2 \epsilon^{-1} \expectation{(M^{\tau_n}_n)^2_\infty} \\
+&\leq \probability{[M_n]_\infty > \epsilon^2 }  + 2 \epsilon \\
+\end{align*}
+and as before take the limit as $n \to \infty$ and then as $\epsilon \to 0$ to see that $M^*_n \toprob 0$.
+\end{proof}
+
+Because the covariation process $[M,N]$ is of finite variation we can define a pointwise Lebesgue-Stieltjes integral $\int f(\omega,s) \, d[M,N]_s$ for any progressive process $f(\omega,t)$ (TODO: is jointly measurable enough?  If we assume progressive then I guess we get a local martingale out of this).  Note that there is the potential for ambiguity in interpreting an integral with respect to a process of finite variation when the integrand is a step process as we could also consider using the definition as an elementary stochastic integral.  It does turn out that these two possible definitions agree but we'll defer addressing the question and instead we will always explicitly denote the integration variable when considering a pointwise Stieltjes integral as in the expression $\int_0^t U_s \, dM_s$.  TODO: Validate that the elementary stochastic integral defined above is consistent with the definition of the pointwise Stieltjes integral; it is worth understand the point at which we need this fact as Rogers and Williams indicate that they don't require it for quite some time.  Actually the consistency when integrands are step processes is trivial to see.  The fact that Rogers and Williams defer is the deeper fact that once one has defined a stochastic integral for not necessarily continuous local martingales one has the possibility for a stochastic integral with an integrator of finite variation.  This integral can be shown to agree with the pointwise Stieltjes integral.
+
+Before we begin we record the following simple fact about Lebesgue-Stieltjes integrals.
+
+TODO: Remove as we moved this into a separate section.
+\begin{lem}\label{StoppingStieltjesIntegrals}Let $F$ be a function of finite variation and for each $t \geq 0$ define $F^t(s) = F(t \wedge s)$, then for all measurable $g$ we have $\int_0^t g \, dF = \int g \, dF^t$.
+\end{lem}
+\begin{proof}
+First suppose that $F$ is a non-decreasing right continuous function, and consider the Stieltjes measure $\mu_t$ defined by $F^t$ (see \ref{LebesgueStieltjesMeasure}).  For any interval $[a,b]$ we have
+\begin{align*}
+\mu_t([a,b]) &= F^t(b) - F^t(a) = F(b \wedge t) - F(a \wedge t) = \int_0^\infty \characteristic{[a,b]} \characteristic{[0,t]} \, dF 
+\end{align*}
+and therefore $\mu_t$ obtained by applying the density function $\characteristic{[0,t]}$ to the Stieltjes measure for $F$.  Now by Lemma \ref{ChainRuleDensity} we see that $\int g \, dF^t = \int g \characteristic{[0,t]} \, dF = \int_0^t g \, dF$.  To finish the result, write a function of finite variation as a difference of two montone functions.
+\end{proof}
+
+\begin{lem}\label{CovariationOfPredictableStepProcessesContinuousLocalMartingale}Let $M$ and $N$ be continuous local martingales and let $U$ and $V$ be finite predictable step processes with deterministic jump times, then 
+\begin{align*}
+[ \int U \, dM, \int V \, dN] &= \int U_s V_s \, d[M,N]_s \text{ a.s.}
+\end{align*}
+\end{lem}
+\begin{proof}
+We know that each of $\int U \, dM$ and $\int U \, dM$ is a continuous local martingale by Lemma \ref{StochasticIntegralPredictableStepProcess}.  In addition each of the expressions in the results is invariant under centering thus we may assume $M_0 = N_0 = 0$.  Furthermore for any optional time $\tau$ we have by Theorem \ref{OptionalQuadraticCovariation}
+\begin{align*}
+[ \int U \, dM, \int V \, dN]^\tau &= [ \left(\int U \, dM \right)^\tau, \left(\int V \, dN \right)^\tau] = [ \int U \, dM^\tau, \int V \, dN^\tau]
+\intertext{and  by Lemma \ref{StoppingStieltjes}}
+\left(\int U_s V_s \, d[M,N]_s\right)^\tau &= \int U_s V_s \, d[M,N]^\tau_s
+\end{align*}
+so if we choose a common localizing sequence $\tau_n \uparrow \infty$ it suffices prove the result for $M^{\tau_n}$, $N^{\tau_n}$ and $[M,N]^{\tau_n}$.  Thus, we may assume that $M$, $N$ and $[M,N]$ is each bounded.  Thus each of $M$, $N$ and $MN - [M,N]$ is a bounded martingale hence each is closable and we may in fact assume each is a bounded martingale on $[0,\infty]$.
+
+Now we first assume that $V = 1$ and let $U = \sum_{k=1}^n \eta_k \characteristic{(t_{k-1}, t_k]}$.  By appending an extra term with $\eta_n = 0$ we may assume that $t_n=\infty$.  Now we compute using the definitions and the martingale property of $M$, $N$ and $MN-[M,N]$ to see
+\begin{align*}
+\expectation{N_\infty \int_0^\infty U \, dM } &= \expectation{\sum_{k=1}^n \eta_k \left(M_{t_k} - M_{t_{k-1}}\right) \sum_{k=1}^n \left( N_{t_k} - N_{t_{k-1}}\right)} \\
+&= \expectation{\sum_{k=1}^n \eta_k \left(M_{t_k} N_{t_k} - M_{t_{k-1}} N_{t_{k-1}}\right)} \\
+&= \expectation{\sum_{k=1}^n \eta_k \left([M, N]_{t_k} - [M, N]_{t_{k-1}}\right)} \\
+&= \expectation{\int_0^\infty U_s \, d[M,N]_s}
+\end{align*}
+For an arbitrary optional time $\tau$ we can also apply this argument to $M^\tau$ and $N^\tau$ to see that
+\begin{align*}
+\expectation{N_\tau \int_0^\tau U \, dM } &= \expectation{N^\tau_\infty\int_0^\infty U \, dM^\tau } \\
+&= \expectation{\int_0^\infty U_s \, d[M^\tau,N^\tau]_s} = \expectation{\int_0^\tau U_s \, d[M,N]_s}
+\end{align*}
+From Lemma \ref{MartingaleOptionalTimeCriterion} we see that $N_t \int_0^t U \, dM - \int_0^t U_s \, d[M,N]_s$ is a martingale
+and therefore $[\int U \, dM, N] = \int_0^t U_s \, d[M,N]_s$ a.s. by uniqueness of the quadratic covariation.
+
+Now we finish by assuming a general $V = \sum_{k=1}^n \xi_k \characteristic{(t_{k-1},t_k]}$.  Note that we can assume by redefining $\xi_k$ and $\eta_k$ appropriately that both $U$ and $V$ are defined with respect to the same sequence of deterministic jump times $0=t_0 < t_1 < \dotsb < t_n$ so in particular $UV = \sum_{k=1}^n \eta_k \xi_k \characteristic{(t_{k-1},t_k]}$.  We can compute directly twice using the special case just proven
+\begin{align*}
+[\int U \, dM , \int V \, dN]_t &= \int_0^t U_s \, d[M, \int V \, dN]_s \\
+&= \sum_{k=1}^n \eta_k \left( [M, \int V \, dN]_{t_k \wedge t} - [M, \int V \, dN]_{t_{k-1} \wedge t} \right) \\
+&= \sum_{k=1}^n \eta_k \left( \int_0 ^{t_k \wedge t} V_u \, d [M, N]_u - \int_0^{t_{k-1} \wedge t} V_u \,d [M, N]_u \right) \\
+&= \sum_{k=1}^n \eta_k \sum_{j=0}^n  \xi_j \left( [M, N]_{t_j \wedge t_k\wedge t} - [M, N]_{t_{j-1} \wedge t_k \wedge t} - [M, N]_{t_j \wedge t_{k-1}\wedge t} + [M, N]_{t_{j-1} \wedge t_{k-1} \wedge t} \right) \\
+&= \sum_{k=1}^n \eta_k  \xi_k \left( [M, N]_{t_k\wedge t} - [M, N]_{t_{k-1} \wedge t} \right) \\
+&= \int_0^t U_s V_s \, d[M,N]_s
+\end{align*}
+and the full result is proven.
+\end{proof}
+
+We have the following bounds on ruin probabilities as a corollary of Optional Stopping for continuous martingales.
+\begin{lem}\label{GamblersRuinContinuousMartingale}Let $M$ be a continuous martingale with $M_0 = 0$ and such that $\probability{M^* > 0} > 0$.  If we define $\tau_x = \inf \lbrace t>0 \mid M_t = x\rbrace$ then for every $a < 0 < b$ we have
+\begin{align*}
+\cprobability{M^* > 0}{\tau_a < \tau_b} &\leq \frac{b}{b-a} \leq \cprobability{M^* > 0}{\tau_a \leq \tau_b} 
+\end{align*}
+\end{lem}
+\begin{proof}We know that $\tau_a$ and $\tau_b$ are optional by continuity of $M$ and Lemma \ref{HittingTimesContinuous}.  Define $\tau = \tau_a \wedge \tau_b$ which we know is optional as well.  For every $t \geq 0$, by Optional Stopping we know that $\expectation{M_{\tau \wedge t}} = M_0 = 0$.  Clearly $\lim_{t \to \infty} M_{\tau \wedge t} = M_\tau$ and by the definition of $\tau$ we know that $\abs{M_{\tau \wedge t}} \leq -a \vee b < \infty$ and therefore we can apply Dominated Convergence to conclude that $\expectation{M_\tau} = 0$.  Now we can establish bounds using two simple facts.   First by continuity of $M$, we know that $\tau_a = \tau_b$ if and only if $\tau_a = \tau_b = \tau = \infty$.   Secondly $\tau_a \neq \tau_b$ implies $M^* > 0$.  With these observations in hand,
+\begin{align*}
+0 &=\expectation{M_\tau; \tau_a < \tau_b} + \expectation{M_\tau; \tau_b < \tau_a} + \expectation{M_\infty; \tau_a = \tau_b =\infty} \\
+&\leq a \probability{\tau_a < \tau_b} + b \probability{\tau_b < \tau_a} + b \probability{M^* > 0 ; \tau_a = \tau_b =\infty} \\
+&= a \probability{\tau_a < \tau_b} + b \probability{M^* > 0 ; \tau_b \leq \tau_a} \\
+&= a \probability{\tau_a < \tau_b} + b \probability{M^* > 0} - b \probability{M^* > 0 ; \tau_a < \tau_b} \\
+&= b \probability{M^* > 0} - (b - a)\probability{M^* > 0 ; \tau_a < \tau_b} \\
+\end{align*}
+which gives the first inequality. The second inequality is demonstrated in the same way but using a lower bound for $M_\infty$ on $\tau_a = \tau_b = \infty$, 
+\begin{align*}
+0 &\geq a \probability{\tau_a < \tau_b} + b \probability{\tau_b < \tau_a} + a \probability{M^* > 0 ; \tau_a = \tau_b =\infty} \\
+&= a \probability{M^* > 0; \tau_a \leq \tau_b} + b \probability{M^* > 0 ; \tau_b < \tau_a} \\
+&= a \probability{M^* > 0; \tau_a \leq \tau_b} + b \probability{M^* > 0} - b \probability{M^* > 0 ; \tau_a \leq \tau_b} \\
+&= b \probability{M^* > 0} - (b - a)\probability{M^* > 0; \tau_a \leq \tau_b} \\
+\end{align*}
+\end{proof}
+
+\begin{thm}[Burkholder-Davis-Gundy Inequalities]\label{BDGInequalities}For every $p > 0$ there exist a constant $0 < c_p < \infty$ such that for every continuous local martingale $M$ with $M_0 = 0$ we have
+\begin{align*}
+c_p^{-1} \expectation{[M]^{p/2}_\infty} &\leq \expectation{(M^*)^p} \leq c_p \expectation{[M]^{p/2}_\infty}
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO: Perform reduction to the bounded martingale case via localization and optional stopping (Kallenberg indicates that we may also assume $[M]$ is bounded).
+
+The following argument is quite elementary in each of its steps but is not entirely obvious so we spell it out in great detail.  To derive the inequalities for expectations we'll use Lemma \ref{TailsAndExpectations} and therefore we proceed by creating tail bounds for the random variables in question.  We first work on the right hand inequality of the result.  Let $r > 0$ be fixed and define $\tau = \inf \lbrace t \geq 0 \mid M_t^2 = r \rbrace$ (which is an optional time by continuity and Lemma \ref{HittingTimesContinuous}) and define $\tilde{M} = M - M^\tau$ and $N = \tilde{M}^2 - [\tilde{M}]$.  Pick any $0 < c < 1$ (we'll later refine the required bounds on $c$) and write
+\begin{align*}
+\probability{(M^*)^2 \geq 4r} &= \probability{(M^*)^2 \geq 4r ; [M]_\infty \geq cr} + \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} \\
+&\leq \probability{[M]_\infty \geq cr} + \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} 
+\end{align*}
+we get
+\begin{align*}
+\probability{(M^*)^2 \geq 4r} - \probability{[M]_\infty \geq cr} &\leq \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} 
+\end{align*}
+Since $[\tilde{M}] = [M] - [M]^\tau$ and $[M]$ is non-decreasing it follows that $[\tilde{M}] \leq [M]$ and therefore $[M]_\infty < cr$ implies $[\tilde{M}]_\infty < cr$.  Since trivially $\tilde{M}^2 \geq 0$ we know that $[M]_\infty < cr$ implies $N > -cr$.  On $\lbrace (M^*)^2 \geq 4r \rbrace$ we know that $\tau < \infty$ and therefore $\abs{M_\tau} = \sqrt{r}$ and for any $\epsilon > 0$ we can find $t \geq 0$ such that $\abs{M_t} \geq 2\sqrt{r} - \epsilon$, thus $\abs{M_t - M_\tau} > \sqrt{r} - \epsilon$ which implies $\sup_t \tilde{M}^2_t \geq r$.  Putting these observations together we see that $\lbrace (M^*)^2 \geq 4r; [M]_\infty < cr \rbrace \subset \lbrace N > -cr; \sup_t N_t > r - cr \rbrace$ and we get 
+\begin{align*}
+\probability{(M^*)^2 \geq 4r} - \probability{[M]_\infty \geq cr} &\leq \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} \\
+&\leq \probability{N > -cr; \sup_t N_t > r - cr}
+\end{align*}
+Now since $N$ is a martingale with $N_0 = 0$, we can apply the Gambler's Ruin Lemma \ref{GamblersRuinContinuousMartingale} with $-cr < 0 < r - cr$ to and use the fact that $\lbrace N > -cr; \sup_t N_t > r - cr \rbrace \subset \lbrace \tau_{-cr} > \tau_{r - cr} ; N^* > 0 \rbrace$ to conclude that 
+\begin{align*}
+\probability {N > -cr; \sup_t N_t > r - cr} &\leq \probability{\tau_{-cr} > \tau_{r - cr} ; N^* > 0} \\
+&= 1 - \probability{\tau_{-cr} \leq \tau_{r - cr} ; N^* > 0} \\
+&\leq (1 - \frac{r - cr}{r -cr + cr})\probability{N^* > 0} = c \probability{N^* > 0}
+\end{align*}
+It is clear from the nonnegativity of $[\tilde{M}]$ and the definition of $N$ that $N^* > 0$ implies $\tilde{M}^*= (M-M^\tau)^* > 0$ which $\tau < \infty$ and therefore $(M^*)^2 > r$.  Thus
+\begin{align*}
+\probability{(M^*)^2 \geq 4r} - \probability{[M]_\infty \geq cr} &\leq \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} \\
+&\leq \probability{N > -cr; \sup_t N_t > r - cr} \\
+&\leq c \probability{N^* > 0} \leq c \probability{(M^*)^2 > r}
+\end{align*}
+
+Now we multiply by $\frac{p}{2}r^{p/2-1}$ and integrate to get 
+\begin{align*}
+&\frac{p}{2}\int_0^\infty r^{p/2-1}\probability{(M^*)^2 \geq 4r} \, dr - \frac{p}{2}\int_0^\infty r^{p/2-1}\probability{[M]_\infty \geq cr} \, dr \\
+&\leq \frac{cp}{2}\int_0^\infty r^{p/2-1} \probability{(M^*)^2 > r} \, dr \\
+\end{align*}
+which yields upon changing integration variables and applying Lemma \ref{TailsAndExpectations}
+\begin{align*}
+2^{-p} \expectation{\abs{M^*}^{p}} - c^{-p/2} \expectation{\abs{[M]_\infty}^{p/2}} &\leq c \expectation{\abs{M^*}^{p}}
+\end{align*}
+Thus we get the right hand inequality for $c_p = c^{-p/2}/(2^{-p} -c)$ which is a positive constant for any $0 < c < 2^{-p}$.
+
+The proof of the left hand inequality follows the same pattern but this time we define the optional time $\tau = \inf \lbrace t \geq 0 \mid [M_t] = r \rbrace$ and as before $\tilde{M} = M - M^\tau$ and $N = \tilde{M}^2 - [\tilde{M}]$.  We let $r > 0$ be arbitrary, assuming that $0 < c < 1/4$.  We give the entire computation at once and them make some comments about the details of the justification:
+\begin{align*}
+\probability{[M]_\infty \geq 2r } - \probability{(M^*)^2 \geq cr} &\leq \probability{[M]_\infty \geq 2r ; (M^*)^2 < cr} \\
+&\leq \probability{N < 4cr ; \inf_t N_t < 4cr -r} \\
+&\leq 4c \probability{N^* > 0} \\
+&\leq 4c \probability{[M]_\infty \geq r}
+\end{align*}
+The first inequality follows as before by a simple union bound.  To see the second inequality, note first that on $\lbrace (M^*)^2 < cr \rbrace$ by non-negativity of $[\tilde{M}]$ we have 
+\begin{align*}
+N &\leq \tilde{M}^2 \leq (\abs{M} + \abs{M^\tau})^2 \leq (2 M^*)^2 < 4 cr
+\end{align*}
+and also on $\lbrace [M]_\infty \geq 2r \rbrace$ we have $\tau < \infty$ and 
+\begin{align*}
+[\tilde{M}]_\infty = [M]_\infty - [M]_\tau \geq 2r - r = r
+\end{align*}
+To see the third inequality we again apply Gambler's Ruin Lemma \ref{GamblersRuinContinuousMartingale} to $N$  this time on $4cr - r < 0 < 4 cr$ noting that $\probability{N < 4cr ; \inf_t N_t < 4cr -r} \leq \probability{ \tau_{4cr - r} <  \tau_{4c} ; N^* > 0} \leq 4c \probability{N^* > 0}$.  The final inequality again follows from noting that $\tau < \infty$ on $N^* > 0$ and therefore because $[M]$ is non-decreasing we have $[M]_\infty \geq [M]_\tau = r$.
+
+Again we multiply by $(p/2) r^{p/2 -1}$ and integrate to get 
+\begin{align*}
+&\frac{p}{2} \int_0^\infty r^{p/2 -1} \probability{[M]_\infty \geq 2r } \, dr - \frac{p}{2} \int_0^\infty r^{p/2 -1} \probability{(M^*)^2 \geq cr} \, dr\\
+&\leq 4c \frac{p}{2} \int_0^\infty r^{p/2 -1} \probability{[M]_\infty \geq r} \, dr
+\end{align*}
+which upon changing variables and applying Lemma \ref{TailsAndExpectations}
+\begin{align*}
+2^{p/2} \expectation{\abs{[M]_\infty}^{p/2}} - c^{-p/2} \expectation{\abs{M^*}^p} &\leq 4c \expectation{\abs{[M]_\infty}^{p/2}} 
+\end{align*}
+which yields the left hand inequality with $c_p = c^{-p/2}/(2^{-p/2} -4c)$ which is positive for any $0 < c < 2^{-p/2 - 2}$.
+\end{proof}
+
+In the following Lemma we remind the reader of the notation $\int g \, \abs{dF}$ to denote integration with respect to the Lebesgue-Stieltjes measure determined by the total variation function of $F$.
+\begin{lem}\label{CourregeCauchySchwartz}Let $M$ and $N$ be continuous local martingales, then almost surely for every $t \geq 0$, 
+\begin{align}
+\abs{[M,N]_t} &\leq \int_0^t \abs{d[M,N]}_s \leq [M]_t^{1/2} [N]_t^{1/2}
+\label{CourregeCauchySchwartz1}\end{align}
+
+Furthermore almost surely for any jointly measurable processes $U$ and $V$ we have 
+\begin{align*}
+\int_0^t \abs{U_sV_s} \, \abs{d[M,N]}_s &\leq \left(\int_0^t U_s^2 \, d[M]_s\right)^{1/2} \left(\int_0^t V_s^2 \, d[N]_s\right)^{1/2} 
+\end{align*}
+(TODO: Confirm that almost sure this holds for all $U,V$ not that for each pair $U,V$ this holds a.s.)
+\end{lem}
+\begin{proof}
+First we can use positivity and bilinearity of quadratic covariation to see that for a fixed $t \geq 0$ and $\lambda \in \reals$ we have 
+\begin{align*}
+0 &\leq [M + \lambda N]_t = [M]_t + 2\lambda[M,N]_t + \lambda^2[N]_t \text{ a.s.}
+\end{align*}
+It follows that $\probability {\cap_{\lambda \in \rationals} \lbrace 0 \leq  [M]_t + 2\lambda[M,N]_t + \lambda^2[N]_t  \rbrace} = 1$ and by continuity of the quadratic polynomial we get that for fixed $t \geq 0$, almost surely $0 \leq [M]_t + 2\lambda[M,N]_t + \lambda^2[N]_t$ for all $\lambda \in \reals$.  Taking the discriminant of the quadratic polynomial and using the fact that it must be non-negative we see that for every $t \geq 0$ we have $[M,N]_t^2 \leq [M]_t [N]_t$ almost surely.  Again, taking the intersection of a countable number of almost sure events we see that almost surely we have $[M,N]_q^2 \leq [M]_q [N]_q$ for all $q \in \rationals$ with $q \geq 0$ and by continuity of the quadratic variation this implies that almost surely $[M,N]_t^2 \leq [M]_t [N]_t$ for all $t \geq 0$.
+
+Now fix an $s \geq 0$ and consider the processes $M - M^s$ and $N - N^s$.  Replaying our continuity argument once more we see that almost surely the inequality just proven will hold almost surely over all the processes $M - M^s$, $N - N^s$ and all $t \geq 0$.   Using this fact and Theorem \ref{OptionalQuadraticCovariation} we conclude that almost surely for all $s \geq 0$ and $s < t$ we have
+\begin{align*}
+\abs{[M,N]_t - [M,N]_s } &=\abs{ [M - M^s, N-N^s]_t} \leq \left([M]_t - [M]_s\right)^{1/2} \left([N]_t - [N]_s\right)^{1/2}
+\end{align*}
+Suppose we are given a partition $s=t_0 < \dotsb < t_n=t$ and use the triangle inequality, the Cauchy-Schwartz inequality for sequences and the above inequality gives us 
+\begin{align*}
+\abs{[M,N]_t - [M,N]_s} &\leq \sum_{j=1}^n \abs{[M,N]_{t_j} - [M,N]_{t_{j-1}}} \\
+&\leq \sum_{j=1}^n \left([M]_{t_j} - [M]_{t_{j-1}}\right)^{1/2} \left([N]_{t_j} - [N]_{t_{j-1}}\right)^{1/2} \\
+&\leq  \left(\sum_{j=1}^n [M]_{t_j} - [M]_{t_{j-1}}\right)^{1/2} \left(\sum_{j=1}^n [N]_{t_j} - [N]_{t_{j-1}}\right)^{1/2} \\
+&= ([M]_t - [M]_s)^{1/2} ([N]_t-[N]_s)^{1/2}
+\end{align*}
+Again, note that this holds almost sure simultaneously for all $0 \leq s < t$, all $n \geq 0$ and all partitions $s=t_0 < \dotsb < t_n=t$.  We may then take the supremum over all partitions to get 
+\begin{align*}
+\abs{[M,N]_t - [M,N]_s} &\leq \int_s^t \abs{d[M,N]_s} \leq ([M]_t - [M]_s)^{1/2} ([N]_t-[N]_s)^{1/2}
+\end{align*}
+and substituting $s=0$ we get \eqref{CourregeCauchySchwartz1}.
+
+Before proceeding further it is helpful to name all of the random Lebesgue-Stieltjes measures floating around: let $\mu = d[M]$, $\nu = d[N]$ and $\rho = \abs{d[M,N]}$.  Note that we have shown that almost surely for every closed interval $I \subset \reals$ we have $\rho(I)^2 \leq \mu(I) \nu(I)$.  By continuity of $[M]$, $[N]$ and $[M,N]$ the measures above have no atoms and therefore this inequality also holds for open intervals.  Now if we let $G$ be an arbitrary open set then we can write it as a disjoint union of open intervals (Lemma \ref{OpenSetsOfReals}) $G = \cup_{n=1}^\infty I_n$.  Then by countable additivity and Cauchy-Schwartz for sequences
+\begin{align*}
+\rho(G) &= \sum_{n=1}^\infty \rho(I_n) \leq \sum_{n=1}^\infty \mu(I_n)^{1/2}\nu(I_n)^{1/2} \\
+&\leq \left( \sum_{n=1}^\infty \mu(I_n) \right)^{1/2}\left( \sum_{n=1}^\infty \nu(I_n) \right)^{1/2} = \mu(G)^{1/2}\nu(G)^{1/2}
+\end{align*}
+
+TODO: Extend to general Borel sets by monotone classes: I think we needed boundedness of the measures here.
+
+Now let $f = \sum_{i=1}^n a_i \characteristic{A_i}$ and $g = \sum_{i=1}^n b_i \characteristic{A_i}$ be positive simple functions.  Then once again applying Cauchy-Schwartz for sequences we get
+\begin{align*}
+\int f(s) g(s) \, \abs{d[M,N]_s} &= \sum_{i=1}^n a_i b_i \rho(A_i) \\
+&\leq \sum_{i=1}^n a_ib_i \mu(A_i)^{1/2} \nu(A_i)^{1/2} \\
+&\leq \left(\sum_{i=1}^n a_i^2 \mu(A_i) \right)^{1/2} \left( \sum_{i=1}^n b_i^2 \nu(A_i)\right)^{1/2} \\
+&= \left( \int f^2(s) \, d[M]_s \right)^{1/2} \left( \int g^2(s) \, d[N]_s \right)^{1/2} 
+\end{align*}
+
+
+For general positive measurable functions $f$ and $g$ we take positive simple approximations $f_n \uparrow f$ and $g_n \uparrow g$ and we get by Monotone Convergence
+\begin{align*}
+\int f(s) g(s) \, \abs{d[M,N]_s} &= \lim_{n \to \infty} \int f_n(s) g_n(s) \, \abs{d[M,N]_s} \\
+&\leq \lim_{n \to \infty}  \left( \int f_n^2(s) \, d[M]_s \right)^{1/2} \lim_{n \to \infty}\left( \int g_n^2(s) \, d[N]_s \right)^{1/2} \\
+&= \left( \int f^2(s) \, d[M]_s \right)^{1/2} \left( \int g^2(s) \, d[N]_s \right)^{1/2} 
+\end{align*}
+noting that this holds almost surely for all $f$ and $g$ positive and measurable.
+
+TODO: Finish, is there anything subtle about applying to the processes?
+\end{proof}
+
+\begin{defn}Given a continuous local martingale $M$ we let $L(M)$ denote the set of processes that are progressively measurable and for which $\int_0^t V^2_s \, d[M]_s < \infty$ almost surely for all $t \geq 0$.
+\end{defn}
+The space $L(M)$ gives the integrands for the extension of the stochastic integral with respect to the integrator $M$.
+\begin{thm}\label{StochasticIntegralContinuousLocalMartingaleIntegrator}Let $M$ be a continuous local martingale and $V \in L(M)$, there exists an almost surely unique continuous local martingale $\int V \, dM$ starting at zero and for which almost surely
+$[\int V \, dM, N]_t = \int_0^t V_s \, d[M,N]_s$ for all $t \geq 0$.
+\end{thm}
+\begin{proof}
+First we show uniqueness as we shall use it during the existence argument.  Suppose that $M^\prime$ and $M^{\prime \prime}$ are continuous local martingales starting at zero for which for every continuous local martingale $[M^\prime, N] = [M^{\prime \prime},N] = \int V_s \, d[M,N]_s$ almost surely.  By linearity of quadratic covariation, this tell us that for all $N$ we have $[M^{\prime} - M^{\prime \prime} ,N]=0$ almost surely.  In particular this will be true if we pick $N = M^{\prime} - M^{\prime \prime}$ so we know that $[M^{\prime} - M^{\prime \prime}] = 0$ almost surely.  By definition of the quadratic variation this implies that $(M^{\prime} - M^{\prime \prime})^2$ is a continuous local martingale starting at zero.  Picking a localizing sequence $\tau_n$ and using the martingale property we see that $\expectation{(M_{t \wedge \tau_n}^{\prime} - M_{t \wedge \tau_n}^{\prime \prime})^2} =0$ which shows us that $(M_{t \wedge \tau_n}^{\prime} - M_{t \wedge \tau_n}^{\prime \prime})^2$ almost surely.  Taking the limit as $n \to \infty$ we get that $(M_{t}^{\prime} - M_{t}^{\prime \prime})^2=0$ almost surely for each $t \geq 0$ hence simultaneously for all $t \in \rationals_+$ and then by continuity for all $t \geq 0$ almost surely.
+
+We first assume that $\int_0^\infty V^2_s \, d[M]_s < \infty$ almost surely and we use the notation $\norm{V}^2_M = \int_0^\infty V^2_s \, d[M]_s$ to denote the corresponding value.  Then if $N \in \mathcal{M}^2$ we have
+\begin{align*}
+\abs{\expectation{\int_0^\infty V_s \, d[M,N]_s}} &\leq \expectation{\abs{\int_0^\infty V_s \, d[M,N]_s}} \\
+&\leq  \expectation{\int_0^\infty \abs{V_s} \, \abs{ d[M,N]_s}} && \text{by Lemma \ref{AbsoluteValueOfStieltjes}} \\
+&\leq  \expectation{\left(\int_0^\infty V^2_s \, d[M]_s\right)^{1/2}\left(\int_0^\infty d[N]_s\right)^{1/2}} && \text{by Lemma \ref{CourregeCauchySchwartz}} \\
+&=  \expectation{\left(\int_0^\infty V^2_s \, d[M]_s\right)^{1/2}[N]_\infty^{1/2}} \\
+&\leq \expectation{\int_0^\infty V^2_s \, d[M]_s}^{1/2}\expectation{[N]_\infty}^{1/2} && \text{by Cauchy Schwartz} \\
+&=\norm{V}_M \expectation{N^2_\infty}^{1/2} = \norm{V}_M \norm{N}
+\end{align*}
+which shows that $N \mapsto \expectation{\int_0^\infty V_s \, d[M,N]_s}$ is a continuous linear functional on $\mathcal{M}^2$.  Thus since $\mathcal{M}^2$ is a Hilbert space with inner product given by $\langle M,N \rangle = \expectation{M_\infty N_\infty}$ (Lemma \ref{ContinuousL2MartingalesHilbert}) we know that there exists an $L^2$-bounded martingale $\int V \, dM \in \mathcal{M}^2$ such that $\expectation{\int_0^\infty V_s \, d[M,N]_s } = \expectation{N_\infty \cdot \int_0^\infty V \, dM}$ for all $N \in \mathcal{M}^2$ (we emphasize that the name $\int V \, dM$ we give to this martingale is only meant to be suggestive and the reader should not get confused trying to figure out that this element can be constructed by some kind of generalized sum; it is no more and no less than the element of the Hilbert space corresponding to the linear functional we've defined).
+
+Since $V$ is progressive we know that $\int V_s \, d[M,N]_s$ is $\mathcal{F}$-adapted (Lemma \ref{StochasticStieltjesIntegral}) and we have just shown that it is integrable.  Now let $\tau$ be an arbitrary optional time and apply the above construction to $N^\tau$ (TODO: Remind why $N^\tau \in \mathcal{M}^2$).  in the following computation
+\begin{align*}
+\expectation{\int_0^\tau V_s \, d[M,N]_s}  &=\expectation{ \int_0^\infty V_s \, d[M,N]^\tau_s} && \text{Lemma \ref{StoppingStieltjes}}\\
+&=\expectation{ \int_0^\infty V_s \, d[M,N ^\tau]_s} && \text{Lemma \ref{OptionalQuadraticCovariation}}\\
+&=\expectation{ N^\tau_\infty \cdot \int_0^\infty V \, dM} && \text{definition of $\int V \, dM$}\\
+&=\expectation{ N_\tau \cdot \int_0^\infty V \, dM} \\
+&=\expectation{ N_\tau \cexpectationlong{\mathcal{F}_\tau}{ \int_0^\infty V \, dM} } && \text{Tower Property}\\
+&=\expectation{ N_\tau \int_0^\tau V \, dM}  && \text{Optional Stopping}\\
+\end{align*}
+We apply Lemma \ref{MartingaleOptionalTimeCriterion} to conclude that $N_t \int_0^t V \, dM - \int_0^t V_s \, d[M,N]_s$ is a martingale.  By the continuity of $[M,N]$ we know that $\int_0^t V_s \, d[M,N]_s$ is continuous and has locally finite variation (Corollary \ref{StieltjesIntegralBoundedVariationAndContinuous}); thus uniqueness and the defining property of quadratic covariation implies $\int V_s \, d[M,N]_s = [N, \int V \, dM]$ almost surely.
+
+The next step is to extend the defining property of the integral to arbitrary continuous local martingales.  For this we take a localizing sequence $\tau_n$ such that $N^{\tau_n}$ is bounded (hence in $\mathcal{M}^2$).  Let $A$ be the event that $\tau_n \uparrow \infty$ and for each $n$, let $A_n$ be the event that $[N^{\tau_n}, \int V \, dM] = \int V_s \, d[M,N]_s$.  For all  $\omega \in A \cap \left(\cap_{n=1}^\infty A_n \right)$ and $t \geq 0$ we have 
+\begin{align*}
+[N, \int V \, dM]_t(\omega) &= \lim_{n \to \infty} [N, \int V \, dM]^{\tau_n}_t(\omega) \\
+&= \lim_{n \to \infty} [N ^{\tau_n}, \int V \, dM]_t(\omega) \\
+&= \lim_{n \to \infty} \int_0^t V_s(\omega) \, d[M,N^{\tau_n}]_s(\omega) \\
+&= \lim_{n \to \infty} \int_0^{t \wedge \tau_n} V_s(\omega) \, d[M,N]_s(\omega) \\
+&= \int_0^{t} V_s(\omega) \, d[M,N]_s(\omega) \\
+\end{align*}
+and as $\probability{A \cap \left(\cap_{n=1}^\infty A_n \right)} = 1$ we have $[N, \int V \, dM] = \int V_s \, d[M,N]_s$ almost surely.
+
+Lastly we must remove the assumption that $\int_0^\infty V_s^2 \, d[M]_s < \infty$.  We know that $\int_0^t V_s^2 \, d[M]_s$ is a continuous process (Lemma \ref{StieltjesIntegralBoundedVariationAndContinuous}) and therefore for every $n >0$ we can define an optional time $\tau_n = \inf \lbrace t \geq 0 \mid \int_0^t V_s^2 \, d[M]_s = n \rbrace$.  We have
+\begin{align*}
+\int_0^\infty V_s^2 \, d[M^{\tau_n}]_s &= \int_0^{\tau_n} V^2_s \, d[M]_s = n < \infty
+\end{align*}
+and by our assumption that $\int_0^t V_s^2 \, d[M]_s < \infty$ for all $t \geq 0$ we know that $\tau_n \uparrow \infty$.  We apply the existing construction to define $\int V \, dM^{\tau_n}$ and it satisfies 
+\begin{align*}
+[N, \int V \, dM^{\tau_n}]_t  &= \int_0^t V_s \, d[M,N]^{\tau_n}_s = \int_0^{t\wedge\tau_n} V_s \, d[M,N]_s
+\end{align*}
+for every continuous local martingale $N$.  Moreover for $m < n$, from the above fact and Lemma \ref{OptionalQuadraticCovariation} we have
+\begin{align*}
+[N, \left(\int V \, dM^{\tau_n}\right)^{\tau_m}]_t &= [N, \int V \, dM^{\tau_n}]_{t \wedge \tau_m} =\int_0^{t\wedge\tau_m} V_s \, d[M,N]_s
+\end{align*}
+for all continuous local martingales $N$ which by uniqueness of the stochastic integral shows $\left(\int V \, dM^{\tau_n}\right)^{\tau_m} = \int V \, dM^{\tau_m}$ so that $\int V \, dM^{\tau_m}$ and $\int V \, dM^{\tau_n}$ agree on the interval $[,\tau_m]$.  Therefore we can define $\int_0^t V \, dM$ as the limit of $\int_0^t V \, dM^{\tau_n}$ for any $\tau_n \geq t$.  The fact that this defines an adapted process follows from writing $\int_0^t V \, dM = \sum_{n=1}^\infty \characteristic{\lbrace \tau_{n-1} \leq t < \tau_n\rbrace} \int_0^t V \, dM^{\tau_n}$ together with the facts that $\tau_n$ is optional and $\int V \, dM^{\tau_n}$ is adapted.  Continuity at $t \geq 0$ follows by picking $\tau_n > t$ and noting that $\int_0^t V \, dM = \int_0^t V \, dM^{\tau_n}$ and continuity of $\int_0^t V \, dM^{\tau_n}$ at $t$.  By Lemma \ref{LocalMartingaleLocalProperty} we know that $\int V \, dM$ is a continuous local martingale.  Lastly by construction, for all $n \geq 0$ and each continuous local martingale there is a set $A_n$ with $\probability{A_n} =1$ such that
+\begin{align*}
+[N, \int V \, dM]_t &=[N, \int V \, dM]^{\tau_n}_t = [N, \left(\int V \, dM\right)^{\tau_n}]_t = [N, \int V \, dM^{\tau_n}]_t \\
+&= \int_0^t V_s \, d[M^{\tau_n}, N]_s = \int_0^{t\wedge \tau_n} V_s \, d[M, N]_s = \int_0^{t} V_s \, d[M, N]_s
+\end{align*}
+for all $0 \leq t \leq \tau_n$ on $A_n$.  Thus taking the intersection of $A_n$ we see that $[N, \int V \, dM] = \int V_s \, d[M,N]_s$ almost surely.
+\end{proof}
+
+With this Theorem proven we know that the following defintion makes sense.
+\begin{defn}Given a continuous local martingale $M$ and a progressive process $V$ such that $\int_0^t V^2_s \, d[M]_s < \infty$ for all $t \geq 0$, the \emph{stochastic integral} $\int V \, dM$ is the unique continuous local martingale for which $[\int V \, dM, N]_t = \int_0^t V_s \, d[M,N]_s$ for all $t \geq 0$ almost surely for every continuous local martingale $N$.
+\end{defn}
+
+Here we collect a few of the most elementary facts about the stochastic integral.
+\begin{lem}The stochastic integral is bilinear in both the integrand and integrator.
+TODO: Be very precise about assumptions here!  E.g. is $V \in L(aM + bN)$ equivalent to $V \in L(M)$ and $V \in L(N)$?  Clearly the latter is at least as strong as the former.
+\end{lem}
+\begin{proof}
+This boils down to a couple of simple computations using bilinearity of the Lebesgue-Stieltjes integral and the quadratic covariation
+\begin{align*}
+[\int (aV + bU) \, dM, N]_t &= \int_0^t (aV_s + bW_s) \, d[M,N]_s \\
+&= a\int_0^t V_s \, d[M,N]_s + b\int_0^t W_s \, d[M,N]_s \\
+&= a[\int V \, dM, N]_t + b[\int W \, dM, N]_t \\
+&= [a\int V \, dM + b\int W \, dM, N]_t
+\end{align*}
+and
+\begin{align*}
+[\int V \, d[aM + bN], R]_t &= \int_0^t V_s \, d[aM+bN, R]_s \\
+&= a\int_0^t V_s \, d[M, R]_s + b\int_0^t V_s \, d[N, R]_s \\
+&= a[\int V \, dM, R] + b[\int V \, dN, R]_t \\
+&= [a\int V \, dM + b\int V \, dN, R]_t
+\end{align*}
+Now apply the uniqueness criteria for stochastic integrals.
+\end{proof}
+
+The basic continuity property of the stochastic integral is
+\begin{lem}\label{LimitsOfStochasticIntegralContinuousLocalMartingale}Let $M_n$ be a sequence of continuous local martingales and let $V_n \in L(M_n)$, then 
+$\left( \int V_n \, dM_n \right)^* \toprob 0$ if and only if $\int_0^\infty (V_n)_s^2 \, d[M_n]_s \toprob 0$.
+\end{lem}
+\begin{proof}
+This follows immediately from Lemma \ref{QuadraticCovariationAndContinuity} upon using the defining property of the stochastic integral twice and Lemma \ref{ChainRuleStieltjes} once to see
+\begin{align*}
+[\int V_n \, dM_n]_t &= \int_0^t V_n(s) \, d[M_n, \int V_n \, dM_n]_s = \int_0^t V_n(s) \, d\int_0^s V_n(u) \, d[M_n](u) \\
+&= \int_0^t V_n^2(s) \, d[M_n]_s
+\end{align*}
+\end{proof}
+
+Before proceeding further we extend the class of integrators in what initially seems like a very ad-hoc manner.  Indeed this extension follows the historical path of the development of stochastic integration which broadened the scope of definitions in exactly these ways.  The reader is encouraged not to spend too much time trying to find the method in the madness as later we will prove a theorem that shows that the only continuous stochastic processes that make sense as integrators are the ones we define here.
+\begin{defn}A \emph{continuous  semimartingale} $X$ is a cadlag adapted process in $\reals$ such that there is a continuous local martingale $M$ and a continuous, adapted process of locally finite variation $A$ such that $X = M + A$.  A cadlag adapted process $X=(X_1, \dotsc, X_d)$ in $\reals^d$ is said to be a continuous semimartingale if and only each $X_i$ is.  Given a continuous semimartingale $X = M + A$ we let 
+\begin{align*}
+L(X) &= \lbrace V \mid V^2 \in L([M]) \text{ and } V \in L(A) \rbrace
+\end{align*}
+that is to say $L(X) = L(M) \cap L(A)$ and for any $V \in L(X)$ we define $\int V \, dX = \int V \, dM + \int V_s \, dA_s$.
+\end{defn} 
+Note that the decomposition $X = M + A$ is almost surely unique as if $M + A = \tilde{M} + \tilde{A}$ then $M - \tilde{M} = \tilde{A} - A$ is a continuous local martingale of locally finite variation and is therefore $0$ almost surely by Lemma \ref{ContinuousLocalMartingaleBoundedVariation}.  As such we refer to this as the \emph{canonical decomposition}.
+
+We want to develop the primary properties of the stochastic integral with a continuous semimartingale integrator.  Note that by the definition $\int V \, dX = \int V \, dM + \int V \, dA$ we can see that a stochastic integral with respect to a continuous semimartingale integrator is itself a continuous semimartingale.  Thus we can consider a stochastic integral as an integrator and the first result is a generalization of the ``chain rule'' proven in Lemma \ref{ChainRuleStieltjes}.
+\begin{lem}\label{ChainRuleContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $V \in L(X)$ then $U \in L(\int V \, dX)$ if and only if $UV \in L(X)$ and $\int U \, d\int V \, dX = \int UV \, dX$ a.s.
+\end{lem}
+\begin{proof}
+For $X$ an adapted process of locally finite variation, this is proven in Lemma \ref{ChainRuleStieltjes}.  Now suppose that $X =M$ is a continuous local martingale.  In this case from the proof of Lemma \ref{LimitsOfStochasticIntegralContinuousLocalMartingale} and Lemma \ref{ChainRuleStieltjes} we have 
+\begin{align*}
+\int_0^t U_s^2 \, d[\int V \, dM]_s &= \int_0^t U_s^2 d \int_0^s V_u^2 d[M]_u = \int_0^t U_s^2 V_s^2 \, d[M]_s
+\end{align*}
+which shows us that $U \in L(\int V \, dM)$ if and only if $UV \in L(M)$.  Moreover, for any continuous local martingale $N$, we have
+\begin{align*}
+[\int U \, d\int V \, dM, N]_t &= \int_0^t U_s \, d[\int V \, dM, N]_s = \int_0^t U_s \, d \int_0^s V_u \, d[M, N]_u \\
+&= \int_0^t U_s V_s \, d[M,N]_s = [\int UV \, dM, N]_t
+\end{align*}
+almost surely.  Thus by the defining property of stochastic integrals with a continuous local martingale integrator we know that $\int U \, d\int V \, dM = \int UV \, dM$.
+
+Lastly let $X$ be a continuous semimartingale and let $X = M + A$ be the canonical decompostion of $X$.  Since the canonical decomposition of $\int V \, dX$ is $\int V \, dM + \int V_s \, dA_s$ we have 
+\begin{align*}
+L(\int V \, dX) &= L(\int V \, dM) \cap L(\int V_s \, dA_s) 
+\end{align*}
+hence combining results for Stieltjes integrals and continuous local martingale we have $U \in L(\int V \, dX)$ if and only if $UV \in L(M)$ and $UV \in L(A)$ (i.e. $UV \in L(X)$).  Furthermore,
+\begin{align*}
+\int_0^t U \, d\int V \, dX &= \int_0^t U \, d\int V \, dM + \int_0^t U \, d \int V_s \, dA_s \\
+&= \int_0^t UV \, dM + \int_0^t U_s V_s \, dA_s = \int_0^t UV \, dX
+\end{align*}
+and the result is proven.
+\end{proof}
+
+The other useful result is the behavior of stochastic integrals under stopping (a generalizaiton of Lemma \ref{StoppingStieltjes}).
+\begin{lem}\label{StoppingIntegralsContinuousSemimartingale}Let $X$ be a continuous semimartingale, $V \in L(X)$ and $\tau$ an optional time then
+\begin{align*}
+\left(\int V \, dX \right)^\tau &= \int V \, dX^\tau = \int \characteristic{[0,\tau]} V \, dX
+\end{align*}
+\end{lem}
+\begin{proof}
+The result is proven for Stieltjes integrals in Lemma \ref{StoppingStieltjes}, so consider next the case in which $X = M$ is a continuous local martingale.  Suppose $N$ is another continuous local martingale and compute
+\begin{align*}
+[\left(\int V \, dM \right)^\tau, N]_t &= [\int V \, dM, N]^\tau_t = \int_0^{t \wedge \tau} V_s \, d[M,N]_s = \int_0^t V_s \, d[M,N]^\tau_s \\
+&= \int_0^t V_s \, d[M^\tau,N]_s = [\int V \, M^\tau, N]_t
+\end{align*}
+and similarly
+\begin{align*}
+[\left(\int V \, dM \right)^\tau, N]_t &= [\int V \, dM, N]^\tau_t = \int_0^t \characteristic{[0,\tau]} V_s \, d[M,N]_s = [\int \characteristic{[0,\tau]} V \, dM, N]_t
+\end{align*}
+and we appeal to the defining property of stochastic integrals with a continuous local martingale integrator.
+
+For a general continuous semimartingale $X$, let $X = M + A$ be the canonical decomposition and then the fact that $M^\tau$ is a continuous local martingale and $A^\tau$ has locally finite variation to conclude that the canonical decomposition of $X^\tau$ is $M^\tau + A^\tau$ and use the results for the continuous local martingale case and the Stieltjes integral case to see
+\begin{align*}
+\left(\int V \, dX \right)^\tau &= \left(\int V \, dM\right)^\tau + \left(\int V_s \, dA_s\right)^\tau = \int V \, dM^\tau + \int V_s \, dA^\tau_s = \int V \, dX^\tau
+\end{align*}
+The second equality is equally trivial.
+\end{proof}
+
+The following Lemma will be a useful for exchanging limits and stochastic integrals and represents the fundamental continuity property of stochastic integrals.
+\begin{lem}\label{LimitsOfStochasticIntegralContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $U, V, V_1, V_2, \dotsc \in L(X)$ with $\abs{V_n} \leq U$ and $V_n \toas V$ (TODO: Make precise what this means) then $\sup_{0 \leq s \leq t} \abs{\int_0^s V_n \, dX - \int_0^s V \, dX} \toprob 0$ for all $t \geq 0$.
+\end{lem}
+\begin{proof}
+Write $X = M + A$ so that $U^2 \in L([M])$ and $U \in L(A)$.  By ordinary Dominated Convergence applied pointwise in $\Omega$ we know that almost surely $\int_0^t V_n(u) \, dA(u) \to \int_0^t V(u) \, dA(u)$ and $\int_0^t V_n^2(u) \, d[M](u) \to \int_0^t V^2(u) \, d[M](u)$ for every $t \geq 0$.  Because $\abs{V_n} \leq U$ we have
+\begin{align*}
+\abs{\int_0^t V_n(u) \, dA(u)} &\leq \int_0^t \abs{V_n(u)} \, d\abs{A}(u) \leq \int_0^t U(u) \, d\abs{A}(u)
+\end{align*}
+and the uniform continuity of $\int_0^t U(u) \, d\abs{A}(u)$ on every bounded interval we know that the family $\int_0^t V_n(u) \, dA(u)$ is uniformly equicontinuous on every bounded interval.  Therefore the pointwise convergence $\int_0^t V_n(u) \, dA(u) \to \int_0^t V(u) \, dA(u)$ can be extended to uniform convergence on bounded intervals $\sup_{0 \leq s \leq t} \abs{\int_0^s V_n(u) \, dA(u) - \int_0^s V(u) \, dA(u)} \toas 0$ and so it follows that $\sup_{0 \leq s \leq t} \abs{\int_0^s V_n(u) \, dA(u) - \int_0^s V(u) \, dA(u)} \toprob 0$.
+
+From $\int_0^t V_n^2(u) \, d[M](u) \toas \int_0^t V^2(u) \, d[M](u)$ we get $\int_0^\infty V_n^2(u) \, d[M^t](u) \toas \int_0^\infty V^2(u) \, d[M^t](u)$ (Lemma \ref{StoppingStieltjes}).  By Lemma \ref{LimitsOfStochasticIntegralContinuousLocalMartingale} the latter convergence statement implies $\left(\int V_n \, dM^t  - \int V \, dM^t\right)^* \toprob 0$ and the Lemma follows since $\left(\int V_n \, dM^t  - \int V \, dM^t\right)^* = \left(\int V_n \, dM  - \int V \, dM\right)_t^*$ (TODO: Is this obvious from earlier or do we need to reference the general stopping property of stochastic integral) from Lemma \ref{StoppingIntegralsContinuousSemimartingale}.
+\end{proof}
+
+Recall that in the proof of Theorem \ref{OptionalQuadraticCovariation} we motivated the construction of the quadratic variation $[M]$ by pointing out that in the case of a bounded martingale starting at zero what we were doing was defining $[M] = M^2 - \int M \, dM$; the stochastic integral had not been defined at that point so the comment served the pedagogical purpose of motivating the formulae but wasn't mathematically justified.  Now that we have defined the stochastic integral are in a position to state and prove a proper Theorem.
+\begin{thm}[Integration by parts]\label{IntegrationByPartsContinuousSemimartingale}Let $X$ and $Y$ be continuous semimartingales then 
+\begin{align*}
+X Y &= X_0 Y_0 + \int X \, dY + \int Y \, dX + [X,Y]
+\end{align*}
+\end{thm}
+\begin{proof}
+First let us assume $X =Y$ (we will later use polarization to extend to the general case).  Furthermore, let us assume that $X = M$ where $M \in \mathcal{M}^2$ is bounded and starts at zero.  Recall that from the proof of Theorem \ref{OptionalQuadraticCovariation}, if we define for $n \geq 0$,
+\begin{align*} 
+\tau^n_k &= \inf \lbrace t > \tau^n_{k-1} \mid \abs{M_t - M_{\tau^n_{k-1}}} = 2^{-n} \rbrace \text{ for $k > 0$} \\
+V^n_t &= \sum_{k=0}^\infty M_{\tau^n_{k}} \characteristic{(\tau^n_{k}, \tau^n_{k+1}]}(t) \\ 
+Q^n_t &= \sum_{k=0}^\infty \left (M_{t \wedge \tau^n_{k+1}}  - M_{t \wedge \tau^n_k}\right)^2 
+\end{align*}
+then we have the identity
+\begin{align*}
+M^2_t &= 2 \int_0^t V^n \, dM + Q^n_t
+\end{align*}
+and the convergence results that $V^n \toas M$ and $\sup_{0 \leq t < \infty} \abs{Q^n_t - [M]_t} \toprob 0$.  While in the proof of Theorem \ref{OptionalQuadraticCovariation} we weren't in a position to discuss the convergence of $\int_0^t V^n \, dM$ we now note that in addition we have $\abs{V^n_t} \leq \sup_{0 \leq s \leq t} \abs{M_s} < \infty$ so we can apply Lemma \ref{LimitsOfStochasticIntegralContinuousSemimartingale} to conclude that 
+\begin{align*}
+\sup_{0 \leq s \leq t} \abs{\int_0^s V^n \, dM - \int_0^t M \, dM} \toprob 0
+\end{align*}
+for all $t \geq 0$.  So we have $Q^n_t \toas [M]_t$ and $\int_0^s V^n \, dM  \toas \int_0^t M \, dM$ along a common subsequence and therefore $M^2_t = 2 \int_0^t M \, dM + [M]_t$ almost surely.  For an arbitrary continuous local martingale $M$ we take a localizing sequence $\tau_n$ such that each $M^{\tau_n}$ is bounded (Lemma \ref{ContinuousLocalMartingaleLocalizeToBounded}) then using the result for bounded $M$, Lemma \ref{StoppingIntegralsContinuousSemimartingale} and Theorem \ref{OptionalQuadraticCovariation} we have for each $t \geq 0$, almost surely
+\begin{align*}
+M_t^2 &= \lim_{n \to \infty} M^2_{t \wedge \tau_n} = \lim_{n \to \infty} 2 \int_0^{t} M^{\tau_n} \, dM^{\tau_n} + [M^{\tau_n}]_t \\
+&=\lim_{n \to \infty} \left( 2 \int_0^{t \wedge \tau_n} M \, dM + [M]_{t \wedge \tau_n} \right) = 2 \int_0^{t} M \, dM + [M]_{t} 
+\end{align*}
+
+For $X = A$ with $A$ of locally finite variation and $A_0 = 0$, we have by definition $[A] = 0$ and $A_t^2 = 2 \int_0^t A_s \, dA_s$ follows by Fubini (TODO: really?)
 \end{proof}

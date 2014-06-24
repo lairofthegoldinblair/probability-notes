@@ -2038,6 +2038,8 @@ martingale theory.
   \sup_{t \in T} \expectation{\abs{\xi_t} ; \abs{\xi_t} > M} = 0$.
 \end{defn}
 
+A very basic example of a uniformly integrable family is provided by
+i.i.d. sequences.
 \begin{examp}A sequence of identically distributed variables $\xi_n$ is
   uniformly integrable.  This can be seen easily by defining $g(x) =
   \abs{x}\characteristic{\abs{x}>M}$ and noting that 
@@ -2048,6 +2050,39 @@ martingale theory.
 by Lemma \ref{ChangeOfVariables} which shows that the expectation is
 independent of $n$ since $d\xi_n$ is independent of $n$.
 \end{examp}
+
+The next example foreshadows the intimate relationship that uniform
+integrability has with limit theorems in the theory of integration.
+\begin{examp}\label{DominatedImpliesUniformlyIntegrable}Suppose $\eta$ is an integrable random variable and $\xi_t$ are random variables with $\abs{\xi_t}
+  \leq \eta$, then $\xi_t$ are uniformly integrable.  To see this let
+  $\epsilon >0$ be given and by Monotone Convergence choose $M > 0$
+  such that $\expectation {\eta; \eta > M} < \epsilon$.  Then we have
+\begin{align*}
+\expectation{\abs{\xi_t}; \abs{\xi_t}>M} &\leq
+\expectation{\abs{\xi_t}; \abs{\eta}>M} \leq \expectation{\abs{\eta};
+  \abs{\eta}>M} < \epsilon
+\end{align*}
+so $\xi_t$ is uniformly integrable.
+\end{examp}
+
+The next example is often enough useful that we call it out in a Lemma.
+\begin{lem}\label{BoundedLpImpliesUniformlyIntegrable}Let $\xi_t$ be a collection of random variables such that
+  for some $C > 0$ and $p > 1$ we have
+  $\sup_{t \in T} \norm{\xi_t}_p \leq C$.  Then $\xi_t$ is uniformly
+  integrable.
+\end{lem}
+\begin{proof} 
+This is a simple computation
+\begin{align*}
+\lim_{M \to \infty} \sup_{t \in T} \expectation{\abs{\xi_n} ;
+  \abs{\xi_n} > M} &\leq
+\lim_{M \to \infty} \sup_{t \in T} \expectation{\frac{\abs{\xi_t}^{p-1}}{M^{p-1}}\abs{\xi_t} ;
+  \abs{\xi_t} > M} \\
+&\leq \lim_{M \to \infty} M^{1-p} \sup_{t \in T}
+\expectation{\abs{\xi_t}^p} \\
+&\leq C^p \lim_{M \to \infty} M^{1-p} = 0
+\end{align*}
+\end{proof}
 
 \begin{lem}\label{UniformIntegrabilityProperties}The random variables $\xi_t$ for $t \in T$ are uniformly
   integrable if and only if
@@ -2089,7 +2124,7 @@ so by (ii), $\expectation{\abs{\xi_t}; \abs{\xi_t} > N} < \epsilon$
 and uniform integrability is proven.
 \end{proof}
 
-Here is a simple result that illustrates how the conditions for
+Here are a few simple results that illustrates how the conditions for
 uniform integrability in the previous Lemma can often be more
 convenient than the definition.
 
@@ -2124,8 +2159,27 @@ we have
 \end{align*}
 \end{proof}
 
-Here is an example that shows that the condition (i) of the previous
-Lemma is not sufficient to guarantee uniform integrability.
+\begin{lem}\label{BoundedTimesUniformlyIntegrable}Suppose $\xi_t$ for
+  $t \in T$ is a uniformly integrable family of random variables and
+  $\eta$ is a bounded random variable, then $\eta \xi_t$ is a
+  uniformly integrable family.
+\end{lem}
+\begin{proof}
+This is essentially trivial when using Lemma \ref{UniformIntegrabilityProperties}.  We know that $\sup_t
+\expectation{\abs{\xi_t}} \leq  \norm{\eta}_\infty \sup_t
+\expectation{\abs{\xi_t}} < \infty$ and  
+\begin{align*}
+\lim_{\probability{A} \to 0} \sup_t \expectation{\abs{\eta \xi_t}; A}
+&\leq \norm{\eta}_\infty \lim_{\probability{A} \to 0} \sup_t
+\expectation{\abs{ \xi_t}; A} = 0
+\end{align*}
+so uniformly integrability follows.
+\end{proof}
+
+Here is an example that shows that the condition (i) of 
+Lemma \ref{UniformIntegrabilityProperties} is not sufficient to
+guarantee uniform integrability (that is to say, this is an example of
+an $L^1$ bounded family of random variables that is not uniformly integrable).
 \begin{examp}Here we demonstrate a sequence $\xi_n$ with $\sup_n \expectation{\abs{\xi_n}} <
 \infty$ but $\xi_n$ is not uniformly integrable.  Consider the sequence
 $\xi_n$ constructed in Example \ref
@@ -2141,8 +2195,6 @@ we have
 and therefore for all $M > 0$ we have $\sup_n \expectation{\abs{\xi_n}
   ; \abs{\xi_n} > M} = 1$.
 \end{examp}
-
- TODO: Show convergence result for uniformly integrable sequences.
 
 While we have shown that convergence in probability is strictly weaker
 than convergence in mean, it turns out that adding the condition of

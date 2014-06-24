@@ -1467,3 +1467,25 @@ s(\theta; y) & = \frac{\partial}{\partial \theta} l(\theta;y) = y -
 \frac{n e^\theta}{1+e^\theta}= y - np \\
 i(\theta; y) & = -\frac{\partial}{\partial \theta} s(\theta;y) = np(1-p)
 \end{align}
+
+\subsection{Bayesian Models}
+Here are some simple examples of Bayesian updating for models in which
+conjugate priors exist so that we have closed form solutions.
+
+\begin{examp}\label{Estimating a Normal mean with know variance}
+Suppose we have a normal population $N(\mu, \sigma^2)$ with $\sigma^2$
+assumed known and $\mu$ assumed to be distributed $N(\mu_0,
+\sigma_0^2)$ with $\mu_0$ and $\sigma_0^2$ known.  If we are given
+independent observations $x_1, \dotsc, x_n$ then we have a likelihood
+function 
+\begin{align*}
+p(\bold{x}\mid \mu) &= \prod_{i=1}^n \frac{1}{\sqrt{2 \pi} \sigma}
+e^{-(x_i - \mu)^2/2\sigma^2} 
+= \frac{1}{(2 \pi)^{n/2}  \sigma^n} e^{-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2}
+\end{align*}
+and by Bayes' Theorem
+\begin{align*}
+p(\mu \mid \bold{x}) &\propto \frac{1}{\sqrt{2\pi}\sigma_0} e^{-(\mu -
+  \mu_0)^2/2\sigma_0^2} \cdot \frac{1}{(2 \pi)^{n/2}  \sigma^n} e^{-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2}
+\end{align*}
+\end{examp}

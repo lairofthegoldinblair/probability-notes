@@ -466,6 +466,123 @@ For general integrable $\eta$ split into its positive and negative
 parts $\eta = \eta_+ - \eta_-$ and use linearity of expectation.
 \end{proof}
 
+It is important to extend our basic limit theorems of integration
+theory to conditional expectations.  We have already proven the
+analogue of montone convergence.  Here we address the other cases of
+importance.  The proofs are essentially identical to the
+non-conditional cases.
+\begin{lem}[Fatou's Lemma for Conditional Expectation]\label{FatouConditional}Let $\xi_1, \xi_2, \dotsc$ be
+  positive random variables then 
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{\liminf_{n \to \infty} \xi_n} &\leq \liminf_{n \to \infty} \cexpectationlong{\mathcal{F}}{\xi_n}
+\end{align*}
+\end{lem}
+\begin{proof}
+The proof is essentially identical to the case for ordinary
+expectations (Theorem \ref{Fatou}) since we have montone convergence
+and monotonicity of conditional expectation
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{\liminf_{n \to \infty} \xi_n} &=
+\lim_{n  \to \infty}\cexpectationlong{\mathcal{F}}{\inf_{k \geq n} \xi_k} \\
+&\leq \lim_{n  \to \infty}\inf_{k \geq n}\cexpectationlong{\mathcal{F}}{ \xi_k} \\
+ &= \liminf_{n \to \infty} \cexpectationlong{\mathcal{F}}{\xi_n}
+\end{align*}
+where all of the equalities and inequalities are taken to be almost sure.
+\end{proof}
+
+\begin{lem}[Dominated Convergence for Conditional
+  Expectation]\label{DCTConditional}Let $\xi, \xi_1, \xi_2, \dotsc$ be
+  random variables such that $\xi_n \toas \xi$ and $\eta$ be a
+  positive random variables such that $\abs{\xi_n} \leq \eta$,
+$\expectation{\eta} <  \infty$ then 
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{\xi} &= \lim_{n \to \infty}
+\cexpectationlong{\mathcal{F}}{\xi_n} \text{ a.s.}
+\end{align*}
+\end{lem}
+\begin{proof}
+Note that $\eta \pm \xi_n \geq 0$ so we may apply Fatou's Lemma
+\ref{FatouConditional} to both sequences.
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{\eta} \pm
+\cexpectationlong{\mathcal{F}}{\xi}  &=\cexpectationlong{\mathcal{F}}{\eta \pm \xi} \\
+&=\cexpectationlong{\mathcal{F}}{\lim_{n \to \infty} \eta \pm \xi_n}
+\\
+&\leq \liminf_{n \to \infty} \cexpectationlong{\mathcal{F}}{ \eta \pm \xi_n} \\
+&= \cexpectationlong{\mathcal{F}}{ \eta} + \liminf_{n \to \infty} \cexpectationlong{\mathcal{F}}{ \pm \xi_n} \\
+\end{align*}
+where all of the comparisons are in an almost sure sense.  Now by
+integrability of $\eta$ and the chain rule of conditional expectation 
+we know that $\expectation
+{\cexpectationlong{\mathcal{F}}{ \eta}}=
+\expectation{\eta} < \infty$ and therefore
+$\cexpectationlong{\mathcal{F}}{ \eta} < \infty$ a.s.  Thus it is
+permissible to subtract $\cexpectationlong{\mathcal{F}}{ \eta}$ from
+both sides of the inequality above and deduce the pair of inequalities
+\begin{align*}
+\pm\cexpectationlong{\mathcal{F}}{\xi}  &\leq \liminf_{n \to \infty}
+\cexpectationlong{\mathcal{F}}{ \pm \xi_n} \text{ a.s.}\\
+\end{align*}
+Now using this pair of inequalities
+\begin{align*}
+\limsup_{n \to \infty} \cexpectationlong{\mathcal{F}}{ \xi_n} &=
+-\liminf_{n \to \infty} \cexpectationlong{\mathcal{F}}{ -\xi_n} \leq \cexpectationlong{\mathcal{F}}{\xi} \leq \liminf_{n \to \infty}
+\cexpectationlong{\mathcal{F}}{\xi_n} \text{ a.s. }
+\end{align*}
+which shows us that $\cexpectationlong{\mathcal{F}}{\xi} = \lim_{n \to \infty}
+\cexpectationlong{\mathcal{F}}{\xi_n}$ a.s.
+\end{proof}
+
+\begin{lem}Suppose that $\xi_t$ for $t \in T$ is a uniformly
+  integrable family of random variables and then
+  $\cexpectationlong{\mathcal{F}}{\xi_t}$ is uniformly integrable.
+  Moreover if $\xi$ is a random variable and $\xi_n$ is a uniformly integrable family of random
+  variables such that $\xi_n \toas \xi$ then
+  $\cexpectationlong{\mathcal{F}}{\xi_n} \toas \cexpectationlong{\mathcal{F}}{\xi}$.
+\end{lem}
+\begin{proof}
+To see uniform integrability of
+$\cexpectationlong{\mathcal{F}}{\xi_t}$ we use Lemma
+\ref{UniformIntegrabilityProperties}.  Since conditional expectation
+is an $L^1$ contraction, the $L^1$ boundedness of
+$\cexpectationlong{\mathcal{F}}{\xi_t}$ follows from the $L^1$
+boundedness of $\xi_t$.  Now if we let $A$ be measurable and pick $R >
+0$, then by using monotonicity and the tower property of conditional expectation 
+\begin{align*}
+\expectation{\abs{\cexpectationlong{\mathcal{F}}{\xi_t}} ; A} &\leq
+\expectation{\cexpectationlong{\mathcal{F}}{\abs{\xi_t}} ; A} \\
+&=\expectation{\cexpectationlong{\mathcal{F}}{\abs{\xi_t}; \abs{\xi_t}
+  \leq R} ; A} +
+\expectation{\cexpectationlong{\mathcal{F}}{\abs{\xi_t}; \abs{\xi_t} >
+  R} ; A} \\
+&\leq R \probability{A} + \expectation{\abs{\xi_t} ; \abs{\xi_t} > R} \\
+\end{align*}
+and therefore taking $\sup_t$, $\lim_{\probability{A} \to 0}$ and
+$\lim_{R \to \infty}$ and using the uniform integrability of $\xi_t$
+we get uniform integrability of
+$\cexpectationlong{\mathcal{F}}{\xi_t}$.
+
+If we assume that $\xi_1, \xi_2, \dotsc$ are uniformly integrable and $\xi_n \toas
+\xi$ then picking a measurable $A$ and using the first part of this
+lemma and Lemma \ref{BoundedTimesUniformlyIntegrable} we know that
+both families $\xi_1
+\characteristic{A}, \xi_2 \characteristic{A}, \dotsc$ and $\cexpectationlong{\mathcal{F}}{\xi_1}
+\characteristic{A}, \cexpectationlong{\mathcal{F}}{\xi_2}
+\characteristic{A}, \dotsc$ are uniformly integrable.  So know using
+using Lemma \ref{LpConvergenceUniformIntegrability} to justify
+exchanging limits and expectations we get
+\begin{align*}
+\expectation{\xi ; A} &= \lim_{n \to \infty} \expectation{\xi_n ; A} =
+\lim_{n \to \infty} \expectation{\cexpectationlong{\mathcal{F}}{\xi_n}
+  ; A} = \expectation{\lim_{n \to \infty} \cexpectationlong{\mathcal{F}}{\xi_n}
+  ; A} 
+\end{align*}
+Since $\lim_{n \to \infty} \cexpectationlong{\mathcal{F}}{\xi_n}$
+is $\mathcal{F}$-measurable (Lemma \ref{LimitsOfMeasurable}) we know that 
+$\cexpectationlong{\mathcal{F}}{\xi} = \lim_{n \to \infty}
+\cexpectationlong{\mathcal{F}}{\xi_n}$ by the defining property of conditional expectation.
+\end{proof}
+ 
 TODO: Provide an example of conditional expectation and a dyadic
 $\sigma$-algebra.
 
@@ -600,6 +717,30 @@ We'll try to avoid making statements about the relative level of
 generality of the two ideas but will try to avoid using the notation
 $\cexpectationlong{\eta}{\xi}$ when we know that $\eta$ is an
 identity map.
+
+\begin{lem}\label{ConditionalExpectationCompletions}Let $\mathcal{F}$ be a $\sigma$-algebra and let $\xi$ be
+  integrable, then $\cexpectationlong{\mathcal{F}}{\xi} =
+  \cexpectationlong{\overline{\mathcal{F}}}{\xi}$ a.s.
+\end{lem}
+\begin{proof}
+Let $A \in \overline{\mathcal{F}}$.  We know from Lemma ??? that there
+exist $A_\pm \in mathcal{F}$ such that $A_- \subset A \subset A_+$ and
+$\probability{A_+ \setminus A_-} = 0$. It is clear that for any $\xi
+\geq 0$ we have 
+\begin{align*}
+\expectation{\xi ; A_-} &\leq \expectation{\xi ; A} \leq
+\expectation{\xi ; A_+} = \expectation{\xi; A_-} + \expectation{\xi;
+  A_+ \setminus A_-} = \expectation{\xi; A_-} 
+\end{align*}
+and therefore $\expectation{\xi ; A_-} = \expectation{\xi; A} =
+\expectation{\xi; A_+}$.  By linearity this clearly extends to
+integrable $\xi$.  Therefore we get
+\begin{align*}
+\expectation{\xi; A} = \expectation{\xi; A_-} =
+\expectation{\cexpectationlong{\mathcal{F}}{\xi}; A_-} = \expectation{\cexpectationlong{\mathcal{F}}{\xi}; A} 
+\end{align*}
+which gives the result.
+\end{proof}
 
 \subsection{Conditional Independence}
 
@@ -948,9 +1089,9 @@ the first realization and $\mu(s)$ when thinking of the second.  It is
 also the case that the notation for integrals with respect to kernels
 needs to be considered.  Up to this point we have notation $\int f \,
 d\mu$ for integrals and in those cases in which we wanted to make it
-clear what the integration variable is we might right $\int f(x) \,
+clear what the integration variable is we might write $\int f(x) \,
 d\mu(x)$.  In a world with kernels the latter notation is unfortunate
-as it becomes difficult to construe wheter the $x$ dependence indicated
+as it becomes difficult to construe whether the $x$ dependence indicated
 for the measure means an integration variable or whether it
 indicates that the measure is a kernel with $x$ dependence.  To resolve
 this issue we shall adopt a different convention when discussing
@@ -983,7 +1124,7 @@ content of the next Lemma.
   probability kernel from $S$ to $T$ and $\nu : S \times T \times
   \mathcal{U} \to [0,1]$ be a probability kernel from $S \times T$ to
   $U$.  Let $f : S \times T \to \reals_+$ and $g
-  : S \times T \times \to U$  be measurable then 
+  : S \times T  \to U$  be measurable then 
 \begin{itemize}
 \item[(i)] $\int f (s, t) \, d\mu(s,dt)$ is a measurable function of $s \in S$.
 \item[(ii)] $\mu_s \circ (g(s, \cdot))^{-1}$ is a kernel from $S$ to $U$.
@@ -1003,8 +1144,7 @@ that $\mu$ is a kernel.  We extend to the case of general characteristic
 functions by observing that products $A \times B$ are a generating
 $\pi$-system for the $\sigma$-algebra $\mathcal{S} \otimes
 \mathcal{T}$.  Additionally we must show that $\mathcal{C} = \lbrace C
-\in \mathcal{S} \otimes \mathcal{T} \mid \int \characteristic{A \times
-  B} (s, t) \, d\mu(s,dt) \text { is measurable} \rbrace$ is a
+\in \mathcal{S} \otimes \mathcal{T} \mid \int \characteristic{C} (s, t) \, d\mu(s,dt) \text { is measurable} \rbrace$ is a
 $\lambda$-system.  To see this first assume that $A \subset B$ with
 $A,B \in \mathcal{C}$.  Then by linearity of integral, $\int
 \characteristic{B \setminus A} (s, t) \, d\mu(s,dt) = \int
@@ -1162,6 +1302,53 @@ select $G : S \times [0,1] \to A$ as above then $G \circ g^{-1} : S
 so $G \circ g^{-1}$ proves the result.
 \end{proof}
 
+\begin{lem}\label{InducedBijectionOnSigmaAlgebras}Let $(S,
+  \mathcal{S})$ and $(T, \mathcal{T})$ be measurable spaces and let $f
+  : S \to T$ be a Borel isomorphism then $f^{-1} : \mathcal{T} \to
+  \mathcal{S}$ is a bijection.
+\end{lem}
+\begin{proof}
+Since a Borel isomorphism is a bijection we know that $f^{-1} : 2^T
+\to 2^S$ is a bijection (Lemma
+\ref{BijectivityOfInducedSetMap}).  By measurability of $f$ we know
+that $f^{-1} (\mathcal{T}) \subset \mathcal{S}$.  Moreover for any $A \in
+\mathcal{S}$ by measurability of we know that $f^{-1}$ $\lbrace t \in T \mid f(t) \in A \rbrace \in
+\mathcal{T}$ and clearly $f^{-1} \lbrace
+t \in T \mid f(t) \in A \rbrace = \lbrace s \in S \mid f(f^{-1}(s))
+\in A \rbrace = A$ since $f$ is a bijection.
+\end{proof}
+
+
+\begin{lem}\label{InducedBorelIsomorphismOnProbabilityMeasures}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
+  spaces and let $f : S \to T$ be a Borel isomorphism, then the map
+  $f_* : \mathcal{P}(S) \to \mathcal{P}(T)$ given by $f_*(\mu)(A) =
+  \mu(f^{-1}(A))$ is a Borel isomorphism with $(f_*)^{-1} = (f^{-1})_*$.
+\end{lem}
+\begin{proof}
+We first show $f_*$ is measurable.  Let $F \in \mathcal{T}$ and let $G
+\in \mathcal{B}([0,1])$ and consider the measurable set $\lbrace \mu
+\mid \mu(F) \subset G \rbrace \subset \mathcal{P}(T)$.  Since $f$ is
+measurable we know that $f^{-1}(F) \in \mathcal{S}$ and therefore
+\begin{align*}
+f_*^{-1} \lbrace \mu \mid \mu(F) \subset G \rbrace &= \lbrace \mu \mid
+f_*\mu(F) \subset G \rbrace= \lbrace \mu \mid \mu(f^{-1}(F)) \subset G \rbrace
+\end{align*}
+is measurable in $\mathcal{P}(S)$.
+Since the $\sigma$-algebra on
+$\mathcal{P}(T)$ is generated by sets of the form $\lbrace \mu
+\mid \mu(F) \subset G \rbrace$, measurability of $f_*$ follows from
+Lemma \ref{MeasurableByGeneratingSet}.
+
+Since $f$ is a Borel isomorphism, we know $(f^{-1})_* :
+\mathcal{P}(T) \to \mathcal{P}(S)$ is well defined and measurable and
+we can compute that for all $A \in \mathcal{S}$ and $\mu \in
+\mathcal{P}(S)$ we have
+\begin{align*}
+(f^{-1})_* f_*\mu(A) &= f_*\mu(f(A)) = \mu(f^{-1}(f(A))) = \mu(A)
+\end{align*}
+so that $(f^{-1})_* \circ f_* = id$.  By symmetry we have $f_* \circ (f^{-1})_* = id$ and the result is shown.
+\end{proof}
+
 \begin{thm}\label{ExistenceConditionalDistribution}Let $(S, \mathcal{S})$ be a Borel space and
   $(T, \mathcal{T})$ be an arbitrary measuable space.  Let $\xi$ be a
   random element in $S$ and $\eta$ be a random element in $T$.  There
@@ -1175,6 +1362,24 @@ so $G \circ g^{-1}$ proves the result.
 \begin{proof}
 TODO:  Reduce to the case of $S = \reals$ and use density of rationals
 and properties of distribution functions to create a regular version.
+
+Now we show how to handle the case of general Borel $S$.  Let $A$ be a
+Borel subset of $\reals$ and let $j : S \to A$ be a Borel
+isomorphism.  We apply the result just proven to $j  \circ \xi :
+\Omega \to A$ and get the existence of a probability kernel $\tilde{\mu} : T
+\to \mathcal{P}(A)$ such that $\cprobability {\eta}{j \circ \xi \in B}
+= \tilde{\mu}(\eta, B)$ for all Borel subsets $B \subset A$.  By Lemma
+\ref{InducedBorelIsomorphismOnProbabilityMeasures} we know that $j_* :
+\mathcal{P}(S) \to \mathcal{P}(A)$ is a Borel isomorphism so we can
+define $\mu = j^{-1}_* \circ \tilde{\mu}$ which is a
+probability kernel by Lemma \ref{KernelMeasurability}.  Because $j$ is
+a Borel isomorphism, we know that every measurable subset of $S$ is of
+the form $j^{-1}B$ for some Borel $B \subset A$ (Lemma
+\ref{InducedBijectionOnSigmaAlgebras}) and we have
+\begin{align*}
+\cprobability{\eta}{\xi \in j^{-1}B} &= \cprobability{\eta}{j \circ
+  \xi \in B} = \tilde{\mu}(\eta, B) = \mu(\eta, j^{-1}B)
+\end{align*}
 \end{proof}
 
 TODO:  Tie this back to the independent case

@@ -929,6 +929,114 @@ Theorem \ref{Disintegration} and Lemma
 and we are done.
 \end{proof}
 
+\subsection{Markov Chains}
+
+\begin{defn}Let $P$ be a finite Markov chain on $S$, we say a function
+  $h : S \to \reals$ is \emph{harmonic} if for all $x \in S$, $\sum_{y
+    \in S} P(x,y) h(y) = h(x)$.
+\end{defn}
+
+\begin{lem}\label{MarkovChainHarmonicFunctionConstant}Let $P$ be an irreducible finite Markov chain on $S$ and let $h :
+  S \to \reals$ be harmonic, then $h$ is constant.
+\end{lem}
+\begin{proof}
+Let $M$ be the maximum value of $h$ and let $x \in S$ be such that
+$h(x) = M$.  Suppose there exists $y \in S$ such that $P(x,y) > 0$ and
+$h(y) < M$.  It would then follow that
+\begin{align*}
+M &= h(x) = \sum_{y \in S} h(x) P(x,y) < M \sum_{y \in S} P(x,y) = M
+\end{align*}
+which is a contradiction.  Thus we know that $h(y) = M$ for all $y \in
+S$ such that $P(x,y) > 0$.  Now we do an induction.  Suppose $h(y) =
+M$ for all $y \in S$ such that $P^{n-1}(x, y) > 0$ and suppose $z \in
+S$ is such that $P^n(x,z) > 0$.  It follows from the expression of
+matrix multiplication $P^n(x,z) = \sum_{y \in S} P^{n-1}(x,y) P(y,z)$
+that there exists a $y \in S$ such that $P^{n-1}(x,y) > 0$ and $P(y,z)
+> 0$.  So by the induction hypothesis we know that $h(y) = M$ and by
+replaying the case of $n=1$ with $y$ we get that $h(z) = M$.  
+
+By irreducibility we know that for every $y \in S$, there exists $n
+\geq 0$ such that $P^n(x,y) > 0$ and thus we have
+$h(y) = M$  for every $y \in S$.
+\end{proof}
+
+\begin{lem}Let $P$ be an irreducible finite Markov chain, if the
+  stationary distribution exists, then is unique.
+\end{lem}
+\begin{proof}
+Let $I$ denote the $\card(S) \times \card(S)$ identity matrix.
+By Lemma \ref{MarkovChainHarmonicFunctionConstant} we know that the
+matrix $P -I$ has a one dimensional null space given by the constant
+functions.  Thus column rank of $P - I$ is $\card(S) - 1$ and the same
+is true for the row rank; thus there is a unique solution of $\pi (P
+-I) = 0$ that satisfies $\sum_{x \in S} \pi(x) = 1$.  Note that this
+does not guarantee the existence of a stationary distribution as that
+requires that the entries of $\pi$ be non-negative.
+\end{proof}
+
+\begin{lem}If $\pi(x) P(x,y) = \pi(y) P(y,x)$ for all $x,y \in S$ then
+  $\pi \cdot P = \pi$.
+\end{lem}
+\begin{proof}
+This is a simple computation for each $y \in S$,
+\begin{align*}
+(\pi \cdot P)(y) &=\sum_{x \in S} \pi(x) P (x,y)  = \sum_{x \in S} \pi(y) P(y,x) =
+\pi(y) \sum_{x \in S} P(y,x) = \pi(y)
+\end{align*}
+\end{proof}
+
+The detail balance equation says ``the probability of starting at $x$
+and making a transition to $y$ is equal to the probability of starting
+at $y$ and making a transition to $x$''.  To be more concise we may
+say that with starting distribution $\pi$, the probability of a trajectory $x \to y$ is the same as the
+probability of a trajectory $y \to x$.  This is a type of symmetry
+that is sometime described as the equivalence running the chain
+forward and running the chain backward.  By induction it is not hard
+to see that this symmetry extends to reversing trajectories of
+arbitrary finite length.  We shall prove something more general by
+showing how to ``reverse'' a Markov chain that doesn't necessarily
+satisfy the detail balance equations.
+
+\begin{defn}The \emph{time reversal} of an irreducible Markov chain
+  with transition matrix $P$ and stationary distribution $\pi$ is
+  given by 
+\begin{align*}
+\hat{P}(x,y) &= \frac{\pi(y) P(y,x)}{\pi(x)}
+\end{align*}
+\end{defn}
+
+\begin{lem}The time reversal is a stochastic matrix and $\pi$ is
+  stationary for $\hat{P}$.  Moreover, for every $x_0, \dotsc, x_n \in
+  S$, we have
+\begin{align*}
+\sprobability{X_0 = x_0; \dotsb ; X_n = x_n}{\pi} &=
+\sprobability{\hat{X}_0 = x_n ; \dotsb ; \hat{X}_n = x_0}{\pi}
+\end{align*}
+\end{lem}
+\begin{proof}
+By stationarity of $\pi$ with respect to $P$ for all $x \in S$,
+\begin{align*}
+\sum_{y \in S} \hat{P}(x,y) &=\sum_{y \in S} \frac{\pi(y)
+  P(y,x)}{pi(x)} \frac{1}{\pi(x)} \sum_{y \in S} \pi(y)  P(y,x) = 1
+\end{align*}
+To see $\pi$ is stationary for $\hat{P}$, compute for all $y \in S$,
+\begin{align*}
+(\pi \cdot \hat{P})(y) &= \sum_{x \in S} \pi(x) \hat{P}(x,y) = \sum_{x
+  \in S} \pi(y) P(y,x) =\pi(y)
+\end{align*}
+The last fact follows from an induction argument where the case $n=1$
+is the definition of the time reversal matrix $\hat{P}$.  If we assume
+that the result holds for $n-1$ then
+\begin{align*}
+\sprobability{X_0 = x_0; \dotsb ; X_n = x_n}{\pi}  &= \pi(x_0) P(x_0,
+x_1) \dotsb P(x_{n-1}, x_n) \\
+&= \hat{P}(x_1, x_0) \pi(x_1) P(x_1, x_2) \dotsb P(x_{n-1},x_n) \\
+&= \hat{P}(x_1, x_0) \pi(x_n) \hat{P}(x_n, x_{n-1}) \dotsb \hat{P}
+(x_2,x_1) \\
+&= \sprobability{\hat{X}_0 = x_n ; \dotsb ; \hat{X}_n = x_0}{\pi}
+\end{align*}
+\end{proof}
+
 \subsection{Pure Jump-Type Markov Processes}
 In this section we discuss a simple subclass of time homogeneous
 Markov Processes on $\reals_+$.
