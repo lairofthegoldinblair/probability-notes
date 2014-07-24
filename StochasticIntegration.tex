@@ -695,7 +695,7 @@ We first assume that $\int_0^\infty V^2_s \, d[M]_s < \infty$ almost surely and 
 &\leq \expectation{\int_0^\infty V^2_s \, d[M]_s}^{1/2}\expectation{[N]_\infty}^{1/2} && \text{by Cauchy Schwartz} \\
 &=\norm{V}_M \expectation{N^2_\infty}^{1/2} = \norm{V}_M \norm{N}
 \end{align*}
-which shows that $N \mapsto \expectation{\int_0^\infty V_s \, d[M,N]_s}$ is a continuous linear functional on $\mathcal{M}^2$.  Thus since $\mathcal{M}^2$ is a Hilbert space with inner product given by $\langle M,N \rangle = \expectation{M_\infty N_\infty}$ (Lemma \ref{ContinuousL2MartingalesHilbert}) we know that there exists an $L^2$-bounded martingale $\int V \, dM \in \mathcal{M}^2$ such that $\expectation{\int_0^\infty V_s \, d[M,N]_s } = \expectation{N_\infty \cdot \int_0^\infty V \, dM}$ for all $N \in \mathcal{M}^2$ (we emphasize that the name $\int V \, dM$ we give to this martingale is only meant to be suggestive and the reader should not get confused trying to figure out that this element can be constructed by some kind of generalized sum; it is no more and no less than the element of the Hilbert space corresponding to the linear functional we've defined).
+which shows that $N \mapsto \expectation{\int_0^\infty V_s \, d[M,N]_s}$ is a continuous linear functional on $\mathcal{M}^2$.  Thus since $\mathcal{M}^2$ is a Hilbert space with inner product given by $\langle M,N \rangle = \expectation{M_\infty N_\infty}$ (Lemma \ref{ContinuousL2MartingalesHilbert}) we know that there exists an $L^2$-bounded martingale $\int V \, dM \in \mathcal{M}^2$ such that $\expectation{\int_0^\infty V_s \, d[M,N]_s } = \expectation{N_\infty \cdot \int_0^\infty V \, dM}$ for all $N \in \mathcal{M}^2$ (we emphasize that the use of the integral sign in the name $\int V \, dM$ we give to this martingale is only meant to be suggestive and the reader should not get confused trying to figure out that this element can be constructed by some kind of generalized sum; at this point it is no more and no less than the element of the Hilbert space corresponding to the linear functional we've defined).
 
 Since $V$ is progressive we know that $\int V_s \, d[M,N]_s$ is $\mathcal{F}$-adapted (Lemma \ref{StochasticStieltjesIntegral}) and we have just shown that it is integrable.  Now let $\tau$ be an arbitrary optional time and apply the above construction to $N^\tau$ (TODO: Remind why $N^\tau \in \mathcal{M}^2$).  in the following computation
 \begin{align*}
@@ -730,7 +730,7 @@ for every continuous local martingale $N$.  Moreover for $m < n$, from the above
 \begin{align*}
 [N, \left(\int V \, dM^{\tau_n}\right)^{\tau_m}]_t &= [N, \int V \, dM^{\tau_n}]_{t \wedge \tau_m} =\int_0^{t\wedge\tau_m} V_s \, d[M,N]_s
 \end{align*}
-for all continuous local martingales $N$ which by uniqueness of the stochastic integral shows $\left(\int V \, dM^{\tau_n}\right)^{\tau_m} = \int V \, dM^{\tau_m}$ so that $\int V \, dM^{\tau_m}$ and $\int V \, dM^{\tau_n}$ agree on the interval $[,\tau_m]$.  Therefore we can define $\int_0^t V \, dM$ as the limit of $\int_0^t V \, dM^{\tau_n}$ for any $\tau_n \geq t$.  The fact that this defines an adapted process follows from writing $\int_0^t V \, dM = \sum_{n=1}^\infty \characteristic{\lbrace \tau_{n-1} \leq t < \tau_n\rbrace} \int_0^t V \, dM^{\tau_n}$ together with the facts that $\tau_n$ is optional and $\int V \, dM^{\tau_n}$ is adapted.  Continuity at $t \geq 0$ follows by picking $\tau_n > t$ and noting that $\int_0^t V \, dM = \int_0^t V \, dM^{\tau_n}$ and continuity of $\int_0^t V \, dM^{\tau_n}$ at $t$.  By Lemma \ref{LocalMartingaleLocalProperty} we know that $\int V \, dM$ is a continuous local martingale.  Lastly by construction, for all $n \geq 0$ and each continuous local martingale there is a set $A_n$ with $\probability{A_n} =1$ such that
+for all continuous local martingales $N$ which by uniqueness of the stochastic integral shows $\left(\int V \, dM^{\tau_n}\right)^{\tau_m} = \int V \, dM^{\tau_m}$ so that $\int V \, dM^{\tau_m}$ and $\int V \, dM^{\tau_n}$ agree on the interval $[0,\tau_m]$.  Therefore we can define $\int_0^t V \, dM$ as the limit of $\int_0^t V \, dM^{\tau_n}$ for any $\tau_n \geq t$.  The fact that this defines an adapted process follows from writing $\int_0^t V \, dM = \sum_{n=1}^\infty \characteristic{\lbrace \tau_{n-1} \leq t < \tau_n\rbrace} \int_0^t V \, dM^{\tau_n}$ together with the facts that $\tau_n$ is optional and $\int V \, dM^{\tau_n}$ is adapted.  Continuity at $t \geq 0$ follows by picking $\tau_n > t$ and noting that $\int_0^t V \, dM = \int_0^t V \, dM^{\tau_n}$ and continuity of $\int_0^t V \, dM^{\tau_n}$ at $t$.  By Lemma \ref{LocalMartingaleLocalProperty} we know that $\int V \, dM$ is a continuous local martingale.  Lastly by construction, for all $n \geq 0$ and each continuous local martingale there is a set $A_n$ with $\probability{A_n} =1$ such that
 \begin{align*}
 [N, \int V \, dM]_t &=[N, \int V \, dM]^{\tau_n}_t = [N, \left(\int V \, dM\right)^{\tau_n}]_t = [N, \int V \, dM^{\tau_n}]_t \\
 &= \int_0^t V_s \, d[M^{\tau_n}, N]_s = \int_0^{t\wedge \tau_n} V_s \, d[M, N]_s = \int_0^{t} V_s \, d[M, N]_s
@@ -739,15 +739,25 @@ for all $0 \leq t \leq \tau_n$ on $A_n$.  Thus taking the intersection of $A_n$ 
 \end{proof}
 
 With this Theorem proven we know that the following defintion makes sense.
-\begin{defn}Given a continuous local martingale $M$ and a progressive process $V$ such that $\int_0^t V^2_s \, d[M]_s < \infty$ for all $t \geq 0$, the \emph{stochastic integral} $\int V \, dM$ is the unique continuous local martingale for which $[\int V \, dM, N]_t = \int_0^t V_s \, d[M,N]_s$ for all $t \geq 0$ almost surely for every continuous local martingale $N$.
+\begin{defn}Given a continuous local martingale $M$ and a progressive process $V$ such that $\int_0^t V^2_s \, d[M]_s < \infty$ for all $t \geq 0$, the \emph{stochastic integral} $\int V \, dM$ is the almost surely unique continuous local martingale for which $[\int V \, dM, N]_t = \int_0^t V_s \, d[M,N]_s$ for all $t \geq 0$ almost surely for every continuous local martingale $N$.
 \end{defn}
 
-Here we collect a few of the most elementary facts about the stochastic integral.
-\begin{lem}The stochastic integral is bilinear in both the integrand and integrator.
+Here we collect a few of the most elementary facts about the stochastic integral.  In particular we call attention to the Ito Isometry which doesn't figure prominently in our presentation but is a critical step in others; we shall have more to say about this later.  
+\begin{lem}\label{BasicPropertiesStochasticIntegralContinuousMartingale}Let $M$ be a continuous local martingales.  If $U,V \in L(M)$ such that $U_t=V_t$ for all $t \geq 0$ almost surely then $\int U \, dM = \int V \, dM$.  The stochastic integral is bilinear in both the integrand and integrator.
 TODO: Be very precise about assumptions here!  E.g. is $V \in L(aM + bN)$ equivalent to $V \in L(M)$ and $V \in L(N)$?  Clearly the latter is at least as strong as the former.
+If $M$ is a continuous local martingale and $V \in L(M)$ then we have $[\int V \, dM]_t = \int_0^t V_s \, d[M]_s$ for all $t \geq 0$ almost surely.  In particular, if $M$ is a continuous martingale with $M_0 = 0$ we have the \emph{Ito Isometry} 
+\begin{align*}
+\expectation{\left(\int_0^t V \, dM\right)^2} &= \int_0^t V_s^2 \, d[M]_s \text{ for all $t \geq 0$}
+\end{align*}
 \end{lem}
 \begin{proof}
-This boils down to a couple of simple computations using bilinearity of the Lebesgue-Stieltjes integral and the quadratic covariation
+With the assumption that $U = V$ almost surely we see that for all continuous local martingales $N$ we have
+\begin{align*}
+[\int U \, dM, N]_t &= \int_0^t U_s \, d[M,N]_s = \int_0^t V_s \, d[M,N]_s = [\int V \, dM, N]_t
+\end{align*}
+for all $t \geq 0$ almost surely.  By the uniqueness property of the stochastic integral we have $\int U \, dM = \int V \, dM$.
+
+Bilinearity boils down to a couple of simple computations using bilinearity of the Lebesgue-Stieltjes integral and the quadratic covariation
 \begin{align*}
 [\int (aV + bU) \, dM, N]_t &= \int_0^t (aV_s + bW_s) \, d[M,N]_s \\
 &= a\int_0^t V_s \, d[M,N]_s + b\int_0^t W_s \, d[M,N]_s \\
@@ -762,28 +772,36 @@ and
 &= [a\int V \, dM + b\int V \, dN, R]_t
 \end{align*}
 Now apply the uniqueness criteria for stochastic integrals.
-\end{proof}
 
-The basic continuity property of the stochastic integral is
-\begin{lem}\label{LimitsOfStochasticIntegralContinuousLocalMartingale}Let $M_n$ be a sequence of continuous local martingales and let $V_n \in L(M_n)$, then 
-$\left( \int V_n \, dM_n \right)^* \toprob 0$ if and only if $\int_0^\infty (V_n)_s^2 \, d[M_n]_s \toprob 0$.
-\end{lem}
-\begin{proof}
-This follows immediately from Lemma \ref{QuadraticCovariationAndContinuity} upon using the defining property of the stochastic integral twice and Lemma \ref{ChainRuleStieltjes} once to see
+Using the defining property of the stochastic integral twice and Lemma \ref{ChainRuleStieltjes} once we see
 \begin{align*}
-[\int V_n \, dM_n]_t &= \int_0^t V_n(s) \, d[M_n, \int V_n \, dM_n]_s = \int_0^t V_n(s) \, d\int_0^s V_n(u) \, d[M_n](u) \\
-&= \int_0^t V_n^2(s) \, d[M_n]_s
+[\int V \, dM]_t &= \int_0^t V_s \, d[M, \int V \, dM]_s = \int_0^t V_s \, d\int_0^s V_u \, d[M](u) \\
+&= \int_0^t V^2(s) \, d[M]_s
+\end{align*}
+In the special case that $M$ is a martingale starting at zero we know that $M^2 - [M]$ is a martingale starting at zero and thus taking expectations we get
+\begin{align*}
+\expectation{\left( \int_0^t V \, dM\right)^2} &= \expectation{[\int V \, dM]_t} = \expectation{\int_0^t V^2(s) \, d[M]_s}
 \end{align*}
 \end{proof}
 
+It is common for the details of defining the stochastic integral to unfold a bit differently than our presentation.  The alternative presentation begins just as we have defines the stochastic integral for predicatable step process integrands but then notes the property of the Ito Isometry holds for such integrands.  The basic idea is to show that predicatable step processes are dense in an $L^2$ space and the use the Ito isometry to extend the definition of the stochastic integral by a completion argument.  There is a subtlety to deal with.  We note that the isometry holds for every \emph{fixed} $t \geq 0$ and thus is a family of isometries between an $L^2$ space of integrands (predictable step processes on $[0,t]$) and an $L^2$ space of random variables; it is not a single isometry between a spaces of processes.  There are two ways to proceed.  In the first case (Steele, Peres and Morters, others) one stays with the \emph{one $t$ at a time} approach and shows that step processes are dense in the progressive processes in $L^2(\Omega \times [0,t])$ and then extends the stochastic integral pointwise in $t \geq 0$.  An extra step is necessary at this point to show that one may find a version of the resulting stochastic integral process that is indeed a continuous martingale.  In the second case (e.g. Karatzas and Shreve), one defines a norm on the space of $L^2$ continuous martingales (different from the Hilbert space structure we have used) and shows that the Ito isometries can be assembled into a single isometry between the space of integrands and this space of martingales; again one extends by completion.  What about Rogers and Williams; they use the Ito isometry approach but I think the details are slightly different.
+ 
+The basic continuity property of the stochastic integral is
+\begin{lem}\label{LimitsOfStochasticIntegralContinuousLocalMartingale}Let $M_n$ be a sequence of continuous local martingales and let $V_n \in L(M_n)$, then 
+$\left( \int V_n \, dM_n \right)^* \toprob 0$ if and only if $\int_0^\infty V_n^2(s) \, d[M_n](s) \toprob 0$.
+\end{lem}
+\begin{proof}
+Lemma \ref{QuadraticCovariationAndContinuity} says that $\left( \int V_n \, dM_n \right)^* \toprob 0$ if and only if $[\int V_n \, dM_n]_\infty \toprob 0$ but Lemma \ref{BasicPropertiesStochasticIntegralContinuousMartingale} tells us that $[\int V_n \, dM_n]_\infty = \int_0^\infty V^2_n(s) \, d[M_n](s)$. 
+\end{proof}
+
 Before proceeding further we extend the class of integrators in what initially seems like a very ad-hoc manner.  Indeed this extension follows the historical path of the development of stochastic integration which broadened the scope of definitions in exactly these ways.  The reader is encouraged not to spend too much time trying to find the method in the madness as later we will prove a theorem that shows that the only continuous stochastic processes that make sense as integrators are the ones we define here.
-\begin{defn}A \emph{continuous  semimartingale} $X$ is a cadlag adapted process in $\reals$ such that there is a continuous local martingale $M$ and a continuous, adapted process of locally finite variation $A$ such that $X = M + A$.  A cadlag adapted process $X=(X_1, \dotsc, X_d)$ in $\reals^d$ is said to be a continuous semimartingale if and only each $X_i$ is.  Given a continuous semimartingale $X = M + A$ we let 
+\begin{defn}A \emph{continuous  semimartingale} $X$ is a cadlag adapted process in $\reals$ such that there is a continuous local martingale $M$ and a continuous, adapted process of locally finite variation $A$ with $A_0 = 0$ such that $X = M + A$.  A cadlag adapted process $X=(X_1, \dotsc, X_d)$ in $\reals^d$ is said to be a continuous semimartingale if and only each $X_i$ is.  Given a continuous semimartingale $X = M + A$ we let 
 \begin{align*}
 L(X) &= \lbrace V \mid V^2 \in L([M]) \text{ and } V \in L(A) \rbrace
 \end{align*}
 that is to say $L(X) = L(M) \cap L(A)$ and for any $V \in L(X)$ we define $\int V \, dX = \int V \, dM + \int V_s \, dA_s$.
 \end{defn} 
-Note that the decomposition $X = M + A$ is almost surely unique as if $M + A = \tilde{M} + \tilde{A}$ then $M - \tilde{M} = \tilde{A} - A$ is a continuous local martingale of locally finite variation and is therefore $0$ almost surely by Lemma \ref{ContinuousLocalMartingaleBoundedVariation}.  As such we refer to this as the \emph{canonical decomposition}.
+Note that the decomposition $X = M + A$ is almost surely unique as if $M + A = \tilde{M} + \tilde{A}$ then $M - \tilde{M} = \tilde{A} - A$ is a continuous local martingale of locally finite variation and is therefore $0$ almost surely by Lemma \ref{ContinuousLocalMartingaleBoundedVariation}.  As such, we refer to this as the \emph{canonical decomposition}.
 
 We want to develop the primary properties of the stochastic integral with a continuous semimartingale integrator.  Note that by the definition $\int V \, dX = \int V \, dM + \int V \, dA$ we can see that a stochastic integral with respect to a continuous semimartingale integrator is itself a continuous semimartingale.  Thus we can consider a stochastic integral as an integrator and the first result is a generalization of the ``chain rule'' proven in Lemma \ref{ChainRuleStieltjes}.
 \begin{lem}\label{ChainRuleContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $V \in L(X)$ then $U \in L(\int V \, dX)$ if and only if $UV \in L(X)$ and $\int U \, d\int V \, dX = \int UV \, dX$ a.s.
@@ -838,7 +856,7 @@ The second equality is equally trivial.
 \end{proof}
 
 The following Lemma will be a useful for exchanging limits and stochastic integrals and represents the fundamental continuity property of stochastic integrals.
-\begin{lem}\label{LimitsOfStochasticIntegralContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $U, V, V_1, V_2, \dotsc \in L(X)$ with $\abs{V_n} \leq U$ and $V_n \toas V$ (TODO: Make precise what this means) then $\sup_{0 \leq s \leq t} \abs{\int_0^s V_n \, dX - \int_0^s V \, dX} \toprob 0$ for all $t \geq 0$.
+\begin{lem}\label{DominatedConvergenceContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $U, V, V_1, V_2, \dotsc \in L(X)$ with $\abs{V_n} \leq U$ and $V_n \toas V$ (TODO: Make precise what this means) then $\sup_{0 \leq s \leq t} \abs{\int_0^s V_n \, dX - \int_0^s V \, dX} \toprob 0$ for all $t \geq 0$.
 \end{lem}
 \begin{proof}
 Write $X = M + A$ so that $U^2 \in L([M])$ and $U \in L(A)$.  By ordinary Dominated Convergence applied pointwise in $\Omega$ we know that almost surely $\int_0^t V_n(u) \, dA(u) \to \int_0^t V(u) \, dA(u)$ and $\int_0^t V_n^2(u) \, d[M](u) \to \int_0^t V^2(u) \, d[M](u)$ for every $t \geq 0$.  Because $\abs{V_n} \leq U$ we have
@@ -867,7 +885,7 @@ then we have the identity
 \begin{align*}
 M^2_t &= 2 \int_0^t V^n \, dM + Q^n_t
 \end{align*}
-and the convergence results that $V^n \toas M$ and $\sup_{0 \leq t < \infty} \abs{Q^n_t - [M]_t} \toprob 0$.  While in the proof of Theorem \ref{OptionalQuadraticCovariation} we weren't in a position to discuss the convergence of $\int_0^t V^n \, dM$ we now note that in addition we have $\abs{V^n_t} \leq \sup_{0 \leq s \leq t} \abs{M_s} < \infty$ so we can apply Lemma \ref{LimitsOfStochasticIntegralContinuousSemimartingale} to conclude that 
+and the convergence results that $V^n \toas M$ and $\sup_{0 \leq t < \infty} \abs{Q^n_t - [M]_t} \toprob 0$.  While in the proof of Theorem \ref{OptionalQuadraticCovariation} we weren't in a position to discuss the convergence of $\int_0^t V^n \, dM$ we now note that in addition we have $\abs{V^n_t} \leq \sup_{0 \leq s \leq t} \abs{M_s} < \infty$ so we can apply Lemma \ref{DominatedConvergenceContinuousSemimartingale} to conclude that 
 \begin{align*}
 \sup_{0 \leq s \leq t} \abs{\int_0^s V^n \, dM - \int_0^t M \, dM} \toprob 0
 \end{align*}
@@ -877,5 +895,244 @@ M_t^2 &= \lim_{n \to \infty} M^2_{t \wedge \tau_n} = \lim_{n \to \infty} 2 \int_
 &=\lim_{n \to \infty} \left( 2 \int_0^{t \wedge \tau_n} M \, dM + [M]_{t \wedge \tau_n} \right) = 2 \int_0^{t} M \, dM + [M]_{t} 
 \end{align*}
 
-For $X = A$ with $A$ of locally finite variation and $A_0 = 0$, we have by definition $[A] = 0$ and $A_t^2 = 2 \int_0^t A_s \, dA_s$ follows by Fubini (TODO: really?)
+Note that by Tonelli's Theorem we know that for any measurable space $S$, any $\sigma$-finite measure $\mu$ and any positive measurable function $f : S \times S \to \reals_+$ we have
+\begin{align*}
+\iint f(x,y) \, d\mu(x) \otimes d\mu(y) &= \int \left [ \int f(x,y) \, d\mu(y) \right] \, d\mu(x) \\
+&= \int \left [ \int f(y,x) \, d\mu(x) \right] \, d\mu(y)  = \iint f(y,x) \, d\mu(x) \otimes d\mu(y)
+\end{align*}
+so in particular the product measure is invariant under reflection along the diagonal. Using this fact, for $X = A$ with $A$ of locally finite variation and $A_0 = 0$, we have by definition $[A] = 0$ and 
+\begin{align*}
+A_t^2 &= \int_0^t \int_0^t dA(u) \otimes dA(v) =2\int_0^t \left[\int_0^u \, dA(v)\right] \, dA(u) \ = 2 \int_0^t A(u) \, dA(u)
+\end{align*}
+so the result holds for Stieltjes integrals.
+
+Now assume that $X = M+A$ is a continuous semimartingale with $X_0 = 0$.  Using the results for the continuous local martingale case and the Stieltjes integral case we have
+\begin{align*}
+X^2 &= M^2 + A^2 + 2MA = 2 \int M \, dM + 2 \int A_s \, dA_s + [M] + 2MA\\
+&=2 \int X \, dX - 2 \int A \, dM - 2 \int M_s \, dA_s + [X] + 2MA 
+\end{align*}
+so the result will follow if we can show that $MA = \int A \, dM + \int M_s \, dA_s$ almost surely.  For this we can proceed by defining approximations.  Fix a $t \geq 0$ and for each $n > 0$ define processes $A^n_s = A_{(k-1)t/n}$ and $M^n_s = M_{tk/n}$ for $s \in (t(k-1)/n, tk/n]$.  Note $A^n$ is a predictable step process by construction and that
+\begin{align*}
+&\int_0^t A^n \, dM + \int_0^t M^n_s \, dA_s \\
+&= \sum_{k=1}^n A_{t(k-1)/n} \left(M_{tk/n} - M_{t(k-1)/n}\right) + \sum_{k=1}^n M_{kt/n} \left(A_{tk/n} - A_{t(k-1)/n}\right) \\
+&=A_t M_t
+\end{align*}
+for every $n > 0$.  We have $A^n \toas A$ by continuity of $A$ and therefore $\sup_{0 \leq s \leq t} \abs{\int_0^s A^n \, dM - \int A \, dM} \toprob 0$ by Lemma \ref{LimitsOfStochasticIntegralContinuousLocalMartingale} (TODO: we need domination!) and $M^n \toas M$ and therefore $\int_0^t M^n_s \, dA_s \to \int_0^t M_s \, dA_s$ by Dominated Convergence applied pointwise (TODO: We need domination!).
+
+Now we remove the assumption $X_0 = 0$.  Applying the result proven to $X - X_0$, we have
+\begin{align*}
+X^2 &= (X-X_0)^2 + 2X_0X - X_0^2 = 2 \int (X - X_0) \, d(X - X_0) + [X-X_0] + 2X_0 X - X_0^2 \\
+&= 2 \int X \, dX - 2X_0 (X-X_0) + [X] + 2X_0 X - X_0^2 = X_0^2 + 2 \int X \, dX + [X]
+\end{align*}
+
+Lastly, we perform the polarization to extend to general $X$ and $Y$, using bilinearity of the stochastic integral and bilinearity and symmetry of the quadratic covariation,
+\begin{align*}
+XY &= \frac{1}{4} \left( (X + Y)^2 - (X-Y)^2 \right) \\
+&=\frac{1}{4} \bigl( (X_0 + Y_0)^2 + 2\int (X+Y) \, d(X+Y) + [X+Y] \\
+&- (X_0-Y_0)^2 - 2\int (X-Y) d(X-Y) - [X-Y] \bigr) \\
+&=X_0 Y_0 + \int X \, dY + \int Y \, dX + [X,Y]
+\end{align*}
+\end{proof}
+
+The following Theorem shows that the class of continuous semimartingales is closed under composition sufficiently smooth functions and provides a means of computing many stochastic integrals.  It is probably the most important theorem in stochastic calculus.
+\begin{thm}[Ito's Lemma]\label{ItoLemmaContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $f \in C^2(\reals)$ then almost surely
+\begin{align*}
+f(X) &= f(X_0) + \int f^\prime(X) \, dX + \frac{1}{2} \int f^{\prime \prime}(X) (s) \, d[X](s)
+\end{align*}
+\end{thm}
+\begin{proof}
+Let $\mathcal{C}$ be set of all functions for which the result holds.
+First we show that $\mathcal{C}$ contains all polynomials and then extend to smooth functions via an approximation argument.  It is trivial that it is true for $f=c$ a constant and for $f(x) = x$ the result is simply the fact that $\int_0^t dX = X - X_0$.  To see that $\mathcal{C}$ contains all polynomials, if suffices to show that $\mathcal{C}$ is an algebra.  Suppose that $f,g \in \mathcal{C}$, using integration by parts Theorem \ref{IntegrationByPartsContinuousSemimartingale}, the Chain Rule Lemma \ref{ChainRuleContinuousSemimartingale} and the defining property of stochastic integrals, we get almost surely
+\begin{align*}
+&f (X) g(X) - f(X_0) g(X_0) = \int f(X) \, dg(X) + \int g(X) \, df(X) + [f(X), g(X)] \\
+&=\int f(X) \, d\int g^{\prime}(X) \, dX + \frac{1}{2} \int f(X) \, d\int g^{\prime \prime}(X)(s) \, d[X](s) \\
+&+ \int g(X) \, d\int f^{\prime}(X) \, dX + \frac{1}{2} \int g(X) \, d\int f^{\prime \prime}(X)(s) \, d[X](s) \\
+&+ [\int f^{\prime}(X)\, dX + \frac{1}{2}\int f^{\prime \prime}(X)(s) \, d[X](s) , \int g^{\prime} (X) \, dX + \frac{1}{2} \int g^{\prime\prime}(X)(s) \, d[X](s)] \\
+&=\int f(X)  g^{\prime}(X) \, dX + \frac{1}{2} \int f(X) g^{\prime \prime}(X) (s) \, d[X](s) + \int g(X)  f^{\prime}(X) \, dX\\
+&+ \frac{1}{2} \int g(X) f^{\prime \prime}(X)(s) \, d[X](s) + [\int f^{\prime}(X)\, dX , \int g^{\prime} (X) \, dX] \\
+&=\int (fg)^{\prime}(X) \, dX + \frac{1}{2} \int f(X) g^{\prime \prime}(X) (s) \, d[X](s) + \frac{1}{2} \int g(X) f^{\prime \prime}(X)(s) \, d[X](s) \\
+&+ \int f^{\prime}(X) g^{\prime} (X) (s) \, d[X](s) \\
+&=\int (fg)^{\prime}(X) \, dX  + \frac{1}{2} \int (fg)^{\prime \prime}(X)(s) \, d[X](s) 
+\end{align*}
+
+Now suppose that we have $f \in C^2(\reals)$.  Let $t \geq 0$ be fixed and by the Weierstrass Approximation Theorem (Corollary \ref{WeierstrassApproximation}) (TODO: We actually need approximation in $C((-\infty, \infty); \reals)$; i.e. uniform approximation on compact sets) find a polynomials $q_n(x)$ such that $q_n$ uniformly approximates $f^{\prime \prime}(x)$ on every interval $[-c,c]$.  Taking two antiderivatives of each $q_n(x)$ we get polynomials $p_n(x)$ such that 
+\begin{align*}
+\lim_{n \to \infty} \sup_{-c \leq x \leq c} \abs{f(x) - p_n(x)} \vee \abs{f^{\prime}(x) - p^{\prime}_n(x)}  \vee \abs{f^{\prime\prime}(x) - p^{\prime\prime}_n(x)} &= 0
+\end{align*}
+for every $t \geq 0$.  In particular, $p_n(X_t(\omega)) \to f(X_t(\omega))$ for every $t \geq 0$ and $\omega \in \Omega$.
+TODO: Finish
+\end{proof}
+
+\begin{lem}\label{ApproximateOptionalQuadraticCovariationContinuousSemimartingale}Let $X$ and $Y$ be continuous semimartingales, let $t \geq 0$ be fixed and suppose that we have a sequence of partitions $0=t_{n,0} < t_{n,1} < \dotsb < t_{n, k_n}=t$ such that $\lim_{n \to \infty} \max_{1 \leq k \leq k_n} (t_{n,k} - t_{n, k-1}) = 0$, then 
+\begin{align*}
+\sum_{k=1}^{k_n} (X_{n,k} - X_{n,k-1}) (Y_{n,k} - Y_{n,k-1}) \toprob [X,Y]_t
+\end{align*}
+\end{lem}
+\begin{proof}
+Using $[X,Y] = [X-X_0, Y-Y_0]$ it is immediate that we may assume $X_0 = Y_0 = 0$.  Given the partition $0=t_{n,0} < t_{n,1} < \dotsb < t_{n, k_n}=t$ we define predicatable step processes $X^n_s = \sum_{k=1}^{k_n} X_{t_{k-1}} \characteristic{(t_{k-1}, t_k]}(s)$ and $Y^n_s = \sum_{k=1}^{k_n} Y_{t_{k-1}} \characteristic{(t_{k-1}, t_k]}(s)$.  By a little algebra using the fact that the integrals $\int X^n \, dY$ and $\int Y^n \, dX$ are given by Riemann sums we see
+\begin{align*}
+&\sum_{k=1}^{k_n} (X_{n,k} - X_{n,k-1}) (Y_{n,k} - Y_{n,k-1}) \\
+&= \sum_{k=1}^{k_n} X_{n,k} (Y_{n,k} - Y_{n,k-1})  - \int_0^t X^n \, dY \\
+&= \sum_{k=1}^{k_n}( X_{n,k} Y_{n,k} - X_{n,k-1} Y_{n,k-1})  - \int_0^t X^n \, dY - \int_0^t Y^n \, dX \\
+&= X_t Y_t - \int_0^t X^n \, dY - \int_0^t Y^n \, dX \\
+\end{align*}
+By continuity of $X$ and $Y$ we see that $X^n \toas X$ and $X^n_t\leq X^*_t< \infty$.  Since $X$ is continuous the same is true of $X^*$ hence $X^* \in L(Y)$, therefore by may apply Lemma \ref{DominatedConvergenceContinuousSemimartingale} to conclude that $\int_0^t X^n \, dY \toprob \int_0^t X \, dY$.  In exactly the same way we see that $\int_0^t Y^n \, dX \toprob \int_0^t Y \, dX$.  Now we can apply integration by parts Lemma \ref{IntegrationByPartsContinuousSemimartingale} to conclude that 
+\begin{align*}
+\int_0^t X^n \, dY \toprob \int_0^t X \, dY \toprob X_t Y_t - \int_0^t X \, dY - \int_0^t Y \, dX 
+\end{align*}
+\end{proof}
+
+\subsection{Approximation By Step Processes}
+
+We defined the stochastic integral in an elegant but somewhat abstract way as the representative of a linear functional on a Hilbert space.  The uniqueness property of the integral showed us that this definition was consistent with intuitively clear defintion of the stochastic integral for step process integrands as Riemann sums.  The uniqueness property of the stochastic integral has shown itself to be a very useful technical tool but is lacking somewhat in intuitive appeal.  We repair this deficiency by showing that the continuity properties of the stochastic integral also characterize the extension from step process integrands.  To see this requires that we understand the approximation by step processes in the spaces $L(M)$.  We note that these approximation results also lead to an alternative path to defining the stochastic integral in the first place.  
+
+\begin{lem}Let $X$ be a continuous semimartingale with canonical decomposition $X = M+A$ and let $V \in L(X)$.  Then there exists processes $V_1, V_2, \dotsc \in \mathcal{E}$ such that almost surely $\lim_{n \to \infty} \int_0^t (V_n -V)^2(s) \, d[M](s) = 0$ and $\lim_{n \to \infty} \sup_{0 \leq s \leq t} \abs{\int_0^s (V_n-V)(u) \, dA(u) } = 0$ for all $t \geq 0$.
+\end{lem}
+\begin{proof}
+TODO: A bunch of stuff
+
+Now suppose that $A$ is a strictly increasing, continuous and adapted process with $A_0=0$.  If one thinks for a moment about the case in which $A_t = t$ then it is more or less clear how to approximate any integrable function $f$ by a continuous one: just define $f^h(t) = \frac{1}{h}\int_{t-h}^t f(s) \, ds$ for $h > 0$ and note that by the Fundamental Theorem of Calculus for almost all $t$ we have $\lim_{h \to 0^+} f^h(t) = f(t)$.  If we treat a general Stieltjes integral then we just have to use the fact that every Lebesgue-Stieltjes measure is of the form $\pushforward{G}{\lambda}$.  Specifically, from the proof of Lemma \ref{LebesgueStieltjesMeasure} recall that if $F$ is nondecreasing and right continuous then the Lebesgue-Stieltjes measure associated with $F$ is given by $\pushforward{G}{\lambda}$ where
+$G(t) = \sup\lbrace s \mid F(s) < t \rbrace$.
+Let us apply this to our process $A$ pointwise by defining the process, $T_t = \sup \lbrace s \geq 0 \mid A_s < t \rbrace$ for $t \geq 0$.  TODO: Show $T$ is a process.  Because we have assumed that $A$ is strictly increasing, $T$ is strictly increasing and is an actual inverse satisfying $T(A(t)) = A(T(t)) = t$.  We can now define the approximation for $h > 0$ and $t > 0$,
+\begin{align*}
+V^h_t &= \frac{1}{h} \int_{T((A_t-h) \vee 0)}^t V(s) \, dA(s) = \frac{1}{h} \int_{(A_t-h) \vee 0}^{A_t} V(T(s)) \, ds
+\end{align*}
+where we have used the change of variables Lemma \ref{ChangeOfVariables} and the fact that $T((A_t - h) \vee 0)\leq T(s) \leq t$ if and only if $(A_t - h) \vee 0 \leq s \leq A(t)$.  TODO: What about $t=0$?  Having expressed the definition of $V^h_t$ in terms of an ordinary Lebesgue integral, we can apply the Fundamental Theorem of Calculus to see that 
+\begin{align*}
+\lim_{h \to 0} V^h (T(t)) &= \lim_{h \to 0} \frac{1}{h} \int_{(t-h) \vee 0}^{t} V(T(s)) \, ds = V(T(t))
+\end{align*} 
+for almost all $0 \leq t \leq A_1$.  Now we can apply the Dominated Convergence Theorem to conclude 
+\begin{align*}
+\lim_{h \to 0} \int_0^1 \abs{V^h_s - V_s} \, dA_s &= \lim_{h \to 0} \int_0^{A_1} \abs{V^h(T(s)) - V(T(s))} \, ds = 0
+\end{align*}
+\end{proof}
+
+\begin{lem}\label{SimpleProcessApproximationBoundedLebesgue}Let $V$ be a bounded $\mathcal{F}$-adapted process then there exist $V^n \in \mathcal{E}$ such that 
+\begin{align*}
+\sup_{0 \leq T < \infty} \lim_{n \to \infty} \expectation{\int_0^T \abs{V_s - V_s^n}^2 \, ds} = 0
+\end{align*}
+\end{lem}
+\begin{proof}
+First fix a $T \geq 0$ and we will approximate on the interval $[0,T]$.  It is also notationally convenient to set $V_t = 0$ for all $t < 0$ in what follows.  Set up the following family of approximations; for every $s \geq 0$ and $n \in \naturals$ define
+\begin{align*}
+V^{(n,s)}_t(\omega)  &= \sum_{j=0}^{\ceil{2^n T}} V_{j/2^n + s}(\omega) \characteristic{(j/2^n + s, (j+1)/2^n + s]}(t) \characteristic{[0,T]}(t)
+\end{align*}
+Note that $V^{(n,s)} \in \mathcal{E}$ and moreover it is jointly measurable in $(s,t,\omega)$.  Also note that $V^{(n,s)}_t = V^{(n, s+1/2^n)}_t$ for all $s \geq 0$ and all $t \geq 0$.
+
+Claim: Let $f \in L^2([0,T])$ then $\lim_{h \downarrow 0} \int_0^T (f(s) - f((s - h) \vee 0))^2 \, ds= 0$.
+
+By Lemma \ref{LpApproximationByContinuous} we can find bounded continuous $f_n$ such that $f_n \tolp{2} f$.  By the triangle inequality, continuity of $f_n$, Dominated Convergence and the translation invariance of Lebesgue measure we get for every $n$
+\begin{align*}
+&\lim_{h \downarrow 0} \left(\int_0^T (f(s) - f((s - h) \vee 0))^2 \, ds\right)^{1/2} \\
+&\leq \left(\int_0^T (f(s) -f_n(s))^2 \, ds\right)^{1/2} + \\
+&\lim_{h \downarrow 0} \left(\int_0^T (f_n(s) - f_n((s - h) \vee 0))^2 \, ds\right)^{1/2} + \\
+&\lim_{h \downarrow 0} \left(\int_0^T (f_n((s-h) \vee 0) - f((s - h) \vee 0))^2 \, ds\right)^{1/2} \\
+&=\left(\int_0^T (f(s) -f_n(s))^2 \, ds\right)^{1/2} + \lim_{h \downarrow 0} \left(\int_0^{T-h} (f_n(s) - f(s))^2 \, ds\right)^{1/2}\\
+&\leq 2 \norm{f - f_n}_2
+\end{align*}
+so we now take the limit as $n \to \infty$.
+
+It is a simple matter to extend this result to a bounded adapted process $V$.  In this case we know that $\int_0^T (V_s - V_{(s-h) \vee 0})^2 \, ds$ is bounded and therefore we conclude from Dominated Convergence and the result on $L^2([0,T])$ that
+\begin{align*}
+\lim_{h \downarrow 0} \expectation{\int_0^T (V_s - V_{(s-h) \vee 0})^2 \, ds} &= \expectation{\lim_{h \downarrow 0} \int_0^T (V_s - V_{(s-h) \vee 0})^2 \, ds} = 0
+\end{align*}
+
+Claim: $\lim_{n \to \infty } \expectation {\int_0^T \int_0^1 (V^{(n,s)}_t - V_t)^2 \, ds \, dt} = 0$.
+
+First off, from $V^{(n,s)}_t = V^{(n, s+1/2^n)}_t$, the definition of $V^{(n,s)}_t$ and a change of integration variable we write
+\begin{align*}
+\int_0^1 (V^{(n,s)}_t - V_t)^2 \, ds &= 2^n \int_0^{2^{-n}}  (V^{(n,s)}_t - V_t)^2 \, ds = 2^n \int_{t-2^{-n}}^t  (V_s - V_t)^2 \, ds = 2^n \int_0^{2^{-n}}  (V_t - V_{t - h})^2 \, dh
+\end{align*}
+Now using this fact and Tonelli's Theorem
+\begin{align*}
+\expectation {\int_0^T \int_0^1 (V^{(n,s)}_t - V_t)^2 \, ds \, dt}  &= 2^n \int_0^{2^{-n}} \expectation {\int_0^T (V_t - V_{t -h})^2 \, dt}  \, dh
+\end{align*}
+By the previous claim for any $\epsilon > 0$ we can find $N>0$ such that $\expectation {\int_0^T (V_t - V_{t -h})^2 \, dt} < \epsilon$ for all $0 \leq h \leq 2^{-N}$ and therefore for all $0 \leq h \leq 2^{-n}$ for any $n \geq N$.  Thus for any $n \geq N$ we have $\expectation {\int_0^T \int_0^1 (V^{(n,s)}_t - V_t)^2 \, ds \, dt} < \epsilon$ and the claim is shown by letting $\epsilon \to 0$.
+
+TODO: Make sure we deal with the boundary at $0$ consistently (we're not at the moment).
+
+Viewing $\expectation {\int_0^n (V^{n}_t - V_t)^2 \, dt}$ as a random variable on the probability space $([0,1], \mathcal{B}([0,1]), \lambda)$  and applying Tonelli's Theorem to previous claim, conclude $\expectation {\int_0^T (V^{(n,s)}_t - V_t)^2 \, dt} \tolp{1} 0$ which implies $\expectation {\int_0^T (V^{(n,s)}_t - V_t)^2 \, dt} \toas 0$ along some subsequence $N \subset \naturals$ (Lemma \ref{ConvergenceInMeanImpliesInProbability}  and Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence}).  Pick any $s \in [0,1]$ where the subsequence converges.
+
+To finish the proof, for each $n \in \naturals$ we apply the result for fixed $T=n$ and find an element $V^n \in \mathcal{E}$ such that $\expectation {\int_0^n (V^{n}_t - V_t)^2 \, dt} < 1/n$.  Then given $T > 0$ and any $\epsilon > 0$ it holds for any $n > \epsilon^{-1} \vee T$ that 
+\begin{align*}
+\expectation {\int_0^T (V^{n}_t - V_t)^2 \, dt} &< \expectation {\int_0^n (V^{n}_t - V_t)^2 \, dt} < 1/n < \epsilon
+\end{align*}
+and the result is proven.
+\end{proof}
+
+\begin{lem}\label{SimpleProcessApproximationPredictableStepProcess}Let $A$ be a non-decreasing, continuous and $\mathcal{F}$-adapted process such that $A_0 = 0$ and $\expectation{A_t} < \infty$ for all $t \geq 0$.  Let $\sigma$ and $\tau$ be bounded $\mathcal{F}$-optional times such that $\sigma \leq \tau$ and $\xi$ be an $\mathcal{F}_\sigma$-measurable bounded random variable.
+Then there exist $V^n \in \mathcal{E}$ such that 
+\begin{align*}
+\sup_{0 \leq T < \infty} \lim_{n \to \infty} \expectation{\int_0^T \abs{\xi \characteristic{(\sigma, \tau]}(s) - V^n(s)}^2 \, dA(s)} = 0
+\end{align*}
+\end{lem}
+\begin{proof}
+Take the standard discrete approximation of optional times $\tau_n = \frac{1}{2^n} \floor{2^n \tau + 1}$ and $\sigma_n = \frac{1}{2^n} \floor{2^n \sigma + 1}$ (Lemma \ref{DiscreteApproximationOptionalTimes}) so that $\tau_n \downarrow \tau$ and $\sigma_n \downarrow \sigma$.  Note that $s \in (\sigma_n, \tau_n]$ if and only if there exists a $k$ such that $\tau_n \geq k/2^n$, $\sigma_n \leq (k-1)/2^n$ and $(k-1)/2^n < s \leq k/2^n$.  As $\tau_n = k/2^n$ when $(k-1)/2^n \leq \tau < k/2^n$ and likewise for $\sigma_n$ we see that $\tau_n \geq k/2^n$ is equivalent to $\tau_n \geq (k-1)/2^n$ and $\sigma_n \leq (k-1)/2^n$ is equivalent to $\sigma < (k-1)/2^n$. From these facts and the boundedness of $\tau$ we see that 
+\begin{align*}
+\characteristic{(\sigma_n, \tau_n]}(s) &= \sum_{k=1}^N \characteristic{\lbrace \sigma < (k-1)/2^n \leq \tau \rbrace} \characteristic{ ((k-1)/2^n, k/2^n]}(s)
+\end{align*}
+for some large $N$.  Now we define 
+\begin{align*}
+V^n &= \xi \characteristic{(\sigma_n, \tau_n]}(s) = \sum_{k=1}^N \xi \characteristic{\lbrace \sigma < (k-1)/2^n \leq \tau \rbrace} \characteristic{ ((k-1)/2^n, k/2^n]}(s)
+\end{align*}
+and claim that $V^n \in \mathcal{E}$.  
+
+Lastly we note that because $\sigma < \sigma_n \leq \tau < \tau_n$ and $\xi$ is bounded (say $\abs{\xi} \leq K$) we get
+\begin{align*}
+\expectation{\int_0^T \abs{\xi \characteristic{(\sigma, \tau]}(s) - V^n(s)}^2 \, dA(s)} &=\expectation{\xi^2 \int_0^T (\characteristic{(\sigma, \tau]}(s) - \characteristic{(\sigma_n, \tau_n]}(s))^2 \, dA(s)} \\
+&=\expectation{\xi^2 (A_{\tau_n} - A_\tau)} + \expectation{\xi^2 (A_{\sigma_n} - A_\sigma)} \\
+&\leq K^2 \expectation{ (A_{\tau_n} - A_\tau)} + \expectation{(A_{\sigma_n} - A_\sigma)} \\
+\end{align*}
+If we let $C$ be a bound for $\tau$, it follows that $\tau_n$ is bounded by $C+1$ for all $n$ and by the non-decreasingness of $A$ we have $\abs{A_{\tau_n} - A_\tau} \leq 2A_{C+1}$ and similarly with $\sigma$, therefore by Dominated Convergence we get $\lim_{n \to \infty} \expectation{\int_0^T \abs{\xi \characteristic{(\sigma, \tau]}(s) - V^n(s)}^2 \, dA(s)}=0$.
+
+TODO: If we need the sup over $T$ then we have that argument elsewhere; check if we really use it.
+\end{proof}
+
+\begin{lem}Let $A$ be a non-decreasing, continuous and $\mathcal{F}$-adapted process with $A_0=0$ and $\expectation{A_t} < \infty$ for all $t \geq 0$.  Let $V$ be an $\mathcal{F}$-progressively measurable process such that 
+\begin{align*}
+\expectation{\int_0^t V^2_s \, dA_s} < \infty
+\end{align*}
+for every $t \geq 0$, then 
+then there exist $V^n \in \mathcal{E}$ such that 
+\begin{align*}
+\sup_{0 \leq T < \infty} \lim_{m \to \infty} \expectation{\int_0^T \abs{V(s) - V^n(s)}^2 \, dA(s)} = 0
+\end{align*}
+\end{lem}
+\begin{proof}
+Pick a $T \geq 0$ fixed and assume that $V_t = 0$ for all $t > T$ and that $V_t(\omega) \leq C$ for all $t \geq 0$ and $\omega \in \Omega$.  Now we want to use the fact that a Lebesgue-Stieltjes integral can be reduced to an ordinary Lebesgue integral via change of variables: this will allow us to use Lemma \ref{SimpleProcessApproximationBoundedLebesgue}.  To make dealing with the change of variables a bit easier, consider $A_s + s$ which is a strictly increasing function; in this case we have genuine inverse $T_s$ that is increasing.  Moreover since $A_{T_s}+T_s = s$ and $A_s \geq 0$ we have $T_s \leq s$ and from the increasingness of $T_s$ we have $\lbrace T_s \leq t \rbrace = \lbrace s \leq A_t + t\rbrace \in \mathcal{F}_t$; so in particular, each $T_s$ is a bounded $\mathcal{F}$-optional time.  Now define the process $W_s = V_{T_s}$ and the filtration $\mathcal{G}_s = \mathcal{F}_{T_s}$ and note that by $\mathcal{F}$-progressive measurability of $V$ and Lemma \ref{StoppedProgressivelyMeasurableProcess} we know that $W_s$ is $\mathcal{G}$-adapted.  Also we compute
+\begin{align*}
+\expectation { \int_0^\infty W_s^2 \, ds} &= \expectation { \int_0^\infty \characteristic{T_s \leq T} (s) V_{T_s}^2 \, ds} = \expectation { \int_0^{A_T + T} V_{T_s}^2 \, ds} \leq C ( \expectation{A_T}+T) < \infty
+\end{align*}
+so that in particular $\lim_{R \to \infty} \expectation { \int_R^\infty W_s^2 \, ds} = 0$.  
+By our boundedness assumption and Lemma  \ref{SimpleProcessApproximationBoundedLebesgue} we know that we can approximate $W$ by $\mathcal{G}$-predicatable step processes with deterministic jump times.  Thus if we let $\epsilon > 0$ then we can find $R>0$ such that $\expectation { \int_R^\infty W_s^2 \, ds} < \epsilon/2$ and $W^\epsilon_s = \xi_0 \characteristic{\lbrace 0 \rbrace}(s) + \sum_{j=1}^n \xi_j \characteristic{(s_{j-1}, s_j]}(s)$ such that 
+$\expectation{\int_0^R \abs{W_s - W_s^\epsilon}^2 \, ds} < \epsilon/2$ and by defining $W^\epsilon_s = 0$ for $s > R$ we have
+\begin{align*}
+\expectation{\int_0^\infty \abs{W_s - W_s^\epsilon}^2 \, ds} &= \expectation{\int_0^R \abs{W_s - W_s^\epsilon}^2 \, ds}  + \expectation{\int_R^\infty W_s^2 \, ds} < \epsilon
+\end{align*}
+Now we undo our change of variables to see what type of approximation we have of $V$.  Let 
+\begin{align*}
+V^\epsilon_s &= W^\epsilon_{A_s+s} = \xi_0 \characteristic{\lbrace 0 \rbrace}(A_s+s) + \sum_{j=1}^n \xi_j \characteristic{(s_{j-1}, s_j]}(A_s+s) \\
+&=\xi_0 \characteristic{\lbrace 0 \rbrace}(s) + \sum_{j=1}^n \xi_j \characteristic{(T_{s_{j-1}}, T_{s_j}]}(s) 
+\end{align*}
+we claim that $V^\epsilon$ is $\mathcal{F}$-adapted.  This follows from the fact that $\xi_j$ is $\mathcal{F}_{s_{j-1}}$-measurable and for any $u > 0$ and $j \geq 1$, 
+\begin{align*}
+\lbrace \xi_j \characteristic{(T_{s_{j-1}}, T_{s_j}]}(s) \leq u \rbrace &= \lbrace \xi_j \leq u \rbrace \cap \lbrace T_{s_{j-1}} < s \rbrace \cap \lbrace s \leq T_{s_j}  \rbrace \in \mathcal{F}_s
+\end{align*}
+TODO: Why is $\lbrace s \leq T_{s_j}  \rbrace \in \mathcal{F}_s$?
+Moreover, by the construction of Stieltjes integral we have
+\begin{align*}
+\expectation{\int_0^T \abs{V_s - V^\epsilon_s}^2 \, dA_s} &\leq \expectation{\int_0^\infty \abs{V_s - V^\epsilon_s}^2 \, d(A_s + s)} \\
+&=\expectation{\int_0^\infty \abs{W_s - W^\epsilon_s}^2 \, ds} < \epsilon
+\end{align*}
+ We are not quite done as $V^\epsilon$ has random jump times.  However, we can apply Lemma \ref{SimpleProcessApproximationPredictableStepProcess} to find $V^{(m,n)} \in \mathcal{E}$ such that $\lim_{m \to \infty} \expectation{\int_0^T \abs{V^{1/n}_s -V^{(m.n)}_s}^2 \, dA_s} = 0$ and then we find a $V^{(m_n,n)}$ such that $\lim_{n \to \infty} \expectation{\int_0^T \abs{V_s -V^{(m_n.n)}_s}^2 \, dA_s} = 0$.
+
+Now we remove the assumption that $V$ is bounded.  For a general $V_s$ such that $\expectation { \int_0^T V_s^2 \, dA_s} < \infty$, let $V^n_s = V_s \characteristic{\abs{V_s} \leq n}$ where by the Dominated Convergence Theorem we know that $\expectation { \int_0^T \abs{V_s - V_s^n}^2 \, dA_s} = 0$.  Since each $V_s^n$ is bounded we can find a sequence $V^{(n,m)}_s$ such that $\lim_{m \to \infty} \expectation { \int_0^T \abs{V^n_s - V_s^{(n,m)}}^2 \, dA_s} = 0$ and now an array argument shows we get a subsequence $V^{(n,m_n)}$ such that $\lim_{n \to \infty} \expectation { \int_0^T \abs{V^{(n,m_n)}_s - V_s}^2 \, dA_s} = 0$.
+
+
+Lastly it remains to remove the assumption that we are dealing with a fixed $T \geq 0$.  By what we have proven thus far, if $V$ is such that $\expectation { \int_0^t V_s^2 \, dA_s} < \infty$ for all $t \geq 0$, then for each $m > 0$ we have a sequence $V^{(n,m)} \in \mathcal{E}$ such that $\lim_{n \to \infty} \expectation{\int_0^m \abs{V_s - V^{(n,m)}_s}^2 \, dA_s} = 0$, so in particular there is $n_m$ such that $\expectation{\int_0^m \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} < \frac{1}{m}$.  If we let $V_s^m = V_s^{(n_m,m)}$ then
+for every $T > 0$, 
+\begin{align*}
+\lim_{m \to \infty} \expectation{\int_0^T \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} &\leq \lim_{m \to \infty} \expectation{\int_0^m \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} = 0
+\end{align*}
+and thus $\sup_{0 \leq T < \infty} \lim_{m \to \infty} \expectation{\int_0^T \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} = 0$ and we are finally done.
 \end{proof}

@@ -39,7 +39,7 @@ we have equality).
 For $1 < p < \infty$, first use the following
 crude pointwise bound to see that $f+g \in L^p(\Omega,  \mathcal{A}, \mu)$:
 \begin{align*}
-(f+g)^p &\leq (f \vee g + f \vee g)^p = 2^p f^p \vee g^p \leq 2^p (f^p
+(f+g)^p &\leq (f \vee g + f \vee g)^p = 2^p (f^p \vee g^p)\leq 2^p (f^p
 + g^p)
 \end{align*}
 and therefore $\norm{f+g}_p^p \leq 2^p (\norm{f}_p^p + \norm{g}_p^p) <
@@ -52,17 +52,17 @@ positivity of the norm.  Write
 \end{align*}
 Now we can apply the H\"{o}lder Inequality (Lemma
 \ref{Holder}) to each of the terms on the right hand side and use the
-fact that $\frac{1}{p} + \frac{1}{q}$ is equivalent to $q = (p-1)q$ to see
+fact that $\frac{1}{p} + \frac{1}{q}=1$ is equivalent to $p = (p-1)q$ to see
 \begin{align*}
 \int f (f+g)^{p-1} \, d\mu &\leq \left(\int f^p \,
   d\mu\right)^\frac{1}{p}\left(\int (f+g)^{(p-1)q} \,
-  d\mu\right)^\frac{1}{q} =\norm{f}_p \norm{f+g}_q^{p/q}
+  d\mu\right)^\frac{1}{q} =\norm{f}_p \norm{f+g}_p^{p/q}
 \end{align*}
 Applying this argument to the term $\int g (f+g)^{p-1} \, d\mu$ as
 well we get
 \begin{align*}
 \norm{f+g}_p^p &\leq  (\norm{f}_p + \norm{g}_p) \cdot
-\norm{f+g}_q^{p/q}
+\norm{f+g}_p^{p/q}
 \end{align*}
 and dividing through by $\norm{f+g}_p^{p/q}$ and using $p - \frac{p}{q}=1$ we get $\norm{f+g}_p \leq  \norm{f}_p + \norm{g}_p$.
 \end{proof}
@@ -125,21 +125,20 @@ convergence.  It is useful to extend this approximation to $L^p$ spaces.
 \begin{lem}\label{LpApproximationBySimple}Simple functions are dense in $L^p(\Omega, \mathcal{A}, \mu)$.
 \end{lem}
 \begin{proof}
-Let's assume for the moment that $\mu$ is a finite measure.  In that
-case, every simple function is in $L^p$.  Pick a positive function $f
-\in L^p(\Omega, \mathcal{A}, \mu)$ and sequence of simple functions
-such that $f_n \uparrow f$.  Then it is also true that $f_n^p \uparrow
-f^p$ and Monotone Convergence tells us that $\lim_{n \to \infty}
+Pick a positive function $f\in L^p(\Omega, \mathcal{A}, \mu)$ and sequence of simple functions
+such that $0 \leq f_n \uparrow f$.  Then it is also true that $f_n^p \uparrow
+f^p$ and Dominated Convergence tells us that $\lim_{n \to \infty}
 \norm{f_n}_p  = \norm{f}_p$.  By Lemma \ref{ConvergenceInMeanConvergenceOfMeans} we conclude that $f_n
 \tolp{p} f$.
 
 To finish the proof, take an arbitrary $f$ and write it as $f = f_+ -
-f_-$ and use linearity.
-
-TODO: What about non-finite measures?  This argument clearly extends
-to $\sigma$-finite by restricting each $f_n$ to a finite subset.  In
-the general case we need to handle the fact that all simple functions
-are not in $L^p$.
+f_-$.  Now take positive
+simple functions $g_n \uparrow f_+$ and $h_n \uparrow f_-$  and use the
+triangle inequality to see that
+\begin{align*}
+\lim_{n \to \infty} \norm{f - (g_n - h_n)}_p &\leq \lim_{n \to \infty}
+(\norm{f_+ - g_n}_p + \norm{f_- - h_n}_p ) = 0
+\end{align*} 
 \end{proof}
 
 Note that for any $\sigma$-algebra $\mathcal{F} \subset \mathcal{A}$
@@ -174,6 +173,71 @@ The following approximation result will be used only occasionaly.
     \tolp{p} \characteristic{A}$.  Since $V$ is closed we know
     $\characteristic{A} \in V$.
 \end{proof}
+
+\begin{lem}\label{LpApproximationByContinuous}Let $S$ be a metric
+  space and let $\mu$ be a finite Borel measure on $S$.  Then the
+ space of bounded continuous functions is dense in $L^p(S,
+  \mathcal{B}(S), \mu)$.
+\end{lem}
+\begin{proof}
+Note that the finiteness of $\mu$ guarantees that any bounded
+measurable function is also in $L^p(S, \mathcal{B}(S), \mu)$ so the
+proof will focus on establishing boundedness of functions involved and
+not concern itself with verifying $p$-integrability.  Suppose we have $U \subset S$ an open set.  Let
+$f_n(x) = (nd(x,U^c)) \wedge 1$.  We know that $f_n(x)$ is 
+increasing, bounded and continuous with $\lim_{n \to \infty} f_n(x) =
+\characteristic{U}(x)$ and therefore $ f^p_n(x) \uparrow
+\characteristic{U}$ as well.  By Monotone Convergence we have $\lim_{n \to
+  \infty} \norm{f_n}_p^p  = \mu(U) = \norm{\characteristic{U}}_p^p$
+hence $f_n \tolp{p} \characteristic{U}$.  Now we
+extend to general Borel sets $A$ by a monotone class argument.  We claim
+that 
+\begin{align*}
+\mathcal{C} &= \lbrace A \in \mathcal{B}(S) \mid \text{ there
+  exist bounded continuous } f_n \text{ such that } f_n \tolp{p}
+\characteristic{A} \rbrace
+\end{align*}
+is a $\lambda$-system.  Supposing $A \subset B$ with $A,B \in
+\mathcal{C}$ we get bounded continuous $f_n$ such that $f_n \tolp{p}
+\characteristic{A}$ and bounded continuous $g_n$ such that $g_n \tolp{p}
+\characteristic{B}$ by Lemma \ref{LpConvergenceUniformIntegrability}.
+Then
+\begin{align*}
+\lim_{n \to \infty} \norm{\characteristic{B\setminus A} - (g_n
+  -f_n)}_p & \leq \lim_{n \to \infty} \norm{\characteristic{B} -
+  g_n}_p   + \lim_{n \to \infty} \norm{\characteristic{A} -
+  f_n}_p = 0
+\end{align*}
+and therefore $B \setminus A \in \mathcal{C}$.  
+If $A_1 \subset A_2 \subset \dotsb$ with $A_n \in \mathcal{C}$ then 
+\begin{align*}
+\lim_{n \to \infty} \norm{\characteristic{A_n}}_p &= \lim_{n \to
+  \infty} \mu(A_n)^{1/p} = \mu(\cup_{n=1}^\infty A_n) ^{1/p} = \norm{\characteristic{\cup_{n=1}^\infty A_n}}_p
+\end{align*}
+Now for each $A_n$ there exists a sequence bounded continuous $f_{n,m}$ with $\lim_{m \to
+  \infty} \norm{\characteristic{A_n} - f_{n,m}}_p = 0$.  Now we can
+find a subsequence $f_{n,m_n}$ such that $\lim_{n \to \infty}
+\norm{\characteristic{\cup_{n=1}^\infty A_n} - f_{n,m_n}}_p = 0$ which
+shows $\cup_{n=1}^\infty A_n \in \mathcal{C}$.  Now as open sets are
+clearly a $\pi$-system the
+$\pi$-$\lambda$ Theorem \ref{MonotoneClassTheorem} shows that
+$\mathcal{B}(S) \subset \mathcal{C}$.  Now for any simple function $f
+= \sum_{j=1}^m c_j \characteristic{A_j}$ we can find $f_{j,n}$ such
+that $\lim_{n \to \infty} \norm{\characteristic{A_j} - f_{j,n}}_p = 0$
+and by the triangle inequality
+\begin{align*}
+\lim_{n \to \infty} \norm{f - \sum_{j=1}^m c_j f_{j,n}}_p &\leq
+\lim_{n \to \infty} \sum_{j=1}^m \abs{c_j} \norm{\characteristic{A_j}
+  - f_{j,n}}_p = 0
+\end{align*}
+and the fact that each $\sum_{j=1}^m c_j f_{j,n}$ is bounded and continuous is clear.
+
+The last step is to use the fact that simple functions are dense in
+$L^p(S, \mathcal{B}(S), \mu)$ (Lemma \ref{LpApproximationBySimple}).
+\end{proof}
+
+TODO: Pretty sure the above result will have an extension to
+$\sigma$-finite case.
 
 TODO: Develop inner product and projection for $L^2$ spaces.
 

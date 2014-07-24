@@ -2584,8 +2584,9 @@ continuity, we see that $\lim_{n \to \infty} X^n = X\mid_{\Omega
 \begin{lem}\label{StoppedProgressivelyMeasurableProcess}Let $X$ be an $\mathcal{F}$-progressively measurable process on
   $\reals_+$ with values in a measurable space $(S, \mathcal{S})$ and
   let $\tau$ be an $\mathcal{F}$-optional time, then $X_\tau$ is
-  $\mathcal{F}_\tau$-measurable.  Moreover, $X_{\tau \wedge t}$ is
-  $\mathcal{F}_t$ measurable for all $t \geq 0$.
+  $\mathcal{F}_\tau$-measurable.  Moreover, the stopped process $X^\tau$ is
+$\mathcal{F}$-progressively measurable, in particular $X_{\tau \wedge
+  t}$ is  $\mathcal{F}_t$ measurable for all $t \geq 0$.
 \end{lem}
 \begin{proof}
 We first claim that if we can prove $X_{\tau \wedge t}$ is
@@ -2600,12 +2601,31 @@ which is $\mathcal{F}_t$ since $\tau$ is $\mathcal{F}$-optional and we
 have assumed $\lbrace X_{\tau \wedge t} \in A \rbrace \in
 \mathcal{F}_t$.
 
-To see that $X_{\tau \wedge t}$ is $\mathcal{F}_t$-measurable note
-that we can factor $X_{\tau \wedge t} = X \circ (id, \tau \wedge t)$ where
-$(id, \tau \wedge t) : \Omega \to \Omega \times [0,t]$ is
-$\mathcal{F}_t / \mathcal{F}_t \otimes \mathcal{B}([0,t])$-measurable
-by $\mathcal{F}$-optionality of $\tau$ and $X :  \Omega \times [0,t]
-\to S$ is $\mathcal{F}_t \otimes
+To see that $X^{\tau}$ is an $\mathcal{F}$-progressively
+measurable process, pick a $t \geq 0$ and consider the restriction of
+$X^{\tau}$ to $\Omega \times [0,t]$.   Note that by replacing $\tau$
+with $\tau \wedge t$, we can assume that $\tau \leq t$ which implies
+$\tau$ is $\mathcal{F}_t$-measurable (to see this note that for $s
+\leq t$, $\lbrace \tau \leq s \rbrace \in \mathcal{F}_s \subset
+\mathcal{F}_t$ and for $s > t$,
+$\lbrace \tau \leq s \rbrace = \Omega$). 
+Now we can factor the restriction of
+$X_{\tau \wedge t}$ to $\Omega \times [0,t]$ as $X^{\tau} =
+X\mid_{\Omega \times [0,t]} \circ T^t$ where
+$T^t : \Omega \times [0,t] \to \Omega \times [0,t]$ is defined by
+$T^t(\omega, s) = (\omega, \tau(\omega) \wedge s)$.   We claim that $T^t$ is
+$\mathcal{F}_t \otimes \mathcal{B}([0,t])$-measurable.  This follows
+from the $\mathcal{F}_t \otimes \mathcal{B}([0,t])$-measurability of
+$(\omega, s) \mapsto \tau(\omega) \wedge s$ which follows by noting
+that for every $0 \leq u \leq t$,
+\begin{align*}
+\lbrace \tau \wedge s \leq u \rbrace &= \lbrace \tau \leq u \rbrace
+\times [0,t] \cup \Omega \times [0,u] \in \mathcal{F}_t \otimes \mathcal{B}([0,t])
+\end{align*}
+As $X\mid_{\Omega \times [0,t]}$ is $\mathcal{F}_t \otimes
 \mathcal{B}([0,t])/\mathcal{S}$-measurable by progressive
-measurability of $X$.  Thus the claim follows from Lemma \ref{CompositionOfMeasurable}.
+measurability of $X$, the claim follows from Lemma
+\ref{CompositionOfMeasurable}.  The fact that $X_{\tau \wedge t}$ is
+$\mathcal{F}_t$-measurable for all $t \geq 0$ follows from the fact
+that progressive measurability implies adaptedness.
 \end{proof}

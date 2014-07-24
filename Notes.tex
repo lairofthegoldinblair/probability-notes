@@ -861,6 +861,14 @@ Theorem applies.
 
 An alternative approach is a more constructive one using the Fejer kernel.
 \end{proof}
+
+\begin{cor}[Weierstrass Approximation
+  Theorem]\label{WeierstrassApproximation}For every continuous
+  function $f : [0,T] \to \reals$ there exists a sequence of
+  polynomials $p_n(x)$ such that $\lim_{n \to \infty} \sup_{0 \leq x \leq T} \abs{f(x) -
+    p_n(x)} = 0$.
+\end{cor}
+
 \section{Measure Theory}
 Measure theory is concerned with the theory of integration.  Thinking
 intuitively for a moment, we know that we want to compute
@@ -1872,7 +1880,7 @@ functions, now we can calculate the integral of $f$ using $h_{kk}$
 where we have used the monotonicity of the integral in both
 inequalities.  
 \end{proof}
-\begin{cor}\label{TonelliIntegralSum}[Tonneli's Theorem for Integrals
+\begin{cor}\label{TonelliIntegralSum}[Tonelli's Theorem for Integrals
   and Sums]Given $f_1,
   f_2, \dots$ positive measurable functions from
   $(\Omega, \mathcal{A}, \mu)$ to $\overline{\reals}_+$, we
@@ -2106,7 +2114,7 @@ we know
   called the \emph{distribution} or \emph{law} of $\xi$.  We often
   write $\mathcal{L}(\xi)$ for the law of $\xi$.
 \end{defn}
-\begin{lem}\label{ChangeOfVariables}[Change of Variables]Suppose we are given a measure space $(\Omega, \mathcal{A},
+\begin{lem}[Change of Variables]\label{ChangeOfVariables}Suppose we are given a measure space $(\Omega, \mathcal{A},
   \mu)$, a measurable space $(S, \mathcal{S})$, and measurable
   functions $f : \Omega \to S$ and $g : S \to \reals$, then 
 \begin{align*}
@@ -3459,13 +3467,14 @@ this property.
 On the other hand, given an $F$ that is nondecreasing, right
 continuous and satisfies $F(0) = 0$ we define a generalized inverse by 
 \begin{align*}
-G(y) = \inf \lbrace x \in \reals \mid F(x) \geq y \rbrace
+G(y) = \inf \lbrace x \in \reals \mid F(x) \geq y \rbrace = \sup
+\lbrace x \in \reals \mid F(x) < y \rbrace
 \end{align*}
 Note that if $y < w$ then $\lbrace x \in \reals \mid F(x) \geq w
 \rbrace \subset \lbrace x \in \reals \mid F(x) \geq y \rbrace$ which
 shows that $G$ is a nondecreasing function.  The fact that $G$ is
 nondecreasing implies that $G^{-1} (-\infty, y] = (-\infty, x]$ for
-some $x \in \reals$ and therefore $G$ is a measurable function.
+some $x \in \reals$ and therefore $G$ is a measurable function.  
 Furthermore, 
 \begin{align*}
 G(F(x)) &= \inf\lbrace s \in \reals \mid F(s) \geq F(x)
@@ -3489,7 +3498,7 @@ sides and to see
 \begin{align*}
 F(c) \geq F(G(y)) \geq y
 \end{align*}
-In a similar way, we see that $c < G(y)$ if and only if $F(c) < y$.
+It follows that we also have the contrapositive assertion $c < G(y)$ if and only if $F(c) < y$.
 
 Now we can finish the proof by 
 defining $\mu = (\pushforward{G}{\lambda})$ where $\lambda$ is Lebesgue
@@ -3501,7 +3510,9 @@ construction of $F$ given above.
 &= \lambda (F(a), F(b)] = F(b) - F(a)
 \end{align*}
 
-Uniqueness of measure $\mu$ with this property follow by Lemma \ref{UniquenessOfMeasure}.
+Uniqueness of measure $\mu$ with this property follows by Lemma
+\ref{UniquenessOfMeasure} as local finiteness obviously implies
+$\sigma$-finiteness on $\reals$.
 \end{proof}
 
 Note the choice of the normalizing condition $F(0) = 0$ is somewhat
@@ -3564,28 +3575,40 @@ Borel $\sigma$-algebras.
 
 For each $\epsilon > 0$, let 
 \begin{align*}
-A_\epsilon &= \{ x \in A \mid \sup_{h \to 0} \frac{F(x + h) - F(x -
+A_\epsilon &= \{ x \in A \mid \limsup_{h \to 0} \frac{F(x + h) - F(x -
   h)}{h} > \epsilon \} \\
-&= \{ x \in A \mid \sup_{h \to 0} \frac{\mu (x - h, x+h]}{2 \epsilon} > \abs{(x-h,x+h]} \} 
 \end{align*}
-TODO: Prove that $A_\epsilon$ is measurable.
+so that for $x \in A_\epsilon$ there exist arbitrarily small $h > 0$
+such that 
+\begin{align*}
+\mu(x-h,x+h] &=F(x + h) - F(x -  h) > \epsilon h =
+\frac{1}{2}\epsilon \lambda(x-h,x+h]
+\end{align*}
+Note that $A_\epsilon$ is measurable since 
+\begin{align*}
+\limsup_{h \to 0}  \frac{F(x + h) - F(x -
+  h)}{h} &= \limsup_{n \to \infty} n \left(F(x + 1/n) - F(x -
+  1/n)\right)
+\end{align*} 
+is measurable (Lemma \ref{LimitsOfMeasurable}).
 
-For any $x \in A_\epsilon$ we can pick $h > 0$ small enough so that
-$I_x = (x - h, x+h] \subset G_\delta$.  Note that $A_\epsilon \subset
-\bigcup_{x \in A_\epsilon} I_x$.  By the previous Lemma
-\ref{IntervalSelection} we pick a finite disjoint set $I_1, \dots,
-I_n$ and note that
+By openness of $G_\delta$ and by the above remarks, for any $x \in A_\epsilon$ we can pick $h > 0$ small enough so that
+$I_x = (x - h, x+h] \subset G_\delta$ and $2\mu(I_x)/\epsilon > \lambda(I_x)$.  Since $A_\epsilon \subset
+\bigcup_{x \in A_\epsilon} I_x$, by the previous Lemma
+\ref{IntervalSelection} we pick a finite disjoint set $I_{x_1}, \dots,
+I_{x_n}$ and note that
 \begin{align*}
 \lambda A_\epsilon &\leq \lambda 
-\bigcup_{x \in A_\epsilon} I_x \\
-&\leq 4 \sum_{k=1}^n \abs{I_k} \\
-&\leq 4 \sum_{k=1}^n \frac{\mu I_k}{2 \epsilon} \\
-& \leq \frac{\delta}{2\epsilon}
+\bigcup_{x \in A_\epsilon} I_x \leq 4 \sum_{k=1}^n \abs{I_{x_k}} \leq
+4 \sum_{k=1}^n \frac{2\mu I_{x_k}}{ \epsilon} = \frac{8}{\epsilon} \mu
+\bigcup_{k=1}^n I_{x_k} \leq \frac{8\delta}{\epsilon}
 \end{align*}
 Now $\delta > 0$ was arbitrary so we see that $\lambda A_\epsilon =
-0$.  Since $\epsilon > 0$ was arbitrary so we see that $F^\prime(x) = 0$
-almost everywhere on $A$ since the set of points where $F^\prime \neq
-0$ is a countable union of $A_\epsilon$ (e.g. take $\bigcup_n A_{\frac{1}{n}}$).
+0$.  Since $\epsilon > 0$ was arbitrary and since the set of points in
+$A$ where $F^\prime \neq
+0$ is a countable union of $A_\epsilon$ (e.g. take $\bigcup_n
+A_{\frac{1}{n}}$)  we see that $F^\prime(x) = 0$
+almost everywhere on $A$.
 \end{proof}
 
 \subsubsection{Functions of Bounded Variation}
@@ -6991,6 +7014,8 @@ $\xi$.  We claim
 \begin{align*}
 \cexpectationlong{\mathcal{F}_\sigma}{\xi} &= M^\xi_\sigma
 \end{align*}
+TODO:  Dude, this is just optional stopping (at least for the
+uniformly integrable case); is that supposed to be available?
 To see this, pick an $A \in \mathcal{F}_\sigma$ and then note that for
 every $n$, use the fact that $A \cap \lbrace \sigma = n \rbrace \in
 \mathcal{F}_n$ and the telescoping rule for conditional expectation to see
@@ -7133,6 +7158,82 @@ q\rbrace$.  If $\sigma(\omega) > t$ then it follows that $\omega \in
 TODO: Mimic the proof of Lemma \ref{SubgaussianEquivalence}.
 \end{proof}
 
+\begin{ex}[Kallenberg Exercise 17.6]Let $B_t$ be a Brownian motion starting at zero and $\tau$ be an optional
+  time.  Show that $\expectation{\tau^{1/2}} < \infty$ implies
+  $\expectation{B_\tau} = 0$ and $\expectation{\tau} < \infty$ implies
+  $\expectation{B^2_\tau} = \expectation{\tau}$.
+\end{ex}
+\begin{proof}For $\tau$ bounded by a constant $T$ these are both consequences of
+  Optional Stopping.  For then since $B_t$ is a martingale we have
+\begin{align*}
+\expectation{B_\tau} &=
+\expectation{\cexpectationlong{\mathcal{F}_\tau}{B_T}} =
+\expectation{B_T} = 0
+\end{align*}
+and since $B^2_t - t$ is a martingale we have
+\begin{align*}
+\expectation{B^2_\tau} - \expectation{\tau}&=
+\expectation{\cexpectationlong{\mathcal{F}_\tau}{B^2_T - T}} =
+\expectation{B^2_T - T} = 0
+\end{align*}
+Now consider the sequence of bounded optional times $\tau \wedge n$.
+If we have $\expectation{\tau^{1/2}} < \infty$ the we can apply the
+BDG inequality (Lemma \ref{BDGInequalities}) to the stopped process
+$B^\tau$ (which is a priori only a continuous local martingale) to see that there is a
+constant $c_1 > 0$ such that $\expectation{\sup_{0 \leq t \leq \tau}
+  \abs{B_t}} \leq c \expectation{\tau^{1/2}} < \infty$ and therefore
+since $\abs{B_{\tau \wedge n}} \leq \sup_{0 \leq t \leq \tau}
+\abs{B_t}$ we can use Dominated Convergence to see that
+$\expectation{B_\tau} = \lim_{n\to \infty} \expectation{B_{\tau \wedge
+    n}} = 0$.  Similarly when $\expectation{\tau} < \infty$, we get a constant $c_2 > 0$ such that $\expectation{\sup_{0 \leq t \leq \tau}
+  \abs{B^2_t}} \leq c_2 \expectation{\tau} < \infty$ and therefore
+Dominated Convergence gives us 
+\begin{align*}
+\expectation{B^2_\tau} &= \lim_{n \to \infty} \expectation{B^2_{\tau
+    \wedge n}} = \lim_{n \to \infty} \expectation{\tau \wedge n} = \expectation{\tau}
+\end{align*}
+\end{proof}
+
+\begin{ex}[Kallenberg Exercise 17.11]Let $X$ be a continuous
+  semimartingale and let $U,V \in L(X)$ be such that $U = V$ a.s. on a
+  set $A \in \mathcal{F}_0$.  Use Lemma
+  \ref{StoppingIntegralsContinuousSemimartingale} to show that $\int U \, dX = \int V \, dX$
+  a.s on $A$.
+\end{ex}
+\begin{proof}
+Define 
+\begin{align*}
+\tau(\omega) &= \begin{cases}
+\infty & \text{where $\omega \in A$} \\
+0 & \text{when $\omega \notin A$}
+\end{cases}
+\end{align*}
+and note that $\tau$ is an optional time since $A \in
+\mathcal{F}_0$. Also note that 
+\begin{align*}
+\characteristic{[0,\tau(\omega)]}( t)
+\cdot U_t(\omega)  &= \begin{cases}
+U_t(\omega) & \text{when $\omega \in A$ or $\omega \notin A$ and
+  $t=0$} \\
+0 & \text{when $\omega \notin A$ and $t > 0$}
+\end{cases}
+\end{align*}
+and similarly with $V$ and therefore we conclude
+$\characteristic{[0,\tau]} \cdot U = \characteristic{[0,\tau]} \cdot
+V$ almost surely and therefore $\int \characteristic{[0,\tau]}  U \,
+dM = \int \characteristic{[0,\tau]}  V \, dM$ almost surely by Lemma
+\ref{BasicPropertiesStochasticIntegralContinuousMartingale}.   From Lemma
+\ref{StoppingIntegralsContinuousSemimartingale} and the fact that
+$\int U \, dX$ starts at zero we get almost surely
+\begin{align*}
+\characteristic{A} \int_0^t U \, dM &= \characteristic{A} \int_0^t U
+\, dM + \characteristic{A^c} \int_0^0 U \, dM 
+=\int_0^{t \wedge \tau} U \, dM 
+= \int_0^{t} \characteristic{[0,\tau]} U \, dM \\
+\end{align*}
+and similarly with $V$ and the result follows.
+\end{proof}
+
 \section{Techniques}
 
 This section is a place to collect some of the recurring proof
@@ -7190,7 +7291,8 @@ that one might need to take a different approach and use Lemma
 \ref{TailsAndExpectations}.  A good example of how to do this is with 
 Lemma \ref{SubgaussianEquivalence}.
 
-TODO: Passing from $L^p$ convergence to almost sure convergence.
+TODO: Passing from $L^p$ convergence to almost sure convergence.  Note
+that we easily get almost sure convergence along a subsequence.
 
 \subsection{Proving Inequalities}
 \subsubsection{Using Calculus}
