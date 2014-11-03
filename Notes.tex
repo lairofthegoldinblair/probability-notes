@@ -2312,6 +2312,39 @@ fact also shows that $\sigma(f) \subset \sigma(\bigwedge_t
 \Omega_s$ generate $\otimes_t \mathcal{S}_t$ by Lemma \ref{MeasurableByGeneratingSet}.
 \end{proof}
 
+\subsection{Null Sets and Completions of Measures}
+\begin{lem}Let $f \geq 0$ be a measurable function then $\int f \,
+  d\mu$ = 0 if and only if $f = 0$ almost everywhere.
+\end{lem}
+\begin{proof}
+First suppose that $f$ is simple with canonical representation $f = c_1
+\characteristic{A_1} + \dotsb +  c_n
+\characteristic{A_n}$ where $c_i > 0$.  Then $\int f \, d\mu = c_1
+\mu(A_1) + \dotsb +  c_n
+\mu(A_n)$ and it follows the positivity of the $c_i$ that $\int f \, d\mu =0$ if and only if
+$\mu(A_1) = \dotsb = \mu(A_n)$.
+
+Now for a general non-negative measurable $f$ we can find simple $0
+\leq f_n \uparrow f$ such that $\int f \, d\mu = \lim_{n \to \infty}
+\int f_n \, d\mu$.  If $\int f\, d\mu = 0$ then by monotonicity of
+integral and the result for simple functions we know that $f_n \neq 0$
+almost everywhere.  Taking the countable union of sets of measure zero we know
+that $f_n \neq 0$ for all $n$ on a set of measure zero and therefore
+taking limits we conclude $f \neq 0$ on a set of measure zero.
+Conversely if $f \neq 0$ on a set of measure zero then since $f_n$ is
+an increasing sequence if follows that each $f_n \neq 0$ on a set of
+measure zero and applying the result for simple functions $\int f_n \,
+d\mu =0$ for all $n$.  Taking the limits of the integrals we see that
+$\int f \, d\mu =0$.
+\end{proof}
+
+\begin{lem}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space, let
+  $\mathcal{F}$ be a sub $\sigma$-algebra of $\mathcal{A}$ and let
+  $\mathcal{F}^{\mu}$ be the $\mu$-completion of $\mathcal{F}$.  The
+  for every $A \in \mathcal{F}^{\mu}$ there exist $A_-, A_+ \in
+  \mathcal{F}$ such that $A_- \subset A \subset A_+$ and $\mu(A_-) = \mu(A_+)$.
+\end{lem}
+
 \subsection{Outer Measures and Lebesgue Measure on the Real Line}
 To construct Lebesgue measure on the real line, one proceeds by
 demonstrating that one may construct a measure by first constructing a more
@@ -7192,6 +7225,133 @@ Dominated Convergence gives us
 \expectation{B^2_\tau} &= \lim_{n \to \infty} \expectation{B^2_{\tau
     \wedge n}} = \lim_{n \to \infty} \expectation{\tau \wedge n} = \expectation{\tau}
 \end{align*}
+
+While we're at it, we can provide a different proof that
+$\expectation{B_\tau} = 0$ under the weaker assumption
+$\expectation{\tau} < \infty$ that doesn't rely on the BDG
+inequalities.  As above, it suffices to show that $\abs{B_{\tau \wedge
+    t}}$ is dominated by an integrable random variable.  The proof here is taken from Peres and Morters.  For
+each integer $k \geq 0$ consider 
+\begin{align*}
+M_k = \sup_{0 \leq t \leq 1} \abs{B_{t+k} - B_k}
+\end{align*}
+TODO: Finish
+\end{proof}
+
+\begin{ex}Let $B_t$ be a standard Brownian motion and define $\tau =
+  \inf \lbrace t > 0 \mid B_t = 1 \rbrace$.  Show that
+  $B_\tau = 1$ almost surely and $\expectation{\tau^c} < \infty$ for
+  all $0 \leq c < 1/2$.
+\end{ex}
+\begin{proof}
+Note that $\tau < \infty$ almost surely since $\limsup_{t \to \infty}
+B_t = \infty$ almost surely and $B_t$ is continuous.  For any $\lambda
+\geq 0$ note that $ \lbrace \tau \geq t \rbrace = \lbrace
+\sup_{0 \leq s \leq t} B_s \leq 1$.  Since the law of $\sup_{0 \leq s
+  \leq t} B_s$ is the same as the law of $\abs{B_t}$ by Lemma
+\ref{TailsAndExpectations} we get
+\begin{align*}
+\expectation{\tau^c} &= c^{-1} \int_0^\infty t^{c-1} \probability{\tau
+  \geq t} \, dt = \frac{2}{c \sqrt{2\pi}} \int_0^\infty
+\int_0^{1/\sqrt{t}}  t^{c-1} e^{-x^2/2} \, dx \, dt \\
+&= \frac{2}{c \sqrt{2\pi}} \int_0^\infty
+\int_0^{1/x^2}  t^{c-1} e^{-x^2/2} \, dt \, dx = \frac{2}{\sqrt{2\pi}}
+\int_0^\infty x^{-2c} e^{-x^2/2} \, dx 
+\end{align*}
+For $0 \leq c < 1/2$ an integration by parts shows that this integral
+is finite.
+
+Note also that integration by parts also shows that
+$\expectation{\tau^c} = \infty$ for $c \geq 1/2$ (as we know must be
+true because of the BDG/Optional Stopping argument above).
+\end{proof}
+
+\begin{ex}Let $B_t$ be a standard Brownian motion show that for every
+  $c \in \reals$ the process $M_t = e^{c B_t - \frac{c^2t}{2}}$ is a martingale.
+\end{ex}
+\begin{proof}
+Adaptedness follows from the fact that $B_t$ is
+$\mathcal{F}_t$-measurable and $e^x$ is continuous hence Borel
+measurable.  First to see that $M_t$ is integrable we compute by Lemma
+\ref{ExpectationRule} and completing the
+square
+\begin{align*}
+\expectation{e^{cB_t}} &= \frac{1}{\sqrt{2\pi t}}
+\int_{-\infty}^\infty e^{c x} e^{-x^2/2t} \, dx = \frac{ e^{c^2t/2}}{\sqrt{2\pi t}}
+\int_{-\infty}^\infty e^{-(x-ct)^2/2t} \, dx = e^{c^2t/2} < \infty
+\end{align*}
+If we take $0 \leq s < t < \infty$ then using the pullout rule of
+conditional expectation, the fact that $B_t -
+B_s$ is independent of $\mathcal{F}_s$ and the above computation of
+the expectation to see that
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{e^{c B_t - \frac{c^2t}{2}}}
+&=e^{- \frac{c^2t}{2}}\cexpectationlong{\mathcal{F}_s}{e^{c (B_t -B_s)} e^{cB_s} } 
+= e^{- \frac{c^2t}{2}}\expectation{e^{c (B_t -B_s)}} e^{cB_s} \\
+&= e^{- \frac{c^2t}{2} }e^{\frac{c^2(t-s)}{2}}  e^{cB_s} 
+= e^{c B_s - \frac{c^2s}{2}}
+\end{align*}
+\end{proof}
+
+\begin{ex}Let $B_t$ be a standard Brownian motion, show that $\inf
+  \lbrace t > 0 \mid B_t > 0 \rbrace = 0$ a.s.  (Hint: Use
+  Blumenthal's 0-1 Law).
+\end{ex}
+\begin{proof}
+Let $\tau = \inf \lbrace t > 0 \mid B_t > 0 \rbrace$.  Clearly the
+event 
+\begin{align*}
+\lbrace \tau = 0 \rbrace &= \cap_{n=1}^\infty \cup_{\substack{0 < q <
+    1/n\\ q \in \rationals}} \lbrace B_q > 0 \rbrace
+\end{align*}
+is  $\mathcal{F}^+_0$-measurable so by Lemma
+  \ref{Blumenthal01LawBrownianMotion} we know that it has probability
+  0 or 1.  It therefore suffices to show that $\probability { \tau =
+    0} \neq 0$.  To see this note that for each $s > 0$ we have
+$\lbrace \tau \leq s \rbrace \supset \lbrace B_s > 0 \rbrace$ hence
+$\probability{\tau \leq s} \geq 1/2$ and by continuity of measure we
+know that $\probability {\tau = 0} = \lim_{s \downarrow 0} \probability{\tau \leq s} \geq 1/2$.
+\end{proof}
+
+\begin{ex}[Law of Large Numbers for Brownian Motion]Let $B_t$ be a standard Brownian motion show that $M_t =
+  t^{-1}B_t$ is a backward martingale.  From this conclude that
+  $t^{-1}B_t \toas 0$ and $t^{-1}B_t \tolp{p} 0$ for all $p > 0$.
+\end{ex}
+\begin{proof}
+Adaptedness and integrability are immediate.  For the backward
+martingale property, let $s < t$ and we first find the density function for the
+conditional distribution $\cprobability{B_t}{B_s \in \cdot}$.  To find
+the joint density $(B_s, B_t)$ we note that $(B_s,B_t) = (x,y)$ if and
+only if $(B_s,B_t - B_s) = (x, y - x)$ so by the independence of $B_s$
+and $B_t - B_s$ and completing the square we get
+\begin{align*}
+\probability{B_s = x ; B_t = y} &= \frac{1}{\sqrt{2\pi s} } e^{-x^2/2s}
+  \frac{1}{\sqrt{2\pi(t- s)}} e^{-(y-x)^2/2(t-s)} \\
+&= \frac{1}{\sqrt{2\pi s}} \frac{1}{\sqrt{2\pi(t- s)}}
+    e^{-\frac{t}{2s(t-s)}(x - \frac{s}{t}y)^2} e^{-y^2/2t}
+\end{align*}
+So we see that the conditional density $B_s$ given $B_t$ is Gaussian
+with mean $\frac{s}{t} B_t$.  Thus $\cexpectationlong{B_t}{s^{-1} B_s}
+= t^{-1} B_t$.  By the extended Markov property (Lemma
+\ref{ExtendedMarkovProperty}) we know that $\cindependent{B_s}{\bigvee_{u \geq t}\sigma(
+    B_u)}{B_t}$ and therefore $\cexpectationlong{B_t}{s^{-1} B_s} = \cexpectationlong{\bigvee_{u \geq t}\sigma(
+    B_u)}{s^{-1} B_s}$ (Lemma \ref{ConditionalIndependenceDoob}) which
+  shows the backward martingale property.
+
+Now we need to show that $\cap_{t > 0} \bigvee_{u \geq t} \sigma(B_u)$
+is a trivial $\sigma$-field (Lemma \ref{Blumenthal01LawBrownianMotion})
+for then for all $t > 1$, 
+\begin{align*}
+t^{-1} B_t &= \cexpectationlong{\bigvee_{u \geq t} \sigma(B_u)}{B_1} 
+\end{align*}
+and by Jessen-Levy and triviality we have 
+\begin{align*}
+\cexpectationlong{\bigvee_{u \geq t}
+  \sigma(B_u)}{B_1} \toas \cexpectationlong{\cap_{t>0} \bigvee_{u \geq t}
+  \sigma(B_u)}{B_1} = \expectation{B_1} = 0
+\end{align*}
+
+TODO: Finish the $L^p$ argument; presumably we need $L^p$ boundedness.
 \end{proof}
 
 \begin{ex}[Kallenberg Exercise 17.11]Let $X$ be a continuous

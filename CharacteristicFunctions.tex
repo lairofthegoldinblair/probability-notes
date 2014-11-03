@@ -612,6 +612,42 @@ e^{-t^2/2}
 \end{align*}
 \end{proof}
 
+It is also useful to call out a useful corollary of the continuity
+theorem that allows one to characterize convergence in distribution of
+random vectors by considering one dimensional projections.
+\begin{cor}[Cramer Wold Device]\label{CramerWoldDevice}Let $\xi, \xi_1, \xi_2, \dotsc$ be 
+  random vectors in $\reals^N$.  Then $\langle c, \xi_n \rangle
+  \todist \langle c, \xi \rangle$ for all $c \in \reals^N$ if and only
+  if $\xi_n \todist \xi$.
+\end{cor}
+\begin{proof}
+Simply note that for all random vectors $\xi$,
+$c \in \reals^N$ and $x \in \reals$
+\begin{align*}
+\varphi_{\langle c , \xi\rangle}(x) &= \expectation{e^{i x \langle
+    c , \xi \rangle} }= \varphi_\xi(x c)
+\end{align*}
+ 
+Therefore if $\langle c, \xi_n \rangle
+  \todist \langle c, \xi \rangle$ for all $c \in \reals^N$ then by the
+  Glivenko-Levy Continuity Theorem \ref{GlivenkoLevyContinuity}
+we know that 
+\begin{align*}
+\lim_{n \to \infty} \varphi_{\xi_n}(c) &= \lim_{n \to \infty}
+\varphi_{\langle c, \xi_n \rangle}(1) = \varphi_{\langle c, \xi
+  \rangle}(1) = \varphi_\xi(c)
+\end{align*}
+and applying the Theorem again we conclude that $\xi_n \todist \xi$.  In
+a completely analogous way, if we assume that $\xi_n \todist \xi$ then
+for all $c \in \reals^N$ and $x\in \reals$, then
+\begin{align*}
+\lim_{n \to \infty} \varphi_{\langle c, \xi_n \rangle}(x) &= \lim_{n \to \infty}
+\varphi_{\xi_n}(x c) = \varphi_{\xi}(x c) = \varphi_{\langle c, \xi \rangle}(x)
+\end{align*}
+from which we conclude that $\langle c, \xi_n \rangle \todist \langle
+c, \xi \rangle$.
+\end{proof}
+
 \begin{thm}[Prokhorov's Theorem, special case]Let $\mu_n$ be a tight sequence of
   measures on $\reals^n$.  Then there is a subsequence of that
   converges in distribution.

@@ -911,24 +911,24 @@ TODO: Extend the Markov property of Brownian motion to the filtration $\mathcal{
 TODO: Define $\mathcal{F}$-Brownian motion
 
 \begin{thm}[Markov  Property]\label{MarkovPropertyBrownianMotion}Let $B_t$ be a
-  Brownian motion then for any $s \geq 0$ the process $B^*_t = B_{t + s} -
+  Brownian motion then for any $s \geq 0$ the process $\tilde{B}_t = B_{t + s} -
   B_s$ is a standard Brownian motion independent of $\lbrace B_t \mid
   0 \leq t \leq s \rbrace$.
 \end{thm}
 \begin{proof}
 We simply walk through the defining properties of Brownian motion:
 \begin{itemize}
-\item[(i)] Clearly $B^*_0 = B_s - B_s = 0$.
+\item[(i)] Clearly $\tilde{B}_0 = B_s - B_s = 0$.
 \item[(ii)] For any $0 \leq t_1 \leq \cdots \leq t_n$ the increment
-  $B^*_{t_j} - B^*_{t_{j-1}} = B^*_{s+ t_j} - B^*_{s+ t_{j-1}}$
-  therefore the independence of the increments $B^*_{t_2} -
-  B^*_{t_1}, \dotsc, B^*_{t_n} - B^*_{t_{n-1}}$ follows from the fact
+  $\tilde{B}_{t_j} - \tilde{B}_{t_{j-1}} = \tilde{B}_{s+ t_j} - \tilde{B}_{s+ t_{j-1}}$
+  therefore the independence of the increments $\tilde{B}_{t_2} -
+  \tilde{B}_{t_1}, \dotsc, \tilde{B}_{t_n} - \tilde{B}_{t_{n-1}}$ follows from the fact
   that $B_t$ is a Brownian motion
 \item[(iii)]By the same argument as in (ii), for any $t_1 < t_2$ we
-  have $B^*_{t_2} -  B^*_{t_1} = B_{s+t_2} -  B_{s+t_1}$ is normallly
+  have $\tilde{B}_{t_2} -  \tilde{B}_{t_1} = B_{s+t_2} -  B_{s+t_1}$ is normallly
   distributed with mean $0$ and variance $(s + t_2) - (s+t_1) = t_2 -
   t_1$.
-\item[(iv)]The paths $B^*_t = B_{s+t}$ are almost surely continuous
+\item[(iv)]The paths $\tilde{B}_t = B_{s+t}$ are almost surely continuous
   because $B_t$ is a Brownian motion
 \end{itemize}
 
@@ -938,14 +938,84 @@ t_n$ and $0 \leq s_1 \leq \cdots \leq s_m \leq s$
 TODO: Finish
 \end{proof}
 
+\begin{defn}A process $X_t$ on a time scale $T$ is called a
+  \emph{Gaussian process} if $c_1 X_{t_1} + \dotsb + c_n X_{t_n}$ is a
+  Gaussian random variable for all $n \in \naturals$, $(t_1, \dotsc, t_n) \in T^n$ and
+  all $(c_1, \dotsc, c_n) \in \reals^n$.  The process is said to be a
+  \emph{centered Gaussian process} if in addition $\expectation{X_t} =
+  0$ for all $t \in T$.
+\end{defn}
+
+Just as the distribution of a Gaussian random variable or vector is characterised by its
+first two moments, so to with a Gaussian process.
+\begin{lem}\label{GaussianProcessMoments}Let $X_t$ be a Gaussian process on a time scale $T$, then
+  the distribution of $X$ is determined by the values
+  $\expectation{X_t}$ for all $t \in T$ and $\expectation{X_s X_t}$
+  for all $s,t \in T$.
+\end{lem}
+\begin{proof}
+Suppose we have Gaussian processes $X$ and $Y$ with same first two
+moments in the sense of the hypothesis of the lemma.  If we pick $n
+\in naturals$, $(t_1, \dotsc, t_n) \in T^n$ and $(c_1, \dotsc, c_n)
+\in \reals^n$ then each of $c_1 X_{t_1} + \dotsb + c_n X_{t_n}$ and
+$c_1 Y_{t_1} + \dotsb + c_n Y_{t_n}$ is Gaussian and has the same mean
+and variance and therefore are equal in distribution.  By the
+Cramer-Wold Device (Corollary \ref{CramerWoldDevice}) this tells us
+that $(X_{t_1}, \dotsc , X_{t_n}) \eqdist (Y_{t_1}, \dotsc,Y_{t_n})$
+and therefore $X \eqdist Y$ by Lemma \ref{ProcessLawsAndFDDs}.
+\end{proof}
+
+\begin{lem}[Brownian Time Inversion]Let $B_t$ be a Brownian
+  motion starting at $x \in \reals$ and define 
+\begin{align*}
+X_t &= \begin{cases}
+0 & \text{if $t=0$} \\
+t B_{1/t} & \text{if $t > 0$}
+\end{cases}
+\end{align*}
+then $X_t$ is also a standard Brownian motion.
+\end{lem}
+\begin{proof}
+Clearly, $X_t$ is a centered Gaussian process (remember constants are
+Gaussian with variance $0$) and
+therefore its distribution is determined by the covariance function
+ by Lemma \ref{GaussianProcessMoments}.  It is straightforward to see
+ that 
+\begin{align*}
+\expectation{X_s X_t} &= st \expectation{B_{1/s} B_{1/t}} = st
+ (1/s \wedge 1/t) = s \wedge t
+\end{align*}
+and therefore $X$ has the distribution of a Brownian motion.  It
+remains to show that $X$ has continuous sample paths almost surely.  In fact we know
+that the sample paths of $X$ are almost surely continuous on $(0,\infty)$ since
+those of $B$ are; we only need to show almost sure continuity at $0$.  First note
+that when restricted to $\rationals$ we have the event 
+\begin{align*}
+A &= \lbrace f :[0, \infty) \to \reals \mid \lim_{\substack{q \downarrow 0 \\
+    q \in \rationals}} f(q) = 0 \rbrace 
+= \cap_{n=1}^\infty \cup_{\substack{q > 0\\q \in \rationals}}
+\cap_{\substack{0 < p < q \\ p \in \rationals}} \lbrace -1/n < f(p) <
+1/n \rbrace 
+\end{align*}
+is measurable and as $B$ and $X$ have the same distribution and $B$ is almost surely
+continuous at $0$ we know that $\probability{B \in A} = \probability{
+  X \in A} = 1$; that is to say, $\lim_{\substack{q \downarrow 0 \\ q
+    \in \rationals}} X_q = 0$ a.s.  On the other hand, as $X$ is
+almost surely continuous on $(0, \infty)$ we know that $\lim_{t
+  \downarrow 0} X_t = \lim_{\substack{q \downarrow 0 \\ q
+    \in \rationals}} X_q$ almost surely so $\lim_{t \downarrow 0} X_t
+= 0$ a.s. 
+\end{proof}
+
 The Markov property of Brownian motion can be extended to a slightly
-stronger statement.
+stronger statement.   TODO: Should we remove this statement as it is
+subsumed by the Strong Markov property proved next.
 \begin{thm}\label{ExtendedMarkovPropertyBrownianMotion}Let $B_t$ be a
-  Brownian motion then for any $s \geq 0$ the process $B^*_t = B_{t + s} -
+  Brownian motion then for any $s \geq 0$ the process $\tilde{B}_t = B_{t + s} -
   B_s$ is a standard Brownian motion independent of $\mathcal{F}^+_s$.
 \end{thm}
 \begin{proof}
-Suppose $s \geq 0$ is chosen.  We have already shown that $B^*_t$ is a standard Brownian motion
+Suppose $s \geq 0$ is chosen.  We have already shown that $\tilde{B}_t$ is a standard Brownian motion
 independent of $\mathcal{F}^0_s$; we only need to extend the independence
 statement to the larger filtration $\mathcal{F}^+_s = \cap_{t > s}
 \mathcal{F}^0_t$.  Let $s_n$ be a sequence of real numbers such that
@@ -953,15 +1023,51 @@ $s_n \downarrow s$ and define for each $n \in \naturals$ the process $B^n_t
 = B_{t+s_n} - B_{s_n}$ which by the Markov Property Theorem
 \ref{MarkovPropertyBrownianMotion} is a Brownian motion independent of
 $\mathcal{F}^0_{s_n} \supset \mathcal{F}^+_{s} $.  By almost sure continuity of $B_t$ we know
-that almost surely $\lim_{n \to \infty} B^n_t = B^*_t$ and therefore
-$B^*_t$ is also independent of $\mathcal{F}^+_{s}$.  TODO: We make
+that almost surely $\lim_{n \to \infty} B^n_t = \tilde{B}_t$ and therefore
+$\tilde{B}_t$ is also independent of $\mathcal{F}^+_{s}$.  TODO: We make
 this last argument several times in this section (see proof of the
 Strong Markov Property below) so we should factor it out for easy reference.
 \end{proof}
 
+\begin{defn}Let $B_t$ be a Brownian motion starting at $x$ then the
+  $\sigma$-algebra $\mathcal{F}^+_0 = \cap_{t>0}
+  \vee_{0 \leq s \leq t} \sigma(B_s)$ is called the \emph{germ
+    $\sigma$-algebra} and the $\sigma$-algebra $\mathcal{T} = \cap_{t > 0} \vee_{s \geq
+    t} \sigma(B_s)$ is called the
+  \emph{tail $\sigma$-algebra}.
+\end{defn}
+
+\begin{lem}[Blumenthal 0-1
+  Law]\label{Blumenthal01LawBrownianMotion}Let $B_t$ be a Brownian
+  motion then the germ $\sigma$-algebra $\mathcal{F}^+_0$ and the tail
+  $\sigma$-algebra $\mathcal{T}$ are both trivial.
+\end{lem}
+\begin{proof}
+By Theorem \ref{ExtendedMarkovPropertyBrownianMotion} we know that for
+any $t > 0$, $B$ is independent of $\mathcal{F}^+_0 $.
+However we know that $\mathcal{F}^+_0 \subset
+\sigma(B)$ it follows that $\mathcal{F}^+_0$ is independent of
+itself and therefore for any $A \in \mathcal{F}^+_0$ we know that
+$\probability(A) = \probability(A \cap A) = \probability(A)^2$ which
+implies $\probability(A) \in \lbrace 0,1 \rbrace$ which shows that the
+germ $\sigma$-algebra is trivial.
+
+Triviality of the tail $\sigma$-algebra follows by noting that 
+\begin{align*}
+\mathcal{T} &= \cap_{t > 0} \vee_{s \geq    t} \sigma(B_s) 
+= \cap_{1/t >  0} \vee_{1/s \geq 1/t} \sigma(B_{1/s})
+= \cap_{t >  0} \vee_{s \leq t} \sigma(B_{1/s})
+\end{align*}
+so we see that the tail $\sigma$-algebra for the Brownian motion $B$
+coincides with the germ $\sigma$-algebra for the time inverted
+Brownian motion $t B_{1/t}$.  As $tB_{1/t}$ is a Brownian motion
+starting at $0$ we see that that the tail $\mathcal{T}$ is trivial.
+\end{proof}
+
+
 \begin{thm}[Strong Markov Property]\label{StrongMarkovPropertyBrownianMotion}Let $B_t$ be a
   Brownian motion and let $\tau$ be an almost surely finite $\mathcal{F}^+$-optional
-  time, then $B^*_t = B_{\tau + t} - B_\tau$ is a standard Brownian
+  time, then $\tilde{B}_t = B_{\tau + t} - B_\tau$ is a standard Brownian
   motion independent of $\mathcal{F}^+_\tau$.
 \end{thm}
 \begin{proof}
@@ -973,7 +1079,7 @@ measurable subset of $\reals^{[0,\infty)}$ and let $E \in
 $\mathcal{F}^+$-optional and the Markov property of $B^s_t$ (Theorem
 \ref{ExtendedMarkovPropertyBrownianMotion}) we get
 \begin{align*}
-\probability{\lbrace B^*_t \in A \rbrace \cap E} &= \sum_{s \in S}
+\probability{\lbrace \tilde{B}_t \in A \rbrace \cap E} &= \sum_{s \in S}
 \probability{ \lbrace B^s_t
   \in A \rbrace \cap E \cap \lbrace \tau = s \rbrace } \\
 &=\sum_{s \in S} \probability{ B^s_t
@@ -982,17 +1088,17 @@ $\mathcal{F}^+$-optional and the Markov property of $B^s_t$ (Theorem
   \in A } \sum_{s \in S} \probability{ E \cap \lbrace \tau = s \rbrace } \\
 &= \probability{ B_t  \in A } \probability{ E } 
 \end{align*}
-which shows that the process $B^*_t$ is independent of
+which shows that the process $\tilde{B}_t$ is independent of
 $\mathcal{F}^+$.  
-It is clear that $B^*_t$ is almost surely continuous and $B^*_0 = 0$;
+It is clear that $\tilde{B}_t$ is almost surely continuous and $\tilde{B}_0 = 0$;
 furthermore taking $E = \Omega$ and $A = (\pi_{t_1}, \dotsc,
 \pi_{t_d})^{-1}(C)$ for some $C \in \mathcal{B}(\reals^d)$ in the above calculation and we see
-that $B^*_t$ has independent Gaussian increments, thus $B^*_t$ is a
+that $\tilde{B}_t$ has independent Gaussian increments, thus $\tilde{B}_t$ is a
 standard Brownian motion.  TODO:  Is there anything that needs to be
-done to show that $B^*_t$ is measurable?
+done to show that $\tilde{B}_t$ is measurable?
 
-It remains to extend the result to arbitrary $\mathcal{F}^+$-optional times.  It is clear that $B^*_t$ is
-almost surely continuous and $B^*_0 = 0$.  Given
+It remains to extend the result to arbitrary $\mathcal{F}^+$-optional times.  It is clear that $\tilde{B}_t$ is
+almost surely continuous and $\tilde{B}_0 = 0$.  Given
 $\tau$ an $\mathcal{F}^+$-optional time let $\tau_n = \frac{1}{2^n}
 \floor{2^n \tau + 1}$ so that $\tau_n \downarrow \tau$ (Lemma
 \ref{DiscreteApproximationOptionalTimes}) and by definition each
@@ -1000,32 +1106,32 @@ $\tau_n$ is $\mathcal{F}^+$-optional.  For each $n \in \naturals$ define $B^n_t 
 B_{\tau_n}$ and apply the result for countably valued optional times
 to conclude $B^n_t$ is a standard Brownian motion independent of
 $\mathcal{F}^+_{\tau_n} \supset \mathcal{F}^+_{\tau} $.  Since $B_t$ is almost surely
-continuous we know that almost surely $B^*_t = \lim_{n \to \infty}
+continuous we know that almost surely $\tilde{B}_t = \lim_{n \to \infty}
 B^n_t$.  Now by Dominated Convergence and the fact that $B^n_t$ is
 independent of $\mathcal{F}^+_{\tau}$ for all $n$ we get for all $E
 \in \mathcal{F}^+_{\tau}$, all
 bounded continuous functions $f : \reals^d \to \reals$ and $0 \leq t_1 \leq
 \dotsb \leq t_d < \infty$,
 \begin{align*}
-\expectation{f(B^*_{t_1}, \dotsc, B^*_{t_d}) ; E} &= 
-\lim_{n \to  \infty} \expectation{f(B^n_{t_1}, \dotsc, B^n_{t_d}) ; E}
-= \lim_{n \to  \infty} \expectation{f(B^n_{t_1}, \dotsc, B^n_{t_d})} \probability{E}
-=\expectation{f(B^*_{t_1}, \dotsc, B^*_{t_d})} \probability{E} 
+\expectation{f(\tilde{B}_{t_1}, \dotsc, \tilde{B}_{t_d}) ; E} &= 
+\lim_{n \to  \infty} \expectation{f(B^n_{t_1}, \dotsc, B^n_{t_d}) ; E} \\
+&= \lim_{n \to  \infty} \expectation{f(B^n_{t_1}, \dotsc, B^n_{t_d})} \probability{E}
+=\expectation{f(\tilde{B}_{t_1}, \dotsc, \tilde{B}_{t_d})} \probability{E} 
 \end{align*}
 Given an arbitrary open set $U \subset \reals^d$ we define $f_n(x) = n
 d(x, U^c) \wedge 1$ so that $f_n$ is bounded and continuous and $f_n
 \downarrow \characteristic{U}$ so that by Monotone Convergence we get
 \begin{align*}
-\probability{ \lbrace (B^*_{t_1}, \dotsc, B^*_{t_d}) \in U \rbrace
-  \cap E} = \probability{ (B^*_{t_1}, \dotsc, B^*_{t_d}) \in U } \probability{E}
+\probability{ \lbrace (\tilde{B}_{t_1}, \dotsc, \tilde{B}_{t_d}) \in U \rbrace
+  \cap E} = \probability{ (\tilde{B}_{t_1}, \dotsc, \tilde{B}_{t_d}) \in U } \probability{E}
 \end{align*}
-and because sets of the form $\lbrace (B^*_{t_1}, \dotsc, B^*_{t_d})
-\in U \rbrace$ are a $\pi$-system generating $B^*_t \in E$, we get 
+and because sets of the form $\lbrace (\tilde{B}_{t_1}, \dotsc, \tilde{B}_{t_d})
+\in U \rbrace$ are a $\pi$-system generating $\tilde{B}_t \in E$, we get 
 \begin{align*}
-\probability{ \lbrace B^*_t \in A \rbrace
-  \cap E} = \probability{ B^*_t \in A } \probability{E}
+\probability{ \lbrace \tilde{B}_t \in A \rbrace
+  \cap E} = \probability{ \tilde{B}_t \in A } \probability{E}
 \end{align*}
-Now arguing exactly as in the countable case this shows that $B^*_t$
+Now arguing exactly as in the countable case this shows that $\tilde{B}_t$
 is a standard Brownian motion independent of $\mathcal{F}^+_\tau$.
 \end{proof}
 
@@ -1049,20 +1155,20 @@ is a Brownian motion with the same distribution as $B_t$.
 \end{lem}
 \begin{proof}
 First assume that $\tau$ is almost surely finite.  Define $B^\tau_t =
-B_{\tau \wedge t}$ and $B^*_t = B_{\tau + t} - B_{\tau}$.  Because
+B_{\tau \wedge t}$ and $\tilde{B}_t = B_{\tau + t} - B_{\tau}$.  Because
 $B_t$ is continuous we know that $B_t$ is progressively measurable
 (Lemma \ref{ContinuityAndProgressiveMeasurability}) and therefore $B^\tau$ is
 $\mathcal{F}_\tau$-measurable (Lemma \ref{StoppedProgressivelyMeasurableProcess}).  By the Strong Markov Property (Theorem
-\ref{StrongMarkovPropertyBrownianMotion}) we know that $B^*$ is a standard Brownian
+\ref{StrongMarkovPropertyBrownianMotion}) we know that $\tilde{B}$ is a standard Brownian
 motion independent of $\mathcal{F}^+_\tau$ hence independent of $\tau$
-and $B^\tau$; the same is true of $-B^*$.  Combining independence and
+and $B^\tau$; the same is true of $-\tilde{B}$.  Combining independence and
 the equality of the marginal distributions we know $(\tau, B^\tau,
-B) \eqdist (\tau, B^\tau, -B^*)$ (Lemma
+B) \eqdist (\tau, B^\tau, -\tilde{B})$ (Lemma
 \ref{IndependenceProductMeasures}).  Now define $G : \reals \times
 \reals^{[0,\infty)} \times \reals^{[0,\infty)} \to
 \reals^{[0,\infty)}$ by $G(t,f,g)(s) = f(s) + g((s-t)_+)$ and note
-that $B_t = G(\tau, B^\tau, B^*)$ and $B^\prime_t = G(\tau, B^\tau,
--B^*)$ so the result follows once we verify that $G$ is measurable.
+that $B_t = G(\tau, B^\tau, \tilde{B})$ and $B^\prime_t = G(\tau, B^\tau,
+-\tilde{B})$ so the result follows once we verify that $G$ is measurable.
 
 Unfortunately in the generality we've defined it, $G$ is not
 measurable.  However all we really need is the fact that restriction
@@ -1191,7 +1297,7 @@ then apply Optional Stopping to conclude $\expectation{B_\tau} =
 get (ii) one argues using the martingale $B_t^2 - t$ and to get (iii)
 one argues using the martingale $B_t^4 -6tB_t^2 + 3t^2$).  The trick is
 that $\tau$ is not assumed bounded so we cannot apply Theorem
-\ref{OptionalStoppingContinuous}.  To fix this, pick an arbitrary $T >
+\ref{OptionalSamplingContinuous}.  To fix this, pick an arbitrary $T >
 0$ and argue as above to conclude that $\expectation{B_{\tau \wedge
     T}} = 0$, $\expectation{B_{\tau \wedge
     T}^2} = \expectation{\tau \wedge T}$ and $\expectation{B_{\tau

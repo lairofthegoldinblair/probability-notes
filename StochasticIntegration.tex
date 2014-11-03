@@ -5,14 +5,20 @@
 \begin{defn}Let $M_t$ be an $\mathcal{F}$-adapted process, we say $M$ is a \emph{local martingale} if there exists a sequence of optional times $\tau_n$ such that $\tau_n \uparrow \infty$ a.s. and $M^{\tau_n} - M_0$ is an $\mathcal{F}$-martingale for all $n$.  We say that $\tau_n$ is a \emph{localizing sequence} for $M$.
 \end{defn}
 
+It is useful  to note that a local martingale can be localized to martingales with nice properties.  In the general case we can always assume that we localize to a uniformly integrable martingale.
+\begin{lem}\label{LocalMartingaleLocalizeToUniformlyIntegrable}Let $M$ be a local martingale with a localizing sequence $\tau_n \uparrow \infty$, then $\tau_n \wedge n$ is a localizing sequence such that $M^{\tau_n \wedge n}$ is a uniformly integrable martingale for each $n \in \naturals$.
+\end{lem}
+\begin{proof}
+It is clear that $\tau_n \wedge n$ is a sequence of optional times such that $\tau_n \wedge n \uparrow \infty$.  Moreover, since $(M-M_0)^{\tau_n}$ is a cadlag martingale, $n$ is a bounded optional time and $(M-M_0)^{\tau_n \wedge n}_t = (M-M_0)_{\tau_n \wedge n \wedge t} = ((M-M_0)^\tau_n)^n_t$ the Optional Sampling Theorem \ref{OptionalSamplingContinuous} tells us that $(M-M_0)^{\tau_n \wedge n}$ is closable hence uniformly integrable.
+\end{proof}
 
-A useful fact is that continuous local martingales can always be localized to bounded martingales.
+Even better is the fact is that continuous local martingales can always be localized to bounded martingales.  This is one of the general facts that makes the theory of continuous local martingales easier than the general case.
 \begin{lem}\label{ContinuousLocalMartingaleLocalizeToBounded}Let $M$ be a continuous local martingale and for each $n \in \integers_+$ let $\tau_n = \inf \lbrace t \geq 0 \mid \abs{M_t} \geq n \rbrace$ then $\tau_n$ is a localizing sequence for $M$.
 \end{lem}
 \begin{proof}
 By continuity and $\mathcal{F}$-adaptedness of $M$ and the fact that $[t, \infty)$ is closed we know that $\tau_n$ is an optional time (Lemma \ref{HittingTimesContinuous}). It is clear that $\abs{M_t} \geq n$ implies $\abs{M_t} \geq n-1$ and therefore $\tau_n$ is an increasing sequence.  By continuity of $M$ we know that $M$ is bounded on bounded intervals and therefore $\tau_n \uparrow \infty$ a.s.  
 
-It remains to show that $(M - M_0)^{\tau_n}$ is a martingale for every $n \in \integers_+$.   Let $\sigma_m$ be a localizing sequence for $M$.  From Optional Stopping we know that $(M - M_0)^{\tau_n \wedge \sigma_m} = ((M-M_0)^{\sigma_m})^{\tau_n}$ is a martingale for every $m,n \in \integers_+$.  Furthermore for fixed $n$ and every $m \in \integers_+$ since $\sigma_m \uparrow \infty$ a.s. we know that $(M-M_0)^{\tau_n \wedge \sigma_m}_t \toas (M-M_0)^{\tau_n}_t$.  Morever $\abs{(M-M_0)^{\tau_n \wedge \sigma_m}_t } = \abs{M_{\tau_n \wedge \sigma_m \wedge t} - M_0} \leq \abs{M_0} + n$.  Since $M_0$ is integrable (TODO: Do we really know this with the Kallenberg definition of a local martingale?; if not what replaces it do we define $\tau_n = \inf \lbrace t \geq 0 \mid \abs{M_t - M_0} \geq n \rbrace$?) so that by Dominated Convergence we get $(M-M_0)^{\tau_n \wedge \sigma_m}_t \tolp{1} (M-M_0)^{\tau_n}_t$ as well. Using both forms of convergence and the martingale property of $M^{\tau_n \wedge \sigma_m}$, for each $s < t$ we get the equality
+It remains to show that $(M - M_0)^{\tau_n}$ is a martingale for every $n \in \integers_+$.   Let $\sigma_m$ be a localizing sequence for $M$.  From Optional Sampling we know that $(M - M_0)^{\tau_n \wedge \sigma_m} = ((M-M_0)^{\sigma_m})^{\tau_n}$ is a martingale for every $m,n \in \integers_+$.  Furthermore for fixed $n$ and every $m \in \integers_+$ since $\sigma_m \uparrow \infty$ a.s. we know that $(M-M_0)^{\tau_n \wedge \sigma_m}_t \toas (M-M_0)^{\tau_n}_t$.  Morever $\abs{(M-M_0)^{\tau_n \wedge \sigma_m}_t } = \abs{M_{\tau_n \wedge \sigma_m \wedge t} - M_0} \leq \abs{M_0} + n$.  Since $M_0$ is integrable (TODO: Do we really know this with the Kallenberg definition of a local martingale?; if not what replaces it do we define $\tau_n = \inf \lbrace t \geq 0 \mid \abs{M_t - M_0} \geq n \rbrace$?) so that by Dominated Convergence we get $(M-M_0)^{\tau_n \wedge \sigma_m}_t \tolp{1} (M-M_0)^{\tau_n}_t$ as well. Using both forms of convergence and the martingale property of $M^{\tau_n \wedge \sigma_m}$, for each $s < t$ we get the equality
 \begin{align*}
 \cexpectationlong{\mathcal{F}_s}{(M - M_0)^{\tau_n}_t} &= \lim_{m \to \infty} \cexpectationlong{\mathcal{F}_s}{(M - M_0)^{\tau_n \wedge \sigma_m }_t} \\
 &= \lim_{m \to \infty} (M - M_0)^{\tau_n \wedge \sigma_m }_s =  (M - M_0)^{\tau_n }_s \text{ a.s.}
@@ -20,12 +26,23 @@ It remains to show that $(M - M_0)^{\tau_n}$ is a martingale for every $n \in \i
 which shows that $M^{\tau_n}$ is a martingale.
 \end{proof}
 
+It will occasionally be important to know when we may conclude a local martingale is actually a martingale.  The simplest case is that of a bounded local martingale (not necessarily continuous).
+\begin{lem}\label{BoundedLocalMartingaleIsMartingale}Let $M$ be a bounded local martingale then it follows that $M$ is a uniformly integrable martingale.
+\end{lem}
+\begin{proof}
+Let $\tau_n$ be a localizing sequence for $M$ so that $M_{t \wedge \tau_n} - M_0$ is a martingale so that $\cexpectationlong{\mathcal{F}_s}{M_{t \wedge \tau_n} - M_0} = M_{s \wedge \tau_n} - M_0$ for every $s < t$.  Now boundedness of $M$ implies boundedness of $M_{t \wedge \tau_n} - M_0$ and therefore we may apply Dominated Convergence for conditional expectations (Lemma \ref{DCTConditional}) and the fact that $\tau_n \uparrow \infty$ a.s. to conclude that 
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{M_{t} - M_0} &= \lim_{n \to \infty} \cexpectationlong{\mathcal{F}_s}{M_{t \wedge \tau_n} - M_0} = \lim_{n\to \infty} M_{s \wedge \tau_n} - M_0 =  M_{s} - M_0 
+\end{align*}
+almost surely.  Thus $M$ is a martingale.  Since $M$ is bounded, in fact it is uniformly integrable by Example \ref{DominatedImpliesUniformlyIntegrable}
+\end{proof}
+
 \begin{lem}Let $\mathcal{F}$ be a right continuous filtration, $M$ be a cadlag $\mathcal{F}$-local martingale with localizing sequence $\tau_n$ and let $\sigma_n$ be an arbitrary sequence of bounded optional times such that $\sigma_n \uparrow \infty$, then $\tau_n \wedge \sigma_n$ is a localizing sequence for $M$.  In particular the space of cadlag $\mathcal{F}$-local martingales is a linear space.
 \end{lem}
 \begin{proof}
-First we claim that every local martingale $M$ has localizing sequence of bounded optional times.  This follows from picking an arbitrary localizing sequence $\tau_n$ and then noting that $\tau_n \wedge n$ is also a localizing sequence as $\tau_n \wedge n \uparrow \infty$ a.s. and $M^{\tau_n \wedge n} -M_0 = (M^{\tau_n})^n - M_0$ is a martingale from Optional Stopping (Theorem \ref{OptionalStoppingContinuous}) since $M^{\tau_n}$ is a cadlag martingale, $\mathcal{F}$ is right continuous and $n$ is a bounded optional time.
+First we claim that every local martingale $M$ has localizing sequence of bounded optional times.  This follows from picking an arbitrary localizing sequence $\tau_n$ and then noting that $\tau_n \wedge n$ is also a localizing sequence as $\tau_n \wedge n \uparrow \infty$ a.s. and $M^{\tau_n \wedge n} -M_0 = (M^{\tau_n})^n - M_0$ is a martingale from Optional Sampling (Theorem \ref{OptionalSamplingContinuous}) since $M^{\tau_n}$ is a cadlag martingale, $\mathcal{F}$ is right continuous and $n$ is a bounded optional time.
 
-Given $\tau_n$ and $\sigma_n$ as in the hypothesis and by our first claim we assume that each $\tau_n$ and $\sigma_n$ is bounded.  It is clear that $\tau_n \wedge \sigma_n$ is a sequence of optional times such that $\tau_n \wedge \sigma_n \uparrow \infty$ and again applying Optional Stopping we see that $M^{\tau_n \wedge \sigma_n} -M_0 = (M^{\tau_n})^{\sigma_n} - M_0$ is a martingale.  
+Given $\tau_n$ and $\sigma_n$ as in the hypothesis and by our first claim we assume that each $\tau_n$ and $\sigma_n$ is bounded.  It is clear that $\tau_n \wedge \sigma_n$ is a sequence of optional times such that $\tau_n \wedge \sigma_n \uparrow \infty$ and again applying Optional Sampling we see that $M^{\tau_n \wedge \sigma_n} -M_0 = (M^{\tau_n})^{\sigma_n} - M_0$ is a martingale.  
 
 Lastly if we are given $M$ and $N$ local martingales, take $\tau_n$ and $\sigma_n$ to be bounded localizing sequences for $M$ and $N$ respectively and by the previous claim, we know that $\tau_n \wedge \sigma_n$ is a joint localizing sequence for $M$ and $N$.   Therefore $(aM + bN)^{\tau_n \wedge \sigma_n} - a M_0 - b N_0$ is a martingale for all $n \geq 0$.
 \end{proof}
@@ -215,7 +232,7 @@ V_t &= \sum_{k=1}^n \xi_k \characteristic{\tau_{k} > t}
 is a finite predictable step process then $\int_0^t V \, dM$ is a martingale.  If we assume that $M$ is a local martingale then $\int_0^t V \, dM$ is a local martingale.
 \end{lem}
 \begin{proof}
-By definition of elementary stochastic integral and linearity, it suffices to show that $N_t = \xi \left (M_t - M_{\tau \wedge t} \right)$ is a martingale whenever either $\tau$ is a countably valued optional time or $\mathcal{F}$ and $M$ are right continuous and $\xi$ is a bounded $\mathcal{F}_\tau$-measurable random variable.  In the first case, by restricting $M_t$ to the range of $\tau$ we can apply the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} to the bounded optional time $\tau \wedge t$ to conclude that $M_{\tau \wedge t}$ is integrable and in the second case we can apply the continuous time Optional Stopping Theorem \ref{OptionalStoppingContinuous} to conclude that $M_{\tau \wedge t}$ is integrable.  This together with the integrability of $M_t$ and boundedness of $\xi$ shows that $N_t$ is integrable.  If we note that $N_t = \xi \characteristic{ \tau \leq t} \left (M_t - M_{\tau \wedge t} \right)$ then because $ \xi \characteristic{ \tau \leq t}$ and $M_t$ are $\mathcal{F}_t$-measurable and $M_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable (hence $\mathcal{F}_t$-measurable) we see that $N_t$ is adapted.  Lastly let $\sigma$ be an countably valued optional time then by the $\mathcal{F}_\tau$-measurability of $\xi$ we have and either the Optional Stopping Theorem \ref{OptionalStoppingDiscrete} or the Optional Stopping Theorem \ref{OptionalStoppingContinuous} we get
+By definition of elementary stochastic integral and linearity, it suffices to show that $N_t = \xi \left (M_t - M_{\tau \wedge t} \right)$ is a martingale whenever either $\tau$ is a countably valued optional time or $\mathcal{F}$ and $M$ are right continuous and $\xi$ is a bounded $\mathcal{F}_\tau$-measurable random variable.  In the first case, by restricting $M_t$ to the range of $\tau$ we can apply the Optional Sampling Theorem \ref{OptionalSamplingDiscrete} to the bounded optional time $\tau \wedge t$ to conclude that $M_{\tau \wedge t}$ is integrable and in the second case we can apply the continuous time Optional Sampling Theorem \ref{OptionalSamplingContinuous} to conclude that $M_{\tau \wedge t}$ is integrable.  This together with the integrability of $M_t$ and boundedness of $\xi$ shows that $N_t$ is integrable.  If we note that $N_t = \xi \characteristic{ \tau \leq t} \left (M_t - M_{\tau \wedge t} \right)$ then because $ \xi \characteristic{ \tau \leq t}$ and $M_t$ are $\mathcal{F}_t$-measurable and $M_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable (hence $\mathcal{F}_t$-measurable) we see that $N_t$ is adapted.  Lastly let $\sigma$ be an countably valued optional time then by the $\mathcal{F}_\tau$-measurability of $\xi$ we have and either the Optional Sampling Theorem \ref{OptionalSamplingDiscrete} or the Optional Sampling Theorem \ref{OptionalSamplingContinuous} we get
 \begin{align*}
 \cexpectationlong{\mathcal{F}_\tau}{N_\sigma} &= \xi \cexpectationlong{\mathcal{F}_\tau}{M_\sigma - M_{\tau \wedge \sigma}} = \xi \left(M_{\tau \wedge \sigma} - M_{\tau \wedge \sigma} \right) = 0
 \end{align*}
@@ -236,7 +253,7 @@ is a martingale with localizing sequence $\sigma_n$  by the first part of the Le
 then $\int_0^t V \, dM$ is an $L^2$-martingale and $\expectation{\left(\int_0^t V \, dM\right)^2} \leq \expectation{M^2_t}$.
 \end{lem}
 \begin{proof}
-We let $V_t = \sum_{k=1}^\infty \eta_k \characteristic{(\tau_k, \tau_{k+1}]}$.  We start by taking an arbitrary $n >0$ and defining $V^n_t =  \sum_{k=1}^n \eta_k \characteristic{(\tau_k, \tau_{k+1}]}$ so that $V^n$ is a finite predictable step process.  By Lemma \ref{StochasticIntegralFinitePredictableStepProcess} shows that $\int_0^t V^n \, dM$ is a martingale.  The $L^2$ bound for $V^n$ follows from Optional Stopping (Theorem \ref{OptionalStoppingDiscrete} or Theorem \ref{OptionalStoppingContinuous} depending on which hypothesis we choose).  The critical point is that for any $1 \leq k < j \leq n$ we have for each cross term term of the stochastic integral
+We let $V_t = \sum_{k=1}^\infty \eta_k \characteristic{(\tau_k, \tau_{k+1}]}$.  We start by taking an arbitrary $n >0$ and defining $V^n_t =  \sum_{k=1}^n \eta_k \characteristic{(\tau_k, \tau_{k+1}]}$ so that $V^n$ is a finite predictable step process.  By Lemma \ref{StochasticIntegralFinitePredictableStepProcess} shows that $\int_0^t V^n \, dM$ is a martingale.  The $L^2$ bound for $V^n$ follows from Optional Sampling (Theorem \ref{OptionalSamplingDiscrete} or Theorem \ref{OptionalSamplingContinuous} depending on which hypothesis we choose).  The critical point is that for any $1 \leq k < j \leq n$ we have for each cross term term of the stochastic integral
 \begin{align*}
 &\expectation{\eta_j \eta_k \left (M_{\tau_{j+1} \wedge t} - M_{\tau_j \wedge t} \right)  \left (M_{\tau_{k+1} \wedge t} - M_{\tau_k \wedge t} \right)} \\
 &=\expectation{\eta_j \eta_k \left (M_{\tau_{j+1} \wedge t} - M_{\tau_j} \right)  \left (M_{\tau_{k+1} } - M_{\tau_k} \right) ; t > \tau_j} \\
@@ -273,14 +290,31 @@ In addition, the $L^2$ bound shows that the family $\int_0^t V \, dM, \int_0^t V
 showing $\int_0^t V \, dM$ is an $L^2$-martingale.
 \end{proof}
 
-\begin{defn}Fix a probability space $(\Omega, \mathcal{A}, P)$ and suppose $\mathcal{F}$ is a right continuous and complete filtration.  Let $\mathcal{M}^2$ be the space of $L^2$ bounded continuous $\mathcal{F}$-martingales such that $M_0 = 0$ a.s.  That is to say that for all $M \in \mathcal{M}^2$ there exists $C \geq 0$ such that for all $0 \leq t < \infty$ we have $\norm{M_t}_2 \leq C$.  For $M, N \in \mathcal{M}^2$, define $\langle M, N \rangle = \langle M_\infty, N_\infty \rangle = \expectation{M_\infty N_\infty }$.
+\begin{defn}Two processes $X$ and $Y$ on a time scale $T$ are said to be \emph{versions} of one another if $\probability{X_t = Y_t} = 1$ for every fixed $t \in T$.   One also says that $Y$ is a modification of $X$ (and vice versa).  Two processes $X$ and $Y$ on a time scale $T$ are said to be \emph{indistinguishable} if $\probability{X_t = Y_t \text{ for all } t \in T} = 1$.
+\end{defn}
+
+While it is trivial that two indistinguishable processes are versions of one another it is also simple that for continuous processes on time scales that are separable the two notions are equivalent.  The following is the case that is most important for us.
+\begin{prop}Let $X$ and $Y$ be cadlag processes on a time scale $\reals_+$.  Then $X$ and $Y$ are versions of one another if and only if they are indistinguishable.
+\end{prop}
+\begin{proof}
+Let $A_X$ be the event that $X$ has cadlag sample paths and similarly with $Y$.  Let $B = \cap_{\substack{ q \geq 0 \\ q \in \rationals}} \lbrace X_q = Y_q\rbrace$.  If $X$ and $Y$ are versions then by taking a countable intersection of almost sure events we have $\probability{A_X \cap A_Y \cap B} = 1$.  Morever on the event $A_X \cap A_Y \cap B$ by right continuity we have for all $t \geq 0$, $X_t = \lim_{q \downarrow t} X_q = \lim_{q \downarrow t} Y_q = Y_t$ and therefore $A_X \cap A_Y \cap B = A_X \cap A_Y \cap \lbrace X_t = Y_t \text { for all } t\geq 0\rbrace$ and it follows that $\probability {X_t = Y_t \text { for all } t\geq 0} \geq \probability{A_X \cap A_Y \cap \lbrace X_t = Y_t \text { for all } t\geq 0\rbrace} = 1$.
+\end{proof}
+
+When constructing spaces of processes is often the case that we'll need to identify indistinguishable processes, thus we make explicit note of the following simple fact.
+\begin{prop}Indistinguishability of processes is an equivalence relation.
+\end{prop}
+\begin{proof}
+Reflexivity and symmetry are immediate from the defintion, and transitivity follows from the fact that $\lbrace X_t = Z_t \text{ for all } t \in T \rbrace \supset \lbrace X_t = Y_t \text{ for all } t \in T \rbrace \cap \lbrace Y_t = Z_t \text{ for all } t \in T\rbrace$ and $\probability{\lbrace X_t = Y_t \text{ for all } t \in T \rbrace \cap \lbrace Y_t = Z_t \text{ for all } t \in T\rbrace} = 1$.
+\end{proof}
+
+\begin{defn}Fix a probability space $(\Omega, \mathcal{A}, P)$ and suppose $\mathcal{F}$ is a right continuous and complete filtration.  Let $\mathcal{M}^2$ be the space of $L^2$ bounded continuous $\mathcal{F}$-martingales such that $M_0 = 0$ a.s.  up to indistinguishability.  That is to say that for all $M \in \mathcal{M}^2$ there exists $C \geq 0$ such that for all $0 \leq t < \infty$ we have $\norm{M_t}_2 \leq C$.  For $M, N \in \mathcal{M}^2$, define $\langle M, N \rangle = \langle M_\infty, N_\infty \rangle = \expectation{M_\infty N_\infty }$.
 \end{defn}
 \begin{lem}\label{ContinuousL2MartingalesHilbert}The space $\mathcal{M}^2$ is a Hilbert space.
 \end{lem}
 \begin{proof}
 The fact that $\mathcal{M}^2$ is a vector space follows immediately from linearity of conditional expectation, the linearity of the space $C([0,\infty); \reals)$ and the triangle inequality of the $L^2$ norm on $C([0,\infty); \reals)$. 
  
-To  see that we have an inner product on $\mathcal{M}^2$, first observe that if $\langle M, M \rangle = \norm{M_\infty}^2_2 = 0$ then $M_\infty = 0$ a.s. hence since $M$ is closable it follows that $M_t = \cexpectationlong{\mathcal{F}_t}{M_\infty} = 0$ a.s.  for all $0 \leq t < \infty$.  Since $M$ is continuous it follows that $M=0$ a.s.  Symmetry of $\langle \cdot,\cdot \rangle$ follows immediately from symmetry of the $L^2$ inner product on $C([0,\infty); \reals)$.  Supposing $M$ and $N$ are both $L^2$ bounded continuous martingales we know they are closable hence $M_t = \cexpectationlong{\mathcal{F}_t}{M_\infty}$ and similarly for $N$.  It then follows from linearity of conditional expectation that $(aM + bN)_\infty = aM_\infty + bN_\infty$ for any $a,b \in \reals$.  From this fact we see that  for all $M,N,R \in \mathcal{M}^2$ and $a,b \in \reals$ we have $\langle aM + bN, R \rangle = \langle aM_\infty + bN_\infty, R_\infty \rangle = a \langle M, R \rangle + b \langle N, R \rangle$. 
+To see that we have an inner product on $\mathcal{M}^2$, first observe that if $\langle M, M \rangle = \norm{M_\infty}^2_2 = 0$ then $M_\infty = 0$ a.s. hence since $M$ is closable it follows that $M_t = \cexpectationlong{\mathcal{F}_t}{M_\infty} = 0$ a.s.  for all $0 \leq t < \infty$.  Since $M$ is continuous it follows that $M=0$ a.s.  Symmetry of $\langle \cdot,\cdot \rangle$ follows immediately from symmetry of the $L^2$ inner product on $C([0,\infty); \reals)$.  Supposing $M$ and $N$ are both $L^2$ bounded continuous martingales we know they are closable hence $M_t = \cexpectationlong{\mathcal{F}_t}{M_\infty}$ and similarly for $N$.  It then follows from linearity of conditional expectation that $(aM + bN)_\infty = aM_\infty + bN_\infty$ for any $a,b \in \reals$.  From this fact we see that  for all $M,N,R \in \mathcal{M}^2$ and $a,b \in \reals$ we have $\langle aM + bN, R \rangle = \langle aM_\infty + bN_\infty, R_\infty \rangle = a \langle M, R \rangle + b \langle N, R \rangle$. 
 
 We now show that $\mathcal{M}^2$ is complete.  Suppose $M^1, M^2, \dotsc$ is Cauchy in $\mathcal{M}^2$, then $M^1_\infty, M^2_\infty, \dotsc$ is Cauchy in $L^2$ and therefore has a limit $\xi$ in $L^2$ that is $\mathcal{F}_\infty$-measurable.  Define $M_t = \cexpectationlong{\mathcal{F}_t}{\xi}$ so we know that $M_t$ is a martingale and $M_\infty = \xi$ a.s.  TODO: Do we know at this point that $M$ is $L^2$ bounded?  Now by the Doob $L^2$ inequality Lemma \ref{DoobLpInequalityContinuous} applied to the closed martingale $M_t$ on $[0,\infty]$ we have $\norm{\sup_{0 \leq s \leq \infty} (M_s^n - M_s)}_2 \leq 2 \norm{M^n_\infty - M_\infty}_2$.  From this we get that $\lim_{n \to \infty} \norm{\sup_{0 \leq s \leq \infty} (M_s^n - M_s)}_2 = 0$ hence $\sup_{0 \leq s \leq \infty} (M_s^n - M_s) \toprob 0$ (Lemma \ref{ConvergenceInMeanImpliesInProbability}) and therefore $\sup_{0 \leq s \leq \infty} (M_s^n - M_s) \toas 0$ along a subsequence (Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence}) which shows that $M$ is has almost surely continuous sample paths (Lemma \ref{UniformLimitContinuousFunctionsIsContinuous}).
 \end{proof}
@@ -291,7 +325,7 @@ The crux of the problem in defining stochastic integrals is the fact that sample
 \begin{lem}Let $M$ and $N$ be continuous local martingales and let $\tau$ be an optional time, then $M^\tau \left( N - N^\tau \right)$ is a local martingale.
 \end{lem}
 \begin{proof}
-First let us assume that $N$ is a martingale, $\tau$ is an optional time and $\eta$ is an $\mathcal{F}_\tau$-measurable bounded random variable.  We claim that $\eta(N_t - N^\tau_t)$ is a martingale.  By the Optional Stopping Theorem \ref{OptionalStoppingContinuous} we know that $\tau \wedge t$ is a bounded optional time hence $N_{\tau \wedge t}$ is integrable and therefore by boundedness of $\eta$ we know that $\eta(N_t - N_{\tau \wedge t})$ is integrable.  To see adaptedness, note that $\eta(N_t - N_{\tau \wedge t}) = \eta \characteristic{\tau \leq t} (N_t - N_{\tau \wedge t})$ so that by $\mathcal{F}_\tau$-measurability of $\eta$ we also have $\mathcal{F}_t$-measurability of $\eta \characteristic{\tau \leq t}$.  Furthermore, $N_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable and since $\tau \wedge t \leq t$ we see that it is also $\mathcal{F}_t$-measurable.  To see that $\eta (N_t - N_{\tau \wedge t})$ is a martingale we let $\sigma$ be any bounded optional time and then note by Optional Sampling, the tower and pullout properties of conditional expectation 
+First let us assume that $N$ is a martingale, $\tau$ is an optional time and $\eta$ is an $\mathcal{F}_\tau$-measurable bounded random variable.  We claim that $\eta(N_t - N^\tau_t)$ is a martingale.  By the Optional Sampling Theorem \ref{OptionalSamplingContinuous} we know that $\tau \wedge t$ is a bounded optional time hence $N_{\tau \wedge t}$ is integrable and therefore by boundedness of $\eta$ we know that $\eta(N_t - N_{\tau \wedge t})$ is integrable.  To see adaptedness, note that $\eta(N_t - N_{\tau \wedge t}) = \eta \characteristic{\tau \leq t} (N_t - N_{\tau \wedge t})$ so that by $\mathcal{F}_\tau$-measurability of $\eta$ we also have $\mathcal{F}_t$-measurability of $\eta \characteristic{\tau \leq t}$.  Furthermore, $N_{\tau \wedge t}$ is $\mathcal{F}_{\tau \wedge t}$-measurable and since $\tau \wedge t \leq t$ we see that it is also $\mathcal{F}_t$-measurable.  To see that $\eta (N_t - N_{\tau \wedge t})$ is a martingale we let $\sigma$ be any bounded optional time and then note by Optional Sampling, the tower and pullout properties of conditional expectation 
 \begin{align*}
 \expectation{\eta (N_\sigma - N_{\tau \wedge \sigma})} &= \expectation{\eta \cexpectationlong{\mathcal{F}_\tau}{ (N_\sigma - N_{\tau \wedge \sigma})}} = \expectation{\eta  (N_{\tau \wedge \sigma} - N_{\tau \wedge \sigma})} = 0
 \end{align*}
@@ -393,7 +427,7 @@ For the first reduction, suppose that $\tau$ is an optional time then we know th
 \begin{align*}
 (MN - [M,N])^\tau &= M^\tau N^\tau - [M,N]^\tau
 \end{align*}
-which is a local martingale by Lemma \ref{LocalMartingaleLocalProperty} and moreover $[M,N]^\tau$ is of locally finite variation therefore we see $[M^\tau,N^\tau] = [M,N]^\tau$ a.s.  We also know that $M^\tau (N^\tau -N)$ is a local martingale (TODO:this is supposed to follow for martingales from optional stopping (doesn't that actually show $M_\tau(N - N^\tau)$ is a martingale) then given a localizing sequence $\tau_n$ for $M$ and $\sigma_n$ for $N$ we know that $\tau_n \wedge \sigma_n$ is a localizing sequence for both $M$ and $N$) and therefore 
+which is a local martingale by Lemma \ref{LocalMartingaleLocalProperty} and moreover $[M,N]^\tau$ is of locally finite variation therefore we see $[M^\tau,N^\tau] = [M,N]^\tau$ a.s.  We also know that $M^\tau (N^\tau -N)$ is a local martingale (TODO:this is supposed to follow for martingales from optional sampling (doesn't that actually show $M_\tau(N - N^\tau)$ is a martingale) then given a localizing sequence $\tau_n$ for $M$ and $\sigma_n$ for $N$ we know that $\tau_n \wedge \sigma_n$ is a localizing sequence for both $M$ and $N$) and therefore 
 \begin{align*}
 M^\tau N - [M,N]^\tau &= M^\tau (N - N^\tau)  + M^\tau N^\tau - [M,N]^\tau
 \end{align*}
@@ -515,13 +549,13 @@ Now we finish by assuming a general $V = \sum_{k=1}^n \xi_k \characteristic{(t_{
 and the full result is proven.
 \end{proof}
 
-We have the following bounds on ruin probabilities as a corollary of Optional Stopping for continuous martingales.
+We have the following bounds on ruin probabilities as a corollary of Optional Sampling for continuous martingales.
 \begin{lem}\label{GamblersRuinContinuousMartingale}Let $M$ be a continuous martingale with $M_0 = 0$ and such that $\probability{M^* > 0} > 0$.  If we define $\tau_x = \inf \lbrace t>0 \mid M_t = x\rbrace$ then for every $a < 0 < b$ we have
 \begin{align*}
 \cprobability{M^* > 0}{\tau_a < \tau_b} &\leq \frac{b}{b-a} \leq \cprobability{M^* > 0}{\tau_a \leq \tau_b} 
 \end{align*}
 \end{lem}
-\begin{proof}We know that $\tau_a$ and $\tau_b$ are optional by continuity of $M$ and Lemma \ref{HittingTimesContinuous}.  Define $\tau = \tau_a \wedge \tau_b$ which we know is optional as well.  For every $t \geq 0$, by Optional Stopping we know that $\expectation{M_{\tau \wedge t}} = M_0 = 0$.  Clearly $\lim_{t \to \infty} M_{\tau \wedge t} = M_\tau$ and by the definition of $\tau$ we know that $\abs{M_{\tau \wedge t}} \leq -a \vee b < \infty$ and therefore we can apply Dominated Convergence to conclude that $\expectation{M_\tau} = 0$.  Now we can establish bounds using two simple facts.   First by continuity of $M$, we know that $\tau_a = \tau_b$ if and only if $\tau_a = \tau_b = \tau = \infty$.   Secondly $\tau_a \neq \tau_b$ implies $M^* > 0$.  With these observations in hand,
+\begin{proof}We know that $\tau_a$ and $\tau_b$ are optional by continuity of $M$ and Lemma \ref{HittingTimesContinuous}.  Define $\tau = \tau_a \wedge \tau_b$ which we know is optional as well.  For every $t \geq 0$, by Optional Sampling we know that $\expectation{M_{\tau \wedge t}} = M_0 = 0$.  Clearly $\lim_{t \to \infty} M_{\tau \wedge t} = M_\tau$ and by the definition of $\tau$ we know that $\abs{M_{\tau \wedge t}} \leq -a \vee b < \infty$ and therefore we can apply Dominated Convergence to conclude that $\expectation{M_\tau} = 0$.  Now we can establish bounds using two simple facts.   First by continuity of $M$, we know that $\tau_a = \tau_b$ if and only if $\tau_a = \tau_b = \tau = \infty$.   Secondly $\tau_a \neq \tau_b$ implies $M^* > 0$.  With these observations in hand,
 \begin{align*}
 0 &=\expectation{M_\tau; \tau_a < \tau_b} + \expectation{M_\tau; \tau_b < \tau_a} + \expectation{M_\infty; \tau_a = \tau_b =\infty} \\
 &\leq a \probability{\tau_a < \tau_b} + b \probability{\tau_b < \tau_a} + b \probability{M^* > 0 ; \tau_a = \tau_b =\infty} \\
@@ -544,7 +578,7 @@ c_p^{-1} \expectation{[M]^{p/2}_\infty} &\leq \expectation{(M^*)^p} \leq c_p \ex
 \end{align*}
 \end{thm}
 \begin{proof}
-TODO: Perform reduction to the bounded martingale case via localization and optional stopping (Kallenberg indicates that we may also assume $[M]$ is bounded).
+TODO: Perform reduction to the bounded martingale case via localization and optional sampling (Kallenberg indicates that we may also assume $[M]$ is bounded).
 
 The following argument is quite elementary in each of its steps but is not entirely obvious so we spell it out in great detail.  To derive the inequalities for expectations we'll use Lemma \ref{TailsAndExpectations} and therefore we proceed by creating tail bounds for the random variables in question.  We first work on the right hand inequality of the result.  Let $r > 0$ be fixed and define $\tau = \inf \lbrace t \geq 0 \mid M_t^2 = r \rbrace$ (which is an optional time by continuity and Lemma \ref{HittingTimesContinuous}) and define $\tilde{M} = M - M^\tau$ and $N = \tilde{M}^2 - [\tilde{M}]$.  Pick any $0 < c < 1$ (we'll later refine the required bounds on $c$) and write
 \begin{align*}
@@ -680,7 +714,7 @@ TODO: Finish, is there anything subtle about applying to the processes?
 \begin{defn}Given a continuous local martingale $M$ we let $L(M)$ denote the set of processes that are progressively measurable and for which $\int_0^t V^2_s \, d[M]_s < \infty$ almost surely for all $t \geq 0$.
 \end{defn}
 The space $L(M)$ gives the integrands for the extension of the stochastic integral with respect to the integrator $M$.
-\begin{thm}\label{StochasticIntegralContinuousLocalMartingaleIntegrator}Let $M$ be a continuous local martingale and $V \in L(M)$, there exists an almost surely unique continuous local martingale $\int V \, dM$ starting at zero and for which almost surely
+\begin{thm}\label{StochasticIntegralContinuousLocalMartingaleIntegrator}Let $M$ be a continuous local martingale and $V \in L(M)$, there exists an almost surely unique continuous local martingale $\int V \, dM$ starting at zero and for which for every continuous local martingale $N$ almost surely
 $[\int V \, dM, N]_t = \int_0^t V_s \, d[M,N]_s$ for all $t \geq 0$.
 \end{thm}
 \begin{proof}
@@ -704,7 +738,7 @@ Since $V$ is progressive we know that $\int V_s \, d[M,N]_s$ is $\mathcal{F}$-ad
 &=\expectation{ N^\tau_\infty \cdot \int_0^\infty V \, dM} && \text{definition of $\int V \, dM$}\\
 &=\expectation{ N_\tau \cdot \int_0^\infty V \, dM} \\
 &=\expectation{ N_\tau \cexpectationlong{\mathcal{F}_\tau}{ \int_0^\infty V \, dM} } && \text{Tower Property}\\
-&=\expectation{ N_\tau \int_0^\tau V \, dM}  && \text{Optional Stopping}\\
+&=\expectation{ N_\tau \int_0^\tau V \, dM}  && \text{Optional Sampling}\\
 \end{align*}
 We apply Lemma \ref{MartingaleOptionalTimeCriterion} to conclude that $N_t \int_0^t V \, dM - \int_0^t V_s \, d[M,N]_s$ is a martingale.  By the continuity of $[M,N]$ we know that $\int_0^t V_s \, d[M,N]_s$ is continuous and has locally finite variation (Corollary \ref{StieltjesIntegralBoundedVariationAndContinuous}); thus uniqueness and the defining property of quadratic covariation implies $\int V_s \, d[M,N]_s = [N, \int V \, dM]$ almost surely.
 
@@ -745,7 +779,7 @@ With this Theorem proven we know that the following defintion makes sense.
 Here we collect a few of the most elementary facts about the stochastic integral.  In particular we call attention to the Ito Isometry which doesn't figure prominently in our presentation but is a critical step in others; we shall have more to say about this later.  
 \begin{lem}\label{BasicPropertiesStochasticIntegralContinuousMartingale}Let $M$ be a continuous local martingales.  If $U,V \in L(M)$ such that $U_t=V_t$ for all $t \geq 0$ almost surely then $\int U \, dM = \int V \, dM$.  The stochastic integral is bilinear in both the integrand and integrator.
 TODO: Be very precise about assumptions here!  E.g. is $V \in L(aM + bN)$ equivalent to $V \in L(M)$ and $V \in L(N)$?  Clearly the latter is at least as strong as the former.
-If $M$ is a continuous local martingale and $V \in L(M)$ then we have $[\int V \, dM]_t = \int_0^t V_s \, d[M]_s$ for all $t \geq 0$ almost surely.  In particular, if $M$ is a continuous martingale with $M_0 = 0$ we have the \emph{Ito Isometry} 
+If $M$ is a continuous local martingale and $V \in L(M)$ then we have $[\int V \, dM]_t = \int_0^t V^2_s \, d[M]_s$ for all $t \geq 0$ almost surely.  In particular, if $M$ is a continuous martingale then we have the \emph{Ito Isometry} 
 \begin{align*}
 \expectation{\left(\int_0^t V \, dM\right)^2} &= \int_0^t V_s^2 \, d[M]_s \text{ for all $t \geq 0$}
 \end{align*}
@@ -778,13 +812,13 @@ Using the defining property of the stochastic integral twice and Lemma \ref{Chai
 [\int V \, dM]_t &= \int_0^t V_s \, d[M, \int V \, dM]_s = \int_0^t V_s \, d\int_0^s V_u \, d[M](u) \\
 &= \int_0^t V^2(s) \, d[M]_s
 \end{align*}
-In the special case that $M$ is a martingale starting at zero we know that $M^2 - [M]$ is a martingale starting at zero and thus taking expectations we get
+In the special case that $M$ is a martingale we know that $\left(\int V \, dM\right)^2 - [\int V \, dM]$ is a martingale starting at zero and thus taking expectations we get
 \begin{align*}
 \expectation{\left( \int_0^t V \, dM\right)^2} &= \expectation{[\int V \, dM]_t} = \expectation{\int_0^t V^2(s) \, d[M]_s}
 \end{align*}
 \end{proof}
 
-It is common for the details of defining the stochastic integral to unfold a bit differently than our presentation.  The alternative presentation begins just as we have defines the stochastic integral for predicatable step process integrands but then notes the property of the Ito Isometry holds for such integrands.  The basic idea is to show that predicatable step processes are dense in an $L^2$ space and the use the Ito isometry to extend the definition of the stochastic integral by a completion argument.  There is a subtlety to deal with.  We note that the isometry holds for every \emph{fixed} $t \geq 0$ and thus is a family of isometries between an $L^2$ space of integrands (predictable step processes on $[0,t]$) and an $L^2$ space of random variables; it is not a single isometry between a spaces of processes.  There are two ways to proceed.  In the first case (Steele, Peres and Morters, others) one stays with the \emph{one $t$ at a time} approach and shows that step processes are dense in the progressive processes in $L^2(\Omega \times [0,t])$ and then extends the stochastic integral pointwise in $t \geq 0$.  An extra step is necessary at this point to show that one may find a version of the resulting stochastic integral process that is indeed a continuous martingale.  In the second case (e.g. Karatzas and Shreve), one defines a norm on the space of $L^2$ continuous martingales (different from the Hilbert space structure we have used) and shows that the Ito isometries can be assembled into a single isometry between the space of integrands and this space of martingales; again one extends by completion.  What about Rogers and Williams; they use the Ito isometry approach but I think the details are slightly different.
+It is common for the details of defining the stochastic integral to unfold a bit differently than our presentation.  The alternative presentation begins just as we have defines the stochastic integral for predictable step process integrands but then notes the property of the Ito Isometry holds for such integrands.  The basic idea is to show that predictable step processes are dense in an $L^2$ space and the use the Ito isometry to extend the definition of the stochastic integral by a completion argument.  There is a subtlety to deal with.  We note that the isometry holds for every \emph{fixed} $t \geq 0$ and thus is a family of isometries between an $L^2$ space of integrands (predictable step processes on $[0,t]$) and an $L^2$ space of random variables; it is not a single isometry between a spaces of processes.  There are two ways to proceed.  In the first case (Steele, Peres and Morters, others) one stays with the \emph{one $t$ at a time} approach and shows that step processes are dense in the progressive processes in $L^2(\Omega \times [0,t])$ and then extends the stochastic integral pointwise in $t \geq 0$.  An extra step is necessary at this point to show that one may find a version of the resulting stochastic integral process that is indeed a continuous martingale.  In the second case (e.g. Karatzas and Shreve), one defines a norm on the space of $L^2$ continuous martingales (different from the Hilbert space structure we have used) and shows that the Ito isometries can be assembled into a single isometry between the space of integrands and this space of martingales; again one extends by completion.  What about Rogers and Williams; they use the Ito isometry approach but I think the details are slightly different.
  
 The basic continuity property of the stochastic integral is
 \begin{lem}\label{LimitsOfStochasticIntegralContinuousLocalMartingale}Let $M_n$ be a sequence of continuous local martingales and let $V_n \in L(M_n)$, then 
@@ -934,8 +968,9 @@ XY &= \frac{1}{4} \left( (X + Y)^2 - (X-Y)^2 \right) \\
 \end{align*}
 \end{proof}
 
+We have mentioned that our introduction of the concept of semimartingales was not well motivated.  Though there is a much deeper justification for the relevance of the concept to be provided later, note that the integration by parts formula gives us an inkling that the concept is robust.  Even if we started with just local martingales, multiplying them together would not result in a local martingale but only a semimartingale.  The integration by parts formula shows us that the space of semimartingales forms an algebra.  Even more is true however.
 The following Theorem shows that the class of continuous semimartingales is closed under composition sufficiently smooth functions and provides a means of computing many stochastic integrals.  It is probably the most important theorem in stochastic calculus.
-\begin{thm}[Ito's Lemma]\label{ItoLemmaContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $f \in C^2(\reals)$ then almost surely
+\begin{thm}[Ito's Lemma]\label{ItoLemmaContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $f \in C^2(\reals^d)$ then almost surely
 \begin{align*}
 f(X) &= f(X_0) + \int f^\prime(X) \, dX + \frac{1}{2} \int f^{\prime \prime}(X) (s) \, d[X](s)
 \end{align*}
@@ -963,22 +998,50 @@ for every $t \geq 0$.  In particular, $p_n(X_t(\omega)) \to f(X_t(\omega))$ for 
 TODO: Finish
 \end{proof}
 
+It can be notationally convenient to have a complex variables version of Ito's Lemma.  We say that $Z$ is a complex semimartingale if $Z = X + iY$ where each of $X$ and $Y$ is a real semimartingale.  
+\begin{cor}\label{ItoLemmaContinuousSemimartingaleEntireFunction}Let $Z$ be a complex semimartingale and let $f$ be an entire function then
+\begin{align*}
+f(Z_t) &= f(Z_0) + \int_0^t f^{\prime}(Z) \, dZ + \frac{1}{2} \int_0^t f^{\prime \prime}(Z) \, d[Z]
+\end{align*}
+\end{cor}
+\begin{proof}
+Write $Z = X + iY$ where $X$ and $Y$ are each real valued semimartingales.  If we write $f = g + ih$ then we know that $g$ and $h$ are analytic but in particular are in $C^2(\reals^2)$ so we may apply Ito's Lemma to them.  Unfolding our notation and using the Cauchy-Riemann equations $\frac{\partial g}{\partial x} = \frac{\partial h}{\partial y}$ and  $\frac{\partial g}{\partial y} =  -\frac{\partial h}{\partial x}$  we get 
+\begin{align*}
+&\int_0^t f^{\prime}(Z) \, dZ = \int_0^t (\frac {\partial g}{\partial x}(X,Y) + i \frac {\partial h}{\partial x}(X,Y) ) \, d(X + iY) \\
+&= \int_0^t \frac {\partial g}{\partial x}(X,Y) \, dX - \int_0^t \frac {\partial h}{\partial x}(X,Y)  \, dY + i \int_0^t \frac {\partial h}{\partial x}(X,Y) \, dX + i \int_0^t \frac {\partial g}{\partial x}(X,Y) \, dY \\
+&= \int_0^t \frac {\partial g}{\partial x}(X,Y) \, dX + \int_0^t \frac {\partial g}{\partial y}(X,Y)  \, dY + i \int_0^t \frac {\partial h}{\partial x}(X,Y) \, dX + i \int_0^t \frac {\partial h}{\partial y}(X,Y) \, dY \\
+\end{align*}
+Similarly recall that two application of Cauchy-Riemann implies $\frac{\partial^2 g}{\partial x^2} = \frac{\partial^2 h}{\partial x \partial y} = -\frac{\partial^2 g}{\partial x^2}$ and similarly with $h$ to get
+\begin{align*}
+&\int_0^t f^{\prime \prime}(Z) \, d[Z] = \int_0^t (\frac {\partial^2 g}{\partial x^2}(X,Y) + i \frac {\partial^2 h}{\partial x^2}(X,Y) ) \, d[X + iY] \\
+&= \int_0^t \frac {\partial^2 g}{\partial x^2}(X,Y) \, d[X] - 2 \int_0^t \frac {\partial^2 h}{\partial x^2}(X,Y)  \, d[X,Y] -\int_0^t \frac {\partial^2 g}{\partial x^2}(X,Y) \, d[Y] \\ 
+&+i \int_0^t \frac {\partial^2 h}{\partial x^2}(X,Y) \, d[X] + 2 i \int_0^t \frac {\partial^2 g}{\partial x^2}(X,Y)  \, d[X,Y] - i \int_0^t \frac {\partial^2 h}{\partial x^2}(X,Y) \, d[Y] \\
+&= \int_0^t \frac {\partial^2 g}{\partial x^2}(X,Y) \, d[X] + 2\int_0^t \frac {\partial^2 g}{\partial x \partial y}(X,Y)  \, d[X,Y] + \int_0^t \frac {\partial^2 g}{\partial y^2}(X,Y) \, d[Y] \\ 
+&+i \int_0^t \frac {\partial^2 h}{\partial x^2}(X,Y) \, d[X] + 2 i \int_0^t \frac {\partial^2 h}{\partial x \partial y}(X,Y)  \, d[X,Y] + i \int_0^t \frac {\partial^2 h}{\partial y^2}(X,Y) \, d[Y] \\
+\end{align*}
+Applying Ito's Lemma to each of $g$ and $h$ separately and using the above formulae we conclude that 
+\begin{align*}
+f(Z) &= g(X,Y) + ih(X,Y) = f(Z_0) + \int_0^t f^{\prime}(Z) \, dZ + \frac{1}{2}\int_0^t f^{\prime \prime}(Z) \, d[Z]
+\end{align*}
+\end{proof}
+
+The following lemma provides an intuitively appealing interpretation of the quadratic covariation that ties it together with the traditional notion of variation in measure theory.  Note that the convergence of the approximation is in probability and not almost sure convergence.  By making more assumptions about the underlying partitions one can prove an almost sure approximation (or simply pass to an appropriate subsequence).
 \begin{lem}\label{ApproximateOptionalQuadraticCovariationContinuousSemimartingale}Let $X$ and $Y$ be continuous semimartingales, let $t \geq 0$ be fixed and suppose that we have a sequence of partitions $0=t_{n,0} < t_{n,1} < \dotsb < t_{n, k_n}=t$ such that $\lim_{n \to \infty} \max_{1 \leq k \leq k_n} (t_{n,k} - t_{n, k-1}) = 0$, then 
 \begin{align*}
 \sum_{k=1}^{k_n} (X_{n,k} - X_{n,k-1}) (Y_{n,k} - Y_{n,k-1}) \toprob [X,Y]_t
 \end{align*}
 \end{lem}
 \begin{proof}
-Using $[X,Y] = [X-X_0, Y-Y_0]$ it is immediate that we may assume $X_0 = Y_0 = 0$.  Given the partition $0=t_{n,0} < t_{n,1} < \dotsb < t_{n, k_n}=t$ we define predicatable step processes $X^n_s = \sum_{k=1}^{k_n} X_{t_{k-1}} \characteristic{(t_{k-1}, t_k]}(s)$ and $Y^n_s = \sum_{k=1}^{k_n} Y_{t_{k-1}} \characteristic{(t_{k-1}, t_k]}(s)$.  By a little algebra using the fact that the integrals $\int X^n \, dY$ and $\int Y^n \, dX$ are given by Riemann sums we see
+Using $[X,Y] = [X-X_0, Y-Y_0]$ it is immediate that we may assume $X_0 = Y_0 = 0$.  Given the partition $0=t_{n,0} < t_{n,1} < \dotsb < t_{n, k_n}=t$ we define predictable step processes $X^n_s = \sum_{k=1}^{k_n} X_{t_{k-1}} \characteristic{(t_{k-1}, t_k]}(s)$ and $Y^n_s = \sum_{k=1}^{k_n} Y_{t_{k-1}} \characteristic{(t_{k-1}, t_k]}(s)$.  By a little algebra using the fact that the integrals $\int X^n \, dY$ and $\int Y^n \, dX$ are given by Riemann sums we see
 \begin{align*}
 &\sum_{k=1}^{k_n} (X_{n,k} - X_{n,k-1}) (Y_{n,k} - Y_{n,k-1}) \\
 &= \sum_{k=1}^{k_n} X_{n,k} (Y_{n,k} - Y_{n,k-1})  - \int_0^t X^n \, dY \\
 &= \sum_{k=1}^{k_n}( X_{n,k} Y_{n,k} - X_{n,k-1} Y_{n,k-1})  - \int_0^t X^n \, dY - \int_0^t Y^n \, dX \\
 &= X_t Y_t - \int_0^t X^n \, dY - \int_0^t Y^n \, dX \\
 \end{align*}
-By continuity of $X$ and $Y$ we see that $X^n \toas X$ and $X^n_t\leq X^*_t< \infty$.  Since $X$ is continuous the same is true of $X^*$ hence $X^* \in L(Y)$, therefore by may apply Lemma \ref{DominatedConvergenceContinuousSemimartingale} to conclude that $\int_0^t X^n \, dY \toprob \int_0^t X \, dY$.  In exactly the same way we see that $\int_0^t Y^n \, dX \toprob \int_0^t Y \, dX$.  Now we can apply integration by parts Lemma \ref{IntegrationByPartsContinuousSemimartingale} to conclude that 
+By continuity of $X$ and $Y$ we see that $X^n \toas X$ and $X^n_t\leq X^*_t< \infty$.  Since $X$ is continuous, $X^*$ is also continuous hence $X^* \in L(Y)$, therefore we may apply Lemma \ref{DominatedConvergenceContinuousSemimartingale} to conclude that $\int_0^t X^n \, dY \toprob \int_0^t X \, dY$.  In exactly the same way we see that $\int_0^t Y^n \, dX \toprob \int_0^t Y \, dX$.  Now we can apply integration by parts Lemma \ref{IntegrationByPartsContinuousSemimartingale} to conclude that 
 \begin{align*}
-\int_0^t X^n \, dY \toprob \int_0^t X \, dY \toprob X_t Y_t - \int_0^t X \, dY - \int_0^t Y \, dX 
+\sum_{k=1}^{k_n} (X_{n,k} - X_{n,k-1}) (Y_{n,k} - Y_{n,k-1})  \toprob X_t Y_t - \int_0^t X \, dY - \int_0^t Y \, dX = [X,Y]_t
 \end{align*}
 \end{proof}
 
@@ -1104,7 +1167,7 @@ Pick a $T \geq 0$ fixed and assume that $V_t = 0$ for all $t > T$ and that $V_t(
 \expectation { \int_0^\infty W_s^2 \, ds} &= \expectation { \int_0^\infty \characteristic{T_s \leq T} (s) V_{T_s}^2 \, ds} = \expectation { \int_0^{A_T + T} V_{T_s}^2 \, ds} \leq C ( \expectation{A_T}+T) < \infty
 \end{align*}
 so that in particular $\lim_{R \to \infty} \expectation { \int_R^\infty W_s^2 \, ds} = 0$.  
-By our boundedness assumption and Lemma  \ref{SimpleProcessApproximationBoundedLebesgue} we know that we can approximate $W$ by $\mathcal{G}$-predicatable step processes with deterministic jump times.  Thus if we let $\epsilon > 0$ then we can find $R>0$ such that $\expectation { \int_R^\infty W_s^2 \, ds} < \epsilon/2$ and $W^\epsilon_s = \xi_0 \characteristic{\lbrace 0 \rbrace}(s) + \sum_{j=1}^n \xi_j \characteristic{(s_{j-1}, s_j]}(s)$ such that 
+By our boundedness assumption and Lemma  \ref{SimpleProcessApproximationBoundedLebesgue} we know that we can approximate $W$ by $\mathcal{G}$-predictable step processes with deterministic jump times.  Thus if we let $\epsilon > 0$ then we can find $R>0$ such that $\expectation { \int_R^\infty W_s^2 \, ds} < \epsilon/2$ and $W^\epsilon_s = \xi_0 \characteristic{\lbrace 0 \rbrace}(s) + \sum_{j=1}^n \xi_j \characteristic{(s_{j-1}, s_j]}(s)$ such that 
 $\expectation{\int_0^R \abs{W_s - W_s^\epsilon}^2 \, ds} < \epsilon/2$ and by defining $W^\epsilon_s = 0$ for $s > R$ we have
 \begin{align*}
 \expectation{\int_0^\infty \abs{W_s - W_s^\epsilon}^2 \, ds} &= \expectation{\int_0^R \abs{W_s - W_s^\epsilon}^2 \, ds}  + \expectation{\int_R^\infty W_s^2 \, ds} < \epsilon
@@ -1135,4 +1198,325 @@ for every $T > 0$,
 \lim_{m \to \infty} \expectation{\int_0^T \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} &\leq \lim_{m \to \infty} \expectation{\int_0^m \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} = 0
 \end{align*}
 and thus $\sup_{0 \leq T < \infty} \lim_{m \to \infty} \expectation{\int_0^T \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} = 0$ and we are finally done.
+\end{proof}
+
+\subsection{Brownian Motion and Continuous Martingales}
+
+The theme of this section is the centrality of Brownian motion in the universe of continuous martingales.  We demonstrate through several different constructions that all continuous martingales can be derived from (or transformed into) a suitable Brownian motion.  We start with a slightly different problem.  Suppose we are given a Brownian motion, we ask whether we can identify a class of continuous martingales that can be constructed from it.
+
+\begin{defn}Let $B_t=(B^1_t, \dotsc, B^d_t)$ be a $d$-dimensional Brownian motion and let $\mathcal{F}_t$ be completion of the filtration generated by $B$, we say that a cadlag (local) martingale that is adapted to $\mathcal{F}$ is a \emph{Brownian (local) martingale}.
+\end{defn}
+
+Note that we have not assumed that a Brownian martingale is continuous but only cadlag.  Our goals is to show that all Brownian martingales may be constructed as stochastic integrals of suitable progressively measurable integrands.  One corollary of this fact is that Brownian martingales are in fact continuous (even though the definition only assumes that they are cadlag).  We start out working with $L^2$ continuous martingales so that we may leverage Hilbert space structures to assist in the analysis.  First a basic decomposition result.
+
+
+OOPS!  Here we are using the covariation of not necessarily continuous martingales which we haven't defined!  Better go back to Kallenberg to understand his proof that doesn't use this idea.  Note that the result goes though with additional assumption of continuity but the results are actually strong enough that continuity of Brownian martingales is part of the conclusion.
+\begin{lem}Let $B$ be a one-dimensional Brownian motion and let $M$ be a bounded $L^2$ Brownian martingale then there is $V \in L(B)$ and a bounded $L^2$ martingale $Z$ such that $M = \int V \, dB + Z$ and $[Z, \int U \, dB] = 0$ for all $U \in L(B)$.  Moreover such a decomposition is unique up to indistinguishability.
+\end{lem}
+\begin{proof}
+We first show the uniqueness part of the claim.  Suppose that we have $M = \int V \, dB + Z = \int \tilde{V} \, dB + \tilde{Z}$.  It then follows by linearity of the stochastic integral that $Z - \tilde{Z} = \int (\tilde{V} - V) \, dB$ is an $L^2$ bounded continuous martingale and therefore $[Z-\tilde{Z}] = [Z, \int (\tilde{V} - V) \,dB] -  [\tilde{Z}, \int (\tilde{V} - V) \,dB] = 0$.  Therefore $Z$ and $\tilde{Z}$ are indistinguishable and it follows that $\int V \, dB$ and $\int \tilde{V} \, dB$ are indistinguishable which implies $V$ and $\tilde{V}$ are indistinguishable by the Ito Isometry.
+
+Now we reduce to demonstrating the decomposition for the stopped process $M^t$.  To that end, suppose that we have $M^t = \int V \, dB + Z$, then clearly for $s < t$ we have 
+\begin{align*}
+M^s & = (M^t)^s = \left( \int V \, dB + Z \right)^s = \int \characteristic{[0,s]} V \, dB + Z^s
+\end{align*}
+so we can define $V$ and $Z$ by extending from each interval $[0,t]$.  It is clear that $M = \int V \, dB + Z$ and moreover for every $0 \leq t < \infty$ we have $M^t = \int \characteristic{[0,t]} V \, dB + Z^t$ with $[Z^t, \int U \, dB] = 0$ for all $U \in L(B)$.  From this for every $U \in L(B)$, we have $[Z, \int U \, dB]^n = [Z^n, \int U \, dB] = 0$ for every $n \in \naturals$ and therefore it follows that $[Z, \int U \, dB] = 0$.
+
+So we now fix $t > 0$ and suppose that $M_t = M_s$ for all $s \geq t$.  We consider $M_t$ as an element of $L^2(\Omega, \mathcal{F}_t)$. 
+
+Claim: The subspace of elements of the form $\int_0^t V \, dB$ is closed.  
+
+This follows from the Ito isometry as if $\int V^n \, dB$ is a convergent sequence in $L^2(\Omega, \mathcal{F}_t)$ then by the Ito Isometry we know that $V^n$ is Cauchy in $L^2(\Omega \times[0,t])$ hence converges to a progressive process $V \in L^2(\Omega \times [0,t])$ (note it follows from Lemma \ref{ProgressivelyMeasurableProcesses} that the limit of progressive processes is progressive).  Again by the Ito Isometry, it follows that $\int V^n \, dB \tolp{2} \int V \, dB$.  
+
+From the claim we can write $M_t = \int_0^t V \, dB + Z_t$ where $\expectation{Z_t \int_0^t U \, dB} = 0$ for all progressive $U \in L^2(\Omega \times [0,t])$.  Now let $Z_s$ be a cadlag version of the martingale $\cexpectationlong{\mathcal{F}_s}{Z_t}$ (noting that $Z_s = Z_t$ for all $s \geq t$) and by Jensen's inequality for conditional expectations 
+\begin{align*}
+\expectation{Z_s^2} \leq \expectation{\cexpectationlong{\mathcal{F}_s}{Z^2_t}} = \expectation{Z_t^2} < \infty
+\end{align*}
+which shows that $Z_t$ is $L^2$-bounded.
+\end{proof}
+
+\begin{lem}\label{ComplexExponentialMartingale}Let $M_t$ be a real continuous local martingale such that $M_0=0$ then $Z_t = e^{iM_t + \frac{1}{2}[M]_t}$ is a complex local martingale satisfying $Z_t = 1 + i \int_0^t Z dM$.
+\end{lem}
+\begin{proof}
+Apply Ito's Lemma Corollary \ref{ItoLemmaContinuousSemimartingaleEntireFunction} to the complex semimartingale $X_t = iM_t + \frac{1}{2}[M]_t$ and the entire function $f(z) = e^z$ to see that
+\begin{align*}
+Z_t &= 1 + \int_0^t Z \, dX + \frac{1}{2} \int_0^t Z_s \, d[X]_s \\
+&= 1 + i \int_0^t Z \, dM - \frac{1}{2} \int_0^t Z_s \, d[M]_s +\frac{1}{2}\int_0^t Z_s \, d[M]_s = 1 + i \int_0^t Z\, dM
+\end{align*}
+The fact that $Z_t$ is a complex local martingale follows from the fact that it is a stochastic integral.
+\end{proof}
+
+\begin{lem}\label{RepresentationOfBrownianFunctionals}Let $B_t=(B^1_t, \dotsc, B^d_t)$ be a $d$-dimensional Brownian motion and let $\xi$ be a $B$-measurable random variable with $\expectation{\xi} = 0$ and $\expectation{\xi^2} < \infty$.  There exists $\probabilityop \times \lambda$ almost everywhere unique processes $V^1, \dotsc, V^d$ such that $\expectation{\int_0^\infty (V^j(s))^2 ds} < \infty$ for each $j=1, \dotsc, d$ and $\xi = \sum_{j=1}^d \int_0^\infty V^j \, dB^j$ almost surely.
+\end{lem}
+\begin{proof}
+Let $H$ be the subspace of $L^2(\Omega, \mathcal{A}, \probabilityop)$ such that $\expectation{\xi} = 0$.  Note that if $\xi_1, \xi_2, \dots$ is a sequence in $H$ and $\xi \in L^2$ such that $\xi_n \tolp{2} \xi$ then by Jensen's Inequality, $\expectation{\xi}^2 = \lim_{j \to \infty} \expectation{\xi - \xi_j}^2 \leq \lim_{j \to \infty} \expectation{(\xi - \xi_j)^2}  = 0$ and therefore $H$ is closed hence a Hilbert space.  Now let $K$ be the subspace of elements of the form $\sum_{j=1}^d \int_0^\infty V^j \, dB^j$ where $V^j$ are progressive processes with $\expectation{\int_0^\infty (V^j(s))^2 \, ds } < \infty$.  
+
+Claim: $K \subset H$ is a closed subspace
+
+First focus on a single $B^j$.  Note that by the Ito Isometry we have
+\begin{align*}
+\expectation{\left(\int_0^t V^j \, dB^j\right)^2} &= \expectation {\int_0^t (V^j(s))^2 \, ds } \leq \expectation{\int_0^\infty (V^j(s))^2 \, ds } < \infty
+\end{align*}
+and therefore each $\int V^j \, dB^j$ is $L^2$-bounded and $\int_0^\infty V^j \, dB^j$ is defined and in $L^2$ (hence in $H$).  Moreover we have the limit of the Ito Isometry $\expectation{\left(\int_0^\infty V^j \, dB^j\right)^2} = \expectation{\int_0^\infty (V^j(s))^2 \, ds}$.  Thus if $\int V^{n,j} \, dB^j$ converges in $L^2$ then it is Cauchy which implies $V^{n,j}$ is Cauchy and thus $V^{n,j}$ converges to some $V^{j}$ by completeness of $L^2$.  Another application of the Ito Isometry shows that $\int_0^\infty V^{n,j} \, dB^j \tolp{2} \int_0^\infty V^j \, dB^j$ hence the space of $\int_0^\infty V^j \, dB^j$ is a closed subspace of $H$ for each $j=1, \dotsc, d$.  Lastly note that for $i \neq j$ we have $\expectation{\int_0^\infty V^i \, dB^i \int_0^\infty V^j \, dB^j} = \expectation{[\int V^i \, dB^i \int V^j \, dB^j]_\infty} = \expectation{\int_0^\infty V_s^i V_s^j \, d[B^i,B^j]_s} = 0$ since $[B^i,B^j] = 0$.  Thus the space of $\sum_{j=1}^d \int_0^\infty V^j \, dB^j$ is the orthogonal sum of closed subspaces and is therefore closed.
+
+The uniqueness claim of the Lemma also follows from the argument above since we have shown that $K$ is an orthogonal sum of subspaces each of which is isometric to $L^2(\Omega \times \reals_+, \mathcal{A} \otimes \mathcal{B}(\reals_+), P \times \lambda)$.
+
+Now for the existence portion of the argument, for any $\xi \in H$ we can write $\xi = \eta + \sum_{j=1}^d \int_0^\infty V^j \, dB^j$ with $\eta$ orthogonal to $K$.  It suffices to show that if $\eta$ is $B$-measurable then $\eta = 0$; so let $\eta \in H \ominus K$.  Suppose that $u^1, \dotsc, u^d$ are deterministic functions in $L^2(\reals)$, $M_t = \sum_{j=1}^d \int_0^t u^j \, dB^j$ and $Z_t = e^{iM_t + \frac{1}{2}[M]_t}$.  By Lemma \ref{ComplexExponentialMartingale} and Lemma \ref{ChainRuleContinuousSemimartingale} we know that 
+\begin{align*}
+Z_t - 1 &= \int_0^t Z \, dM = \sum_{j=1}^d \int_0^t Z \, d\int u^j \, dB^j = \sum_{j=1}^d \int_0^t Z u^j \, dB^j 
+\end{align*} 
+Moreover we have $[M]_t = \sum_{j=1}^d \int_0^t (u^j(s))^2 ds$ is deterministic and therefore 
+\begin{align*}
+\expectation{\abs{Z_t}^2} = \expectation{e^{[M]_t}} = e^{\sum_{j=1}^d \int_0^t (u^j(s))^2 ds} \leq e^{\sum_{j=1}^d \norm{u^j}_2} < \infty
+\end{align*}
+so $Z_t$ is $L^2$ bounded.  Therefore $Z_\infty - 1 \in K$ and from $\eta \in H \ominus K$ we have 
+\begin{align*}
+0 &= \expectation{\eta (Z_\infty - 1)} = \expectation{\eta Z_\infty} = e^{\frac{1}{2} \sum_{j=1}^d \int_0^\infty (u^j(s))^2 ds} \expectation{\eta e^{i\sum_{j=1}^d \int_0^\infty u^j \, dB^j}}
+\end{align*}
+and therefore $\expectation{\eta e^{i\sum_{j=1}^d \int_0^\infty u^j \, dB^j}} = 0$.
+
+This expression looks quite a bit like a charactersitic function; we proceed to pick some strategic $u^j$ so that it really becomes an honest one.  Fix an arbitrary $n \in \naturals$ and let $(t_1, \dotsc, t_n) \in \reals^n_+$ and $\theta^1, \dotsc, \theta^n \in \reals^d$ be given.  Define the step functions $u^j = \sum_{k=1}^n \theta^k_j \characteristic{[0,t_k]}$ for $j=1, \dotsc, d$. Then $\sum_{j=1}^d \int_0^\infty u^j \, dB^j = \sum_{j=1}^d\sum_{k=1}^n \theta^k_j B^j_{t_k} = \sum_{k=1}^n \langle \theta^k , B_{t_k}\rangle$ and therefore we get
+\begin{align*}
+\expectation{\eta e^{\sum_{k=1}^n \langle \theta^k , B_{t_k}\rangle}} = 0
+\end{align*}
+Writing $\eta = \eta_+ - \eta_-$ with $\eta_\pm \geq 0$ we note that by Lemma \ref{ChainRuleDensity} and Lemma \ref{ChangeOfVariables}
+\begin{align*}
+\expectation{\eta_\pm e^{\sum_{k=1}^n \langle \theta^k , B_{t_k}\rangle}} &= \int e^{\sum_{k=1}^n \langle \theta^k , B_{t_k}\rangle} \, d (\eta_\pm \cdot \probabilityop) \\
+&= \int e^{\sum_{k=1}^n \langle \theta^k , x_k \rangle} \, d \pushforward{(B_{t_1}, \dotsc , B_{t_n})}{\eta_\pm \cdot \probabilityop}(x_1, \dotsc, x_n)
+\end{align*} 
+is the Fourier transform of the measure $\pushforward{(B_{t_1}, \dotsc , B_{t_n})}{\eta_\pm \cdot \probabilityop}$ on $\reals^{nd}$.  By uniqueness of the Fourier transform or measures we conclude that $\expectation{\eta ; (B_{t_1}, \dotsc B_{t_n}) \in A} = 0$ for all $A \in \mathcal{B}(\reals^{nd})$.  
+
+Since it is trivial that $\lbrace (B_{t_1}, \dotsc B_{t_n}) \in A \rbrace \cap  \lbrace (B_{s_1}, \dotsc B_{s_m}) \in C \rbrace =  \lbrace (B_{t_1}, \dotsc B_{t_n}, B_{s_1}, \dotsc B_{s_m}) \in A \times C \rbrace$ we see that sets of the form $\lbrace (B_{t_1}, \dotsc B_{t_n}) \in A$ are a $\pi$-system and we know they generate $\vee_{t \geq 0} \sigma(B_t)$.  Moreover if we let $\mathcal{C} = \lbrace A \in \mathcal{A} \mid \expectation{\eta ; A} = 0\rbrace$ 
+we have $A \subset C$ then $\expectation{\eta ; C \setminus A}  = \expectation{\eta ; C} - \expectation{\eta ; A} = 0$ and if $A_1 \subset A_2 \subset \dotsb$ then by Dominated Convergence, 
+$\expectation{\eta ; \cup_{j=1}^\infty A_j} = \lim_{j \to \infty} \expectation{\eta ; A_j} = 0$ which shows $\mathcal{C}$ is a $\lambda$-system.  Now by the $\pi$-$\lambda$ Theorem \ref{MonotoneClassTheorem} we see that $\expectation{\eta ; A }=0$ for all $A \in \vee_{t \geq 0} \sigma(B_t)$ which shows that $\cexpectationlong{\vee_{t \geq 0} \sigma(B_t)}{\eta} = 0$.  If we also assume that $\eta$ is $B$-measurable then we know that $\eta = \cexpectationlong{\vee_{t \geq 0} \sigma(B_t)}{\eta} $ and we are done.
+\end{proof}
+
+\begin{thm}[Martingale Representation Theorem]\label{MartingaleRepresentationTheorem}Let $B=(B_1, \dotsc, B_d)$ be a $d$-dimensional Brownian motion and let $\mathcal{F}_t$ be the complete filtration generated by $B$.  Let $M$ be a cadlag local $\mathcal{F}$-martingale.  Then $M$ is continuous and moreover there exists $\probabilityop \times \lambda$-almost everywhere unique progressive processes $V^1, \dotsc , V^d$ such that 
+\begin{align*}
+M &= M_0 + \sum_{j=1}^d \int V^j \, dB^j
+\end{align*}
+\end{thm}
+\begin{proof}
+By applying the result to $M-M_0$ it is clear that we may assume that $M_0=0$.  We first show that $M$ is continuous.  By Lemma \ref{LocalMartingaleLocalizeToUniformlyIntegrable} we may pick a localizing sequence $\tau_n$ such that $M^{\tau_n}$ is a uniformly integrable cadlag martingale.  If we can show that every $M^{\tau_n}$ is almost surely continuous then it follows that $M$ is almost surely continuous.  To be precise, if we let $A = \lbrace \tau_n \uparrow \infty \rbrace \cap \cap_{n=1}^\infty \lbrace M^{\tau_n} \text{ is continuous}\rbrace$ then for all $\omega \in A$ and for every $t \geq 0$ there exists an $N$ such that $\tau_n(\omega) \geq t+1$ for all $n \geq N$ and therefore $M_s(\omega) = M^{\tau_n}_s(\omega)$ for all $0 \vee t-1 < s < t+1$ and therefore $M$ is continuous at $t$. 
+
+Thus we may assume that $M$ is a uniformly integrable martingale starting at zero.  By the Martingale Convergence Theorem \ref{L1MartingaleConvergenceTheoremContinuous} we have $\mathcal{F}_\infty$-measurable $M_\infty$ such that $M \tolp{1} M_\infty$.  Since $L^2$ is dense in $L^1$ we may find $\xi^n \in L^2(\Omega, \mathcal{F}_\infty)$ such that $\xi^n \tolp{1} M_\infty$.  By $\mathcal{F}_\infty$-measurability of $\xi^n$ and Lemma \ref{RepresentationOfBrownianFunctionals} we know that the martingale $M^n_t = \cexpectationlong{\mathcal{F}_t}{\xi^n}$ is almost surely continuous.  Denote $\Delta M_t = M_t - \lim_{s \uparrow t}M_s$ to be jump process associated with $M$ and note that by the Doob Maximal Inequality (Lemma \ref{DoobMaximalInequalityContinuous}) we have for each $\epsilon > 0$ and $n \in \naturals$
+\begin{align*}
+\probability{ \sup_{0 \leq t < \infty} \abs{\Delta M_t} > 2 \epsilon} &\leq \probability{\sup_{0 \leq t < \infty} \abs{M^n_t - M_t} > \epsilon} \leq \epsilon^{-1} \expectation{\abs{\xi^n - M_\infty}}
+\end{align*}
+and taking the limit as $n \to \infty$ we see that $\probability{ \sup_{0 \leq t < \infty} \abs{\Delta M_t} > 2 \epsilon} = 0$ for every $\epsilon > 0$ and thus $\probability{ \sup_{0 \leq t < \infty} \abs{\Delta M_t} \neq 0} \leq \cup_{n=1}^\infty \probability{ \sup_{0 \leq t < \infty} \abs{\Delta M_t} > 1/n} = 0$ which shows us that $M_t$ is almost surely continous.
+
+By the above argument we may now assume that $M$ is a continuous local $\mathcal{F}$-martingale.  By Lemma \ref{ContinuousLocalMartingaleLocalizeToBounded} we may assume that we have a localizing sequence $\tau_n$ such each $M^{\tau_n}$ is bounded (in particular $L^2$ bounded).  Therefore $M^{\tau_n}_\infty$ exists and is in $L^2$.  Since $M^{\tau_n}_\infty$ is $\mathcal{F}_\infty$-measurable and $\expectation{M^{\tau_n}_\infty}=0$ we may apply Lemma \ref{RepresentationOfBrownianFunctionals} to conclude there are $V^{j,n} \in L(B^1)$ such that $M^{\tau_n}_\infty = \sum_{j=1}^d \int_0^\infty V^{j,n} \, dB^j$.  Therefore from the fact that $M^{\tau_n}_t$ is a closable martingale we have $M^{\tau_n}_t = \cexpectationlong{\mathcal{F}_t}{M^{\tau_n}_\infty} = \sum_{j=1}^d \int_0^t V^{j,n} \, dB^j$.
+
+For $m < n$ we have $\tau_m \leq \tau_n$ and therefore using Lemma \ref{StoppingIntegralsContinuousSemimartingale}
+\begin{align*}
+\sum_{j=1}^d \int V^{j,m} \, dB^j &= M^{\tau_m} = (M^{\tau_n})^{\tau_m} = \sum_{j=1}^d \int \characteristic{[0,\tau_m]} V^{j,n} \, dB^j
+\end{align*}
+and by the almost sure uniqueness of the $V^{j,m}$ we conclude that $V^{j,n}\mid_{[0,\tau_m]} = V^{j,m}$.  Therefore there exists $V^j$ such that $V^j \mid_{[0,\tau_n]} = V^{j,n}$ and for any $t \geq 0$ using Lemma \ref{StoppingIntegralsContinuousSemimartingale}
+\begin{align*}
+M_t &= \lim_{n \to \infty} M^{\tau_n}_t =  \lim_{n \to \infty} \sum_{j=1}^d \int_0^t V^{j,n} \, dB^j \\
+&= \lim_{n \to \infty}  \sum_{j=1}^d \int_0^t \characteristic{[0,\tau_n]} V^{j} \, dB^j \\
+&=  \lim_{n \to \infty} \sum_{j=1}^d \int_0^{\tau_n \wedge t} V^{j} \, dB^j = \sum_{j=1}^d \int_0^{t} V^{j} \, dB^j 
+\end{align*}
+almost surely.
+TODO: Show $V^j \in L(B^1)$ and show a.s. uniqueness of $V^j$.
+\end{proof}
+
+Another result that is important is the Levy's characterization of Brownian motion in terms of its covariance structure.
+\begin{thm}[Levy's Theorem]\label{LevyCharacterizationOfBrownianMotion}Let $B_t=(B^1_t, \dotsc, B^d_t)$ be a process in $\reals^d$ such that $B_0=0$, then $B$ is an $\mathcal{F}$-Brownian motion if and only if $B$ is a continuous local $\mathcal{F}$-martingale with $[B^i,B^j]_t = \delta_{ij} t$.
+\end{thm}
+\begin{proof}
+Suppose that $B$ is a continuous local  $\mathcal{F}$-martingale with $[B^i,B^j]_t = \delta_{ij} t$ and $B_0 = 0$.  We need to show that for each $s < t$,  $B_t - B_s$  is independent of $\mathcal{F}_s$ and Gaussian with covariance matrix $t -s$ times the identity.   Fix $S < T$ and define  the filtration $\tilde{\mathcal{F}}_t = \mathcal{F}_{t+S}$,  $\tilde{B}^i_t = B_{t+S} - B_S$ for each $i=1, \dotsc, d$ and $\tilde{B} = (\tilde{B}^1, \dotsc, \tilde{B}^d)$.  Clearly, $\tilde{B}$ is a continuous local $\tilde{\mathcal{F}}$-martingale and moreover note that $[\tilde{B}^i,\tilde{B}^j]_t = [B^i,B^j]_{t+S} - [B^i,B^j]_S = t \delta_{ij}$.  Let $u=(u_1, \dotsc, u_d) \in \reals^d$ be given and define 
+\begin{align*}
+N_t &= \langle u , \tilde{B}_t^{T-S} \rangle = u_1 (B_{(t+S) \wedge T}^1 - B_S^1) + \dotsb + u_d (B_{(t + S) \wedge T}^d - B_S^d)
+\end{align*}  
+Clearly, $N_t$ is a continuous local $\tilde{\mathcal{F}}$-martingale such that $N_0 = 0$ and also has the quadratic variation
+\begin{align*}
+[N]_t &= \sum_{i=1}^d \sum_{j=1}^du_iu_j [(\tilde{B}^i)^{T-S},  (\tilde{B}^j)^{T-S}]_t \\
+&= \sum_{i=1}^d \sum_{j=1}^du_iu_j ([B^i, B^j ]_{t+S} -  [B^i, B^j ]_{S})^{T-S}=  (t \wedge (T-S)) \norm{u}_2^2\\
+\end{align*}
+By Lemma \ref{ComplexExponentialMartingale} we know that $Z_t = \exp(iN_t + \frac{1}{2} [N]_t)$ is a continuous local $\tilde{\mathcal{F}}$-martingale that satisfies $Z_0 = 1$.  Since $[N]_\infty = [N]_{T-S} = (T-S) \norm{u}_2^2< \infty$ we know that $Z_t$ is bounded and therefore we can apply Lemma \ref{BoundedLocalMartingaleIsMartingale} to see that is a uniformly integrable martingale.
+For any $A \in \tilde{\mathcal{F}}_0 = \mathcal{F}_S$ we have by the martingale property of $Z$ and the definition of $N$
+\begin{align*}
+\probability{A} &= \expectation{Z_0 ; A} = \expectation{Z_\infty ; A} = \expectation{ \exp(iN_\infty + \frac{1}{2} [N]_\infty); A} \\
+&=  \expectation{ e^{i\langle u, \tilde{B}_{T-S} \rangle}; A} e^{\frac{1}{2}(T-S) \norm{u}_2^2}
+\end{align*}
+which shows us that $\cexpectationlong{\mathcal{F}_S}{e^{i \langle u, \tilde{B}_{T-S} \rangle}} = e^{-\frac{1}{2} (T-S) \langle u, u \rangle}$.  We may now apply uniqueness of conditional characteristic functions Lemma \ref{ConditionalCharacteristicFunctions} and Theorem \ref{GaussianVectorCharacteristicFunction} to conclude that the conditional probability distribution $\cprobability{\mathcal{F}_S}{ (B_{T}^1 - B_S^1,\dotsc, B_{T}^d - B_S^d) \in \cdot}$ is centered Gaussian with covariance matrix $(T-S)$ times the identity. As the conditional probability distribution is deterministic and we see that $B_T -B_S$ is independent of $\mathcal{F}_S$ as well.
+\end{proof}
+
+\subsubsection{Girsanov Theory}
+
+We now begin an investigation of how continuous local martingales behave as the underlying probability measure is changed.  
+
+\begin{defn}Let $P$ and $Q$ be probability measures on a measure space $(\Omega, \mathcal{A})$ with a filtration $\mathcal{F}_t$ with index set $T$.  We say that $Q$ is \emph{locally absolutely continuous} with respect to $P$ is for each $t \in T$ we have $Q \ll P$ on $\mathcal{F}_t$.  If in addition $P$ is locally absolutely continuous with respect to $Q$ then say that $P$ and $Q$ are \emph{locally equivalent}.
+\end{defn}
+
+TODO:  Are there any subtleties about the usual conditions?  The fact that the usual conditions are tied to the probability measure by the assumption that each $\mathcal{F}_t$ contains all subsets of the null sets of the probability measure.  When we pass to a new probability measure (even with the absolute continuity assumptions) we may be introducing new null sets and the filtration may no longer satisfy the usual conditions right?  Most presentations restrict to the situation of equivalent probability measures so this problem doesn't arise but Kallenberg clearly doesn't intend to make this restriction at the outset.  There is indeed something subtle about the usual conditions (see Bichteler).  In the first place it is observed (and noted elsewhere) that the usual conditions mean that if $Q \ll P$ on $\mathcal{F}_0$ then $Q \ll P$ on all of $\mathcal{F}_\infty$ (i.e. there isn't a useful notion of being only locally absolutely continuous).  On the other hand, Kallenberg uses the usual conditions to assume a cadlag version of the likelihood ratio process.  Moreover, it seems that some of the more useful variants of Girsanov are not compatible with the usual conditions since they require that the change of measure is not absolutely continuous but merely locally so.  It seems like Kallenberg has made a bit of a muddle of this.  I'm still trying to distill the core issues.  In the Brownian motion case a constant drift term illustrates the problem.  Let $B_t$ be a standard Brownian motion, let $\mu > 0$ be a constant and consider $\tilde{B}_t = B_t - \mu t$.  Let $\mathcal{F}_t$ be the filtration generated by $B_t$ and let $\tilde{\mathcal{F}}_t$ be the usual augmentation.  If we define $Z_t = \exp\left [ \mu B_t - \frac{1}{2} \mu^2 t\right]$ then we can define a new probability measure $\tilde{P}$ on each $\tilde{\mathcal{F}}_t$ by $\tilde{P}(A) = \expectation{Z_t ; A}$.  What is true is that
+\begin{itemize}
+\item[(i)]$\tilde{B}_t$ is a $\tilde{\mathcal{F}}$-Brownian motion on $[0,t]$ with respect to $\tilde{P}$ for all $0 \leq t < \infty$.
+\item[(ii)]$P$ and $\tilde{P}$ are mutually absolutely continous on $\tilde{\mathcal{F}}_t$ for all $0 \leq t < \infty$.
+\item[(iii)]There is an extension of $\tilde{P}$ to all of $\mathcal{F}_\infty$ such that $\tilde{B}_t$ is an $\mathcal{F}$-Brownian motion
+\end{itemize}
+what is not true is that
+\begin{itemize}
+\item[(i)]The extension of $\tilde{P}$ to all of $\mathcal{F}_\infty$ is not equal to $\expectation{Z_t; A}$ on all of $\tilde{\mathcal{F}}_t$ but only on $\mathcal{F}_t$.  In particular $\lbrace \lim_{t \to \infty} B_t/t = \mu \rbrace$ is a $P$ - null set but is $\tilde{P}$ almost sure.
+\item[(ii)]The extension $\tilde{P}$ and $P$ are not mutually absolutely continuous on $\mathcal{F}_\infty$.
+\item[(iii)]$\tilde{B}_t$ is not a $\tilde{\mathcal{F}}$-Brownian motion on $[0,\infty)$ with respect to $\tilde{P}$. 
+\end{itemize}
+
+TODO: Is there an obstruction to extending $\tilde{P}$ to a probability measure on $\tilde{\mathcal{F}}_\infty$ or is it just that $\tilde{B}_t$ will not be a Brownian motion on $[0,\infty)$ with respect to such an extension?  From van der Vaart's notes, the Brownian motion example above shows that there is an obstruction.  The key seems to be that if such an extension did exist then Girsanov would apply and we'd be able to conclude that $\tilde{B}_t$ would be a Brownian motion on it.  That would cause a contradiction because the Brownian-ness of $\tilde{B}_t$ would imply that $\tilde{P}\lbrace \lim_{t \to \infty} B_t/t = \mu \rbrace = 1$ but the completeness of $\mathcal{F}_t$ would imply that $\tilde{P}\lbrace \lim_{t \to \infty} B_t/t = \mu \rbrace = P\lbrace \lim_{t \to \infty} B_t/t = \mu \rbrace = 0$.  Does this mean that Kallenberg's Lemma 18.18 is incorrect?
+
+TODO: Is it also that case that $\tilde{B}_t$ is not a continuous local $\tilde{P}$-martingale on $[0,\infty)$?  This question only makes sense if the answer to the previous question is that there is such an extension to $\tilde{P}$ on all of $\tilde{\mathcal{F}}_\infty$.
+
+One of the nasty things about developing the theory in this way (and having a result that doesn't hold for filtrations that satisfy the usual conditions) is the fact that we have all sorts of results that do assume the usual conditions and it is not terribly clear what the ramifications of losing the assumption are.  Bichteler has identified an extension procedure that is more conservative than the imposition of the usual conditions (his \emph{natural} conditions) that seems to preserve all the important results but also allows an extension of $\tilde{P}$ such that $\tilde{B}_t$ will be a Brownian motion on all of $[0,\infty)$ with respect to $\tilde{P}$.  Note that the example of the event $\lbrace \lim_{t \to \infty} B_t/t = \mu \rbrace$ shows that such an extension will not be mutually absolutely continuous but it will be locally so.
+
+We need a preliminary result that says when a non-negative cadlag supermartingale hits $0$ it is absorbed.  The reader should convince herself that this is expected: since a supermartingle is non-increasing on average, once it hits zero any attempt to return to a positive value would have to be offset by corresponding negative value.  Making sense of the intuition requires an argument using optional times.  
+\begin{lem}\label{PositiveSupermartingaleAbsorption}Let $X \geq 0$ be a cadlag $\mathcal{F}$-supermartingale (not necessarily satisfying the usual conditions) and let $\tau = \inf \lbrace t \mid X_{t-} \wedge X_t =0 \rbrace$, then $X \equiv 0$ a.s. on $[\tau, \infty)$.
+\end{lem}
+\begin{proof}
+First note that $X$ is also an $\mathcal{F}^+$-supermartingale.  To see this, pick for any $s < t$ pick a sequence $s_m \downarrow s$ and use the Levy Downward Theorem
+\ref{JessenConditioningLimits}  to conclude $\cexpectationlong{\mathcal{F}_s^+}{X_t} = \lim_{n \to \infty} \cexpectationlong{\mathcal{F}_{s_n}^+}{X_t} \leq X_t$.  Now we use an approximation to the optional time $\tau$.  The idea the approximation is that $X_{t-} \wedge X_t=0$ if and only if $X_{t-} \wedge X_t < 1/n$ for all $n \in \naturals$ so we look for the first point $t$ for which $X_{t-} \wedge X_t < 1/n$, that is to say we consider the hitting time $\tau_n = \lbrace t \mid X_t < 1/n \rbrace$ and use the fact that $\tau_n \uparrow \tau$ (we'll actually show this carefully later in the proof but it isn't hard to believe).  Note that $\tau_n$ is an $\mathcal{F}^+$-optional time due to the openness of $(-\infty, 1/n)$ and the right continuity of $X$ (Lemma \ref{HittingTimesContinuous}).  Note that for all $n \in \naturals$ the right continuity of $X$ implies that $X_{\tau_n} \leq 1/n$ (just pick a random sequence $t_m \downarrow \tau_n$ such that $X_{t_m} < 1/n$).  Now pick $t \geq 0$ and $n \in \naturals$ and use the supermartingale property, the $\mathcal{F}^+_{\tau_n \wedge t}$-measurability of $\lbrace \tau_n \leq t \rbrace$ (TODO: where  do we show this) and Optional Sampling Theorem \ref{OptionalSamplingContinuous}
+\begin{align*}
+\expectation{ X_t ; \tau_n \leq t } &=\expectation{ \cexpectationlong{\mathcal{F}^+_{\tau_n \wedge t}}{X_t} ; \tau_n \leq t }  \leq \expectation{ X_{\tau_n \wedge t} ; \tau_n \leq t }  \\
+&=\expectation{ X_{\tau_n} ; \tau_n \leq t } \leq 1/n
+\end{align*}
+Using the non-negativity and integrability of $X_t$, the fact that $\tau_n \uparrow \tau$ and Dominated Convergence, we get 
+\begin{align*}
+0 &\leq \expectation{ X_t ; \tau \leq t } \leq \lim_{n \to \infty} 1/n = 0
+\end{align*}
+and therefore $X_t = 0$ a.s. on the set $\lbrace \tau \leq t\rbrace$.  Taking a countable union of null events we see that almost surely for all $q \in \rationals_+$,  $X_q = 0$ on the set $\lbrace \tau \leq q\rbrace$ and by right continuity we get that 
+\begin{align*}
+\cap_{q \in \rationals_+} \lbrace X_q = 0 \text{ on } \lbrace \tau \leq q \rbrace \rbrace &=
+\cap_{0 \leq t < \infty} \lbrace X_t = 0 \text{ on } \lbrace \tau \leq t \rbrace \rbrace
+\end{align*}
+(for $\omega \in \cap_{q \in \rationals_+} \lbrace X_q = 0 \text{ on } \lbrace \tau \leq q \rbrace \rbrace$ and $t \geq \tau(\omega)$, pick $q_n \downarrow t$ and note that $X_{q_n}(\omega) = 0$ so by right continuity $X_t(\omega) = 0$). This yields the final result.
+
+We now return to the deferred justification of the claim that $\tau_n \uparrow \tau$.  It is clear that $\tau_n$ is non-decreasing.  To see that $\tau_n \leq \tau$ note that if $X_{t-} \wedge X_t = 0$ the either $X_t = 0$ or we may find $s < t$ such that $X_s < 1/n$ and therefore $\tau_n \leq t$.  In the opposite direction, we give ourselves an $\epsilon$ of room and pick an arbitrary $\epsilon > 0$.  Pick a random $N > 0$ such that $\lim_{n \to \infty} \tau_n - \epsilon/2 \leq \tau_n$ for all $n \geq N$ and then for each $n \geq N$ we pick a $t_n$ such that $X_{t_n} < 1/n$ and $t_n \leq \tau_n + \epsilon/2$.  In this way we construct a sequence $t_n$ in $[0,\lim_{n \to \infty} \tau_n+\epsilon]$ such that $X_{t_n} < 1/n$.  By compactness we get a $t \in [0,\lim_{n \to \infty} \tau_n+\epsilon]$ and a convergent subsequence $N^\prime$ such that $t_n \to t$ along $N^\prime$  which by passing to another subsequence we may assume is either increasing or decreasing.  From this and right continuity of $X$ we conclude that $X_{t-} \wedge X_t = 0$ and therefore $\tau \leq \lim_{n \to \infty} \tau_n+\epsilon$ and since $\epsilon > 0$ was arbitrary we are done.
+\end{proof}
+
+\begin{lem}\label{LikelihoodRatioProcesses}Let $P$ and $Q$ be probability measures on a measure space $(\Omega, \mathcal{A})$ with a filtration $\mathcal{F}$ (not necessarily satisfying the usual conditions).   Suppose that $Q$ is locally absolutely continuous with respect to $P$ and let $Z_t$ be an $\mathcal{F}$-adapted process such that $Q = Z_t \cdot P$ on $\mathcal{F}_t$ for all $t \geq 0$, then 
+\begin{itemize}
+\item[(i)] An adapted process $X$ is a $Q$-martingale if and only if $X Z$ is a $P$-martingale.  In particular, $Z_t$ is a $P$-martingale.  Moreover, $Z$ is uniformly integrable if and only if $Q \ll P$ on $\mathcal{F}_\infty$.  
+\item[(ii)] If $Z$ is a cadlag version then for any optional time
+\begin{align*}
+Q &= Z_\tau \cdot P \text{ on $\mathcal{F}_\tau \cap \lbrace \tau < \infty \rbrace$ }
+\end{align*}
+and an adapted cadlag process $X$ is a local $Q$-martingale if and only if $X Z$ is a local $P$-martingale.
+\item[(iii)] If $\tau_n$ is a sequence of optional times such that $\tau_n \uparrow \infty$ $P$-almost surely then $\tau_n \uparrow \infty$ $Q$-almost surely.
+\item[(iv)] An adapted cadlag process $X$ is a local $Q$-martingale if and only if $X Z$ is a local $P$-martingale.  
+\item[(v)] If $Z$ is a cadlag version then $Q$-almost surely for every $t > 0$ we have $\inf_{0\leq s \leq t} Z_s > 0$.  If $Q$ and $P$ are locally equivalent then this is true $P$-almost surely as well.
+\end{itemize}
+\end{lem}
+\begin{proof}
+We start with proving (i).  Note that since $X_t$ is $\mathcal{F}_t$-measurable by Lemma \ref{ChainRuleDensity} and non-negativity of $Z_t$ we have $\sexpectation{\abs{X_t}}{Q} = \sexpectation{Z_t \abs{X_t}}{P}= \sexpectation{ \abs{Z_t X_t}}{P}$ and therefore $X_t$ is $Q$-integrable if and only if $Z_t X_t$ is $P$-integrable.  If we let $A \in \mathcal{F}_s$ then if we assume $Z_t X_t$ is a $P$-martingale then for $t \geq s$,
+\begin{align*}
+\sexpectation{X_t ; A}{Q} = \sexpectation{Z_t X_t ; A}{P} = \sexpectation{Z_s X_s ; A}{P}  = \sexpectation{X_s ; A}{Q}
+\end{align*}
+and similarly if we assume that $X_t$ is a $Q$-martingale then we just the run the logic in a slightly different order
+\begin{align*}
+\sexpectation{Z_t X_t ; A}{P} = \sexpectation{X_t ; A}{Q} = \sexpectation{X_s ; A}{Q}  = \sexpectation{Z_s X_s ; A}{P}
+\end{align*}
+Thus we see that $X_t$ is a $Q$-martingale if and only if $Z_t X_t$ is a $P$-martingale.  Since $X_t \equiv 1$ is obviously a $Q$-martingale we see that $Z_t$ is a $P$-martingale.  If we assume that $Z$ is a uniformly integrable $Q$-martingale then by the Martingale Convergence Theorem \ref{L1MartingaleConvergenceTheoremContinuous} there exists $Z_\infty$ such that $Z_t = \cexpectationlong{\mathcal{F}_t}{Z_\infty}$ a.s.  Therefore if we assume that $A \in \mathcal{F}_t$ we have 
+\begin{align*}
+(Z_\infty \cdot P)(A) &= \expectation{Z_\infty ; A} = \expectation{\cexpectationlong{\mathcal{F}_t}{Z_\infty} ; A} = \expectation{Z_t; A} = Q(A)
+\end{align*}
+and since $\cup_{t \geq 0} \mathcal{F}_t$ is a $\pi$-system generating $\mathcal{F}_\infty$ we know that $Z_\infty \cdot P = Q$ on $\mathcal{F}_\infty$ by monotone classes (specifically Lemma \ref{UniquenessOfMeasure}).  On the other hand suppose that $Q \ll P$ on $\mathcal{F}_\infty$ and write $Q = \xi \cdot P$.  Then since $\mathcal{F}_t \subset \mathcal{F}_\infty$ we know that for all $t \geq 0$ and $A \in \mathcal{F}_t$ we have $Q(A) = \expectation{\xi ; A} = \expectation{\cexpectationlong{\mathcal{F}_t}{\xi} ; A}$ which shows $Z_t = \cexpectationlong{\mathcal{F}_t}{\xi}$ by the $P$-almost sure uniqueness of the Radon-Nikodym derivative.  This shows that $Z_t$ is uniformly integrable.
+
+We now show (ii).  Note that since we know $Z_t$ is a martingale and we have assumed $\mathcal{F}$ is right continuous we can apply Theorem \ref{CadlagModificationContinuousMartingale} we may assume that we have taken a cadlag version of $Z_t$.  If we let $\tau$ be an optional time then we fix $t \geq 0$ and assume $A \in \mathcal{F}_{\tau \wedge t} \subset \mathcal{F}_t$ and apply Optional Sampling to see that 
+\begin{align*}
+Q(A) = \expectation{Z_t ; A} = \expectation{\cexpectationlong{\mathcal{F}_{\tau\wedge t}}{Z_t} ; A} =  \expectation{Z_{\tau \wedge t}; A} 
+\end{align*}
+Given an arbitrary $A \in \mathcal{F}_\tau$ we know from Proposition \ref{StoppedAlgebraMinOfOptionalTimes} that for all $t \geq 0$ we have $A \cap \lbrace \tau \leq t \rbrace \in \mathcal{F}_{\tau \wedge t}$.  Therefore $Q(A ; \tau \leq t) = \expectation{Z_{\tau}; A; \tau \leq t}$ and by continuity of measure and Monotone Convergence we get 
+\begin{align*}
+Q(A ; \tau < \infty) &= \lim_{n \to \infty} Q(A ; \tau \leq n) = \lim_{n \to \infty} \expectation{Z_{\tau}; A; \tau \leq n}= \expectation{Z_{\tau}; A; \tau < \infty}
+\end{align*}
+
+To see (iii), we let $\tau = \sup_n \tau_n$ and note that $\tau$ is an optional time by Lemma \ref{InfSupStoppedFiltration}.  Therefore we may apply (ii) and the fact that $\probability{\tau < \infty} = 0$ to conclude that $\sprobability{\tau < \infty}{Q} = \sexpectation{Z_\tau ; \tau < \infty}{P} = 0$.  Note that the above argument is necessary since we don't necessarily have $Q \ll P$ on $\mathcal{F}_\infty$.
+
+To see (iv), suppose that $X$ is a local $P$-martingale.  Let $\tau_n \uparrow \infty$ $P$-a.s. be a localizing sequence for $X$ so that $X^{\tau_n}$ is a $P$-martingale for every $n \in \naturals$.  By (i) we conclude that $Z X^{\tau_n}$ is a $Q$-martingale.  It follows that $(Z X^{\tau_n})^{\tau_n} = Z^{\tau_n} X^{\tau_n} = (Z X)^{\tau_n}$ is a $Q$-martingale for every $n \in \naturals$.  Since by (iii) it follows that $\tau_n \uparrow \infty$ $Q$-almost surely we conclude that $ZX$ is a local $Q$-martingale.  
+
+To see (v), by the $\mathcal{F}_t$-measurability of $Z_t$ we have $\sprobability{Z_t = 0}{Q} = \expectation{Z_t ; Z_t = 0} = 0$ and therefore $Z_t > 0$ $Q$-almost surely for each $t \geq 0$.  Since $Z_t$ is a cadlag $P$-martingale we let $\tau = \inf \lbrace t \mid Z_{t-} \wedge Z_t = 0 \rbrace$ and apply Lemma \ref{PositiveSupermartingaleAbsorption} to conclude that $Z_t \equiv 0$ $P$-almost surely on $[\tau,\infty)$: more formally written as $\probability{\cap_{0 \leq t < \infty} \lbrace Z_t \characteristic{\tau \leq t} = 0 \rbrace}=1$.  In particular, we have $\probability{Z_t \characteristic{\tau \leq t} = 0}=1$ for all $t \geq 0$.  Since $\lbrace Z_t \characteristic{\tau \leq t} = 0\rbrace \in \mathcal{F}_{t}$-measurable and  $Q \ll P$ on $\mathcal{F}_{t}$, by taking complements we see that $\sprobability{Z_t > 0 ; \tau \leq t}{Q}=0$ for all $t \geq 0$..  Putting these two facts together we conclude for all $t \geq 0$ that
+\begin{align*}
+\sprobability{\tau \leq t}{Q} &= \sprobability{Z_t = 0 ; \tau \leq t}{Q} + \sprobability{Z_t > 0 ; \tau \leq t}{Q}  \\
+&\leq \sprobability{Z_t = 0}{Q} + \sprobability{Z_t > 0 ; \tau \leq t}{Q}  = 0
+\end{align*}
+By continuity of measure $\sprobability{\tau < \infty}{Q} = \lim_{t \to \infty} \sprobability{\tau \leq t}{Q} = 0$ and therefore
+$\tau = \infty$ $Q$-almost surely. and therefore $Z_{t-} \wedge Z_t > 0$ for all $t \geq 0$ $Q$-almost surely which shows the result.  If we now assume that $P$ and $Q$ are locally equivalent, we also have $Z_t > 0$ $P$-almost surely for each $t \geq 0$.  We have already shown that, indepedent of the assumption of local equivalence, we have $Z_t \equiv 0$ $P$-almost surely on $[\tau,\infty)$.  By exactly the same argument as above, these two facts imply the result with respect to $P$.
+\end{proof}
+
+TODO: Van der Vaart claims that it is not true that $X$ is a local $Q$-martingale if and only if $ZX$ is a local $P$-martingale unless we assume that $P$ and $Q$ are locally equivalent.  Understand whether that is true and if so produce a counterexample and find the flaw in the proof from Kallenberg (which is very brief).
+
+\begin{thm}\label{AbstractTransformationOfDriftContinuousLocalMartingale}Let $P$ and $Q$ be locally equivalent probability measures on a measure space $(\Omega, \mathcal{A})$ with a filtration $\mathcal{F}$.   Let $Z_t$ be an $\mathcal{F}$-adapted process such that $Q = Z_t \cdot P$ on $\mathcal{F}_t$ for all $t \geq 0$ and assume that $Z_t$ is almost surely continuous.  Then if $M$ is a local $P$-martingale, the process $\tilde{M}_t = M_t - \int_0^t Z^{-1}_s d[Z,M]_s$ is a local $Q$-martingale.
+\end{thm}
+\begin{proof}
+The first thing to note is that the process $M_t - \int_0^t Z^{-1}_s d[Z,M]_s$ is well defined.  From Lemma \ref{LikelihoodRatioProcesses} we know that  $Q$-almost surely and $P$-almost surely, for all $t \geq 0$ $\inf_{0 \leq s \leq t} \lbrace t \mid Z_s \rbrace > 0$; thus $Q$-a.s. and $P$-a.s. the process $Z^{-1}$ is bounded on every $[0,t]$ and therefore $\int_0^t Z^{-1}_s d[Z,M]_s$ exists.
+
+
+For each $n \in \naturals$, let $\tau_n = \inf \lbrace t \mid Z_t < 1/n \rbrace$ and define $\tilde{M}^n_t = M_t^{\tau_n} - \int_0^t \characteristic{[0,\tau_n]} Z_s^{-1} \, d[Z, M^{\tau_n}]_s$.  Note that from the definition of $\tau_n$, $\characteristic{[0,\tau_n]} Z_s^{-1}$ is bounded and therefore $\tilde{M}^n_t$ is well defined and moreover is a continuous $\mathcal{F}$-semimartingale.  By  integration by parts (Lemma \ref{IntegrationByPartsContinuousSemimartingale}) and the Chain Rule (Lemma \ref{ChainRuleContinuousSemimartingale})  we get
+\begin{align*}
+\tilde{M}^n_t Z_t - \tilde{M}^n_0 Z_0 &= \int_0^t \tilde{M}^n \, dZ + \int_0^t Z \, d\tilde{M}^n + [\tilde{M}^n, Z]_t \\
+&= \int_0^t \tilde{M}^n \, dZ + \int_0^t Z \, d M^{\tau_n} -  \int_0^t Z_s \, d \int_0^s Z^{-1}_u [Z, M^{\tau_n}]_u + [M^{\tau_n}, Z]_t \\
+&= \int_0^t \tilde{M}^n \, dZ + \int_0^t Z \, d M^{\tau_n} -  \int_0^t d[Z, M]_s + [M^{\tau_n}, Z]_t \\
+&= \int_0^t \tilde{M}^n \, dZ + \int_0^t Z \, d M^{\tau_n}
+\end{align*}
+which shows that $\tilde{M}^n_t Z_t$ is a local $P$-martingale and therefore $\tilde{M}^n_t$ is a local $Q$-martingale by Lemma \ref{LikelihoodRatioProcesses}.
+
+TODO: Kallenberg states this Lemma without the assumption of local equivalence of $P$ and $Q$ (i.e. only assuming that $Q$ is locally absolutely continuous with respect to $P$).  The main point that I don't understand is showing that $M$ is well defined both $P$-a.s. as well as $Q$-a.s.
+
+TODO: How do we see that $\int_0^t Z^{-1}_s  d[Z,M]_s$ is well defined in general?  Perhaps there is an argument that shows that if we let $\tau = \inf \lbrace t \mid Z_t = 0 \rbrace$ then $0 < Z^{-1} < \infty$ on $[0,\tau)$ and  by  Lemma \ref{PositiveSupermartingaleAbsorption}  $Z^{-1} = \infty$ on $[\tau, \infty)$ $P$-a.s.  If we can then show that $[Z,M]=0$ on $[\tau,\infty)$.  By  then perhaps we can conclude that $\int_0^t Z^{-1}_s d[Z,M]_s$ is well defined for all $t \geq 0$ (the only issue is $t \geq \tau$.  This is a question of Stieltjes integrals but seems possible as it is a $\infty \cdot 0$ type of situation.  Perhaps this argument won't work either as we still would have to control the rate that $Z^{-1}_t \uparrow \infty$ as $t \to \tau$.
+
+TODO: As an alternative to showing that Here I try to show that $\tilde{M}$ is well defined by defining it as a limit of the $\tilde{M}^n$; is this any better because we only know that $\tau_n \uparrow \tau$ $Q$-a.s?  Now note that since $\inf_{0 \leq s \leq t} Z_t > 0$ $Q$-almost surely (Lemma \ref{LikelihoodRatioProcesses}) we know that $\tau_n \uparrow \tau$ $Q$-almost surely.  We know that for any fixed $t \geq 0$ the sequence $\tilde{M}^n_t$ is $Q$-almost surely constant and therefore we can define $\tilde{M}_t = \lim_{n \to \infty} \tilde{M}^n_t$ and it follows that $\tilde{M}^n = (\tilde{M})^{\tau_n}$.  Now we can apply Lemma \ref{LocalMartingaleLocalProperty} to conclude that $\tilde{M}$ is a local $Q$-martingale.
+\end{proof}
+
+Note that in the result above the quadratic covariation $[Z,M]$ is taken with respect to the measure $P$.  However we know from Lemma \ref{ApproximateOptionalQuadraticCovariationContinuousSemimartingale} that for each $t \geq 0$ we can find a sequence of partitions $0=t_{n,0} < \dotsb < t_{n,k_n} = t$ such that $\sum_{j=1}^{k_n} (Z_{t_{n, j}} - Z_{t_{n, j-1}})  (M_{t_{n, j}} - M_{t_{n, j-1}}) \toprob [Z,M]_t$ with respect to $P$.  Since $P$ and $Q$ are locally equivalent this implies that in fact $[Z,M]$ is the quadratic covariation of $Z$ and $M$ under $Q$ as well.
+
+If we specialize the previous result to the case in which $M$ is a Brownian motion then it is easy to see that $\tilde{M}$ is also a Brownian motion; thus the family of Brownian motions is invariant under locally equivalent changes of measure.
+\begin{cor}Let $P$ and $Q$ be locally equivalent probability measures on a measure space $(\Omega, \mathcal{A})$ with a filtration $\mathcal{F}$.   Let $Z_t$ be an $\mathcal{F}$-adapted process such that $Q = Z_t \cdot P$ on $\mathcal{F}_t$ for all $t \geq 0$ and assume that $Z_t$ is almost surely continuous.  Then if $M$ is a $P$-Brownian motion, then process $M_t - \int_0^t Z^{-1}_s d[Z,M]_s$ is a $Q$-Brownian motion.
+\end{cor}
+\begin{proof}
+Since $\int_0^t Z^{-1}_s d[Z,M]_s$ has finite variation we know that $[M - \int Z^{-1}_s d[Z,M]_s]_t = [M]_t = t$ where we have used fact that $M$ is a $P$-Brownian motion and the discussion preceeding the corollary to note that the quadratic variation of $M$ with respect to $Q$ is the same as the quadratic variation with respect to $P$.  Since $M$ is continuous local $Q$-martingale, it follows from Levy's Theorem \ref{LevyCharacterizationOfBrownianMotion} that $M - \int Z^{-1}_s d[Z,M]_s$ is in fact a $Q$-Brownian motion.
+\end{proof}
+
+In some ways Theorem \ref{AbstractTransformationOfDriftContinuousLocalMartingale} is a deceptively clean result.  In applications it is common that one is not given the measure $Q$ rather one starts with a nonnegative process $Z_t$.  Two things need to be addressed. First is that it is often easy to see that $Z$ is a local martingale (e.g. by expressing $Z$ as a stochastic integral) but the hypotheses of the theorem require that it is a true martingale.  Therefore one should spend some time developing conditions that allow one to conclude that a nonnegative local martingale is a martingale; there are no necessary and sufficient conditions known but there are some useful sufficient conditions.  The second, more subtle, issue is constructing the measure $Q$ from the given nonnegative martingale $Z_t$.  As in Lemma \ref{LikelihoodRatioProcesses} this is easy if $Z_t$ is uniformly integrable but in many important applications uniform integrability of $Z_t$ will not hold.  As it turns out, the existence of a $Q$ such that $Q=Z_t \cdot P$ on every $\mathcal{F}_t$ is not guaranteed and depends on the properties of the underlying filtration $\mathcal{F}$.  In particular, the usual conditions on $\mathcal{F}$ may be incompatible with the existence of $Q$.  Theorem \ref{AbstractTransformationOfDriftContinuousLocalMartingale} has become such an important tool that this phenomenon is viewed as a deficiency of the usual conditions and has led some authors to propose that the usual conditions be replaced by a different extension procedure that is compatible with Theorem \ref{AbstractTransformationOfDriftContinuousLocalMartingale}.
+
+
+We examine conditions under which a positive local martingale is a martingale.  First, we note that every positive continuous local martingale has a logarithm that is a continuous local martingale.
+\begin{lem}\label{RealExponentialContinuousMartingale}A continuous process $Z > 0$ is a local martingale if and only if there exists a continuous local martingale $M$ such that
+\begin{align*}
+Z_t &= \mathcal{E}(M)_t \equiv e^{M_t - \frac{1}{2}[M]_t} \text{ for all $t \geq 0$}
+\end{align*}
+Such an $M$ is almost surely unique and satifies $[M,N]_t = \int_0^t Z^{-1}_s \, [Z,N]_s$ for any continuous local martingale $N$.
+\end{lem}
+\begin{proof}
+Suppose that $M$ is a continuous local martingale then apply It\^{o}'s Lemma to the continuous semimartingale $M - \frac{1}{2}[M]$ to see
+\begin{align*}
+\mathcal{E}(M)_t &= e^{M_0} + \int_0^t \mathcal{E}(M) \, d(M - \frac{1}{2}M) + \frac{1}{2} \int_0^t \mathcal{E}(M)_s \, d[M]_s =  e^{M_0} + \int_0^t \mathcal{E}(M) \, dM
+\end{align*}
+which shows that $\mathcal{E}(M)$ is a stochastic integral hence a continuous local martingale.
+
+If we assume that $Z>0$ is a continuous local martingale then again apply It\^{o}'s Lemma, Lemma \ref{ChainRuleStieltjes} and the defining property of stochastic integrals to see (TODO: We need the extension to functions defined on an open subset of $\reals^d$) to see
+\begin{align*}
+\log(Z)_t - \log(Z)_0 &= \int_0^t Z^{-1} \, dZ - \frac{1}{2} \int_0^t Z^{-2}_s \, d[Z]_s \\
+&= \int_0^t Z^{-1} \, dZ - \frac{1}{2} \int_0^t Z_s^{-1} d \int_0^s Z_s^{-1} d[Z]_s \\
+&= \int_0^t Z^{-1} dZ - \frac{1}{2} \int_0^t Z_s^{-1}  d [ \int Z^{-1} \, dZ, Z]_s \\
+&=  \int_0^t Z^{-1} dZ - \frac{1}{2}[ \int Z^{-1} \, dZ]_t
+\end{align*}
+so the result holds with $M_t = \int_0^t Z^{-1} \, dZ$.  From this expression for $M$ it follows that for any continuous local martingale $N$, we have $[M,N]_t = [\int Z^{-1} \, dZ, N]_t = \int_0^t Z^{-1}_s \, d[Z,N]_s$.  Uniqueness follows that if $M$ and $N$ are continuous local martingales with $M - \frac{1}{2} [M] = N - \frac{1}{2} [N]$ then we have $M -N = \frac{1}{2} [N] - \frac{1}{2} [M]$ is a continuous local martingale of finite variation hence is almost surely zero by Lemma \ref{ContinuousLocalMartingaleBoundedVariation}.
+\end{proof}
+
+As a result of Lemma \ref{RealExponentialContinuousMartingale} we look for conditions on a continuous local martingale $M$ that guarantee that $\mathcal{E}(M)$ is a continuous martingale.  The following is a commonly used condition.
+\begin{lem}[Novikov's Condition]\label{NovikovsCondition}Let $M$ be a continuous local martingale with $M_0 = 0$ such that $\expectation{e^{\frac{1}{2}[M]_t}} < \infty$ for all $t \geq 0$ then $\mathcal{E}(M)$ is a martingale.  If in addition $\expectation{e^{\frac{1}{2}[M]_\infty}} < \infty$ then $\mathcal{E}(M)$ is a uniformly integrable martingale.
+\end{lem}
+\begin{proof}
+TODO
+\end{proof}
+
+\begin{examp}Constructing an example of a Brownian motion with a drift term that can be removed with respect to a filtration generated by the Brownian motion but cannot be removed with respect to the completion of that filtration turns out not to be too hard. Let $B_t$ be a standard Brownian motion 
+\end{examp}
+
+The following theorm clarifies when a deterministic drift term can be removed from a Brownian motion.  Historically, this is one of the first results dealing with change of measure.  TODO: The result as specified in Kallenberg states that we use the augmented filtration; I'm not sure if the result is true under these circumstances (just consider the limit event $B_t/t \to \mu$ as in the example).  I suspect it is true if the filtration is that generated by $B$ (or restricting to an arbitrary finite interval $[0,T]$).
+\begin{thm}[Cameron-Martin Theorem]\label{CameronMartin}Let $B=(B_1, \dotsc, B_d)$ be a $d$-dimensional Brownian motion and let $\mathcal{F}_t$ be the complete filtration generated by $B$. Let $h: \reals_+ \to \reals^d$ be a continuous function with $h(0) = 0$ and let $P_h$ be distribution of $B + h$.  Then $P_0 \sim P_h$ on $\mathcal{F}_t$ for all $t \geq 0$ if and only $h(t) = \int_0^t f(s) \, ds$ for some $f \in L^2_{loc}$.  Moreover, in this case we have $P_h = \mathcal{E}(f \cdot B)_t \cdot P_0$ on $\mathcal{F}_t$.
+\end{thm}
+\begin{proof}
+First assume that $P_0 \sim P_h$ on $\mathcal{F}_t$ for all $t \geq 0$.  By Lemma \ref{LikelihoodRatioProcesses} we know that there exists a $P_0$-martingale $Z$ with $Z_t > 0$ and $P_h = Z_t \cdot P_0$ on $\mathcal{F}_t$ for all $t \geq 0$.  Since $Z$  is a Brownian martingale we may apply the Martingale Representation Theorem \ref{MartingaleRepresentationTheorem} to conclude that $Z$ is almost surely continuous and therefore by Lemma \ref{RealExponentialContinuousMartingale} we may write $Z = \mathcal{E}(M)$ for some continuous local $P_0$-martingale $M$.  Applying the Martingale Representation Theorem to $M$ we know there are almost surely unique processes $V^j \in L(B^j)$ such that $M = M_0 + \sum_{j=1}^d \int V^j \, dB^j$.  Note that $V^j \in L(B^j)$ implies $\int_0^t (V^j(s))^2 \, ds < \infty$ for all $t \geq 0$ and therefore we have $V^j \in L^2_{loc}$.
+TODO: Finish
 \end{proof}

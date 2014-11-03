@@ -167,6 +167,101 @@ which implies $w \in V$ providing a contradiction of $U \cap V =
 TODO:
 \end{proof}
 
+Separation axioms tells us that we have enough open sets in a topology
+to distinguish features of the the underlying set (e.g. distinguishing
+points from points or closed sets from closed sets).  Another way of
+thinking about the size of a topology is by considering the number of
+continuous functions that the topology allows.  The following theorem
+shows that in normal topological spaces we have enough continuous
+functions to approximate indicator functions of closed sets.
+
+\begin{thm}[Uryshon's Lemma]\label{UrysohnsLemma}Let $X$ be a
+  topological space, then following are equivalent
+\begin{itemize}
+\item[(i)]$X$ is normal
+\item[(ii)]Given a closed set $F \subset X$ and an open neighborhood
+  $F \subset U$ there is an open set $V$ such that $F \subset V
+  \subset \overline{V} \subset U$.
+\item[(iii)]Given disjoint closed sets $F$ and $G$ there exists a
+  continuous function $f : X \to [0,1]$ such that $f \equiv 1$ on $F$
+  and $f \equiv 0$ on $G$.
+\item[(iv)]Given a closed set $F$ with an open neighborhood $U$ there
+  is a continuous function $f$ such that $\characteristic{F}(x) \leq
+  f(x) \leq \characteristic{U}(x)$ for all $x \in X$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+(i) $\implies$ (ii): Since $U^c$ is and $F \cap U^c = \emptyset$ we
+use normality to find disjoint open sets $V$ and $O$ such that $F \subset V$
+and $U^c \subset O$.  Note that $\overline{V} \cap U^c = \emptyset$; if $x \in U^c$ then $O$ is an open neighborhood $x$ such that
+$O \cap V$ which implies $x \notin \overline{V}$. Therefore we have $F
+\subset V \subset \overline{V} \subset U$.
+
+(ii) $\implies$ (i): Let $F$ and $G$ be closed subsets of $X$, it
+follows that $G^c$ is open and $F \subset G^c$.  Find an open set $V$
+such that $F \subset V \subset \overline{V} \subset G^c$ and observe
+that if we define $U = \overline{V}^c$ then we have $V \cap U =
+\emptyset$ and $F \subset V$ and $G \subset U$.
+
+(iii) $\implies$ (iv): Construct continuous $f : X \to [0,1]$ such
+that $f$ equals $1$ on $F$ and $f$ equals 0 on $U^c$.  Clearly
+$\characteristic{F} \leq f$ and $\characteristic{U^c} \leq 1 -f$.  The
+latter is equivalent to $f \leq \characteristic{U}$ since
+$\characteristic{U^c} = 1 - \characteristic{U}$.
+
+(iv) $\implies$ (iii):  Note that $F \subset G^c$ and construct $f$
+such that $\characteristic{F} \leq f \leq \characteristic{G^c}$.  The
+first inequality implies that $f \equiv 1$ on $F$ while the second
+implies that $f \equiv 0$ on $(G^c)^c = G$.
+
+(iii) $\implies$ (i):  Given $F$ and $G$ and a continuous function $f
+: X \to [0,1]$ such that $F \subset f^{-1}(1)$ and $G \subset
+f^{-1}(0)$, simply define $U =  f^{-1}(2/3,1]$ and $V = f^{-1}[0,1/3)$
+and note that by continuity of $f$ both $U$ and $V$ are open.  
+
+(ii) $\implies$ (iv):  We construct $f$ as a limit of (discontinuous)
+indicator functions.  Suppose that $F$ and $U$ are given as in the
+hypothesis in (iv).  Define $F_1 = F$ and $U_0 = U$.  Using (ii) we
+find an open neighborhood $V$ such that $F_1 \subset V \subset
+\overline{V} \subset U$.  Define $F_{1/2} = \overline{V}$ and $U_{1/2}
+= V$ so we may rewrite our inclusions as 
+\begin{align*}
+F_1 &\subset U_{1/2} \subset F_{1/2} \subset U_{0}
+\end{align*}
+Now we iterate this construction.  To make it clear and to set the
+notation for the iteration we turn the crank one more time we apply
+(ii) to the pair $F_1 \subset U_{1/2}$ to construct an open set $U_{3/4}$
+and closed set $F_{3/4}$ and to the pair $F_{1/2} \subset U_{0}$ to
+construct an open set $U_{1/4}$
+and closed set $F_{1/4}$ yielding the inclusions
+\begin{align*}
+F_1 &\subset U_{3/4} \subset F_{3/4} \subset U_{1/2} \subset F_{1/2} \subset U_{1/4} \subset F_{1/4} \subset U_{0}
+\end{align*}
+Now we induct over the dyadic rationals $\mathcal{D} = \lbrace a/2^n
+\mid a \in \naturals \text{ and } n \in \naturals \rbrace \cap (0,1)$ so that we create a sequence
+of open and closed sets $U_q$ and $F_q$ satisfying
+\begin{itemize}
+\item[(i)] $U_q \subset F_q$ for all $q \in \mathcal{D}$
+\item[(i)] $F_r \subset U_q$ for all $r,q \in \mathcal{D}$ with $r > q$.
+\end{itemize}
+Now let $f(x) = \inf \lbrace q \mid x \in U_q \rbrace$.  
+TODO: Show that $f$ works...
+\end{proof}
+
+\begin{thm}[Tietze's Extension
+  Theorem]\label{TietzeExtensionTheorem}Let $F$ be a closed subset of
+  a normal topological space, let $a < b$ be real numbers and let $f :
+  F \to [a,b]$ be a continuous function.  There exists a continuous
+  function $g : X \to [a,b]$ such that $g\mid_F = f$.  If $f : F \to
+  \reals$ is a continuous function then there exists a continuous
+  function $g: X \to \reals$ such that $g \mid_F = f$.
+\end{thm}
+\begin{proof}
+We begin with the case of $f$ with bounded range.  We construct $g$
+via an iterative procedure.  
+TODO:
+\end{proof}
+
 \begin{defn}Given a topological space $(X, \mathcal{T})$ the Baire
   $\sigma$-algebra is smallest $\sigma$-algebra for which all bounded
   continuous functions are measurable.  Equivalently 
@@ -194,172 +289,6 @@ Lipschitz and therefore $f(x) \in C_b(S; \reals)$.  Because $F$ is
 closed we also know that $F = f^{-1}(\lbrace 0 \rbrace)$ and we are done.
 \end{proof}
 
-TODO: How much this stuff on regularity can be extended to outer
-measures????  I want to understand the overlap with the results in
-Evans and Gariepy.
-
-\begin{lem}\label{InnerRegularSetsSigmaAlgebra}Let $X$ be a Hausdorff topological space, $\mathcal{A}$
-  a $\sigma$-algebra on $X$ and $\mu$ a finite tight measure.  Then
-\begin{align*}
-\mathcal{R} &= \lbrace A \in \mathcal{A} \mid A \text { and } A^c
-\text{ are $\mu$-inner regular} \rbrace
-\end{align*}
-is a $\sigma$-algebra.  The same is true if the condition is replaced
-by sets that are $\mu$-closed inner regular (without the requirement
-that $\mu$ is tight).
-\end{lem}
-\begin{proof}
-By definition, $\mathcal{R}$ is closed under complement.  By
-assumption that $\mu$ is tight we have $X \in \mathcal{R}$ so all that
-needs to be shown is closure under countable union.
-
-Assume $A_1, A_2, \dots \in \mathcal{R}$ and let $\epsilon>0$ be
-given.  By finiteness of $\mu$, $\mu(\cup_{n=1}^\infty A_n) < \infty$ and
-continuity of measure (Lemma \ref{ContinuityOfMeasure}) there exists $M>0$ such that $\mu(\cup_{n=1}^M
-A_n) > \mu(\cup_{n=1}^\infty A_n) - \epsilon$.
- By assumption that $A_n \in \mathcal{R}$ and finiteness of $\mu$, for each
-$A_n$ there exists a compact $K_n$ such that $\mu(A_n \setminus K_n) <
-\frac{\epsilon}{2^n}$ and there exists compact $L_n$ such that $\mu(A_n^c \setminus L_n) <
-\frac{\epsilon}{2^n}$. Let
-\begin{align*}
-K &= \cup_{n=1}^M K_n \\
-L &= \cap_{n=1}^\infty L_n
-\end{align*}
-and note that both $K$ and $L$ are compact (in the latter case,
-because X is Hausdorff we know that each $L$ is closed hence the
-intersection is a closed subset of a compact set hence compact).
-Furthermore we can compute
-\begin{align*}
-\mu(\cup_{n=1}^\infty A_n \setminus K) &= \mu(\cup_{n=1}^\infty A_n
-\setminus \cup_{n=1}^M K_n)  \\
-&= \mu(\cup_{n=1}^M A_n
-\setminus \cup_{n=1}^M K_n)  + \mu(\cup_{n=1}^\infty A_n \setminus \cup_{n=1}^M A_n
-\setminus \cup_{n=1}^M K_n)\\
-&\leq \mu(\cup_{n=1}^M A_n \setminus K_n)  + \mu(\cup_{n=1}^\infty A_n
-\setminus \cup_{n=1}^M A_n)\\
-&\leq \sum_{n=1}^M(A_n \setminus K_n)  + \epsilon \\
-&\leq 3 \epsilon
-\end{align*}
-and
-\begin{align*}
-\mu((\cup_{n=1}^\infty A_n)^c \setminus L) &=\mu(\cap_{n=1}^\infty
-A_n^c \setminus \cap_{n=1}^\infty L_n) \\
- &=\mu(\cap_{n=1}^\infty
-A_n^c \cap \cup_{n=1}^\infty L_n^c) \\
- &=\mu(\cup_{n=1}^\infty \cap_{m=1}^\infty
-A_m^c \cap L_n^c) \\
- &\leq \mu(\cup_{n=1}^\infty 
-A_n^c \cap L_n^c) \\
- &\leq \sum_{n=1}^\infty (
-A_n^c \setminus L_n) \\
-&\leq 2 \epsilon
-\end{align*}
-
-TODO: The closed inner regular case...
-\end{proof}
-
-TODO:  In metric space, tightness is equivalent to inner regularity.
-Then Ulam's Theorem that finite measures on separable metric spaces
-are automatically inner regular.  Also finite measures on arbitrary
-metric spaces are closed inner regular as well as outer regular.
-
-\begin{lem}\label{FiniteMeasuresOnMetricSpacesAreClosedInnerRegular}
-Let $(S,d)$ be a metric space and $\mu$ be a Borel measure on $(S,
-\mathcal{B}(S))$, the $\mu$ is closed inner regular.  If in addition
-$\mu$ is a finite measure then it is outer regular.
-\end{lem}
-\begin{proof}
-Let $U$ be an open set in $S$.  Then $U^c$ is closed and the
-function $f(x) = d(x, U^c)$ is continuous.  If we define 
-\begin{align*}
-F_n &= f^{-1}([1/n, \infty))
-\end{align*}
-then each $F_n$ is closed, $F_1 \subset F_2 \subset \cdots$ and
-$\cup_{n=1}^\infty F_n = U$.  By continuity of measure (Lemma
-\ref{ContinuityOfMeasure}) we know that $\lim_{n \to \infty} \mu(F_n)
-= \mu(U)$.  So this shows that every open set is inner closed
-regular.  Furthermore it is trivial to note that $U^c$ is inner closed
-regular because it is closed.  
-
-By Lemma \ref{InnerRegularSetsSigmaAlgebra} we know know that 
-\begin{align*}
-\mathcal{B}(S) &\subset \mathcal{R} = \lbrace A \subset S \mid A
-\text{ and } A^c
-\text{ are inner closed regular}  \rbrace
-\end{align*}
-
-Outer regularity follows from taking complements and using the
-finiteness of $\mu$.
-\end{proof}
-
-If we add the criterion that the metric space is separable, then we
-can upgrade the regularity to inner regularity.
-\begin{lem}\label{SeparableInnerRegularTight}Let $(S,d)$ be a
-  separable metric space and $\mu$ be a finite Borel measure on $(S,
-\mathcal{B}(S))$, then $\mu$ is inner regular if and only if it is tight.
-\end{lem}
-\begin{proof}
-Clearly inner regularity implies tightness (which is just inner
-regularity of the set $S$), so it suffices to show
-that tightness implies inner regularity.
-
-Suppose that $\mu$ is a tight measure.  By Lemma
-\ref{InnerRegularSetsSigmaAlgebra} it suffices to show that both open
-and closed sets are inner regular.
-
-Pick $\epsilon >0$ and select $K \subset S$ a compact set such that $\mu(S \setminus K) < \frac{\epsilon}{2}$.
-By Lemma \ref{FiniteMeasuresOnMetricSpacesAreClosedInnerRegular} we
-know that for any Borel set $B$ there exists a closed set $F \subset
-B$ such that $\mu(B \setminus F) < \frac{\epsilon}{2}$.  Note that $F
-\cap K$ is compact.   We have
-\begin{align*}
-\mu(B \setminus (F \cap K)) &\leq \mu(B \cap F^c) + \mu(B \cap K^c) \leq \mu(B \cap F^c) + \mu(S \cap K^c) < \epsilon
-\end{align*}
-\end{proof}
-\begin{thm}[Ulam's Theorem]\label{UlamsTheorem}Let $(S,d)$ be a
-  complete separable metric space and $\mu$ be a finite Borel measure on $(S,
-\mathcal{B}(S))$, then $\mu$ is inner regular.
-\end{thm}
-\begin{proof}
-By Lemma \ref{SeparableInnerRegularTight} it suffices to show that $\mu$ is tight.  Pick
-$\epsilon > 0$ and we construct a compact set $K \subset S$ such that
-$\mu(S \setminus K) < \epsilon$.  Let
-$\overline{B}(x,r)$ denote the closed ball of radius $r$ around $x \in
-S$.  Pick
-a countable dense subset $x_1, x_2, \dotsc \in S$.  For each $m \in
-\naturals$, by density of $\lbrace x_n \rbrace$, we know $\cap_{n=1}^\infty \left ( S
-\setminus \cup_{j=1}^n \overline{B}(x_j, \frac{1}{m}) \right ) =
-\emptyset$, thus by
-continuity of measure (Lemma \ref{ContinuityOfMeasure}) there exists
-$N_m > 0$ such that $\mu(S
-\setminus \cup_{j=1}^n \overline{B}(x_j, \frac{1}{m}) < \frac{\epsilon}{2^m}$ for
-all $n \geq N_m$.
-If we define
-\begin{align*}
-K &= \cap_{m=1}^\infty \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})
-\end{align*}
-we claim that $K$ is compact.  Note that $K$ is easily seen to be
-closed as it is an intersection of a finite union of closed balls.
-Since $S$ is complete this implies that $K$ is also complete.  Also it
-is easy to see that $K$ is totally bounded since by construction we
-have demonstrated a cover by a finite number of balls of radius
-$\frac{1}{m}$ for each $m \in \naturals$.  So by Theorem
-\ref{CompactnessInMetricSpaces} we know $K$ is compact.
-
-To finish the result we claim $\mu(S \setminus K) < \epsilon$:
-\begin{align*}
-\mu(S \setminus K) 
-&= \mu(S \cap \left(\cap_{m=1}^\infty
-  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})\right)^c) \\
-&= \mu(S \cap \cup_{m=1}^\infty \left(
-  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})\right)^c) \\
-&= \mu(\cup_{m=1}^\infty S \setminus 
-  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})) \\
-&\leq \sum_{m=1}^\infty \mu( S \setminus 
-  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})) \\
-&< \epsilon
-\end{align*}
-\end{proof}
 
 \begin{lem}\label{SeparabilityOfBoundedUniformlyContinuous}Let $(S,d)$ be a separable metric space, then $X$ is
   homeomorphic to a subset of $[0,1]^{\integers_+}$ and furthermore
@@ -1874,8 +1803,792 @@ $f_n$ is not Cauchy with respect to $d$.
 
 \subsection{Riesz Representation}
 
+We saw in the Daniell-Stone Theorem \ref{DaniellStoneTheorem} that one
+may recapture a part of integration theory by considering certain
+linear functionals on a space of functions.  There is a analogue to
+that result that applies in the case of measure on topological
+spaces and allows one to bring the machinery of functional analysis to
+bear on problems of measure theory.  
+
+The Riesz representation theorem is actually a class of different
+theorems with different hypotheses made about the measures involved
+and the topology on the
+underlying space.  Here we concentrate the reasonable general case of
+Hausdorff locally compact spaces.  Other presentations may treat the
+slightly simpler cases in which either second countability,
+compactness or
+$\sigma$-compactness are added as hypotheses on the topological space.  More general
+presentations may drop the the assumption of local compactness and treat
+arbitrary Hausdorff spaces.  
+
+\begin{defn}A topological space $X$ is said to be \emph{locally
+    compact} if every point in $X$ has a compact neighborhood
+  (i.e. for every $x \in X$ there exists an open set $U$ and a compact
+  set $K$ such that $x \in U \subset K$).
+\end{defn}
+
+\begin{lem}\label{LocallyCompactEquivalences}Let $X$ be a Hausdorff topological space then the following
+  are equivalent
+\begin{itemize}
+\item[(i)]$X$ is locally compact
+\item[(ii)]Every point in $X$ has an open neighborhood with compact closure
+\item[(iii)]$X$ has a base of relatively compact neighborhoods
+\end{itemize}
+\end{lem}
+\begin{proof}
+(i) implies (ii):  If $X$ is Hausdorff then a closed subset of a compact set is compact
+and therefore if $X$ is locally compact and $x \in X$ we take $U$ open
+and $K$ compact such that $x \in U \subset K$ and then it follows that
+$\overline{U}$ is compact hence (ii) follows.  
+
+The fact that (ii) implies (i) is immediate.
+
+(ii) implies (iii): For each $x \in X$ pick a relatively compact
+neighborhood $U_x$, let $\mathcal{B}_x = \{ U \subset U_x \mid U
+\in \mathcal{T} \}$ and let $\mathcal{B} = \cup_{x \in X}
+\mathcal{B}_x$.  It is clear that $\mathcal{B}$ is a base for the
+topology $\mathcal{T}$.  Moreover for each $U
+\in \mathcal{B}$ there exists $x \in X$ such that $U \subset U_x$ with
+$\overline{U}_x$ compact and then since $X$ is Hausdorff we know that
+$\overline{U}$ is compact.
+
+(iii) implies (ii) is immediate.
+\end{proof}
+
+\begin{prop}\label{CompleteRegularityLCH}A locally compact Hausdorff space X is completely regular
+  (i.e. for every $x \in X$ and closed set $F \subset X$ such that $x
+  \notin F$ there is are disjoint open sets $U$ and $V$ such that $x
+  \in U$ and $F \subset V$).
+\end{prop}
+\begin{proof}
+Let $F$ be a closed set and pick $x \in X \setminus F$.  By Lemma
+\ref{LocallyCompactEquivalences} and the openness of $X \setminus F$
+we can find a relatively compact neighborhood $U_0$ of $x$ such that $x
+\in U_0 \subset X \setminus F$.  The set $\overline{U_0} \cap F$ is a closed subset of a compact
+set hence is compact.  For each $y \in \overline{U_0} \cap F$ by the
+Hausdorff property we may find open neighborhoods $x \in U_y$ and $y
+\in V_y$ such that $U_y \cap V_y = \emptyset$.  By compactness of
+$\overline{U} \cap F$ we get a finite subcover $V_{y_1}, \dotsc,
+V_{y_n}$ of $\overline{U_0} \cap F$.  Now define $U = U_0 \cap U_{y_1}
+\cap \dotsb U_{y_n}$.  This is an open neighborhood of $x$ and
+moreover $\overline{U} \cap F = \emptyset$.  Define $V = X \setminus \overline{U}$.
+\end{proof}
+
+\begin{defn}Let $X$ be a topological space, then a subset $A \subset
+  X$ is said to be \emph{bounded} if there exists a compact set $K$
+  such that 
+  $A \subset K \subset X$.  A subset $A \subset
+  X$ is said to be \emph{$\sigma$-bounded} if there exists a sequence
+  of compact sets $K_1, K_2, \dotsc$ such that
+$A \subset  \cup_{i=1}^\infty K_i \subset X$.
+\end{defn}
+
+\begin{prop}\label{SigmaBoundedEquivalence}A set $A$ is $\sigma$-bounded Borel set if and only if
+  there exist disjoint bounded Borel sets $A_1, A_2, \dotsc$ such that $A =
+  \cup_{i=1}^\infty A_i$.
+\end{prop}
+\begin{proof}
+Suppose $A$ is a $\sigma$-bounded Borel set and let $K_1, K_2, \dotsc$
+be compact sets such that $A \subset \cup_{i=1}^\infty K_i$.  Define
+$A_1= A \cap K_1$ and for $n>1$ let $A_n = A \cap K_n \setminus
+\cup_{j=1}^{n-1} A_j$  Trivially each $A_n$ is bounded (it is contained in
+$K_n$), $A = \cup_{i=1}^\infty A_i$ (by construction $A_n \subset A$
+and for any $x \in A$ we can find $n$ such that $x \in K_n$; it
+follows that $x \in A_n$).  Moreover by construction it is clear that
+the $A_n$ are Borel.  On the other hand, if $A =
+\cup_{i=1}^\infty A_i$ with $A_i$ bounded and Borel and disjoint, then take $K_i$ compact
+such that $A_i \subset K_i$ and it follows that $A \subset
+\cup_{i=1}^\infty K_i$.  $A$ is clearly Borel as it is a countable
+union of Borel sets.
+\end{proof}
+
+\begin{lem}\label{BoundedNeighborhoodsOfCompactSets}Let $K$ be a
+  compact set in a locally compact Hausdorff topological
+  space $X$, then there exists a bounded open set $U$ such that $K
+  \subset U$.  Moreover if $V$ is a open set such that $K \subset V$
+  then there is a bounded open set $U$ such that $K \subset U \subset
+  \overline{U} \subset V$.
+\end{lem}
+\begin{proof}
+By taking $V = X$ we see the second assertion implies the first so it
+suffices to prove the second assertion.  By complete regularity of $X$
+(Proposition \ref{CompleteRegularityLCH}) and local compactness of $X$
+for each $x \in K$ we may
+find a relatively compact open neighborhood $x \in U_x$ such that
+$\overline{U}_x \cap V^c = \emptyset$.  By compactness of $K$ we may
+take a finite subcover $U_{x_1}, \dotsc, U_{x_n}$.  Then
+$U = U_{x_1} \cup \dotsb \cup U_{x_n}$ is an open set with $K \subset
+U$ and
+$\overline{U} = \overline{U}_{x_1} \cup \dotsb \cup \overline{U}_{x_n}$ is
+a finite union of
+compact sets and is therefore compact.  Lastly $\overline{U} \cap
+V^c = (\overline{U}_{x_1} \cap V^c) \cup \dotsb \cup
+(\overline{U}_{x_n} \cap V^c) = \emptyset$ and therefore $K \subset U
+\subset \overline{U} \subset V$.
+\end{proof}
+
+For our purposes the reason for bringing up $\sigma$-bounded sets is
+the fact that the properties of inner and outer regularity are
+essentially equivalent on them.
+
+\begin{lem}\label{InnerOuterRegularityEquivalence}Let $X$ be a locally compact Hausdorff topological space and let $\mu$ be a measure
+  that is finite on compact sets.  Then $\mu$ is inner regular on
+  $\sigma$-bounded Borel sets if and only if $\mu$ is outer regular on
+  $\sigma$-bounded Borel sets.
+\end{lem}
+\begin{proof}
+Suppose that $\mu$ is inner regular on $\sigma$-bounded sets.  Let $A$
+be a bounded Borel set and suppose $\epsilon > 0$ is given.   First,
+note that $\overline{A}$ is compact so may apply
+Lemma \ref{BoundedNeighborhoodsOfCompactSets} to find a bounded
+open set $U$ such that $\overline{A} \subset U$.  Therefore
+$\overline{U} \setminus A$ is a bounded Borel set so by inner
+regularity we may find a
+compact set $K \subset \overline{U} \setminus A$ such that 
+\begin{align*}
+\mu(\overline{U} \setminus A) - \epsilon &< \mu(K) \leq \mu(\overline{U} \setminus A)
+\end{align*}
+Let $V = U \cap K^c$.  Then $V$ is an open set and $A \subset V$.
+Moreover,
+\begin{align*}
+\mu(V) &= \mu(U) - \mu(K) \leq \mu(\overline{U}) - \mu(\overline{U}
+\setminus A) + \epsilon = \mu(A) + \epsilon
+\end{align*}
+Since $\epsilon > 0$ was arbitrary we see that $\mu$ is outer regular
+on bounded Borel sets.  Now we need to extend to outer regularity on
+$\sigma$-bounded sets.  Let $A$ be a $\sigma$-bounded Borel set and
+let $\epsilon > 0$ be given.  Apply Lemma
+\ref{SigmaBoundedEquivalence}
+to find disjoint bounded Borel sets $A_i$ such that $A = \cup_{i=1}^\infty
+A_i$.  By the just proven outer regularity on bounded Borel sets we
+may find open sets $U_i$ such that $\mu(U_i) \leq \mu(A_i) +
+\epsilon/2^i$.  Then clearly $A \subset U$, $U$ is open and 
+\begin{align*}
+\mu(U) &\leq \sum_{i=1}^\infty \mu(U_i) \leq \epsilon + \sum_{i=1}^\infty
+\mu(A_i)  = \epsilon + \mu(A)
+\end{align*}
+Again, as $\epsilon > 0$ is arbitrary we see that $\mu$ is outer
+regular on $\sigma$-bounded Borel sets.
+
+Now we assume that $\mu$ is outer regular on $\sigma$-bounded Borel
+sets.  As before we start with the bounded case.  Let $A$ be a bounded
+Borel set and suppose that $\epsilon > 0$ is given.  Let $L$ be a
+compact set such that $A \subset L$.  Since $L \setminus A$ is also a
+bounded Borel set, we may apply outer regularity to find an open set
+$U$ such that $L \setminus A \subset U$ and 
+\begin{align*}
+\mu(U) - \epsilon < \mu(L \setminus A) \leq \mu(U)
+\end{align*}
+Define $K = L \setminus U = L \cap U^c$. As $K$ is a closed subset of the compact set $L$
+it is compact.  Also
+\begin{align*}
+\mu(K) &= \mu(L) - \mu(L \cap U) \geq \mu(L) - \mu(U) = \mu(A) + \mu(L
+\setminus A) - \mu(U) > \mu(A) - \epsilon
+\end{align*}
+As $\epsilon >0$ was arbitrary we see that $\mu$ is inner regular on
+bounded Borel sets.  
+
+Lastly we extend inner regularity to
+$\sigma$-bounded Borel sets.  Let $A$ be $\sigma$-bounded Borel and
+write $A = \cup_{i=1}^\infty A_i$ with the $A_i$ disjoint and each
+$A_i$ bounded Borel (Lemma \ref{SigmaBoundedEquivalence}).  Let
+$\epsilon > 0$ be given.  As each
+$A_i$ is bounded and $\mu$ is finite on compact sets it follows that
+$\mu(A_i) < \infty$ for all $i \in \naturals$.  Now by the just proven
+inner regularity on bounded Borel sets we find $L_i \subset A_i$ with
+$L_i$ compact and
+\begin{align*}
+\mu(A_i) - \epsilon/2^i < \mu(L_i) \leq \mu(A_i)
+\end{align*}
+The disjointness of the $A_i$ implies that the $L_i$ are disjoint as well.
+Let $K_n = L_1 \cup \dotsb \cup L_n$ and note that
+\begin{align*}
+\mu(K_n) &= \sum_{i=1}^n \mu(L_i) > \sum_{i=1}^n \left( \mu(A_i) -
+\epsilon/2^i \right ) > \sum_{i=1}^n \mu(A_i) - \epsilon
+\end{align*}
+Now take the limit as $n \to \infty$ to conclude that 
+\begin{align*}
+\sup \lbrace \mu(K) \mid K \subset A \text{ and $K$ is compact}
+\rbrace &\geq \sup_n \mu(K_n) \geq \mu(A) - \epsilon
+\end{align*}
+and as $\epsilon > 0$ was arbitrary inner regularity of $\mu$ on
+$\sigma$-bounded Borel sets is proven.
+\end{proof}
+
+\begin{defn}Let $X$ be a topological space the $C_c(X)$ is the set of
+  all continuous function $f : X \to \reals$ with compact support
+  (i.e. $supp(f) = \overline{\{x \in X \mid f(x) \neq 0 \}}$ is
+  compact).
+\end{defn}
+
+\begin{defn}Let $X$ be a topological space the $C_0(X)$ is the set of
+  all continuous function $f : X \to \reals$ which vanish at infinity
+  in the sense that for every $\lambda >0$ the set $\{ x \in X \mid
+  \abs{f(x)} \geq \lambda \}$ is  compact.
+\end{defn}
+
+\begin{prop}\label{BanachSpaceOfFunctionsVanishingAtInfinity}If $X$ is a topological space, then  for each $f \in C_0(X)$
+  define $\norm{f} = \sup_{x \in X} \abs{f(x)}$ then $\norm{f}$ is a
+  norm on $C_0(X)$ and $C_0(X)$ is a Banach space.  Furthermore
+  $C_c(X)$ is dense in $C_0(X)$.
+\end{prop}
+\begin{proof}
+TODO:
+\end{proof}
+
+The difficult part of the Riesz-Markov Theorem is the construction of
+a Radon measure that corresponds to a positive functional.  The
+tradition is to break that construction into two pieces: first the
+construction of a set function on a smaller class of sets than the
+full $\sigma$-algebra  and secondly the extension of that set function
+to a full blown Radon measure. In many developments the set function
+is defined on the compact subsets of the  locally compact
+Hausdorff space $X$ and are called \emph{contents}.  Following
+Arveson, we choose a set function is one
+that is defined on just the open subsets of $X$.
+
+The description of the desireable properties of the set function and
+the process of extending the set function to a Radon measure is dealt with in the following Lemma.
+\begin{lem}\label{ExtensionToRadonMeasure}Let $X$ be a locally compact Hausdorff space and let $m$ be
+  a function from the open set of $X$ to $[0,\infty]$ satisfying:
+\begin{itemize}
+\item[(i)]$m(U) < \infty$ if $\overline{U}$ is compact
+\item[(ii)]if $U \subset V$ then $m(U) \leq m(V)$
+\item[(iii)]$m(\cup_{i=1}^\infty U_i) \leq \sum_{i=1}^\infty m(U_i)$
+  for all open sets $U_1, U_2, \dotsc$.
+\item[(iv)]if $U \cap V = \emptyset$ then $m(U \cup V) = m(U) + m(V)$
+\item[(v)]$m(U) = \sup \lbrace m(V) \mid V \text{ is open, } \overline{V} \subset U \text{ and }
+  \overline{V} \text{ is compact} \rbrace$
+\end{itemize}
+then there is a unique Radon measure $\mu$ such that $\mu(U) = m(U)$
+for all open sets $U$.  Moreover every Radon measure satisfies
+properties (i) through (v) when restricted to the open subsets of $X$.
+\end{lem}
+\begin{proof}
+First we show that a Radon measure satisfies properties (i) through
+(v) on the open sets of $X$.  In fact, properties (ii), (iii) and (iv)
+follow for all measures and (i) follows from the fact that $\mu$ is
+finite on compact subsets and monotonicity of measure.  Property (v)
+requires a bit more justification.  If we let $U$ is an open set and
+$\epsilon > 0$ is given then by inner regularity of $\mu$ we may find
+a compact set $K$ such that $K \subset U$ and $\mu(U) \geq \mu(K) > \mu(U) -
+\epsilon$.  By Lemma \ref{BoundedNeighborhoodsOfCompactSets} we may
+find a relatively compact open set $V$ such that $K \subset V \subset
+\overline{V} \subset U$.  Then by monotonicity we have $\mu(U) \geq \mu(V) > \mu(U) -
+\epsilon$ and since $\epsilon$ was arbitrary (v) follows.
+
+Next we prove uniqueness of the extension of $m$ to a Radon measure
+$\mu$.  Since a Radon measure is inner regular on all Borel sets Lemma
+\ref{InnerOuterRegularityEquivalence} implies that any extension $\mu$
+is outer regular on all $\sigma$-bounded Borel sets.  Since the values
+of $\mu$ are determined on all open sets this implies that the values
+of $\mu$ are determined on all $\sigma$-bounded Borel sets; in
+particular the values of $\mu$ are determined on all compact
+sets. Clearly a Radon measure is determined uniquely by its values on
+compact sets.
+
+Now we turn to proving existence of the extension $\mu$.  The proof
+goes in a few steps.  First we define an outer measure from $m$ and
+observe that Borel sets are measurable with respect to it; though the
+Caratheordory restriction of the outer
+measure is outer regular it is not necessarily inner regular.  The
+second step is to 
+modify the Caratheodory restriction to make it inner regular.  
+
+We begin by defining the outer measure in a standard way.  Let $A$ be
+an arbitrary subset of $X$ and define
+\begin{align*}
+\mu^*(A) &= \inf \lbrace m(U) \mid A \subset U \text{ and $U$
+  is open} \rbrace
+\end{align*}
+Note that $\mu^*(U) = m(U)$ for all open sets.
+
+Claim : $\mu^*$ is an outer measure
+
+Note that because the emptyset is relatively compact we know from (i)
+that $m(\emptyset) < \infty$ and thus from (iv) we see that
+$m(\emptyset) = 2m(\emptyset)$.  Thus $m(\emptyset) = 0$ and it
+follows that $\mu^*(\emptyset) = 0$.  If $A \subset B$ then it is
+trival that 
+\begin{align*}
+\lbrace m(U) \mid A \subset U \text{ and $U$
+  is open } \rbrace &\subset \lbrace m(U) \mid B \subset U \text{ and $U$
+  is open } \rbrace
+\end{align*}
+which implies $\mu^*(A) \leq \mu^*(B)$.  If we let $A_1, A_2, \dotsc$
+be given and define $A = \cup_{i=1}^\infty A_i$.  If any
+$\mu^*(A_i) = \infty$ it follows that $\mu(A) \leq \sum_{i=1}^\infty
+\mu^*(A_i) = \infty$.  If on the other hand every $\mu^*(A_i) <
+\infty$ then let $\epsilon > 0$ be given and find an open set $U_i
+\subset A_i$ such that $m(U_i) \leq \mu^*(A_i) + \epsilon / 2^i$.
+Clearly $\cup_{i=1}^\infty U_i$ is an open subset of $A$ and it
+follows from (iii) and the definition of $\mu^*$ that
+\begin{align*}
+\mu^*(A) &\leq m(\cup_{i=1}^\infty U_i) \leq \sum_{i=1}^\infty m(U_i)
+\leq \sum_{i=1}^\infty m(A_i) + \epsilon
+\end{align*}
+Since $\epsilon > 0$ is arbitrary we see that $\mu^*$ is countably
+subadditive and is therefore proven to be an outer measure.
+
+Claim: Borel sets are $\mu^*$-measurable.
+
+The $\mu^*$-measurable sets form a $\sigma$-algebra by Lemma
+\ref{CaratheodoryRestriction} and therefore it suffices to show that
+open sets are $\mu^*$-measurable.  Let $U$ be open subset and $A$ be an
+arbitrary subset of $X$, by subadditivity of $\mu^*$ we only have to
+show the inequality 
+\begin{align*}
+\mu^*(A) &\geq \mu^*(A \cap U) + \mu^*(A \cap U^c)
+\end{align*}
+Obviously we may assume that $\mu^*(A) < \infty$ since otherwise the
+inequality is trivially satisfied.  
+We first assume that $A$ is an open set.  Since $\mu^*$ and $m$ agree
+on open sets we have to show
+\begin{align*}
+m(A) &\geq m(A \cap U) + \mu^*(A \cap U^c)
+\end{align*}
+Let $\epsilon > 0$ be given and use property (v) so we can find an relatively compact open set $V$ such
+that $\overline{V} \subset A \cap U$ and $m(V) \geq m(A \cap U) -
+\epsilon$.  Then $A \cap \overline{V}^c$ is an open set containing $A
+\cap U^c$ disjoint from $V$ and it follows from (ii), (iv)  and the
+definition of $\mu^*$ that
+\begin{align*}
+m(A) &\geq m(V \cup A \cap \overline{V}^c) = m(V) + m(A \cap
+\overline{V}^c) \geq m(A \cap U) - \epsilon + \mu^*(A \cap U^c) 
+\end{align*}
+As $\epsilon > 0$ was arbitrary we are done with the case of open
+sets $A$.  Now suppose that $A$ is an arbitrary set with $\mu^*(A) <
+\infty$ and let $\epsilon
+> 0$ be given.  We find an open set $V$ such that $A \subset V$ and
+$m(V) \leq \mu^*(A) + \epsilon$.  From what we have just proven of
+open sets and the monotonicity of $\mu^*$
+\begin{align*}
+\mu^*(A) + \epsilon &\geq \mu^*(V) \geq \mu^*(V \cap U) + \mu^*(V \cap
+U^c) \geq \mu^*(A \cap U) + \mu^*(A \cap U^c) 
+\end{align*}
+The claim follows by observing that $\epsilon >0$ was arbitrary.
+
+Now by Caratheodory Restriction (Lemma \ref{CaratheodoryRestriction}) we may restrict $\mu^*$ to a Borel measure
+$\overline{\mu}$ that is outer regular by definition and that
+satisfies $\overline{\mu}(U) = m(U)$ for all open sets $U$.  Moreover
+$\overline{\mu}(K) < \infty$ for all compact sets since by Lemma
+\ref{BoundedNeighborhoodsOfCompactSets} we may find a relatively
+compact open neighborhood $U$ such that $K \subset U$; monotonicity
+and (i) tell us that 
+\begin{align*}
+\overline{\mu}(K) \leq \overline{\mu}(U) = m(U) <
+\infty
+\end{align*}  
+Since $\overline{\mu}$ is outer regular on all Borel sets \emph{a fortiori}
+it is outer regular on all $\sigma$-bounded Borel sets.  By  Lemma
+\ref{InnerOuterRegularityEquivalence} it follows that
+$\overline{\mu}$ is inner regular on all $\sigma$-bounded Borel sets.
+Note that if we assume that $X$ is $\sigma$-compact (i.e. all Borel
+sets are $\sigma$-bounded) then we already know that $\overline{\mu}$
+is a Radon measure.  In the general case it is not necessarily true
+and we must make a further modification to $\overline{\mu}$ to make it
+inner regular.
+
+For an arbitrary Borel set $A$ we define
+\begin{align*}
+\mu(A) &= \sup \lbrace \overline{\mu}(B) \mid B \subset A \text{ and
+  $B$ is a $\sigma$-bounded Borel set } \rbrace
+\end{align*}
+Clearly, $\mu(\emptyset) = \overline{\mu}(\emptyset) = 0$.
+It is also immediate from the definition that $\mu(A) = \overline{\mu}(A)$
+for all $\sigma$-bounded Borel sets $A$ and therefore that $\mu(U) =
+m(U)$ for all $\sigma$-bounded open sets $U$.  In fact more is true.
+
+Claim: $\mu(U) = m(U)$ for all open sets $U$.
+
+Let $V$ be a relatively compact open set with $\overline{V} \subset U$.  We have
+\begin{align*}
+m(U) &= \overline{\mu}(U) \geq \mu(U) \geq \mu(V) = m(V)
+\end{align*}
+Now we take the supremum over all such $V$ and by property (v) 
+\begin{align*}
+m(U) &\geq \mu(U) \sup \lbrace m(V) \mid V \text{ is relatively
+  compact and $\overline{V} \subset U$} \rbrace = m(U)
+\end{align*}
+and therefore $\mu(U) = m(U)$.
+
+Claim: $\mu$ is a measure.
+
+To see that $\mu$ is a measure it remains to show countable
+additivity.  Let $A_1, A_2, \dotsc$ be disjoint Borel sets.  First we
+show countable subadditivity.  Let $B$ be a $\sigma$-bounded Borel
+subset of $\cup_{i=1}^\infty A_i$ and define $B_i = B \cap A_i$.
+Clearly the $B_i$ are disjoint $\sigma$-bounded Borel measures, thus
+using the countable additivity of $\overline{\mu}$ we get
+\begin{align*}
+\overline{\mu{B}} &= \sum_{i=1}^\infty \overline{\mu}(B_i) \leq \sum_{i=1}^\infty \mu(A_i)
+\end{align*}
+Taking the supremum over all such $B$ subadditivity follows.
+
+We need to show the opposite inequality.  Suppose that some $\mu(A_j) = \infty$ for some $j$.  Then we may find
+a sequence of $\sigma$-bounded Borel sets $B_n$ such that
+$\overline{\mu}(B_n) \geq n$.  Since $B_n \subset \cup_{i=1}^\infty
+A_i$ we also see that $\mu(\cup_{i=1}^\infty A_i) = \infty$.  Thus we
+may now assume that $\mu(A_i) < \infty$ for all $i$.  Let $\epsilon >
+0$ be given and for each $i$ find a $\sigma$-bounded Borel set $B_i$
+such that $B_i \subset A_i$ and $\overline{\mu}(B_i) \geq \mu(A_i) -
+\epsilon/2^i$.  For each $n$ define $C_n = \cup_{j=1}^n B_j$ and note
+that $C_n$ is a $\sigma$-bounded Borel set such that $C_n \subset
+\cup_{i=1}^\infty A_i$.  Also, for every $n$, 
+\begin{align*}
+\mu(\cup_{i=1}^\infty A_i) \geq \mu(C_n) = \overline{\mu}(C_n) =
+\sum_{j=1}^n \overline{\mu}(B_j) \geq \sum_{j=1}^n \mu(A_j)  -
+\epsilon/2^j \geq \sum_{j=1}^n \mu(A_j)  -\epsilon
+\end{align*}
+Now take the limit as $n \to \infty$ and using the fact that $\epsilon
+> 0$ was arbitrary, we get $\sum_{j=1}^\infty \mu(A_j) \leq \mu(\cup_{j=1}^\infty A_j)$.
+
+Claim: $\mu$ is a Radon measure.
+
+The fact that $\mu(K) < \infty$ for all compact sets follows from the
+fact that $\mu$ and $\overline{\mu}$ agree on $\sigma$-bounded sets
+and the fact that $\overline{\mu}(K) < \infty$.  To see inner
+regularity, let $A$ be a Borel set and let $\epsilon > 0$ be given.
+By the definition of $\mu$ we find a $\sigma$-bounded Borel set $B
+\subset A$ such that $\overline{\mu}(B) \geq \mu(A) - \epsilon/2$.  Then by
+the fact that $\overline{\mu}$ is inner regular on $\sigma$-bounded
+sets we find a compact set $K$ such that $\overline{\mu}(K) \geq
+\overline{\mu}(B) - \epsilon/2$.  Combining the two inequalities and
+using the fact that $\mu$ and $\overline{\mu}$ agree on compact sets
+we get $\mu(K) \geq \mu(A) - \epsilon$.  Since $\epsilon > 0$ was
+arbitrary we are done.
+\end{proof}
+
+Given a Radon measure on a locally compact Hausdorff space, all
+compactly supported continuous functions are integrable: $\int \abs{f}
+\, d\mu \leq \norm{f}_\infty \mu(supp(f)) < \infty$.  Thus such a
+measure yields a linear functional on $C_c(X)$.  Such functionals
+share another simple property.
+\begin{defn}A linear functional $\Lambda$ on $C_c(X)$ is said to be
+  \emph{positive} if $f \geq 0$ implies $\Lambda(f) \geq 0$.
+\end{defn}
+
+It is clear that the linear functional defined by integration with
+respect to a Radon measure is positive.  The Riesz-Markov Theorem
+tells us that the positive linear functionals are precisely those
+generated by integration with respect to a Radon measure.  To prove
+the result we will need to figure out how to define a measure from a
+positive linear functional.  As a warm up let's first answer that
+question in the case of integration with respect to a Radon measure.
+
+\begin{lem}\label{RieszMarkovUniquenessOnOpen}Let $X$ be a locally compact Hausdorff space and let $\mu$
+  be a Radon measure on $X$, then for every open set $U$ we have
+\begin{align*}
+\mu(U) &= \sup \lbrace \int f \, d\mu \mid 0 \leq f \leq 1, f \in
+C_c(X), supp(f) \subset U \rbrace
+\end{align*}
+\end{lem}
+\begin{proof}
+For the inequality $\geq$, suppose that $f \in C_c(X)$ satisfies $0
+\leq f \leq 1$ and $supp(f) \subset U$, then observe the hypotheses
+imply that $f \leq \characteristic{U}$ so that
+\begin{align*}
+\int f(x) \, d\mu(x) &\leq \int \characteristic{U}(x) \, d\mu(x) = \mu(U)
+\end{align*}
+and the inequality follows by taking the supremum over all such $f$.
+
+For the inequality $\leq$ we leverage the inner regularity of $\mu$.
+Let $K \subset U$ be a compact set.  By Lemma
+\ref{BoundedNeighborhoodsOfCompactSets} we find an relatively compact
+open set $V$ with $K \subset V \subset \overline{V} \subset U$.  Since
+$\overline{V}$ is a compact Hausdorff space, it is normal and we may
+apply the Tietze Extension Theorem \ref{TietzeExtensionTheorem} to
+find a continuous function $g : \overline{V} \to [0,1]$ such that $g
+\equiv 1$ on $K$.  Applying Urysohn's Lemma \ref{UrysohnsLemma} we
+construct a continuous function $h : X \to [0,1]$ such that $h = 1$ on
+$K$ and $h=0$ on $V^c$.  We define
+\begin{align*}
+f(x) &= \begin{cases}
+h(x) g(x) & \text{if $x \in \overline{V}$} \\
+0 & \text{if $x \notin \overline{V}$}
+\end{cases}
+\end{align*}
+By the corresponding properties of $g$ and $h$, it is clear that $0 \leq f \leq 1$ and that $f=1$ on $K$.  We claim that $f$ is continuous on all of $X$.  Since $h$ restricts to a continuous function
+on $\overline{V}$ it is clear that the restriction of $f$ to
+$\overline{V}$ is continuous.  Let $O \subset \reals$ be an open
+set.  If $0 \notin O$ then it follows that $f^{-1}(O) \subset V$ and
+is therefore open by the continuity of $f$ restricted to $V$.  If on
+the other hand, $0 \in O$ then $f^{-1}(O) \cap \overline{V}$ is open
+in $\overline{V}$ hence is of the form $Z \cap \overline{V}$ for some
+open subset $Z \subset X$.  Because $0 \in O$ if follows that $Z
+\subset f^{-1}(O)$ and therefore by the definition of $f$ we we may
+write $f^{-1}(O) = Z \cup \overline{V}^c$ which is an open set.
+
+TODO: This is a locally compact Hausdorff version of Tietze, factor it
+out into a separate result.
+
+With the extension $f$ in hand we see that 
+\begin{align*}
+\mu(K) &\leq \int f(x) \, d\mu(x) \leq \sup \lbrace \int f \, d\mu \mid 0 \leq f \leq 1, f \in
+C_c(X), supp(f) \subset U \rbrace
+\end{align*}
+Now taking the supremum over all compact subsets $K \subset U$ and
+using the inner regularity of $\mu$ the result follows.
+\end{proof}
+
+
+Before we state an prove the Riesz-Markov theorem we need the
+existence of finite partitions of unity on compact sets in an LCH: a standard
+bit of general topology.
+
+\begin{lem}\label{PartitionOfUnity}Let $X$ be a locally compact Hausdorff space, $K$ be a
+  compact subset of $X$ and $\lbrace U_\alpha \rbrace$ an open
+  covering of $K$.  There exists a finite subset $\alpha_1, \dotsc,
+  \alpha_n$ and continuous functions with compact support $f_{\alpha_1}, \dotsc,
+  f_{\alpha_n}$ such that $supp(f_{\alpha_j}) \subset U_{\alpha_j}$
+  and $f_{\alpha_1} + \dotsb + f_{\alpha_n} = 1$ on $K$.
+\end{lem}
+\begin{proof}
+Pick an $x \in K$, pick an $U_{\alpha_x}$ such that $x \in U_{\alpha_x}$ and
+using complete regularity of $X$, construct a continuous function
+$g_x$ from $X$ to $[0,1]$ such that $g_x(x) = 1$ and
+$g_x \equiv 0$ on $U_{\alpha_x}^c$.  Thus $g_x^{-1}(0,1] \subset
+U_{\alpha_x}$ and the $g_x^{-1}(0,1]$ form an open cover of $K$.  By
+compactness of $K$ we extract a finite subcover $g_{x_1}^{-1}(0,1],
+\dotsc, g_{x_n}^{-1}(0,1]$.  If we clean up notation by denoting $U_{\alpha_{x_j}} =
+U_{\alpha_j}$ and $g_{\alpha_j} = g_{\alpha_{x_j}}$, it follows that
+$U_{\alpha_1}, \dotsc, U_{\alpha_n}$ is an open cover of $K$ and $g =
+\sum_{j=1}^n g_{\alpha_j}$ is strictly positive on $K$.  Moreover by
+compactness of $K$ we know that $g$ has a minimum value $C > 0$ on
+$K$.  Define $h = g \vee C$ so that $h$ is continuous, $h = g$ on $K$ and $h
+\geq C > 0$ everywhere on $X$.  By continuity and strict positivity of
+$h$ we can define $f_{\alpha_j} = g_{\alpha_j}/h$ so that
+$f_{\alpha_j}$ is continuous and moreover $f_{\alpha_1} + \dotsb +
+f_{\alpha_n} = g/h = 1$ on $K$.
+\end{proof}
+
+\begin{thm}[Riesz-Markov Theorem]\label{RieszMarkov}Let $X$ be a
+  locally compact Hausdorff space and let $\Lambda : C_c(X) \to
+  \reals$ be a positive linear functional then there exists a unique
+  Radon measure $\mu$ such that $\Lambda(f) = \int f \, d\mu$ for all
+  $f \in C_c(X)$.
+\end{thm}
+\begin{proof}
+The uniqueness part of the result is straightforward.  By Lemma
+\ref{RieszMarkovUniquenessOnOpen} we know that the values of $\mu$ on open sets
+are determined by $\Lambda$.  By Lemma
+\ref{InnerOuterRegularityEquivalence} we conclude that the values of
+$\mu$ on $\sigma$-bounded Borel sets are determined by $\Lambda$, in
+particular the values on compact sets are determined by $\Lambda$.
+The inner regularity of $\mu$ implies that the values on all Borel
+sets are determined by $\Lambda$.
+
+For existence we follow the lead of Lemma
+\ref{RieszMarkovUniquenessOnOpen} and define the set function on the
+open sets of $X$
+\begin{align*}
+m(U) &=  \sup \lbrace \Lambda( f ) \mid 0 \leq f \leq 1, f \in C_c(X), supp(f) \subset U \rbrace
+\end{align*}
+We proceed by showing that $m(U)$ satisfies properties (i) through (v)
+from Lemma \ref{ExtensionToRadonMeasure} and that if $\mu$ is the
+Radon measure constructed by that result that we indeed have
+$\Lambda(f) = \int f \, d\mu$.
+
+Claim: $m$ satisfies (i)
+
+Let $U$ be a relatively compact open set.  By Lemma
+\ref{BoundedNeighborhoodsOfCompactSets} we can find another relatively
+compact open set $V$ such that $\overline{U} \subset V$.  By the
+Tietze Extension Theorem argument of Lemma \ref{ExtensionToRadonMeasure} we can find a continuous function $g: X \to
+[0,1]$ such that $g = 1$ on $\overline{U}$ and $g = 0$ on $V^c$.
+Since $g \in C_c(X)$ we have $\Lambda(g) < \infty$.  Now suppose that
+$f \in C_c(X)$ satisfies $0 \leq f \leq 1$ and  $f \in C_c(X), supp(f)
+\subset U$.  It follows that $0 \leq f \leq g$ and linearity and
+positivity of $\Lambda$ we know that $\Lambda(f) \leq \Lambda(g)$.
+Taking the supremum over all such $f$ we get
+\begin{align*}
+m(U) &= \sup \lbrace \Lambda( f ) \mid 0 \leq f \leq 1, f \in C_c(X),
+supp(f) \subset U \rbrace \leq \Lambda(g) < \infty
+\end{align*}
+
+Claim: $m$ satsifies (ii)
+
+This is immediate since $U \subset V$ implies 
+\begin{align*}
+\lbrace \Lambda( f ) \mid 0 \leq f \leq 1, f \in C_c(X),
+supp(f) \subset U \rbrace \subset \lbrace \Lambda( f ) \mid 0 \leq f \leq 1, f \in C_c(X),
+supp(f) \subset V \rbrace
+\end{align*}
+
+Claim: $m$ satisfies (iii)
+
+Let $U_1, U_2, \dotsc$ be open sets and let $f \in C_c(X)$ satisfy $0
+\leq f \leq 1$ and $supp(f) \subset \cup_{n=1}^\infty U_n$.  By
+compactness of $supp(f)$ and Lemma
+\ref{PartitionOfUnity} we may find an $N$ and continuous functions
+$g_i$ for $i=1, \dotsc, N$ such that $0 \leq g_i \leq 1$, $supp(g_i) \subset U_i$ and
+$\sum_{i=1}^N g_i = 1$ on $supp(f)$ and therefore $f = f \cdot
+\sum_{i=1}^N g_i$.  It also follows that $0 \leq f g_i
+\leq 1$ and $supp(f g_i) \subset U_i$ for $i=1, \dotsc, N$ and thus
+\begin{align*}
+\Lambda(f) &= \sum_{i=1}^N \Lambda( f g_i) \leq \sum_{i=1}^N m(U_i)
+\leq \sum_{i=1}^\infty m(U_i)
+\end{align*}
+Now we take the supremum over all such $f$ to conclude that
+$m(\cup_{i=1}^\infty U_i) \leq \sum_{i=1}^\infty m(U_i)$.
+
+Claim: $m$ satisfies (iv)
+
+Suppose $U$ and $V$ are disjoint open sets.  We only need to show that
+$m(U \cup V) \geq m(U) + m(V)$ since the opposite inequality follows
+from (iii).  Let $f, g \in C_c(X)$ such that $0 \leq f,g \leq 1$,
+$supp(f) \subset U$ and $supp(g) \subset V$.  By disjointness of $U$
+and $V$ it follows that $f+g \in C_c(X)$, $0 \leq f+g \leq 1$ and
+$supp(f+g) \subset supp(f) \cup supp(g) \subset U \cup V$.  Therefore
+\begin{align*}
+\Lambda(f) + \Lambda(g) &= \Lambda(f+g) \leq m(U \cup V)
+\end{align*}
+Now take the supremum over all $f$ and $g$ to get the result.
+
+Claim: $m$ satisfies (v)
+
+Let $U$ be an open set and let $f \in C_c(X)$ such that $0 \leq f \leq
+1$ and $supp(f) \subset U$.  By compactness of $supp(f)$ and Lemma
+\ref{BoundedNeighborhoodsOfCompactSets} we may find a relatively
+compact open set $V$ such that 
+$supp(f) \subset V \subset \overline{V} \subset U$.  
+It follows that 
+\begin{align*}
+\Lambda(f) &\leq m(V) \leq \sup \lbrace m(V) \mid V \text{ is open, } \overline{V} \subset U \text{ and }
+  \overline{V} \text{ is compact} \rbrace
+\end{align*}
+Now take the supremum over all such $f$.
+
+We may now apply Lemma \ref{ExtensionToRadonMeasure} to construct a
+Radon measure $\mu$ such that $\mu(U) = m(U)$.  We need to show that
+for every $f \in C_c(X)$ we have $\Lambda(f) = \int f \, d\mu$. By
+linearity we know that $\Lambda(0) = \int 0 \, d\mu = 0$ so we may
+assume that $f \neq 0$.  We may write $f = f_+
+- f_-$ with $f_+ = f \vee 0 \in C_c(X)$ and $f_- = (-f) \vee 0 \in
+C_c(X)$.  Since both $\Lambda$ and the integral are linear it suffices
+to show the result for $f \geq 0$.  Since $f$ is continuous with
+compact support, it follows that $f$ is bounded and since $f \neq 0$
+we have $0 < \norm{f}_\infty < \infty$.  Again, by linearity of
+$\Lambda$ and integration it suffices to prove the result of
+$f/\norm{f}_\infty$ and thus we may assume that $0 \leq f \leq 1$.
+
+We proceed by constructing a generalized upper and lower sum
+approximation to the integral of $f$.  Once again apply Lemma
+\ref{BoundedNeighborhoodsOfCompactSets} to find a relatively compact
+open neighborhood $U_0$ with $supp(f) \subset U_0$.  Let $\epsilon >
+0$ be given and choose $n \in \naturals$ such that $\mu(U_0) <
+\epsilon n$.  For $j=1, \dotsc, n$ define $U_j = f^{-1} (j/n,
+\infty)$.  Because $f$ is continuous and of compact support, each
+$U_j$ is a relatively compact open set and it is trivial from the
+definitions that we have $\emptyset = U_n \subset U_{n-1} \subset \dotsb \subset
+U_0$.  In fact by the continuity of $f$ it is also true that $\overline{U}_j \subset U_{j+1}$.
+Define the lower and upper approximations to $f$
+\begin{align*}
+u(x) &= \begin{cases}
+\frac{j}{n} & \text{if $x \in U_j \setminus U_{j+1}$ for some $j=1, \dotsc,  n-1$} \\
+0 & \text{if $x \notin U_1$}
+\end{cases}
+\end{align*}
+ and similarly 
+\begin{align*}
+v(x) &= \begin{cases}
+\frac{j}{n} & \text{if $x \in U_{j-1} \setminus U_{j}$ for some
+  $j=1,  \dotsc,  n$} \\
+0 & \text{if $x \notin U_0$}
+\end{cases}
+\end{align*}
+Note that we have the property that $u \leq f \leq v$ and moreover we
+have the useful alternative defintion of $u$ and $v$
+\begin{align*}
+u(x) &= \frac{1}{n} \sum_{j=1}^n \characteristic{U_j}(x) \\
+v(x) &= \frac{1}{n} \sum_{j=1}^{n} \characteristic{U_{j-1}}(x) \\
+\end{align*}
+which shows that $u,v \in C_c(X)$.
+
+Claim: $\int (v -u) \, d\mu < \epsilon$
+
+This follows by observing that $v - u = \frac{1}{n}
+(\characteristic{U_0} - \characteristic{U_n}) = \frac{1}{n}
+\characteristic{U_0}$ since $U_n = \emptyset$.
+
+Claim: $\int u \, d\mu \leq \Lambda(f) \leq \int v \, d\mu + \epsilon$
+
+To see this claim we decompose $f$ into a representation that is
+adapted to the nested sequence $U_n \subset \dotsb \subset U_0$.  For
+$j=1, \dotsc, n$ define 
+\begin{align*}
+\phi_j(x) &= \begin{cases}
+1/n & \text{if $x \in U_j$} \\
+f(x) - \frac{j-1}{n} & \text{if $x \in U_{j-1} \setminus U_{j}$} \\
+0 & \text{if $x \notin U_{j-1}$}
+\end{cases} \\
+&=[(f(x) - \frac{j-1}{n}) \vee 0] \wedge \frac{1}{n}\\
+\end{align*}
+where the second representation shows that $\phi_j \in C_c(X)$ and $0 \leq \phi_j \leq \frac{1}{n}$.
+Note also
+that if we are given $x \in U_{j-1} \setminus U_j$ for some $j=1,
+\dotsc, n$ then $\phi_i(x) = 0$ for $j < i \leq n$ and $\phi_i(x) =
+\frac{1}{n}$ for $1 \leq i < j$.  Therefore we have 
+\begin{align*}
+\phi_1(x) + \dotsb + \phi_n(x) &= \phi_1(x) + \dotsb + \phi_j(x) \\
+&= \frac{j-1}{n} + f(x) - \frac{j-1}{n} = f(x)
+\end{align*}
+It is clear that for $x \notin U_0$ we have $f(x) = 0$ and
+$\phi_j(x) = 0$ for all $j=1, \dotsc, n$ so we have
+ $f = \phi_1 + \dotsb + \phi_n$ on all of $X$.
+
+We now need to bound $\Lambda(\phi_j)$ in terms of $\mu(U_k) = m(U_k)$ for
+suitable $k=1, \dotsc, n$.  First we get a lower bound on
+$\Lambda(\phi_j)$.  Let $1 \leq j \leq n$ be given.  Suppose that we have a $g \in C_c(X)$ with
+$0 \leq g \leq 1$ and $supp(g) \subset U_j$.  Then by positivity of
+$\phi_j$ and the fact that $\phi_j(x) = \frac{1}{n}$ on $U_j$ we see
+that $g \leq \characteristic{U_j} \leq n \phi_j$ and therefore
+$\Lambda(g) \leq n \Lambda(\phi_j)$.    Taking the supremum over all
+such $g$ we see that $\frac{1}{n} \mu(U_j) \leq \Lambda(\phi_j)$.  Taking the
+sum over all $j=1, \dotsc, n$ and using linearity of $\Lambda$ we get
+\begin{align*}
+\int u \, d\mu &= \frac{1}{n} \sum_{j=1}^n \mu(U_j) \leq \sum_{j=1}^n
+\Lambda(\phi_j) = \Lambda(f)
+\end{align*}
+
+Now we get an upper bound on $\Lambda(\phi_j)$.   For $j=2, \dotsc, n$ we that
+$n phi_j \in C_c(X)$, $0 \leq n \phi_j \leq 1$ and $supp(n \phi_j)
+\subset \overline{U_{j-1}} \subset U_{j-2}$.  From the definition of
+$\mu(U_{j-2}) =m(U_{j-2})$ it follows that $\Lambda(\phi_j) \leq
+\frac{1}{n} \mu(U_{j-2})$.  As for $\phi_1$, we have
+$n \phi_1 \in C_c(X)$ and $0 \leq n\phi_1 \leq 1$ by exactly the same
+argument as for $j \geq 2$.  We also have $supp(n \phi_1) \subset
+supp(f) \subset U_0$ so that $\Lambda(\phi_1) \leq \frac{1}{n}
+\mu(U_0)$.  If we define $U_{-1} = U_0$ the we get
+have $\Lambda(\phi_j) \leq \frac{1}{n} \Lambda(U_{j-2})$ for $j=1,
+\dotsc, n$.  Again we sum and use linearity of $\Lambda$,
+\begin{align*}
+\Lambda(f) &= \sum_{j=1}^n \Lambda(\phi_j) \leq \frac{1}{n}
+\sum_{j=1}^n \mu(U_{j-2}) = \frac{1}{n} \mu(U_{-1}) +  \frac{1}{n}
+\sum_{j=1}^{n-1} \mu(U_{j-1}) \\
+&\leq \frac{1}{n} \mu(U_{0}) +  \frac{1}{n}
+\sum_{j=1}^{n} \mu(U_{j-1}) \leq \epsilon + \int v \, d\mu
+\end{align*}
+
+It remains to stitch together the previous claims to
+show that $\Lambda(f) = \int f \, d\mu$.  Integrating the inequality
+$u \leq f \leq v$ we get $\int u \, d\mu \leq f \leq \int v \, d\mu$.
+Now using this fact and previous two claims we get
+\begin{align*}
+\Lambda(f) - \int f \, d\mu &\leq \Lambda(f) - \int v \, d\mu \leq
+\int u \, d\mu  - \int u \, d\mu + \epsilon \leq 2 \epsilon
+\end{align*}
+and
+\begin{align*}
+\Lambda(f) - \int f \, d\mu &\geq \int u \, d\mu - \int f \, d\mu \geq
+\int u \, d\mu - \int v \, d\mu \geq -\epsilon
+\end{align*}
+from which we conclude that $\abs{\Lambda(f) - \int f \, d\mu} \leq
+2\epsilon$.  Since $\epsilon > 0$ was arbitrary we are done.
+\end{proof}
+
 \begin{defn}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
-  topological space $S$.  
+Hausdorff topological space $S$.  
 \begin{itemize}
 \item[(i)] A Borel set $B$ is \emph{inner regular} if for
  $\mu(B) = \sup_{K \subset B} \mu(K)$ where $K$
@@ -1898,6 +2611,21 @@ $f_n$ is not Cauchy with respect to $d$.
 \end{itemize}
 \end{defn}
 
+\begin{prop}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
+  locally compact Hausdorff space $S$.  Then $\mu$ is locally finite
+  if and only if $\mu(K) < \infty$ for all compact sets $K \subset S$.
+\end{prop}
+\begin{proof}
+If $\mu(K) < \infty$ for all compact sets $K$ we let $x \in S$ and
+pick a relatively compact neighborhood $U$ of $x$.  Then $\mu(U) \leq
+\mu(\overline{U}) < \infty$ which shows $\mu$ is locally finite.  On
+the other hand, suppose $\mu$ is locally finite and let $K$ be a
+compact set.  For each $x \in K$ we take an open neighborhood $U_x$
+such that $\mu(U_x) < \infty$ and then extract a finite subcover $U_{x_1},
+\dotsc,U_{x_n}$.  By subadditivity, we have $\mu(K) \leq \mu(U_{x_1}) + \dotsb
++ \mu(U_{x_n}) < \infty$.
+\end{proof}
+
 \begin{defn}Let $\mu$ be a Borel measure on a Hausdorff topological space. A set measurable set $A$ is called \emph{regular} if 
 \begin{itemize}
 \item[(i)]$\mu(A) = \inf_{U \supset A} \mu(A)$ where $U$ are open
@@ -1908,7 +2636,9 @@ regularity above).  If every measurable set is regular then $\mu$ is
 said to be regular.  Note that if we assume the definition of
 regularity uses compact inner approximations then regular measures are
 inner and outer regular (although inner and outer regularity refer to
-only Borel sets; is that a meaningful distinction?)
+only Borel sets; is that a meaningful distinction?)  I think this use
+of closed inner regularity is a bit non-standard should probably get
+rid of it.
 \end{defn}
 
 
@@ -1919,11 +2649,180 @@ and the measure on the $\mu$-measurable sets and then take the induced
 outer measure we get $\mu$ back if and only $\mu$ is a regular outer
 measure.  Evans and Gariepy show that Radon outer measures on
 $\reals^n$ are inner
-regular as measures on the $\mu$-measurable sets.  Note that inner
+regular as measures on the $\mu$-measurable sets (I think we prove this more
+generally above in the context of LCH spaces; note that every set in
+$\reals^n$ is $\sigma$-bounded).  Note that inner
 regular is part of the most common definition of Radon measure so
 their result can be taken as showing a weaker definition of Radon
 measure holds on $\reals^n$ (but also they phrase everything in terms
 of outer measures...).
+
+TODO: How much this stuff on regularity can be extended to outer
+measures????  I want to understand the overlap with the results in
+Evans and Gariepy.
+
+\begin{lem}\label{InnerRegularSetsSigmaAlgebra}Let $X$ be a Hausdorff topological space, $\mathcal{A}$
+  a $\sigma$-algebra on $X$ and $\mu$ a finite tight measure.  Then
+\begin{align*}
+\mathcal{R} &= \lbrace A \in \mathcal{A} \mid A \text { and } A^c
+\text{ are $\mu$-inner regular} \rbrace
+\end{align*}
+is a $\sigma$-algebra.  The same is true if the condition is replaced
+by sets that are $\mu$-closed inner regular (without the requirement
+that $\mu$ is tight).
+\end{lem}
+\begin{proof}
+By definition, $\mathcal{R}$ is closed under complement.  By
+assumption that $\mu$ is tight we have $X \in \mathcal{R}$ so all that
+needs to be shown is closure under countable union.
+
+Assume $A_1, A_2, \dots \in \mathcal{R}$ and let $\epsilon>0$ be
+given.  By finiteness of $\mu$, $\mu(\cup_{n=1}^\infty A_n) < \infty$ and
+continuity of measure (Lemma \ref{ContinuityOfMeasure}) there exists $M>0$ such that $\mu(\cup_{n=1}^M
+A_n) > \mu(\cup_{n=1}^\infty A_n) - \epsilon$.
+ By assumption that $A_n \in \mathcal{R}$ and finiteness of $\mu$, for each
+$A_n$ there exists a compact $K_n$ such that $\mu(A_n \setminus K_n) <
+\frac{\epsilon}{2^n}$ and there exists compact $L_n$ such that $\mu(A_n^c \setminus L_n) <
+\frac{\epsilon}{2^n}$. Let
+\begin{align*}
+K &= \cup_{n=1}^M K_n \\
+L &= \cap_{n=1}^\infty L_n
+\end{align*}
+and note that both $K$ and $L$ are compact (in the latter case,
+because X is Hausdorff we know that each $L$ is closed hence the
+intersection is a closed subset of a compact set hence compact).
+Furthermore we can compute
+\begin{align*}
+\mu(\cup_{n=1}^\infty A_n \setminus K) &= \mu(\cup_{n=1}^\infty A_n
+\setminus \cup_{n=1}^M K_n)  \\
+&= \mu(\cup_{n=1}^M A_n
+\setminus \cup_{n=1}^M K_n)  + \mu(\cup_{n=1}^\infty A_n \setminus \cup_{n=1}^M A_n
+\setminus \cup_{n=1}^M K_n)\\
+&\leq \mu(\cup_{n=1}^M A_n \setminus K_n)  + \mu(\cup_{n=1}^\infty A_n
+\setminus \cup_{n=1}^M A_n)\\
+&\leq \sum_{n=1}^M(A_n \setminus K_n)  + \epsilon \\
+&\leq 3 \epsilon
+\end{align*}
+and
+\begin{align*}
+\mu((\cup_{n=1}^\infty A_n)^c \setminus L) &=\mu(\cap_{n=1}^\infty
+A_n^c \setminus \cap_{n=1}^\infty L_n) \\
+ &=\mu(\cap_{n=1}^\infty
+A_n^c \cap \cup_{n=1}^\infty L_n^c) \\
+ &=\mu(\cup_{n=1}^\infty \cap_{m=1}^\infty
+A_m^c \cap L_n^c) \\
+ &\leq \mu(\cup_{n=1}^\infty 
+A_n^c \cap L_n^c) \\
+ &\leq \sum_{n=1}^\infty (
+A_n^c \setminus L_n) \\
+&\leq 2 \epsilon
+\end{align*}
+
+TODO: The closed inner regular case...
+\end{proof}
+
+TODO:  In metric space, tightness is equivalent to inner regularity.
+Then Ulam's Theorem that finite measures on separable metric spaces
+are automatically inner regular.  Also finite measures on arbitrary
+metric spaces are closed inner regular as well as outer regular.
+
+\begin{lem}\label{FiniteMeasuresOnMetricSpacesAreClosedInnerRegular}
+Let $(S,d)$ be a metric space and $\mu$ be a Borel measure on $(S,
+\mathcal{B}(S))$, then $\mu$ is closed inner regular.  If in addition
+$\mu$ is a finite measure then it is outer regular.
+\end{lem}
+\begin{proof}
+Let $U$ be an open set in $S$.  Then $U^c$ is closed and the
+function $f(x) = d(x, U^c)$ is continuous.  If we define 
+\begin{align*}
+F_n &= f^{-1}([1/n, \infty))
+\end{align*}
+then each $F_n$ is closed, $F_1 \subset F_2 \subset \cdots$ and
+$\cup_{n=1}^\infty F_n = U$.  By continuity of measure (Lemma
+\ref{ContinuityOfMeasure}) we know that $\lim_{n \to \infty} \mu(F_n)
+= \mu(U)$.  So this shows that every open set is inner closed
+regular.  Furthermore it is trivial to note that $U^c$ is inner closed
+regular because it is closed.  
+
+By Lemma \ref{InnerRegularSetsSigmaAlgebra} we know know that 
+\begin{align*}
+\mathcal{B}(S) &\subset \mathcal{R} = \lbrace A \subset S \mid A
+\text{ and } A^c
+\text{ are inner closed regular}  \rbrace
+\end{align*}
+
+Outer regularity follows from taking complements and using the
+finiteness of $\mu$.
+\end{proof}
+
+If we add the criterion that the metric space is separable, then we
+can upgrade the closed inner regularity to inner regularity.
+\begin{lem}\label{SeparableInnerRegularTight}Let $(S,d)$ be a
+  separable metric space and $\mu$ be a finite Borel measure on $(S,
+\mathcal{B}(S))$, then $\mu$ is inner regular if and only if it is tight.
+\end{lem}
+\begin{proof}
+Clearly inner regularity implies tightness (which is just inner
+regularity of the set $S$), so it suffices to show
+that tightness implies inner regularity.
+
+Suppose that $\mu$ is a tight measure.  By Lemma
+\ref{InnerRegularSetsSigmaAlgebra} it suffices to show that both open
+and closed sets are inner regular.
+
+Pick $\epsilon >0$ and select $K \subset S$ a compact set such that $\mu(S \setminus K) < \frac{\epsilon}{2}$.
+By Lemma \ref{FiniteMeasuresOnMetricSpacesAreClosedInnerRegular} we
+know that for any Borel set $B$ there exists a closed set $F \subset
+B$ such that $\mu(B \setminus F) < \frac{\epsilon}{2}$.  Note that $F
+\cap K$ is compact.   We have
+\begin{align*}
+\mu(B \setminus (F \cap K)) &\leq \mu(B \cap F^c) + \mu(B \cap K^c) \leq \mu(B \cap F^c) + \mu(S \cap K^c) < \epsilon
+\end{align*}
+\end{proof}
+\begin{thm}[Ulam's Theorem]\label{UlamsTheorem}Let $(S,d)$ be a
+  complete separable metric space and $\mu$ be a finite Borel measure on $(S,
+\mathcal{B}(S))$, then $\mu$ is inner regular.
+\end{thm}
+\begin{proof}
+By Lemma \ref{SeparableInnerRegularTight} it suffices to show that $\mu$ is tight.  Pick
+$\epsilon > 0$ and we construct a compact set $K \subset S$ such that
+$\mu(S \setminus K) < \epsilon$.  Let
+$\overline{B}(x,r)$ denote the closed ball of radius $r$ around $x \in
+S$.  Pick
+a countable dense subset $x_1, x_2, \dotsc \in S$.  For each $m \in
+\naturals$, by density of $\lbrace x_n \rbrace$, we know $\cap_{n=1}^\infty \left ( S
+\setminus \cup_{j=1}^n \overline{B}(x_j, \frac{1}{m}) \right ) =
+\emptyset$, thus by
+continuity of measure (Lemma \ref{ContinuityOfMeasure}) there exists
+$N_m > 0$ such that $\mu(S
+\setminus \cup_{j=1}^n \overline{B}(x_j, \frac{1}{m}) < \frac{\epsilon}{2^m}$ for
+all $n \geq N_m$.
+If we define
+\begin{align*}
+K &= \cap_{m=1}^\infty \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})
+\end{align*}
+we claim that $K$ is compact.  Note that $K$ is easily seen to be
+closed as it is an intersection of a finite union of closed balls.
+Since $S$ is complete this implies that $K$ is also complete.  Also it
+is easy to see that $K$ is totally bounded since by construction we
+have demonstrated a cover by a finite number of balls of radius
+$\frac{1}{m}$ for each $m \in \naturals$.  So by Theorem
+\ref{CompactnessInMetricSpaces} we know $K$ is compact.
+
+To finish the result we claim $\mu(S \setminus K) < \epsilon$:
+\begin{align*}
+\mu(S \setminus K) 
+&= \mu(S \cap \left(\cap_{m=1}^\infty
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})\right)^c) \\
+&= \mu(S \cap \cup_{m=1}^\infty \left(
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})\right)^c) \\
+&= \mu(\cup_{m=1}^\infty S \setminus 
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})) \\
+&\leq \sum_{m=1}^\infty \mu( S \setminus 
+  \cup_{j=1}^{N_m} \overline{B}(x_j, \frac{1}{m})) \\
+&< \epsilon
+\end{align*}
+\end{proof}
 
 \begin{thm}Let $\mu$ be a finite Borel measure on a metric space $S$,
   then $\mu$ is closed regular.  If $\mu$ is tight then $\mu$ is regular.
@@ -1937,29 +2836,35 @@ TODO: Are Radon measures automatically outer regular?
 Tao proves Riesz representation under assumption of local compactness
 and $\sigma$-compactness.
 
-Kallenberg proves Riesz representation under assumption of local
-compactness and second countability (this is more general than the Tao
-result as $\sigma$-compactness implies second countability (I think)).
+Kallenberg proves Riesz representation under assumption of LCH and second countability (this is more general than the Tao
+result as $\sigma$-compactness implies second countability (I think))
+and targets Radon measures.  Our results taken from Arveson are more
+general as the remove the second countability assumption.
 
-Evans and Gareipy prove Riesz representation only on $\reals^n$.
+Evans and Gareipy prove Riesz representation only on $\reals^n$ using
+Radon outer measures.  This is probably subsumed by our results taken
+from Arveson but I need to understand whether the use of outer
+measures adds anything to the picture.
 
-Arveson has some well known lecture notes that cover a more general
-case that emphasizes Radon measures (and explores how Baire and Borel measures figure in the
-picture).
+Arveson has some well known lecture notes that prove Riesz on general
+LCH spaces
+and emphasizes Radon measures (it also explores how Baire measures figure in the
+picture).  I have chosen to follow these notes.
 
 Fremlin probably has some very general account of Reisz representation
 (of course).
 
-Dudley proves Riesz representation of compact Hausdorff spaces (in
-which cases the dual measures are Baire measures instead of Radon
-measures).  Dudley does not really discuss Radon measures.  
+Dudley proves Riesz representation of compact Hausdorff spaces and
+phrases things in terms of Baire measures.  Dudley does not really
+discuss Radon measures.  Arveson discusses the relationship between
+the use of Baire and Radon measures.
 
 \subsection{Covering Theorems in $\reals^n$}
 
 Since our purposes have been to understand probability theory we have
 hitherto avoided making assumptions that we are dealing with
 $\reals^n$.  While this decision has benefits, it has drawbacks as
-well.  Among them we lose sight of some history but also some of the
+well.  Among those drawbacks are that we lose sight of some history and also some very
 beautiful and deep understanding of the measure theory of the reals.
 TODO: Vitali and Besicovich.
 

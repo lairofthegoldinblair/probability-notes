@@ -230,6 +230,226 @@ depends only on the $t_j$.  Now the result follows from functoriality
 of the pushforward of a measure.
 \end{proof}
 
+The previous result shows that the finite dimensional distributions
+uniquely characterize the distribution of a stochastic process.  We
+now turn an associated existence problem.  Namely given a family of
+distributions that are candiates to be the finite dimensional
+distributions of a stochastic process, is there in fact a stochastic
+process with these FDDs.  In general this is not the case and the
+result requires topological assumptions.  It is sufficient to assume
+that the spaces involved are Borel.
+
+\begin{defn}Let $(S_1, \mathcal{S}_1), (S_2, \mathcal{S}_2), \dotsc$ be a sequence of measurable spaces,
+  and for each $n \in \naturals, $ let  $\mu_n$ be a probability
+  measure on on $S_1 \times \dotsb \times S_n$.  We say that the
+  sequence of measures $\mu_1, \mu_2, \dotsc$ is \emph{projective} if
+  for every $n \in \naturals$ and every $A \in \mathcal{S}_1 \otimes
+  \dotsb \otimes \mathcal{S}_n$ we have $\mu_{n+1}(A \times S_{n+1}) =
+  \mu_n(A)$.
+\end{defn}
+
+\begin{thm}[Daniell Theorem]\label{DaniellExtension}Let $(S_1,
+  \mathcal{S}_1), (S_2, \mathcal{S}_2), \dotsc$ be a sequence of
+  measurable spaces, with $S_2, S_3 , \dotsc$ Borel and let $\mu_1,
+  \mu_2, \dotsc$ be a projective sequence of measures then there exist
+  random elements $\xi_n$ in $S_n$ for $n \in \naturals$ such that
+  $\mathcal{L}(\xi_1, \dotsc, \xi_n) = \mu_n$ for all $n \in
+  \naturals$.  In particular, there exists a probability measure $\mu$
+  on $S_1 \times S_2 \times \dotsb$ such that for every $n \in
+  \naturals$ and $A \in \mathcal{S}_1 \otimes \dotsb \otimes
+  \mathcal{S}_n$ we have $\mu(A \times S_{n+1} \times \dotsb) = \mu_n(A)$.
+\end{thm}
+\begin{proof}
+Trivially we can create $\xi_1$ with $\mathcal{L}(\xi_1) = \mu_1$
+(just take $\Omega = S_1$ and define $\xi_1$ to be the identity).  Now
+by extending $\Omega$ to $S_1 \times [0,1]$ we applying Lemma
+\ref{ReproductionOfUniform} we can find independent $U(0,1)$ random
+variables $\vartheta_2, \vartheta_3, \dotsc$ which are also
+independent of $\xi_1$.  We construct the remaining $\xi_2, \xi_3,
+\dotsc$ by an induction argument using Lemma \ref{Transfer}.  
+
+Suppose that we have constructed $\xi_1, \dotsc, \xi_n$ where for each
+$m > 1$ there exists a measurable function $f_m$ such that $\xi_m =
+f_m(\xi_1, \vartheta_2, \dotsc, \vartheta_m)$.  Let $\eta_1, \dotsc,
+\eta_{n+1}$ we arbitrary random elements such that
+$\mathcal{L}(\eta_1, \dotsc, \eta_{n+1}) = \mu_{n+1}$ (e.g. define
+$\tilde{\Omega} = S_1 \times \dotsb \times S_{n+1}$ with probability
+measure $\mu_{n+1}$ and define $\eta_m(s_1, \dotsc, s_{n+1}) = s_m$).
+By the induction hypothesis and the projective property of the sequence $\mu_n$ we have for each $A
+\in \mathcal{S}_1 \otimes \dotsb \otimes \mathcal{S}_n$
+\begin{align*}
+\probability{(\eta_1, \dotsc, \eta_n) \in A} &= \probability{(\eta_1,
+  \dotsc, \eta_n, \eta_{n+1}) \in A \times S_{n+1}} = \mu_{n+1}(A
+\times S_{n+1}) \\
+&= \mu_n(A) = \probability{(\eta_1, \dotsc, \eta_n) \in A} 
+\end{align*}
+and therefore $(\eta_1, \dotsc, \eta_n) \eqdist (\xi_1, \dotsc,
+\xi_n)$.  Now we may apply Lemma \ref{Transfer} to conclude that there
+is a measurable function $g : S_1 \times \dotsb \times S_n \times
+[0,1] \to S_{n+1}$ such that $\xi_{n+1} = g(\xi_1, \dotsc, \xi_n,
+\vartheta_{n+1})$ satisfies 
+\begin{align*}
+\mathcal{L}(\xi_1, \dotsc, \xi_{n+1}) &=
+\mathcal{L}(\eta_1, \dotsc, \eta_{n+1})  = \mu_{n+1}
+\end{align*}
+Moreover we may define 
+\begin{align*}
+f_{n+1}(x_1, \dotsc, x_{n+1}) &= g(x_1,
+f_2(x_1, x_2), \dotsc, f_n(x_1, \dotsc, x_n), x_{n+1})
+\end{align*} so that
+$\xi_{n+1} = f_{n+1}(\xi_1, \vartheta_2, \dotsc, \vartheta_{n+1})$.
+
+For the last part of the theorem, define $\mu = \mathcal{L}(\xi_1,
+\xi_2, \dotsc)$.  It then follows that for every $n \in \naturals$ and
+$A \in \mathcal{S}_1 \otimes \dotsb \otimes \mathcal{S}_n$ we have
+\begin{align*}
+\mu(A \times S_{n+1} \dotsb) &= \probability{(\xi_1, \xi_2, \dotsc)
+  \in A \times S_{n+1} \dotsb} \\
+&=  \probability{(\xi_1, \dotsc, \xi_n)
+  \in A } = \mu_n(A) 
+\end{align*}
+\end{proof}
+
+We now generalize the Daniell Theorem to arbitrary index sets $T$.
+First we generalize the notion of a projective sequence of measures to
+a projective family on an arbitrary index set.
+\begin{defn}Let $T$ be a set and suppose we are given a measurable
+  space $(S_t, \mathcal{S}_t)$ for every $t \in T$ and for every
+  finite subset $I \subset T$ we are given a probability measure
+  $\mu_I$ on $\times_{t \in I} S_t$.  For any subset $U \subset T$
+  define $(S_U, \mathcal{S}_U) = (\times_{t \in U} S_t , \otimes{t \in
+    U} \mathcal{S}_t)$.  We say that $\lbrace \mu_I
+  \rbrace$ is a \emph{projective family} if for every
+  finite subset $J \subset T$ and $I \subset J$ we have $\mu_J( \cdot
+  \times S_{J \setminus I}) = \mu_I( \cdot)$. If in the definition
+  above we replace the set of finite subsets of $T$ by the set of
+  countable subsets of $T$ the we say $\mu_I$ is a \emph{countable projective family}.
+\end{defn}
+
+Before we attack the theorem we give a description of the structure of the
+infinite product $\sigma$-algebra that will prove useful in the proof
+of the extension theorem.
+\begin{lem}\label{ProductSigmaAlgebraAsCountableCylinderSets}Let $T$ be a set and $(S_t, \mathcal{S}_t)$ be a family of
+  measurable spaces then the $\sigma$-algebra $\otimes_{t \in T}
+  \mathcal{S}_t$ is precisely the set of sets of the form $A \times
+  S_{T \setminus U}$ where $U \subset T$ is a countable subset and $A
+  \in \otimes_{t \in U} \mathcal{S}_t$.
+\end{lem}
+\begin{proof}
+We claim that 
+\begin{align*}
+\mathcal{C} &= \lbrace A \times
+  S_{T \setminus U} \mid U \subset T \text{ is countable and } A
+  \in \otimes_{t \in U} \mathcal{S}_t \rbrace
+\end{align*}
+is a $\sigma$-algebra.  Obviously $\mathcal{C}$ is non-empty.  To see that $\mathcal{C}$ is closed under set
+complement take $A \times S_{T \setminus U}$ with $U \subset T$
+countable and $A \in \mathcal{S}_U$.  Then $A^c  \in \mathcal{S}_U$
+and moreover $(A \times S_{T \setminus U})^c = A^c \times S_{T
+  \setminus U} \in \mathcal{C}$.  
+Given a sequence $C_1, C_2, \dotsc \in \mathcal{C}$
+with $C_j = A_j \times S_{T \setminus U_j}$, again by passing to the
+union $\cup_{j=1}^\infty U_j$ we may assume that the $U_j$ are all the
+same countable subset of $T$ and therefore $C_j = A_j \times S_{T
+  \setminus U}$ with $A_j \in \mathcal{S}_U$.  It follows that
+$\cup_{j=1}^\infty A_j \in \mathcal{S}_U$ and therefore
+$\cup_{j=1}^\infty C_j \in \mathcal{C}$.  Closure under countable
+intersection follows by De Morgans Law.  Since it is clear that each
+$\pi_t$ is $\mathcal{C}$-measurable we see that $\otimes_{t \in T}
+\mathcal{S}_t \subset \mathcal{C}$.
+
+To see the reverse conclusion fix a countable subset $U \subset T$ and
+we need to show that for every $A \in \mathcal{S}_U$ we have $A \times
+S_{T \setminus U} \in \otimes_{t \in T}
+\mathcal{S}_t$.  We note that the set of all  $A \subset S_U$ such that $A \times
+S_{T \setminus U} \in \mathcal{S}_T$ is a $\sigma$-algebra since 
+it is precisely the pullback and pushforward of $\mathcal{S}_U$ under the projection
+$\pi_U : S_T \to S_U$ (Lemma \ref{SigmaAlgebraPullback}).  It clearly
+contains all sets of the form $B \times S_{U \setminus \lbrace t
+  \rbrace}$ for $t \in U$ and $B \in \mathcal{S}_t$.  Such sets
+generate the $\sigma$-algebra $\mathcal{S}_U$  and therefore we
+conclude that $A \times S_{T \setminus U} \in \mathcal{S}_T$.
+\end{proof}
+
+\begin{thm}[Daniell-Kolmogorov
+  Theorem]\label{DaniellKolmogorovExtension}Let $T$ be a set, $(S_t,
+  \mathcal{S}_t)$ for $t \in T$ be a family of Borel sets and $\mu_I$
+  be a projective family of probability measures.  There exists a
+  random element $\xi_t$ in $S_t$ for all $t \in T$ such that for
+  every $I \subset T$ we have $\mathcal{L}(\xi_I) = \mu_I$.
+\end{thm}
+\begin{proof}
+Let $\overline{T}$ be the set of countable subsets of $T$.  It is
+clear that the restriction of the projective family $\mu_I$ to any
+subset $U \subset T$ is a projective sequence and therefore we can
+apply Theorem \ref{DaniellExtension} to construct a probability
+measure $\mu_U$ on $S_U$ such that for every finite subset $J \subset
+U$ we have $\mu_U(\cdot \times S_{U \setminus J}) = \mu_J(\cdot)$.  
+
+Now assume that we have a \emph{countable} subset $V \subset U$ and
+consider the probability measure $\mu_U( \cdot \times S_{U \setminus
+  V}$ on $S_V$.  From what we have just shown, for every finite subset
+$J \subset V$ and every $A \in \mathcal{S}_J$ we have
+\begin{align*}
+\mu_U(A \times S_{V \setminus J} \times S_{U \setminus V}) &= \mu_U(A
+\times S_{U \setminus J}) = \mu_J(A)
+\end{align*}
+and therefore $\mu_U(\cdot \times S_{U \setminus V})$ and $\mu_V$ have
+the same finite dimensional distributions and therefore by Lemma
+\ref{ProcessLawsAndFDDs} we know that $\mu_U(\cdot \times S_{U
+  \setminus V}) =\mu_V$.  Thus we have extended the projective
+family $\mu_I$ to a countable projective family.  Since by Lemma
+\ref{ProductSigmaAlgebraAsCountableCylinderSets} we know that
+$\otimes_{t \in T} \mathcal{S}_t$ is the precisely the set of
+countable cylinder sets, we can define a measure as a set function on
+said sets.  Pick $U \subset T$ and let $A \in \mathcal{S}_U$ then we
+define $\mu$ by $\mu(A \times S_{T \setminus U} ) = \mu_U(A)$.  We first
+claim that the $\mu$ is well defined.  Suppose we have countable
+subset $U,V \subset T$, $A \in \mathcal{S}_U$ and $B \in
+\mathcal{S}_V$ such that $A \times S_{T setminus U} = B \times S_{T
+  \setminus V}$.  We can write 
+\begin{align*}
+A \times S_{T setminus U} &= A \times S_{V \setminus U} \times S_{T
+  setminus (U \cup V)}
+\intertext{and}
+B \times S_{T setminus V} &= B \times S_{U \setminus V} \times S_{T
+  setminus (U \cup V)}
+\end{align*}
+from which it follows that $A \times S_{V \setminus U}  =  B \times
+S_{U \setminus V}$.  Using this equality along with projectivity we get
+\begin{align*}
+\mu(A \times S_{T \setminus U}) &= \mu_U(A) = \mu_{U \cup V}(A \times
+S_{V \setminus U}) \\
+&=\mu_{U \cup V}(B \times S_{U \setminus V}) = \mu_V(B) = \mu(B \times S_{T \setminus V}) 
+\end{align*}
+which shows that $\mu$ is well defined.
+
+It is clear that $\mu(\emptyset) = \mu_I(\emptyset)$ for any $I
+\subset T$ and therefore $\mu(\emptyset) = 0$.  
+
+To see countable additivity of $\mu$ suppose we are given set $A_1
+\times S_{T \setminus U_1}, A_2 \times S_{T \setminus U_2}, \dotsc$
+where each $U_j \subset T$ is a countable subset and $A_j \in
+\mathcal{S}_{U_j}$ for $j \in \naturals$.  If we define $U =
+\cup_{j=1}^\infty U_j$ and redefine $A_j$ as $A_j \times S_{U
+  \setminus U_j}$ then we may assume that the $U_j$ are all the same.
+  Therefore we now have by countable additivity of $\mu_U$,
+\begin{align*}
+\mu(\cup_{j=1}^\infty (A_j \times S_{T\setminus U})) &=
+\mu((\cup_{j=1}^\infty A_j) \times S_{T\setminus U}) \\
+&=\mu_U(\cup_{j=1}^\infty A_j) = \sum_{j=1}^\infty \mu_U(A_j) =
+\sum_{j=1}^\infty \mu(A_j \times S_{T \setminus U}) 
+\end{align*}
+
+Having defined $\mu$ on $(S_T, \mathcal{S}_T)$ we now define $\xi_t$
+to be the projection $\xi_t : S_T \to S_t$ for each $t \in T$.  It is
+clear from the definition of $\mu$ that for every finite subset of $I
+\subset T$ and $A \in \mathcal{S}_I$ we have
+\begin{align*}
+\probability{ \xi_I \in A} &= \mu(A \times S_{T \setminus I}) = \mu_I(A)
+\end{align*}
+and therefore $\mathcal{L}(\xi_I) = \mu_I$.
+\end{proof}
 
 There are a great many things to be said about stochastic processes in
 general, however we will wait a bit to travel that road and instead begin to
@@ -565,7 +785,7 @@ filtration; many arguments make use of this idea.  A precise statement
 that allows localization of conditional expectations with respect to
 $\mathcal{F}_\tau$ is given here.  The reader should translate the
 following lemma into the intuitively obvious prose assertion that ``given
-that an event $A$ happens when $\tau = t$, the event $A$ happens before
+that $\tau = t$, an event $A$ happens before
 $\tau$ if and only if $A$ happens before $t$''.
 \begin{lem}\label{LocalizationOfStoppedFiltration}Given a filtration $\mathcal{F}_t$ and an
   $\mathcal{F}$-optional time $\tau$, for every $t \in T$, the $\sigma$-algebras
@@ -585,6 +805,15 @@ A & \text{if $s \geq t$} \\
 \end{cases}
 \in \mathcal{F}_s
 \end{align*}
+\end{proof}
+
+Another useful fact is 
+\begin{prop}\label{StoppedAlgebraMinOfOptionalTimes}Let $\sigma$ and $\tau$ be $\mathcal{F}$-optional times
+  then $\mathcal{F}_\sigma \cap \lbrace \sigma \leq \tau \rbrace \subset
+  \mathcal{F}_{\sigma \wedge \tau} = \mathcal{F}_\sigma \cap \mathcal{F}_\tau$.
+\end{prop}
+\begin{proof}
+TODO:
 \end{proof}
 
 \subsection{Discrete Time Martingales}
@@ -663,7 +892,7 @@ time.  This latter case is just a simple induction on $n$.
 \end{proof}
 
 
-\begin{thm}[Optional Stopping Theorem]\label{OptionalStoppingDiscrete}Let $\sigma$ and $\tau$ be bounded
+\begin{thm}[Optional Sampling Theorem]\label{OptionalSamplingDiscrete}Let $\sigma$ and $\tau$ be bounded
   $\mathcal{F}$-optional times and
   let $M_n$ be a martingale, then 
 \begin{align*}
@@ -768,7 +997,7 @@ compute
   time, then $M_{\tau \wedge n}$ is a martingale.
 \end{cor}
 \begin{proof}
-This is an immediate consequence of Optional Stopping as $\tau \wedge
+This is an immediate consequence of Optional Sampling as $\tau \wedge
 n$ and $n-1$ are both bounded optional times and therefore 
 \begin{align*}
 \cexpectationlong{\mathcal{F}_{n-1}}{M_{\tau \wedge n}} &= M_{\tau
@@ -834,8 +1063,8 @@ follows from the facts that $A_n$ is increasing and $A_0 = 0$.
 The Doob Decomposition is generally a useful tool to transfer results
 about martingales over to submartingales.  As a first illustration we
 present the following optional
-stopping theorem to submartingales
-\begin{cor}\label{OptionalStoppingSubmartingaleDiscrete}Let $X_n$ be a submartingale and let $\sigma$ and $\tau$ be
+sampling theorem to submartingales
+\begin{cor}\label{OptionalSamplingSubmartingaleDiscrete}Let $X_n$ be a submartingale and let $\sigma$ and $\tau$ be
   bounded optional times, then
   $\cexpectationlong{\mathcal{F}_\sigma}{X_\tau} \geq X_{\sigma \wedge
     \tau}$ a.s.
@@ -844,8 +1073,8 @@ TODO: See comments about relaxing boundedness hypotheses.
 \end{cor}
 \begin{proof}
 We write $X_n = M_n + A_n + X_0$ with $M_n$ a martingale and $A_n$ positive
-increasing previsible.  Applying optional stopping (Theorem
-\ref{OptionalStoppingDiscrete}) and the Doob Decomposition we get
+increasing previsible.  Applying optional sampling (Theorem
+\ref{OptionalSamplingDiscrete}) and the Doob Decomposition we get
 \begin{align*}
 \cexpectationlong{\mathcal{F}_\sigma}{X_\tau} &=
 \cexpectationlong{\mathcal{F}_\sigma}{M_\tau + A_\tau + X_0} = M_{\sigma
@@ -1056,7 +1285,7 @@ Let $\tau = \min \lbrace k \mid X_k \leq -\lambda \rbrace$ be the
 hitting time for the interval $(-\infty, -\lambda]$ and note that it
 is an optional time.  Furthermore we have by this definition $\lbrace \min_{0
   \leq k \leq n} X_k \leq -\lambda \rbrace=\lbrace \tau \leq n\rbrace$.  By
-Optional Stopping Theorem \ref{OptionalStoppingDiscrete} we know that 
+Optional Sampling Theorem \ref{OptionalSamplingDiscrete} we know that 
 \begin{align*}
 \expectation{X_0} &\leq \expectation{X_{\tau \wedge n}}
 \end{align*}
@@ -1298,8 +1527,8 @@ X_t &= X_{\tau_0 \wedge t} + \sum_{j=0}^n \left ( X_{\sigma_j \wedge t} - X_{\ta
 \end{align*}
 Taking expectations we note that from the positivity of $X_t$ we have
 $\expectation{X_{\tau_0 \wedge t}}\geq 0$ and because $\sigma_j \geq
-\tau_j$ and the optional stopping theorem for submartingles
-(Corollary \ref{OptionalStoppingSubmartingaleDiscrete}) we have
+\tau_j$ and the optional sampling theorem for submartingles
+(Corollary \ref{OptionalSamplingSubmartingaleDiscrete}) we have
 \begin{align*}
 \expectation{X_{\sigma_j \wedge t} - X_{\tau_j    \wedge t} } &=
 \expectation{\cexpectationlong{\mathcal{F}_{\tau_j \wedge t}}{X_{\sigma_j \wedge t}
@@ -1545,44 +1774,48 @@ along $N$ which is a contradiction.
 \end{proof}
 
 Convergence of martingales in $L^p$ spaces with $p > 1$ is equivalent
-to boundedness.
+to boundedness.  An even stronger condition holds, if a martingale
+converges in $L^1$ to a $p$-integrable limit then the convergence can
+be upgraded to $L^p$ convergence.
 \begin{thm}[$L^p$ Martingale
   Convergence]\label{LpMartingaleConvergenceDiscrete}Given a
   martingale $M_n$, then for $p > 1$, there exists an $M \in L^p$ such that $M_n
-  \tolp{p} M$ if and only if $M_n$ is $L^p$ bounded.
+  \tolp{p} M$ if and only if $M_n$ is $L^p$ bounded.  In fact, if $M_n
+  \tolp{1} M$ with $M \in L^p$ then $M_n \tolp{p} M$ and $M_n$
+  is $L^p$ bounded.
 \end{thm}
 \begin{proof}
 Suppose $M_n$ is an $L^p$ bounded martingles.  By $L^p$ boundedness,
 we know that $M_n$ is uniformly integrable thus by Theorem
 \ref{L1MartingaleConvergenceTheoremDiscrete}
-we know there is an integrable $M$ such that $M_n \toas M$ (thus $\abs{M_n}^p \toas \abs{M}^p$ and $M_n
+we know there is an integrable $M$ such that $M_n \toas M$ (thus $\abs{M_n}^p \toas \abs{M}^p$) and $M_n
 \tolp{1} M$.  By Doob's $L^p$ inequality, for every $n$ we have
-$\norm{\sup_{0 \leq k \leq n}M_k}_p \leq \frac{p}{p-1} \norm{M_n}_p <
-\frac{p}{p-1} \sup_n \norm{M_n}_p < \infty$ therefore by Monotone
-Convergence we have $\norm{\sup_{0 \leq k \leq \infty}M_k}_p = \lim_{n
-  \to \infty}\norm{\sup_{0 \leq k \leq n}M_k}_p < \infty$.  Now we
-clearly have $\abs{M_n}^p \leq (\sup_{0 \leq k \leq \infty}M_k)^p$ and
+\begin{align*}
+\norm{\sup_{0 \leq k \leq n} \abs{M_k}}_p &\leq \frac{p}{p-1} \norm{M_n}_p <
+\frac{p}{p-1} \sup_n \norm{M_n}_p < \infty
+\end{align*}
+therefore by Monotone
+Convergence we have $\norm{\sup_{0 \leq k \leq \infty} \abs{M_k}}_p = \lim_{n
+  \to \infty}\norm{\sup_{0 \leq k \leq n} \abs{M_k}}_p < \infty$.  Now we
+clearly have $\abs{M_n}^p \leq (\sup_{0 \leq k \leq \infty} \abs{M_k})^p$ and
 Dominated Convergence gives us $M_n \tolp{p} M$.
 
-Now if we assume that $M_n \tolp{p} M$ then we also know from
-Corollary \ref{IncreasingMoments} that $M_n
-\tolp{1} M$ so Theorem \ref{L1MartingaleConvergenceTheoremDiscrete}
+Now assume that $M_n \tolp{1} M$ with $M \in L^p$ and $p > 1$. Theorem \ref{L1MartingaleConvergenceTheoremDiscrete}
 implies that $M_n = \cexpectationlong{\mathcal{F}_n}{M}$ a.s. for
-every $n$.  Now by Jensen's Inequality (Theorem \ref{JensenConditionalExpectation})
+every $n$.  Now convexity of $x^p$ for $p > 1$ and  Jensen's
+Inequality (Theorem \ref{JensenConditionalExpectation}) imply
 \begin{align*}
 \expectation{\abs{M_n}^p} &=
 \expectation{\abs{\cexpectationlong{\mathcal{F}_n}{M}}^p} \leq 
 \expectation{\cexpectationlong{\mathcal{F}_n}{\abs{M}^p}} =
 \norm{M}_p^p < \infty
 \end{align*}
-Now the $L^p$ boundedness follows from the fact that $M_n \tolp{p} M$
-since we can find $N>0$ such that $\norm{M_n}_p \leq \norm{M}_p +
-\norm{M_n-M}_p \leq \norm{M}_p + 1$ for $n > N$ and then $M =
-\max(\norm{M_1}_p, \dotsc, \norm{M_N}_p,  \norm{M}_p + 1)$ is a bound
-for $L^p$ norms of the $M_n$.
+which shows that not only is $M_n$ $p$-integrable but that the
+martingale $M_n$ is
+$L^p$-bounded.  The first part of the Theorem shows that $M_n \tolp{p} M$.
 \end{proof}
 
-Martingale convergence also allows us to extend the optional stopping
+Martingale convergence also allows us to extend the optional sampling
 theorem to unbounded optional times.
 \begin{lem}Let $M_n$ be a uniformly integrable martingale and let
   $\sigma$ and $\tau$ be optional times, then $M_\tau$ is integrable
@@ -1606,7 +1839,7 @@ $ proving integrability.  Note that this was proven for arbitrary
 optional times so in particular $M_{\tau \wedge \sigma}$ is integrable
 as well.
 
-To show the optional stopping equality we first observe by the result
+To show the optional sampling equality we first observe by the result
 in the bounded case that for every $n$, $\cexpectationlong{\mathcal{F}_\sigma}{M_{\tau
     \wedge n}} = M_{\sigma
     \wedge \tau \wedge n}$ and we just need to justify taking limits
@@ -2159,10 +2392,133 @@ a cadlag version of martingales.  Say something about the nature of
 the modification (e.g. preservation of f.d.d.'s) and the fact that it
 is a modification.
 
-\begin{thm}Let $X_t$  be a $\mathcal{F}$-submartingale on $\reals_+$
+The martingale results for discrete time tell us quite a
+bit about what can happen in continuous time as well.  If we are given
+a submartingale on $\reals_+$ then we can restrict it to
+$\rationals_+$ and ask what we know about the restricted process; as
+we'll  soon see we know quite a lot!  The first issue which we examine
+gets to the heart of whether we can extrapolate from the discrete case
+to the continuous case.  If there are no restrictions on the
+regularity/continuity of sample paths then there is very little that we can say
+about what happens on $\reals_+ \setminus \rationals_+$ based on what
+is happening on $\rationals_+$.  Thus our first task is to understand
+the ways in which we can modify a continuous time submartingale to get
+a different submartingale that has some continuity in sample paths. Note here
+that the use of the word modify is quite a bit subtle: we mean to use
+the word both in its colloquial sense of \emph{how can we change
+  continuous time submartingale to make it have regular sample paths}
+as well as the technical sense of \emph{when are the changes that we
+  make to a continuous time submartingale a modification of the
+  stochastic process}.   The
+specific type of regularity we aim for is that sample paths of the
+submartingale are right continuous and have left limits.  It is
+traditional to refer to such paths as cadlag which is an acronym
+derived from the French phrase \emph{continue \`{a} droits limite
+  \`{a} gauche}.  The reader may encounter the acronym derived from
+the English rcll but it seems to be less popular.
+
+The formal development of these ideas comes with a lot of technical
+baggage so before we jump into the details let's step
+back and think about what we can expect.  We discuss the martingale
+case here even though almost all of what we say applies equally to
+submartingales.  Lets suppose that we have an
+$\mathcal{F}$-martingale $X$ on $\reals_+$.  If we restrict a
+$X$ to $\rationals_+$ then the convergence
+theorems (and at their the base the upcrossing lemma) tells us that
+almost surely on
+any bounded interval the restricted martingale has limits along all
+sequences.  Therefore at worst the restricted martingale on
+$\rationals_+$ has jump discontinuities (almost surely!).  This gives us hope that we
+can modify (in the colloquial sense) $X$ to create a new process $Y$
+on $\reals_+$ such that $Y$ is cadlag: simply define $Y_t$ for $t \in
+\reals_+$ such that $Y_t =
+\lim_{\substack{q\downarrow t \\ q \in \rationals}} X_q$.  This gives
+us a process to be sure but it isn't even $\mathcal{F}$-adapted in
+general: by the definition of $Y_t$ as limit of $X_q$ for $q > t$  we know that $Y_t$ is
+$\mathcal{F}^+_t$-measurable but it is not necessarily $\mathcal{F}_t$-measurable.  This
+introduces one of the key ideas: if we have any hope of  changing $X$
+to get an adapted cadlag $Y$ we had
+either be prepared to pass to the filtration $\mathcal{F}^+$ or start
+with a right continuous one.  
+
+We've already glossed over an issue that brings up a second key idea.
+The construction described only works \emph{almost surely}; we have to
+come up a different plan on the null set where $X_q$ is wild.  The easiest thing
+to do is just to set $Y_t \equiv 0$ when this occurs.  Since the event
+of $X$ on $\rationals_+$ being ill-behaved has probability zero whatever it is we decide
+t do won't prevent $Y$ from being a version of $X$.  The issue is that
+the event of $X$ on $\rationals_+$ being ill-behaved depends on all of
+$X_t$ for all $t \geq 0$ hence is in $\mathcal{F}_\infty$; thus as we
+modify $X_t$ to get $Y_t$, in accounting for the ill-behavedness of $X_t$
+we are changing each $Y_t$ on an event in $\mathcal{F}_\infty$ further
+destroying adaptedness of $Y$.  The good news is that we do know that
+the event in question is a null event and therefore we come to the
+second key idea: to get a cadlag $Y$ from $X$ we had either be
+prepared to add all of the null events of $\mathcal{F}_\infty$ to each
+$\mathcal{F}^+_t$ or assume that they are there to begin with.  The
+filtration that is right continuous and has null sets added is
+referred to as the \emph{partial augmentation} of $\mathcal{F}$.
+
+These first two ideas are enough to get us an adapted process $Y$ but
+more is true: $Y$ is a martingale with respect the partially
+augmented filtration.  This is not obvious and requires checking using
+discrete time discrete time results.  The remaining issue and question
+is whether $Y$ is indeed a version of $X$.  The following example shows
+that this may not be true without further hypotheses on $X$.
+
+\begin{examp}\label{CadlagNotAModification}Let $\Omega = \lbrace -1, 1 \rbrace$ with the probability
+  measure $\probability{1} = \probability{-1} = \frac{1}{2}$.  Let
+  $\mathcal{F}_t = \lbrace \Omega, \emptyset \rbrace$ for $0 \leq t
+  \leq 1$ and $\mathcal{F}_t = \lbrace \Omega, \emptyset, \lbrace 1
+  \rbrace, \lbrace -1 \rbrace\rbrace$ for $t > 1$ let 
+\begin{align*}
+X_t(\omega) &= \begin{cases}
+0 & \text{for $0 \leq t \leq 1$} \\
+\omega & \text{for $t > 1$}
+\end{cases}
+\end{align*}
+It is easy to see that $X_t$ is an $\mathcal{F}$-martingale.  Now
+define 
+\begin{align*}
+Y_t(\omega) &= \begin{cases}
+0 & \text{for $0 \leq t < 1$} \\
+\omega & \text{for $t \geq 1$}
+\end{cases}
+\end{align*}
+and note that $Y_1$ is not $\mathcal{F}_1$-measurable.  However, it is
+easy to see that 
+ $\mathcal{F}^+_t = \lbrace \Omega, \emptyset \rbrace$ for $0 \leq t
+  < 1$,  $\mathcal{F}^+_t = \lbrace \Omega, \emptyset, \lbrace 1
+  \rbrace, \lbrace -1 \rbrace\rbrace$ for $t \geq 1$ and 
+  $Y_t$ is an $\mathcal{F}^+$-martingale.  Note however that
+  $\probability{X_1 = Y_1} = 0 \neq 1$ and thus $Y$ is not a version
+  of $X$.
+
+Note that $X$ is not a $\mathcal{F}^+$-martingale (or
+$\mathcal{F}^+$-sub/supermartingale) as for $t > 1$ we have
+$\cexpectationlong{\mathcal{F}^+_1}{X_t} = X_t$ and therefore
+$\cexpectationlong{\mathcal{F}^+_1}{X_t}> X_1$ with probability $1/2$
+(i.e. when $\omega = 1$)
+and $\cexpectationlong{\mathcal{F}^+_1}{X_t} < X_1$ with probability
+$1/2$ (i.e. when $\omega = -1$).
+\end{examp}
+
+Example \ref{CadlagNotAModification} shows that there is a limit to
+what we can accomplish by taking a martingale with respect to an
+arbitrary filtration and trying find a version that is cadlag.  
+Nonetheless, the method we've outlined to make a cadlag process $Y$
+from an arbitrary process $X$ can be shown to result in a version if
+$X$ is assumed to be a martingale with respect to the the augmented
+filtration in the first place (plus some extra conditions if $X$ is
+only assumed to be a submartingale).  Thus the impediment to the
+existence of a cadlag version in Example \ref{CadlagNotAModification}
+is in the final comment about $X$ not being a martingale with respect
+to the right continuous filtration. 
+
+\begin{thm}\label{CadlagModificationContinuousMartingale}Let $X_t$  be a $\mathcal{F}$-submartingale on $\reals_+$
   and let $Y_q$ denote the restriction to $\rationals_+$.  The there
   exists a set $A \subset \mathcal{F}_\infty$ with $\probability{A}=1$ on which
-  $\lim_{q \to t^+} Y_q$ and $\lim_{a \to t_-} Y_q$ exist for all $t
+  $\lim_{q \to t^+} Y_q$ and $\lim_{a \to t^-} Y_q$ exist for all $t
   \in \reals_+$.  If we
   define 
 \begin{align*}
@@ -2174,6 +2530,9 @@ Z_t(\omega) =
 \end{align*} 
 then $Z_t$ is a cadlag
   $\overline{\mathcal{F}_+}$-submartingale.
+If $\mathcal{F}$ is right continuous then $X^t$ has a cadlag
+modification that is a submartingale if and only if $t \mapsto
+\expectation{X_t}$ is right continuous.
 \end{thm}
 \begin{proof}
 Pick $N \in \naturals$ and note that since $Y^+_q$ is a submartingale
@@ -2294,7 +2653,86 @@ Claim 1 and the countable index set $L^p$ inequality we get the second result.
 TODO:
 \end{proof}
 
-\begin{thm}\label{OptionalStoppingContinuous}Let $X_t$ be an $\mathcal{F}$-submartingale on $\reals_+$
+\begin{thm}[$L^1$ Submartingale Convergence
+  Theorem]\label{MartingaleConvergenceBoundedL1Continuous}Let $X_t$ be a cadlag
+  $\mathcal{F}$-submartingale on $\reals_+$ such that $\sup_{0 \leq t
+    < \infty} \norm{X_t}_1 <
+  \infty$ then there exists an $X \in L^1$ such that $X_t \toas X$ a.s.
+\end{thm}
+\begin{proof}
+Restricting $X_t$ to $\rationals_+$ and applying Theorem
+\ref{MartingaleConvergenceBoundedL1Discrete} we know that there
+exists $X$ such that $\lim_{\substack{q \to \infty \\ q \in
+    \rationals_+}} X_q = X$ almost surely.  By right continuity of $X$
+we also get that $\lim_{t \to \infty} X_t = X$ almost surely (let
+$\epsilon > 0$ be given, for
+almost every $\omega$ we pick $N_\omega$ such that $\abs{X_q(\omega) -
+  X(\omega)} \leq \epsilon$ for all $q > N_\omega$ then for any $t >
+N_\omega$ we have $\abs{X_t(\omega) -
+  X(\omega)} = \lim_{\substack{q \downarrow t \\ q \in \rationals_+}} \abs{X_t(\omega) -
+  X(\omega)} \leq \epsilon$).
+\end{proof}
+
+
+NOTE: It is also true that a UI submartingale is $L^1$ convergent
+but it is not true that an $L^1$ convergence submartingale must be
+UI (while that is true in discrete time).  Make this into a result
+somewhere and provide the counterexample (I am pretty sure Rogers and
+Williams has one).
+
+\begin{thm}[Martingale Closure
+  Theorem]\label{L1MartingaleConvergenceTheoremContinuous}Let $X_t$ be
+  a cadlag martingale then the following are equivalent
+\begin{itemize}
+\item[(i)]$X_t$ is uniformly
+  integrable
+\item[(ii)]there exists an integrable $X$  such that
+  $X_t \tolp{1} X$
+\item[(iii)]there exists an integrable $X$ such that
+  $X_t = \cexpectationlong{\mathcal{F}_t}{X}$ almost surely.
+\end{itemize}
+\end{thm}
+\begin{proof}
+Given the result Theorem
+\ref{MartingaleConvergenceBoundedL1Continuous}, the proof is
+essentially identical to the discrete time case.  
+To see (i) implies (ii) we know from Lemma
+\ref{UniformIntegrabilityProperties} that $X_t$ uniformly integrable
+implies $L^1$ boundedness, hence we can apply Theorem
+\ref{MartingaleConvergenceBoundedL1Continuous}
+to conclude the existence of an integrable $X$ such that $X_t \toas
+X$.  However almost sure convergence implies convergence in
+probability (Lemma \ref{ConvergenceAlmostSureImpliesInProbability})
+which together with uniform integrability implies $X_t \tolp{1} X$
+(Lemma \ref{LpConvergenceUniformIntegrability}).
+
+To see that (ii) implies (iii) from $X_t \tolp{1} X$ we get for any
+$\sigma$-algebra $\mathcal{G}$,
+\begin{align*}
+\lim_{t \to \infty}
+\norm{\cexpectationlong{\mathcal{G}}{X_t}
+    -\cexpectationlong{\mathcal{G}}{X} }_1 &\leq
+\lim_{t \to \infty}\expectation{\cexpectationlong{\mathcal{G}}{\abs{
+      X_t- X}}} = \lim_{t \to \infty}\expectation{\abs{X_t -X}} = 0
+\end{align*}
+and therefore for any fixed $s \geq 0$ and the martingale property
+$X_s = \cexpectationlong{\mathcal{F}_s}{X_t}$ a.s. we have
+\begin{align*}
+\norm{X_s - \cexpectationlong{\mathcal{F}_s}{X}}_1 &\leq \lim_{t \to
+  \infty} \norm{X_s -
+  \cexpectationlong{\mathcal{F}_s}{X_t}}_1  + \lim_{t \to
+  \infty} \norm{\cexpectationlong{\mathcal{F}_s}{X_t}-
+  \cexpectationlong{\mathcal{F}_s}{X}}_1 \\
+&= \lim_{t \to
+  \infty} \norm{\cexpectationlong{\mathcal{F}_s}{X_t}-
+  \cexpectationlong{\mathcal{F}_s}{X}}_1=0
+\end{align*}
+and we get that $X_s = \cexpectationlong{\mathcal{F}_s}{X}$ a.s.
+
+To see that (ii) implies (iii), we simply invoke Corollary \ref{ConditionalExpectationsUniformlyIntegrable}.
+\end{proof}
+
+\begin{thm}\label{OptionalSamplingContinuous}Let $X_t$ be an $\mathcal{F}$-submartingale on $\reals_+$
   with $X_t$ and $\mathcal{F}$ right continuous, let $\sigma$ and
   $\tau$ be optional times with $\tau$ bounded, then $X_\tau$ is
   integrable and
@@ -2316,8 +2754,8 @@ times such that $\tau_n \downarrow \tau$ and $\sigma_n \downarrow
 furthermore $\mathcal{F}_\sigma = \cap_n \mathcal{F}_{\sigma_n}$ (Lemma
 \ref{InfSupStoppedFiltration} and right
 continuity of $\mathcal{F}$).
-We can now apply the Optional Stopping Theorem Corollary
-\ref{OptionalStoppingSubmartingaleDiscrete} to conclude that for each
+We can now apply the Optional Sampling Theorem Corollary
+\ref{OptionalSamplingSubmartingaleDiscrete} to conclude that for each
 $m,n>0$,
 \begin{align*}
 \cexpectationlong{\mathcal{F}_{\sigma_m}}{X_{\tau_n}} &\geq X_{\tau_n \wedge
@@ -2344,7 +2782,7 @@ $\mathcal{F}_{\tau_{-n}}$ for every $n < 0$
 then $X_{\tau_{-n}}$ is an $\mathcal{F}_{\tau_{-n}}$-submartingale on
 $\integers_-$.  The fact that $X_{\tau_{-n}}$ is a submartingale
 follows from the fact that $\tau_n$ is decreasing and Optional
-Stopping (Corollary \ref{OptionalStoppingSubmartingaleDiscrete})
+Sampling (Corollary \ref{OptionalSamplingSubmartingaleDiscrete})
 together
 with our awkward indexing
 \begin{align*}
@@ -2460,7 +2898,7 @@ follows from Lemma \ref{LimitsOfMeasurableMetricSpace}.
 \end{align*}
 \end{defn}
 
-\begin{lem}The set $\mathcal{P}\mathcal{M}$ is a sub $\sigma$-algebra
+\begin{lem}\label{ProgressivelyMeasurableProcesses}The set $\mathcal{P}\mathcal{M}$ is a sub $\sigma$-algebra
   of $\mathcal{A} \otimes \mathcal{B}(\reals_+)$.  A process $X :
   \Omega \times \reals_+ \to S$ is progressive if and only if $X$ is
   $\mathcal{P}\mathcal{M}$-measurable, in particular a progressive
@@ -2505,6 +2943,7 @@ s) \in \Omega \times [0,t] \mid X_s(\omega) \in A \rbrace
 \end{align*}
 which shows that $X$ is progressive if and only if it is $\mathcal{P}\mathcal{M}$-measurable.
 \end{proof}
+
 \begin{examp}The following is an example of a measurable adapted process that is not
   progressively measurable.  Take $\Omega=[0,1]$ and $S = \reals$ all
   supplied with the Borel $\sigma$-algebra and Lebesgue measure.

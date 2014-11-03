@@ -1,7 +1,4 @@
 \section{Convergence of Random Variables}
-TODO: a.s. convergence, convergence in probability
-and weak convergence (convergence in distribution), tightness of
-distribution.
 \begin{defn}Let $(S,d)$ be a $\sigma$-compact metric space with the Borel
   $\sigma$-algebra and let $\xi_n$ be a sequence of random elements in
   $S$.  Let $\xi$ be a random element in $S$.
@@ -34,13 +31,40 @@ TODO: Note that convergence in distribution is really a property of
 the distribution of the random variables and not the random variables
 themselves.
 
- For the case of random variables there is another strong form of
+For the case of random variables there is another strong form of
 convergence that is quite useful.
 \begin{defn}If $\xi, \xi_1, \xi_2, \dots$ are random variables then $\xi_n$ \emph{converges in $L^p$} to $\xi$ if 
 $\lim_{n \to \infty} \expectation{\abs{\xi_n - \xi}^p} = 0$.
 We write $\xi_n \tolp{p} \xi$ to denote convergence in $L^p$.  We may
 also call convergence in $L^p$ \emph{convergence in $p^{th}$ mean}.
 \end{defn}
+
+Limits with respect to these forms of convergence are essentially
+unique.
+\begin{prop}\label{AlmostSureUniquenessOfLimits}Suppose that $\xi_n$ is a sequence of random elements and
+  suppose $\xi$ and $\eta$ are random elements such that $\xi_n \toas
+  \xi$ and $\xi_n \toas \eta$ or $\xi_n \toprob
+  \xi$ and $\xi_n \toprob \eta$.  It follows that $\xi = \eta$
+  almost surely.
+\end{prop}
+\begin{proof}
+For the case  of almost sure convergence this follows from by taking
+the intersection of almost sure events to see that almost surely
+$\xi_n \to \xi$ and $\xi_n \to \eta$.  By uniqueness of limits in $S$
+we have $\xi = \eta$ almost surely.
+
+For the case of convergence in probability, let $\epsilon > 0$ be
+given and note that 
+\begin{align*}
+\probability{ d(\xi, \eta) > \epsilon} &\leq \probability{ d(\xi,
+  \xi_n )  + d(\xi_n , \eta) > \epsilon} \leq  \probability{ d(\xi,
+  \xi_n ) > \epsilon/2 } + \probability{ d(\xi_n , \eta) > \epsilon/2} 
+\end{align*}
+Now take the limit as $n \to \infty$ to conclude that $\probability{
+  d(\xi, \eta) > \epsilon} = 0$.  By continuity of measure Lemma
+\ref{ContinuityOfMeasure} we have $\probability{d(\xi, \eta) > 0} =
+\lim_{n \to \infty} \probability{d(\xi, \eta) > 1/n} = 0$.
+\end{proof}
 
 TODO: Motivation for concept of almost sure convergence via Law of
 Large Numbers.  Think of modeling coin tossing using random

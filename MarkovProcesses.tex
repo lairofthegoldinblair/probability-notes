@@ -230,7 +230,106 @@ $\nu$ and transition kernels $\mu_{s,t}$.
 \end{itemize} 
 \end{thm}
 \begin{proof}
-TODO: Define FDDs, show consistency and use Kolmogorov extension theorem
+This is an application of the Daniell-Kolmogorov Theorem.  We first
+define the finite dimensional distributions and show that they form a
+projective family.  For every $n \in \naturals$ and $0 \leq t_1 \leq
+\dotsb \leq t_n$ we define
+\begin{align*}
+\nu_{t_1, \dotsc, t_n} &= \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
+\otimes \dotsb \otimes \mu_{t_{n-1}, t_n}
+\end{align*}
+Let $B \in \mathcal{S}^{\otimes n-1}$ and let $1 \leq k \leq n$.
+Define
+\begin{align*}
+B_k &= \lbrace (x_1, \dotsc, x_n) \in S^n \mid (x_1, \dotsc, x_{k-1},
+x_{k+1}, \dotsc, x_n) \in B \rbrace
+\end{align*}
+and calculate
+\begin{align*}
+&\nu_{t_1, \dotsc, t_n}(B_k) = ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
+\otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(B_k) \\
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B_k}(s_1,
+    \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb
+\right] \, \mu_{t_1, t_2}(s_1, ds_2) \right ] \, \nu \mu_{0,
+t_1}(ds_1) \\
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
+    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_1, t_2}(s_1, ds_2) \right ] \, \nu \mu_{0, t_1}(ds_1)
+\end{align*}
+
+The point here is that for every fixed $s_1, \dotsc, s_{k-1}$, the inner integral
+\begin{align*}
+\int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
+    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_k, t_{k+1}}(s_k, ds_{k+1}) 
+\end{align*}
+is a function of $s_{k+1}$ only.  From the Chapman-Kolmogorov relation
+$\mu_{t_{k-1}, t_k} \mu_{t_{k}, t_{k+1}}  = \mu_{t_{k-1}, t_{k+1}}$ we
+know that for any function of $f : S \to \reals$ we have 
+\begin{align*}
+\int \left [
+  \int
+f(z) \, \mu_{t_{k}, t_{k+1}} (y, dz) \right ] \, \mu_{t_{k-1}, t_k}
+(x, dy) &= \int
+f(z) \, \mu_{t_{k-1}, t_{k+1}} (x, dz) 
+\end{align*}
+which when applied to the inner integral above yields
+\begin{align*}
+&\int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
+    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
+    \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_{k-1},
+t_{k}}(s_{k-1}, ds_{k}) \\
+&=\int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
+    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
+    \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \,
+\mu_{t_{k-1}, t_{k+1}}(s_{k-1}, ds_{k+1})
+\end{align*}
+for every fixed $s_1, \dotsc, s_{k-1}$.  Now we can use this to
+conclude that 
+\begin{align*}
+\nu_{t_1, \dotsc, t_n}(B_k) &= ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
+\otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(B_k) \\
+&= ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2} \otimes \dotsb \otimes
+\mu_{t_{k-1}, t_{k+1}} \otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(B)
+\\
+&=\nu_{t_1, \dotsc, t_{k-1}, t_{k+1}, \dotsc, t_n}(B)
+ \end{align*}
+and we have show that the $\nu_{t_1, \dotsc, t_n}$ are a projective
+family.
+Now we can apply the Daniell-Kolmogorov Theorem
+\ref{DaniellKolmogorovExtension} to conclude that there is an $S$
+valued process $X$ on $T$ such that 
+\begin{align*}
+\mathcal{L}(X_{t_1}, \dotsc, X_{t_n}) = \nu_{t_1, \dotsc, t_n} &= \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
+\otimes \dotsb \otimes \mu_{t_{n-1}, t_n}
+\end{align*}
+for all $n \in \naturals$ and $0 \leq t_1 \leq \dotsb \leq t_n$.  The
+case $n=1$ and $t_1 = 0$ shows us that $\mathcal{L}(X_0) = \nu
+\mu_{0,0} = \nu$.
+
+For every $t \in T$ define $\mathcal{F}_t = \sigma(X_s ; s \leq t)$ to
+be filtration induced by $X$.  We must show that $X_t$ is a Markov process with transition
+kernels $\mu_{s,t}$ (the fact that the initial distribution is $\nu$
+was already noted).  Let $s \leq t$ be given and suppose that we have
+$s_1 \leq \dotsb \leq s_n = s$.  Pick $B \in \mathcal{S}^{\otimes n}$
+and $C \in \mathcal{S}$ and calculate using the FDDs of $X_t$ and the
+expectation rule (Lemma \ref{ExpectationRule})
+\begin{align*}
+&\probability{(X_{s_1}, \dotsc, X_{s_n}) \in B ; X_t \in C}  = \probability{(X_{s_1}, \dotsc, X_{s_n}, X_t) \in B \times C} =
+\nu_{s_1, \dotsc, s_n, t}(B \times C) \\
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B}(u_1,
+    \dotsc, u_n) \characteristic{C}(u_{n+1})\, \mu_{s,t}(u_{n}, du_{n+1}) \right] \dotsb
+\right] \, \mu_{s_1, s_2}(u_1, du_2) \right ] \, \nu \mu_{0,
+s_1}(du_1) \\
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B}(u_1,
+    \dotsc, u_n) \mu_{s,t}(u_{n}, C)\, \mu_{s_{n-1},s_n}(u_{n-1}, du_{n}) \right] \dotsb
+\right] \, \mu_{s_1, s_2}(u_1, du_2) \right ] \, \nu \mu_{0,
+s_1}(du_1) \\
+&=\expectation{\mu_{s,t}(X_s, C) ; (X_{s_1}, \dotsc, X_{s_n}) \in B}
+\end{align*}
+Sets of the form $(X_{s_1}, \dotsc, X_{s_n}) \in B$ for $s_1 \leq
+\dotsb \leq s_n=s$ are a $\pi$-system generating $\mathcal{F}_s$ and
+therefore by a monotone class argument (specifically Lemma \ref{ConditionalExpectationExtension}) we may
+conclude that $\cexpectationlong{\mathcal{F}_s}{X_t \in \cdot} =
+\mu_{s,t}(X_s, \cdot)$ a.s.
 \end{proof}
 
 \begin{defn}Suppose that a family of transition kernels $\mu_{s,t}$ is

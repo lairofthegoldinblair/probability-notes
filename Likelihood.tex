@@ -1489,3 +1489,18 @@ p(\mu \mid \bold{x}) &\propto \frac{1}{\sqrt{2\pi}\sigma_0} e^{-(\mu -
   \mu_0)^2/2\sigma_0^2} \cdot \frac{1}{(2 \pi)^{n/2}  \sigma^n} e^{-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2}
 \end{align*}
 \end{examp}
+
+A generalization of the above to a linear regression scenario is
+\begin{examp}\label{BayesianUnivariateLinearRegression}Here we have a
+  model $y = X^t \beta + \epsilon$ with 
+\begin{itemize}
+\item[(i)]  $\epsilon$ is $N(0, \sigma^2)$ 
+\item[(ii)]  $1/\sigma^2$ is $\Gamma(\alpha, \beta)$ with $\alpha$ and
+  $\beta$ known.
+\item[(iii)] $\beta$ is $N(\mu_0, \sigma^2 \Lambda_0^{-1})$ with
+  $\mu_0$ and $\Lambda_0$ known
+\end{itemize}
+We suppose that we are given independent observations $X_1, \dotsc,
+X_n$ which we assemble into an observation matrix $X$.  
+TODO: Finish
+\end{examp}

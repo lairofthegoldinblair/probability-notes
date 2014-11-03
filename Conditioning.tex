@@ -788,7 +788,7 @@ identity map.
 \end{lem}
 \begin{proof}
 Let $A \in \overline{\mathcal{F}}$.  We know from Lemma ??? that there
-exist $A_\pm \in mathcal{F}$ such that $A_- \subset A \subset A_+$ and
+exist $A_\pm \in \mathcal{F}$ such that $A_- \subset A \subset A_+$ and
 $\probability{A_+ \setminus A_-} = 0$. It is clear that for any $\xi
 \geq 0$ we have 
 \begin{align*}
@@ -1583,8 +1583,8 @@ $\mu$.  Now by Theorem \ref{Disintegration} and the ordinary Jensen
 Inequality (Lemma \ref{Jensen}) applied pointwise we know that 
 \begin{align*}
 \varphi(\cexpectationlong{\mathcal{F}}{\xi}) &= 
-\varphi \left( \int f(s) \, \mu(ds) \right) \leq \int \varphi (f(s))
-\, \mu(ds) = \cexpectationlong{\mathcal{F}}{\varphi(f(\xi))}
+\varphi \left( \int s \, \mu(ds) \right) \leq \int \varphi (s)
+\, \mu(ds) = \cexpectationlong{\mathcal{F}}{\varphi(\xi)}
 \end{align*}
 
 TODO: The strictly convex/equality case
@@ -1624,7 +1624,54 @@ get a conditional densities $f(x,y)/f_\xi(x)$ and $f(x,y)/f_\eta(y)$.
 TODO: Tie this back to conditional distributions as defined in the
 general case (this is an exercise in Kallenberg for example).
 
-We've seen that given a specified distribution we can always find a
+For random vectors, the existence of regular versions allows us to
+bring the theory of characteristic functions to bear on problems.
+
+\begin{lem}\label{ConditionalCharacteristicFunctions}Let $\xi$ be a random vector in $\reals^n$ and let
+  $\mathcal{F}$ be a $\sigma$-algebra.  Suppose that $\phi : \reals^n
+  \times \Omega \to \complexes$ is a function such that for each fixed
+  $u \in \reals^n$ we have
+\begin{align*}
+\phi(u, \omega) &= \cexpectationlong{\mathcal{F}}{e^{i\langle u,\xi
+    \rangle}} \text{ a.s.}
+\end{align*}
+If for every $\omega \in \Omega$ there is a probability measure
+$\mu(\omega)$ on $(\reals^n, \mathcal{B}(\reals^n))$ such that
+$\phi(u, \omega) = \int e^{i\langle u, x \rangle} \, \mu(\omega, dx)$
+then it follows that for every $A \in \mathcal{B}(\reals^n)$ we have
+\begin{align*}
+\cprobability{\mathcal{F}}{\xi \in A}(\omega) &= \mu(\omega, A) \text{ a.s.}
+\end{align*}
+\end{lem}
+\begin{proof}
+By Theorem \ref{ExistenceConditionalDistribution} we know that we may
+chose a regular version $\nu$ for $\cprobability{\mathcal{F}}{\xi \in
+  \cdot}$.  By Theorem \ref{Disintegration} we know that for every
+fixed $u \in \reals^n$ we have
+\begin{align*}
+\cexpectationlong{\mathcal{F}}{e^{i \langle u, \xi \rangle}} &=
+\phi(u, \omega) = \int
+e^{i \langle u, x \rangle} \, \nu(\omega, dx)
+\end{align*} 
+almost surely and by
+taking a countable intersection of almost sure events we may assume
+that $\phi(u, \omega) = \int
+e^{i \langle u, x \rangle} \, \nu(\omega, dx)$ for all $u \in
+\rationals^n$ almost surely.  For each fixed $\omega$, both sides of
+this equation are characteristic functions of a probability measure
+hence each side is uniformly continuous (Lemma
+\ref{CharacteristicFunctionBoundedAndContinuous}) and therefore
+equality on $\rationals^n$ can be upgraded to equality on $\reals^n$.
+Now the characteristic function uniquely identifies the underlying
+probability measure Theorem
+\ref{EqualCharacteristicFunctionEqualMeasures} and therefore 
+\begin{align*}
+\mu(\omega, \cdot) = \nu(\omega, \cdot) =
+\cprobability{\mathcal{F}}{\xi \in A}(\omega) \text{ a.s.}
+\end{align*}
+\end{proof}
+
+ We've seen that given a specified distribution we can always find a
 random variable with that specfied distribution.  Moreover, we know
 that if we allow ourselves to to extend the probability space then we
 can construct such a random variable to be independent of any existing
@@ -1632,12 +1679,11 @@ random elements (or $\sigma$-algebras).  We now turn our attention to
 the analogous problem space for conditional distributions.  The
 simplest such result shows that given a random element and a
 prescribed probability kernel we can always find a second random
-element whose conditional distribution is the kernel.
+element whose conditional distribution given the first random element is the kernel.
 \begin{lem}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
   spaces, $\mu : T \times \mathcal{S} \to \reals$ be a
   probability kernel and $\eta$ be a random element in $T$.  There
-  exists an extension $\hat{\Omega}$ and a random element $\xi$ in
-  $\hat{\Omega} \to S$
+  exists an extension $\hat{\Omega}$ and a random element $\xi : \hat{\Omega} \to S$
   such that $\cprobability{\eta}{\xi \in \cdot} = \mu(\eta, \cdot)$
   a.s.   and $\cindependent{\xi}{\zeta}{\eta}$ for every random element
   $\zeta$ defined on $\Omega$.
