@@ -1,6 +1,6 @@
-\section{Stochastic Integration}
+\chapter{Stochastic Integration}
 
-\subsection{Local Martingales}
+\section{Local Martingales}
 
 \begin{defn}Let $M_t$ be an $\mathcal{F}$-adapted process, we say $M$ is a \emph{local martingale} if there exists a sequence of optional times $\tau_n$ such that $\tau_n \uparrow \infty$ a.s. and $M^{\tau_n} - M_0$ is an $\mathcal{F}$-martingale for all $n$.  We say that $\tau_n$ is a \emph{localizing sequence} for $M$.
 \end{defn}
@@ -75,7 +75,7 @@ Since $V_t$ is bounded we can apply Dominated Convergence, the martingale proper
 and from this we conclude that $M_t = 0$ a.s.  Taking the union of a countable number of sets of probability zero we see that almost surely $M_q = 0$ for all $q \in \rationals_+$.  Since $M_t$ is continuous we conclude that almost surely $M_t = 0$ for all $t \in \reals_+$.
 \end{proof}
 
-\subsection{Stieltjes Integrals}
+\section{Stieltjes Integrals}
 
 There are a few simple facts about Stieltjes integrals that we want to describe in the stochastic setting as they will play a part in the general theory of stochastic integration.  First we record the formula for the restriction of a Lebesgue-Stieltjes measure to an interval.
 \begin{lem}\label{RestrictionOfLebesgueStieltjesMeasure}Let $F$ be a right continuous function of bounded variation on $[a,b]$, let $[c,d] \subset [a,b]$.  If we let $\mu_F$ denote the signed Lebesgue-Stieltjes measure associated with $F$ and we let
@@ -154,7 +154,7 @@ We also want to record the behavior of a stochastic Stieltjes integral under sto
 This follows immediately by writing $\int_0^\infty \characteristic{[0,t]} \characteristic{[0,\tau]} V_s \, dF_s$ and pointwise using the fact that $\mu_F \mid_{[0, \tau]} = \mu_{F^\tau}$ (Lemma \ref{RestrictionOfLebesgueStieltjesMeasure}).
 \end{proof}
 
-\subsection{Stochastic Integrals}
+\section{Stochastic Integrals}
 
 The process of defining stochastic integrals follows the standard path of defining integrals for a subclass of integrands for which the definition and existence of the associated integral is easy to see.  Then one uses approximations to extend the class of integrands.  We begin by defining that initial subclass of integrands and define integrals of them with respect to an arbitrary martingale.
 \begin{defn}Let $\tau_1 \leq \tau_2 \leq \dotsb$ be optional times, let $\xi_1, \xi_2, \dotsc$ be bounded random variables and assume $\xi_k$ is  $\mathcal{F}_{\tau_k}$-measurable.  Then we say that 
@@ -319,7 +319,7 @@ To see that we have an inner product on $\mathcal{M}^2$, first observe that if $
 We now show that $\mathcal{M}^2$ is complete.  Suppose $M^1, M^2, \dotsc$ is Cauchy in $\mathcal{M}^2$, then $M^1_\infty, M^2_\infty, \dotsc$ is Cauchy in $L^2$ and therefore has a limit $\xi$ in $L^2$ that is $\mathcal{F}_\infty$-measurable.  Define $M_t = \cexpectationlong{\mathcal{F}_t}{\xi}$ so we know that $M_t$ is a martingale and $M_\infty = \xi$ a.s.  TODO: Do we know at this point that $M$ is $L^2$ bounded?  Now by the Doob $L^2$ inequality Lemma \ref{DoobLpInequalityContinuous} applied to the closed martingale $M_t$ on $[0,\infty]$ we have $\norm{\sup_{0 \leq s \leq \infty} (M_s^n - M_s)}_2 \leq 2 \norm{M^n_\infty - M_\infty}_2$.  From this we get that $\lim_{n \to \infty} \norm{\sup_{0 \leq s \leq \infty} (M_s^n - M_s)}_2 = 0$ hence $\sup_{0 \leq s \leq \infty} (M_s^n - M_s) \toprob 0$ (Lemma \ref{ConvergenceInMeanImpliesInProbability}) and therefore $\sup_{0 \leq s \leq \infty} (M_s^n - M_s) \toas 0$ along a subsequence (Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence}) which shows that $M$ is has almost surely continuous sample paths (Lemma \ref{UniformLimitContinuousFunctionsIsContinuous}).
 \end{proof}
 
-\subsection{Quadratic Variation}
+\section{Quadratic Variation}
 The crux of the problem in defining stochastic integrals is the fact that sample paths of continuous martingales almost surely have infinite total variation and therefore Lebesgue-Stieltjes integrals cannot be defined.   
 
 \begin{lem}Let $M$ and $N$ be continuous local martingales and let $\tau$ be an optional time, then $M^\tau \left( N - N^\tau \right)$ is a local martingale.
@@ -1045,7 +1045,7 @@ By continuity of $X$ and $Y$ we see that $X^n \toas X$ and $X^n_t\leq X^*_t< \in
 \end{align*}
 \end{proof}
 
-\subsection{Approximation By Step Processes}
+\section{Approximation By Step Processes}
 
 We defined the stochastic integral in an elegant but somewhat abstract way as the representative of a linear functional on a Hilbert space.  The uniqueness property of the integral showed us that this definition was consistent with intuitively clear defintion of the stochastic integral for step process integrands as Riemann sums.  The uniqueness property of the stochastic integral has shown itself to be a very useful technical tool but is lacking somewhat in intuitive appeal.  We repair this deficiency by showing that the continuity properties of the stochastic integral also characterize the extension from step process integrands.  To see this requires that we understand the approximation by step processes in the spaces $L(M)$.  We note that these approximation results also lead to an alternative path to defining the stochastic integral in the first place.  
 
@@ -1200,7 +1200,7 @@ for every $T > 0$,
 and thus $\sup_{0 \leq T < \infty} \lim_{m \to \infty} \expectation{\int_0^T \abs{V_s - V^{(n_m,m)}_s}^2 \, dA_s} = 0$ and we are finally done.
 \end{proof}
 
-\subsection{Brownian Motion and Continuous Martingales}
+\section{Brownian Motion and Continuous Martingales}
 
 The theme of this section is the centrality of Brownian motion in the universe of continuous martingales.  We demonstrate through several different constructions that all continuous martingales can be derived from (or transformed into) a suitable Brownian motion.  We start with a slightly different problem.  Suppose we are given a Brownian motion, we ask whether we can identify a class of continuous martingales that can be constructed from it.
 
@@ -1343,7 +1343,7 @@ For any $A \in \tilde{\mathcal{F}}_0 = \mathcal{F}_S$ we have by the martingale 
 which shows us that $\cexpectationlong{\mathcal{F}_S}{e^{i \langle u, \tilde{B}_{T-S} \rangle}} = e^{-\frac{1}{2} (T-S) \langle u, u \rangle}$.  We may now apply uniqueness of conditional characteristic functions Lemma \ref{ConditionalCharacteristicFunctions} and Theorem \ref{GaussianVectorCharacteristicFunction} to conclude that the conditional probability distribution $\cprobability{\mathcal{F}_S}{ (B_{T}^1 - B_S^1,\dotsc, B_{T}^d - B_S^d) \in \cdot}$ is centered Gaussian with covariance matrix $(T-S)$ times the identity. As the conditional probability distribution is deterministic and we see that $B_T -B_S$ is independent of $\mathcal{F}_S$ as well.
 \end{proof}
 
-\subsubsection{Girsanov Theory}
+\subsection{Girsanov Theory}
 
 We now begin an investigation of how continuous local martingales behave as the underlying probability measure is changed.  
 
@@ -1370,7 +1370,7 @@ TODO: Is it also that case that $\tilde{B}_t$ is not a continuous local $\tilde{
 One of the nasty things about developing the theory in this way (and having a result that doesn't hold for filtrations that satisfy the usual conditions) is the fact that we have all sorts of results that do assume the usual conditions and it is not terribly clear what the ramifications of losing the assumption are.  Bichteler has identified an extension procedure that is more conservative than the imposition of the usual conditions (his \emph{natural} conditions) that seems to preserve all the important results but also allows an extension of $\tilde{P}$ such that $\tilde{B}_t$ will be a Brownian motion on all of $[0,\infty)$ with respect to $\tilde{P}$.  Note that the example of the event $\lbrace \lim_{t \to \infty} B_t/t = \mu \rbrace$ shows that such an extension will not be mutually absolutely continuous but it will be locally so.
 
 We need a preliminary result that says when a non-negative cadlag supermartingale hits $0$ it is absorbed.  The reader should convince herself that this is expected: since a supermartingle is non-increasing on average, once it hits zero any attempt to return to a positive value would have to be offset by corresponding negative value.  Making sense of the intuition requires an argument using optional times.  
-\begin{lem}\label{PositiveSupermartingaleAbsorption}Let $X \geq 0$ be a cadlag $\mathcal{F}$-supermartingale (not necessarily satisfying the usual conditions) and let $\tau = \inf \lbrace t \mid X_{t-} \wedge X_t =0 \rbrace$, then $X \equiv 0$ a.s. on $[\tau, \infty)$.
+\begin{lem}\label{PositiveSupermartingaleAbsorption}Let $X \geq 0$ be a cadlag $\mathcal{F}$-supermartingale (with $\mathcal{F}$ not necessarily satisfying the usual conditions) and let $\tau = \inf \lbrace t \mid X_{t-} \wedge X_t =0 \rbrace$, then $X \equiv 0$ a.s. on $[\tau, \infty)$.
 \end{lem}
 \begin{proof}
 First note that $X$ is also an $\mathcal{F}^+$-supermartingale.  To see this, pick for any $s < t$ pick a sequence $s_m \downarrow s$ and use the Levy Downward Theorem
@@ -1421,7 +1421,7 @@ Thus we see that $X_t$ is a $Q$-martingale if and only if $Z_t X_t$ is a $P$-mar
 \end{align*}
 and since $\cup_{t \geq 0} \mathcal{F}_t$ is a $\pi$-system generating $\mathcal{F}_\infty$ we know that $Z_\infty \cdot P = Q$ on $\mathcal{F}_\infty$ by monotone classes (specifically Lemma \ref{UniquenessOfMeasure}).  On the other hand suppose that $Q \ll P$ on $\mathcal{F}_\infty$ and write $Q = \xi \cdot P$.  Then since $\mathcal{F}_t \subset \mathcal{F}_\infty$ we know that for all $t \geq 0$ and $A \in \mathcal{F}_t$ we have $Q(A) = \expectation{\xi ; A} = \expectation{\cexpectationlong{\mathcal{F}_t}{\xi} ; A}$ which shows $Z_t = \cexpectationlong{\mathcal{F}_t}{\xi}$ by the $P$-almost sure uniqueness of the Radon-Nikodym derivative.  This shows that $Z_t$ is uniformly integrable.
 
-We now show (ii).  Note that since we know $Z_t$ is a martingale and we have assumed $\mathcal{F}$ is right continuous we can apply Theorem \ref{CadlagModificationContinuousMartingale} we may assume that we have taken a cadlag version of $Z_t$.  If we let $\tau$ be an optional time then we fix $t \geq 0$ and assume $A \in \mathcal{F}_{\tau \wedge t} \subset \mathcal{F}_t$ and apply Optional Sampling to see that 
+We now show (ii).  If we let $\tau$ be an optional time then we fix $t \geq 0$ and assume $A \in \mathcal{F}_{\tau \wedge t} \subset \mathcal{F}_t$ and apply Optional Sampling to see that 
 \begin{align*}
 Q(A) = \expectation{Z_t ; A} = \expectation{\cexpectationlong{\mathcal{F}_{\tau\wedge t}}{Z_t} ; A} =  \expectation{Z_{\tau \wedge t}; A} 
 \end{align*}

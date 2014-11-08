@@ -2446,7 +2446,7 @@ The construction described only works \emph{almost surely}; we have to
 come up a different plan on the null set where $X_q$ is wild.  The easiest thing
 to do is just to set $Y_t \equiv 0$ when this occurs.  Since the event
 of $X$ on $\rationals_+$ being ill-behaved has probability zero whatever it is we decide
-t do won't prevent $Y$ from being a version of $X$.  The issue is that
+to do won't prevent $Y$ from being a version of $X$.  The issue is that
 the event of $X$ on $\rationals_+$ being ill-behaved depends on all of
 $X_t$ for all $t \geq 0$ hence is in $\mathcal{F}_\infty$; thus as we
 modify $X_t$ to get $Y_t$, in accounting for the ill-behavedness of $X_t$
@@ -2457,12 +2457,14 @@ second key idea: to get a cadlag $Y$ from $X$ we had either be
 prepared to add all of the null events of $\mathcal{F}_\infty$ to each
 $\mathcal{F}^+_t$ or assume that they are there to begin with.  The
 filtration that is right continuous and has null sets added is
-referred to as the \emph{partial augmentation} of $\mathcal{F}$.
+referred to as the \emph{partial augmentation} of $\mathcal{F}$ (it is
+distinguished from the full augmentation in that it does not assume
+that the filtration is complete).
 
 These first two ideas are enough to get us an adapted process $Y$ but
 more is true: $Y$ is a martingale with respect the partially
 augmented filtration.  This is not obvious and requires checking using
-discrete time discrete time results.  The remaining issue and question
+discrete time results.  The remaining issue and question
 is whether $Y$ is indeed a version of $X$.  The following example shows
 that this may not be true without further hypotheses on $X$.
 
@@ -2508,7 +2510,7 @@ what we can accomplish by taking a martingale with respect to an
 arbitrary filtration and trying find a version that is cadlag.  
 Nonetheless, the method we've outlined to make a cadlag process $Y$
 from an arbitrary process $X$ can be shown to result in a version if
-$X$ is assumed to be a martingale with respect to the the augmented
+$X$ is assumed to be a martingale with respect to the the right continuous
 filtration in the first place (plus some extra conditions if $X$ is
 only assumed to be a submartingale).  Thus the impediment to the
 existence of a cadlag version in Example \ref{CadlagNotAModification}
@@ -2516,7 +2518,9 @@ is in the final comment about $X$ not being a martingale with respect
 to the right continuous filtration. 
 
 \begin{thm}\label{CadlagModificationContinuousMartingale}Let $X_t$  be a $\mathcal{F}$-submartingale on $\reals_+$
-  and let $Y_q$ denote the restriction to $\rationals_+$.  The there
+  and let $Y_q$ denote the restriction to $\rationals_+$.  
+\begin{itemize}
+\item[(i)]There
   exists a set $A \subset \mathcal{F}_\infty$ with $\probability{A}=1$ on which
   $\lim_{q \to t^+} Y_q$ and $\lim_{a \to t^-} Y_q$ exist for all $t
   \in \reals_+$.  If we
@@ -2528,11 +2532,13 @@ Z_t(\omega) =
 0 & \text{if $\omega \notin A$} \\
 \end{cases}
 \end{align*} 
-then $Z_t$ is a cadlag
+then $Z$ is a cadlag
   $\overline{\mathcal{F}_+}$-submartingale.
-If $\mathcal{F}$ is right continuous then $X^t$ has a cadlag
-modification that is a submartingale if and only if $t \mapsto
-\expectation{X_t}$ is right continuous.
+\item[(ii)]$X$ has a right
+continuous version if and only if $Z$ is a version of $X$.
+\item[(iii)]If $\mathcal{F}$ is right continuous then $Z$ is a version of $X$ if and only if $t \mapsto
+\expectation{X_t}$ is right continuous.  
+\end{itemize}
 \end{thm}
 \begin{proof}
 Pick $N \in \naturals$ and note that since $Y^+_q$ is a submartingale
@@ -2553,34 +2559,51 @@ We can apply Theorem \ref{L1MartingaleConvergenceTheoremDiscrete} to
 the restricted submartingale $Y_q$ to construct $A_N \in \mathcal{F}_N$ with
 $\probability{A_N}=1$ such that for all increasing and decreasing
 sequences $q_n$ in $\rationals \cap [0,N]$ we have $Y_{q_n}$ converge
-almost on $A_N$.  So in particular $\lim_{q \to t^-} Y_q$ and $\lim_{q
+on $A_N$.  So in particular $\lim_{q \to t^-} Y_q$ and $\lim_{q
   \to t^+} Y_q$ exist for every $t \in [0,N]$ on $A_N$.  Taking the
 intersection of $A = \cap_{N=1}^\infty A_N$ we see that  $\lim_{q \to t^-} Y_q$ and $\lim_{q
   \to t^+} Y_q$ exist for every $t \in \reals_+$ on $A \in
-\mathcal{F}_\infty$.  Note also that the process $Z_t$ is cadlag and
+\mathcal{F}_\infty$.  Note that the process $Z_t$ is
 $\overline{\mathcal{F}_+}$-adapted (in fact is adapted with respect to
 the smaller filtration $\mathcal{G}_t = \sigma(A, \mathcal{F}^+_t)$).
+We claim that the process $Z_t$ is cadlag.  Clearly sample paths on
+$A^c$ are continuous since they are constant.  So we consider a sample
+path on $A$.  If we fix $t \geq 0$ and $\epsilon > 0$ then
+by definition of $Z_t$ on $A$ we may find a $\delta > 0$ such that
+$\abs{Y_q - Z_t} < \epsilon/2$ for all $t < q < t +\delta$ and $q \in
+\rationals$.  If we take an arbitrary $t < s < t + \delta$ then again
+applying the definition of $Z_s$ we may pick a $s < q < t+\delta$ such
+that $\abs{Y_q - Z_s} < \epsilon/2$, therefore by the triangle
+inequality we have $\abs{Z_t - Z_s} < \epsilon$ and right continuity
+is established.  Similarly if we define $Y^-_t = \lim_{q \to t^-} Y_q$, we may find a $\delta$ such that
+$\abs{Y^-_t - Y_q} < \epsilon/2$ for all $t - \delta < q < t$.  For
+any $t - \delta < s < t$ by the definition of $Z_s$ we may pick $s < q
+< t$ such that $\abs{Y_q-Z_s} < \epsilon/2$ and again the triangle
+inequality implies $\abs{Y^-_t - Z_s} < \epsilon$.
+This shows $\lim_{s \to t^-} Z_s = \lim_{q \to t^-} Y_q$
+and in particular $Z_t$ has left limits.
 
 Now to see that $Z$ is a submartingale, let $0 \leq s < t < \infty$ be
 arbitrary and pick decreasing sequence $t_n \in \rationals_+$
 such that $t_n \downarrow t$ and a decreasing sequence $s_n \in
 \rationals_+$ such that $s_n < t$ for all $n$ and  $s_n \downarrow s$.
 For each $n$ and $m$ we have
-$Z_{s_m} \leq \cexpectationlong{\mathcal{F}_{s_m}}{Z_{t_n}}$ by the
-submartingale property of $X$ (TODO: Is there anything to say about
-what happens on $A^c$?).  By the Levy Downward Theorem
+$Y_{s_m} \leq \cexpectationlong{\mathcal{F}_{s_m}}{Y_{t_n}}$ a.s. by the
+submartingale property of $X$.  By the Levy Downward Theorem
 \ref{JessenConditioningLimits} we know that $\lim_{m \to \infty}
-\cexpectationlong{\mathcal{F}_{s_m}}{Z_{t_n}} =
-\cexpectationlong{\mathcal{F}^+_{s}}{Z_{t_n}}$ and therefore $Z_s \leq \cexpectationlong{\mathcal{F}_{s}}{Z_{t_n}}$.
-We know that $Z_{t_n} \toas Z_t$ but as the sequence $t_n$ is bounded
+\cexpectationlong{\mathcal{F}_{s_m}}{Y_{t_n}} =
+\cexpectationlong{\mathcal{F}^+_{s}}{Y_{t_n}}$ a.s. and by definition
+$Z_s = \lim_{m \to \infty} Y_{s_m}$ therefore $Z_s
+\leq \cexpectationlong{\mathcal{F}_{s}}{Y_{t_n}}$ a.s.
+Again, by definition  $Y_{t_n} \toas Z_t$, furthermore as the sequence $t_n$ is bounded
 we have already shown
-$Z_{t_n}$ is $L^1$-bounded.  This allows us to apply Lemma
+$Y_{t_n}$ is $L^1$-bounded.  This allows us to apply Lemma
 \ref{BackwardSubmartingaleBoundedUniformlyIntegrable} to conclude that
-$Z_{t_n}$ is uniformly continuous hence $Z_{t_n} \tolp{1} Z_t$ by
+$Y_{t_n}$ is uniformly continuous hence $Y_{t_n} \tolp{1} Z_t$ by
 Lemma \ref{LpConvergenceUniformIntegrability}.  Thus we have 
 \begin{align*}
 Z_s &\leq \lim_{n \to \infty}
-\cexpectationlong{\mathcal{F}^+_s}{Z_{t_n}} =
+\cexpectationlong{\mathcal{F}^+_s}{Y_{t_n}} =
 \cexpectationlong{\mathcal{F}^+_s}{Z_{t}} =
 \cexpectationlong{\overline{\mathcal{F}}^+_s}{Z_{t}}
 \end{align*}
@@ -2590,10 +2613,75 @@ It is worth noting that the submartingale property also holds with
 respect to the smaller filtration $\mathcal{G}_t$ alluded to above; the fact that the result is
 expressed in terms of the augmented filtration is due to the fact that
 the augmented filtration proves to be necessary in subsequent theory.
+In fact when we get to the discussion of Girsanov theory it will be
+inconvenient to require the full completion of $\mathcal{F}^+$.
 
-TODO: We have not shown that $Z$ is a version/modification of $X$.
-This requires additional hypotheses on the filtration.
+Suppose that $X$ has a right continuous version $W$.  Then by
+taking an intersection of almost sure events, we see that almost
+surely $Y_q = W_q$ for all $q \in \rationals_+$ ($Y$ continues to
+denote the restriction of $X$ to $\rationals$).  If we fix a
+particular $t \geq 0$ and use the fact that $W$ is a version
+of $X$, the right continuity of $W_q$ and the definition of $Z$ to
+see that almost surely we see
+\begin{align*}
+X_t &= W_t = \lim_{q \to t^+} W_q = \lim_{q \to t^+} Y_q = Z_t
+\end{align*}
+and therefore $Z$ is a version of $X$.
+
+We now assume that $\mathcal{F}$ is right continuous.  Before
+proceeding to show that $Z$ is a version of $X$ if and only if
+$\expectation{X_t}$ is right continuous we need two small computations.
+We have already observed that for every sequence $t_n \downarrow t$ with $t
+\geq 0$ and $t_n \in \rationals_+$ we have 
+not only does $Y_{t_n} \toas Z_t$ but also $Y_{t_n} \tolp{1}
+Z_t$. From this fact and the definition of $Y$ we get
+\begin{align*}
+\lim_{t_n \to t} \expectation{X_{t_n}} &= \lim_{t_n \to
+  t}\expectation{Y_{t_n}} = \expectation{Z_t}
+\end{align*}
+Moreover using the submartingale property of $X$, the definition of
+$Y$, the fact that $Y_{t_n} \tolp{1} Z_t$, Lemma \ref{ConditionalExpectationCompletions} and the
+$\overline{\mathcal{F}}$-adaptedness of $Z$ we get
+\begin{align*}
+X_t &\leq \lim_{t_n \to t} \cexpectationlong{\mathcal{F}_t}{X_{t_n}} =
+\lim_{t_n \to t} \cexpectationlong{\mathcal{F}_t}{Y_{t_n}} =
+\cexpectationlong{\mathcal{F}_t}{Z_t} =\cexpectationlong{\overline{\mathcal{F}}_t}{Z_t} = Z_t \text{ a.s.}
+\end{align*}
+
+Now we suppose that $\expectation{X_t}$ is a right continuous function
+of $t$ and we want to show that $Z$ is a version of $X$.  From the
+above two observations and the right continuity of $\expectation{X_t}$
+we get
+\begin{align*}
+\expectation{\abs{Z_t - X_t}} &= \expectation{Z_t - X_t} =
+\expectation{Z_t} - \expectation{X_t} = 0
+\end{align*}
+which shows $X_t = Z_t$ a.s. (i.e. $Z$ is a version of $X$).
+
+Now if we assume that $Z$ is a version of $X$ then playing the above
+argument backward, we conclude that 
+\begin{align*}
+\expectation{X_t} &= \expectation{Z_t - X_t}  + \expectation{Z_t} =
+\expectation{Z_t} = \lim_{t_n \to t} \expectation{X_{t_n}}
+\end{align*}
+which shows that $\expectation{X_t}$ is right continuous.
 \end{proof}
+Since the condition of right continuity of $\expectation{X_t}$ is
+trivially satisfied in the case of a martingale we know that given any
+martingale $X$ on a right continuous filtration we may find a version
+of $X$ that is a cadlag martingale on the completion of that
+filtration (actually the completion is quite a bit more than is required as
+seen from the proof).  For the most part we don't worry too much about
+the fact that the filtration has to be enlarged and in much of the
+theory we define the problem away by assuming that our filtration is
+both right continuous and complete to begin with.  There are however
+cases in which passing to the completion can cause real issues
+(e.g. one loses the Borel space property by adding in additional
+sets).  Note that need to enlarge the space to the completion is deal
+with those places in which right limits do not exist.  If one know a priori
+(or is will to assume) that these limits exist then one can dispense
+with the addition of null sets and it suffices to take the right
+continuous filtration.
 
 \begin{lem}\label{DoobMaximalInequalityContinuous}Let $X_t$ be a
   cadlag submartingale on $\reals_+$, then for any $t$ and $\lambda$ we have
