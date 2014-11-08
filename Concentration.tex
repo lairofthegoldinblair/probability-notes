@@ -1,0 +1,415 @@
+\chapter{Concentration Inequalities}
+\begin{lem}[Markov Inequality]\label{MarkovInequality}Let $\xi$ be a positive integrable random variable.  Then $\probability{\xi>t} \leq \frac{E(\xi)}{t}$\end{lem}
+\begin{proof}
+$E(\xi) \leq E(\xi\characteristic{\{\xi>t\}}) \leq E(t\characteristic{\{\xi>t\}})=t\probability{\xi>t}$
+\qedhere
+\end{proof}
+
+\begin{lem}[Chebeshev's Inequality]\label{ChebInequality}Let $\xi$ be a random variable with finite mean $\mu$ and finite variance $\sigma$.  Then $\probability{|\xi-\mu|>t} \leq \frac{\sigma^2}{t^2}$\end{lem}
+\begin{proof}
+$\probability{|\xi-\mu|>t} = \probability{(\xi-\mu)^2 > t^2} \leq \frac{\expectation{(\xi-\mu)^2}}{t^2}=\frac{\sigma^2}{t^2}$
+\qedhere
+\end{proof}
+
+\begin{lem}[One Sided Chebeshev's Inequality]\label{OneSidedChebInequality}Let $\xi$ be a random variable with finite mean $\mu$ and
+  finite variance $\sigma$.  Then $\probability{\xi-\mu>\lambda} \leq
+  \frac{\sigma^2}{\sigma^2 + \lambda^2}$\end{lem}
+\begin{proof}
+First we assume $\expectation{\xi}=0$.  We prove a family of
+inequalities for a real parameter $c > 0$.
+\begin{align*}
+\probability{\xi>\lambda}  
+&= \probability{\xi + c > \lambda + c} \\
+& \leq \probability{(\xi + c)^2 > (\lambda + c)^2} & \textrm{ because }
+\lambda+c>0 \\
+& \leq \frac{\expectation{\xi^2} + c^2}{(\lambda + c)^2}
+\end{align*}
+Now we extract the best estimate by finding the minimum of the right
+hand side with respect to $c$.  Differentiating we get a vanishing
+first derivative when
+$
+(\lambda^2 + c^2) 2c = (\expectation{\xi^2} + c^2) 2(\lambda +
+c)$.  Divide by $2(\lambda+ c)$  and subtract $c^2$ to get the
+  minimum at $c=\expectation{\xi}/\lambda > 0$.  Plug this value in to
+  get the final estimate.
+\begin{align*}
+\frac{
+  \expectation{\xi^2} +
+  (\frac{\expectation{\xi^2}}{\lambda})^2
+}
+{(\lambda +
+    \frac{\expectation{\xi^2}}{\lambda})^2
+} & =
+    \frac{\expectation{\xi^2}(1 +
+      \frac{\expectation{\xi^2}}{\lambda^2})}
+{
+  \lambda^2 (1 + \frac{\expectation{\xi^2}}{\lambda^2}
+)^2
+} \\
+& = \frac{\expectation{\xi^2}}{\lambda^2 + \expectation{\xi^2}}
+\end{align*}
+Now apply the above inequality to the centered random variable $\xi -
+\mu$ to get the general result.
+\qedhere
+\end{proof}
+
+\begin{defn}
+We say that a random variable $\xi$ is \emph{subgaussian} if and only if
+there exist constants $c, C > 0$ such that $\probability { \abs{\xi}
+  \geq \lambda} \leq C e^{-c \lambda^2}$ for all $\lambda > 0$.
+\end{defn}
+
+TODO: Show that any Gaussian is subgaussian (independent of its mean?).
+
+TODO: Show any bounded (or almost surely bounded) random variable is
+subgaussian.
+
+\begin{examp}Given the nomenclature it isn't surprising that Gaussian
+  random variables are subgaussian.  As it turns out it is useful to
+  analyze the case of a $N(0,\sigma^2)$ random variable separately
+  since it has slightly different behavior than the general $N(\mu,
+  \sigma^2)$ case.  Let us assume that $\xi$ is a normal random
+  variable with mean $0$ and variance $\sigma^2$.  We have a standard tail estimate for $\lambda \geq \sigma$
+\begin{align*}
+\probability{\xi \geq \lambda} &= 
+\frac{1}{\sqrt{2\pi}\sigma} \int_\lambda^\infty e^{-x^2/2\sigma^2} \, dx \leq 
+\frac{1}{\sqrt{2\pi}\sigma} \int_\lambda^\infty \frac{x}{\sigma} e^{-x^2/2\sigma^2} \, dx =
+\frac{1}{\sqrt{2\pi}} e^{-\lambda^2/2\sigma^2}
+\end{align*}
+The $0 \leq \lambda \leq \sigma$ case can easily be handled with a constant
+multiplier but we can actually find the constant that gives a tight
+bound.  Note that $\frac{1}{\sqrt{2\pi}\sigma} \int_0^\infty e^{-x^2/2\sigma^2} =
+\frac{1}{2}$ so we can't do any better than $\probability{\xi \geq
+  \lambda} \leq \frac{1}{2} e^{-\lambda^2/2\sigma^2}$; in fact this bound
+works for all $\lambda \geq 0$.  We've already shown this for $\lambda
+\geq 1$ and $\lambda=0$.  To show the bound on $[0,1]$ we calculate
+the derivative 
+\begin{align*}
+\frac{d}{d\lambda} \left( \frac{1}{2} e^{-\lambda^2/2\sigma^2} -
+  \frac{1}{\sqrt{2\pi}\sigma} \int_\lambda^\infty e^{-x^2/2\sigma^2} \, dx \right)
+&=\left( -\frac{\lambda}{2\sigma^2} + \frac{1}{\sqrt{2\pi}\sigma}\right) e^{-\lambda^2/2}
+\end{align*}
+from which we conclude there is a unique maximum of the function at
+$\lambda=\sigma \sqrt{\frac{2}{\pi}} \in (0,\sigma)$.  We have already validated
+that the function is nonnegative at the endpoints of $[0,\sigma]$ so it must
+be nonnegative on the entire interval.  Now by symmetry of $\xi$, the
+calculation also shows that $\probability{\xi \leq -\lambda} \leq
+\frac{1}{2}e^{-\lambda^2/2\sigma^2}$ and therefore $\probability{\abs{\xi}
+  \geq \lambda} \leq e^{-\lambda^2/2\sigma^2}$.
+
+Now for a general $N(\mu, \sigma)$ normal random variable $\xi$ we
+have by change of variables
+\begin{align*}
+\probability{\xi \geq \lambda} &= 
+\frac{1}{\sqrt{2\pi} \sigma} \int_\lambda^\infty e^{-(x-\mu)^2/2\sigma^2} \, dx = 
+\frac{1}{\sqrt{2\pi}} \int_{(\lambda-\mu)/\sigma}^\infty e^{-x^2/2} \,
+dx \leq \frac{1}{\sqrt{2\pi}} e^{-(\lambda-\mu)^2/2\sigma^2}
+\end{align*}
+
+TODO: Finish
+\end{examp}
+
+\begin{lem}Let $\{\xi_i\}_{i=1}^m$ be jointly independent subgaussian random variables.  Then $\expectation{e^{\sum_{i=1}^m \xi}} =
+  \prod_{i=1}^m \expectation{e^{\xi_i}}$.
+\end{lem}
+\begin{proof}
+First show that for a subgaussian $\xi$, we have by dominated
+convergence the Taylor expansion 
+$$\expectation{e^{t\xi}} = 1 + \sum_{k=1}^\infty
+\frac{t^k}{k!}\expectation{\xi^k}$$
+The proof of this fact is to exhibit an integrable function that
+dominates the sequence of partial sums $1+\sum_{k=1}^n
+\frac{t^k\xi^k}{k!}$.  This is obvious if $\xi$ is almost surely
+bounded but it's not obvious to me that this should be true for a
+subgaussian $\xi$.  TODO: Perhaps we need to use uniform integrability or
+something like that in the subgaussian/subexponential case.
+
+In any case, assuming the validity of the above identity for each
+$\xi$, we turn to the case of the sum.
+\end{proof}
+
+\begin{lem}\label{SubgaussianEquivalence}$\xi$ is subgaussian if and only if there exists $C$ such
+  that $\expectation{e^{t\xi}} \leq C e^{Ct^2}$ and if and only if
+    there exists $C$ such that $\expectation{|\xi|^k} \leq
+    \left(Ck\right)^{\frac{k}{2}}$ for all $t \in \reals$.
+\end{lem}
+\begin{proof}
+Suppose $\xi$ is subgaussian and calculate:
+\begin{align*}
+\expectation{e^{t\xi}} &= \int_0^\infty \probability{e^{t\xi} \geq
+    \lambda} d\lambda \\
+&= \int_{-\infty}^\infty \probability{e^{t\xi} \geq e^{t\eta}} t
+e^{t\eta} d\eta \\
+& = \int_{-\infty}^\infty \probability{\xi \geq \eta} t
+e^{t\eta} d\eta \\
+& \leq \int_{-\infty}^\infty C t
+e^{t\eta - c\eta^2} d\eta  \\
+& = C t e^{\frac{t^2}{4c}}\int_{-\infty}^\infty 
+e^{-\left(\sqrt{c}\eta - \frac{t}{2\sqrt{c}}\right)^2} d\eta \\
+&= C^\prime t e^{\frac{t^2}{4c}} \\
+&\leq C^\prime e^{\frac{5c t^2}{4c}} 
+\end{align*}
+
+Now assume that we have $\expectation{e^{t\xi}} \leq C e^{Ct^2}$ for
+all $t$.  Pick an arbitrary $t>0$ to be
+chosen later and proceed by using first order
+moment method:
+\begin{align*}
+\probability{\xi \geq \lambda} &= \probability{e^{t\xi} \geq
+  e^{t\lambda}} \\
+&\leq \frac{\expectation{e^{t\xi}}}{e^{t\lambda}} \\
+&\leq C e^{Ct^2 - t\lambda} \\
+\end{align*}
+Now we pick $t$ to minimize the upper bound derived above; simple
+calculus shows this occcurs at $t=\frac{\lambda}{2C}$.  Subtituting
+yields the bound 
+\begin{align*}
+\probability{\xi \geq \lambda} \leq C e ^ {-\frac{\lambda^2}{4C}}
+\end{align*}
+For the other tail, we note that our assumption holds equally well for
+$-\xi$.  Thus we can use the same method to bound 
+\begin{align*}
+\probability{\xi \leq -\lambda} = \probability{-\xi \geq \lambda} \leq C e ^ {-\frac{\lambda^2}{4C}}
+\end{align*}
+therefore taking the union bound we get
+\begin{align*}
+\probability{|\xi| \geq \lambda} \leq 2 C e ^ {-\frac{\lambda^2}{4C}}
+\end{align*}
+
+Now consider absolute moments of subgaussian variables.  We can assume
+that $\xi \geq 0$ and calculate as before:
+\begin{align*}
+\expectation{\xi^k} &= \int_0^\infty \probability{\xi^k \geq x} dx \\
+&= k\int_0^\infty \probability{\xi^k \geq y^k} y^{k-1} dy \\
+&= k C \int_0^\infty y^{k-1} e^{-cy^2} dy \\
+&= k C \frac{c^{k-3}}{2} \int_0^\infty x^{\frac{k}{2}-1} e^{-x} dx \\
+&= k C \frac{c^{k-3}}{2} \Gamma\left(\frac{k}{2}\right) \\
+&\leq k C \frac{c^{k-3}}{2} \left(\frac{k}{2}\right)^\frac{k}{2} \\
+\end{align*}
+To go the other direction, assume $\expectation{|\xi|^k} \leq
+(Ck)^\frac{k}{2}$ and pick a constant $0 < c < \frac{e}{2C}$ 
+\begin{align*}
+\expectation{e^{K\xi^2}} &= 1 + \sum_{k=1}^\infty
+\frac{t^k\expectation{\xi^{2k}}}{k!}\\
+&\leq 1 + \sum_{k=1}^\infty
+\frac{(2tCk)^k}{k!}\\
+&\leq 1 + \sum_{k=1}^\infty
+\left(\frac{2tC}{e}\right)^k < \infty \\
+\end{align*}
+Now use the elementatry bound $ab \leq \frac{(a^2 + b^2)}{2}$ so see
+\begin{align*}
+\expectation{e^{t\xi}} &\leq 
+\end{align*}
+\end{proof}
+
+The definition of subgaussian random variables differs in a minor way
+from another in common use in the literature.  In particular, in some descriptions a random
+variable $\xi$ is called subgaussian if and only if
+$\expectation{e^{t\xi}} \leq e^{\frac{c^2 t^2}{2}}$ for all $t \in \reals$.  The important
+difference here compared with the characterization in Lemma
+\ref{SubgaussianEquivalence} is that the constant on the right hand side is $1$.
+With this defintion, we must add the hypothesis $\expectation{\xi}=0$
+to get equivalence with the other definition.
+
+\begin{lem}Suppose $\xi$ is a random variable such that there exists
+  $c>0$ for which
+\begin{align*}
+\expectation{e^{t\xi}} &\leq e^{\frac{c^2 t^2}{2}} \text{ for all $t \in \reals$}
+\end{align*}
+then $\expectation{\xi}=0$ and $\expectation{\xi^2} \leq c^2$.
+\end{lem}
+\begin{proof}
+By Dominated Convergence and the hypothesis we get
+\begin{align*}
+\sum_{n=0}^\infty \frac{t^n}{n!}\expectation{\xi^n} &=
+\expectation{e^{t\xi}} \leq e^{\frac{c^2 t^2}{2}} = \sum_{n=0}^\infty
+\frac{c^{2n}}{2^n n!}t^{2n}
+\end{align*}
+so in particular by taking only terms up to order $t^2$ and using the
+fact that the constant term in on both sides is $1$, we have
+\begin{align*}
+t \expectation{\xi} + \frac{t^2}{2} \expectation{\xi^2} &= \frac{c^2 t^2}{2}
++
+o(t^2) \text { as $t \to 0$}
+\end{align*}
+If we divide both sides by $t > 0$ and take the limit as $t \to 0^+$ then we
+get $\expectation{\xi} \leq 0$.  If we divide by $t < 0$ and take the
+limit as $t \to 0^-$ then we get $\expectation{\xi} \geq 0$.  Thus we
+can conclude $\expectation{\xi} = 0$.  If we plug that in and divide
+by $t^2$ and take the limit as $t \to 0$ then see $\expectation{\xi^2}
+\leq c^2$.
+\end{proof}
+Note that the argument in the proof above doesn't even get off the
+ground unless the constant of the bounding exponential is assumed to
+be $1$.
+
+The following lemma is useful for the second moment method for
+deriving tail bounds.
+\begin{lem}Let $\{\xi_i\}_{i=1}^m$ be pairwise independent random
+  variables and $c_i$ be scalars.  Then $\variance{\sum_{i=1}^m c_i \xi} =
+  \sum_{i=1}^m |c_i|^2\variance{\xi_i}$.
+\end{lem}
+\begin{proof}
+TODO
+\end{proof}
+
+\begin{lem}[Bennett's Inequality]\label{Bennett} Let $\{\xi_i\}_{i=1}^m$ be independent random variables with means $\mu_i$ and variances $\sigma_i$.  Set $\Sigma^2 = \sum_{i=1}^m \sigma_i^2$.  If for every $i$, $|\xi_i - \mu_i| \leq M$ almost everywhere then for every $\lambda > 0$ we have $$
+\probability{\sum_{i=1}^m [\xi_i - \mu_i] > \lambda} \leq 
+e^{
+	-\frac{\lambda}{M}\{(1 + \frac{\Sigma^2}{M\lambda})\log(1+\frac{M\lambda}{\Sigma^2}) - 1\}
+}
+$$
+\end{lem}
+\begin{proof}
+First it is easy to see that by subtracting means we may assume that
+$\mu_i=0$.  Then we have $\sigma_i = \expectation{\xi_i^2}$.  We use
+the exponential moment method.  We show a family of inequalities
+depending on a real parameter $c > 0$ which we will pick later.  First we have 
+\begin{align*}
+\probability{\sum_{i=1}^m \xi_i > \lambda} & =
+\probability{c\sum_{i=1}^m \xi_i > c\lambda}  && \textrm{since } c >0.\\
+  & =\probability{e^{c\sum_{i=1}^m \xi_i} > e^{c\lambda}} &&
+  \textrm{since } e^x \textrm{ is increasing}\\
+  & \leq e^{-c\lambda} \expectation{e^{c\sum_{i=1}^m \xi_i}} && \textrm
+  {by Markov's Inequality}\eqref{MarkovInequality}\\
+  & = e^{-c\lambda} \prod_{i=1}^m \expectation{e^{c\xi_i}} &&
+  \textrm{by independence and boundedness.  TODO: do we really need boundedness?}
+\end{align*}
+Now we consider an individual term $\expectation{e^{c\xi_i}}$ for an
+almost surely bounded $\xi_i$ with zero mean.
+\begin{align*}
+\expectation{e^{c\xi_i}} &= \expectation{\sum_{k=0}^\infty
+  \frac{c^k\xi_i^k}{k!}} = \sum_{k=0}^\infty
+  \frac{c^k}{k!}\expectation{\xi_i^k} && \textrm{by dominated
+    convergence} \\
+& = 1  + \sum_{k=2}^\infty
+  \frac{c^k}{k!}\expectation{\xi_i^k} && \textrm{by mean zero} \\
+& \leq 1  + \sum_{k=2}^\infty
+  \frac{c^k M^{k-2} \sigma_i^2}{k!} && \textrm{by boundedness and
+    definition of variance} \\
+& \leq e^{\sum_{k=2}^\infty  \frac{c^k M^{k-2} \sigma_i^2}{k!}} &&
+\textrm{since } 1+x \leq e^x \eqref{BasicExponentialInequalities} \\
+& = e^{\frac{(e^{cM} -1 - cM)\sigma_i^2}{M^2}}
+\end{align*}
+Therefore,
+\begin{align*}
+\probability{\sum_{i=1}^m \xi_i > \lambda} &\leq e^{-c\lambda} \prod_{i=1}^m
+e^{\frac{(e^{cM} -1 - cM)\sigma_i^2}{M^2}} \\
+& = e^{\frac{(e^{cM} -1 - cM)\Sigma^2}{M^2}}
+\end{align*}
+Now we pick $c>0$ to minimize the bound above ($e^{cM} -1 =
+\frac{M\lambda}{\Sigma^2}$ or equivalently $c = \frac{1}{M}\ln(1 + \frac{M\lambda}{\Sigma^2})$).
+Substituting yields the final bound
+\begin{align*}
+\probability{\sum_{i=1}^m \xi_i > \lambda} &\leq e^{-(\lambda + \frac{\Sigma^2}{M})
+  \frac{1}{M}\ln(1 + \frac{M\lambda}{\Sigma^2}) + \frac{\lambda}{M}}
+\\
+& = e^{-\frac{\lambda}{M} \{
+  (1+\frac{\Sigma^2}{\lambda M}) \ln(1 + \frac{M\lambda}{\Sigma^2}) -1
+\}}
+\end{align*}
+\end{proof}
+
+\begin{lem}[Bernstein's or Chernoff's Inequality]\label{Bernstein} Let
+  $\{\xi_i\}_{i=1}^m$ be independent random variables with means
+  $\mu_i$ and variances $\sigma_i$.  Set $\Sigma^2 = \sum_{i=1}^m
+  \sigma_i^2$.  If for every $i$, $|\xi_i - \mu_i| \leq M$ almost
+  everywhere then for every $\lambda > 0$ we have 
+\begin{align*}
+\probability{\sum_{i=1}^m [\xi_i - \mu_i] > \lambda} &\leq 
+e^{
+	-\{\frac{\lambda^2}{2(\Sigma^2 + \frac{1}{3}M\lambda)}\}
+}
+\end{align*}
+\end{lem}
+\begin{proof}
+TODO
+\end{proof}
+
+The next inequality has a pleasing form because the resulting bound is
+of the form of a Gaussian random variable.  Such bounds are
+interesting enough that they warrant the following definition.
+\begin{defn} Let $\xi$ be a real valued random variable with mean
+  $\mu$.  We say that $\xi$ has a \emph{subgaussian upper tail} if there
+  exists a  constants $C > 0$ and $c > 0$ such that for all $\lambda > 0$,
+$$
+\probability{[\xi-\mu] > \lambda} \leq Ce^{-c\lambda^2}.
+$$
+We say that $\xi$ has a \emph{subgaussian tail up to} $\lambda_0$ if the
+above bound holds for $\lambda < \lambda_0$.  We say that $\xi$ has a
+\emph{subgaussian tail} if both $\xi$ and $-\xi$ have subgaussian upper
+tails (or equivalently if $|\xi|$ has a subgaussian tail.
+\end{defn}
+
+ The boundedness assumption on the individual random variables in the
+above sums can be relaxed to an assumption that the individual random
+variables has subgaussian tails.  Moreover, one can generalize the sum
+of random variables to an arbitrary linear combination of random
+variables on the unit sphere.
+
+\begin{lem}\label{Matousek} Let $\{\xi_i\}_{i=1}^m$ be independent
+  random variables with $E[\xi_i]=0$ and $E[\xi_i^2]=1$ and uniform
+  subgaussian tails.  Let $\{\alpha_i\}_{i=1}^m$ be real coefficients
+satisfying $\sum_{i=1}^m \alpha_i^2 = 1$.  The then random variable
+$\eta=\sum_{i=1}^m \alpha_i\xi_i$ has $E[\eta]=0$, $E[\eta^2]=1$ and a
+subgaussian tail.
+\end{lem}
+\begin{proof}
+TODO
+\end{proof}
+
+\begin{lem}[Exercise 7 Lugosi] Let $\{\xi_i\}_{i=1}^n$ be independent
+  random variables with values in $[0,1]$.  Let $S_n = \sum_{i=1}^n
+  \xi_i$ and let $\mu=\expectation{S_n}$.  Show that for any
+  $\lambda\geq \mu$,
+\begin{align*}
+\probability{S_n \geq \lambda} \leq
+\left(\frac{\mu}{\lambda}\right)^\lambda \left(\frac{n-\mu}{n-\lambda}\right)^{n-\lambda}.
+\end{align*}
+\end{lem}
+\begin{proof}
+Use Chernoff bounding.  Looking at the solution, we can pattern match
+that we may want to use the convexity of $e^x$ since the solution
+seems to reference the endpoints of the interval $[0,n]$; indeed that
+is the way to proceed.  TODO: convert the argument below for $n=1$ to
+cover general $n$.
+To estimate $\expectation{e^{s\xi_i}}$ we first use convexity of
+$e^sx$ on the interval $x\in[0,1]$,
+\begin{align*}
+e^{sx} \leq xe^s + (1-x)
+\end{align*}
+Substituting $\xi_i$ and taking expectations we get
+\begin{align*}
+\expectation{e^{s\xi_i}} \leq \mu_i e^s + (1-\mu_i).
+\end{align*}
+So now we minimize the Chernoff bound by using elementary calculus
+\begin{align*}
+\frac{d}{ds} \mu_i e^{s(1-\lambda)} + (1-\mu_i)e^{-s\lambda} = \mu_i
+(1-\lambda) e^{s(1-\lambda)} + \lambda (1-\mu_i)e^{-s\lambda} 
+\end{align*}
+which equals $0$ when
+$s=\ln\left(\frac{\lambda(1-\mu_i)}{\mu_i(1-\lambda)}\right)$.  This
+value is positive when $\lambda \geq \mu$.
+Backsubstituing this value and doing some algebra shows
+\begin{align*}
+e^{-s\lambda}\expectation{e^{s\xi_i}} \leq
+\left(\frac{\mu_i}{\lambda}\right)^\lambda
+\left(\frac{1-\mu_i}{1-\lambda}\right)^{1-\lambda}
+\end{align*}
+Note also an argument for a related estimate (Exercise 8) that uses bounds similar to those in Bennett can be made
+as follows.  Since $\xi_i \in [0,1]$, we have that $\xi_i^k \leq
+\xi_i$.  With this observation, 
+\begin{align*}
+\expectation{e^{s\xi_i}} &= 1 + \sum_{k=1}^\infty \frac{s^k
+  \expectation{\xi_i^k}}{k!} \\
+& \leq 1 + \sum_{k=1}^\infty \frac{s^k \mu_i}{k!} \\
+&= 1 + \mu_i (e^s -1) \\
+&\leq e^{\mu_i(e^s - 1)}
+\end{align*}
+Now we select $s$ to minimize the Chernoff bound $e^{\mu_i(e^s - 1)
+  -s\lambda}$ which simple calculus shows happens at
+$s=\ln\left(\frac{\lambda}{\mu_i}\right)$; the location of the minimum
+being positive precisely when $\lambda \geq \mu_i$.  Backsubstituting
+yields a bound $\left(\frac{\mu_i}{\lambda}\right)^\lambda e^{\lambda
+  - \mu_i}$.
+\end{proof}

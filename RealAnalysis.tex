@@ -1,0 +1,792 @@
+\chapter{Real Analysis}
+For purposes of our discussion of measure theory, we often make little
+use of the structure of the reals.  In many cases it is with little
+effort that we can state results much more generally.  Sometimes the
+results will be true of arbitrary sets but in other cases we need the
+most basic notions of metric spaces.
+\begin{defn}A metric space is a set $S$ together with a function
+  $d:SxS \to \reals$ satisfying
+\begin{itemize}
+\item[(i)]$d(x,y) = 0$ if and only if $x=y$.
+\item[(ii)]For all $x,y \in S$, $d(x,y) = d(y,x)$.
+\item[(iii)]For all $x,y,z \in S$, $d(x,z) \leq d(x,y) + d(y,z)$.
+\end{itemize}
+\end{defn}
+\begin{lem} Given a metric space $(S,d)$, we have $d(x,y) \geq 0$ for all
+  $x,y \in S$.
+\end{lem}
+\begin{proof}
+Let $x,y \in S$ and observe 
+\begin{align*}
+d(x,y) &= \frac{1}{2} (d(x,y) + d(y,x)) \textrm { by symmetry} \\
+&\geq \frac{1}{2} d(x,x) \textrm{ by triangle inequality} \\
+&= 0
+\end{align*}
+\end{proof}
+ It's pretty easy to see that standard notions of limits and continuity
+extend to the case of metric spaces.
+\begin{defn}A sequence of elements $x_n \in S$ converges to $x \in S$
+  if for every $\epsilon > 0$, there exists $N > 0$ such that
+  $d(x_n,x) < \epsilon$ for all $n > N$.
+\end{defn}
+\begin{defn}A function between metric spaces $f : (S,d) \to (S', d')$
+  is continuous at $x \in S$ if for every $\epsilon>0$, there exists
+  $\delta > 0$ such that for $y\in S$ such that $d(x,y)<\delta$ we
+  have $d'(f(x),f(y)) < \epsilon$.  A function $f$ that is continuous
+  at all points $x \in S$ is said to be continuous.
+\end{defn}
+\begin{lem}$f : (S,d) \to (S', d')$ is continuous at $x \in S$ if and only if for
+  every $x_n \to x$ we have $f(x_n) \to f(x)$.
+\end{lem}
+\begin{proof}
+Suppose $f$ is continuous and let $\epsilon > 0$ be given.  By
+continuity, we can pick $\delta > 0$ such that for all $y \in S$
+with $d(x,y) < \delta$ we have $d'(f(x), f(y)) < \epsilon$.  Now by
+convergence of the sequence $x_n$, we can find $N$ such that for all
+$n>N$, we have $d(x_n,x) < \delta$.  Hence for all $n > N$, we have
+$d'(f(x), f(x_n)) < \epsilon$.
+
+Now suppose that for every $x_n \to x$ we have $f(x_n) \to f(x)$.  We
+argue by contradiction.  Suppose $f$ is not continuous at $x$.  There
+exists $\epsilon > 0$ such that we can find $x_n \in S$ such that
+$d(x,x_n) < 2 ^ {-n}$ and $d'(f(x_n), f(x)) \geq \epsilon$.  Note that
+the sequence $x_n \to x$ but $f(x_n)$ doesn't converge to $f(x)$.
+\end{proof}
+\begin{defn}For $x\in S$ and $r \geq 0$, the open ball at $x$ or
+  radius $r$ is the set
+\begin{align*}
+B(x;r) = \{y\in S | d(x,y) < r \}
+\end{align*}
+\end{defn}
+\begin{defn}A set $U \subset S$ is open if for every $x \in U$ there
+  exists $r>0$ such that $B(x;r) \subset U$.  The complement of an
+  open set is called a closed set.
+\end{defn}
+\begin{lem}A set $A \subset S$ is closed if and only if for every $x_n
+  \to x$ with $x_n \in A$, we have $x \in A$.
+\end{lem}
+\begin{proof}
+Suppose $A$ is closed.  Then $A^c$ is open.  Let $x_n \in A$ converge
+to $x$.  If $x \notin A$, then $x \in A^c$ and we can find an open
+ball $B(x;\epsilon) \subset A^c$.  Pick $N>0$ such that $d(x_n, x) <
+\epsilon$ for all $n > N$.  Then $x_n \notin A$ for all $n>N$ which is
+a contradiction.
+
+Now suppose $A$ contains all of its limit points.  We show that $A^c$
+is open.  Let $x\in A^c$ and suppose the balls $B(x;2^{-n}) \bigcap A
+\ne \emptyset$.  Then we can construct a sequence $x_n \in A$ such
+that $x_n ->x$.  This is a contradiction, hence for some $n$, we have 
+$B(x;2^{-n}) \bigcap A = \emptyset$ and therefore $A^c$ is open.
+\end{proof}
+
+As it turns out continuity of a function can be expressed entirely in
+terms of open sets.
+\begin{lem}A function between metric spaces $f : (S,d) -> (T,d^\prime)$ is continuous
+  if and only if for every open subset $U \subset T$, we have $f^{-1}(U)$ is an
+  open subset of $S$.
+\end{lem}
+\begin{proof}For the only if direction, let $U \subset T$ be an open set and pick $x \in
+  f^{-1}(U)$.  Now, $f(x) \in U$ and by openness of $U$ we can find $\epsilon
+  > 0$ such that $B(f(x); \epsilon) \subset U$.  By continutity of $f$
+  we can find a $\delta > 0$ such that for all $y \in S$ with $d(x,y) <
+  \delta$ we  have $d^\prime(f(x),f(y)) < \epsilon$.  This is just
+  another way of saying $B(x; \delta) \subset f^{-1}(U)$ which shows
+  that $f^{-1}(U)$ is open.
+
+For the if direction, pick $x \in S$ and suppose we are given
+$\epsilon > 0$.  The ball $B(f(x); \epsilon)$ is an open set in $T$.  
+By assumption we know that $f^{-1}(B(f(x); \epsilon))$ is
+an open set in $S$ containing $x$.   By definition of openness, we can pick a $\delta > 0$, such that 
+$B(x;\delta) \subset f^{-1}(B(f(x); \epsilon))$.  Unwinding this
+statement shows that for all $y \in S$ with $d(x,y) < \delta$, we have
+$d^\prime(f(x),f(y)) < \epsilon$ and we have show that $f$ is
+continuous at $x$.  Since $x \in S$ was arbitrary we have shown $f$ is
+continuous on all of $S$.
+\end{proof}
+
+\begin{defn}A sequence of elements $x_n \in S$ is said to be a
+  \emph{Cauchy sequence}
+  if for every $\epsilon > 0$, there exists $N > 0$ such that
+  $d(x_n,x_m) < \epsilon$ for all $n,m > N$.
+\end{defn}
+Note that any convergent sequence is Cauchy.
+\begin{lem}If a sequence of elements $x_n \in S$ converges to $x \in
+  S$ then it is a Cauchy sequence.
+\end{lem}
+\begin{proof}Pick $\epsilon > 0$ and then pick $N>0$ so that $d(x_n,x)
+  < \frac{\epsilon}{2}$ for all $n > N$.  Then by the triangle
+  inequality, $d(x_n, x_m) \leq d(x_n, x) + d(x, x_m) < \epsilon$ for
+  $n,m > N$.
+\end{proof}
+It is also easy to construct examples of Cauchy sequences that do not
+converge by looking at spaces with \emph{holes}.
+\begin{examp}Consider the sequence $\frac{1}{n}$ on $\reals \setminus
+  \lbrace 0 \rbrace$.  It is Cauchy but does not converge.
+\end{examp}
+The existence of non-convergent Cauchy sequences is in some sense the
+definition of what it means for a general metric space to have holes.
+This motivates the following definition.
+\begin{defn}A metric space $(S,d)$ is said to be \emph{complete} if
+  every Cauchy sequence is convergent.
+\end{defn}
+\begin{defn}The real line $\reals$ is complete.
+\end{defn}
+\begin{proof}Suppose we are given a Cauchy sequence $x_n$.  Let $a =
+  \liminf_{n \to \infty} x_n$ and $b = \limsup_{n \to \infty} x_n $.
+  We proceed by contradiction and suppose
+  that $a < b$ (note
+  that the \emph{completeness axiom} of the reals is used in the
+  definition of $\liminf$ and $\limsup$).  Let $M =b-a$ then for any
+  $0 < \epsilon < M$, $N>0$
+  we can find $k,m > N$ such that $\abs{a - x_k} < \frac{M -
+    \epsilon}{2}$ and $\abs{b - x_m} < \frac{M -
+    \epsilon}{2}$ thus showing $\abs{x_k - x_m} \geq \epsilon$ and
+  contradicting the assumption that $x_n$ was a Cauchy sequence.
+\end{proof}
+
+The following is a simple fact about $\reals$.
+\begin{lem}\label{IncreasingSequenceWithConvergentSubsequence}Let $x_n$ be a nondecreasing sequence in $\reals$.  Suppose
+  there is an infinite subsequence $x_{n_k}$ such that $\lim_{k \to
+    \infty} x_{n_k} = x$ , then $\lim_{n \to \infty} x_n = x$.
+\end{lem}
+\begin{proof}
+TODO:  This is actually pretty much obvious.
+\end{proof}
+In our treatment of measure theory we'll want to have a detailed
+understanding of the structure of the topology of the real line.  It
+can be described quite simply.
+\begin{lem}\label{OpenSetsOfReals}The open sets in $\reals$ are precisely the countable
+  unions of disjoint open intervals.
+\end{lem}
+\begin{proof}Pick an open set $U \subset \reals$.  Define an
+  equivalence relation on $U$ such that $a \equiv b$ if and only if
+  $[a,b] \subset U$ or $[b,a] \subset U$.  It is easy to see this is an equivalence
+  relation.  Reflexivity and symmetry are entirely obvious.
+  Transitivity follows from taking a union of intervals (carefully
+  taking order into consideration).  
+
+Now, consider the equivalence classes of the relation. As equivalence
+classes these sets are disjoint and their union is $U$.  Call the
+family of equivalence classes $U_\alpha$.
+
+We have to show that
+the equivalence classes are open intervals.  Consider $x \in U_\alpha
+\subset U$.  Openness of $U_\alpha$ follows from using openness of $U$ to find a small ball (open interval) around $x \in U$ and noting that every
+point of the ball is $\equiv$-related to $x$.  Therefore the same open
+ball demonstrates the openness of $U_\alpha$.
+
+To see that equivalence classes are intervals, pick an equivalence
+class $U_\alpha$ and consider the open interval $(\inf U_\alpha, \sup
+U_\alpha)$.  Since $U_\alpha$ is nonempty and open, $\inf U_\alpha \neq \sup
+U_\alpha $ and this interval is non-empty.  By definition of $\inf$ and $\sup$ and the openness of
+$U_\alpha$ we can see that $U_\alpha \subset (\inf U_\alpha, \sup
+U_\alpha)$ (otherwise we could find an element of $U_\alpha$ bigger
+than $\sup$ or less than $\inf$).  On the other hand, suppose we are
+given $x \in (\inf U_\alpha, \sup U_\alpha)$.  We can find elements
+$y,z \in U_\alpha$ such that $\inf U_\alpha  < y < x < z <\sup  U_\alpha$.
+By definition of the equivalence relation, this shows $[y,z] \subset
+U_\alpha$ and therefore $x \in U_\alpha$.  Therefore we have shown
+that $U_\alpha =  (\inf U_\alpha, \sup U_\alpha)$ is an open interval.
+
+The fact that there are
+at most countably many equivalence classes follows from the density
+and countability of $\rationals$.
+\end{proof} 
+
+\begin{lem}\label{ComplementOfCountableSetDense}Let $A \subset \reals$ be a countable set.  Then $A^c$ is
+  dense in $\reals$.
+\end{lem}
+\begin{proof}
+Pick an $x \in \reals$ and consider an interval $I_n = (x - \frac{1}{n}, x +
+\frac{1}{n})$ for $n > 0$.  Then if $A^c \cap I_n = \emptyset$ we have
+$I_n \subset A$ which implies that $I_n$ is countable.  This is
+clearly false (since otherwise we could write the reals as a countable
+union of countable sets which would imply the reals themselves are countable).
+\end{proof}
+
+Just as an aside at this point, we note that notions of open and
+closed set are really all that is needed to make sense of the notions
+of convergence and continuity.
+\begin{defn}A topological space is a set $S$ together with a
+  collection of subsets $\tau$ satisfying
+\begin{itemize}
+\item[(i)]$\tau$ contains $\emptyset$ and $S$.
+\item[(ii)]$\tau$ is closed under arbitrary union.
+\item[(iii)]$\tau$ is closed under finite intersection.
+\end{itemize}
+The collection $\tau$ is called a topology on $S$.  The elements of
+$\tau$ are called the open sets of $S$ and the complement of the open
+sets are called closed sets.  As we have shown above, if one defines
+continuity of a function between topological spaces as inverse images
+of open sets being open we have a definition that is a compatible
+generalization of the $\epsilon/\delta$ definition of calculus.
+\end{defn}
+
+\begin{thm}[Taylor's Formula]\label{TaylorsTheorem}Let $f: \reals\to
+  \reals$ be a function which is $m$-times continuously differentiable.  Then for all
+  $0 \leq n < m$,
+\begin{align*}
+f(b) &= \sum_{k=0}^n \frac{(b-a)^k}{k!} f^{(k)}(a) + R_n(b)
+\end{align*}
+where the \emph{remainder term} is of the form
+\begin{align*}
+R_n(b) &= \int_a^b
+\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx
+\end{align*}
+\end{thm}
+\begin{proof}
+We proceed by induction.  Note that for $n=1$, then Taylor's Formula simply says $f(b) = f(a) +
+\int_a^b f^\prime(x) \, dx$ which is just the Fundamental Theorem of
+Calculus.  For the induction step, we integrate the remainder term by parts.  Consider
+the integral $\int_a^b \frac{(b-x)^{(n-1)}}{(n-1)!} f^{(n)}(x) \, dx$ and let
+$u = f^{(n)}(x)$ and $dv = \frac{(b-x)^{(n-1)}}{(n-1)!} dx$.  Then $du =
+f^{(n+1)}(x) dx$ and $v = -\frac{(b-x)^n}{n!}$, so 
+\begin{align*}
+\int_a^b \frac{(b-x)^{(n-1)}}{(n-1)!} f^{(n)}(x) \, dx &=
+-\frac{(b-x)^n}{n!} f^{(n)}(x) \mid_a^b + \int_a^b \frac{(b-x)^n}{n!}
+f^{(n+1)}(x) \, dx \\
+&= \frac{(b-a)^n}{n!} f^{(n)}(a) + \int_a^b \frac{(b-x)^n}{n!}
+f^{(n+1)}(x) \, dx
+\end{align*}
+which proves the result.
+\end{proof}
+The version of Taylor's Formula above expresses the ``integral form''
+of the remainder term.  It is often useful to transform the remainder term in Taylor's Formula
+into the \emph{Lagrange form}.
+\begin{lem}\label{LagrangeFormRemainder}There is a number $c \in
+  [a,b]$ such that $\int_a^b
+R_n(b)= f^{(n+1)}(c) \frac{(b-a)^{n+1}}{(n+1)!}$
+\end{lem}
+\begin{proof}
+By continuity of $f^{(n+1)}(x)$ and compactness of $[a,b]$ we know
+that there exist $m, M \in \reals$ such that $m = \min_{x \in [a,b]}
+f^{(n+1)}(x)$ and $M = \max_{x \in [a,b]}
+f^{(n+1)}(x)$.
+Therefore we have the bounds
+\begin{align*}
+m\frac{(b-a)^{(n+1)}}{(n+1)!} &= m \int_a^b
+\frac{(b-x)^n}{n!} \, dx \\
+&\leq \int_a^b
+\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx \\
+&\leq M \int_a^b
+\frac{(b-x)^n}{n!} \, dx = M\frac{(b-a)^{(n+1)}}{(n+1)!} 
+\end{align*}
+hence 
+\begin{align*}
+m \leq \frac {(n+1)!} {(b-a)^{(n+1)}}\int_a^b
+\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx \leq M
+\end{align*}
+By continuity of $f^{(n+1)}(x)$ and the Intermediate Value Theorem, we know that $f^{(n+1)}(x)$
+takes every value in $[m,M]$ and therefore there exists $c \in [a,b]$
+such that $f^{(n+1)}(c) = \frac {(n+1)!} {(b-a)^{(n+1)}}\int_a^b
+\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx$.
+\end{proof}
+\begin{lem} Let $X$ be a real normed vector space with a subspace $Y$
+  of codimension 1.  Then any bounded linear functional $\lambda$ on
+  $Y$ extends to a bounded linear functional on $X$ with the same
+  operator norm.
+\end{lem}
+\begin {proof}
+We first assume that $\lambda$ has operator norm $1$.
+Let $v$ be any vector that is not in $Y$.  Then every element of $X$
+is of the form $y + tv$, hence by linearity all we really have to
+choose is the value of $\lambda(v)$ so that the operator norm doesn't
+increase.  
+First, note that it suffices to show $|\lambda(y+v)| \leq
+\|y+v\|$ for all $y$.  For it that if that is true then
+\begin{align*}
+|\lambda(y + tv)| &= |t\lambda(y/t + v)| \\
+&\leq |t| \|y/t + v\| \\
+&= \|y + tv\| 
+\end{align*}
+We rewrite the constraint $|\lambda(y+v)| \leq
+\|y+v\|$ for all $y$ as
+\begin{align*}
+-\lambda(y) - \|y+v\| \leq \lambda(v) \leq  \|y+v\| - \lambda(y)
+\end{align*}
+To see that it is possible to satisfy the constraint derived above, we
+use the triangle inequality (subadditivity) of the operator norm.  For
+all $y_1,y_2 \in Y$,
+\begin{align*}
+\lambda(y_1) - \lambda(y_2) &\leq|\lambda(y_1 - y_2)| \\
+&\leq \|y_1 - y_2\| \\
+&= \|y_1 + v - v - y_2 \| \\
+&\leq \|y_1 + v\| + \|y_2 + v\| 
+\end{align*}
+From which we conclude by rearranging terms 
+\begin{align*}
+\sup_{y_2 \in Y} -\lambda(y_2) - \|y_2 + v\| \leq \inf_{y_1 \in Y} \|y_1 + v\| - \lambda(y_1)
+\end{align*} 
+Picking any value between the two terms of the above inequality
+results in a valid extension.
+To handle the case of operator norm not equal to $1$, notice that the
+extension is trivial if the operator norm is $0$ (i.e. $\lambda=0$), otherwise define the
+extension by $\|\lambda\|$ times the extension of $\lambda/\|\lambda\|$.
+\end {proof}
+\begin{thm}[Hahn-Banach Theorem (Real case)]
+Let $X$ be a real normed vector space with a subspace $Y$.  Then any bounded linear functional $\lambda$ on  $Y$ extends to a bounded linear functional on $X$ with the same operator norm.
+\end{thm}
+\begin{proof}We proceed by using the codimension 1 case proved above
+  and then applying Zorn's Lemma.  We define a partial extension of
+  $\lambda$ to be a pair $(Y^\prime, \lambda^\prime)$ such that $Y
+  \subset Y^\prime \subset X$ and $\lambda^\prime$ is an extension of
+  $\lambda$ with the same operator norm.  Put a partial order on the
+  set of extensions by declaring $(Y^\prime, \lambda^\prime) \leq
+  (Y^{\prime\prime}, \lambda^{\prime\prime})$ if and only if $Y^\prime
+  \subset Y^{\prime\prime}$ and $\lambda^{\prime\prime}\mid_{Y^\prime}
+  = \lambda^\prime$.
+
+To apply Zorn's Lemma, we need to show that every chain has an upper
+bound.  If we are given a chain $(Y_\alpha, \lambda_\alpha)$ then we
+define $Z = \cup_\alpha Y_\alpha$ and for any $z \in Z$ we define
+$\tilde{\lambda}(z) = \lambda_\alpha(z)$ for any $\alpha$ such that $z \in
+Y_\alpha$.  It is immediate that this well defined.  It is easy to
+show linearity and to show that $\norm{\tilde{\lambda}} =
+\norm{\lambda}$ (TODO: do this).
+
+Now we can apply Zorn's Lemma to conclude that there is a maximal
+element $(Y^\prime, \lambda^\prime)$.  The codimension one case show
+us that $Y^\prime = X$ for otherwise we can construct an extension
+that shows $(Y^\prime, \lambda^\prime)$ is not maximal.
+\end{proof}
+Note that the use of Zorn's Lemma here is not accidental; the Hahn
+Banach Theorem cannot be proven in set theory without the Axiom of
+Choice (though according to Tao it can be proven without the full
+power of the Axiom of Choice using what is know as the Ultrafilter Lemma).
+\section{Compactness}
+
+\begin{defn}Let $(S,d)$ be a metric space, then we say $K \subset S$
+  is \emph{sequentially compact} if and only if for every sequence $x_1, x_2,
+  \dots \in K$ there exists a convergent subsequence $x_{n_j}$ such
+  that $\lim_{j \to \infty} x_{n_j} \in K$.
+\end{defn}
+
+\begin{defn}Let $(S,d)$ be a metric space, then we say $S$
+  is \emph{compact} if and only if for every collection $U_\alpha$ of
+  open sets such that $\bigcup_\alpha U_\alpha \supset S$ there
+  exists a finite subcollection $U_1, \dots, U_n$ such that
+  $\bigcup_{j=1}^n U_j \supset S$.
+\end{defn}
+
+\begin{defn}Let $(S,d)$ be a metric space, then we say $S$
+  is \emph{totally bounded} if and only if for every $\epsilon >0$
+  there exists a finite set of points $F \subset S$ such that for
+  every $x\in S$ there is a $y \in F$ such that $d(x,y) < \epsilon$.
+\end{defn}
+
+\begin{defn}Let $(S,d)$ be a metric space, then we say $x \in S$
+  is \emph{limit point} of a set $A \subset S$ if and only if for
+  every open set $U$ containing $x$, $A \cap (U \setminus \lbrace x
+  \rbrace) \neq \emptyset$.
+\end{defn}
+
+\begin{thm}\label{CompactnessInMetricSpaces}In a metric space $(S,d)$ the following are equivalent
+\begin{itemize}
+\item[(i)]$S$ is compact
+\item[(ii)]$S$ is complete and totally bounded
+\item[(iii)]Every infinite subset of $S$ has a limit point
+\item[(iv)]$S$ is sequentially compact
+\end{itemize}
+\end{thm}
+\begin{proof}
+First we show that (i) implies (ii).  Given $\epsilon > 0$ note that
+we have a covering by open balls $\cup_{x \in S} B(x, \epsilon)$.  By
+compactness we have a finite set $x_1, \dots, x_m$ such that
+$\cup_{i=1}^m B(x_i, \epsilon) = S$.  Thus given $y \in S$, we know
+there is an $x_j$ such that $y \in B(x_j, \epsilon)$ and we have shown
+total boundedness.  To show completeness, let $x_1, x_2, \dots$ be a
+Cauchy sequence in $S$.  For every $m > 0$ we know there exists $N_m$
+such that $d(x_{N_m}, x_n) < \frac{1}{m}$ for every $n > N_m$.  Now
+define $U_m = \lbrace x \in S \mid d(x_{N_m}, x) > \frac{1}{m}\rbrace$
+and note that $U_m$ is open. Furthermore we know that $x_n \notin U_m$
+for all $n > N_m$.  By virtue of this latter fact we can see that
+there is no finite subset of $U_m$ that covers $S$; for given $U_1,
+\dots, U_m$ then $x_n \notin \cup_{k=1}^m U_k$ for any $n > \max(N_1,
+\dots, N_m)$.  By compactness of $S$ we know that the $U_m$ do not
+cover $S$ and therefore there is an $x \in S \setminus
+\cup_{m=1}^\infty U_m$.  For such an $x$, by definition of $U_m$ we
+know that $d(x_{N_m}, x) \leq \frac{1}{m}$ for all $m > 0$.  By the
+triangle inequality we then get that $d(x_n, x) \leq \frac{2}{m}$ for
+all $n > N_m$ and $m > 0$ which shows that $x_n$ converges to $x$.
+Thus $S$ is complete.
+
+Next we show that (ii) implies (iii).  Suppose $A \subset S$ is an
+infinite set.  By the assumption of total boundedness, for each $n >
+0$, we can find a finite set $F_n$ such that for every $y \in S$ there
+exists $x \in F_n$ such that $d(x,y) < \frac{1}{n}$.  Since the finite
+sets $B(y, 1)$ for $y \in F_1$ cover $S$ there is an $y_1 \in F_1$
+such that $A \cap B(y_1, 1)$ is infinite.  Then arguing inductively we
+construct for every $n>0$ a $y_n \in F_n$ such that $A \cap B(y_1,1)
+\cap \cdots \cap B(y_n, \frac{1}{n})$ is infinite.  Note that for $n > m
+>0$, by the triangle inequality using any of the infinite number of
+elements in $B(y_n, \frac{1}{n}) \cap B(y_m, \frac{1}{m})$, we have $d(y_n, y_m) < \frac{1}{m} +
+\frac{1}{n} < \frac{2}{m}$.  This shows that $y_n$ is a Cauchy
+sequence and by assumption we know that this converges to some $y \in
+S$ and by the above estimate on $d(y_n, y_m)$, we know that for every
+$m > 0$, $d(y, y_m) < \frac{2}{m}$.  Therefore we have the inclusion
+$B(y_m, \frac{1}{m}) \subset B(y, \frac{3}{m})$ and therefore $A \cap
+B(y, \frac{3}{m})$ is also infinite which shows $y$ is a limit point
+of $A$.
+
+Next we show that (iii) implies (iv).  Let $x_1, x_2, \dots$ be an
+infinite sequence with an infinite range and by (iii) we can get a limit point $x \in S$.
+Thus we can find a subsequence $x_{n_1}, x_{n_2}, \dots$ such that
+$x_{n_k} \in B(x, \frac{1}{k})$ which shows that the subsequence
+converges.  If the sequence has a finite range then it is eventually
+constant and converges.
+
+Lastly let's show that (iv) implies (i).  Pick an open cover
+$\mathcal{U}_\alpha$ of $S$.  Our first subtask is to show that there exists a
+radius $r > 0$ such that for every $x \in S$, the ball $B(x,r)$ is contained in some
+element of $\mathcal{U}_\alpha$.   To that end, for every $x \in S$ let 
+\begin{align*}
+f(x) &= \sup \lbrace r \mid B(x,r) \subset U_\alpha \text{ for some }
+\alpha \rbrace
+\end{align*}
+We claim that $\inf \lbrace f(x) \mid x \in S \rbrace > 0$.  To verify
+the claim, we argue by contradiction and assume we can find a sequence
+$x_n$ with $f(x_n) < \frac{1}{n}$ (i.e. the ball $B(x_n, \frac{1}{n})$
+is not contained in any $U_\alpha$). 
+By sequential compactness we have a convergent subsequence $x_{n_k}$
+that converges to $x \in S$.  Because $\mathcal{U}_\alpha$ is a open cover there we
+can find an $r > 0$ and $U_\alpha$ such that $B(x, r) \subset
+U_\alpha$.  Pick $N_1 > \frac{2}{r}$.  By convergence of $x_{n_k}$ we can find $N_2 > 0$ such that
+for $n_k > N_2$ we have $d(x, x_{n_k}) < \frac{r}{2}$.  For $n_k >
+\max(N_1, N_2)$, by the triangle inequality we have $B(x_{n_k},
+\frac{1}{n_k}) \subset B(x,r) \subset U_\alpha$, so we have
+a contradiction.
+
+With the claim verified we return to the problem of proving
+compactness.  Pick an arbitrary $x_1 \in S$ and let $c = 2 \wedge
+\inf_{x \in S} f(x)$.  We define $x_n$ inductively by the following
+algorithm: if there is exists $x_n$ such that $d(x_n, x_j) >
+\frac{c}{2}$ for all $j=1, \dots, n-1$ then pick it otherwise stop.
+We claim that the algorithm terminates after a finite number of
+steps.  If it didn't then we'd have constructed an infinite sequence
+$x_n$ such that for all $m,n > 0$ we have $d(x_n,x_m) > \frac{c}{2}$
+which implies there is no Cauchy subsequence hence has no convergent
+subsequence contradicting sequential compactness.  Therefore there is an $n>0$ such that $S = \cup_{k=1}^n
+B(x_k, \frac{c}{2})$; however by construction we know that for every
+$x_k$ there is a $U_k$ such that $B(x_k, \frac{c}{2}) \subset U_k$.
+Then $U_1, \dots, U_n$ is a finite subcover of $S$ and we are done.
+\end{proof}
+It is worth noting that the equivalence of the finite subcover
+property and sequential compactness does not hold in general
+topological spaces.  In general sequential compactness is equivalent
+to the weaker property that \emph{countable} open covers have finite
+subcovers (sometime this property is refered to as countable
+compactness).  It turns out that in these circumstances that the full
+power of the finite subcover property is generally needed.
+
+\begin{cor}\label{ClosedSubsetsCompact}Every closed subset of a compact set is compact.
+\end{cor} 
+\begin{proof}Let $B$ be a compact set and let $A \subset B$ be
+  closed.  Then by the previous result and the compactness of $B$, any
+  infinite sequence in $A$ has a subsequence that converges to a point
+  in $B$.
+  Because $A$ is closed the limit of the subsequence is in fact in $A$.
+\end{proof}
+
+\begin{thm}\label{ContinuousImageOfCompact}Let $f : (S, d) \to
+  (S^\prime, d^\prime)$ be continuous.  If $S$ is compact then $f(S)$
+  is compact.
+\end{thm}
+\begin{proof}Let $U_\alpha$ be an open cover of $f(S)$.  By continuity
+  of $f$, $f^{-1}(U_\alpha)$ is an open cover of $S$ and therefore has
+  a finite subcover $f^{-1}(U_1), \dots, f^{-1}(U_n)$.  It is easy to
+  see that $U_1, \dots, U_n$ is a finite subcover of $f(S)$:  if $y \in
+  f(S)$, we can write $y = f(x)$ for $x \in S$; picking $i$ so that $x \in
+  f^{-1}(U_i)$, we see that $y \in U_i$.
+\end{proof}
+
+The following is a characterization of compact sets in $\reals^n$.
+\begin{thm}\label{HeineBorel}[Heine-Borel Theorem]A subset $A \subset
+  \reals^n$ is closed and
+  bounded if and only if it is compact.
+\end{thm}
+TODO:  I don't think it is worth doing the proof from scratch; this is
+a simple corollary of the result.
+\begin{proof}By Lemma \ref{CompactnessInMetricSpaces} it suffices to
+  show that a closed and bounded set in $\reals^n$ is complete and
+  totally bounded.  Completeness is simple as any Cauchy sequence in
+  $A$ converges in $\reals^n$ by completeness of $\reals^n$ but then
+  the limit is in $A$ because $A$ is closed.  To see total
+  boundedness, pick an $\epsilon > 0$ and then pick $N >
+  \frac{\sqrt{n}}{\epsilon}$.  Since $A$ is bounded, there exists $M >
+  0$ such that $A \subset [-M, M] \times \cdots \times [-M,M]$.  It
+  suffices to show that the latter set is totally bounded.  Pick
+  the finite set of points $\lbrace (x_1/N, \dots , x_n/N) \mid -MN \leq x_j
+    \leq MN \rbrace$ and note that 
+\begin{align*} [-M, M] \times \cdots \times
+  [-M,M] \subset \bigcup B((x_1/N, \dots , x_n/N), \epsilon)
+\end{align*}
+\end{proof}
+
+Before we begin the proof we need a Lemma.
+\begin{lem}Suppose $C_0 \supset C_1 \supset \cdots$ is a nested
+  sequence of closed and bounded sets $C_k \subset \reals^n$.  Then
+  $\cap_k C_k$ is non empty.
+\end{lem}
+\begin{proof}Here is the proof for $n=1$.  TODO: Generalize.
+
+Let $a_k = \inf C_k$; because $C_k$ is closed we know that $a_k \in
+C_k$.  By the nestedness and boundedness of $C_k$, we know that $a_k$
+is a non-decreasing bounded sequence and therefore has a limit $a$.
+For any fixed $k$, the sequence $a_n \in C_k$ for all $n \geq k$ and
+thus $a=\lim_{n \to \infty} a_n \in C_k$.  Since $k$ was arbitrary we
+have $a \in \cap_k C_k$ and we're done.
+\end{proof}
+With the Lemma in hand we can proceed to the proof of Heine-Borel.
+\begin{proof}
+Suppose $A$ is closed and bounded.  By boundedness there exists $N>0$
+such that $A \subset [-N,N] \times \cdots \times [-N,N]$ and by
+Corollary \ref{ClosedSubsetsCompact} it suffices to show that $ [-N,N]
+\times \cdots \times [-N,N]$ is compact.
+
+Now suppose that we are given an infinite open covering of $ [-N,N]
+\times \cdots \times [-N,N]$ by sets $A_\alpha$ such that there is no
+finite subcover.  Now bisect each side of the cube so that we can
+write it as a union of $2^n$ cubes each of side $N$.  $A_\alpha$
+covers each of the subcubes; if all of the subcubes had a finite
+subcover of $A_\alpha$ then by taking the union we'd have constructed
+a finite subcover of $ [-N,N]
+\times \cdots \times [-N,N]$.  Since we've assumed that this isn't
+true at least one of the subcubes has no finite subcover.   Pick that
+cube, call it $C_1$ and now iterate the construction to create a
+nested sequence of cubes $C_k$ where $C_k$ has side of length
+$N/2^k$.  Since the $C_k$ are closed and bounded by the previous Lemma
+we know that the intersection $\cap_k C_k \neq \emptyset$ and
+therefore we can pick $x \in \cap_k C_k$.  Since $A_\alpha$ is a
+cover, there exists an $A$ such that $x \in A$.  Because $A$ is open
+we can in fact find a ball $B(x,r) \subset A$ for some $r > 0$.  Then
+for sufficiently large $k$, $C_k \subset B(x,r) \subset A$ which means
+that we have constructed a finite subcover for $C_k$ which is a contradiction.
+\end{proof}
+
+\begin{defn}Let $(S,d)$ and $(T, d^\prime)$ be metric spaces, a
+  function $f : S \to T$ is said to be \emph{uniformly continuous} if
+  for every $\epsilon > 0$ there exists a $\delta > 0$ such that
+  $d(x,y) < \delta$ implies $d^\prime(f(x), f(y)) < \epsilon$.
+\end{defn}
+
+\begin{thm}\label{UniformContinuityOnCompactSets} Let $f : (S,d) \to (T, d^\prime)$ be a continuous function, if $S$ is
+  compact then $f$ is uniformly continuous.
+\end{thm}
+\begin{proof}
+The proof is by contradiction.  Suppose that $f$ is not uniformly
+continuous.  Fix an $\epsilon > 0$, for every $n > 0$ we can find
+$x_n$ and $y_n$ such that $d(x_n, y_n) < \frac{1}{n}$ but
+$d^\prime(f(x_n), f(y_n)) \geq \epsilon$.  Now by compactness and Theorem
+\ref{CompactnessInMetricSpaces} we can find a
+common convergence subsequence of both $x_n$ and $y_n$.  Let's say
+$\lim_{j \to \infty} x_{n_j} = x$ and $\lim_{j \to \infty} y_{n_j} =
+y$.  Note that for every $j>0$, 
+\begin{align*}
+d(x,y) = \lim_{j \to \infty } d(x,y)\leq \lim_{j \to \infty } d(x,
+x_{n_j}) + d(x_{n_j}, y_{n_j}) + d(y_{n_j}, y) = 0
+\end{align*}
+therefore $x=y$ and $f(x)=f(y)$.  
+
+Again using the triangle inequality we see
+\begin{align*}
+\lim_{j \to \infty} d^\prime(f(x_{n_j}), f(y_{n_j})) \leq \lim_{j \to \infty}
+d^\prime(f(x_{n_j}), f(x)) + d^\prime(f(x), f(y)) + d^\prime(f(y), f(y_{n_j})) = 0
+\end{align*}
+which is the desired contradiction.
+\end{proof}
+
+\begin{lem}\label{IntersectionOfNestedCompactSets}Let $K_1 \supset K_2
+  \supset \cdots$ be a nested collection of non-empty compact sets,
+  then $\cap_{n=1}^\infty K_n$ is nonempty.
+\end{lem}
+\begin{proof}Pick $x_n \in K_n$ and note that by compactness there is
+  a convergent subsequence.  Let $x$ be the limit of that convergent
+  subsequence.  By nestedness and closedness of each $K_n$ we conclude
+  that $x \in K_n$ for every $n$.
+\end{proof}
+
+\begin{thm}Let $f : S \to \reals^n$ be a continuous function, if $S$ is
+  compact then $f$ is bounded.
+\end{thm}
+\begin{proof}
+By the Heine-Borel Theorem and Theorem \ref{ContinuousImageOfCompact}, we know that $f(S)$ is a closed bounded set.
+\end{proof}
+
+A related notion is that of uniform convergence of functions.
+\begin{defn}Let $f, f_n : S \to (S, d^\prime)$ be a sequence
+  of functions.  The we way that $f_n$ converges to $f$
+  \emph{uniformly} if and only if for every $\epsilon > 0$ there
+  exists a $N > 0$ such that for all $x \in S$, and $n > N$, $d^\prime(f_n(x), f(x)) < \epsilon$.
+\end{defn}
+
+One of the most important points about uniform convergence is that a
+uniform limit of continuous functions is continuous.
+\begin{lem}\label{UniformLimitContinuousFunctionsIsContinuous}Let $f,
+  f_n : (S,d) \to (S^\prime, d^\prime)$ be a sequence
+  of functions where $f_n$ are continuous.  If the $f_n$ converge
+  to $f$ uniformly then $f$ is continuous.
+\end{lem}
+\begin{proof}
+Suppose we are given an $\epsilon > 0$ and let $x \in S$.  By uniform
+convergence of $f_n$ we may find an $N > 0$ such that
+$d^\prime(f_n(y), f(y)) < \frac{\epsilon}{3}$ for all $n \geq N$ and
+$y \in S$.  In particular, consider $f_N$.  Since this function is
+continuous we may find $\delta > 0$ so that $d(x,y) < \delta$ implies
+$d^\prime(f_N(x), f_N(y)) < \frac{\epsilon}{3}$.  So by the triangle
+inequality, we have 
+\begin{align*}
+d^\prime(f(x), f(y)) < d^\prime(f(x), f_N(x)) + d^\prime(f_N(x),
+f_N(y)) + d^\prime(f_N(y), f(y)) < \epsilon
+\end{align*}
+\end{proof}
+
+\section{Stone Weierstrass Theorem}
+
+\begin{lem}\label{ApproximationOfLatticeInfimum}Let $L$ be a lattice of continuous functions on a compact Hausdorff
+  space $X$ and suppose that the pointwise infimum $g(x) = \inf_{f \in
+    L} f(x)$ is continuous.  Then for every $\epsilon > 0$ there
+  exists $f \in L$ such that $0 \leq \sup \lbrace x \in X \mid f(x) - g(x)
+  \rbrace < \epsilon$.
+\end{lem}
+\begin{proof}
+For every $x \in X$ we can find an $f_x \in L$ such that $f_x(x) - g(x) <
+\epsilon/3$.  By continuity of $f_x$ and $g$ we can find an open
+neighborhood  $U_x$ of $x$ such that $\abs{f_x(x) - f_x(y)} < \epsilon/3$
+and $\abs{g(x) - g(y)} < \epsilon/3$.  By the triangle inequality it
+follows that $f_x(y) - g(y) < \epsilon$ for all $y \in U_x$.  The
+$U_x$ are an open cover of $X$ so by compactness we may take a finite
+subcover $U_{x_1}, \dotsc, U_{x_n}$.  Let $f = f_{x_1} \wedge \cdots
+\wedge f_{x_n}$ then for every $x \in X$ we have $x \in U_{x_j}$ for
+some $x_j$ and 
+\begin{align*}
+f(x) - g(x) &\leq f_{x_j}(x) - g(x) < \epsilon
+\end{align*}
+\end{proof}
+
+\begin{lem}Let $L$ be a lattice of continuous functions on a compact
+  Hausdorff space $X$ such that 
+\begin{itemize}
+\item[(i)]$L$ separates points (i.e. for every $x \neq y \in X$ there
+  exists $f \in L$ such that $f(x) \neq f(y)$)
+\item[(ii)]If $f \in L$ then for every $c \in \reals$ we have $cf \in
+  L$ and $f + c \in L$.
+\end{itemize}
+Then for every continuous function $g$ on $X$ and $\epsilon > 0$ there
+exists $f \in L$ such $0 \leq \sup \lbrace x \in X \mid f(x) - g(x)
+\rbrace < \epsilon$.
+\end{lem}
+\begin{proof}
+The first thing is to observe that for the lattice $L$ we have
+complete control over the values of the function that separates points.
+
+Claim 1: Suppose $x \neq y \in X$ and $a \neq b \in \reals$ then
+there exists $f \in L$ such that $f(x) = a$ and $f(y) = b$.
+
+To see the claim because $L$ separates points we have an $h \in L$
+such that $h(x) \neq h(y)$.  Now it suffices to define
+\begin{align*}
+f(z) &= \frac{a -b}{h(x) - h(y)} h(z) + \frac{b h(x) -a h(y) }{h(x) - h(y)} 
+\end{align*}
+and note that by (ii) we have $f \in L$.
+
+Claim 2: For any closed set $F \subset X$, $y \notin F$ and $a \leq b
+\in \reals$ we can find $f \in L$ such that $f \geq a$, $f(y) = a$ and
+$f(x) > b$ for all $x \in F$.
+
+Pick an $x \in F$ then by Claim 1, we can find $f_x$ such that $f_x(x)
+= b+1$ and $f_x(y) = a$.  By continuity of $f_x$ we have an open
+neighborhood $U_x$ of $x$ such that $f(y) > b$ for all $y \in U_x$.
+Clearly the $U_x$ form an open cover of $F$.
+Since $F$ is closed and $X$ is compact Hausdorff we know that $F$ is
+also compact hence we can extract a finite open cover $U_{x_1},
+\dotsc,U_{x_n}$ of $F$.  Define
+\begin{align*}
+f &= (f_{x_1} \vee \cdots \vee f_{x_n}) \wedge a
+\end{align*}
+and observe that $f \in L$ since $L$ is a lattice and by (ii) $L$
+contains the constant functions.
+
+Now we can prove the Lemma proper.  With $g$ selected, let $L_g =
+\lbrace f \in L \mid g \leq f \rbrace$.  Clearly $L_g$ is a lattice so
+the result follows from Lemma \ref{ApproximationOfLatticeInfimum} if
+we can show $g = \inf_{f \in L_g} f$.  Pick an $\delta > 0$ and a $y
+\in X$, we try
+to find $f \in L_g$ such that $f(y) - g(y) 
+\leq \delta$.  First we find
+such and $f \in L$ and then show that in fact $f \in L_g$.  Let $F =
+\lbrace x\in X \mid g(x) + \delta \rbrace$ which is closed by
+continuity of $g$.  By compactness of $X$ and continuity of $g$ we
+know that $g$ has a maximum value $M$.  Using Claim 2 we know that we
+can find $f \in L$ such that $g(y) +\delta \geq f(x)$ for all $x \in
+X$, $g(y) + \delta = f(y)$ and $f(x) > M$ for all $x \in F$.  To see
+that $f \in L_g$, note that by definition of $F$ and construction of $f$  for all $x \in X
+\setminus F$ we have 
+$g(x) < g(y) + \delta \leq f(x)$ and for all $x \in F$ we have $g(x)
+\leq M < f(x)$.
+\end{proof}
+
+The Stone Weierstrass Theorem concerns the approximation properties of
+subalgebras of $C(X)$ but we have been describing the approximation
+properties of lattices of continuous functions.  The connection will
+rely on the fact that we can uniformly approximate the absolute value
+function by a polynomial on a compact interval.  We record that fact
+as the following 
+\begin{lem}For every $\epsilon > 0$ there exists a polynomial $p(x)$
+  such that 
+\begin{align*}
+\sup \lbrace x \in [-1,1] \mid \abs{p(x) - \abs{x}}
+  \rbrace < \epsilon
+\end{align*}
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{thm}[Stone Weierstrass Theorem]\label{StoneWeierstrassApproximation}Let $X$ be a compact Hausdorff space and let $A \subset
+  C(X;\reals)$ be a subalgebra which contains a non-zero constant
+  function.  The $A$ is dense in $C(X;\reals)$ if and only if $A$
+  separates points.
+\end{thm}
+\begin{proof}
+Let $\overline{A}$ be the uniform closure of $A$ (that is to say the
+set of $f$ such that for every $\epsilon > 0$ there exists $g \in A$
+such that $\sup \lbrace x \in X \mid \abs{g(x) - f(x)} \rbrace <
+\epsilon$.  By Lemma \ref{UniformLimitContinuousFunctionsIsContinuous}
+any such limit is continuous hence $\overline{A} \subset C(X)$. (TODO: The referenced result is stated
+for a metric space domain however the proof clearly works for a domain
+that is a general topological space).
+
+TODO: Finish
+\end{proof}
+
+\begin{cor}[Fourier Series Approximation]\label{FourierSeries}For
+  every continuous $f : \reals^n \to \reals$ such that $f(x + v) =
+  f(x)$ for all $x \in \reals$, and $v \in \integers^n$, for every
+$\epsilon > 0$  there exists constants $c_{j,k}$ and
+$d_{j,k}$ such that 
+\begin{align*}
+\sup_x \abs{\sum_{j=0}^n \sum_{k=0}^N (c_{j,k} \sin(2k\pi x_j) + d_{j,k}
+\cos(2k\pi x_j)) - f(x)} < \epsilon
+\end{align*}
+\end{cor}
+\begin{proof}First we observe that there is a bijection between
+  periodic function as in the hypothesis and functions on the
+  topological space $T^n = S^1 \times \cdots \times S^1$ (the $n$-torus).
+Observe that if one has a uniform approximation to a function
+viewed as having a domain $T^n$ then the uniform approximation applies
+equally well when considered as a periodic function on $\reals^n$.
+
+It remains to observe that $T^n$ is compact Hausdorff, the functions $\sin(2k\pi x_j)$ an $\cos(2k
+\pi x_j)$ separate points and contain the constants so the Stone Weierstrass
+Theorem applies.
+
+An alternative approach is a more constructive one using the Fejer kernel.
+\end{proof}
+
+\begin{cor}[Weierstrass Approximation
+  Theorem]\label{WeierstrassApproximation}For every continuous
+  function $f : [0,T] \to \reals$ there exists a sequence of
+  polynomials $p_n(x)$ such that $\lim_{n \to \infty} \sup_{0 \leq x \leq T} \abs{f(x) -
+    p_n(x)} = 0$.
+\end{cor}
+

@@ -1,0 +1,475 @@
+\chapter{Lindeberg's Central Limit Theorem}
+
+The Law of Large Numbers tells us that when we are given i.i.d. random
+variables $\xi_i$ with finite expectation, we have almost sure
+convergence of $\frac{1}{n} \sum_{k=1}^n \xi_k =
+\expectation{\xi_i}$.  Using different notation we can say, 
+\begin{align*}
+\sum_{k=1}^n \xi_k - n \expectation{\xi_i}  = o(n)
+\end{align*}
+From one point of view, the Central Limit Theorem arises from asking
+the question about whether $o(n)$ can be replaced by $o(n^p)$ or
+$\mathcal{O}(n^p)$ for $p < 1$.  In this sense the Central Limit
+Theorem gives some information about the rate of convergence of the sums
+$\frac{1}{n} \sum_{k=1}^n \xi_k$ to their limit.
+
+First some intuition about the Central Limit Theorem.  Let's assume
+that we have a sequence of i.i.d. random variables $\xi_i$ such that
+$\xi_i$ has moments of all orders (a much stronger assumption than one
+needs for the CLT).  We also assume 
+\begin{align*}
+\expectation{\xi_i} = 0, \expectation{\xi_i^2} =1
+\end{align*}
+Consider the following computation of the moments
+of the partial sums of $\xi_i$.  Let $S_n = \xi_1 + \cdots + \xi_n$.
+\begin{align*}
+\expectation{S_n^{m+1}} &= \expectation{(\xi_1
+  + \cdots + \xi_n) (\xi_1
+  + \cdots + \xi_n)^{m}} \\
+&= \sum_{i=1}^n \expectation{\xi_i (\xi_n + S_{n-1})^m }\\
+&= n \expectation{\xi_n (\xi_n + S_{n-1})^m} \textrm{ TODO: don't know how
+  to prove this step}\\
+&= n \sum_{j=0}^m \binom{m}{j} \expectation{\xi_n^{j+1}}
+\expectation{S_{n-1}^{m-j}} \\
+&= n m \expectation{S_{n-1}^{m-1}} + n \sum_{j=2}^m \binom{m}{j} \expectation{\xi_n^{j+1}}
+\expectation{S_{n-1}^{m-j}} \\
+\end{align*}
+Now define $\hat{S}_n = S_n/\sqrt{n}$, and divide both sides of the
+above by $n^{\frac{m+1}{2}}$ and we see
+\begin{align*}
+\expectation{\hat{S}_n^{m+1}} = m \expectation{\hat{S}_n^{m-1}} + \sum_{j=2}^m \binom{m}{j} \frac{1}{n^\frac{j-1}{2}}\expectation{\xi_n^{j+1}}
+\expectation{\hat{S}_{n-1}^{m-j}}
+\end{align*}
+An induction on $m$ together with the observation that $\expectation{\hat{S}_n^0} =
+1$ and $\expectation{\hat{S_n}} = 0$ shows that 
+\begin{align*}
+\lim_{n \to \infty} \expectation{\hat{S}_n^{2m+1}}&=0 \\
+\lim_{n \to \infty} \expectation{\hat{S}_n^{2m}}&=\prod_{j=1}^m (2j-1)
+= \frac{(2m)!}{2^m m!}\\
+\end{align*}
+We can recognize that these are the moments of the standard normal
+distribution.
+
+The above argument is one path to use to see how Gaussian
+distributions might arise when looking at sums of i.i.d random
+variables but relies on an unecessarily strong set of assumptions (not
+to mention it ignores the fact that moments alone to not characterize
+a distribution).
+
+In fact convergence to normal distributions is more general than
+i.i.d. variables and we look for a version that has a rather precise set of
+assumptions called the Lindeberg conditions.  The statement of the
+result and the corresponding notation is unwieldy but the proof itself
+doesn't seem to suffer much from the added complexity.  Furthermore
+the added generality provides a useful space to explore when examining the limits of asymptotic normality.
+
+\begin{thm}[Lindeberg]\label{LindebergTheorem}Let $\xi_1, \xi_2, \dots$ be independent square
+  integrable random variables $\expectation{\xi_m} = 0$ and
+  $\expectation{\xi_m^2} = \sigma_m^2 > 0$.  Define
+\begin{align*}
+S_n &= \sum_{i=1}^n \xi_i \\
+\Sigma_n &= \sqrt{\sum_{i=1}^n \sigma_i^2}\\
+\hat{S}_n &= \frac{S_n}{\Sigma_n} \\
+r_n &= \max_{1 \leq i \leq n} \frac{\sigma_i}{\Sigma_n} \\
+g_n(\epsilon) &= \frac{1}{\Sigma_n^2} \sum_{i=1}^n \expectation{\xi_i^2
+  \characteristic{|\xi_i| \geq \epsilon \Sigma_n}}
+\end{align*}
+and let $d \gamma = \frac{1}{\sqrt{2\pi}} e^{\frac{-x^2}{2}} dx$ be the
+  distribution of an $N(0,1)$ random variable.  Now for all $\epsilon > 0$, $\varphi \in C^3(\reals;\reals)$ with
+bounded 2nd and 3rd derivative,
+\begin{align*}
+\left \lvert \expectation{\varphi(\hat{S_n})} - \int_\reals \varphi
+  d\gamma \right \rvert \leq
+\left ( \frac{\epsilon}{6} + \frac{r_n}{2}\right ) \norm{\varphi^{\prime\prime\prime}}_\infty + g_n(\epsilon) \norm{\varphi^{ \prime
+\prime}}_\infty
+\end{align*}
+and 
+\begin{align*}
+r_n^2 \leq \epsilon^2 + g_n(\epsilon)
+\end{align*}
+In particular, if $\lim_{n \to \infty} g_n(\epsilon) = 0$ for every
+$\epsilon > 0$, then 
+\begin{align*}
+\lim_{n \to \infty} \left \lvert \expectation{\varphi(\hat{S_n})} - \int_\reals \varphi
+  d\gamma \right \rvert = 0
+\end{align*}
+\end{thm}
+Before attacking the proof we note how everything specializes in the
+case of i.i.d. random variables.  In this case $\Sigma_n = \sqrt{n}
+\sigma$, $\hat{S}_n = \frac{\sum_{i=1}^n \xi_i}{\sqrt{n} \sigma}$ and
+$g_n(\epsilon) = \frac{1}{\sigma^2} \expectation{\xi^2 ; \abs{\xi}
+  \geq \epsilon \sqrt{n} \sigma}$.  Because $\expectation{\xi^2}
+< \infty$ we know that $\xi^2 < \infty$ a.s.  and we have
+$\xi^2 \characteristic{\abs{\xi}  \geq \epsilon \sqrt{n} \sigma}
+\toas 0$.  Noting $\xi^2 \characteristic{\abs{\xi}  \geq \epsilon \sqrt{n}
+  \sigma} \leq \xi^2$, Dominated Convergence tells us that $\lim_{n
+\to \infty} g_n(\epsilon) = 0$.
+
+This special case also sheds some light on aspects of the hypotheses.
+For example, the $\sqrt{n}$ in the denominator is the only possible
+choice to acheive convergence to a random variable with finite
+non-zero variance; it is precisely the term requires to make
+$\sigma(\hat{S}_n)$ converge to a finite non-zero number (in fact in
+the i.i.d. case it makes the sequence constant).  
+
+It is also worth spending some time understanding the nature of
+$g_n(\epsilon)$.  First, it is clear from independence and definitions that 
+\begin{align*}
+\expectation{\hat{S}_n^2} &= \sum_{i=1}^n \expectation{\left
+    (\frac{\xi_i}{\Sigma_n} \right )^2} = \frac{1}{\Sigma_n^2}
+\sum_{i=1}^n \sigma_i^2 = 1
+\end{align*}
+but we can also write 
+\begin{align*}
+g_n(\epsilon) &= \frac{1}{\Sigma_n^2} \sum_{i=1}^n \expectation{\xi_i^2
+  \characteristic{|\xi_i| \geq \epsilon \Sigma_n}} = \sum_{i=1}^n
+\expectation{\left (\frac{\xi_i}{\Sigma_n}\right )^2
+  ; \abs{\frac{\xi_i}{\Sigma_n}} \geq \epsilon}
+\end{align*}
+So the $\hat{S}_n$ is the sum of $\xi_i$ normalized to maintain a
+constant unit variance.  Our assumption that $\lim_{n \to \infty}
+g_n(\epsilon) = 0$ is an assertion that in the limit, all of that unit
+variance is contained in a bounded region around $0$.  In the
+i.i.d. case that is clearly true because all of the unscaled $\xi_n$
+have their ``energy'' in a constant fashion, so rescaling is able to
+concentrate that energy arbitrarily close to $0$.  It is permissible
+to have the energy of the $\xi_n$ moving off to infinity but only if
+it travels at a rate less than $\sqrt{n}$.
+
+TODO: Question is it possible to satisfy the Lindeberg condition when
+$\lim_{n \to \infty} \Sigma_n < \infty$?
+
+\begin{proof}
+Fix an $n >0$ and define $\hat{\xi}_m = \frac{\xi_m}{\Sigma_n}$ and
+$\hat{S}_n = \hat{\xi}_1 + \cdots + \hat{\xi}_n$.  Note that
+$\expectation{\hat{S}_n^2} = 1$.  Let $\eta_1, \eta_2, \dots$ be independent $N(0,1)$ random variables
+that are also independent of the $\xi_i$.  Note that we may have to
+extend $\Omega$ in order to arrange this (e.g. extend by $[0,1]$ and
+use Theorem \ref{ExistenceCountableIndependentRandomVariables}).  We
+rescale each $\eta_i$ so that it has the same variance as
+$\hat{\xi_i}$; define $\hat{\eta}_i =
+\frac{\sigma_i \eta_i}{\Sigma_n}$ and $\hat{T}_n = \hat{\eta}_1 +
+\cdots + \hat{\eta}_n$.  Notice that
+$\expectation{\hat{\eta}_m^2} =
+\expectation{\hat{\xi}_m^2} = \frac{\sigma_m^2}{\Sigma_n^2}$ and $\hat{T}_n$ is also a $N(0,1)$
+random variable.  Therefore, by the Expectation Rule (Lemma
+\ref{ExpectationRule}) $\int \varphi \, d\gamma =
+\expectation{\varphi(\hat{T}_n)}$ and we can write 
+\begin{align*}
+\left \lvert \expectation{\varphi(\hat{S_n})} - \int_\reals \varphi
+  d\gamma \right \rvert = \left \lvert \expectation{\varphi(\hat{S_n})} - \expectation{\varphi(\hat{T_n})} \right \rvert
+\end{align*}
+By having arranged for $\hat{\xi}_i$ and $\hat{\eta}_i$ to have same
+first and second moments so one should be thinking that we have
+constructed a ``second order approximation''.  TODO: What is critical
+is that the approximation of the individual $\hat{\xi}_i$ may not be a
+good one, the approximation $\hat{S_n}$ by $\hat{T_n}$ is a good one.
+Find the critical point(s) in the proof where this comes to light.
+
+The real trick of the proof is to interpolate between
+$\varphi(\hat{S_n})$ and $\varphi(\hat{T_n})$ by exchanging
+$\hat{\xi}_i$ and $\hat{\eta}_i$ one summand at a time.  By varying
+only one summand we will then be able use Taylor's Theorem to
+estimate the differences between the terms.  Concretely we write,
+\begin{align*}
+\varphi(\hat{S_n}) - \varphi(\hat{T_n}) &= \varphi(\hat{\xi}_1 + \cdots + \hat{\xi}_n) -
+\varphi(\hat{\eta}_1 + \cdots + \hat{\eta}_n) \\
+&= \varphi(\hat{\xi}_1 + \cdots + \hat{\xi}_n) - \varphi(\hat{\eta}_1 +
+\hat{\xi}_2 + 
+\cdots + \hat{\xi}_n) \\
+&+ \varphi(\hat{\eta}_1 +
+\hat{\xi}_2 +
+\cdots + \hat{\xi}_n) - 
+\varphi(\hat{\eta}_1 + \hat{\eta}_2 + \hat{\xi}_3 + \cdots + \hat{\xi}_n) \\
+&+ \cdots\\
+&+ \varphi(\hat{\eta}_1 +
+\cdots  +
+\hat{\eta}_{n-1} + \hat{\xi}_n) - 
+\varphi(\hat{\eta}_1 + \cdots + \hat{\eta}_n) \\
+\end{align*}
+Since we have to manipulate these terms a bit, it helps to clean up
+the notation by defining:
+\begin{align*}
+U_m &= \begin{cases}
+\hat{\xi}_2 + \cdots + \hat{\xi}_n & \text{if $m=1$} \\
+\hat{\eta}_1 + \cdots + \hat{\eta}_{m-1}+\hat{\xi}_{m+1} + \cdots +
+\hat{\xi}_n & \text{if $1 < m<n$} \\
+\hat{\eta}_1 + \cdots + \hat{\eta}_{n-1} & \text{if $m=n$} \\
+\end{cases}
+\end{align*}
+and then we can write the above interpolation as 
+\begin{align*}
+\varphi(\hat{S_n}) - \varphi(\hat{T_n}) &= \sum_{m=1}^n \varphi(U_m + \hat{\xi}_m) -\varphi(U_m + \hat{\eta}_m)
+\end{align*}
+Now we can take absolute values, use the triangle inequality and use
+linearity of expectation to see
+\begin{align*}
+\abs{\expectation{\varphi(\hat{S_n}) - \varphi(\hat{T_n})}} &\leq
+\sum_{m=1}^n \abs{\expectation{\varphi(U_m + \hat{\xi}_m)}
+  -\expectation{\varphi(U_m + \hat{\eta}_m)}}\\
+&=\sum_{m=1}^n \abs{\expectation{\varphi(U_m + \hat{\xi}_m)
+  -\varphi(U_m + \hat{\eta}_m)}}
+\end{align*}
+
+Now we focus on each term $\varphi(U_m + \hat{\xi}_m) -\varphi(U_m +
+\hat{\eta}_m)$ by applying Taylor's Formula (Theorem
+\ref{TaylorsTheorem}) to see 
+\begin{align*}
+\varphi(U_m + x) = \varphi(U_m) + x \varphi^\prime(U_m) +
+\frac{x^2}{2} \varphi^{\prime\prime}(U_m) + R_m(x)
+\end{align*}
+where
+\begin{align*}
+R_m(x) &=  \int_{U_m}^{U_m+x}
+\frac{(U_m + x - t)^2}{2} \varphi^{\prime \prime \prime}(t) \, dt
+\end{align*}
+
+For example,applying this expansion with $x = \hat{\xi}_m$, using
+linearity of expectation, independence of
+$\hat{\xi}_m$ and $U_m$ and Lemma \ref{IndependenceExpectations} we get
+\begin{align*}
+\expectation{\varphi(U_m + \hat{\xi}_m) } &= \expectation{
+  \varphi(U_m)+ \hat{\xi}_m \varphi^\prime(U_m) +
+\frac{\hat{\xi}_m^2}{2} \varphi^{\prime\prime}(U_m) +
+R_m(\hat{\xi}_m)} \\
+&=\expectation{
+  \varphi(U_m)} + \frac{\sigma_m^2}{2\Sigma_n^2}\expectation{\varphi^{\prime\prime}(U_m)} + \expectation{R_m(\hat{\xi}_m)}
+\end{align*}
+and in exactly the same way because we have arrange for $\hat{\xi}_m$
+and $\hat{\eta}_m$ to share the first two moments, we get
+\begin{align*}
+\expectation{\varphi(U_m + \hat{\eta}_m) } &=\expectation{
+  \varphi(U_m)} + \frac{\sigma_m^2}{2\Sigma_n^2}\expectation{\varphi^{\prime\prime}(U_m)} + \expectation{R_m(\hat{\eta}_m)}
+\end{align*}
+Thus, $\expectation{\varphi(U_m + \hat{\xi}_m)
+  -\varphi(U_m + \hat{\eta}_m)} = \expectation{R_m(\hat{\xi}_m)} -
+\expectation{R_m(\hat{\eta}_m)}$ and 
+\begin{align*}
+\abs{\expectation{\varphi(\hat{S_n}) - \varphi(\hat{T_n})}} &\leq 
+\sum_{m=1}^n \abs{\expectation{R_m(\hat{\xi}_m) }} +  \sum_{m=1}^n \abs{\expectation{R_m(\hat{\eta}_m) }}
+\end{align*}
+
+We complete the proof by bounding each expectation above.  On the one hand, there is the Lagrange Form for the
+remainder term (Lemma \ref{LagrangeFormRemainder}) that shows that $R_m(x) =
+\varphi^{\prime\prime\prime}(c) \frac{x^3}{6}$ for some $c \in [U_m,
+U_m+x]$ hence $\abs{R_m(x)} \leq
+\norm{\varphi^{\prime\prime\prime}}_\infty \frac{\abs{x}^3}{6}$. On
+the other hand, sticking with the integral form of the remainder term, since $t \in [U_m, U_m + x]$ we can bound the term $(U_m + x - t)^2 \leq \abs{x}^2$ in
+the integral and integrate to conclude 
+\begin{align*}
+\abs{R_m(x)} &=  \int_{U_m}^{U_m+x}
+\frac{(U_m + x - t)^2}{2} \varphi^{\prime \prime \prime}(t) \, dt \leq
+\frac{\abs{x}^2}{2} \int_{U_m}^{U_m+x}
+\varphi^{\prime \prime \prime}(t) \, dt \\
+&=\frac{\abs{x}^2}{2} \left(\varphi^{\prime \prime}(U_m+x) - \varphi^{\prime \prime}(x)\right) \leq \norm{\varphi^{\prime\prime}}_\infty \abs{x}^2
+\end{align*}
+
+With this setup, pick $\epsilon >0$ and first consider the remainder term $R_m(\hat{\xi}_m) $
+and a note that we have to be a little careful.  We would like to use
+the stronger $3^{rd}$ moment bound however we have not
+assumed that $\hat{\xi}_m$ has a finite $3^{rd}$ moment.  So what we
+do is truncate $\hat{\xi}_m$ and take a $2^{nd}$ moment bound over the
+tail (valid because of the finite variance assumption) and use a
+$3^{rd}$ moment bound on the truncated $\hat{\xi}_m$.  The details follow:
+\begin{align*}
+\abs{\expectation{R_m(\hat{\xi}_m) }} &\leq
+\abs{\expectation{R_m(\hat{\xi}_m) ; \abs{\hat{\xi}_m} \leq \epsilon}}
++ \abs{\expectation{R_m(\hat{\xi}_m) ; \abs{\hat{\xi}_m} > \epsilon}}
+\end{align*}
+We take the sum of first terms and apply the Taylor's formula bound to see 
+\begin{align*}
+\sum_{m=1}^n \abs{\expectation{R_m(\hat{\xi}_m) ; \abs{\hat{\xi}_m} \leq
+    \epsilon}}
+&\leq
+\frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n \abs{\expectation{\abs{\hat{\xi}_m}^3
+    ; \abs{\hat{\xi}_m} \leq \epsilon}} \\
+&\leq
+\epsilon \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n
+\abs{\expectation{\abs{\hat{\xi}_m}^2}} \\
+&=
+\epsilon \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n
+\frac{\sigma_m^2}{\Sigma_n^2} = \epsilon \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \\
+\end{align*}
+Next take the sum of the second terms to see
+\begin{align*}
+\sum_{m=1}^n \abs{\expectation{R_m(\hat{\xi}_m) ; \abs{\hat{\xi}_m} >
+    \epsilon}}
+&\leq
+\norm{\varphi^{\prime\prime}}_\infty\sum_{m=1}^n \abs{\expectation{\abs{\hat{\xi}_m}^2
+    ; \abs{\hat{\xi}_m} > \epsilon}} \\
+&=
+\norm{\varphi^{\prime\prime}}_\infty \frac{1}{\Sigma_n^2}\sum_{m=1}^n \abs{\expectation{\abs{\xi_m}^2
+    ; \abs{\xi_m} > \epsilon \Sigma_n}} \\
+&= \norm{\varphi^{\prime\prime}}_\infty g_\epsilon(n)
+\end{align*}
+Lastly, to bound the remainder term on $\hat{\eta}_m$ we can directly
+appeal to the $3^{rd}$ moment bound because as a normal random
+variable $\hat{\eta}_m$ has finite moments of all orders:
+\begin{align*}
+\sum_{m=1}^n \abs{\expectation{R_m(\hat{\eta}_m) }}
+&\leq
+\frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n
+\abs{\expectation{\abs{\hat{\eta}_m}^3}} \\
+&= \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n \frac{\sigma_m^3}{\Sigma_n^3}
+\abs{\expectation{\abs{\eta_m}^3}} \\
+&= \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n \frac{\sigma_m^2}{\Sigma_n^2}
+\abs{\expectation{\abs{\eta_m}^3}} \\
+&= \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{6}
+\frac{2\sqrt{2}}{\sqrt{\pi}} < \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{2}
+\end{align*}
+
+TODO: We used a calculation of the $3^{rd}$ absolute moment of the
+standard normal distribution ($\frac{2\sqrt{2}}{\sqrt{\pi}}$).  We need to record that calculation somewhere.
+
+The last thing to show is the bound on $r_n^2$.  For each $n >0$ and
+$1 \leq m \leq n$,
+\begin{align*}
+\frac{\sigma_m^2}{\Sigma_n^2} &= \frac{1}{\Sigma_n^2} \left(
+  \expectation{\xi_m^2 ; \abs{\xi_m} < \epsilon \Sigma_n} +
+  \expectation{\xi_m^2 ; \abs{\xi_m} \geq \epsilon \Sigma_n} \right) \\
+&\leq \frac{1}{\Sigma_n^2} \left(\epsilon^2 \Sigma_n^2 + \Sigma_n^2
+  g_n(\epsilon) \right) = \epsilon^2 + g_n(\epsilon)
+\end{align*}
+hence $r_n^2 = \max_{1\leq m \leq n} \frac{\sigma_m^2}{\Sigma_n^2}
+\leq \epsilon^2 + g_n(\epsilon)$.
+\end{proof}
+
+Note that the Lindeberg condition is a sufficient condition but not a
+necessary condition for convergence to a normal distribution; but is
+not too far off.  Thus it is useful to examine a case in which we
+don't satisfy the condition.
+\begin{examp}[Failure of Lindeberg Condition]Let $\xi_n$ be a sequence
+  of independent random
+  variables such that $\xi_n = n$ with probability $\frac{1}{2n^2}$, $\xi_n =
+  -n$ with probability $\frac{1}{2n^2}$ and $\xi_n = 0$ with
+  probability $1-\frac{1}{n^2}$.  Note that $\variance{\xi_n} =
+  (-n)^2 \cdot \frac{1}{2n^2} + 0 \cdot (1 - \frac{1}{2n^2}) +  n^2 \cdot
+  \frac{1}{2n^2} = 1$.  
+$\sum_{n=1}^\infty
+  \probability{\xi_n \neq 0} = \sum_{n=1}^\infty \frac{1}{n^2} <
+  \infty$ so by Borel Cantelli, we have $\xi_n$ are eventually $0$
+  a.s.; hence $S_n = \sum_{i=1}^n \xi_i$ is bounded a.s. and $\lim_{n
+    \to \infty} \frac{S_n}{\sqrt{n}} = 0$ a.s.  Therefore,
+  $\frac{S_n}{\sqrt{n}}$ does not converge to a Gaussian in
+  distribution.
+
+We know that $\xi_n$ must not satisfy the Lindeberg condition and it
+is instructive to perform that calculation explicitly.  Using the
+notation of Theorem \ref{LindebergTheorem}, $\Sigma_n = \sqrt{n}$,
+thus for any $\epsilon >
+0$, and $n > \epsilon^2$, we have 
+\begin{align*}
+\xi_n \cdot \characteristic{\abs{\xi_n} >
+  \epsilon \Sigma_n} &= \xi_n \cdot \characteristic{\abs{\xi_n} >
+  \epsilon \sqrt{n}} = \xi_n
+\end{align*}
+so only a finite number of summands of $\expectation{ \xi_n^2 ;
+  \abs{\xi_n} >  \epsilon \sqrt{n}}$ are different from $1$, hence
+\begin{align*}
+\lim_{n \to \infty} g_n(\epsilon) &=\lim_{n \to \infty} \frac{1}{n} \sum_{i=1}^n \expectation{ \xi_n^2 ;
+  \abs{\xi_n} >  \epsilon \sqrt{n}} = 1
+\end{align*}
+\end{examp}
+
+TODO: Mention Feller-Lindeberg Theorem that adds an addition
+hypothesis that makes the Lindeberg condition equivalent to
+asymptotic normality.
+
+The Lindeberg Theorem above doesn't actually prove weak convergence
+because of the differentiability assumption on the function $\varphi$.
+Our next step is to use approximation arguments to show that we in
+fact get weak convergence.  The argument has broader applicability
+than the Central Limit Theorem and is just a validation that proving weak
+convergence for random vectors only requires use compactly supported
+smooth test functions.
+\begin{lem}\label{WeakConvergenceWithSmoothTestFunctions}Let $\xi, \xi_1, \xi_2, \dots$ be random vectors in $\reals^N$,
+  then $\xi_n \todist \xi$ if and only if $\lim_{n \to \infty}
+  \expectation{f(\xi_n)} = \expectation{f(\xi)}$ for all $f \in
+  C^\infty_c(\reals^N; \reals)$.
+\end{lem}
+\begin{proof}
+Since any $f \in  C^\infty_c(\reals^N; \reals)$ is bounded we
+certainly see that $\xi_n \todist \xi$ implies $\lim_{n \to \infty}
+  \expectation{f(\xi_n)} = \expectation{f(\xi)}$.
+
+In the other direction, take an arbitrary $f \in C_b(\reals^N;
+\reals)$ and pick $\epsilon > 0$.  By Lemma \ref{ApproximationByMollifiers}, we can find $f_n
+\in C^\infty_c(\reals^N; \reals)$ such that $f_n$ converges uniformly
+on compact sets and $\norm{f_n}_\infty \leq \norm{f}_\infty$.  
+The idea of the proof is to note that for any
+$n, k \geq 0$, we have
+\begin{align*}
+\abs{\expectation{f(\xi_n) - f(\xi)}} &\leq \abs{\expectation{f(\xi_n)
+    - f_k(\xi_n)}} + \abs{\expectation{f_k(\xi_n)    - f_k(\xi)}} + \abs{\expectation{f_k(\xi) - f(\xi)}}
+\end{align*}
+and then to bound each term on the right hand side.  The second term
+will be easy to handle because of our hypothesis and the smoothness of
+$f_k$.   The first and
+third terms will require that we examine the approximation provided by
+the uniform convergence of the $f_k$ on all compact sets.
+
+
+The first task we have
+is to pick that compact set; it turns out that it suffices to consider
+closed balls centered at the origin.  For any $R \in \reals$ with $R>0$,
+ there exists a $\psi_R \in C^\infty_c(\reals^N;\reals)$
+with $\characteristic{\abs{x} \leq \frac{R}{2}} \leq \psi_R(x) \leq
+\characteristic{\abs{x} \leq R}$,
+therefore 
+\begin{align*}
+\lim_{n \to \infty} \probability{\abs{\xi_n} > R} &= 1 - \lim_{n \to
+  \infty} \expectation{\characteristic{\abs{\xi_n} \leq R}} \\
+&\leq 1 - \lim_{n \to
+  \infty} \expectation{\psi_R(\xi_n)} \\
+&=1 - \expectation{\psi_R(\xi)} \\
+&\leq 1 - \expectation{\characteristic{\abs{\xi} \leq \frac{R}{2}}} \\
+&=\probability{\abs{\xi} > \frac{R}{2}} 
+\end{align*}
+On the other hand, we know that $\lim_{R \to \infty}
+\characteristic{\abs{\xi} \leq \frac{R}{2}} = 0$ a.s. and therefore by
+Monotone Convergence, $\lim_{R \to \infty} \probability{\abs{\xi} >
+  \frac{R}{2}} = 0$.  Select $R > 0$ such that  
+\begin{align*}
+\probability{\abs{\xi} >R} &\leq \probability{\abs{\xi} >\frac{R}{2}} \leq \frac{\epsilon}{4\norm{f}_\infty}
+\end{align*}
+Then we can
+pick $N_1 > 0$ such that $\probability{\abs{\xi_n} >R} \leq \frac{\epsilon}{2\norm{f}_\infty}$ for all $n > N_1$.
+
+Having picked $R>0$, we know that $f_n$ converges uniformly to $f$ on
+$\abs{x} \leq R$ and therefore we can find a $K > 0$ such that for $k
+> K$ and $\abs{x} \leq R$  we have $\abs{f_k(x) - f(x)} < \epsilon$.
+Therefore,
+\begin{align*}
+\abs{\expectation{f_k(\xi) - f(\xi)}} &\leq \expectation{\abs{f_k(\xi)
+    - f(\xi)} ; \abs{\xi} \leq R} + \expectation{\abs{f_k(\xi)
+    - f(\xi)} ; \abs{\xi} > R} \\
+&\leq \epsilon \probability{ \abs{\xi} \leq R} + 2\norm{\xi}_\infty \probability{ \abs{\xi} > R} \\
+&\leq \epsilon + \frac{\epsilon}{2} < 2\epsilon
+\end{align*}
+and via the same calculation, for $n > N_1$
+\begin{align*}
+\abs{\expectation{f_k(\xi_n) - f(\xi_n)}} &\leq \epsilon + 2\norm{\xi_n}_\infty \probability{ \abs{\xi_n} > R} \leq 2\epsilon
+\end{align*}
+
+To finish the proof, pick a single $k > K$ and then we can find $N_2 >
+0$ such that for all $n > N_2$, we have $\abs{\expectation{f_k(\xi_n)
+    - f_k(\xi)}} < \epsilon$.  Putting these three estimates together,
+we have for $n > \max(N_1, N_2)$, 
+\begin{align*}
+\abs{\expectation{f(\xi_n) - f(\xi)}} &\leq 5 \epsilon
+\end{align*}
+\end{proof}
+
+We are not going to prove the following but we should talk about it:
+\begin{thm}\label{Berry-Esseen Theorem}Let $\xi, \xi_1, \xi_2, \dots$
+  be i.i.d with $\expectation{\abs{\xi}^3} < \infty$.  Let $\Phi(x)$
+  be the cdf of standard normal and let $G(x) = \probability{\frac{S_n
+      - \mu}{\sigma\sqrt{n}} \leq x}$ be the empirical cdf.  Then
+  there exists a constant $C > 0$ such that
+\begin{align*}
+\sup_x \abs{G(x) - \Phi(x)} \leq \frac{C
+  \expectation{\abs{\xi}^3}}{\sigma^3 \sqrt{n}}
+\end{align*}
+\end{thm}
+Note the upper bound of the constant $C$ has been reduced to about
+$0.5600$.  

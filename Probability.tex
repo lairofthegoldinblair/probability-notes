@@ -1,0 +1,371 @@
+\chapter{Probability}
+Here we begin to focus on the special case of probability spaces.  The
+development of measure theoretic probabilty begins with the
+assumptions that we are given a
+\begin{defn}A \emph{probability space} is a measure space $(\Omega,
+  \mathcal{A}, P)$ such that $\probability{\Omega} = 1$.
+\end{defn}
+Given a measurable function $\xi : \Omega \to (S,
+\mathcal{S})$ we will refer to $\xi$ as a \emph{random
+  element} of $S$.  The special case of a measurable function $\xi : \Omega \to (\reals, \mathcal{B}(\reals))$
+is called a \emph{random variable}.  For a random element $\xi$, by
+Lemma \ref{PushforwardMeasure} we can
+push forward the probability measure to get a measure $(\pushforward{\xi}{P})$ called the \emph{distribution} or \emph{law} of $\xi$. One
+sometimes writes $\mathcal{L}(\xi)$ to denote the distribution of
+$\xi$ and one writes $\xi \eqdist \eta$ to denote that $\xi$ and $\eta$ have
+the same distribution. 
+
+In probability theory the existence of a probability space is critical
+to the formal development of the theory however it is almost always
+the case that one is only concerned with results that don't depend on
+the exact choice of probability space.  To make this statement more
+precise we introduce 
+\begin{defn}A probability space $(\Omega^\prime, \mathcal{A}^\prime,
+  P^\prime)$ is an \emph{extension} of $(\Omega, \mathcal{A},
+  P)$ if there is a surjective measurable map $\pi : \Omega^\prime \to
+  \Omega$ such that $P = \pushforward{\pi}{P^\prime}$.
+\end{defn}
+
+A result is considered properly \emph{probabilistic} if it is
+preserved under extension of sample space.  Note that this is a
+cultural statement and not a mathematical theorem.  As an example of a
+probabilistic concept, we have the ability to talk about an
+\emph{event} $A$ and its probability $\probability{A}$ since given any
+$\pi$  we can unambiguously refer to $\pi^{-1}(A)$ as the same event
+in $\Omega^\prime$ and we know that probability is preserved.  As an
+example of a non-probabilistic concept we have the cardinality of an
+event.
+
+In keeping with the philosophy that probabilistic results are
+invariant under extension of the underlying probability space, we will
+follow common practice and try to avoid explicit mention of the underlying
+probability space in many definitions and results.  
+
+\begin{defn}Given a random vector $\xi = (\xi_1, \dots, \xi_n)$ in
+  $\reals^n$ we define the \emph{distribution function} to be 
+\begin{align*}
+F(x_1, \dots, x_n) = \probability {\cap_{i=1}^n \left ( \xi_i \leq x_i
+    \right ) }
+\end{align*}
+\end{defn}
+\begin{lem}\label{DistributionFunctionCharacterizeProbability}Let $\xi$ and $\eta$ be random vectors in $\reals^n$ with
+  distribution functions $F$ and $G$, then
+  $\xi \eqdist \eta$ if and only if $F = G$.
+\end{lem}
+\begin{proof}This follows from Lemma \ref{UniquenessOfMeasure} by
+  noting
+  that sets of the form $(-\infty, x_1] \times \cdots \times (-\infty,
+  x_n]$ form a $\pi$-system that contains $\reals^n$.
+\end{proof}
+
+The construction of Lebesgue-Stieltjes measure shows that every
+Borel probability measure on $\reals$ is determined uniquely by its distribution function.
+\begin{lem}Probability measures of $(\reals, \mathcal{B}(\reals))$ are
+  in one to one correspondence with $F : \reals \to \reals$ that are
+  right continuous, nondecreasing such that $\lim_{x \to -\infty} F(x)
+  = 0$ and $\lim_{x \to \infty} F(x) = 1$ via the mapping $F(x) =
+  \probability{(-\infty, x]}$.
+\end{lem}
+\begin{proof}Clearly any probability measure is locally finite so we
+  apply Lemma \ref{LebesgueStieltjesMeasure} to create a 1-1
+  correspondence with $\hat{F}$, 
+  right continuous and nondecreasing such that $\probability{(a,b]} =
+  \hat{F}(b) - \hat{F}(a)$.  Now define $F(x) = \hat{F}(x) +
+  \probability{(-\infty, 0]}$.
+\end{proof}
+
+\begin{defn}The \emph{expectation} of a random variable $\xi$ on a
+  probability space $(\Omega, \mathcal{A}, P)$ is
+  defined to be 
+\begin{align*}
+\expectation{\xi} = \int \xi \, dP
+\end{align*}
+\end{defn}
+A very useful corollary to the abstract change of variables Lemma
+\ref{ChangeOfVariables} is the following
+\begin{lem}[Expectation Rule]\label{ExpectationRule}Let $\xi$ be a random variable and $f: \reals \to \reals$
+  be a Borel measurable function.  Then 
+\begin{align*}
+\expectation{f(\xi)} = \int f \, d (\pushforward{\xi}{P})
+\end{align*}
+In particular, 
+\begin{align*}
+\expectation{\xi} = \int x \, d (\pushforward{\xi}{P})
+\end{align*}
+\end{lem}
+\begin{proof}This is just a restatement of Lemma
+  \ref{ChangeOfVariables} for the special case of random variables and
+  measurable functions on $\reals$.
+\end{proof}
+
+The following lemma is useful for relating tail bounds and expectations.
+\begin{lem}\label{TailsAndExpectations}Let $\xi$ be a positive random variable with finite
+  expectation.  Then $\expectation{\xi} = \int_0^\infty \probability{\xi \geq
+    \lambda} d\lambda$.
+\end{lem}
+\begin{proof}
+This is just an application of Tonelli's Theorem,
+\begin{align*}
+\int_0^\infty \probability{\xi \geq \lambda}d\lambda &= \int_0^\infty \left[\int
+\characteristic{\xi \geq \lambda} dP\right] d\lambda \\
+&= \int\left[\int_0^\infty \characteristic{\xi \geq \lambda} d\lambda\right] dP \\
+&= \int\left[\int_0^{\xi} d\lambda\right] dP \\
+&= \int \xi \, dP \\
+&= \expectation{\xi} \\
+\end{align*}
+\end{proof}
+
+\begin{lem}[Cauchy Schwartz Inequality]\label{CauchySchwartz}Let $\xi$
+  and $\eta$ satisfy $\expectation{\xi^2}, \expectation{\eta^2} < \infty$ then $\xi \eta$ is integrable and
+  $\expectation{\xi \eta}^2 \leq \expectation{\xi^2}
+  \expectation{\eta^2}$.
+\end{lem}
+\begin{proof}
+Since we have both $0 \leq (\xi + \eta)^2$ and $0 \leq (\xi - \eta)^2$
+we have $\abs{\xi \eta} \leq \frac{1}{2}(\xi^2 + \eta^2)$ which shows
+that $\xi \eta$ is integrable.
+
+There are a host of different proofs of Cauchy Schwartz inequality.  Here is perhaps
+the simplest one.  Note that for all $t \in \reals$, $0 \leq \expectation{(t \xi +
+\eta)^2} = \expectation{\xi^2} t^2 + 2 \expectation{\xi \eta} t +
+\expectation{\eta^2}$.  The quadratic formula implies that
+$\sqrt{4 \expectation{\xi^2} \expectation{\eta^2} - (2
+  \expectation{\xi \eta})^2 } \geq 0$ which in turn implies the
+result.
+
+The proof we just provided is probably the slickest one available but
+has the disadvantage of being very specific to the quadratic case.  
+There is a different proof of Cauchy Schwartz that we provide that
+involves two steps that have a broader application.  The idea is to
+derive Cauchy Schwartz from the trival fact that for all real numbers
+$x,y$ we have $xy \leq \frac{x^2}{2} + \frac{y^2}{2}$ (which we used when showing
+integrability of $\xi\eta$).  Applying this fact to $\xi$ and $\eta$ we see
+that
+\begin{align*}
+\expectation{\xi \eta} &\leq \frac{\expectation{\xi^2}}{2} + \frac{\expectation{\eta^2}}{2}
+\end{align*}
+To finish the proof, we apply a \emph{normalization trick} by defining
+$\hat{\xi} = \frac{\xi}{\sqrt{\expectation{\xi^2}}}$ and $\hat{\eta} =
+\frac{\eta}{\sqrt{\expectation{\eta^2}}}$ so that
+$\expectation{\hat{\xi^2}} = \expectation{\hat{\eta^2}} =1$.  Now we apply the above bound and linearity of expectation to see that
+\begin{align*}
+\frac{1}{\sqrt{\expectation{\xi^2}}\sqrt{\expectation{\eta^2}}}
+\expectation{\xi\eta} &= \expectation{\hat{\xi}\hat{\eta}} \leq 1
+\end{align*}
+which yields the result.
+\end{proof}
+
+Applications of Cauchy Schwatz are ubiquitous in analysis.  Only
+slightly less common are applications of the following
+generalization.  First a definition
+\begin{defn}Given any $p > 0$ and random variable $\xi$, the \emph{$L^p$
+  norm} of $\xi$ is 
+\begin{align*}
+\norm{\xi}_p = \left (\expectation{\abs{\xi}^p} \right )^ {\frac{1}{p}}
+\end{align*}
+\end{defn}
+\begin{lem}[H\"{o}lder Inequality]\label{Holder}Given $p,q,r > 0$ such
+  that $\frac{1}{r} = \frac{1}{p} + \frac{1}{q}$ and random variables
+  $\xi$ and $\eta$, we have
+\begin{align*}
+\norm{\xi \eta}_r \leq \norm{\xi }_p \norm{\eta}_q
+\end{align*}
+\end{lem}
+\begin{proof}
+We start by assuming that $r=1$.  The proof here is a direct generalization of the second proof we
+provided for Cauchy Schwartz.  To get started we need to find a
+generalization of the simple fact that $xy \leq \frac{x^2}{2} +
+\frac{y^2}{2}$.  
+ 
+The inequality we need is called Young's Inequality and is derived
+from the following fact.  Let $f$ be an
+continuous increasing function $f : [0,c] \to \reals$ such that $f(0)
+= 0$.  Then the area interpretation of integral tells us that for $0
+\leq a \leq c$ and $0 \leq b \leq f(c)$ we have
+\begin{align*}
+ab \leq \int_0^a f(x) \, dx + \int_0^b f^{-1}(x) \, dx
+\end{align*}
+with equality if and only if $b=f(a)$.  
+
+For our case, we first assume that $r = 1$.  Define $f(x) =
+x^{p-1}$ then observe that $f^{-1}(x) = x^{q-1}$ since
+$1 = \frac{1}{p} + \frac{1}{q}$ is equivalent to $(p-1)(q-1) = 1$.
+Therefore we have Young's Inequality, $ab \leq \frac{a^p}{p} +
+\frac{b^q}{q}$.
+
+Now applying the normalization trick by defining $\hat{\xi} =
+\frac{\abs{\xi}}{\norm{\xi}_p}$ and $\hat{\eta} =
+\frac{\abs{\eta}}{\norm{\eta}_q}$ so that ${\norm{\hat{\xi}}_p} =
+{\norm{\hat{\eta}}_q} = 1$.  We now apply Young's Inequality to
+$\hat{\xi}$ and $\hat{\eta}$ to see
+\begin{align*}
+\frac{1}{\norm{\hat{\xi}}_p \norm{\hat{\eta}}_q} \expectation{\abs{\xi \eta}} &=
+\expectation{\hat{\xi}\hat{\eta}} \leq \frac{1}{p} + \frac{1}{q} = 1
+\end{align*}
+
+Lastly we generalize to general $r>0$.  Given $\frac{1}{r} =
+\frac{1}{p} + \frac{1}{q}$ we define $\hat{p} = \frac{p}{r}$ and 
+$\hat{q} = \frac{q}{r}$ so that $1 =
+\frac{1}{\hat{p}} + \frac{1}{\hat{q}}$ and 
+\begin{align*}
+\expectation{\abs{\xi \eta}^r} &\leq \norm{\xi^r}_{\hat{p}}
+\norm{\eta^r}_{\hat{q}} = \norm{\xi}_p^r \norm{\eta}_q^r 
+\end{align*}
+Taking $r^{th}$ roots we are done.
+\end{proof}
+\begin{cor}\label{IncreasingMoments}For $p > r > 0$ and any random variable $\xi$, we
+  have $\norm{\xi}_r \leq \norm{\xi}_p$.
+\end{cor}
+\begin{proof}Define $q = \frac{p -r}{pr} > 0$ and apply H\"older's
+  Inequality to see that $\norm{\xi}_r \leq \norm{\xi}_p \norm{1}_q = \norm{\xi}_p $.
+\end{proof}
+It worth noting that the corollary above is generally true on finite
+measure spaces but fails for non-finite measure spaces (e.g. consider
+$f(x) = \frac{1}{x}$ which has finite $L^p$ norm on $[1,\infty)$ for
+$p > 1$ but infinite $L^1$ norm on $[1,\infty)$).
+
+\section{Convexity and Jensen's Inequality}
+\begin{defn}A function $\varphi : \reals^n \to \reals$ is said to be
+  \emph{convex} if for all $x, y \in \reals^n$ and $t \in [0,1]$, we
+  have
+\begin{align*}
+\varphi( tx + (1-t)y) \leq t\varphi(x) + (1-t)\varphi(y)
+\end{align*}
+$\varphi$ is said to be \emph{strictly convex} if it is convex and for
+all $t \in (0,1)$, 
+\begin{align*}
+\varphi( tx + (1-t)y) < t\varphi(x) + (1-t)\varphi(y)
+\end{align*}
+\end{defn}
+
+TODO: Convex functions are continuous
+
+Convex functions are almost surely differentiable.
+\begin{lem}\label{ThreeChordLemma}Let $\varphi : [a,b] \to \reals$ be convex.  Then for every
+  $a < x < b$, we have
+\begin{align*}
+\frac{\varphi(x) - \varphi(a)}{x - a} &\leq \frac{\varphi(b) -
+  \varphi(a)}{b - a}  \leq \frac{\varphi(b) - \varphi(x)}{b - x} 
+\end{align*}
+If $\varphi$ is strictly convex then the inequalities may be replaced
+by strict inequalities.
+\end{lem}
+\begin{proof}
+Note that we can write $x = t a + (1-t) b$
+with $t = \frac{b-x}{b-a} \in [0,1]$.  So applying the definition of
+convexity we know that $\varphi(x) \leq t \varphi(a) +
+(1-t)\varphi(b)$ and using the fact that $1-t = \frac{x-a}{b-a}$ we get
+\begin{align*}
+\frac{\varphi(x) - \varphi(a)}{x - a} &\leq \frac{t \varphi(a) +
+(1-t)\varphi(b) - \varphi(a)}{x - a} = \frac{1-t}{x-a} (\varphi(b) -
+\varphi(a) ) = \frac{\varphi(b) -
+  \varphi(a)}{b - a} 
+\end{align*}
+and in a similar way,
+\begin{align*}
+\frac{\varphi(b) - \varphi(x)}{b - x} &\geq \frac{ \varphi(b)  - t \varphi(a) -
+(1-t)\varphi(b) }{b -x} = \frac{t}{b-x} (\varphi(b) -
+\varphi(a) ) = \frac{\varphi(b) -
+  \varphi(a)}{b - a} 
+\end{align*}
+It is clear from the definition of strict convexity that the
+inequalities above may be replaced by strict inequalities if $\varphi$ is strictly convex.
+\end{proof}
+\begin{lem}\label{ConvexHasDini}Let $\varphi : [a,b] \to \reals$ be a convex function, then
+  for every $x \in (a,b)$, $D^-\varphi(x)$ and $D^+\varphi(x)$ exist
+  and furthermore for $a < x < y < b$ we have
+\begin{align*}
+D^-\varphi(x) &\leq D^+\varphi(x) \leq \frac{\varphi(y) -
+  \varphi(x)}{y - x} \leq D^-\varphi(y) \leq D^+\varphi(y)
+\end{align*}
+If $\varphi$ is strictly convex then we have
+\begin{align*}
+D^+\varphi(x) &< \frac{\varphi(y) -  \varphi(x)}{y - x} < D^-\varphi(y)
+\end{align*}
+\end{lem}
+\begin{proof}
+Lemma \ref{ThreeChordLemma} shows that for $a < x < b$ and $h > 0$,
+$\frac{\varphi(x + h) - \varphi(x)}{h}$ is an increasing function of
+$h$ bounded below by $\frac{\varphi(x) - \varphi(a)}{x - a}$.  Thus $D^+\varphi(x) = \lim_{h \downarrow 0} \frac{\varphi(x + h) -
+  \varphi(x)}{h}$ is a decreasing limit hence exists.
+Similarly $\frac{\varphi(x - h) -
+  \varphi(x)}{-h}=\frac{\varphi(x)-\varphi(x - h)}{h}$ is an decreasing
+function of $h$ bounded above by $\frac{\varphi(b) - \varphi(x)}{b - x}$.  Thus $D^-\varphi(x) = \lim_{h \downarrow 0} \frac{\varphi(x - h) -
+  \varphi(x)}{-h}$ is a bounded increasing limit hence
+exists.  
+
+The inequalities follow directly from Lemma \ref{ThreeChordLemma}.
+For example, since $D^+\varphi(x) = \lim_{h \downarrow 0} \frac{\varphi(x + h) -
+  \varphi(x)}{h}$ and for all $x < x+h < y$, we have $\frac{\varphi(x + h) -
+  \varphi(x)}{h} \leq \frac{\varphi(y) -
+  \varphi(x)}{y-x}$ we get $D^+\varphi(x) \leq \frac{\varphi(y) -
+  \varphi(x)}{y-x}$.  In the strictly convex case, we know that for
+any $w$ with
+$x < w < y$ we have  by what we have just shown and
+another application of Lemma \ref{ThreeChordLemma}
+\begin{align*}
+D^+\varphi(x) &\leq \frac{\varphi(w) -
+  \varphi(x)}{w-x} < \frac{\varphi(y) -
+  \varphi(x)}{y-x}
+\end{align*}  The case of $D^-\varphi(y)$ follows analogously.
+\end{proof}
+\begin{cor}\label{ConvexHasSubderivative}Let $\varphi : [a,b] \to
+  \reals$ be convex then for $x \in (a,b)$ there exists constants $A,B
+  \in \reals$ such that $Ay + B \leq \varphi(y)$ for all $y \in [a,b]$
+  and $Ax + B = \varphi(x)$.  If $\varphi$ is strictly convex then we
+  may assume that $Ay + B < \varphi(y)$ for $y \neq x$.
+\end{cor}
+\begin{proof}
+By Lemma \ref{ConvexHasDini} we can pick $D^-(x) \leq A \leq D^+(x)$.
+Also by that result we know that for all $h > 0$, in fact we
+have
+\begin{align*}
+\frac{\varphi(x) - \varphi(x-h)}{h} &\leq A \leq \frac{\varphi(x+h) - \varphi(x)}{h}
+\end{align*}
+which gives the result upon clearing denominators and defining $B =
+\varphi(x)$.
+Once again, the strictly convex case follows easily.
+\end{proof}
+TODO: Extend this to $\reals^n$ (presumably this can be done by taking
+partial Dini Derivatives.
+
+\begin{thm}[Jensen's Inequality]\label{Jensen}Let $\xi$ be a random vector in $\reals^n$
+  and $\varphi : \reals^n \to \reals$ be a convex function such that
+  $\xi$ and $\varphi(\xi)$ are integrable.  Then 
+\begin{align*}
+\varphi(\expectation{\xi}) \leq \expectation{\varphi(\xi)}
+\end{align*}
+If $\varphi$ is strictly convex then we have $\varphi(\expectation{\xi}) = \expectation{\varphi(\xi)}$ if and only if $\xi =
+\expectation{\xi}$ a.s.
+\end{thm}
+\begin{proof}We use the fact that for every $x \in \reals^n$ we have a
+  subdifferential $\langle a, y \rangle + b$ that satisfies
+\begin{align*}
+\langle a, y \rangle + b &\leq \varphi(y) \\
+\langle a,x \rangle + b &= \varphi(x)
+\end{align*}
+In particular, choose such an $a,b \in \reals^n$ for the choice $x =
+\expectation{\xi}$.  Then by monotonicity and linearity of integral
+\begin{align*}
+\expectation{\varphi(\xi)} &\geq \expectation{\langle a, \xi\rangle +
+  b} \\
+&= \langle a, \expectation{\xi} \rangle + b = \varphi(\xi)
+\end{align*}
+which gives the result.
+
+If $\varphi$ is strictly convex then when $\xi \neq \expectation{\xi}$,
+we have 
+\begin{align*}
+0 &< \varphi(\xi) - \varphi(\expectation{\xi}) - \langle a , \xi -
+\expectation{\xi} \rangle
+\end{align*}  Thus if $\varphi(\expectation{\xi}) =
+\expectation{\varphi(\xi)}$ using linearity of expectation
+\begin{align*}
+\expectation{ (\varphi(\xi) - \varphi(\expectation{\xi}) - \langle a , \xi -
+\expectation{\xi}\rangle); \xi \neq \expectation{\xi}} &= \expectation{\varphi(\xi) - \varphi(\expectation{\xi}) - \langle a , \xi -
+\expectation{\xi}\rangle} \\
+&=0
+\end{align*}
+from which we conclude $\characteristic{\xi \neq \expectation{\xi}} = 0$ a.s.
+\end{proof}
+
