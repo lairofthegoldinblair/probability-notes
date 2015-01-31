@@ -222,7 +222,7 @@ of open sets being open we have a definition that is a compatible
 generalization of the $\epsilon/\delta$ definition of calculus.
 \end{defn}
 
-\begin{thm}[Taylor's Formula]\label{TaylorsTheorem}Let $f: \reals\to
+\begin{thm}[Taylor's Theorem]\label{TaylorsTheorem}Let $f: \reals\to
   \reals$ be a function which is $m$-times continuously differentiable.  Then for all
   $0 \leq n < m$,
 \begin{align*}
@@ -254,33 +254,82 @@ The version of Taylor's Formula above expresses the ``integral form''
 of the remainder term.  It is often useful to transform the remainder term in Taylor's Formula
 into the \emph{Lagrange form}.
 \begin{lem}\label{LagrangeFormRemainder}There is a number $c \in
-  [a,b]$ such that $\int_a^b
+  (a,b)$ such that $\int_a^b
 R_n(b)= f^{(n+1)}(c) \frac{(b-a)^{n+1}}{(n+1)!}$
 \end{lem}
 \begin{proof}
+If $f^{(n+1)}(x)$ is constant on the interval $[a,b]$ then by explicit
+integration we have the result for any $a < c < b$, so let us assume
+that $f^{(n+1)}(x)$ is not constant on $[a,b]$.
 By continuity of $f^{(n+1)}(x)$ and compactness of $[a,b]$ we know
 that there exist $m, M \in \reals$ such that $m = \min_{x \in [a,b]}
 f^{(n+1)}(x)$ and $M = \max_{x \in [a,b]}
 f^{(n+1)}(x)$.
-Therefore we have the bounds
+From this fact and the fact that $(b -x)^n$ is strictly positive on
+$[a,b)$ we have bounds
 \begin{align*}
-m\frac{(b-a)^{(n+1)}}{(n+1)!} &= m \int_a^b
+m\frac{(b-a)^{n+1}}{(n+1)!} &= m \int_a^b
 \frac{(b-x)^n}{n!} \, dx \\
-&\leq \int_a^b
+&< \int_a^b
 \frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx \\
-&\leq M \int_a^b
-\frac{(b-x)^n}{n!} \, dx = M\frac{(b-a)^{(n+1)}}{(n+1)!} 
+&< M \int_a^b
+\frac{(b-x)^n}{n!} \, dx = M\frac{(b-a)^{n+1}}{(n+1)!} 
 \end{align*}
 hence 
 \begin{align*}
-m \leq \frac {(n+1)!} {(b-a)^{(n+1)}}\int_a^b
-\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx \leq M
+m < \frac {(n+1)!} {(b-a)^{n+1}}\int_a^b
+\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx < M
 \end{align*}
 By continuity of $f^{(n+1)}(x)$ and the Intermediate Value Theorem, we know that $f^{(n+1)}(x)$
 takes every value in $[m,M]$ and therefore there exists $c \in [a,b]$
 such that $f^{(n+1)}(c) = \frac {(n+1)!} {(b-a)^{(n+1)}}\int_a^b
-\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx$.
+\frac{(b-x)^n}{n!} f^{(n+1)}(x) \, dx$.  Because the inequalities are
+strict and because $(b-x)^n$ is positive, it follows that in fact $c
+\in (a,b)$.
 \end{proof}
+
+In addition to the integral form and the Lagrange form of the
+remainder it can also be useful to have an estimate on the remainder
+in hand.
+\begin{cor}\label{TaylorsTheoremRemainderEstimate}Let $f: \reals\to
+  \reals$ be a function which is $m$-times continuously differentiable.  Then for all
+  $1 \leq n \leq m$,
+\begin{align*}
+f(b) &= \sum_{k=0}^n \frac{(b-a)^k}{k!} f^{(k)}(a) + r_n(b)
+\end{align*}
+where the remainder term satisfies
+\begin{align*}
+\abs{r_n(b)} &\leq 
+\frac{\sup_{a \leq x \leq b}\abs{f^{(n)}(x) - f^{(n)}(a)}}{n!} \abs{b-a}^n
+\end{align*}
+in particular we have $\lim_{b \to a} \frac{r_n(b)}{(b-a)^n} = 0$.
+\end{cor}
+\begin{proof}
+By Taylor's Theorem we have
+\begin{align*}
+f(b) &= \sum_{k=0}^{n-1} \frac{(b-a)^k}{k!} f^{(k)}(a) + R_{n-1}(b)
+\end{align*}
+with
+\begin{align*}
+R_{n-1}(b) &= \int_a^b \frac{(b-x)^{n-1}}{(n-1)!} f^{(n)}(x) \, dx \\
+&=\int_a^b \frac{(b-x)^{n-1}}{(n-1)!} (f^{(n)}(x) - f^{(n)}(a)) \, dx +
+ f^{(n)}(a) \int_a^b \frac{(b-x)^{n-1}}{(n-1)!} \, dx \\
+&=\int_a^b \frac{(b-x)^{n-1}}{(n-1)!} (f^{(n)}(x) - f^{(n)}(a)) \, dx +
+ f^{(n)}(a) \frac{(b-a)^{n}}{n!}  \\
+\end{align*}
+so that 
+\begin{align*}
+r_n(b) &= \int_a^b \frac{(b-x)^{n-1}}{(n-1)!} (f^{(n)}(x) - f^{(n)}(a)) \, dx
+\end{align*}
+and therefore
+\begin{align*}
+\abs{r_n(b)} &\leq \int_a^b \frac{\abs{b-x}^{n-1}}{(n-1)!} \abs{f^{(n)}(x) -
+               f^{(n)}(a)} \, dx
+\leq \sup_{a \leq x \leq b} \abs{f^{(n)}(x) - f^{(n)}(a)} \frac{\abs{b-a}^{n}}{n!} 
+\end{align*}
+The last statement follows from the continuity of $f^{(n)}(x)$.
+\end{proof}
+
 \begin{lem} Let $X$ be a real normed vector space with a subspace $Y$
   of codimension 1.  Then any bounded linear functional $\lambda$ on
   $Y$ extends to a bounded linear functional on $X$ with the same
@@ -481,10 +530,12 @@ power of the finite subcover property is generally needed.
 \begin{cor}\label{ClosedSubsetsCompact}Every closed subset of a compact set is compact.
 \end{cor} 
 \begin{proof}Let $B$ be a compact set and let $A \subset B$ be
-  closed.  Then by the previous result and the compactness of $B$, any
-  infinite sequence in $A$ has a subsequence that converges to a point
-  in $B$.
-  Because $A$ is closed the limit of the subsequence is in fact in $A$.
+  closed.  Let $U_\alpha$ be an open cover of $A$, the we may append
+  $A^c$ to get an open cover of $B$.  By compactness of $B$ we may
+  extract a finite subcover $U_{\alpha_1}, \dotsc, U_{\alpha_n}, A^c$
+  (there is no loss in generality in assuming that $A^c$ is in the
+  finite subcover).  Clearly, $U_{\alpha_1}, \dotsc, U_{\alpha_n}$ is
+  a finite subcover of $A$.
 \end{proof}
 
 \begin{thm}\label{ContinuousImageOfCompact}Let $f : (S, d) \to
@@ -638,6 +689,36 @@ inequality, we have
 d^\prime(f(x), f(y)) < d^\prime(f(x), f_N(x)) + d^\prime(f_N(x),
 f_N(y)) + d^\prime(f_N(y), f(y)) < \epsilon
 \end{align*}
+\end{proof}
+
+\begin{prop}\label{ExtensionOfUniformlyContinuousMapCompleteRange}Let $(S,d)$ be a metric space and $(T,d^\prime)$ a
+  complete metric space.  Suppose that $A \subset S$ and that $f: A
+  \to T$ is a uniformly continuous function, then $f$ has a unique
+continuous  extension $\overline{f} : \overline{A} \to T$ to the closure of $A
+  \subset S$.  
+\end{prop}
+\begin{proof}
+Let $x \in \overline{A}$, pick a sequence $x_n$
+in $A$ such that $\lim_{n \to \infty} x_n = x$ and observe that by
+uniform continuity of $f(x)$, for
+any $\epsilon > 0$ there exists a $\delta > 0$ such that $d(x,y)
+< \delta$ implies $d^\prime(f(x) , f(y)) < \epsilon$.  If we pick $N > 0$
+such that $d(x_n,y) < \delta/2$ for $n \geq N$ then
+$d(x_n, x_m) < \delta$ for all $n,m \geq N$ and thus $d^\prime(f(x_n), f(x_m)) < \epsilon$ for all
+$n,m \geq N$.  This shows that the sequence $f(x_n)$ is Cauchy and by
+completeness of $T$ we can take the limit; we define $f(x) =
+\lim_{n\to infty} f(x_n)$.  We claim that this definition is
+independent of the sequence chosen.  Indeed, let $y_n$ be another
+sequence from $A$ such that $\lim_{n \to \infty} y_n = x$.  Pick an
+$\epsilon > 0$ and by uniform continuity of $f(x)$ let $\delta$ be
+chosen such that $d^\prime(f(x),f(y)) < \epsilon/2$ whenever $d(x,y) < \delta$.
+There exists $N_1 > 0$ such that $d(y_n, x_n) < \delta$ for every
+$n > N_1$ and there exists $N_2 > 0$ such that $d^\prime(f(x_n),f(x)) <
+\epsilon/2$ for all $n \geq N_2$.  Then we have for all $n \geq N_1 \vee
+N_2$ by the triangle inequality $d^\prime(f(y_n), f(x)) < \epsilon$.
+Note that this also shows that the extension $f(x)$ to $\overline{A}$ is
+continuous at $x \in \overline{A}$; since is was continuous at all points
+of $A$ we know the extension is continuous.  
 \end{proof}
 
 \section{Stone Weierstrass Theorem}

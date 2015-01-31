@@ -310,7 +310,8 @@ f(x) &= \left ( \frac{d(x_1, x)}{1 + d(x_1, x)}, \frac{d(x_2, x)}{1 +
     d(x_2, x)}, \dotsc \right )
 \end{align*}
  
-Claim 1: $f(x)$ is continuous.
+\begin{clm}$f(x)$ is continuous.
+\end{clm}
 
 By definition of the product topology $f(x)$ is continuous if and only
 if each coordinate is.  For any given fixed $x_j$, we know that
@@ -318,14 +319,16 @@ $d(x_j, x)$ is continuous (in fact Lipschitz by Lemma
 \ref{DistanceToSetLipschitz}) and thus the result follows from the
 continuity of $x/(1+x)$ on $\reals_+$.
 
-Claim 2: $f(x)$ is injective.
+\begin{clm}$f(x)$ is injective.
+\end{clm}
 
 For any $z \neq y$ we find $\epsilon > 0$ such that $B(z ; \epsilon)
 \cap B( y ; \epsilon) = \emptyset$ and then using density of $x_1,
 x_2, \dotsc$ to pick an $x_n$ such that $d(z,x_n) < \epsilon$ and
 $d(y, x_n) \geq \epsilon$ showing $f(z) \neq f(y)$.  
 
-Claim 3: The inverse of $f(x)$ is continuous.
+\begin{clm}The inverse of $f(x)$ is continuous.
+\end{clm}
 
 Fix an $x \in S$ and let $\epsilon >0$ be given.  Pick $x_n$ such that
 $d(x_n, x) < \epsilon/2$.  If we let $g(x) : [0,1) \to \reals_+$ be
@@ -390,8 +393,9 @@ To see (iii), suppose $\hat{\rho}$ is a totally bounded metric on
 $S$.  Let $\hat{S}$ be the completion of $S$ with respect to
 this metric.  
 
-Claim 4: $\hat{\rho}$ extends to a totally bounded
+\begin{clm}$\hat{\rho}$ extends to a totally bounded
 metric on $\hat{S}$.  
+\end{clm}
 
 Let $\epsilon>0$ be given and cover $S$ by ball
 $B(x_i, \epsilon/2)$; we show that $B(x_i, \epsilon)$ covers
@@ -405,8 +409,9 @@ Because $(\hat{S},\hat{\rho})$ is complete and totally bounded we know
 it is compact (Theorem \ref{CompactnessInMetricSpaces}) and we have
 just shown that $C(\hat{S} ; \reals)$ has a countable dense subset.
 
-Claim 5: $f\vert_S : C(\hat{S} ; \reals) \to U_b^{\hat{\rho}}(S ;
+\begin{clm}$f\vert_S : C(\hat{S} ; \reals) \to U_b^{\hat{\rho}}(S ;
 \reals)$ is a well defined, continuous and surjective.
+\end{clm}
 
 Being well defined in this context means that restriction to $S$
 results in a bounded uniformly continuous function.  This follows
@@ -415,7 +420,8 @@ and uniformly continuous (Theorem \ref{ContinuousImageOfCompact} and
 Theorem \ref{UniformContinuityOnCompactSets} respectively) and these
 properties are preserved upon restriction.  To see surjectivity, let
 $g : S \to \reals$ be bounded and uniformly continuous.  TODO: Make
-this a separate Lemma.  Let $x \in \hat{S}$, pick a sequence $x_n$
+this a separate Lemma (I think Proposition
+\ref{ExtensionOfUniformlyContinuousMapCompleteRange} does the trick).  Let $x \in \hat{S}$, pick a sequence $x_n$
 in $S$ such that $\lim_{n \to \infty} x_n = x$ and observe that by
 uniform continuity of $f(x)$, for
 any $\epsilon > 0$ there exists a $\delta > 0$ such that $\hat{d}(x,y)
@@ -531,10 +537,11 @@ $\Lambda$ to all of $U_b^\rho(S;\reals)$.  Since $\Lambda$ is
 uniformly continuous on a dense subset we know that a continuous
 extension is defined; however we need a little bit more information.
 
-Claim 1: $\lim_{k \to \infty} \int f \, d\hat{\mu}_{k}$ exists for every
+\begin{clm}$\lim_{k \to \infty} \int f \, d\hat{\mu}_{k}$ exists for every
 $f \in U_b^\rho(S;\reals)$; moreover $\lim_{k \to \infty} \int f_m \,
 d\hat{\mu}_{k} = lim_{m \to \infty} \Lambda(\hat{f}_m)$ where
 $\hat{f}_m$ is any subsequence of $f_m$ that converges uniformly to $f$.
+\end{clm}
 
 Pick a subsequence of the $f_m$ that converges to $f$.  Let that
 subsequence be donoted $\hat{f}_m$ so that $\lim_{m \to \infty} \norm{\hat{f}_m -
@@ -591,11 +598,12 @@ B(x_k, 1/n)^c ) < \epsilon/2^n$.  We claim that, because $M$ is
 compact, we can find an $N_n$ for
 which this is true uniformly over the measures in $M$.
 
-Claim 2: For every $n > 0$ there exists $N_n > 0$ such that $\mu(\cap_{k=1}^{N_{n}}
+\begin{clm}\label{ProhorovClaim2}For every $n > 0$ there exists $N_n > 0$ such that $\mu(\cap_{k=1}^{N_{n}}
 B(x_k, 1/n)^c ) < \epsilon/2^n$ for all $\mu \in M$.
- 
+ \end{clm}
+
 We argue by contraction by reducing the case where $M$ is a singleton
-set (where we have already shown the claim holds).  If Claim 2 is not
+set (where we have already shown the claim holds).  If Claim \ref{ProhorovClaim2} is not
 true then there exists $n$ such that for every integer $N>0$ we have
 some $\mu_N \in M$ such that $\mu_N(\cap_{k=1}^{N} B(x_k, 1/n)^c )
 \geq \epsilon/2^n$.  By sequential compactness of $M$ we know that
@@ -622,7 +630,7 @@ limit and using continuity of measure
 1/n)^c) = 0
 \end{align*}
 
-With Claim 2 proven we mimic the proof of Ulam's Theorem.  Let 
+With Claim \ref{ProhorovClaim2} proven we mimic the proof of Ulam's Theorem.  Let 
 \begin{align*}
 K &=
 \cap_{m=1}^\infty \cup_{j=1}^{N_m} \overline{B}(x_j,\frac{1}{m})
@@ -1469,7 +1477,8 @@ A_\epsilon &= \lbrace 0 \leq t \leq T \mid r(x(t-), x(t)) \geq
 \epsilon \rbrace
 \end{align*}
 
-Claim: $A_\epsilon$ is finite.
+\begin{clm} $A_\epsilon$ is finite.
+\end{clm}
 
 Suppose otherwise, then by compactness of $[0,T]$ there is an
 accumulation point $t$ of $A_\epsilon$.  By passing to a further
@@ -1504,11 +1513,11 @@ union of the discontinuities of $x$ restricted to $[0,n]$ for $n \in \naturals$.
 \begin{align*}
 \rho(x,y,\lambda) &= \abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
 \end{align*}
-and define $\rho : D([0,T]; E) \times D([0,T]; E) \to  reals$ by 
+and define $\rho : D([0,T]; E) \times D([0,T]; E) \to  \reals$ by 
 \begin{align*}
 \rho(x,y) &= \inf_{\lambda \in \Lambda} \rho(x,y,\lambda)
 = \inf_{\lambda \in \Lambda} \sup_{t \in [0,T]}
-\abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
+\sup_{t \in [0,T]}\abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
 \end{align*}
 \end{defn}
 
@@ -1591,7 +1600,8 @@ so that $f_{n+m} (t) = f_{n}(\lambda_{m+n}(t))$ for all $t \in [0,1]$
 and $\sup_{0 \leq t \leq 1} \abs{\lambda_{m+n}(t) - t} = \frac{1}{n} -
 \frac{1}{n+m+2} < \frac{1}{n}$ which shows $\rho(f_n, f_{n+m}) < \frac{1}{n}$.
 
-Claim: If $f_n$ converges in then it must converge to $0$.
+\begin{clm}If $f_n$ converges in then it must converge to $0$.
+\end{clm}
 
 Suppose that $f_n$ converges to some $f \in D([0,1];\reals)$.  Then
 there exist $\lambda_n \in \Lambda$ such that $\lim_{n \to \infty} \sup_{0 \leq t \leq 1}
@@ -1679,11 +1689,8 @@ d(x,y) = \inf_{\substack{\lambda \in \Lambda \\ \gamma(\lambda) <
 \end{align*}
 \end{defn}
 
-The main goal is to prove
-\begin{lem}\label{SkorohodJ1Metric}$d$ is a metric on $D([0,T];E)$ that is equivalent to
-  $\rho$.
-\end{lem}
-Before proving the result we need a few simple facts about $\gamma$.
+The main goal is to prove that $d$ is a metric that is equivalent to $\rho$.
+Before proving that we need a few facts about $\gamma$.
 \begin{lem}\label{SkorohodJ1GammaFacts}$\gamma(\lambda) = \gamma(\lambda^{-1})$ and
   $\gamma(\lambda_1 \circ \lambda_2) \leq \gamma(\lambda_1) +
   \gamma(\lambda_2)$.
@@ -1736,7 +1743,7 @@ conclude
 \log(1-2x) &< -x < 0 < x < \log(1+2x) \text{ for } 0 < x < 1/2
 \end{align*}
 
-Suppose $\gamma(\lambda) < 1/2$ and let $0 \leq t \leq T$.  By definition and the
+Suppose $\gamma(\lambda) < 1/2$ and let $0 < t \leq T$.  By definition and the
 fact that $\lambda(0) = 0$ we have
 \begin{align*}
 \abs{\log \frac{\lambda(t)}{t}} &\leq \sup_{0 \leq s < t \leq
@@ -1750,17 +1757,22 @@ and exponentiating
 \begin{align*}
 1 - 2\gamma(\lambda) < \frac{\lambda(t)}{t} < 1 + 2 \gamma(\lambda)
 \end{align*}
-which shows $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} < 2 T \gamma(\lambda)$.  
+and therefore $\abs{\lambda(t) - t} < 2 T \gamma(\lambda)$ for $0 < t \leq T$.  Since $\lambda(0) - 0 = 0$ 
+it follows that $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} \leq 2 T \gamma(\lambda)$.
 
-Now suppose we have $d(f,g) < 1/2$.  Let $\epsilon$ be given and
-select $\lambda \in \Lambda$ such that $\gamma(\lambda) < 1/2 \wedge
-(d(f,g) + \epsilon)$ and $\sup_{0 \leq t \leq T} r(f(t),
+Now suppose we have $d(f,g) < 1/2$.  Let $0 < \epsilon < 1/2 - d(f,g)$ be given and
+select $\lambda \in \Lambda$ such that $\gamma(\lambda) <
+d(f,g) + \epsilon$ and $\sup_{0 \leq t \leq T} r(f(t),
 g(\lambda(t))) < d(f,g) + \epsilon$.  By what we have just shown, we
 get that $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} < 2 T
 \gamma(\lambda) < 2T(d(f,g) + \epsilon)$ and therefore $\rho(f,g) <
 2T(d(f,g) + \epsilon)$.  Now let $\epsilon \to 0$.
 \end{proof}
 
+Now we are ready to show that $d$ is a metric and is equivalent to $\rho$.
+\begin{lem}\label{SkorohodJ1Metric}$d$ is a metric on $D([0,T];E)$ that is equivalent to
+  $\rho$.
+\end{lem}
 \begin{proof}
 The fact that $d(f,g) \geq 0$ is immediate. Suppose $d(f,g)$ and pick $\lambda_n$ such that
 $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq
@@ -1800,6 +1812,8 @@ From this fact we see that $\gamma(\lambda_{mn}) \geq
 \frac{n+m+2}{n+2} > 1$ which shows that $d(f_n, f_{n+m}) \geq 1$ so
 $f_n$ is not Cauchy with respect to $d$.
 \end{examp}
+
+TODO: Show that $d$ is complete.
 
 \section{Riesz Representation}
 
@@ -2103,7 +2117,8 @@ an arbitrary subset of $X$ and define
 \end{align*}
 Note that $\mu^*(U) = m(U)$ for all open sets.
 
-Claim : $\mu^*$ is an outer measure
+\begin{clm}$\mu^*$ is an outer measure
+\end{clm}
 
 Note that because the emptyset is relatively compact we know from (i)
 that $m(\emptyset) < \infty$ and thus from (iv) we see that
@@ -2130,7 +2145,8 @@ follows from (iii) and the definition of $\mu^*$ that
 Since $\epsilon > 0$ is arbitrary we see that $\mu^*$ is countably
 subadditive and is therefore proven to be an outer measure.
 
-Claim: Borel sets are $\mu^*$-measurable.
+\begin{clm}Borel sets are $\mu^*$-measurable.
+\end{clm}
 
 The $\mu^*$-measurable sets form a $\sigma$-algebra by Lemma
 \ref{CaratheodoryRestriction} and therefore it suffices to show that
@@ -2199,7 +2215,8 @@ It is also immediate from the definition that $\mu(A) = \overline{\mu}(A)$
 for all $\sigma$-bounded Borel sets $A$ and therefore that $\mu(U) =
 m(U)$ for all $\sigma$-bounded open sets $U$.  In fact more is true.
 
-Claim: $\mu(U) = m(U)$ for all open sets $U$.
+\begin{clm}$\mu(U) = m(U)$ for all open sets $U$.
+\end{clm}
 
 Let $V$ be a relatively compact open set with $\overline{V} \subset U$.  We have
 \begin{align*}
@@ -2212,7 +2229,8 @@ m(U) &\geq \mu(U) \sup \lbrace m(V) \mid V \text{ is relatively
 \end{align*}
 and therefore $\mu(U) = m(U)$.
 
-Claim: $\mu$ is a measure.
+\begin{clm}$\mu$ is a measure.
+\end{clm}
 
 To see that $\mu$ is a measure it remains to show countable
 additivity.  Let $A_1, A_2, \dotsc$ be disjoint Borel sets.  First we
@@ -2243,7 +2261,8 @@ that $C_n$ is a $\sigma$-bounded Borel set such that $C_n \subset
 Now take the limit as $n \to \infty$ and using the fact that $\epsilon
 > 0$ was arbitrary, we get $\sum_{j=1}^\infty \mu(A_j) \leq \mu(\cup_{j=1}^\infty A_j)$.
 
-Claim: $\mu$ is a Radon measure.
+\begin{clm}$\mu$ is a Radon measure.
+\end{clm}
 
 The fact that $\mu(K) < \infty$ for all compact sets follows from the
 fact that $\mu$ and $\overline{\mu}$ agree on $\sigma$-bounded sets
@@ -2389,7 +2408,8 @@ from Lemma \ref{ExtensionToRadonMeasure} and that if $\mu$ is the
 Radon measure constructed by that result that we indeed have
 $\Lambda(f) = \int f \, d\mu$.
 
-Claim: $m$ satisfies (i)
+\begin{clm}$m$ satisfies (i)
+\end{clm}
 
 Let $U$ be a relatively compact open set.  By Lemma
 \ref{BoundedNeighborhoodsOfCompactSets} we can find another relatively
@@ -2406,7 +2426,8 @@ m(U) &= \sup \lbrace \Lambda( f ) \mid 0 \leq f \leq 1, f \in C_c(X),
 supp(f) \subset U \rbrace \leq \Lambda(g) < \infty
 \end{align*}
 
-Claim: $m$ satsifies (ii)
+\begin{clm}$m$ satsifies (ii)
+\end{clm}
 
 This is immediate since $U \subset V$ implies 
 \begin{align*}
@@ -2415,7 +2436,8 @@ supp(f) \subset U \rbrace \subset \lbrace \Lambda( f ) \mid 0 \leq f \leq 1, f \
 supp(f) \subset V \rbrace
 \end{align*}
 
-Claim: $m$ satisfies (iii)
+\begin{clm}$m$ satisfies (iii)
+\end{clm}
 
 Let $U_1, U_2, \dotsc$ be open sets and let $f \in C_c(X)$ satisfy $0
 \leq f \leq 1$ and $supp(f) \subset \cup_{n=1}^\infty U_n$.  By
@@ -2432,7 +2454,8 @@ $\sum_{i=1}^N g_i = 1$ on $supp(f)$ and therefore $f = f \cdot
 Now we take the supremum over all such $f$ to conclude that
 $m(\cup_{i=1}^\infty U_i) \leq \sum_{i=1}^\infty m(U_i)$.
 
-Claim: $m$ satisfies (iv)
+\begin{clm}$m$ satisfies (iv)
+\end{clm}
 
 Suppose $U$ and $V$ are disjoint open sets.  We only need to show that
 $m(U \cup V) \geq m(U) + m(V)$ since the opposite inequality follows
@@ -2445,7 +2468,8 @@ $supp(f+g) \subset supp(f) \cup supp(g) \subset U \cup V$.  Therefore
 \end{align*}
 Now take the supremum over all $f$ and $g$ to get the result.
 
-Claim: $m$ satisfies (v)
+\begin{clm}$m$ satisfies (v)
+\end{clm}
 
 Let $U$ be an open set and let $f \in C_c(X)$ such that $0 \leq f \leq
 1$ and $supp(f) \subset U$.  By compactness of $supp(f)$ and Lemma
@@ -2505,13 +2529,15 @@ v(x) &= \frac{1}{n} \sum_{j=1}^{n} \characteristic{U_{j-1}}(x) \\
 \end{align*}
 which shows that $u,v \in C_c(X)$.
 
-Claim: $\int (v -u) \, d\mu < \epsilon$
+\begin{clm}$\int (v -u) \, d\mu < \epsilon$
+\end{clm}
 
 This follows by observing that $v - u = \frac{1}{n}
 (\characteristic{U_0} - \characteristic{U_n}) = \frac{1}{n}
 \characteristic{U_0}$ since $U_n = \emptyset$.
 
-Claim: $\int u \, d\mu \leq \Lambda(f) \leq \int v \, d\mu + \epsilon$
+\begin{clm}$\int u \, d\mu \leq \Lambda(f) \leq \int v \, d\mu + \epsilon$
+\end{clm}
 
 To see this claim we decompose $f$ into a representation that is
 adapted to the nested sequence $U_n \subset \dotsb \subset U_0$.  For
@@ -3014,3 +3040,1429 @@ For $A$ and $s$ as above define
 \mathcal{H}^s(A) &= \lim_{\delta \to 0} \mathcal{H}_\delta^s(A) = \sup_{\delta>0} \mathcal{H}_\delta^s(A)
 \end{align*}
 \end{defn}
+
+\section{Integration in Banach Spaces}
+
+Our prior development of measure and integration theory made use of the
+order structure on the reals in various places and as a
+result the theory does not hold for functions with values in arbitrary
+vector spaces.  As we shall soon see it is useful to be able to
+integrate functions with vector space values (in particular Banach
+spaces) so we need an integration theory.  As it turns out there are a
+couple of directions that one can go.  In the simplest case that will
+suffice for many of our needs, we simply develop the theory of Riemann
+integrals.  The primary loss of generality is
+that the domains of functions in the Riemann integral case must be 
+functions of a real variable.  For our purposes we shall only be
+requiring the Riemann theory for a single real variable so that shall
+suit us fine.  For problems in which the domain in an arbitrary
+measurable space we need a Lebesgue-like theory that was developed by
+Bochner.  The reader may want to be made aware that in addition to these integrals there is also an
+integral due to Gelfand and Pettis that we shall not discuss.
+
+\subsection{Riemann Integrals}
+As mentioned we shall only bother to develop the Riemann integral for
+a single real variable.
+\begin{defn}Let $a \leq b$ be real numbers then a \emph{partition} of
+  the interval $[a,b]$ is a finite sequence of real numbers $a=a_0
+  \leq a_1 \leq \dotsb \leq a_n = b$.  Let $X$ be a Banach space then
+  a map $f : [a,b] \to X$ is said to be a \emph{step map with repsect
+    to P} if there
+  exists a partition $P=\lbrace a_j \rbrace_{j=0}^n$ and elements $w_1,
+  \dotsc, w_n \in X$ such that $f(t) = w_j$ for $a_{j-1} < t < a_j$.
+  A \emph{step map} is any map $f$ such that for which there exists a partition
+  $P$ for which $f$ is a step map with respect to $P$.
+  The \emph{integral} of a step map with repsect to $P$ is
+\begin{align*}
+I_P(f) &= 
+\sum_{j=1}^n (a_j - a_{j-1}) w_j
+\end{align*}
+\end{defn}
+Note that a step map has it values constrained on the open intervals
+$(a_{j-1},a_j)$ but not at the points $a_j$.
+
+With all of these elementary definitions in hand we come to our first
+task which is to show that the integral of a step map is well defined.
+\begin{prop}Let $X$ be a Banach space and let $f : [a,b] \to X$ be a
+  step map with respect to partitions $P$ and $Q$ then it follows that
+  $I_P(f) = I_Q(f)$.
+\end{prop}
+\begin{proof}
+Given a partition $P$ of the form $a=a_0 \leq \dotsb \leq a_n=b$ let
+$c \in [a,b]$ and let the refinement $P_c$ represent the partition
+obtained by adding $c$ to the set of $a_j$.  It is clear that $f$ is
+still a step map with respect to $P_c$ and that $I_P(f)
+= I_{P_c}(f)$.  A partition $R$ is said to be a refinement of $P$ if
+it is a subset of $P$; by induction we see that $I_P(f) = I_R(f)$
+whenever $R$ is a refinement of $P$.  Now given arbitrary partitions
+$P$ and $Q$ as in the hypotheses we simply find a common refinement
+(e.g. take the union of $P$ and $Q$) and the result follows.
+\end{proof}
+
+Now we extend the integral by a limiting procedure.  To do this we use 
+somewhat abstract language of Banach space theory.  First let us set
+up the Banach space in which we operate.
+
+\begin{prop}Let $X$ be a normed vector space, let $S$ be an arbitrary
+  set and let $\mathfrak{B}(S, X)$
+  represent the set of bounded functions $f : S \to X$.  Let
+  $\abs{x}$ denote the norm on $X$.  If we
+  define $\norm{f} = \sup_{s \in S} \abs{f(s)}$ then $\norm{f}$
+  makes $\mathfrak{B}(S, X)$ into a normed vector space.
+\end{prop}
+\begin{proof}
+We first observe that $\mathfrak{B}(S, X)$ is a vector space.  
+This follows from the fact that if $f$ is bounded by $C$ then for all
+$a \in \reals$ we have $af$ is bounded by $\abs{a} C$ if both $f$ and
+$g$ are bounded by $C_1$ and $C_2$ respectively then using the
+triangle inequality in $X$ we see that $f+g$ is bounded by $C_1 + C_2$.
+
+Next we prove that we have defined a norm.  The fact that $\norm{f}
+\geq 0$ and $\norm{0} =0$ follow immediately from the definition and
+the fact that $\abs{\cdot}$ is a norm on $X$.   If $\norm{f}
+= 0$ the it follows that $\abs{f(s)} = 0$ for all $s \in S$
+and therefore $f=0$.  Let $c \in \reals$ then since $\abs{cf(s)} =
+\abs{c} \abs{f(s)}$ it follows that $\norm{cf} \leq \abs{c}\norm{f}$.
+On the other hand, let $\epsilon > 0$ be given then we may find an $s
+\in S$
+such that $\norm{f} - \epsilon < \abs{f(s)}$.  It follows that 
+\begin{align*}
+\abs{c} \norm{f} - \abs{c} \epsilon < \abs{c} \abs{f(s)} = \abs{cf(s)}
+\end{align*}
+Now $\epsilon$ was chosen arbitrarily so we may let $\epsilon \to 0$
+and we get the inequality $\abs{c} \norm{f} \leq
+\abs{cf(s)}$.  Now take the supremum over $s \in S$ to get opposite
+inequality $\abs{c} \norm{f} \leq \norm{cf}$ and it follows that
+$\abs{c} \norm{f} = \norm{cf}$.  The triangle inequality follows in a
+similar way.  Given an $f$ and $g$ we see using the triangle
+inequality in $X$ that for all $s \in S$ we
+have $\abs{f(s) + g(s)} \leq \abs{f(s)} + \abs{g(s)} \leq \norm{f}
++\norm{g}$; taking the supremum over $s \in S$ we get $\norm{f+g} \leq
+\norm{f} + \norm{g}$.
+\end{proof}
+
+Now we have the following extension result
+\begin{lem}Let $X$ be a normed vector space and let $Y$ be a Banach
+  space.  Suppose that $V \subset X$ is a subspace and $A : V \to Y$
+  is a bounded linear map, then $A$ has a unique extension
+  $\overline{A} : \overline{V} \to Y$ from the closure of $V$ into
+  $Y$.  Moreover if $C$ is a bound on $A$ the $C$ is also a bound on $\overline{A}$.
+\end{lem}
+\begin{proof}
+\end{proof}
+
+As is usual to compute with integrals it is imperative to connect the
+integration with differentiation.  Since we are dealing with the
+Riemann integral we must use relatively strong hypotheses however
+these results will suffice for our applications and the proof are very
+simple.  We start with the Fundamental Theorem of Calculus.
+
+\begin{thm}[Fundamental Theorem of
+  Calculus]\label{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals}Let
+ $X$ be a Banach space and let $f : [a,b] \to X$ be continuously
+ differentiable then 
+\begin{align*}
+f(b) - f(a) &= \int_a^b Df(t) dt
+\end{align*}
+\end{thm}
+\begin{proof}
+First we let $g(t)$ be a regulated function from $[a,b]$ to $X$ and
+consider the integral $\int_a^s g(t) \, dt$.  Suppose that $g$ is
+continuous at $c \in [a,b]$ and let $\epsilon > 0$ be given.  By
+right continuity we may find $\delta > 0$ such that $\abs{g(c+h) -
+  g(c)} < \epsilon$ for all $\abs{h} < \delta$.  If we let $G(s) = \int_a^s g(t) \,
+dt$ then if $\abs{h} < \delta$ we have
+\begin{align*}
+\abs{ \frac{G(c + h) - G(c)}{h} - g(c)} &= \abs{\frac{1}{h}
+                                          \int_c^{h+c} g(t)\, dt  -
+                                          \frac{1}{h} \int_c^{h+c}
+                                          g(c) \, dt} \\
+&= \abs{\frac{1}{h}  \int_c^{h+c} (g(t) - g(c)) \, dt} \\
+&\leq \frac{1}{\abs{h}} \abs{h} \sup_{c \leq s \leq c+h} \abs{g(t) -
+  g(c)} 
+=\sup_{c \leq s \leq c+h} \abs{g(t) -  g(c)} 
+\end{align*}
+By continuity
+TODO
+\end{proof}
+
+\begin{prop}\label{RiemannIntegralOfContinuousMaps}Let $X$ and $Y$ be
+  Banach spaces and let $f : [a,b] \to L(X,Y)$ be regulated then it
+  follows that for every $x \in X$ we have
+\begin{align*}
+\int_a^b f(t) x \, dt &= \int_a^b f(t) \, dt \cdot x
+\end{align*}
+\end{prop}
+\begin{proof}
+TODO
+\end{proof}
+
+\subsection{Bochner Integrals}
+
+TODO:
+
+\section{Differentiation in Banach Spaces}
+
+TODO:
+\begin{itemize}
+\item Absolute convergence of a infinite series in a Banach space
+\item Define space of linear maps with operator norm
+\item Show that Frechet deriviative is equal to Jacobian matrix on
+  finite dimensional spaces
+\end{itemize}
+
+\begin{prop}Let $X$ be a Banach space then if $\sum_{j=0}^\infty a_j$
+  converges absolutely then $\sum_{j=0}^\infty a_j$ converges in $X$.
+\end{prop}
+\begin{proof}
+By completeness of $X$ it suffices to show that $S_n = \sum_{j=0}^n
+a_j$ is a Cauchy sequence.  Let $\epsilon > 0$ be given and pick $n >
+0$ such that $\sum_{j=n}^\infty \norm{a_j} < \epsilon$.  Then for all
+$m \geq n$ we have
+\begin{align*}
+\norm{S_m - S_n} &\leq \norm{\sum_{j=n}^{m-1} a_j} \\
+&\leq \sum_{j=n}^{m-1}\norm{ a_j} \leq \sum_{j=n}^{infty}\norm{ a_j} < \epsilon
+\end{align*}
+and we are done.
+\end{proof}
+
+\begin{prop}Let $X$ be a Banach space.  The set of invertible maps in $L(X)$ is open, moreover
+  for any invertible map $A \in L(X)$ and any $\norm{A-B} <
+  \norm{A}^{-1}$ we have 
+\begin{align*}
+B^{-1} &= \sum_{n=0}^\infty A^{-n-1} (A-B)^n 
+\end{align*}
+In particular, the inversion map is continuously differentiable on its domain.
+\end{prop}
+\begin{proof}
+We first assume that $A= I$ is the identity map.  If we let $\norm{B}
+< 1$ then note that 
+\begin{align*}
+\norm{\sum_{n=0}^m B^n} &\leq \sum_{n=0}^m \norm{ B}^n <
+                          \sum_{n=0}^\infty \norm{ B}^n =
+                          \frac{1}{1-\norm{B}} < \infty
+\end{align*}
+which shows that $\sum_{n=0}^\infty B^n$ converges absolutely and
+is well defined in $L(X)$.  Moreover we have
+\begin{align*}
+\norm{(1- B) \sum_{n=0}^\infty B^n }
+\end{align*}
+TODO: Finish....
+\end{proof}
+
+We present some of the basic results on differentiation in Banach
+spaces.
+
+\begin{defn}Let $X$ and $Y$ be Banach spaces, let $U \subset X$ be
+  open and let $f : U \to Y$ be
+  a map.  We say that $f$ is differentiable at $x \in U$ if there
+  exists a bounded linear map $L : X \to Y$ such that
+\begin{align*}
+\lim_{h \to 0} \frac{f(x + h) - f(x) -Lh}{\norm{h}} = 0
+\end{align*}
+We call the linear map $L$ the \emph{Frechet derivative} of $f$ at $x$
+and denote it $Df(x)$.
+\end{defn}
+
+As it stand, we have been a little loose in defining \emph{the}
+Frechet derivative as we have not ruled out the possibility that
+multiple linear maps may satisfy the defining property.   The first
+task is to show that in fact the Frechet derivative is uniquely
+defined provided it exists.
+
+\begin{prop}Suppose $A$ and $B$ are bounded linear maps satisfying the
+  defining property of the Frechet derivative then $A = B$.
+\end{prop}
+\begin{proof}
+Let $\epsilon > 0$ be given and pick $\delta > 0$ so that we have
+$\norm{f(x+h) - f(x) -Ah} < \epsilon \norm{h}$ for $\norm{h} < \delta$
+and similarly for $B$.  It then follows that
+\begin{align*}
+\norm{Ah - Bh} &\leq \norm{f(x+h) - f(x) -Ah} + \norm{f(x+h) - f(x)
+                 -Bh} < 2 \epsilon \norm{h}
+\end{align*}
+so by linearity we see that $\norm{A - B} < 2 \epsilon$.  Since
+$\epsilon>0$ was arbitrary it follows that $\norm{A -B} = 0$ and
+therefore $A = B$.
+\end{proof}
+
+There are weaker forms of derivative that one can consider.  For the
+most part we shall be concerned with only the Frechet derivative but
+it can be helpful to be aware of the alternatives if for no other
+reason than to refine one's understanding of the nature of the Frechet derivative.
+\begin{defn}Let $X$ and $Y$ be Banach spaces, let $U \subset X$ be
+  open and let $f : U \to Y$ be
+  a map.  Let $v \in X$, the we say that $f$ has a directional
+  derivative at $x$ in the direction of $v$ if the limit 
+\begin{align*}
+df(x,v) &= \lim_{t \to
+    0} \frac{f(x + tv) - f(x)}{t}
+\end{align*} 
+exists.  We say that $f$ is
+  \emph{G\^{a}teaux differentiable at $x$} if it has directional
+  derivatives at all $v \in X$.
+\end{defn}
+
+We first observe that Frechet differentiability implies G\^{a}teaux differentiability.
+\begin{prop}\label{FrechetDifferentiableImpliesGateauxDifferentiable}Let $X$ and $Y$ be Banach spaces, let $U \subset X$ be
+  open and let $f : U \to Y$ be
+  a Fr\'{e}chet differentiable at $x \in U$.  Then $f$ is G\^{a}teaux
+  differentiable at $x$ and the directional derivative at $v$ is equal
+  to $Df(x)v$.
+\end{prop}
+\begin{proof}
+Let $\epsilon >0$ be given and pick $\delta>0$ such
+that $\norm{f(x+h) - f(x) -Df(x)h} \leq \epsilon \norm{h}$ for all
+$\norm{h} < \delta$.  With $v \in X$ fixed and suppose that $\norm{v}
+= 1$; we note that for all
+$\abs{t} < \delta$ we have $\norm{f(x+tv) - f(x) - t Df(x) v}
+\leq \epsilon \abs{t} $ and thus 
+\begin{align*}
+\norm{\frac{f(x+tv) - f(x) }{t} - Df(x) v} < \epsilon
+\end{align*}
+so that $df(x,v) = Df(x) v$.  Now it is a simple matter to validate
+that $df(x, tv) = t df(x,v) = Df(x) \cdot tv$ for all $t \in \reals$.
+\end{proof}
+In general G\^{a}teaux derivatives need not be linear (i.e. even
+though $df(x,tv) = tdf(x,v)$ it is not necessarily the case that
+$df(x,v+w) = df(x,v) + df(x,w)$) and even if
+linear need not be bounded.  Somewhat more surprising is that even if
+the G\^{a}teaux derivative exists and is bounded and linear the
+Fr\'{e}chet derivative may not exist.  What is necessary is that the
+limits $\lim_{t \to 0} \frac{f(x+tv) -f(x)}{t}$ converge uniformly for
+$v$ in the unit sphere.
+
+We calculate some trivial Frechet derivatives.
+\begin{examp}Let $f : X \to Y$ be a constant map $f(x) = y$ for some
+  fixed $y \in Y$, then $f$ is differentiable at every point $x \in X$
+  and moreover $Df(x) = 0$.
+\end{examp}
+\begin{examp}Let $A : X \to Y$ be a bounded linear map, then $A$ is differentiable at every point $x \in X$
+  and moreover $Df(x) = A$.
+\end{examp}
+
+The following example generalizes the product rule of calculus.
+\begin{examp}Let $A : X_1  \times \dotsm \times X_n \to Y$ be a bounded
+  multilinear map, then $A$ is differentiable at every point $x \in
+  X_1 \times \dotsm \times X_n$
+  and moreover 
+\begin{align*}
+Df(x_1, \dotsc, x_n)(h_1, \dotsc, h_n) = A(h_1, x_2, \dotsc, x_n) +
+  A(x_1, h_2, x_3, \dotsc, x_n) + \dotsm + A(x_1, x_2, \dotsc, h_n)
+\end{align*}
+\end{examp}
+
+Another important case is the behavior of deriviative when composing
+with a linear map.
+\begin{examp}\label{FrechetDerivativeCompositionWithLinearMap}Let $X$, $Y$ and $Z$ be Banach spaces, let $U \subset X$
+  be open, let $f : U \to Y$ be differentiable and let $A : Y \to Z$
+  be a bounded linear map, then $D (A \circ f)(x) = A \circ Df(x)$.
+
+Note that this would follow from the Chain Rule below (Proposition
+\ref{ChainRuleBanachSpaces}) but is worth showing this directly to get
+some practice with the definitions.  Let $\epsilon > 0$ be given and
+pick $\delta>0$ such that $\norm{f(x+h) - f(x) - Df(x)h} \leq
+\frac{\epsilon}{\norm{A}} \norm{h}$ for all $\norm{h} < \delta$.  Note
+that
+\begin{align*}
+\norm{Af(x+h) - Af(x) - A Df(x)h} &\leq \norm{A} \norm{f(x+h) - f(x) -
+                                    Df(x)h} \leq \epsilon \norm{h}
+\end{align*}
+for all $\norm{h} < \delta$ which shows the result.
+\end{examp}
+
+\begin{prop}\label{DifferentiabilityImpliesContinuity}Let $X$ and $Y$ be Banach spaces, let $U \subset X$ be
+  open and let $f : U \to Y$ be differentiable at $x \in U$ then $f$
+  is continuous at $x$.
+\end{prop}
+\begin{proof}
+Let $\epsilon > 0$ be given and define $0 < \delta < \frac{\epsilon}{1 + \norm{Df(x)}}$ small enough so
+that $\norm{f(x+h) - f(x) - Df(x)h} \leq \norm{h}$ for all $\norm{h} <
+\delta$ then 
+\begin{align*}
+\norm{f(x + h) - f(x)} &\leq \norm{f(x + h) - f(x) - Df(x)h} +
+                         \norm{Df}\norm{h} \\
+&\leq \norm{h} + \norm{Df}\norm{h} < \epsilon
+\end{align*}
+and continuity is proven.
+\end{proof}
+
+\begin{prop}[Chain Rule]\label{ChainRuleBanachSpaces}Let $X$, $Y$ and $Z$ be
+  Banach spaces, let $U \subset X$ and $f : U \to Y$ be differentiable
+  at $x \in U$, let $V \subset Y$ with $f(U) \subset V$, $g : V \to Z$ be
+  differentiable at $f(x)$ then $g \circ f : U \to Z$ is
+  differentiable at $x$ and moreover
+\begin{align*}
+D(g \circ f)(x) &= Dg(f(x)) \circ Df(x)
+\end{align*}
+\end{prop}
+\begin{proof}
+Let $\epsilon$ be given.  Let $\tilde{\delta} > 0$ be chosen so that
+$\norm{g(f(x) + h) - g(f(x)) - Dg(f(x)) h} < \frac{1}{2} \epsilon
+\norm{h}$ for all $\norm{h} < \tilde{\delta}$.  By continuity of $f$
+at $x$ we can choose $\delta_1>0$ such that $\norm{f(x+h) - f(x)} <
+\tilde{\delta}$ for all $\norm{h} < \delta_1$ and by differentiability
+we may choose $\delta_2>0$ such that $\norm{f(x+h) - f(x) - Df(x)h} <
+\frac{\epsilon}{\epsilon + 2\norm{Dg(f(x))}} \norm{h}$ for all
+$\norm{h} < \delta_2$.  Let $\delta = \delta_1 \vee \delta_2$ and then
+for $\norm{h} < \delta$ we compute
+\begin{align*}
+&\norm{g(f(x+h)) - g(f(x)) - Dg(f(x)) Df(x) h} \\
+&\leq \norm{g(f(x+h)) -
+                                                g(f(x)) - Dg(f(x))
+                                                (f(x+h)-f(x)) }  \\
+&+\norm{Dg(f(x))(f(x+h)-f(x))
+                                                - Dg(f(x)) Df(x) h}\\
+&\leq \frac{1}{2} \epsilon\norm{f(x+h)-f(x)}  +\norm{Dg(f(x))}\norm{f(x+h)-f(x) - Df(x) h}\\
+&\leq \frac{1}{2} \epsilon \norm{h}  +(\frac{\epsilon}{2} +
+  \norm{Dg(f(x))}) \frac{\epsilon}{\epsilon + 2\norm{Dg(f(x))}}
+  \norm{h} = \epsilon \norm{h}\\
+\end{align*}
+and we're done.
+\end{proof}
+
+\subsection{Higher Order Derivatives and Taylor's Theorem}
+
+\begin{thm}[Mean Value Theorem]\label{MeanValueTheoremBanachSpaces}Let
+  $X$ and $Y$ be  Banach spaces, $U \subset X$ be open and let $f : U
+  \to Y$ be continuously differentiable.  Suppose $x \in U$ and $y \in
+  X$ such that $x + ty \in U$ for all $0 \leq t \leq 1$ then
+\begin{align*}
+f(x + y) - f(x) &= \int_0^1 Df(x + ty) y dt = \int_0^1 Df(x + ty) dt
+                  \cdot y
+\end{align*}
+\end{thm}
+\begin{proof}
+Define $g(t) = f(x + ty)$.  Then by the Chain Rule it follows that
+$g(t)$ is continuously differentiable and $Dg(t) = Df(x + ty) y$.
+Since $Dg(t)$ is continuous we may apply the Fundamental Theorem of
+Calculus (Theorem
+\ref{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals}) to
+conclude that 
+\begin{align*}
+f(x+y) - f(x) &= g(1) - g(0) = \int_0^1 Df(x+ty) y dt = \int_0^1
+                Df(x+ty) dt \cdot y
+\end{align*}
+where in the last inequality we have use Proposition \ref{RiemannIntegralOfContinuousMaps}.
+\end{proof}
+
+Higher order derivatives are defined by iterating Frechet derivatives.  For
+example if we assume that the map $f : U \to Y$ differentiable on all
+of $U$ then the second derivative is obtained by
+taking the derivative of the map $Df : U \to L(X,Y)$ whereever it
+exists.  Thus the second derivative is a map $D^2f : U \to
+L(X,L(X,Y))$.  
+
+\begin{examp}Let $A : X \to Y$ be a bounded linear map then $D^2A = 0$.
+\end{examp}
+
+Based on the definition via induction we think of $D^nf$ as a map from
+$U$ to $L(X, \dotsb ,L(X, Y) \dotsb)$.  The range here actually has a
+more convenient representation as the space of multilinear maps $X
+\times \dotsm \times X \to Y$.  For example given an element in $f \in
+L(X,L(X,Y))$ we may define $\tilde{f}(u,v) = f(u) v$ and note that
+\begin{align*}
+\tilde{f}(au + bv, w) &= f(au + bv) w = a f(u) w + b f(v) w = a
+\tilde{f}(u,w) + b \tilde{f}(v,w)
+\end{align*} and 
+\begin{align*}
+\tilde{f}(u, av + bw) &= f(u)(av+bw) = a f(u) v + b f(u) w = a
+                        \tilde{f}(u,v) + b\tilde{f}(u,w)
+\end{align*}
+so that $\tilde{f}$ is indeed bilinear.  It is easy to see that this
+is an isomorphism and that the construction extends to general $n$.
+
+TODO: Do this in the required excruciating detail...
+
+In the sequel, it will be convenient to view higher derivatives as maps
+from $U$ to the space of multilinear maps.  It turns out that higher
+derivatives are not arbitrary multilinear maps but also have the
+property of being symmetric.
+\begin{prop}Let $U \subset X$ be open and $f : U \to Y$ be $C^p$ then
+  $D^pf(x)$ is multilinear and symmetric for every $x \in U$.
+\end{prop}
+\begin{proof}
+TODO:
+We first consider the case $p=2$.  Let $u,v \in X$ and consider
+\begin{align*}
+D^2f(x) (u,v) = 
+\end{align*}
+\end{proof}
+
+A more complicated but important example is the computation of the
+derivative of the inverse in a Banach algebra.
+\begin{prop}\label{FrechetDerivativeOfInverse}The map $\phi(A) = A^{-1}$ on $L(X,X)$ is $C^\infty$ on the open set of
+  invertible maps.  In fact we have
+\begin{align*}
+D^n\phi(A)(h_1, \dotsc, h_n) &= (-1)^n\sum_\sigma A^{-1} h_{\sigma_1}
+                               A^{-1} \dotsm h_{\sigma_n} A^{-1}
+\end{align*}
+where the summation is over all permutations of $\lbrace 1, \dotsc, n \rbrace$.
+\end{prop}
+\begin{proof}
+We first compute the first derivative of $\phi$.  Let $A$ be invertible and
+observe that for $\norm{h} < \norm{A^{-1}}^{-1}$ we know that $I +
+A^{-1} h$ is invertible and moreover
+\begin{align*}
+(A + h)^{-1} &= A^{-1} (I + h A^{-1})^{-1} = A^{-1} \sum_{n=0}^\infty
+              (-1)^n h^n A^{-n}
+\end{align*}
+and therefore using the absolute convergence of the series on the
+right we get
+\begin{align*}
+\norm{(A + h)^{-1} - A^{-1} + A^{-1} h A^{-1}} &\leq \sum_{n=2}^\infty
+                                                 \norm{h}^n
+                                                 \norm{A^{-1}}^n \\
+&= \frac{\norm{h}^2\norm{A^{-1}}^2}{1 - \norm{h}\norm{A^{-1}}} < \norm{h}^2\norm{A^{-1}}^2
+\end{align*}
+which shows us that $D\phi(A)h = -A^{-1} h A^{-1}$ (for $\epsilon > 0$
+let $\delta < \epsilon \norm{A^{-1}}^{-2}$).
+
+Now to see that $\phi$ is in fact $C^{\infty}$, we do an induction.
+TODO: Finish
+\end{proof}
+
+With the defintion of higher derivatives available we are now able to
+extend the Mean Value Theorem to Taylor's Theorem in Banach spaces.  
+\begin{thm}[Taylor's Theorem]\label{TaylorsTheoremBanachSpaces}Let $X$
+  and $Y$ be Banach spaces and let $U \subset X$ be open and of class
+  $C^p$.  Suppose that $x \in U$ and $y \in X$ such that $x + ty \in
+  U$ for all $0 \leq t \leq 1$ then we have
+\begin{align*}
+f(x+y) &= f(x) + Df(x) y + \dotsm + \frac{D^{p-1}f(x)
+         y^{(p-1)}}{(p-1)!} + \int_0^1 \frac{(1-t)^{p-1}}{(p-1)!}
+         D^pf(x + ty) y^{(p)} dt
+\end{align*}
+where $y^{(k)} = (y, \dotsc, y) \in X^k$.
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
+It is worth noting that in the case $Y=\reals$ that Theorem
+\ref{TaylorsTheoremBanachSpaces} can be proven using the one
+dimensional version Theorem \ref{TaylorsTheorem} and the chain rule
+Proposition \ref{ChainRuleBanachSpaces}.  We'll show this in the proof
+of the Lagrange form of the remainder term below.
+
+We've presented Taylor's Theorem in Banach spaces with the integral
+form of the remainder term.  There are several different versions of
+the remainder and estimates derived therefrom that are useful to
+note.  The first that we mention is applicable in the important case
+in which $Y = \reals$; the Lagrange form of the remainder.
+\begin{prop}\label{LagrangeFormRemainderBanachSpaces}There is a number $c \in
+  (0,1)$ such that 
+\begin{align*}
+\int_0^1 \frac{(1-t)^{p-1}}{(p-1)!}
+         D^pf(x + ty) y^{(p)} dt &= 
+\frac{D^pf(x + cy) y^{(p)}}{p!}
+\end{align*}
+\end{prop}
+\begin{proof}
+We derive this from the one dimensional Taylor's Theorem.  Note that
+$g(t) = f(x + ty)$ is $C^p$ from $[0,1]$ to $\reals$ and by the chain
+rule we have $g^\prime(t) = Df(x + ty) y$.  Now since evaluation $A \to A y$
+is a bounded linear map on $L(X,Y)$, an induction argument using either Example \ref
+{FrechetDerivativeCompositionWithLinearMap}
+or the chain rule shows that $g^{(k)}(t) = D^kf(x+ty) y^{(k)}$.
+Now apply Theorem \ref{TaylorsTheorem} to see there is a $0 < c < 1$ such that 
+\begin{align*}
+f(x+y) &= g(1) = g(0) + g^\prime(0) + \dotsm + \frac{g^{(p-1)} (0)}{(p-1)!} +
+         \frac{g^{(p)} (c)}{p!}  \\
+&=f(x) + Df(x) y + \dotsm + \frac{D^{p-1}f(x) y^{(p-1)}}{(p-1)!} +
+         \frac{D^{p}f(x + cy) y^{(p)}}{p!}
+\end{align*}
+\end{proof}
+
+\subsection{Inverse and Implicit Function Theorems}
+
+\begin{thm}\label{InverseFunctionTheoremBanachSpaces}Let $X$ and $Y$ be Banach spaces let $U \subset X$ be an
+  open subset of $X$ and suppose that $f : U \to Y$ is continuously
+  differentiable and $Df(x)$ is invertible at $x \in U$.  There is an
+  open set $V \subset U$ containing $x$ and an open set $W \subset Y$
+  containing
+  $f(x)$ such that $f : V \to W$ is a bijection and $f^{-1}$ is
+  continuously differentialble on $W$.
+\end{thm}
+
+The general Banach space proof is rather elegant but feels a bit like
+magic.  We'll be a bit redundant a  provide both the general proof as
+well as a proof for the finite dimensional case that is more verbose
+but is very elementary.
+
+For the finite dimensional proof we use the following simple
+consequence of the mean value theorem
+that shows a continuously differentiable function is Lipschitz
+continuous on a bounded domain.
+\begin{lem}\label{IFT:BoundedDerivativeImpliesLipschitz}Let $f : \reals^n \to \reals^n$ be differentiable on an
+  open rectangle $R = (a_1,b_1) \times \dotsm \times (a_n, b_n)$ such that 
+\begin{align*}
+\abs{\frac{\partial f_i}{\partial x_j}(x)} \leq M
+\end{align*}
+for all $1 \leq i,j \leq n$ and $x \in R$ then it follows that
+$\norm{f(y)-f(x)} \leq M \cdot n^2 \cdot \norm{y-x}$ for all $x,y \in R$.
+\end{lem}
+\begin{proof}
+By expanding as a telescoping sum and the one
+dimensional mean value theorem we
+get for every $i=1, \dotsc, n$ 
+\begin{align*}
+f_i(y) - f_i(x) &= \sum_{j=1}^n f_i(y_1, \dotsc, y_j, x_{j+1},
+                     \dotsc, x_n) - 
+f_i(y_1, \dotsc, y_{j-1}, x_{j},
+                     \dotsc, x_n)\\
+&= \sum_{j=1}^n \frac{\partial f_i}{\partial x_j} (y_1, \dotsc, y_{j-1}, y^*_j, x_{j+1},
+                     \dotsc, x_n) (y_j - x_j)\\
+\end{align*}
+where $a_j < y^*_j  < b_j$ (in fact $x_j \leq y^*_j \leq y_j$ when
+$x_j \leq y_j$ and similarly when $y_j < x_j$).  Now by the triangle
+inequality and the bound on partials of $f$ we get
+\begin{align*}
+\norm{f(y) - f(x)} &\leq \sum_{i=1}^n \abs{f_i(y) - f_i(x)} \\
+&= \sum_{i=1}^n \sum_{j=1}^n \abs{\frac{\partial f_i}{\partial x_j} (y_1, \dotsc, y_{j-1}, y^*_j, x_{j+1},
+                     \dotsc, x_n)} \abs{ y_j - x_j } \\
+&\leq \sum_{i=1}^n \sum_{j=1}^n M \norm{y - x} = M \cdot n^2 \cdot
+  \norm{y -x}
+\end{align*}
+\end{proof}
+
+Now we can proceed with the proof of the theorem in the finite
+dimensional case.
+\begin{proof}
+We first make a reduction to the case in which $Df(x)$ is the
+identity.  If the result is proven in that case then for general $f$
+we can define $Df(x)^{-1} \circ f : X \to X$ where from the Chain Rule
+it follows that
+$D(Df(x)^{-1} \circ f)(x)$ is the identity.  Applying the inverse
+function theorem we see there exists open
+sets $V$ and $\tilde{W}$ containing $x$ and $Df(x)^{-1}  f(x)$ respectively such
+$Df(x)^{-1} \circ f$ is a bijection from $V$ to $\tilde{W}$ with $(Df(x)^{-1} \circ f)^{-1}$
+continuously differentiable.  Now we define $W = Df(x)(\tilde{W})$
+which is open by continuity of $Df(x)^{-1}$ and contains $f(x)$.
+Since $f^{-1} = Df(x) \circ Df(x)^{-1} \circ f$ it follows by the
+Chain Rule that $f^{-1}$ is continuously differentiable on $W$.
+
+\begin{clm}There is an open ball $B(x, \delta) \subset U$ such that $f$ is
+injective on the closure of $B(x, \delta)$, $Df(y)$ is invertible for all $y \in B(x,
+\delta)$ and 
+\begin{align}
+\abs{\frac{\partial f_i}{\partial x}(y) - \frac{\partial
+    f_i}{\partial x}(x)} 
+&< \frac{1}{2n^2} \text{ for all $1 \leq i,j \leq n$ and $y \in
+  B(x,\delta)$}
+\end{align}\label{IFT:Partials}
+\end{clm}
+
+By the the openness of $U$, triangle inequality and the fact that $Df(x)$ is the
+identity we know that we can find $\delta > 0$
+such that $B(x,\delta) \subset U$ and 
+\begin{align*}
+\norm{f(x+h) - f(x)} &= \norm{f(x+h) - f(x) - h + h} \geq \norm{h} -
+                       \norm{f(x+h) - f(x) - h} \\
+&\geq \frac{1}{2}\norm{h}
+\end{align*}
+so injectivity on $B(x, \delta)$ follows; by continuity of $f$ the
+bound and hence the injectivity extends to the closure of $B(x,\delta)$.  Since the invertible linear maps are an open
+subset of $L(X,Y)$ and $Df$ is continuous we may also assume that
+$\delta > 0$ is chosen so that $Df$ is invertible on $B(x,\delta)$.
+Similarly continuity of $Df$ implies the continuity of each partial
+derivative $\frac{\partial f_i}{\partial x}$ and therefore
+\eqref{IFT:Partials} follows for sufficiently small $\delta > 0$.
+
+The next claim should be thought of as asserting that the inverse of
+$f$ is Lipschitz.  As it turns out the estimate is useful in showing
+that $f^{-1}$ exists.
+
+\begin{clm}$\norm{y - z}
+\leq 2 \norm{f(y) - f(z)}$ for all $y,z \in B(x, \delta)$.
+\end{clm}
+
+Define $g(x) = f(x) - x$ on $B(x, \delta)$.  Because $Df(x)$ is the
+identity we know that $\frac{\partial f_i}{\partial x}(x) =
+\delta_{ij}$ and therefore 
+\begin{align*}
+\abs{\frac{\partial g_i}{\partial x}(y)} &=
+\abs{\frac{\partial f_i}{\partial x}(y) - \frac{\partial f_i}{\partial
+                                           x}(x)} 
+\leq \frac{1}{2n^2}
+\end{align*}
+Since $y$ and $z$ are contained in some open rectangle that is a
+subset of $B(x,\delta)$ we can apply Lemma \ref{IFT:BoundedDerivativeImpliesLipschitz} and the
+triangle inequality to
+conclude that 
+\begin{align*}
+\frac{1}{2} \norm{y - z} &\geq \norm{g(y) - g(z)} \\
+&=\norm{f(y) - y - g(z) + z} \\
+&\geq \norm{y - z} - \norm{f(y) - g(z)}
+\end{align*}
+and the claim follows by collecting terms.
+
+The next step in the proof is to validate that the image of $B(x,
+\delta)$ under $f$ contains an open set (on which we will then have a
+bijection).  Consider the function $f(y) - f(x)$.  It is
+continuous and by compactness of the boundary $\partial B(x,\delta)$
+and the injectivity of $f$ on the closed ball we know that there
+exists an $\epsilon > 0$ such that $g(y) \geq \epsilon$ on $\partial
+B(x,\delta)$.  Define $W = B(f(x), \epsilon/2)$ and notice that by the
+choice of $\epsilon$, the triangle inequality and the previous claim
+we have for all $z \in W$ and $y \in \partial B(x, \delta)$
+\begin{align}
+\norm{z - f(y)} &\geq \norm{f(x) - f(y)} - \norm {f(x) - z} \geq d -
+                  \frac{d}{2} \\
+&= \frac{d}{2} > \norm{z - f(x)}
+\end{align}\label{IFT:InteriorMinimumEstimate}
+
+This estimate is used to construct an open set in the image of $f$.
+
+\begin{clm}For every $z \in W$ there is a unique $y \in B(x, \delta)$ such
+that $f(y) = z$.
+\end{clm}
+
+To see existence we let $z \in W$ be given and we define the function
+$h(y) = \norm{f(y) - z}^2 = \sum_{j=1}^n (f_j(y) - z_j)^2$.  Differentiability of $h$ follows from the
+differentiability of $f$ and the chain rule.  In
+particular, $h$ is continuous and therefore by compactness of the
+closed ball $\overline{B}(x, \delta)$ it attains its minimum.  By the
+estimate \eqref{IFT:InteriorMinimumEstimate} we see that the minimum
+must occur in the interior of the ball.  Therefore we know that the
+derivative of $h$ must vanish at the minimum so by the Chain Rule we
+know that for all $v \in X$
+\begin{align*}
+0 &=D \norm{f - z}^2 (y) \cdot v = 2 \norm{Df(y)\cdot v}{f(y) - z}
+\end{align*}
+and by the invertibility of $Df(y)$ it follows that we must have $f(y)
+= z$ at the minimum.
+
+The uniqueness of $y$ follows from the injectivity of $f$.
+
+Now we define $V = f^{-1}(W) \cap B(x, \delta)$ and it follows that
+$f$ is a bijection from $V$ to $W$. Now that $f^{-1}$ is well defined
+we immediately get its continuity.  
+
+\begin{clm}$f^{-1}$ is continuous on $W$.
+\end{clm}
+
+The second claim proved the bound $\norm{y - z} \leq 2 \norm{f(y) -
+  f(z)}$ on $B(x, \delta)$ which certainly shows that $\norm{f^{-1}(z)
+  - f^{-1}(w)} \leq 2 \norm{z -w}$ on $W$ so that $f^{-1}$ is
+Lipschitz in particular continuous.
+
+It remains to show that $f^{-1}$ is differentiable.
+
+\begin{clm}$f^{-1}$ is continuously differentiable on $W$.
+\end{clm}
+
+In fact we show (as would follow from the Chain Rule) that $Df^{-1}
+(z) = \left[ Df(f^{-1}(z) )\right]^{-1}$ for all $z \in W$.  Note that
+this is well defined since $Df$ is invertible on all of $V$.  To clean
+up the notation a bit let $A = Df(f^{-1}(z) )$.  Let $\epsilon > 0$ be
+given.  Using differentiability of $f$ at $f^{-1}(z)$ we choose
+$\tilde{\eta} > 0$ such that
+\begin{align*}
+\norm{f(f^{-1}(z) +
+  h) -
+  f(f^{-1}(z)) - Ah} &< \frac{\epsilon}{2\norm{A^{-1}}} \norm{h}
+                       \text{ for all $\norm{h} < \tilde{\eta}$}
+\end{align*}
+By continuity of $f^{-1}$ at $z$ we choose $\eta > 0$ such that
+$\norm{f^{-1}(z+h) - f^{-1}(z)} < \tilde{\eta}$ for
+all $\norm{h} < \eta$.  Pick $h \in Y$ with $\norm{h}<\eta$ and
+compute using the Lipschitz continuity of $f^{-1}$
+\begin{align*}
+&\norm{f^{-1}(z + h) - f^{-1}(z) - A^{-1} h} \\
+&=\norm{A^{-1} \left(f(f^{-1}(z+h)) - f(f^{-1}(z)) - A(f^{-1}(z + h) -
+                                              f^{-1}(z)) \right)} \\
+&\leq \norm{A^{-1}} \norm{f(f^{-1}(z+h)) - f(f^{-1}(z)) - A(f^{-1}(z + h) -
+                                              f^{-1}(z))} \\
+&\leq \frac{1}{2} \epsilon \norm{f^{-1}(z + h) - f^{-1}(z)} \leq \epsilon \norm{h} 
+\end{align*}
+which gives us $Df^{-1}(z) = \left[ Df(f^{-1}(z) )\right]^{-1}$.
+Continuity of $Df^{-1}$ follows from the continuity of $Df$,
+continuity of $f^{-1}$ and continuity of inversion of invertible maps
+in $L(X,Y)$.
+\end{proof}
+
+The proof of the Inverse Function Theorem in general Banach spaces
+rests on a simple result that is of broad applicability.  The result
+actually doesn't use the vector space structure and is valid in
+general complete metric spaces; it provides a
+very general mechanism for solving equations in such spaces.
+
+\begin{prop}[Contraction Mapping
+  Principle]\label{ContractionMappingPrinciple}Let $(S,d)$ be a complete
+  metric space
+  space, let $F \subset S$ be a closed subset and let $g : F \to F$ be
+  a mapping such that there exists a constant $0 < K < 1$ such that 
+\begin{align*}
+d(g(x), g(y)) &\leq K d(x,y) \text{ for all $x,y \in F$}
+\end{align*}
+then there exists a unique $x_0 \in F$ such that $g(x_0) = x_0$ and
+moreover given any $x \in F$ the sequence $\lbrace g^n(x) \rbrace$ is
+Cauchy and converges to $x_0$.
+\end{prop}
+\begin{proof}
+First we prove uniqueness.  Suppose there are two points $x$ and $y$
+satisfying $g(x) = x$ and $g(y) = y$ then we know that
+\begin{align*}
+d(x,y) &= d(g(x), g(y)) \leq K d(x,y)
+\end{align*}
+and since $0 < K < 1$ this shows that $d(x,y) = 0$.
+
+Now we let $x \in F$ be arbitrary and show that $g^n(x)$ is Cauchy.
+Suppose that $m > n$ and observe that by a simple induction
+\begin{align*}
+d(g^n(x), g^m(x)) \leq K^n d(x, g^{m-n}(x))
+\end{align*}
+In particular, we have that $d(g^n(x), g^{n+1}(x)) \leq K^n d(x,g(x))$
+and therefore by the triangle inequality 
+\begin{align*}
+d(x, g^n(x)) &\leq d(x, g(x)) + \dotsm + d(g^{n-1}(x), g^n(x)) \leq (1
+               + \dotsm + K^{n-1}) d(x,g(x)) < \frac{d(x,g(x))}{1-K}
+\end{align*}
+Putting these two bounds together we see that $d(g^n(x), g^m(x)) \leq  \frac{K^n
+  d(x,g(x))}{1-K}$ hence $g^n(x)$ is Cauchy.  
+
+Since $F$ is
+a closed subset of a complete metric space, it is 
+complete and we know that $g^n(x)$ converges to some $x_0 \in F$; it remains to show that $x_0$
+is a fixed point of $g$.  Let $\epsilon > 0$ be given and chose $N >
+0$ such that $d(x_0, g^n(x)) < \epsilon$ for all $n \geq N$.  Then we
+know that 
+\begin{align*}
+d(g(x_0), g^n(x)) &\leq K d(x_0, g^{n-1}(x)) \leq K\epsilon < \epsilon
+\end{align*}
+for all $n \geq N+1$ which shows that $g^n(x)$ converges to $g(x_0)$.  It
+follows that $x_0 = g(x_0)$.
+\end{proof}
+
+Note that in a Banach space finding fixed points $f(x) = x$ is
+equivalent to finding roots $g(x) = 0$ (just find a fixed point of
+$g(x) + x$ to find a root of $g$ and find a root of $f(x) - x$ to find
+a fixed point of $f$). 
+
+The Inverse Function Theorem has the following equally important
+consequence that is known at the Implicit Function Theorem.
+
+\begin{thm}[Implicit Function
+  Theorem]\label{ImplicitFunctionTheorem}Let $X$, $Y$ and $Z$ be a Banach
+  spaces, let $U \subset X \times Y$ be an open set  and let $f : U
+  \to Z$ be $C^p$.  
+Suppose $(x_0,y_0) \in U$, that $f(x_0,y_0) = 0$
+  and $Df(x_0,y_0)(0,v)$ defines an invertible map from $Y \to Z$, then
+  there exists an open set $V \subset X$ such that $x_0 \in V$, an
+  open set $W \subset Y$ such that $y_0 \in W$ and a function $g : V \to
+  W$ such that $g$ is continuously differentiable, $f(x, g(x)) = 0$
+  for all $x \in V$ and $f(x,y) = 0$ if and only if $y = g(x)$ for all
+  $(x,y) \in V \times W$.
+\end{thm}
+\begin{proof}
+First define the map $g : U \to X \times Z$ by $g(x,y) = (x,
+f(x,y))$.  We claim that $g$ has a local inverse at $(x_0,y_0)$.  To
+see this we compute
+\begin{align*}
+Dg(x_0,y_0) 
+\end{align*}
+TODO:
+\end{proof}
+
+\subsection{Optimization in Banach Spaces}
+As one will undoubtedly remember from one's first calculus class the
+derivative is an extraordinarily useful tool for finding maxima and
+minima of functions of a real variable.  Essentially all of that
+theory carries over to the case of general Banach space domains.  One
+of the goals in this subsection is to develop that basic theory.  
+
+In a multivariate calculus course the reader almost certainly
+encounterd problems of constrained optimization as well: learning the
+tool of the Lagrange multiplier for solving such problems. This theory
+also carries over to the Banach space setting and we develop it here.
+
+What one has learned up to this point is the theory of equality
+constrained optimization.  Though it tends not to be taught in the
+introductory
+calculus curriculum, in applications it is equally important to be able to
+solve optimization with both equality and inequality constraints.
+Having the tools we have developed it is no harder to develop such
+theory in the general Banach space setting and we do so here.
+
+We will discuss optimization problems in terms of minimization; as a
+general rule there is no loss of generality in doing so as
+maximization of a function $f$ may be performed by minimizing the
+function $-f$.  
+
+First we distinguish the different kinds of minima that we may
+characterize.  The primary distinction is the dichotomy between local
+and global minimization.  There are subtler distinctions to be made
+between different type of local minima.  The definitions make sense
+for arbitrary topological spaces.
+
+\begin{defn}Let $X$ be a topological space and let $f : X \to \reals$
+  be a function.  We say that $x^* \in X$ is a \emph{global minimizer}
+  of $f$ if $f(x^*) \leq f(x)$ for all $x \in X$.  We say that $x^*
+  \in X$ is a \emph{local minimizer} if there exists an open set $U
+  \subset X$ such that $x^* \in U$ and $f(x^*) \leq f(x)$ for all $x
+  \in U$.  We say that $x^*
+  \in X$ is a \emph{strict local minimizer} if there exists an open set $U
+  \subset X$ such that $x^* \in U$ and $f(x^*) < f(x)$ for all $x
+  \in U$ with $x^* \neq x$.  We say that $x^* \in X$ is an
+  \emph{isolated local minimizer} if there exists and open set $U
+  \subset X$ such that $x^* \in U$ and $x^*$ is the only local
+  minimizer in $U$.
+\end{defn}
+
+\begin{examp}Let 
+\begin{align*}
+f(x) &= \begin{cases}
+x^4 \cos(1/x) + 2x^4 & \text{if $x \neq 0$} \\
+0 & \text{if $x = 0$}
+\end{cases}
+\end{align*}
+then $0$ is a strict local minimizer that is not isolated.  TODO: Show this
+\end{examp}
+
+Note that minimizers are not guaranteed to exist since functions may
+be unbounded below.  More subtely may have a lower bound but may never
+take the value of its greatest lower bound.  We already know a case in
+which both of these problems are avoided: namely continuous images of
+compact sets are compact in $\reals$ and this guarantees the exists of
+a miminum (Theorem \ref{ContinuousImageOfCompact}).  As it turns out
+this fact can be generalized a bit by relaxing the property of
+continuity.
+
+\begin{defn}Let $X$ be a topological space and let $f : X \to \reals$
+  be a function, we say that $f$ is \emph{lower semicontinuous}
+  (resp. \emph{upper semicontinuous}) if for every
+  $\epsilon > 0$ there exists an open set $U$ containing $x$ such that
+  $f(y) \geq f(x) - \epsilon$ (resp. $f(y) \leq f(x) + \epsilon$) for
+  every $y \in U$. We say that $f$ is \emph{sequentially lower
+    semicontinuous} (resp. \emph{sequentially upper semicontinuous})
+  at $x$ if for every sequence $x_n$ such that $\lim_{n \to \infty}
+  x_n = x$ we have $f(x) \leq \liminf_{n \to \infty} f(x_n)$ (resp. $f(x) \geq \limsup_{n \to \infty} f(x_n)$).
+\end{defn}
+
+It is simple to see that $f$ is lower semicontinuous
+(resp. sequentially lower semicontinuous) if and only if $-f$ is upper
+semicontinuous (resp. sequentially upper semicontinuous).
+
+A function is lower (resp. upper) semicontinuous at $x$ if its values near $x$ are
+either close to $f(x)$ or larger (resp. smaller) than $f(x)$.  In
+general sequential semicontinuity is a weaker property than
+semicontinuity (since sequences do not characterize convergence in
+general topological spaces); however in metric spaces the two concepts
+are equivalent.
+
+\begin{prop}Let $X$ be a topological space and let $f$ be a lower
+  (resp. upper) semicontinuous at $x$, then $f$ is sequentially
+  lower (resp. upper) semicontinuous at $x$.  If $X$ is a metric space and
+  $f$ is sequentially lower (resp. upper) semicontinuous at $x$ then $f$ is
+  lower (resp. upper) semicontinuous at $x$.
+\end{prop}
+\begin{proof}If suffices to handle the cases of lower semicontinuity
+  since the upper semicontinuity results follow by applying the lower
+  semicontinuity case to $-f$.
+
+If $f$ is lower semicontinuous and $x_n \to x$.  Let $\epsilon > 0$ be
+given an find an open neighborhood $U$ of $x$ such that $f(y) \geq
+f(x) - \epsilon$ for all $y \in U$.  Since $x_n \to x$ we know that
+there exists $N > 0$  such that $x_n \in U$ for $n \geq N$ and thus
+$\inf_{m \geq n} f(x_m) \geq f(x) - \epsilon$ for every $n \geq N$.
+We take the limit at $n \to \infty$ to get $\liminf_{n \to \infty}
+f(x_n) \geq f(x) - \epsilon$.  Since $\epsilon > 0$ was arbitrary we
+conclude that $f$ is sequentially lower semicontinuous at $x$.
+
+Now let $X$ be a metric space and suppose that $f$ is not
+lower semicontinuous at $x$.  Then there exists an $\epsilon > 0$ such
+that for every $n \in \naturals$ there exists $x_n$ with $d(x,x_n) <
+1/n$ such that $f(x_n) < f(x) - \epsilon$.  Clearly $x_n \to x$ and
+moreover $\liminf_{n \to \infty} f(x_n) \leq f(x) - \epsilon < f(x)$
+which shows that $f$ is not sequentially lower semicontinuous at $x$.
+\end{proof}
+
+Compactness and sequential lower semicontinuity suffice to show that
+a function has a global minimizer.
+\begin{thm}Let $X$ be a topological space, let $f : X \to [-\infty,
+  \infty]$ be a sequentially lower
+  semicontinuous function and suppose that there exists $M \in \reals$
+  such that $\lbrace x \in X \mid f(x) \leq M \rbrace$ is non-empty
+  and compact then
+  $f$ has a global minimizer.  Moreover if $f$ is lower
+  semicontinuous, the set of global minimizers
+  is compact.
+\end{thm}
+\begin{proof}
+We first show the existence of a global minimizer.  Let $\alpha = \inf_{x \in X} f(x)$ and note that we know $\alpha \leq
+M < \infty$.  If $\alpha = M$ then in fact $\lbrace x \in X \mid f(x)
+\leq M \rbrace  = \lbrace x \in X \mid f(x) = M \rbrace $ and is assumed
+non-empty and we are done.  Therefore we assume that $\alpha < M$.  Let $x_n$ be chosen so that
+$\lim_{n \to \infty} f(x_n) = \alpha$ (if $\alpha > -\infty$ then
+choose $x_n$ such that $f(x_n) < \alpha + 1/n$ otherwise choose $x_n$
+so that $f(x_n) \leq -n$).  As $\alpha < M$ we know that there exists
+$N>0$ such that $f(x_n) \leq M$ for all $n \geq N$ and therefore by
+compactness there exists a convergent subsequence $x_{n_j}$.  Let $x =
+\lim_{j \to \infty} x_{n_j}$ and note that by sequential lower semicontinuity
+at $x$
+\begin{align*}
+\alpha \leq f(x) \leq \liminf_{j \to \infty} f(x_{n_j}) = \alpha
+\end{align*}
+which shows that $f(x) = \alpha$.
+
+Let $G = \lbrace x \in X \mid f(x) = \alpha \rbrace$.  Now we know
+that since $\alpha \leq M$  that $G \subset \lbrace x \in X \mid f(x)
+\leq M \rbrace$ hence it suffices to show that the set of global
+minimizers is closed (Corollary \ref{ClosedSubsetsCompact}).  Let $x$
+be in $\overline{G}$ and let $\epsilon > 0$ be given.  Since $f$ is
+lower semicontinuous we can find an open set $U$ containing $x$ such
+that $f(y) \geq f(x) - \epsilon$.  However we know that $G \cap U \neq
+\emptyset$ therefore $\alpha \geq f(x) - \epsilon$.  Since $\epsilon$
+is arbitrary we conclude $\alpha \geq f(x)$ and thus $x \in G$.  
+\end{proof}
+
+
+Given that derivatives are determined by the behavior of functions on
+arbitrarily small neighborhoods of a point it is clear that they have
+little to say about when a point is a global minimizer.  On the other
+hand derivatives are rather informative about local minimizers and we
+turn our attention to this.
+
+\subsubsection{Unconstrained Optimization}
+
+The first thing to do is to note that there are \emph{necessary}
+conditions for a point being a local minimizer that are described by
+derivatives.  The first such is the vanishing of the first derivative.
+
+\begin{thm}\label{VanishingFirstDerivativeAtLocalMinimum}Let $X$ be a
+  Banach space, let $f : X \to \reals$ be a function and let $x^*$ be
+  a local minimum.  If $f$ is $C^1$ on an open neighborhood of $x^*$
+  then $Df(x^*) = 0$.
+\end{thm}
+\begin{proof}
+The proof is by contradiction.  Suppose that $Df(x^*) \neq 0$.  Thus
+there exists $y \in X$ such that $Df(x^*)y > 0$.  Let $f$ be $C^1$ on
+an open neighborhood $U$ of $x^*$.  By continuity of $Df(x)$ on $U$ we
+may also find a $\delta > 0$ such that $Df(x) y > 0$ for all $x \in
+B(x^*, \delta) \subset U$.  By multiplying $y$ by an
+appropriate positive constant we may assume that $\norm{y} < \delta$.  Now we can
+apply Taylor's Theorem to conclude that 
+\begin{align*}
+f(x^* - y) &= f(x^*) - \int_0^1 Df(x^*-ty) y \, dt < f(x^*)
+\end{align*}
+which shows that $x^*$ is not a local minimizer.
+
+Here is an alternative proof that avoid appealing to Taylor's Theorem.
+Find an open ball $\delta > 0$ such that $f(x^*) \leq f(y)$
+for all $y$ with $\norm{y - x} < \delta$.  Pick an arbitrary $y \in X$
+then for all $0 < t < \delta/\norm{y}$ we have $f(x^* + t y) - f(x^*)
+\geq 0$ which implies 
+\begin{align*}
+Df(x) y &= \lim_{t \to 0} \frac{f(x^* + ty) - f(x^*)}{t} \geq 0
+\end{align*}
+On the other hand applying the argument to $-y$ and using linearity of
+$Df(x)$ show that $Df(x) y = -Df(x) (-y) \leq 0$ and therefore $Df(x)y
+= 0$.
+\end{proof}
+
+When $f$ has two derivatives then we can say even more.
+\begin{thm}\label{PositiveSemidefiniteSecondDerivativeAtLocalMinimum}Let $X$ be a
+  Banach space, let $f : X \to \reals$ be a function and let $x^*$ be
+  a local minimum.  If $f$ is $C^2$ on an open neighborhood of $x^*$
+  then $Df(x^*) = 0$ and $D^2f(x^*)$ is positive semidefinite
+  (i.e. $D^2f(x^*) (v,v) \geq 0$ for all $v \in X$).
+\end{thm}
+\begin{proof}
+Again we proceed by contradiction.  Suppose that $D^2f(x^*)(v,v) < 0$.
+By continuity of $D^2f$ we may find a $\delta > 0$ such that $D^2f(x)(v,v) < 0$ for
+all $x \in B(x^*,\delta) \subset U$.  If necessary multiply $v$ be a
+small positive constant to guarantee that $\norm{v} < \delta$.  By Theorem \ref{VanishingFirstDerivativeAtLocalMinimum} we know that
+$Df(x^*) = 0$ so Taylor's Theorem says
+\begin{align*}
+f(x^* + v) &= f(x^*) + \int_0^1 (1 - t) D^2f(x^* + tv) (v,v) \, dt < f(x^*)
+\end{align*}
+which is a contradiction.
+\end{proof}
+
+When $f$ has two derivatives there also exists sufficient conditions
+that a point be a local minimizer.
+\begin{thm}\label{LocalMinimumAtPositiveDefiniteSecondDerivative}Let $X$ be a
+  Banach space, let $f : X \to \reals$ be a function and suppose $f$
+  is $C^2$ on an open neighborhood $U$ of $x^*$.
+  If $Df(x^*) = 0$ and $D^2f(x^*)$ is positive definite
+  (i.e. there exists an $\alpha > 0$ such that $D^2f(x^*) (v,v) >
+  \alpha \norm{v}^2$ for all $v \in X$ with $v \neq 0$) then
+  $x^*$ is a strict local minimizer of $f$.
+\end{thm}
+\begin{proof}
+Using continuity of $D^2f$ at $x^*$ we may find a $\delta > 0$ such
+that $B(x^*,
+\delta) \subset U$ and $\norm{D^2f(x^* + y) - D^2f(x^*)}
+< \frac{\alpha}{2}$ for all $\norm{y} < \delta$.  Note in particular
+that 
+\begin{align*}
+(D^2f(x^* + y) - D^2f(x^*) )(v,w) &> -\frac{\alpha \norm{v}
+  \norm{w}}{2} \text{ for all $\norm{y} < \delta$ and $v,w \in X$}
+\end{align*}  
+By Taylor's Theorem, 
+for all $y$ with $\norm{y} < \delta$
+\begin{align*}
+f(x^* + y) - f(x) &= 
+\int_0^t (1-t) D^2f(x^* + ty)(y,y) \, dt \\
+&=\frac{1}{2} D^2f(x^*)(y,y) + \int_0^t (1-t) (D^2f(x^* + ty)
+  -D^2f(x^*)) (y,y) \, dt  \\
+&\geq \frac{\alpha \norm{y}^2}{2} - \frac{\sup_{0 \leq t \leq 1}
+  \norm{D^2f(x^* + ty) - D^2f(x^*)} \norm{y}^2}{2} \\
+&\geq  \frac{\alpha
+  \norm{y}^2}{4} > 0\\
+\end{align*}
+which shows that $x^*$ is a local minimizer.
+\end{proof}
+
+Note that in finite dimensions the condition of positive definiteness
+is equivalent to the apparently weaker condition $D^2f(x^*) (v,v) > 0$
+for all $v \neq 0$.
+
+\subsubsection{Constrained Optimization}
+
+We first consider an abstract version of constrained
+optimization.  Let $X$ be a Banach space and consider a function $f :
+X \to \reals$ then given a closed set $F \subset X$ we can consider
+the problem of finding a minimizer of $f$ restricted to $F$.  Note
+that the meaning of finding a constrained minimizer is captured by
+using our existing definitions of minimizers on the space $F$ with the
+relative topology.
+
+In order
+to apply derivatives to the problem of characterizing minimizers on
+$F$ we need to restrict them to directions that don't leave $F$;
+if we have a point $x \in F$ and $f$ is decreasing at $x$ in a direction that immediately takes one out of
+$F$ then that alone won't means that $x$ isn't a minimizer when
+restricted to $F$.  This leads us to a definition of direction tangent
+to a closed set $F$.  Note that if a direction is tangent to a set at
+a point then any positive multiple should be tangent (though if the
+set has corners then negative multiples may fail to be tangents;
+consider the behavior of $\abs{x}$ at the origin).  As a result of
+this observation we should be seeking to characterize a cone of
+tangent directions.  
+\begin{defn}Let $X$ be a Banach space, let $F$ be a closed subset and
+  let $x \in F$ then we say that $v \in X$ is a \emph{tangent vector to $F$
+  at $x$} if there is a sequence $x_n$ such that $x_n \in F$ and
+  $\lim_{n \to \infty} x_n = x$ and a sequence of positive real numbers
+  $t_n$ such that $\lim_{n \to \infty} t_n = 0$ that together satisfy
+\begin{align*}
+\lim_{n \to \infty} \frac{x_n - x}{t_n} = v
+\end{align*}
+The set $T_F(x)$ of all tangent vectors to $F$ at $x$ is called the
+\emph{tangent cone to $F$ at $x$}.
+\end{defn}
+
+We call out the fact that the tangent cone is in fact a cone.
+\begin{prop}The tangent cone $T_F(x)$ is a cone (i.e. for every
+  $\alpha \geq 0$ and $v \in T_F(x)$ we have $\alpha v \in T_F(x)$).
+\end{prop}
+\begin{proof}
+It is trivial to see that $0 \in T_F(x)$ since we can just pick the
+$x_n \equiv x$.  Let $v \in T_F(x)$, $\alpha > 0$ and pick sequences $x_n$ and $t_n$ such that $x_n \to x$, $t_n \to 0$ and
+$\frac{x_n - x}{t_n} = v$.  Then let $\tilde{t}_n = t_n/\alpha$ and note that
+$\tilde{t}_n \to 0$ and $\frac{x_n -x}{\tilde{t}_n} = \alpha v$.
+\end{proof}
+
+The first hint that we have the correct notion of tangent vector is
+the following necessary condition for a local minimizer to exist.
+
+A few facts about Landau notation.
+\begin{defn}Let $X$, $Y$ and $Z$ be Banach spaces.  Let $x_n$ be a sequence in $X$ and let
+  $y_n$ be a sequence in  $Y$ we say that $x_n = o(y_n)$
+  as $n \to \infty$ if $\lim_{n \to \infty} \frac{x_n}{\norm{y_n}} =
+  0$ (equivalently $\lim_{n \to \infty} \frac{\norm{x_n}}{\norm{y_n}} =
+  0$).  We say that $x_n = O(y_n)$ if there exists $M > 0$ and $N \geq
+  0$ such that
+  $\frac{\norm{x_n}}{\norm{y_n}}  \leq M$ for all $n \geq N$.  
+Given functions $f : X \to Y$, $g : X \to Z$ and $x_0 \in X$ we say that
+  $f(x)$ is $o(g(x))$ as $x \to x_0$ if $\lim_{x \to x_0}
+  \frac{f(x)}{\norm{g(x)}} = 0$ (equivalently $\lim_{x \to x_0}
+  \frac{\norm{f(x)}}{\norm{g(x)}} = 0$) and we say that $f(x)$ is
+  $O(g(x))$ if there exists $M > 0$ and $\delta > 0$ such that
+  $\frac{\norm{f(x)}}{\norm{g(x)}} \leq M$ for all $\norm{x - x_0} < \delta$.
+\end{defn}
+Because the definitions above really only depend on the norms of the
+sequences and functions in question, it is often useful to say that a
+sequence $x_n \in X$ is $o(\norm{y_n})$ or a function $f(x)$ is
+$o(\norm{g(x)})$.  It is also worth pointing out that Landau notation
+is confusing for uninitiated in large part because of its abuse of the
+equality sign.  
+
+\begin{prop}\label{LandauNotationIdentities}The following are true:
+\begin{itemize}
+\item[(i)] $o(y_n) + o(y_n) = o(y_n)$.
+\item[(ii)] Suppose $z_n = O(y_n)$ then if $x_n = o(z_n)$ it follows
+  that $x_n = o(y_n)$.  In shorthand we say that $o(O(y_n)) = o(y_n)$.
+\end{itemize}
+\end{prop}
+\begin{proof}
+(i) follows from linearity: if $x_n = o(y_n)$ and $z_n = o(y_n)$ then
+it follows that 
+\begin{align*}
+\lim_{n \to \infty} \frac{x_n + z_n}{\norm{y_n}} &= 
+\lim_{n \to \infty} \frac{x_n}{\norm{y_n}}
++ \lim_{n \to \infty} \frac{z_n}{\norm{y_n}}
+= 0
+\end{align*}
+To see (ii), we know that $\lim_{n \to \infty} \frac{\norm{x_n}}{\norm{z_n}} =
+0$ and there exist $M,N \geq 0$ such that $\norm{z_n} \leq M
+\norm{y_n}$ for all $n \geq N$, therefore 
+\begin{align*}
+0 &\leq \lim_{n \to \infty} \frac{\norm{x_n}}{\norm{y_n}} \leq M \lim_{n \to \infty}
+\frac{\norm{x_n}}{\norm{z_n}} = 0
+\end{align*}
+\end{proof}
+
+
+\begin{thm}\label{LocalConstrainedMinimizerFirstDerivative}Let $X$ be a Banach space, $F \subset X$ be closed and let
+  $f : U  \to \reals$ be $C^1$ on an open set $U \supset F$.  Then if
+  $x^*$ is a local minimizer of $f$ on $F$ we have $Df(x^*) v \leq 0$
+  for all $v \in T_F(x^*)$.  
+\end{thm}
+\begin{proof}
+Suppose that we have $x_n \in F$ with $x_n \to x$, $t_n>0$ with $t_n \to 0$
+and $(x_n - x)/t_n \to v$.  By Taylor's Theorem and the fact that
+$x^*$ is a local minimizer we know that we
+can find a neighborhood $x^* \subset V \subset U$ such that
+\begin{align*}
+f(y)  - f(x^*) = Df(x^*) (y - x) + o(\norm{y - x^*}) \leq 0
+\end{align*}
+and for $y \in V$.  From the fact that $x_n \to x$ we can find an $N \in \naturals$ such
+that $x_n \in V$ for all $n \geq N$.  Since $(x_n - x)/t_n \to v$ we
+know that $\norm{x_n -x^*}$ is $O(t_n)$ and therefore $o(\norm{x_n -
+  x})$ is $o(t_n)$ (Proposition \label{LandauNotationIdentities}) and since $x_n - x -t_nv$ is $o(t_n)$ we have
+\begin{align*}
+t_n Df(x^*) v + o(t_n) &= f(x_n) - f(x^*) \leq 0
+\end{align*}
+which implies that $Df(x^*) v \leq 0$ (divide by $t_n>0$ and let $n
+\to \infty$).
+\end{proof}
+
+TODO: Define the normal cone...
+
+For computational purposes (and in particular for numerical
+optimization problems) we are given a constraint set in some concrete
+form rather than the abstract formulation we've used.  In practice it
+is useful to formulate a constraint set using a combination of
+equalities and inequalities.  For the moment we specialize to the case
+of finite dimensions.  Let $X$ be a finite dimensional Banach space
+(i.e. $\reals^n$) and suppose we are given finite sets $\mathcal{E}$
+(the \emph{equality constraints})
+and $\mathcal{I}$ (the \emph{inequality constraints}) and for each $i
+\in \mathcal{E} \cup \mathcal{I}$ we have a $C^1$ 
+function $c_i : X \to \reals$.  Let $f : X \to \reals$ be a $C^1$
+function and we consider the constrained minimization problem for $f$
+with constraint set 
+\begin{align*}
+F &= \lbrace x \in X \mid c_i(x) = 0 \text{ for all $i \in
+    \mathcal{E}$ and } c_i(x) \geq 0 \text{ for all $i \in
+    \mathcal{I}$} \rbrace
+\end{align*}
+It is clear from the continuity of the $c_i(x)$ that $F$ is closed and
+therefore we have the first order necessary condition of Theorem
+\ref{LocalConstrainedMinimizerFirstDerivative} for local minimizers of
+$f$ restricted to $F$.  What we seek are
+conditions in terms of $f$ and the $c_i$ that are implied by the
+conditions in Theorem \ref{LocalConstrainedMinimizerFirstDerivative};
+for that we need to understand how $T_F(x)$ might be expressed in
+terms of $f$ and the $c_i$.  To that end, we first have the following
+definitions.
+\begin{defn}Given a Banach space $X$, disjoint sets $\mathcal{E}$ and
+  $\mathcal{I}$, functions $c_i : X \to \reals$ for each $i \in
+  \mathcal{E} \cup \mathcal{I}$ and the set
+\begin{align*}
+F &= \lbrace x \in X \mid c_i(x) = 0 \text{ for all $i \in
+    \mathcal{E}$ and } c_i(x) \geq 0 \text{ for all $i \in
+    \mathcal{I}$} \rbrace
+\end{align*}
+we say that a constraint $c_i$ is \emph{active} at $x \in F$ if either
+$i \in \mathcal{E}$ or $i \in \mathcal{I}$ and $c_i(x) = 0$.  For each
+$x \in F$ we let the \emph{active constraint set} be 
+\begin{align*}
+\mathcal{A}(x) &= \lbrace i \in \mathcal{E} \cup \mathcal{I} \mid i
+                 \text{ is active at $x$} \rbrace
+\end{align*}
+Assume that the $c_i$ are continuously differentiable, then the set of \emph{linearized feasible directions at $x$} is defined to
+be 
+\begin{equation*}
+\mathcal{F}(x) =
+\left \{ v \in X \mid
+\begin{aligned}
+Dc_i(x) v = 0 & \text{ for all $i \in \mathcal{E}$} \\
+Dc_i(x) v \geq 0 & \text{ for all $i \in \mathcal{A}(x) \cap \mathcal{I}$} \\
+\end{aligned}
+\right \}
+\end{equation*}
+\end{defn}
+Note that it is trivial to see that $\mathcal{F}(x)$ is a cone.  The
+first thing is to note that every tangent vector is a linearized
+feasible direction.
+
+\begin{prop}$T_F(x) \subset \mathcal{F}(x)$.
+\end{prop}
+\begin{proof}
+Let $v \in T_F(x)$ and pick a feasible sequence $x_n \to x$ and
+sequence of positive numbers $t_n
+\to 0$ such that $x - x_n = t_nv + o(t_n)$.  Applying Taylor's Theorem
+we can conclude that 
+\begin{align*}
+c_i(x_n) &= c_i(x) + Dc_i(x) (x_n - x) + o(\norm{x_n-x}) \\
+&= c_i(x) + t_n Dc_i(x) v + o(t_n) 
+\end{align*}
+so if $i \in \mathcal{A}(x)$ we have $c_i(x_n) = t_n Dc_i(x) v +
+o(t_n)$. Dividing by $t_n$ and taking the limit as $n \to
+\infty$ we get $Dc_i(x) v = \lim_{n \to \infty}
+\frac{c_i(x_n)}{t_n}$.  Thus it follows that  $i \in \mathcal{E}$
+implies $Df(x) v = 0$ and $i \in \mathcal{A}(x) \cap \mathcal{I}$
+implies $Df(x) v \geq 0$.
+\end{proof}
+It is not true in general that $T_F(x) = \mathcal{F}(x)$ yet the
+result that we want to demonstrate requires that this equality holds.
+A set of conditions that we place on the $c_i$ that guarantees such an
+equality is called a \emph{constraint qualification}; more generally a
+constraint qualification may a bit weaker than that and simply imply
+that $T_F(x)$ and $\mathcal{F}(x)$ aren't too different.  There are a
+variety of choices of constraint qualifications we state a
+conceptually straightforward and useful one.
+\begin{defn}A set of constraints $c_i$ satisfies the \emph{linearly
+    independent constraint qualification (LICQ)} at $x$ if the set of
+  derivatives $\lbrace Dc_i(x) \rbrace$ for $i \in \mathcal{A}(x)$ is
+  linearly independent in $X^*$.
+\end{defn}
+The LICQ is a sufficient criterion for the equality of the tangent
+cone and the linearized feasible set.
+
+\begin{examp}Consider the set $F \subset \reals^2$ defined by the
+  constraints $c_1(x,y) = 1 - x^2 - (y-1)^2 \geq 0$ and $c_2(x,y) =
+  -y \geq 0$.
+
+TODO: Show that $T_F(x)$ is a strict subset of $\mathcal{F}(x)$.
+\end{examp}
+
+\begin{prop}Let $F$ be defined by a set of constraints $c_i(x)$ which
+  satisfy the LICQ at $x$ then $T_F(x) = \mathcal{F}(x)$.
+\end{prop}
+\begin{proof}
+Let $v \in \mathcal{F}(x)$, we need to show that $v$ is a tangent
+vector producing a sequence $x_n \in F$ and $t_n > 0$ such that $v = x_n + o(t_k)$. 
+By assumption the set of derivatives $Dc_i(x)$ for $i \in
+\mathcal{A}(x)$ is linearly independent hence is a basis for the linear 
+span $V = \lbrace Dc_i(x) \rbrace_{i \in \mathcal{A}(x)}$.  Let $m$ be the cardinality of $\mathcal{A}(x)$ and $c : X \to \reals^m$ 
+be defined by $c(y) = (c_{i_1}(y), \dotsc, c_{i_m}(y))$ where $\lbrace i_1, \dotsc, i_m \rbrace = \mathcal{A}(x)$.
+Take the orthogonal complement $W$ of $V$ 
+in $X^*$ and pick a basis $w_j$ for $W$ and let $w : X \to \reals^{n-m}$ be defined by $w(y) = (w_1(y), \dotsc, w_{n-m}(y))$.  Now define $R : X \times \reals \to X$ by
+\begin{align*}
+R(y,t) &= \begin{bmatrix}
+c(y) - t Dc(x) v \\
+w(y - x - tv)
+\end{bmatrix}
+\end{align*}
+and note that $R(x,0) = 0$.  Moreover 
+\begin{align*}
+DR(x,0)(u, 0) &= \begin{bmatrix}
+Dc(x) u \\
+w(u)
+\end{bmatrix}
+\end{align*}
+which is invertible by construction of $w$.  Now we can apply the Implicit Function Theorem \ref{ImplicitFunctionTheorem} to 
+conclude that there exists and $\epsilon > 0$ and a function $f : (-\epsilon, \epsilon) \to X$ such that $f(0) = x$, $R(f(t), t) = 0$ 
+for all $-\epsilon < t < \epsilon$ and moreover $f(t)$ is the unique solution to the equation $R(x,t) = 0$.  In addition note that
+since we have assumed that $v \in \mathcal{F}(x)$ we have from $R(f(t), t) = 0$,
+\begin{align*}
+c_i(f(t)) &= t Dc_i(x) v = 0 \text{ for $i \in \mathcal{E}$} \\
+c_i(f(t)) &= t Dc_i(x) v >= 0 \text{ for $t > 0$ and $i \in \mathcal{A}(x)\cap \mathcal{I}$} \\
+\end{align*}
+and moreover by continuity we have $c_i(f(t)) > 0$ for $i \in \mathcal{I} \setminus \mathcal{A}(x)$ (here we may need to shrink $\epsilon$ for this to be true.  Thus we have $f(t) \in F$.  
+
+
+
+Now pick any sequence $0 < t_n < \epsilon$ with $\lim_{n \to \infty} t_n = 0$ and define $x_n = f(t_n)$; by continuity of $f$ and and the 
+fact that $f(0) = x$ we have $x_n \to x$.  If we Taylor expand $R(y,t)$ around $(x,0)$ we get
+\begin{align*}
+0 &= f(x_n, t_n) = \begin{bmatrix}
+Dc(x) (x_n - x - t_n v) \\
+w(x_n - x - t_n v)
+\end{bmatrix}
++ o(\norm{(x_n,t_n) - (x,0)})
+\end{align*}
+Since $x_n = f(t_n)$ and $f$ is differentiable it follows that $x_n - x = O(t_n)$ and therefore $o(\norm{(x_n,t_n) - (x,0)}) = o(t_n)$.  Thus by
+considering the first component of the vector we have $Dc(x)  (x_n - x - t_n v)  = o(t_n)$ and since 
+$Dc(x)$ is invertible we get that $x_n - x -t_n v = o(t_n)$ which shows that $v \in T_F(x)$.
+\end{proof}
+
+\subsubsection{Algorithms for Unconstrained Optimization}
+
+We have developed criteria for detecting minimizers (mostly local)
+however we have not yet addressed the issue of how we might find one.
+There are two basic paradigms to consider: line search and trust
+region methods.  We first consider line search.
+
+For motivation we give an interpretation of the Frechet derivative of
+a real valued function on a Hilbert space $X$.  Since $Df(x)$ is a
+bounded linear functional on $X$, we know by Reisz
+representation that there is a unique element of $X$ representing the
+functional.
+
+\begin{defn}Let $X$ be a Hilbert space, $U \subset X$ be open and let
+  $f : U \to \reals$ be differentiable at $x \in U$.  The
+  \emph{gradient of $f$ at $x$} is the unique element $\nabla f(x)$ of
+  $X$ such that $\langle \nabla f(x), v \rangle = Df(x) v$ for all $v
+  \in X$.
+\end{defn}
+
+We now proceed to interpret the vector $-\nabla f(x)$ as the
+direction of steepest decrease of the function $f$.  Suppose
+that we are at a point $x$ for which $\nabla f(x) \neq 0$.  To see
+this, let $v \in X$ be an arbitrary unit vector in $X$ and consider the function of a single
+real variable $g_v(t) = f(x + tv)$.  The question we ask is what is the
+direction $v$ along which $f$ is decreasing the fastest at $x$.  By the Chain Rule, the definition of the
+gradient and Taylor's Theorem we can write
+\begin{align*}
+f(x + tv) = f(x) + t \langle \nabla f(x), v \rangle + o(t)
+\end{align*}
+which implies that $g_v^\prime(0) = \langle \nabla f(x), v \rangle$.  So
+what we want is to find the unit vector $v$ which minimizes the value
+of $g_v^\prime(0)$.  We can write $v = \alpha \nabla f(x)/\norm{\nabla
+  f(x)} + w$ where $\langle \nabla f(x), w \rangle = 0$.  Note that on
+the one hand $\langle \nabla f(x), v \rangle = \alpha/\norm{\nabla
+  f(x)}$ and on the other hand from $\norm{v} = 1$ we see that $-1
+\leq \alpha \leq 1$.  Therefore it is clear that the minimum of
+$g_v^\prime(0)$ occurs for $\alpha = -1$ which implies that $v = -
+\nabla f(x) /\norm {\nabla f(x)}$. It is colloquial to say that the direction of
+the gradient is the \emph{direction of steepest descent of $f$}.  Note
+that the computation above shows that $g_v^\prime(0) < 0$ precisely
+when $\langle \nabla f(x), v \rangle < 0$ which motivates the
+following defintion
+\begin{defn}Let $X$ be a Hilbert space, $U \subset X$ be open and let
+  $f : U \to \reals$ be differentiable at $x \in U$ we say that $v \in
+  X$ is a \emph{descent direction for $f$ at $x$} if $\langle \nabla
+  f(x) , v\rangle < 0$.
+\end{defn}
+
+
+TODO: Discuss gradient flow in the Hilbert space and observe how the
+solutions of the differential equation have limit points equal to the
+stationary points of $f$.
+
+Armed with the idea that when we are in possesion of derivatives we can
+find directions along which the values of a function decreases, we
+seek find an iterative algorithm for minimization.  The obvious idea
+is that if at a given point $x_k$ we can find a descent direction
+(e.g. the gradient $\nabla f(x_k)$ then we should move in that
+direction and thereby expect that the function decreases.  There are
+three problems to address about such an algorithm.  The first issue is
+that the descent direction is characterized by an infinitessimal
+condition and therefore there is no guarantee that a finite step in
+that direction will result in a decrease in the function value.  The
+second issue is that if our step sizes in the descent direction are
+too small asymptotically we may never reach the minimum.  The third
+issue is that if we choose a variable descent direction, the descent
+direction may get increasing close to being orthogonal to the gradient
+in which case function values may not decrease enough to converge
+(note this is a non-issue is we choose the steepest descent direction).  We
+seek conditions on the choice of step sizes and descent directions
+that give us convergence to a stationary point of $f$.
+
+
+

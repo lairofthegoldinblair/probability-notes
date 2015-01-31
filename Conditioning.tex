@@ -1002,14 +1002,14 @@ need another definition.
   by all of the evaluation maps.
 \end{defn}
 
-\begin{examp}
+\begin{examp}\label{ProbabilityKernelFiniteSampleSpace}
 The following special case of a probability kernel is easy to
 understand and also comes up in the theory of finite Markov chains.
 Suppose $S$ and $T$ are two finite probability spaces each equipped with the power
 set $\sigma$-algebra.  In this case a probability measure on $T$ is just
 a set of non-negative real numbers $p_t$ for $t \in T$ such $\sum_{t
   \in T} p_t = 1$.  Therefore a probablity kernel from $S$ to $T$ is
-just a set of such vectors for each $s \in S$.   It is customary in
+just a set of such vectors, one for each $s \in S$.   It is customary in
 the theory of finite Markov chains to view probabilities on $T$ as row
 vectors and thus view a probability kernel $\mu$ as an $S \times T$ matrix
 $\mu_{s,t}$ such that $\mu_{s,t} \geq 0$ and for each fixed $s \in S$
@@ -1180,6 +1180,9 @@ involving kernels.  It is a type of ``twisted'' product construction.
 \mu \otimes \nu(s, A) &= \iint \characteristic{A}(t,u) \,
 d\nu(s,t,du) \, d\mu(s, dt)
 \end{align*}
+We also have the special restriction $\mu \nu : S \times 
+  \mathcal{U} \to [0,1]$ defined by $\mu \nu(s, B) = \mu \otimes
+  \nu(s, T \times B)$.
 \end{defn}
 
 The fact that this construction defines a probability kernel is the
@@ -1257,15 +1260,37 @@ d\nu(s,t,du)$ is $\mathcal{S} \otimes \mathcal{T}$-measurable.  Now
 apply (i) again to conclude that $\mu \otimes \nu (A) (s)$ is $\mathcal{S}$-measurable.
 \end{proof}
 
-\begin{examp}
-For finite probability spaces $S$, $T$ and $U$ a probability kernel
+\begin{examp}\label{ProbabilityKernelProductFiniteSampleSpace}
+This continues Example \ref{ProbabilityKernelFiniteSampleSpace}.  For finite probability spaces $S$, $T$ and $U$ a probability kernel
 $\mu : S  \to \mathcal{P}(T)$ is a stochastic matrix $\mu_{s,t}$ and a
 probability kernel $\nu : S \times T \to \mathcal{P}(U)$ is a $(S
 \times T) \times U$
 stochastic matrix $\nu_{s,t, u}$ where we consider the pair $(s,t)$ to
 the row index.  If we now identify $(t,u)$ as column index in the 
-$S \times (T \times U)$ matrix $\mu \otimes \nu$ then $(\mu \otimes
-\nu)_{s,t,u} = \mu_s \nu_{s,t,u}$.
+$S \times (T \times U)$ matrix $\mu \otimes \nu$ then 
+\begin{align*}
+(\mu \otimes
+\nu)_{s,t,u} 
+&= (\mu \otimes\nu)(s, \lbrace (t,u) \rbrace) = \iint
+\characteristic{\lbrace (t,u) \rbrace} (x,y) \, d\nu(s,x,dy) \,
+d\mu(s, dx) \\
+&= \int \characteristic{\lbrace (t) \rbrace} (x) \nu(s,x, \lbrace{u}) \,
+d\mu(s, dx) \\
+&=\mu_{s,t} \nu_{s,t,u} 
+\end{align*}
+
+There is a particularly important special case of this special case.
+Consider the case of $\mu : S \to \mathcal{P}(T)$  and $\nu : T \to
+\mathcal{P}(T)$.  We can apply the kernel product $\mu \otimes \mu : S
+\to T \times U$ to sets of the form $T \times \lbrace u \rbrace$ for
+$u \in U$ and we get
+\begin{align*}
+(\mu \nu)(s, \lbrace u \rbrace) &= (\mu \otimes \nu)(s, T \times
+\lbrace u \rbrace) \\
+&=\sum_{t \in T}  (\mu \otimes \nu)(s,  \lbrace (t,u) \rbrace) \\
+&= \sum_{t \in T} \mu_{s,t} \nu_{s,t,u} 
+\end{align*}
+so the product $\mu \nu$ is simply the matrix product.
 \end{examp}
 
 It shall also be useful to show that we can construct a parameterized
@@ -1781,8 +1806,12 @@ we can find $\tilde{\xi} \eqdist \xi$ such that $(\xi, f(\xi)) \eqdist
 id : S \times T \to T \times T$ we conclude that $(f(\xi), f(\xi))
 \eqdist (f(\tilde{\xi}), \eta)$.  Because the diagonal $\Delta \subset
 T \times T$ is measurable (TODO: Do we really need Borel-ness for
-this?) we can conclude $\probability{f(\tilde{\xi}) = \eta} =
-\probability{f(\xi) = f(\xi)} =1$.
+this?) we can conclude 
+\begin{align*}
+\probability{f(\tilde{\xi}) = \eta} &= \probability{(f(\tilde{\xi}),
+  \eta) \in \Delta} = 
+\probability{(f(\xi), f(\xi)) \in \Delta} =1
+\end{align*}
 \end{proof}
 
 

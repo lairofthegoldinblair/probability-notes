@@ -84,8 +84,8 @@ for finite dimensional distributions of the process.
 \begin{proof}
 We begin by proving the first equality via induction.  The case $n=0$
 is true by definition.  The induction step is 
-really just a specific case of Theorem 
-\ref{Disintegration} applied to the Markov transition kernels.  Let $A
+really just a specific case of distintegration (Theorem 
+\ref{Disintegration}) applied to the Markov transition kernels.  Let $A
 \in \otimes_{i=0}^n \mathcal{S}$ then 
 \begin{align*}
 &\probability{(X_{t_0}, \cdots, X_{t_n}) \in A} \\
@@ -412,7 +412,7 @@ right-continuous complete filtration (usual conditions) then one has
 to give up Borel measurability in the kernel and make due with
 universal measurability.
 
-\begin{defn}
+\begin{defn}\label{MarkovFamilyDefn}
 A \emph{Markov family} is a stochastic process $X_t$ with a
 probability space $(\Omega, \mathcal{A})$, a time scale $T
 \subset \reals_+$ and a state space $(S, \mathcal{S})$ and a family of
@@ -432,6 +432,16 @@ probability measures $\probabilityop_x$ on $\Omega$ for $x \in S$ such that
   requirement with respect to $x \in S$ here???).
 \end{itemize}
 \end{defn}
+
+Note that Bass doesn't require that $\probabilityop_x$ is a kernel $S
+\to \mathcal{P}(\Omega)$ rather he only requires that
+$\pushforward{X}{\probabilityop_x}$ is a kernel from $S$ to
+$\mathcal{P}(S^T)$ (equivalently for each $t \in T$ and $A \in \mathcal{S}$ we have
+$\sprobability{X_t \in A}{x}$ is a measurable function of $x$ or again
+equivalently $\probabilityop_x$ is a kernel on the natural filtration
+$\mathcal{F}^X_\infty$; what I don't know if whether a universally
+measurable kernel $S \to  \mathcal{P}(\Omega)$ is necessarily Borel
+measurable when restricted to $\mathcal{F}^X_\infty$).
 
 Question:  Given a Markov family as above then given an arbitrary
 initial distribution $\nu$ on $S$ we can define $\probabilityop_\nu$
@@ -681,9 +691,6 @@ determined by a single kernel (and the initial distribution).
   $\cexpectationlong{\mathcal{F}_s}{X_t \in B} = \cexpectationlong{\mathcal{F}_{s+u}}{X_{t+u} \in B}$.
 \end{defn}
 
-TODO: Show that a time homogenous Markov process is a dynamical system
-with noise.
-
 \section{Strong Markov Property}
 
 In dealing with Markov processes we make a lot of use of constructions
@@ -848,9 +855,11 @@ $\tau \circ X$ where $\tau$ is an optional time defined on $S^T$).  If
 we are given a pair of these optional times then we can
 apply the time shift construction of the optional times on the path
 space and pull back (i.e. forming $\sigma \circ X + \tau \circ
-\theta_{\sigma \circ X} \circ X$).  
+\theta_{\sigma \circ X} \circ X$).  The notation for the non-canonical
+case is a bit ugly so sometimes we will simply use the notation $\sigma + \tau \circ
+\theta_{\sigma} $ as a shorthand.
 
-\begin{lem}Let $X$ be a time homogeneous Markov process on
+\begin{thm}\label{StrongMarkovPropertyMarkovProcessCountableValues}Let $X$ be a time homogeneous Markov process on
   $\integers_+$ or $\reals_+$ and let $\tau$ be an optional
   time with at most countably many values.  Then for every measurable
   $A \subset S^T$,
@@ -858,7 +867,7 @@ space and pull back (i.e. forming $\sigma \circ X + \tau \circ
 \cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A}(\omega) &=
 \sprobability{A}{X_\tau(\omega)} \text{ for almost all $\omega$ such that $\tau(\omega) < \infty$}
 \end{align*}
-\end{lem}
+\end{thm}
 \begin{proof}
 Before starting on the proof we first need to make some remarks about
 the well-definedness of the quantities in the result.  Specifically we
@@ -1028,9 +1037,947 @@ Theorem \ref{Disintegration} and Lemma
 and we are done.
 \end{proof}
 
-\section{Markov Chains}
+\begin{defn}Let $X$ be a time homogeneous Markov process with
+  transition kernel $\mu_t$ we say an initial distribution $\nu$ is
+  \emph{invariant} if $\nu \mu_t = \nu$ for all $t \in T$, i.e. we
+  have
+\begin{align*}
+\int \mu_t(x, A) \, \nu(dx) = \nu(A)
+\end{align*}
+for all $t \in T$ and $A \in \mathcal{S}$.
+\end{defn}
 
-\begin{defn}Let $P$ be a finite Markov chain on $S$, we say a function
+\begin{defn}Let $X$ be a stochastic process with time scale $T$ then
+  we say $X$ is \emph{stationary} if $\theta_t X \eqdist X$
+  for all $t \in T$.
+\end{defn}
+
+
+\begin{lem}\label{InvarianceImpliesStationary}Let $X$ be a time
+  homogeneous Markov process with transition kernel $\mu$ and an invariant initial distribution
+  $\nu$, then $X$ is stationary.
+\end{lem}
+\begin{proof}
+Fix $t \in T$, $s_1 < \dotsb < s_n$ and $A \in \mathcal{S}^{\otimes
+  n}$, then using Lemma
+\ref{MarkovDistributions} and time homogeneity we compute
+\begin{align*}
+\probability{(X_{t + s_1}, \dotsc, X_{t + s_n}) \in A} &= \nu_{t+s_1}
+                                                         \otimes
+                                                         \mu_{s_2 -
+                                                         s_1} \otimes
+                                                         \dotsm
+                                                         \otimes
+                                                         \mu_{s_n -
+                                                         s_{n-1}}(A)
+  \\
+&=\nu_{s_1}
+                                                         \otimes
+                                                         \mu_{s_2 -
+                                                         s_1} \otimes
+                                                         \dotsm
+                                                         \otimes
+                                                         \mu_{s_n -
+                                                         s_{n-1}}(A)
+= \probability{(X_{ s_1}, \dotsc, X_{s_n}) \in A}
+\end{align*}
+Since the finite dimensional distributions characterize the
+distribution of $\theta_t X$ (Lemma \ref{ProcessLawsAndFDDs}) it follows that $X$ is stationary.
+\end{proof}
+
+
+\section{Discrete Time Markov Chains}
+
+In this section we discuss the theory of Markov processes on a time
+scale $\integers_+$.  This part of Markov process theory has many
+applications and we'll be able to construct lots of important examples
+that both illustrate and motivate the accompanying theory.  Moreover
+much of the theory in discrete time illustrates concerns that are also
+present in more general cases but with fewer technical distractions.
+
+One of our first concerns is to think about constructing examples of
+Markov processes.  The obvious way to approach this is the way we have
+done it up until now: specify a transition kernel and an initial
+distribution.  As it turns out, it can be surprisingly difficult to
+get a handle on the transition kernel of a concrete process and it is
+desirable to have alternative ways of constructing and characterizing
+Markov processes.  In the discrete time case we can think of a Markov
+process as a deterministic system that is perturbed by noise (or
+alternatively a  ``transduced'' noise sequence).  We make this precise
+in the following theorem.
+\begin{thm}\label{RandomMappingRepresentationExistence}Let $X$ be a
+  process on time scale $\integers_+$ with a Borel state space
+  $S$, then $X$ is Markov if and only if there exist a measurable
+  space $(T, \mathcal{T})$, measurable
+  functions $f_1, f_2, \dotsc : S \times T \to S$ and
+  i.i.d. random elements $\vartheta_1, \vartheta_2, \dotsc
+  \Independent X_0$ such that $X_n = f_n(X_{n-1}, \vartheta_n)$
+  a.s. for all $n \in \naturals$.   If $X$ is Markov we may find such
+  a representation with $T=[0,1]$ and $\vartheta_n$ i.i.d. $U(0,1)$
+  random variables.  We may choose $f_1 = f_2 = \dotsb$
+  if and only if $X$ is time homogeneous. 
+\end{thm}
+\begin{proof}
+First assume that $X$ has the hypothesized representation.  Let
+$\mathcal{F}$ be the filtration generated by $X$.  Let $\nu$ be the
+law of $\vartheta_1, \vartheta_2, \dotsc$.  Pick a
+random element $\vartheta$ with law $\nu$ and for $A \in
+\mathcal{S}$ define $\mu_n(x, A) = \probability{f_n(x, \vartheta) \in
+  A}$.  Note that it follows from a simple induction using
+$(\vartheta_1, \vartheta_2, \dotsc) \Independent X_0$ and the
+expression $X_n = f_n(X_{n-1}, \vartheta_n)$ that $\vartheta_n$ is
+independent of $X_m$ for all $m = 0, \dotsc, n-1$.  Therefore $\cprobability{\vartheta_n \in \cdot}
+{\mathcal{F}_{n-1}} = \probability{\vartheta \in \cdot} = \nu$ and in particular has a regular
+version. Furthermore since $X_{n-1}$ is $\mathcal{F}_{n-1}$-measurable
+we can apply Lemma \ref{DisintegrationIndependentLaws} to compute for any $A \in \mathcal{S}$
+\begin{align*}
+\cprobability{X_n \in A}{\mathcal{F}_{n-1}} &=
+\cprobability{f_n(X_{n-1}, \vartheta_n) \in A}{\mathcal{F}_{n-1}} \\
+&=\int \characteristic{f_n (X_{n-1}, s)\in A} \, \nu(ds) =
+\probability{f_n (X_{n-1}, \vartheta)\in A} = \mu_n(X_{n-1}, A)
+\end{align*}
+which shows that $X$ is Markov with transition kernel $\mu_n$ (recall
+in discrete time the Chapman Kolmogorov relations hold identically for
+free).  Note also that $f_1 = f_2 = \dotsc$ if and only if $\mu_1 =
+\mu_2 = \dotsc$ which is to say that $X$ is time homogeneous.
+
+Now let $X$ be Markov.  Since $S$ is Borel we may apply Lemma \ref{RandomizationAndKernels}
+to each transition kernel $\mu_n$ and construct a measurable function
+$f_n : S \times [0,1] \to S$ such that for a $U(0,1)$ random variable
+$\vartheta$ we know that $\probability{f_n(s, \vartheta) \in \cdot} = \mu_n(s,
+\cdot)$.  Let $\tilde{X}_0$ be a random element such that $\tilde{X}_0
+\eqdist X_0$ (e.g. just take the identity on $(S, \mathcal{S})$
+provided with the probability measure $\mathcal{L}(X_0)$).  By
+extending the probability space of $\tilde{X}_0$ if necessary we
+can assume the existence of i.i.d. $U(0,1)$ random variables
+$\tilde{\vartheta}_1, \tilde{\vartheta}_2, \dotsc$.  Recursively
+define $\tilde{X}_n = f_n(\tilde{X}_{n-1}, \tilde{\vartheta}_n)$ for
+$n \in \naturals$ and apply the first part of this theorem to conclude
+that $\tilde{X}$ is a Markov process with transition kernels $\mu_n$
+and initial distribution $\mathcal{L}(\tilde{X}_0) =
+\mathcal{L}(X_0)$.  We now apply Lemma \ref{MarkovDistributions} to
+conclude that the of $X \eqfdd \tilde{X}$ and thus $X
+\eqdist \tilde{X}$ by Lemma \ref{ProcessLawsAndFDDs}.  Now since
+$[0,1]^\infty$ is a Borel space we may
+apply Lemma \ref{Transfer} to conclude there are
+random variables $\vartheta_1, \vartheta_2, \dotsc$ such that $(X,
+(\vartheta_1, \vartheta_2, \dotsc)) \eqdist (\tilde{X},
+(\tilde{\vartheta}_1, \tilde{\vartheta}_2, \dotsc))$.  By considering
+marginal distributions we conclude that 
+$\vartheta_1, \vartheta_2, \dotsc$ are i.i.d. $U(0,1)$ and that
+$(\vartheta_1, \vartheta_2, \dotsc) \Independent X_0$. Also using $(X,
+(\vartheta_1, \vartheta_2, \dotsc)) \eqdist (\tilde{X},
+(\tilde{\vartheta}_1, \tilde{\vartheta}_2, \dotsc))$, the
+measurability of the diagonal $\Delta \subset S \times S$ and the
+definition of $\tilde{X}$ we conclude
+that for each $n \in \naturals$ 
+\begin{align*}
+\probability{X_n = f_n(X_{n-1}, \vartheta_n)} &= \probability{(X_n,
+  f_n(X_{n-1}, \vartheta_n)) \in \Delta} \\
+&= \probability{(\tilde{X}_n,
+  f_n(\tilde{X}_{n-1}, \tilde{\vartheta}_n)) \in \Delta} = 1
+\end{align*}
+and we are done.
+\end{proof}
+
+The representation of a Markov process as in the preceeding theorem is
+refered to as a \emph{random mapping representation} and we'll soon
+put it use in constructing examples of Markov processes.
+
+We proceed to study the special subclass of time homogenous Markov processes with time
+scale $\integers_+$.  A further important specialization occurs when
+the state space $S$ is countable or finite.  We establish
+some terminology while recording the definitions.
+\begin{defn}A time homogeneous Markov process $X$ with time scale
+  $\integers_+$, transition kernels $\mu_n$ and state space $S$ is called a
+  \emph{discrete time Markov process}.  Furthermore,
+\begin{itemize}
+\item[(i)]If  $S$ countable then $X$ is a
+  \emph{discrete time Markov chain} 
+\item[(ii)]If  $S$ is finite then $X$ is a \emph{finite discrete time
+    Markov chain}
+\item[(iii)]For each $y \in S$ we let $\tau^+_y
+  = \inf \lbrace n \in \naturals \mid X_n = y \rbrace$ and then
+  recursively define the \emph{return times}
+\begin{align*}
+\tau^0_y &= 0 \\
+\tau^{k+1}_y &= \tau^k_y + \tau^+_y \circ \theta_{\tau^k_y} \text{ for
+  $k \in \integers_+$}
+\end{align*}
+\item[(iv)]For each $y \in S$ we define the \emph{occupation time} at $y \in S$ as
+\begin{align*}
+\kappa_y &= \sup \lbrace k \in \integers_+ \mid \tau^k_y < \infty \rbrace
+\end{align*}
+\item[(v)]For each $x,y \in S$ we define the \emph{hitting probability} 
+\begin{align*} 
+r_{xy} &= \sprobability{\tau^+_y < \infty}{x} = \sprobability{\kappa_y >
+0}{x} 
+\end{align*}
+\item[(vi)]For each $x,y \in S$ and we define the \emph{transition probabilities}
+\begin{align*}
+p_{xy} &= \mu_1(x, \lbrace y \rbrace) &
+p^n_{xy} &= \mu_n(x, \lbrace y \rbrace) \text{ for $n \in \naturals$}
+\end{align*}
+\end{itemize}
+\end{defn}
+For the case of a discrete time Markov chain, the transition
+probabilities $p_{xy}$ characterize the transition kernels and recall
+from Example \ref{ProbabilityKernelProductFiniteSampleSpace} it is
+convenient to interpret the $p_{xy}$ as being the entries of a
+\emph{transition matrix}
+we shall call $p$.  Moreover
+from Example \ref{ProbabilityKernelProductFiniteSampleSpace} and the
+Chapman Kolmogorov relations we have 
+\begin{align*}
+\mu_n(x, \lbrace y \rbrace) &= \mu_1^n(x, \lbrace y \rbrace) =
+p_{xy}^n
+\end{align*}
+where in the last equality we are taking the $(x,y)^{th}$ entry of the
+$n$-fold product of the matrix $p$.  This explains the use of the
+notation in the above definition of transition probabilites and also shows that for Markov chains
+the notation is consistent with transition matrix point of view.  We
+emphasize that $p^n_{xy}$ does not signify $p_{xy}$ raised to the
+$n^{th}$ power!
+
+We have two initial goals in our study of Markov chains.  The first is
+to develop a little macroscopic structure theory of Markov chains.
+
+\begin{prop}\label{RecurrenceTransienceDiscreteTime}Let $X$ be a discrete time Markov process on state space
+  $S$.  Then for $y \in S$ we have
+\begin{align*}
+\kappa_y &= \sum_{n=1}^\infty \characteristic{X_n = y}
+\end{align*}
+Moreover for all $x,y \in S$ and $n \in \naturals$,
+\begin{align*}
+\sprobability{\kappa_y \geq n}{x} &= \sprobability{\tau^n_y <
+  \infty}{x} = r_{xy} r_{yy}^{n-1} 
+\end{align*}
+If $r_{xy} = 0$ then $\kappa_y = 0$  $P_x$-almost surely, if $r_{xy} > 0$ and
+$r_{yy} = 1$ then $\sprobability{\kappa_y = \infty}{x} = r_{xy} > 0$, otherwise
+$\kappa_y$ is integrable with expectation
+\begin{align*}
+\sexpectation{\kappa_y}{x} &= \frac{r_{xx}}{1 - r_{yy}} =
+\sum_{n=1}^\infty p^n_{xy}
+\end{align*}
+\end{prop}
+\begin{proof}
+First to see that $\kappa_y = \sum_{n=1}^\infty \characteristic{X_n =
+  y}$, simply note that both represent the number of times that $X$
+visits $y$.
+  
+To see that $\sprobability{\kappa_y \geq n}{x} = \sprobability{\tau^n_y <
+  \infty}{x}$ simply note that equality holds at the level of events: $\lbrace \kappa_y \geq n \rbrace$ if
+and only if $\lbrace \tau^n_y <  \infty \rbrace$.  Since $\tau^{n+1}_y
+< \infty$ if and only if $\tau^n_y < \infty$ and $\theta_{\tau^n_y}
+\circ \tau^+_y < \infty$ we can use the Strong Markov property to
+calculate
+\begin{align*}
+\sprobability{\tau^{n+1}_y < \infty}{x} &= \sprobability{\tau^{n}_y
+  < \infty ; \theta_{\tau^n_y} \circ \tau^+_y < \infty } {x} \\
+&=\sexpectation{\tau^{n}_y
+  < \infty ; \cprobability{\mathcal{F}_{\tau^n_y}}{\theta_{\tau^n_y} \circ \tau^+_y < \infty}
+} {x} \\
+&=\sexpectation{\tau^{n}_y
+  < \infty ; \sprobability{\tau^+_y < \infty}{y}} {x} = \sprobability{\tau^{n}_y
+  < \infty} {x} \sprobability{\tau^+_y < \infty}{y}
+\end{align*}
+which we use in an induction argument to get $\sprobability{\tau^{n}_y <
+  \infty}{x} =  r_{xy} r_{yy}^{n-1}$.
+
+Now we apply this fact along with Lemma \ref{TailsAndExpectations} to
+see that
+\begin{align*}
+\sexpectation{\kappa_y}{x} &= \sum_{n=1}^\infty \sprobability{\kappa_y
+  \geq n}{x} = r_{xy} \sum_{n=1}^\infty r_{yy}^{n-1} = \frac{r_{xy}}{1-r_{yy}}
+\end{align*}
+The rest of the statements in the proposition are trivial consequences
+of what we have proven.
+\end{proof}
+By virtue of this result we can see that for every $x \in S$ there is
+a dichotomy: either we have $r_{xx} = 1$ in which case $\kappa_x =
+\infty$ $P_x$-a.s. (almost surely $X$ returns to $x$ infinitely many
+times) or $0 \leq r_{xx} < 1$ in which case the number of times that
+$X$ returns to $x$ has finite expectation $\frac{r_{xx}}{1-r_{xx}}$.
+This attribute of states is worthy of a definition.
+\begin{defn}Let $X$ be a discrete time Markov process on state space
+  $S$, we say a state $x \in S$ is \emph{recurrent} if and only if $X$
+  returns to $x$ infinitely many times $P_x$-a.s.  We say $x \in S$ is
+  \emph{transient} if and only if $X$  returns to $x$ only finitely many times $P_x$-a.s.
+\end{defn}
+
+The theory of Markov processes tends to be concerned with long term
+behavior of the process and therefore recurrent states are more
+important than transient states (just wait long enough and you'll
+never see a transient state again!)  Being able to detect recurrent
+states is therefore a useful thing to be able to do.  A simple and
+useful criterion can be found when there is an invariant distribution
+for $X$.
+
+\begin{prop}\label{RecurrenceFromInvariantDistribution}Let $X$ be a discrete time Markov process with state space
+  $S$ and assume that an invariant distribution $\nu$ exists, then for
+  every $x \in S$ if $\nu(x) > 0$ it follows that $x$ is recurrent.
+\end{prop}
+\begin{proof}
+Using the invariance of $\nu$ we get for every $n \in \naturals$
+\begin{align*}
+0 &< \nu(x) = \int p^n_{xy} \, \nu(dy)
+\end{align*}
+Therefore using the fact that $r_{yx} \leq 1$ for all $x,y \in S$,
+Proposition \ref{RecurrenceTransienceDiscreteTime} and Tonelli's Theorem \ref{Fubini} we get
+\begin{align*}
+\frac{1}{1 - r_{xx}} &\geq \int \frac{r_{yx}}{1-r_{xx}} \, \nu(dy) =
+\int \sum_{n=1}^\infty p^n_{yx} \, \nu(dy) = \sum_{n=1}^\infty\int
+p^n_{yx} \, \nu(dy) = \infty
+\end{align*}
+and thus it follows that $r_{xx} = 1$.
+\end{proof}
+
+\begin{defn}Let $p^n_{xy}$ be the transition probabilities of a
+  discrete time Markov process on $S$.  The \emph{period} of a state
+  $x \in S$ is 
+\begin{align*}
+d_x &= \gcd \lbrace n \in \naturals \mid p^n_{xx} > 0 \rbrace
+\end{align*}
+If $d_x = 1$ then we say that the state $x$ is \emph{aperiodic}.
+\end{defn}
+
+\begin{prop}\label{PeriodicReturnDiscreteTimeMarkov}Let $p^n_{xy}$ be the transition probabilities of a
+  discrete time Markov process on $S$, if $x$ has period $d$
+  then there exists an $N > 0$ such that $p^{nd}_{xx} > 0$ for all $n
+  \geq N$.
+\end{prop}
+\begin{proof}
+We need the following number theoretic fact:
+
+\begin{lem}Let $A \subset \integers_+$ then there exists an integer $m_A$
+such that for all $m \geq m_S$ there exist constants $c_1, \dotsc ,
+c_n \in \integers_+$ and $x_1, \dotsc, x_n \in A$ such that $m \gcd A = c_1 x_1 + \dotsb +
+c_n x_n$.
+\end{lem}
+\begin{proof}
+To prove the lemma we first recall that the greatest common divisor of
+a set is an integer linear combination of elements of the set.  
+
+Claim: For any subset $B \subset \integers_+$ there exist elements
+$x_1, \dotsc, x_n \in B$ and constants $c_1, \dotsc, c_n \in \integers$
+such that $\gcd B = c_1 x_1 + \dotsb + c_n x_n$.
+
+To see this, let $g^*_B$ be
+smallest element in the set 
+\begin{align*}
+C &= \lbrace c_1 x_1 + \dotsb +
+c_n x_n > 0 \mid n \in \naturals, c_1, \dotsc, c_n \in \integers \text{ and } x_1,
+\dotsc, x_n \in B \rbrace
+\end{align*}
+  Note that
+$g^*_B$ divides every $x \in B$; for if not then there is an $x$ such that
+we can write $x = c
+g^*_B + r$ with $c \in \integers_+$ and $0 < r < g^*_S$ thus $r = x
+- g_B^* \in C$.  Therefore it follows that $\gcd B$ divides $g^*_B$.
+On the other hand, since $g^*_B$ is an integer linear combination of a
+finite number of
+elements of $B$ it follows that $\gcd B$ divides $g^*_B$ and
+therefore $\gcd B = g^*_B$.
+
+Claim: For any set $B \subset
+\integers_+$ there is a finite subset $F \subset B$ such that $\gcd F
+= \gcd B$.  
+
+To see this consider the sequence $g_n = \gcd B \cap \lbrace 0,
+\dots, n \rbrace$.  Clearly, $g_n$ is non-increasing and non-negative
+so there exists an $N > 0$ such that $g_n = g_N$ for all $n \geq N$.
+It is also clear that $g_N$ divides every element of $B$ since every
+element of $B$ is in some $B \cap \lbrace 0,
+\dots, n \rbrace$ and it follows by a similar argument that $\gcd S
+\leq g_N$. Thus $\gcd S = g_N$.
+
+From the previous claim note that it suffices to prove the lemma for
+finite sets $A$.  To prove the lemma for finite sets we proceed by
+induction on the cardinality of $A$.
+
+The result is vacuous for singleton sets so let $A = \lbrace a, b \rbrace$ and let $g = \gcd A$.  For
+every $m \in \naturals$ we can write $m g = ca + db$ for some $c,d \in
+\integers$.  By replacing $c$ and $d$ by $c + kb$ and $d - ka$ for
+suitable $k \in \integers$ we may assume that $0 \leq c < b$ as well.
+Thus in this case, define $m_A = (ab - a -b)/g +1$ and note that for
+any $m \geq m_A$ we have
+\begin{align*}
+m g &=ca + db  \geq (ab - a - b) + g >  ab - a - b
+\end{align*}
+with $0 \leq c < b$ which implies
+\begin{align*}
+(d+1)b  &> ab - a - ca \geq 0
+\end{align*}
+which in turn implies $d \geq 0$.  Thus the result is proven for a two
+point set.
+
+Now we do induction on the cardinality of $A$.  Suppose the result is
+proven for all $A$ with cardinality less than or equal to $n$.  Let $A$ be a finite
+subset of $\integers_+$ with $A = \lbrace a_1, \dotsc, a_n \rbrace$ and $\gcd A = g_A$.  Let $a \in \integers_+
+\setminus A$ and note the facts that $\gcd (A \cup \lbrace a \rbrace ) =
+\gcd(\gcd A, a)$ and $\gcd(A \cup \lbrace a \rbrace )$ divides $\gcd
+A$.  Define $g =  \gcd( A \cup \lbrace a \rbrace)$ and 
+\begin{align*}
+m_{A \cup  \lbrace a \rbrace} &= (m_{\lbrace a,  g_A \rbrace} g + m_A g_A)/g
+\end{align*}
+and pick any $m \geq m_{A \cup \lbrace a \rbrace}$ :  trivially we have
+$m g \geq m_{\lbrace a,  g_A \rbrace} g + m_A g_A$.  It follows from the
+fact that $g = \gcd(\gcd A, a)$ that $g$ divides $g_A$ and therefore
+there is a $\tilde{m} \in \integers_+$ such that $mg - m_A g_A = \tilde{m} g \geq m_{\lbrace a,  g_A
+  \rbrace} g$.
+By the definition of $m_{\lbrace a,  g_A \rbrace}$ we know that
+there are integers $c,d \geq 0$ such that $mg - m_A g_A = c a + d
+g_A$.  Therefore
+\begin{align*}
+mg &= ca + (d + m_A) g_A = ca + \sum_{j=1}^n c_j a_j
+\end{align*}
+with suitable $c_1, \dotsc c_n \in \integers_+$ and the lemma is
+proved.
+\end{proof}
+
+Now to prove the proposition, let $x \in S$,  let $A = \lbrace n \in \naturals \mid
+p^n_{xx} > 0 \rbrace$ assume that $\gcd A = d$.  Applying the lemma we
+see that there is an $N > 0$ such that for all $n \geq N$, $nd = c_1 n_1 + \dotsb + c_k
+n_k$ for suitable $k \in \naturals$, $n_1, \dotsc, n_k \in A$ and $c_1, \dotsc, c_k \in
+\integers_+$.  On the other hand suppose $n, m \in A$ and note that by
+the Chapman Kolmogorov relations we have 
+\begin{align*}
+p^{n+m}_{xx} &= \mu_{n+m}(x, \lbrace x \rbrace) = \mu_{n}\mu_m(x,
+\lbrace x \rbrace) = \int \mu_m(y , \lbrace x \rbrace) \, \mu_n(x, dy)
+\\
+&\geq \int \mu_m(y, \lbrace x \rbrace) \characteristic{x=y} \,
+\mu_n(x, dy) 
+= \mu_m(x, \lbrace x \rbrace) \mu_n(x, \lbrace x \rbrace) 
+> 0
+\end{align*}
+which shows that $A$ is closed under addition.  It follows that $nd
+\in A$ and the result is proven.
+\end{proof}
+
+\begin{defn}Let $X$ be a discrete time Markov process with initial
+  distribution $\nu$ and transition kernel $\mu$.  We say that $X$ is
+  \emph{reversible} if for every non-negative measurable or integrable $f : S \times
+  S \to \reals$ we have
+\begin{align*}
+\int f(x,y) \, (\nu \otimes \mu)(dx,dy) 
+&= \iint f(x,y) \, \mu(x, dy) \, \nu(dx) \\
+&= \iint f(y,x) \, \mu(x, dy) \, \nu(dx)
+= \int f(y,x) \, (\nu \otimes \mu)(dx,dy) 
+\end{align*}
+\end{defn}
+
+There are a couple of immediate consequences of reversibility that
+follow by looking at the finite dimensional distributions of a
+reversible $X$.  The first very useful implication is that
+reversibility implies stationarity.
+
+\begin{prop}\label{ReversibleImpliesInvariant}Let $X$ be a reversible discrete time Markov process with initial
+  distribution $\nu$ and transition kernel $\mu$, then $\nu$ is
+  invariant for $X$.
+\end{prop}
+\begin{proof}
+Let $A \in \mathcal{S}$ then using Lemma \ref{MarkovDistributions} and reversibility
+\begin{align*}
+\pushforward{X}{\probabilityop_{\nu}}
+&= \nu \mu (A) 
+= (\nu \otimes \mu)(S \times A) 
+=  \iint \characteristic{A}(y) \, \mu(x, dy) \, \nu(dx) \\
+&=  \iint \characteristic{A}(x) \, \mu(x, dy) \, \nu(dx) 
+= \int \characteristic{A}(x) \, \nu(dx) 
+= \nu(A)
+\end{align*}
+\end{proof}
+
+The next implication explains the origin of the term reversible.
+Prosaically one says that a reversible Markov process looks the same
+if run backwards.
+\begin{prop}Let $X$ be a reversible discrete time Markov process then
+  for all $n,k \geq 0$ and $A \in \mathcal{S}^{\otimes n}$ 
+\begin{align*}
+\probability{(X_k, \dotsc, X_{n+k}) \in A} &= 
+\probability{(X_{n+k}, \dotsc, X_k) \in A} 
+\end{align*}
+\end{prop}
+\begin{proof}
+Because $\nu$ is invariant, it follows that $X$ is a stationary
+process (Lemma \ref{InvarianceImpliesStationary}) and therefore it
+suffices to prove the result for $k=0$.
+In fact we prove a bit more; we show that 
+\begin{align}
+\int f(x_0, \dotsc, x_n)
+\nu \otimes \mu^{\otimes n}(dx_0, \dotsc, dx_n) &= \int f(x_n, \dotsc,x_0)
+\nu \otimes \mu^ {\otimes n}(dx_0,\dotsc, dx_n)
+\end{align}\label{ReversibleIntegrals}
+for all $n \in \naturals$ and all non-negative measurable functions $f
+: S^{n+1} \to [0,\infty)$.  By Lemma
+\ref{MarkovDistributions} the current result follows from \eqref{ReversibleIntegrals}.
+The proof is by induction on $n$ with the case $n=1$ being part of the
+definition of reversibility.
+
+Now supposing the result is true for $n-1$, we use Lemma
+\ref{MarkovDistributions}, Tonelli's Theorem
+and two applications of the induction hypothesis
+\begin{align*}
+&\int f(s_0, \dotsc, s_n) \, \mu(s_{n-1},ds_n) \dotsm
+  \mu(s_0, ds_1) \nu(ds_0) \\
+&=\int \left [ \int f(s_0, \dotsc, s_n) \,
+  \mu(s_{n-1},ds_n) \right ]\mu(s_{n-2},ds_{n-1}) \dotsm
+  \mu(s_0, ds_1) \nu(ds_0) \\
+&=\int f(s_{n-1}, \dotsc, s_0, s_n) \, \mu(s_0,ds_n)
+  \mu(s_{n-2}, ds_{n-1})\dotsm
+  \mu(s_0, ds_1) \nu(ds_0) \\
+&=\int \left [ \int f(s_{n-1}, \dotsc, s_0, s_n) \, 
+  \mu(s_{n-2}, ds_{n-1})\dotsm
+  \mu(s_0, ds_1) \right ] \, \mu(s_0,ds_n) \nu(ds_0) \\
+&=\int f(s_{n-1}, \dotsc, s_n, s_0) \, 
+  \mu(s_{n-2}, ds_{n-1})\dotsm
+  \mu(s_n, ds_1) \mu(s_0,ds_n) \nu(ds_0) \\
+&=\int f(t_{n}, \dotsc, t_1, t_0) \, 
+  \mu(t_{n-1}, dt_{n})\dotsm
+  \mu(t_0,t_1) \nu(dt_0) \\
+\end{align*}
+where in the last line we have defined new integration variables $t_0
+= s_0$, $t_1 = s_n$ and 
+$t_k = s_{k-1}$ for $2 \leq k \leq n$.
+\end{proof}
+
+We now make the transition to discussing discrete time Markov chains
+(that is to say we restrict ourselves to countable state spaces.
+
+Recurrence is a somewhat contagious property; if you start with a
+recurrent state $x$ and can reach a state $y$ from $x$ with positive
+probability then it will follow that $y$ is recurrent.  Intuitively
+this can be seen by making the following observations:
+\begin{itemize}
+\item If $x$ is recurrent and I can reach $y$ from $x$ with positive
+  probability then I must be able to reach $x$ from $y$ with positive
+  probability; otherwise with positive probability $x$ reaches $y$
+  (returning to itself only a finite number of times on the way) and
+  then never again returns to itself contradicting recurrence.
+\item One way for $y$ to return to itself is to first travel to $x$,
+  then return to itself some number of times, then to make the return
+  trip from $x$ to $y$; since $x$ is recurrent with positive
+  probability this may be done in infinitely many ways hence $y$ is
+  also recurrent.
+\end{itemize}
+These facts and a few more are captured less prosaically in the
+following lemma.
+\begin{lem}\label{RecurrenceClassesMarkovChains}Let $X$ be a discrete
+  time Markov chain with state space $S$, let $x \in S$ be recurrent
+  and define $S_x = \lbrace y \in S \mid r_{xy} > 0 \rbrace$.  Then
+  for all $y \in S_x$, it follows that $y$ is recurrent
+and for every $y,z \in S_x$ we have $r_{yz} = 1$.
+\end{lem}
+\begin{proof}
+We first handle the case of showing that $r_{yx} = 1$.  For this, we
+use a union bound, the Strong Markov property and the fact that
+$X_{\tau^+_y} = y$ on $\lbrace \tau^+_y < \infty \rbrace$ to see
+\begin{align*}
+0 &= \sprobability{\tau^+_x = \infty} {x} 
+\geq \sprobability{\tau^+_y < \infty ; \theta_{\tau^+_y} \circ
+  \tau^+_x = \infty} {x} \\
+&= \sexpectation{\tau^+_y < \infty ; \cprobability {\mathcal{F}_{\tau^+_y}}{\theta_{\tau^+_y} \circ
+  \tau^+_x = \infty} } {x} \\
+&=\sprobability{\tau^+_y < \infty ; \sprobability{\tau^+_x = \infty}
+  {y}} {x} = \sprobability{\tau^+_y < \infty } {x}
+\sprobability{\tau^+_x = \infty}{y} = r_{xy}(1 -r_{yx})
+\end{align*}
+which implies $r_{yx} =1$ since we assumed $r_{xy} > 0$.
+
+Now we turn to the task of showing that all $y \in S_x$ are recurrent.
+We know that $r_{xy} > 0$ and $r_{yx} > 0$ and therefore there exist
+$m, n \in \naturals$ such that $p^n_{xy} > 0$ and $p^m_{yx} > 0$.
+Thus, by Proposition \ref{RecurrenceTransienceDiscreteTime} and two
+applications of the 
+Chapman Kolmogorov relations and the recurrence of $x$  we get
+\begin{align*}
+\sexpectation{\kappa_y}{y} &= \sum_{j=1}^\infty p^j_{yy} \geq
+\sum_{j=1}^\infty p^{j+m+n}_{yy} =\sum_{j=1}^\infty \sum_{z \in S} \sum_{w \in S} p^m_{yz}p^j_{zw}
+p^n_{wy} \\
+&\geq \sum_{j=1}^\infty p^m_{yx}p^j_{xx}
+p^n_{xy} =\infty
+\end{align*}
+which implies that $y$ is recurrent.  Knowing that $y$ is recurrent
+and having already shown that $r_{yx} =1 >0$, we know that $x \in S_y$
+and we can apply the first
+argument in the proof to conclude that $r_{xy} =1$ as well.
+
+Lastly let $y,z \in S_x$.  We use the fact that one way for $X$ to get
+from $y$ to $z$ is by passing through $x$ first.  Formally we use a
+union bound and the Strong Markov Property to see
+\begin{align*}
+r_{yz} &= \sprobability{\tau^+_z < \infty}{y} \geq
+\sprobability{\tau^+_x < \infty ; \theta_{\tau^+_x} \circ \tau^+_z < \infty}{y}
+\\
+&=\sexpectation{\tau^+_x < \infty ;
+  \cprobability{\mathcal{F}_{\tau^+_x}}{\theta_{\tau^+_x} \circ
+    \tau^+_z < \infty}}{y} \\
+&= \sprobability{\tau^+_x < \infty }{y}
+\sprobability{\tau^+_z < \infty}{x} = r_{yx} r_{xz} = 1
+\end{align*}
+which shows us that $r_{yz} = 1$.
+\end{proof}
+
+\begin{defn}Let $X$ be a discrete time Markov chain with state space
+  $S$ then we say that $X$ is \emph{irreducible} if $r_{xy} > 0$ for
+  all $x,y \in S$.  If $X$ is not irreducible we say that $X$ is \emph{reducible}.
+\end{defn}
+
+There are generalizations of the notion of irreducibility to the
+general discrete time Markov process case but they will be dealt with
+later; the countable state space case is historically the first to be
+handled and provides important motivation while avoid some subtle
+points.  The first thing is to record some alternative
+characterizations of irreducibility; in the sequel we'll fell free to
+use these equivalences without explicit mention.  They are all just
+slightly different ways of capturing the notion that a Markov chain is
+irreducible if it is possible for the chain to reach any part of state
+space regardless of the starting point.
+
+\begin{prop}\label{IrreducibleEquivalencesDiscreteTimeMarkovChain}Let
+  $X$ be a discrete time Markov chain with state space $S$ then $X$ is
+  irreducible if and only if for every $x,y \in S$ there exists $n \in
+  \naturals$ such that $p^n_{xy} > 0$.
+\end{prop}
+\begin{proof}
+Suppose $X$ is irreducible and let $x,y \in S$; it follows that
+$\sprobability{\tau^+_y < \infty}{x} > 0$.  Writing
+$\sprobability{\tau^+_y < \infty}{x} = \cup_{n=1}^\infty
+\sprobability{\tau^+_y = n}{x}$ we conclude there is an $n \in
+\naturals$ such that $\sprobability{\tau^+_y = n}{x} > 0$.  Now
+observe that by a union bound
+\begin{align*}
+0 &< \sprobability{\tau^+_y = n}{x} \leq \sprobability{X_n = y}{x} = p^n_{xy}
+\end{align*}
+
+On the other hand suppose that $p^n_{xy} > 0$.  Then we know that
+\begin{align*}
+\lbrace X_n = y \rbrace &\subset \lbrace \tau^+_y \leq n \rbrace
+                          \subset \lbrace \tau^+_y < \infty \rbrace
+\end{align*}
+and therefore $ 0 < p^n_{xy} \leq \sprobability{\tau^+_y < \infty}{x}$.
+\end{proof}
+
+\begin{prop}\label{IrreducibleChainProperties}Let $X$ be an irreducible discrete time Markov chain, then 
+\begin{itemize}
+\item[(i)]Either every $x \in S$ is transient or every $x \in S$ is
+  recurrent.  Moreover $r_{xy} = 1$ for every $x,y \in S$.
+\item[(ii)]Every $x \in S$ has the same period
+\item[(iii)]If $\nu$ is an invariant distribution then $\nu(x) > 0$
+  for every $x \in S$.
+\end{itemize}
+\end{prop}
+\begin{proof}
+Property (i) is an immediate consequence of Lemma
+\ref{RecurrenceClassesMarkovChains} since for irreducible $X$ we have $S = S_x$ for any $x \in S$.
+
+To see (ii), let $x,y \in S$ and pick $m,n \in \naturals$ such that
+$p^n_{xy} > 0$ and $p^m_{yx} > 0$.  Now by the Chapman Kolmogorov
+relations we see that for all $j \in \integers_+$
+\begin{align*}
+p^{j+m+n}_{yy} &= \sum_{z \in S} \sum_{w \in S} p^m_{yz} p^j_{zw}
+p^n_{wy} \geq 
+p^m_{yx} p^j_{xx} p^n_{xy} 
+\end{align*}
+If we choose $j = 0$ then we get inequality $p^{m+n}_{yy} \geq p^m_{yx} p^n_{xy} > 0$ which
+implies that $d_y$ divides $m+n$.  With this fact in hand, we see that
+for $j > 0$ for which $p^j_{xx} > 0$ it follows that $p^{j+m+n}_{yy} >
+0$ and therefore $d_y$ divides $j$ as well.  By definition of the
+period we then get $d_y \leq d_x$.  The argument we just made is
+symmetric in $x$ and $y$ so the opposite inequality holds as well and
+we conclude that $d_x = d_y$.
+
+To see (iii), suppose that $\nu$ is an invariant distribution and
+pick an $x \in S$ such that $\nu(x) > 0$.  If we let $y \in S$ by
+irreducibility we find $n > 0$ such that $p^n_{xy} > 0$ and by
+invariance of $\nu$ we get
+\begin{align*}
+\nu(y) &= \sum_{x \in S} p^n_{xy} \nu(x) \geq \nu(x) p^n_{xy} > 0
+\end{align*}
+\end{proof}
+
+We now move to the theorem that gives us a useful criterion for the
+existence of an invariant distribution for a discrete time Markov
+chain and also shows that in a strong sense any initial distribution
+converges to that invariant distribution.
+
+\begin{thm}\label{ErgodicTheoremDiscreteTimeMarkovChains}Let $X$ be an
+  irreducible and aperiodic discrete time Markov chain with countable state
+  space $(S, \mathcal{S})$.  Then exactly
+  one of the following holds
+\begin{itemize}
+\item[(i)]There exists a unique invariant distribution $\nu$ for which
+  $\nu(x) > 0$ for all $x \in S$ and moreover for every initial
+  distribution $\mu$ we have
+\begin{align}
+\lim_{n \to \infty} \sup_{A \in \mathcal{S}^\infty}
+  \abs{\pushforward{\theta_n}{\probabilityop_\mu}\lbrace A \rbrace -
+  \sprobability{A}{\nu}} = 0
+\end{align}\label{ConvergenceToInvariantDiscreteTimeMarkovChain}
+\item[(ii)]An invariant distribution does not exist and 
+\begin{align*}
+\lim_{n \to \infty} p^n_{xy} = 0 & \text{ for all $x,y \in S$}
+\end{align*}
+\end{itemize}
+\end{thm}
+The proof breaks down is a few different lemmas.  The proof technique used here is referred to as a
+\emph{coupling} argument; it will reappear with increasing levels of
+sophistication later in this book.  The common thread in coupling
+arguments is the construction of a joint distribution on a product
+space (called a \emph{coupling}) and its use to compare a process under study to one with simpler properties.
+
+The first part of the coupling argument is the construction of the
+process on the product space.  In this case a pair of independent
+Markov chains suffices but we need a few details of about such
+products of Markov chains to execute the coupling argument.
+
+\begin{lem}\label{CouplingIndependentMarkovChainsDiscreteTime}Let $X$ and $Y$ be independent discrete time
+  Markov chains with state space $S$ and $T$ and transition matrices $p_{xy}$
+  and $q_{xy}$ respectively.  Then $(X,Y)$ is an irreducible discrete
+  Markov chain with state space $S \times T$ and transition matrix
+  $r_{xz,yw} = p_{xy}q_{zw}$.  If $X$ and $Y$ are both irreducible
+    and aperiodic then $(X,Y)$ is as well.  If in addition invariant
+    distributions exists for both $X$ and $Y$ then it follows that
+    $(X,Y)$ is recurrent.
+\end{lem}
+\begin{proof}
+The fact that $(X,Y)$ is a discrete time Markov chain with transition
+matrix $p_{xy}q_{zw}$ is a special case of Exercise
+\ref{ProductOfIndependentMarkov}.  If we assume that $X$ is
+irreducible and aperiodic then for all $x,y \in S$ we know that there
+exists $n \in \naturals$ such that $p_{xy}^n > 0$ by irreducibility
+and furthermore by aperiodicity we know that $p_{yy}^m > 0$ for all by
+finitely many $m \in \naturals$ (Proposition
+\ref{PeriodicReturnDiscreteTimeMarkov}) and therefore $p^{m+n}_{xy}
+\geq p^n_{xy}p^m{yy} > 0$ for all by finitely many $m \in \naturals$.
+Applying the same argument to $Y$ we see that for each $x,y \in S$ and
+$z,w \in T$ we have $r_{xz,yw}^n =
+p^n_{xy}q^n_{zw} > 0$ for all  but finitely many $n \in \naturals$.
+Thus $(X,Y)$ is irreducible and aperiodic.
+
+If we assume that $\nu$ and $\mu$ are invariant distributions for $X$
+and $Y$ respectively then it follows the fact that the transition
+kernel of $(X,Y)$ is a product measure that the product measure $\nu
+\otimes \mu$ is invariant for $(X,Y)$.  Now apply Proposition
+\ref{RecurrenceFromInvariantDistribution} to see that $(X,Y)$ has a
+recurrent state $(x,y) \in S \times T$ and Proposition
+\ref{IrreducibleChainProperties} to see that $(X,Y)$ is recurrent.
+\end{proof}
+
+We now apply the coupling to compare the behavior of a pair Markov
+chains with the same transition matrix but different initial
+distributions.  
+
+\begin{lem}\label{StrongErgodicityMarkovChainsDiscreteTime}Let $X$ and $Y$ be independent discrete time Markov chains
+  both with state space $S$ and transition matrix $p_{xy}$ but with
+  initial distributions $\nu$ and $\mu$ respectively.  If $(X,Y)$ is
+  irreducible, aperiodic and recurrent then
+\begin{align*}
+\lim_{n \to \infty} \sup_{A \in \mathcal{S}^\infty}
+  \abs{\pushforward{\theta_n}{\probabilityop_\nu}\lbrace A \rbrace -
+  \pushforward{\theta_n}{\probabilityop_\mu}\lbrace A \rbrace} = 0
+\end{align*}
+\end{lem}
+\begin{proof}
+By Lemma \ref{CouplingIndependentMarkovChainsDiscreteTime} we know
+that $(X,Y)$ is a Markov chain with transition matrix $p_{xy}p_{zw}$.
+Let $\mathcal{F}$ be the induced filtration of $(X,Y)$ and note that
+by the independence of $X$ and $Y$ 
+each of $X$ and $Y$ is
+Markov with respect to $\mathcal{F}$.
+Consider the optional time $\tau = \min \lbrace n \in \naturals \mid
+X_n = Y_n \rbrace$ and note that by recurrence of $(X,Y)$ we can apply
+Lemma \ref{RecurrenceClassesMarkovChains} see that $\tau$ is almost
+surely finite (in fact for every $x \in S$,  $\min \lbrace n \in \naturals \mid
+X_n = Y_n = x\rbrace < \infty$ almost surely).  Let $A \in
+\mathcal{S}^\infty$, then since $\tau$ is
+countably valued and almost surely finite by the Strong Markov
+Property applied to $X$ and $Y$, 
+\begin{align*}
+\cprobability {\mathcal{F}_\tau} {\theta_\tau X \in A}
+&=\sprobability{A}{X_\tau}
+=\sprobability{A}{Y_\tau}
+=\cprobability {\mathcal{F}_\tau} {\theta_\tau Y \in A}
+\end{align*}
+From this and the $\mathcal{F}_\tau$-measurability of $X^\tau$ and
+$\tau$ it follows that $(X^\tau, \tau, \theta_\tau X) \eqdist (X^\tau,
+\tau, \theta_\tau Y)$.  Define 
+$\psi : S^\infty \times \integers_+ \times S^\infty \to S^\infty$
+by 
+\begin{align*}
+\psi(s,n,t)_m = \begin{cases}
+s_m & \text{if $m < n$} \\
+t_{m-n} & \text{if $m \geq n$} 
+\end{cases}
+\end{align*}
+and note that for $A \in \mathcal{S}$, 
+\begin{align*}
+\lbrace \psi_m \in A \rbrace = 
+\cup_{n < m} \lbrace s_m \in A \rbrace \times \lbrace n \rbrace \times
+  S^\infty 
+\cup 
+S^\infty \times \lbrace n \rbrace \times
+\cup_{n \geq m} \lbrace s_{m-n} \in A \rbrace
+\end{align*}
+and therefore $\psi$ is measurable.  Define $\tilde{X} = \psi(X^\tau,
+\tau, \theta_\tau Y)$ so that
+\begin{align*}
+\tilde{X}_n &= \begin{cases}
+X_n & \text{if $n < \tau$} \\
+Y_n & \text{if $n \geq \tau$} \\
+\end{cases}
+\end{align*}
+and also note that $X = \psi(X^\tau, \tau, \theta_\tau X)$.  It
+follows from the Expectation Rule that $X \eqdist \tilde{X}$ and
+therefore for any $A \in \mathcal{S}^{\infty}$
+\begin{align*}
+\abs{\probability{\theta_n X \in A} - \probability{\theta_n Y \in A} } 
+&=\abs{\probability{\theta_n \tilde{X} \in A} - \probability{\theta_n Y \in A} } \\
+&=\abs{\probability{\theta_n \tilde{X} \in A; \tau > n} -
+  \probability{\theta_n Y \in A; \tau > n} } 
+\leq 2 \probability{\tau > n}
+\end{align*}
+and therefore since $\tau$ is almost surely finite we have
+\begin{align*}
+\lim_{n \to \infty} \sup_{A \in \mathcal{S}^{\infty}}
+  \abs{\probability{\theta_n X \in A} - \probability{\theta_n Y \in A}
+  } \leq 2 \lim_{n \to \infty} \probability{\tau > n} = 0
+\end{align*}
+\end{proof}
+
+The proof of the existence of an invariant distribution also benefits
+from the coupling argument of the previous lemma.
+\begin{lem}\label{TransitionMatrixConvergeToZeroNoInvariantDistribution}Let $X$ be an irreducible aperiodic Markov chain with state
+  space $S$ and transition matrix $p_{xy}$ such that
+  there exists $x_0,y_0 \in S$ for which $\limsup_{n \to \infty}
+  p^n_{x_0 y_0} > 0$, then an invariant distribution for $X$ exists.
+\end{lem}
+\begin{proof}
+Take a subsequence $N$ such that $\lim_{n \to \infty} p^n_{x_0 y_0}$
+exists and is positive.  By countability of $S$ we can use a diagonal
+argument to pass to a further subsequence if necessary and assume that
+there are non-negative constants $c_y$ for $y \in S$ with $c_{y_0} > 0$ such that 
+$\lim_{n\to \infty} p^n_{x_0 y} = c_y$ along $N$ for all $y \in S$.
+Note that by Fatou's Lemma 
+\begin{align*}
+0 < \sum_{y \in S} c_y &\leq \liminf_{n \to \infty} \sum_{y \in S}
+                            p^n_{x_0 y} = 1
+\end{align*}
+
+Claim: $\lim_{n \to \infty} p^n_{xy} = c_y$ along $N$ for all $x,y \in
+S$.
+
+The proof of the claim uses the coupling argument.  Pick an $x \in S$
+and let $Y$ be an
+Markov chain  independent of $X$ with transition matrix $p_{xy}$ and
+initial distribution $\delta_x$, then
+$Y$ is
+also irreducible and aperiodic thus it follows from Lemma
+\ref{CouplingIndependentMarkovChainsDiscreteTime}
+that $(X,Y)$ is an irreducible and aperiodic Markov chain with
+transition matrix $r_{xz,yw} = p_{xy} p_{zw}$.  Suppose
+that $(X,Y)$ is transient then it follows from Proposition
+\ref{RecurrenceTransienceDiscreteTime} that 
+\begin{align*}
+\sum_{n=1}^\infty (p^n_{x_0y_0})^2 &= \sum_{n=1}^\infty r^n_{x_0x_0,y_0y_0} < \infty
+\end{align*}
+which would imply $\lim_{n \to \infty} p^n_{x_0y_0} = 0$ which is a
+contradiction. Thus we know that $(X,Y)$ is recurrent and we may apply
+Lemma \ref{StrongErgodicityMarkovChainsDiscreteTime} to conclude that
+$\lim_{n \to \infty} (p^n_{xy} - p^n_{x_0 y}) = 0$ for all $y \in S$
+and therefore the claim follows.
+
+Now note from the Chapman Kolomogorov relation that for each $x,y \in
+S$ and $n \in \naturals$
+\begin{align*}
+\sum_{z \in S} p^n_{xz}p_{zy} &= p^{n+1}_{xy} = \sum_{z \in S} p_{xz}p^n_{zy}
+\end{align*}
+Note that $p_{xz}p^n_{zy} \leq p_{xz}$ and $\sum_{z \in S} p_{xz} = 1$
+and so we may use Dominated Convergence when taking limits in the
+second sum.  In the first sum we can only use Fatou so we get
+\begin{align*}
+\sum_{z \in S} c_z p_{zy} &\leq \lim_{n \to \infty} \sum_{z \in S}
+                           p^n_{xz}p_{zy} 
+= \lim_{n \to \infty} \sum_{z \in S}p_{xz}p^n_{zy} 
+= c_y \sum_{z \in S}p_{xz}  = c_y
+\end{align*}
+where all of the limits are taken along the subsequence $N$.
+Now suppose we have a strict inequality for some $y \in S$, then
+summing over $y$ and using Tonelli's Theorem 
+and the finiteness of $\sum_{z \in S} c_z$ we get
+\begin{align*}
+\sum_{z \in S} c_z &= \sum_{y \in S}\sum_{z \in S} p^n_{xz}p_{zy} =
+                     \sum_{z \in S} \sum_{y \in S} p^n_{xz}p_{zy} < \sum_{z \in S} c_z
+\end{align*}
+which is a contradiction.  Thus we in fact have $\sum_{z \in S} c_z
+p_{zy} = c_y$ for all $y \in S$.  We have observed that $\sum_{z \in S}
+c_z > 0$ and therefore we may define $\nu(x) = c_x / \sum_{z \in S}
+c_z$ to get an invariant distribution.
+\end{proof}
+
+It remains to assemble the pieces into the proof of the theorem.
+\begin{proof}
+By Lemma \ref{TransitionMatrixConvergeToZeroNoInvariantDistribution}
+if $X$ has no invariant distribution then $\limsup_{n \to \infty}
+p^n_{xy} = 0 \leq \liminf_{n \to \infty} p^n_{xy}$ for all $x,y \in
+S$; thus $\lim_{n \to \infty} p^n_{xy} = 0$ for all $x,y \in S$.  Now
+suppose that an invariant distribution $\nu$ exists.  Since $X$ is
+irreducible we know that
+$\nu(x) > 0$ for all $x \in S$ by Proposition
+\ref{IrreducibleChainProperties}.  Furthermore by the existence of
+$\nu$ and Lemma \ref{CouplingIndependentMarkovChainsDiscreteTime}, if
+we let $Y$ be an independent discrete time chain with transition
+matrix $p_{xy}$ and initial distribution $\nu$ we
+know that $(X,Y)$ is irreducible, aperiodic and recurrent.  Thus we
+may apply Lemma \ref{StrongErgodicityMarkovChainsDiscreteTime} and the
+fact that $\pushforward{\theta_n}{\probabilityop_\nu} = \nu$ to
+conclude that 
+\begin{align*}
+\lim_{n \to \infty} \sup_{A \in \mathcal{S}^\infty} \abs{\pushforward{\theta_n}{\probabilityop_\mu}\lbrace A \rbrace -
+  \sprobability{A}{\nu}} = 0
+\end{align*}
+
+To see uniqueness of $\nu$ suppose that we have a second invariant
+distribution $\tilde{\nu}$ and note that by invariance of
+$\tilde{\nu}$ and the convergence property \eqref{ConvergenceToInvariantDiscreteTimeMarkovChain}
+$\sup_{A \in \mathcal{S}^\infty} \abs{\sprobability{A}{\tilde{\nu}}-
+  \sprobability{A}{\nu}} = 0$ which implies $\nu =\tilde{\nu}$.
+\end{proof}
+
+\begin{prop}Let $X$ be a discrete time Markov chain with state space
+  $S$ and let $x,y \in S$ with $y$ aperiodic then it follows that
+\begin{align*}
+\lim_{n \to \infty} p^n_{xy} &= \frac{\sprobability{\tau^+_y < \infty}{x}}{\sexpectation{\tau^+_y}{y}}
+\end{align*}
+\end{prop}
+\begin{proof}
+Let's first consider the case in which $x=y$.  Suppose that $x$ is
+transient.  In that case Proposition
+\ref{RecurrenceTransienceDiscreteTime} implies $\sum_{n=1}^\infty
+p^n_{xx} = \sexpectation{\kappa_x}{x} < \infty$ and thus
+$\lim_{n\to \infty} p^n_{xx} = 0$.  Moreover when $x$ is transient we
+know that $\sprobability{\tau^+_x = \infty}{x} = 1-r_{xx} > 0$ and
+therefore $\sexpectation{\tau^+_x}{x} = \infty$ and therefore the
+result holds in this case.  So we now suppose that $x$ is recurrent.
+Let $S_x = \lbrace y \in S \mid r_{xy} > 0 \rbrace$ be the irreducible
+component containing $x$.  We may restrict $X$ to $S_x$ and then by
+Proposition \ref{RecurrenceClassesMarkovChains} it follows that the
+restriction is irreducible and recurrent and by Proposition
+\ref{IrreducibleChainProperties} it follows that the restriction is
+aperiodic.  Now we may apply Theorem
+\ref{StrongErgodicityMarkovChainsDiscreteTime} to conclude that $\lim
+p^n_{xx}$ exists.
+
+Note that if we let $\xi_1 = \tau^+_x$ and $\xi_{n+1} = \tau^{n+1}_x -
+\tau^{n}_x$ for $n \in \naturals$ then by the Strong Markov property
+the $\xi_n$ are an i.i.d. sequence with respect to
+$\probabilityop_x$.  Moreover $\sexpectation{\tau^+_x} < \infty$
+(TODO: I don't believe I've shown this...)
+
+TODO:  Finish
+\end{proof}
+
+\begin{defn}Let $P$ be a finite discrete time Markov chain on $S$, we say a function
   $h : S \to \reals$ is \emph{harmonic} if for all $x \in S$, $\sum_{y
     \in S} P(x,y) h(y) = h(x)$.
 \end{defn}
@@ -1060,7 +2007,7 @@ $h(y) = M$  for every $y \in S$.
 \end{proof}
 
 \begin{lem}Let $P$ be an irreducible finite Markov chain, if the
-  stationary distribution exists, then is unique.
+  invariant distribution exists, then is unique.
 \end{lem}
 \begin{proof}
 Let $I$ denote the $\card(S) \times \card(S)$ identity matrix.
@@ -1069,11 +2016,11 @@ matrix $P -I$ has a one dimensional null space given by the constant
 functions.  Thus column rank of $P - I$ is $\card(S) - 1$ and the same
 is true for the row rank; thus there is a unique solution of $\pi (P
 -I) = 0$ that satisfies $\sum_{x \in S} \pi(x) = 1$.  Note that this
-does not guarantee the existence of a stationary distribution as that
+does not guarantee the existence of a invariant distribution as that
 requires that the entries of $\pi$ be non-negative.
 \end{proof}
 
-\begin{lem}If $\pi(x) P(x,y) = \pi(y) P(y,x)$ for all $x,y \in S$ then
+\begin{lem}\label{DetailBalanceEquationImpliesInvariance}If $\pi(x) P(x,y) = \pi(y) P(y,x)$ for all $x,y \in S$ then
   $\pi \cdot P = \pi$.
 \end{lem}
 \begin{proof}
@@ -1097,7 +2044,7 @@ showing how to ``reverse'' a Markov chain that doesn't necessarily
 satisfy the detail balance equations.
 
 \begin{defn}The \emph{time reversal} of an irreducible Markov chain
-  with transition matrix $P$ and stationary distribution $\pi$ is
+  with transition matrix $P$ and invariant distribution $\pi$ is
   given by 
 \begin{align*}
 \hat{P}(x,y) &= \frac{\pi(y) P(y,x)}{\pi(x)}
@@ -1105,7 +2052,7 @@ satisfy the detail balance equations.
 \end{defn}
 
 \begin{lem}The time reversal is a stochastic matrix and $\pi$ is
-  stationary for $\hat{P}$.  Moreover, for every $x_0, \dotsc, x_n \in
+  invariant for $\hat{P}$.  Moreover, for every $x_0, \dotsc, x_n \in
   S$, we have
 \begin{align*}
 \sprobability{X_0 = x_0; \dotsb ; X_n = x_n}{\pi} &=
@@ -1118,7 +2065,7 @@ By stationarity of $\pi$ with respect to $P$ for all $x \in S$,
 \sum_{y \in S} \hat{P}(x,y) &=\sum_{y \in S} \frac{\pi(y)
   P(y,x)}{pi(x)} \frac{1}{\pi(x)} \sum_{y \in S} \pi(y)  P(y,x) = 1
 \end{align*}
-To see $\pi$ is stationary for $\hat{P}$, compute for all $y \in S$,
+To see $\pi$ is invariant for $\hat{P}$, compute for all $y \in S$,
 \begin{align*}
 (\pi \cdot \hat{P})(y) &= \sum_{x \in S} \pi(x) \hat{P}(x,y) = \sum_{x
   \in S} \pi(y) P(y,x) =\pi(y)
@@ -1133,6 +2080,254 @@ x_1) \dotsb P(x_{n-1}, x_n) \\
 &= \hat{P}(x_1, x_0) \pi(x_n) \hat{P}(x_n, x_{n-1}) \dotsb \hat{P}
 (x_2,x_1) \\
 &= \sprobability{\hat{X}_0 = x_n ; \dotsb ; \hat{X}_n = x_0}{\pi}
+\end{align*}
+\end{proof}
+
+\section{Poisson Process}
+The Poisson process is the standard example of a continuous time
+stochastic process that has discontinuous sample paths.  It is a
+Markov process and is (almost) a martingale.  
+
+\subsection{Exponential Random Variables}
+The standard construction of the Poisson process uses sums of a sequence of
+i.i.d. exponential random variables so it is therefore useful to
+discuss such random variables first.  As explained below exponential
+random variables will figure prominently in subsequent theory of
+Markov processes as well so it will be a good investment of time to
+get familiar with them.
+
+\begin{defn}Given a parameter $\lambda > 0$, the probability measure
+  on $\reals_+$ given by $\mu(A) = \lambda \int_A e^{-\lambda x} \,
+  dx$ is called the \emph{exponential distribution with rate
+    $\lambda$}.  A random variable $\xi$ whose law is an exponential
+  distribution is said to be a \emph{exponential random variable}.
+\end{defn}
+
+The reader may have learned at some point that incandescent lightbulbs
+have peculiar property; the probability that such a light bulb will
+fail does not depend on the age of the light bulb.  Expressed using
+our notation, if we let $\xi$ be age of a light bulb when it fails we
+are saying that for all $t > s$ we have $\cprobability{\xi > s}{\xi >
+  t} = \probability{\xi > t -s}$ or equivalently 
+\begin{align*}
+\probability{\xi > t} &= \probability{\xi > t ; \xi > s} = \cprobability{\xi > s}{\xi >
+  t} \probability{\xi > s}= \probability{\xi > t -s}\probability{\xi > s}
+\end{align*}
+
+While the stated fact about light bulbs is only
+approximately true, it is a concrete illustration of a property
+that we call memorylessness.
+The reason that exponential random variables figure so prominently in
+subsequent theory is that they are precisely the random variables that
+have the property of being memoryless.
+\begin{prop}\label{ExponentialMemoryless}Let $\gamma$ be an
+  exponential random variable then for each $t,s \geq 0$ we have the
+  functional equation
+\begin{align}
+\probability{\gamma > t+s} &= \probability{\gamma > t}\probability{\gamma > s}
+\label{ExponentialDistributionFunctionalEquation}\end{align}
+Moreover if $\gamma$ is a nonnegative random variable that is not almost surely
+equal to $0$ and satisfies \eqref{ExponentialDistributionFunctionalEquation}, it
+follows that $\gamma$ is exponential.
+\end{prop}
+\begin{proof}
+The memorylessness property of exponential random variable is a
+trivial computation, 
+\begin{align*}
+\probability{\gamma > t+s} &= e^{-\lambda(t+s)} = e^{-\lambda
+  t}e^{-\lambda s} = \probability{\gamma >
+  t}\probability{\gamma > s}
+\end{align*}
+
+If we let $\probability{\gamma > 1}= e^{-c}$ for some $c \in [0,
+\infty]$, then from the functional equation
+\eqref{ExponentialDistributionFunctionalEquation}
+we immediately see that for every $n \in
+\naturals$, $\probability{\gamma > n}=\probability{\gamma >
+  1}^n= e^{-cn}$ and then for all
+positive rationals $p/q \in \rationals_+$ we have
+$\probability{\gamma > p/q} = e^{-cp/q}$.  Now since
+$\probability{\gamma > t}$ is right continuous we can conclude that
+$\probability{\gamma > t}= e^{-ct}$ for all $0 \leq t < \infty$.
+By our assumption that there exists some $t \geq 0$ such that
+$\probability{\gamma > t} > 0$
+it follows that $c < \infty$ and we have shown that $\gamma$ is
+exponentially distributed.
+\end{proof}
+
+\begin{prop}\label{SumOfExponentialMemoryless}Let $\gamma_1, \dotsc, \gamma_n$ be a sequence of
+  i.i.d. exponential random variables with rate $\lambda$ then for all
+  $t > s$ we have
+\begin{align*}
+\probability{\gamma_1 +\dotsb + \gamma_n > t; \gamma_1 > s} &=
+\probability{\gamma_1 +\dotsb + \gamma_n > t-s} \probability{\gamma_1 > s} 
+\end{align*}
+\end{prop}
+\begin{proof}
+We proceed by induction.  The initial case is just the memorylessness
+of a single exponential random variable.  For $n \geq 2$ we compute using Fubini's theorem (specifically Lemma
+\ref{DisintegrationIndependentLaws}) and the non-negativity of
+exponential random variables
+\begin{align*}
+&\probability{\gamma_1 + \dotsb + \gamma_n > t ; \gamma_1 > s} \\
+&= \probability{\gamma_1 + \dotsb + \gamma_n > t ; \gamma_1 > s;
+  \gamma_n < t-s} + \probability{\gamma_1 + \dotsb + \gamma_n > t ; \gamma_1 > s;
+  \gamma_n \geq t-s}  \\
+&= \expectation{\probability{\gamma_1 + \dotsb + \gamma_{n-1} > t-u ;
+    \gamma_1 > s} \mid_{u = \gamma_n} ;
+  \gamma_n < t-s} \\
+&+ \probability{\gamma_1 + \dotsb + \gamma_n > t ; \gamma_1 > s;
+  \gamma_n \geq t-s}  \\
+&= \expectation{\probability{\gamma_1 + \dotsb + \gamma_{n-1} > t-u-s}
+  \mid_{u = \gamma_n} ; 
+  \gamma_n < t-s} \probability{\gamma_1 > s} \\
+&+ \probability{\gamma_n \geq t-s} \probability{\gamma_1 > s} \\
+&= \left(\probability{\gamma_1 + \dotsb + \gamma_{n} > t-s;  \gamma_n < t-s}
++ \probability{\gamma_n \geq t-s} \right) \probability{\gamma_1 > s} \\
+&= \probability{\gamma_1 + \dotsb + \gamma_{n} > t-s}\probability{\gamma_1 > s} 
+\end{align*}
+\end{proof}
+
+It is also worth having the density and cumulative distribution of a
+sum of i.i.d. exponential random variables handy
+\begin{prop}Let $\gamma_1, \dotsc, \gamma_n$ be i.i.d. exponential
+  random variables with rate $\lambda$, then the density of $\gamma_1
+  + \dotsb + \gamma_n$ is $\lambda^n e^{-\lambda t}
+  \frac{t^{n-1}}{(n-1)!}$ and 
+\begin{align*}
+\probability{\gamma_1 + \dotsb + \gamma_n > t} = e^{-\lambda t}
+\sum_{j=1}^{n-1} \frac{\lambda^k t^k}{k!}
+\end{align*}
+\end{prop}
+\begin{proof}
+Straightforward induction calculation using the convolution formula.
+\end{proof}
+
+We are now in a position to show that Poisson processes exist.  
+\begin{thm}\label{HomogeneousPoissonProcessExistence}Let $\gamma_1,
+  \gamma_2, \dotsc$ be i.i.d. exponential random variables with rate
+  $\lambda > 0$.  For each $n \in \naturals$ define $S_n = \gamma_1 +
+  \dotsc + \gamma_n$ and for each $t \in \reals_+$ let 
+\begin{align*}
+N_t = \max  \lbrace n \in \naturals \mid S_n \leq t \rbrace
+\end{align*}
+where the maximum of the empty set is taken to be $0$.  
+Then $N$ is a homogeneous Poisson process with rate $\lambda$.
+\end{thm}
+\begin{proof}
+Since $\lbrace N_t \geq m \rbrace = \lbrace S_m \leq t \rbrace$ the
+measurability of $N_t$ follows from the measurability of the
+$\gamma_n$ and thus $N$ is a stochastic process.  
+
+It remains to
+show that $N$ has independent increments.  Let $0 \leq s < t < \infty$
+and consider the computation of $\cprobability{\mathcal{F}_s}{N_t
+  - N_s \in \cdot}$. 
+Let $\mathcal{F}$ be the filtration generated by $N$, let
+$\mathcal{G}_0 = \lbrace \emptyset, \Omega \rbrace$ and for each $n
+\in \naturals$ let $\mathcal{G}_n = \sigma(\gamma_1, \dotsc,
+\gamma_n)$.   We wish to do this computation locally on events of the
+form $\lbrace N_s = n \rbrace$ for $n \in \integers_+$ by reducing to
+a conditional expectation with respect to $\mathcal{G}_n$.  
+
+Rather than appealing to the general Lemma
+\ref{ConditionalExpectationIsLocal} we use the following simple version.
+
+Claim: Let $0 \leq s < \infty$, $n \in \integers_+$ and $A \in
+\mathcal{F}_s$.  There exists a $B \in \mathcal{G}_n$ such that $A
+\cap \lbrace N_s = n \rbrace = B \cap \lbrace N_s = n \rbrace$.
+
+Note first that the set $\mathcal{C}$ of all $A \in \mathcal{F}_s$ for which an
+appropriate $B \in \mathcal{G}_n$ exists is a $\sigma$-algebra.  This
+is elementary since if $A \cap \lbrace N_s = n \rbrace = B \cap \lbrace
+N_s = n \rbrace$ then it follows that $A^c \cap \lbrace N_s = n \rbrace = B^c \cap \lbrace
+N_s = n \rbrace$ and morever if $A_m \cap \lbrace N_s = n \rbrace = B_m \cap \lbrace
+N_s = n \rbrace$ for all $m \in \naturals$ then 
+\begin{align*}
+  \left(\cup_{m=1}^\infty A_m \right) \cap \lbrace N_s = n \rbrace
+  &=
+    \cup_{m=1}^\infty
+    \left(A_m
+    \cap
+    \lbrace
+    N_s
+    = n
+    \rbrace\right)
+    =
+    \cup_{m=1}^\infty
+    \left(B_m
+    \cap
+    \lbrace
+    N_s
+    = n
+    \rbrace\right) \\
+  &=
+    \left
+    (\cup_{m=1}^\infty
+    B_m\right)
+    \cap
+    \lbrace
+    N_s = n \rbrace
+\end{align*}
+Since $\mathcal{C}$ is a $\sigma$-algebra is suffices to that that
+$\lbrace N_u = m \rbrace \in \mathcal{C}$ for all $0 \leq u \leq s$
+and $m \in \integers_+$ since such sets generate $\mathcal{F}_s$.  To
+see this note that $\lbrace N_u = m \rbrace
+\cap \lbrace N_s = n \rbrace = \emptyset$ for $m > n$, $\lbrace N_u = m \rbrace
+\cap \lbrace N_s = n \rbrace = \lbrace S_m \leq u < S_{m+1} \rbrace
+\cap \lbrace N_s = n \rbrace$ for $m < n$ and $\lbrace N_u = n \rbrace
+\cap \lbrace N_s = n \rbrace = \lbrace S_n \leq u \rbrace
+\cap \lbrace N_s = n \rbrace$.
+
+We now use the claim to calculate  $\cprobability{\mathcal{F}_s}{N_t
+  - N_s \in \cdot}$.  Let $A \in \mathcal{F}_s$ and for each $n \in \integers_+$
+we pick $B_n \in \mathcal{G}_n$ such that $A \cap \lbrace N_s = n
+\rbrace = B_n \cap \lbrace N_s = n \rbrace$.  We let $k \in
+\integers_+$ and use the definition of $N_t$, the independence of the
+$\gamma$, Lemma \ref{DisintegrationIndependentLaws} and Proposition \ref{SumOfExponentialMemoryless}
+\begin{align*}
+  &\probability{N_t - N_s \leq k; A} 
+    = \sum_{n=0}^\infty \probability{N_t - N_s \leq k; N_s = n ; A} 
+    =\sum_{n=0}^\infty \probability{N_t- N_s \leq k; N_s = n ; B_n}  \\
+  &=\sum_{n=0}^\infty \probability{S_{n+k+1} > t; S_{n+1} > s; s \geq S_n ; B_n}  \\
+  &=\sum_{n=0}^\infty \expectation{\probability{\gamma_{n+1} + \dotsb
+    + \gamma_{n+k+1} > t-u; \gamma_{n+1} > s-u}\mid_{u=S_n}; s \geq S_n ; B_n}  \\
+  &=\sum_{n=0}^\infty \expectation{\probability{\gamma_{n+1} + \dotsb
+    + \gamma_{n+k+1} > t-s}\probability{\gamma_{n+1} > s-u}\mid_{u=S_n}; s \geq S_n ; B_n}  \\
+  &=\probability{\gamma_{1} + \dotsb
+    + \gamma_{k+1} > t-s} \sum_{n=0}^\infty \probability{S_{n+1} > s; s \geq S_n ; B_n}  \\
+  &=\probability{\gamma_{1} + \dotsb
+    + \gamma_{k+1} > t-s} \sum_{n=0}^\infty \probability{N_s=n ; B_n}  \\
+  &=\probability{\gamma_{1} + \dotsb
+    + \gamma_{k+1} > t-s} \sum_{n=0}^\infty \probability{N_s=n ; A}  \\
+  &=\probability{\gamma_{1} + \dotsb
+    + \gamma_{k+1} > t-s} \probability{A}  \\
+\end{align*}
+which shows that 
+\begin{align*}
+\cprobability{\mathcal{F}_s}{N_t  - N_s \leq k} 
+&= \probability{\gamma_{1} + \dotsb  + \gamma_{k+1} > t-s}
+= e^{-\lambda(t-s)} \sum_{j=0}^{k} \frac{\lambda^j(t-s)^j}{j!}
+\end{align*}
+Since the conditional probability is a constant it follows that $N_t -
+N_s \Independent \mathcal{F}_s$ and moreover by taking expectations it
+follows that $N_t - N_s$ is
+Poisson distributed with rate $\lambda(t-s)$.
+\end{proof}
+
+A homogeneous Poisson process provides us with another important
+example of a continuous time martingale.
+\begin{prop}\label{CompensatedHomogeneousPoissonProcessMartingale}Let $N$ be a homogeneous Poisson process with rate
+  $\lambda$ then $N_t - \lambda t$ is a cadlag martingale.
+\end{prop}
+\begin{proof}
+It is clear that $N_t - \lambda t$ is a cadlag process, moreover since
+$N_t$ is Poisson distributed with rate $\lambda t$ it follows that
+$N_t - \lambda t$ is integrable and has mean zero.  The martingale
+property follows from the independent increments property
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{N_t} 
+&=\cexpectationlong{\mathcal{F}_s}{N_t - N_s}  + N_s = \lambda(t-s) + N_s
 \end{align*}
 \end{proof}
 
@@ -1189,6 +2384,21 @@ Lemma
 \tau_{n-1} + \tau_1 \circ \theta_{\tau_{n-1}}$.
 \end{proof}
 
+The definition of the optional time $\tau_1$ allows us to define an
+important property of elements of $S$.
+\begin{defn}A state $x \in S$ is said to be \emph{absorbing} if
+  $\probability{X_t \equiv x} = \sprobability{\tau_1 = \infty}{x} =
+  1$.  If $x$ is not absorbing we say it is \emph{non-absorbing}.
+\end{defn}
+By the Markov property we see that if a pure jump-type Markov process
+$X$ reaches an absorbing state $x$ it remains there indefinitely
+almost surely.  If $X$ is in a non-absorbing state one might ask
+whether there is a positive probability that it remains there forever
+(i.e. the state is ``partially absorbing'').  In fact in a
+non-absorbing state it is almost sure that a jump to a new state will
+occur (a kind of 0-1 law).  This fact is a corollary of the following
+result that describes the distribution to the next jump from a
+non-absorbing state.
 \begin{lem}\label{PureJumpFirstJumpTime}Let $X$ be a pure jump-type Markov process and let $x \in
   S$ be nonabsorbing, then under $\probabilityop_x$ the optional time
   $\tau_1$ is exponentially distributed and independent of $\theta_{\tau_1}X$.
@@ -1199,65 +2409,99 @@ To see that $\tau_1$ is exponentially distributed note that
 \sprobability{\tau_1 > t+s}{x} &= \sprobability{\tau_1 > s; \tau_1
   \circ \theta_s > t}{x} = \sprobability{\tau_1 > s}{x} \sprobability{\tau_1 > t}{x} 
 \end{align*}
-If we let $\sprobability{\tau_1 > 1}{x} = e^{-c}$ for some $c \in [0,
-\infty]$, then from this functional equation we immediately see that for every $n \in
-\naturals$, $\sprobability{\tau_1 > n}{x} = e^{-cn}$ and then for all
-positive rationals $p/q \in \rationals_+$ we have
-$\sprobability{\tau_1 > p/q}{x} = e^{-cp/q}$.  Now since
-$\sprobability{\tau_1 > t}{x}$ is non-decreasing we can conclude that
-$\sprobability{\tau_1 > t}{x} = e^{-ct}$ for all $0 \leq t < \infty$.
 By our assumption that $x$ is nonabsorbing we know that $\tau_1 > 0$
-a.s. and therefore $c < \infty$; thus we have shown that $\tau_1$ is
+with positive probability and therefore we can apply Proposition
+\ref{ExponentialMemoryless} to conclude that $\tau_1$ is
 exponentially distributed.
 
 Recall from Lemma
 \ref{HittingTimesContinuous} that when restricted to
 $D([0,\infty);S)$, one can think of $\tau_1$
 as being a composition of the process $X$ with a measurable function on
-$S^{[0,\infty)}$ which by abuse of notation we also call $\tau_1$
-(of course in the canonical case there is no abuse of notation as
-these two interpretations of $\tau_1$ are exactly the same).  
-Moreover, note that the random variable $\theta_{\tau_1 }X$
-can be written as a composition of $X$ and the measurable function
-$\phi : D([0,\infty) ; S) \to \reals$ defined by $\phi(f,t) =
-\characteristic{B}(\theta_{\tau_1(f)}f)$. Measurability of $\phi$
-follows from writing it as the composition 
+$S^{[0,\infty)}$ which we call $\tilde{\tau}_1$
+(of course if $X$ is the canonical process $\tau_1=\tilde{\tau}_1$).  
+Let $B$ be a measurable set in $S^{[0,\infty)}$ and define the set
 \begin{align*}
-D([0,\infty) ; S) \overset{(id, \tau_1)}  \to D([0,\infty) ; S) \times
+\tilde{B} &= \lbrace f \in D([0,\infty) \mid \theta_{\tilde{\tau}_1(f)} f \in
+B \rbrace
+\end{align*}
+By writing the indicator of $\tilde{B}$
+as the composition 
+\begin{align*}
+D([0,\infty) ; S) \overset{(id, \tilde{\tau}_1)}  \to D([0,\infty) ; S) \times
 [0, \infty)
 \overset{\theta} \to D([0,\infty) ; S) \overset{\characteristic{B}}
 \to \reals
 \end{align*}
-(recall that $\theta$ as above is measurable by Lemma \ref{MeasurabilityOfShiftOperator}).
+we see that $\tilde{B}$ is also measurable
+(recall that $\theta$ as above is measurable by Lemma
+\ref{MeasurabilityOfShiftOperator}).  It is also noted that we have
+the equality $\lbrace X \in \tilde{B} \rbrace = \lbrace
+\theta_{\tau_1} X \in B \rbrace$.
 
 Let $\tau^t_1 = \inf \lbrace s \geq
-t \mid X_s \neq x \rbrace$ and note that $\tau^t_1(X) =
-\tau_1(\theta_t X) + t$.   From this we get
+t \mid X_s \neq X_t \rbrace$ and note that $\tau^t_1(X) =
+\tilde{\tau}_1(\theta_t X) + t$.   From this we get
 \begin{align*}
-\left( \theta_{\tau^t_1}X \right)_s &= X(\tau^t_1(X) + s) =
-X(\tau_1(\theta_tX) + t + s) = \left(\theta_{\tau_1(\theta_t X)} \circ \theta_tX
+\left( \theta_{\tau^t_1}X \right)_s &=
+X(\tilde{\tau}_1(\theta_tX) + t + s) = \left(\theta_{\tilde{\tau}_1(\theta_t X)} \theta_tX
 \right)_s
 \end{align*} 
-Now we can compute (in rather excruciating detail I might add)
+Now we can compute (in rather excruciating detail I might add) using
+the fact that $\tau^t_1 = \tau_1$ on the set $\lbrace \tau_1 >
+t \rbrace$, the Markov Property of $X$, the definition of $\tilde{B}$ and the fact that $X_t = x$ on
+$\lbrace \tau_1 > t \rbrace$ to see
 \begin{align*}
 \probability{\tau_1 > t ; \theta_{\tau_1}X \in B}
 &=
 \probability{\tau_1 > t ; \theta_{\tau^t_1}X \in B}\\
 &=
 \probability{\tau_1 > t ;
-  \cexpectationlong{\mathcal{F}_t}{\theta_{\tau_1(\theta_t X)}\circ \theta_t X \in B}}\\
+  \cexpectationlong{\mathcal{F}_t}{\theta_{\tilde{\tau}_1(\theta_t X)} \theta_t X \in B}}\\
 &=
 \probability{\tau_1 > t ;
-  \cexpectationlong{\mathcal{F}_t}{\phi(\theta_t X)}}\\
+  \cprobability{\mathcal{F}_t}{\theta_t X \in \tilde{B}}}\\
 &=
 \probability{\tau_1 > t ;
-  \sexpectation{\phi}{X_t}}\\
-&= \probability{\tau_1 > t } \sexpectation{\phi}{x}\\
-&= \probability{\tau_1 > t } \probability{\phi(X)}\\
+  \sprobability{\tilde{B}}{X_t}}\\
+&= \probability{\tau_1 > t } \sprobability{\tilde{B}}{x}\\
 &= \probability{\tau_1 > t } \probability{\theta_{\tau_1} X \in B}\\
 \end{align*}
-
 \end{proof}
+
+With the distribution of first jump time available we can now see that
+a the first jump time is either almost surely finite or almost surely
+infinite depending on whether the process starts in a non-absorbing or
+absorbing state.
+\begin{cor}\label{AbsorbingDichotomy}Let $\probabilityop_x$ be a
+  Markov family for pure jump-type Markov process and let $\tau_1$ be
+  the first jump time then
+\begin{align*}
+\sprobability{\tau_1 < \infty} {x} &= \begin{cases}
+0 & \text{when $x$ is non-absorbing} \\
+1 & \text{when $x$ is absorbing}
+\end{cases}
+\end{align*}
+\end{cor}
+\begin{proof}
+By Lemma \ref{PureJumpFirstJumpTime} we know that for $x$
+non-absorbing $\sexpectation{\tau_1}{x} < \infty$ which implies
+$\sprobability{\tau_1 < \infty}{x} < \infty$.  
+\end{proof}
+
+It should be noted that in the literature it is very uncommon to make
+the subtle distinction between the interpretation of $\tau_1$ as
+either a random variable or a function on $D([0, \infty); \reals)$.
+On the one hand, authors may deal with the issue by glossing over the
+distinction and abusing notation through the use of $\tau_1$ to denote
+both functions.  On the other hand authors may try to define the
+problem away by restricting attention to the canonical case; this
+restriction later biting the reader when results proven in the
+canonical case are implicitly extended to the non-canonical case.  At
+some point we will start to take the abuse of notation approach
+but we want to have some examples in which all of the fine
+distinctions are made so that the reader can refer back to them in
+times of confusion.
 
 Based on the previous result we see that the distribution of the first
 jump of a pure
@@ -1278,7 +2522,13 @@ c(x) &=\begin{cases}
 \end{cases}
 \end{align*}
  the \emph{jump transition kernel} to be
-  $\mu(x,B) = \sprobability{\theta_{\tau_1}X \in B}{x}$ and the \emph{rate
+ \begin{align*}
+\mu(x,B) &= \begin{cases}
+\sprobability{\theta_{\tau_1}X \in B}{x} & \text{ if $x$ is non-absorbing} \\
+\delta_x(B) & \text{ if $x$ is absorbing}
+\end{cases}
+\end{align*} 
+and the \emph{rate
     kernel} to be $\alpha(x,B) = c(x) \mu(x,B)$.  
 \end{defn}
 Note that in the above definition we are thinking of the Markov
@@ -1300,8 +2550,8 @@ We know that $\probabilityop_x$ is a kernel by Lemma
 measurable function of $x$ by Lemma
 \ref{KernelTensorProductMeasurability}.  Lastly we see that 
 \begin{align*}
-\lbrace x \text{ is non-absorbing} \rbrace &= \sprobability{\tau_1 <
-  \infty}{x}
+\lbrace x \text{ is non-absorbing} \rbrace &= \lbrace \sprobability{\tau_1 <
+  \infty}{x} = 1 \rbrace
 \end{align*}
 is measurable because $\probabilityop_x$ is a kernel; thus $c(x)$ is measurable.
 
@@ -1315,32 +2565,39 @@ To see that $\mu(x,B)$ is a measurable function of $\alpha(x,B)$ just
 observe that 
 \begin{align*}
 \mu(x,B) &= \begin{cases}
-\alpha(x,B)/\alpha(x, S^{[0,\infty)}) & \text{if $\alpha(x, \cdot)
+\alpha(x,B)/\alpha(x, S) & \text{if $\alpha(x, S)
   \neq 0$} \\
-\delta_x(B) & \text{if $\alpha(x, \cdot) = 0$}
+\delta_x(B) & \text{if $\alpha(x, S) = 0$}
 \end{cases}
 \end{align*}
 \end{proof}
 
-Extending these ideas further we see that every pure jump-type Markov
+Extending these ideas further we will see that every pure jump-type Markov
 process decomposes into a discrete time Markov chain that describes
-the jumps that occur and a sequence of independent exponential random
+the state transition of the jumps that occur and a sequence of independent exponential random
 variables that describe the time between jumps.   This make intuitive sense given the
 last lemma and the Strong Markov property: our process begins by
 waiting for an exponentially distributed time then makes an
 independent jump to a new state; by the Strong Markov property the
 process starts afresh in the new state waits for another independent
 exponentially distributed time and makes another independent jump and
-so on.  The subtlety arises because the heuristic argument just given
+so on. 
+One subtlety arises because the heuristic argument just given
 ignores the fact that our process may jump into an absorbing state.
-Handling that problem and making things precise is the job of the
+The other subtlety is that the mean time to the next jump depends on
+the current state.  If we normalize by the rate function of the
+current state then the means are all unity and we might be able
+``integrate'' the waiting times into the single source of randomness
+that a sequence of i.i.d. exponential random variables would provide.
+Handling these problems and making things precise is the job of the
 next theorem.
 
 \begin{thm}Let $X$ be a pure jump Markov process with rate kernel
-  $\alpha=c\mu$, then there is a Markov process $Y$ on $\integers_+$ with $Y$ has transition kernel $\mu$
+  $\alpha=c\mu$ and jump times $\tau_0, \tau_1, \dotsc$, then there is a Markov process $Y$ on $\integers_+$ with transition kernel $\mu$
   and a
   sequence of i.i.d. exponential random variables $\gamma_0, \gamma_1,
-  \dotsc$ of rate $1$ that are independent of $Y$ such that
+  \dotsc$ of rate $1$ that are independent of $Y$ such that for all $n
+  \geq 1$ 
 \begin{align*}
 \tau_n &= \begin{cases}
 \sum_{k=0}^{n-1} \frac{\gamma_k}{c(Y_k)} &\text{when $c(Y_k)
@@ -1367,16 +2624,7 @@ constructing the $\gamma_n$ and validating the Markov property.
 Our first real task is to understand the relationship between the condition
 $\lbrace \tau_n < \infty \rbrace$ and the condition $\lbrace c(Y_{n-1})
 \neq 0 \rbrace$ in order to make proper sense of the expression for
-$\tau_n$.  One of the critical facts in these calculation is the fact
-that 
-\begin{align}\label{AbsorbingDichotomy}
-\sprobability{\tau_1 < \infty} {x} &= \begin{cases}
-0 & \text{when $c(x) = 0$ } \\
-1 & \text{when $c(x) \neq 0$}
-\end{cases}
-\end{align}
-which is a consequence of Lemma \ref{PureJumpFirstJumpTime} and the
-definition of $c(x)$.
+$\tau_n$.  
 
 Claim: $\tau_n < \infty$ almost surely when $c(Y_{n-1}) \neq 0$ and
 $\tau_{n-1} < \infty$
@@ -1414,10 +2662,117 @@ Calculate
 &= \probability{c(Y_{n-1}) = 0; \tau_{n-1} < \infty;
   \cprobability{\mathcal{F}_{\tau_{n-1}}}{\tau_1(\theta_{\tau_{n-1}(X)}(X)) < \infty }} \\
 &= \probability{c(Y_{n-1}) = 0; \tau_{n-1} < \infty;
-  \sprobability{\tau_1 < \infty }{Y_{n-1}}} = 0 \text{ by \eqref{AbsorbingDichotomy}}\\
+  \sprobability{\tau_1 < \infty }{Y_{n-1}}} = 0 \text{ by Corollary \ref{AbsorbingDichotomy}}\\
+\end{align*}
+
+TODO: Here is the crux of where I get confused.  Kallenberg says the
+following:
+let $\gamma_1^\prime, \gamma_2^\prime, \dotsc$ be i.i.d. exponentially
+distributed of mean 1 and such that $\gamma_n^\prime \Independent X$
+which means we must be willing to break out of the canonical case.  Define 
+\begin{align*}
+\gamma_n &= (\tau_n - \tau_{n-1})c(Y_{n-1}) \characteristic{\tau_{n} <
+  \infty} + \gamma_n^\prime \characteristic{\tau_{n} =
+  \infty} 
+\end{align*}
+and we claim that if $c(x) > 0$ then we have
+\begin{align*}
+\sprobability{\gamma_1 > t; Y_1 \in B}{x} &= \sprobability{\tau_1 c(x)
+  > t; Y_1 \in B}{x} = e^{-t} \mu(x, B)
+\end{align*}
+and that if $c(x) = 0$ then 
+\begin{align*}
+\sprobability{\gamma_1 > t; Y_1 \in B}{x} &= \sprobability{\gamma^\prime_1 
+  > t; Y_1 \in B}{x} = e^{-t} \mu(x, B)
+\end{align*} 
+and this is where I get hung up on a subtlety.  The measure
+$\probabilityop_x$ was defined to be on the path space but $\gamma_1$
+is not defined on the path space but on an extension.  Probably the
+right way to make sense of this is to consider a Markov family as in
+Definition \ref{MarkovFamilyDefn} and then consider $\probabilityop_x$
+in that context.  Of course, we have not proven that Markov families
+exist (though I believe that is implicit in the proof of Markov
+processes and the proof of Daniell-Kolmogorov) nor have we proven that
+Markov families are preserved under extension.  In any case if we
+succeed in doing that then $\probabilityop_x$ is the probability
+measure on $\Omega$ under which $X$ is a Markov process with $X_0 = x$
+almost surely and computation is a straightforward application of
+Lemma \ref{PureJumpFirstJumpTime} and the independence of
+$\gamma_n^\prime$ and $X$.  The thing that I am unsatisfied with in this context
+is the fact that the statement of the result does not involve or
+require Markov
+families.  Also, what if $X$ has a non-point mass initial
+distribution?  Of course the other issue is that Kallenberg's formula for
+$\gamma_n$ is wrong!!!!  He writes
+\begin{align*}
+\gamma_n &= (\tau_n - \tau_{n-1})c(Y_n) \characteristic{\tau_{n-1} <
+  \infty} + \gamma_n^\prime \characteristic{\tau_{n-1} =
+  \infty} 
 \end{align*}
 \end{proof}
 
+It is useful to turn this description of  a pure jump-type Markov
+around and use it to construct a pure jump-type Markov process.  
+
+\begin{thm}Let $\alpha = c \mu$ be a kernel on $S$ such that
+  $\alpha(x, \lbrace x \rbrace) \equiv 0$, let $Y$ be a Markov chain
+  with transition kernel $\mu$ and let $\gamma_1, \gamma_2, \dotsc$ be
+  i.i.d. exponential random variables of mean 1 such that $\gamma_1,
+  \gamma_2, \dotsc \Independent Y$.  Pick an arbitrary element $s_0
+  \in S$ and define $\tau_0 = 0$ and for $n
+  \in \naturals$ we define
+\begin{align*}
+\tau_n &= \sum_{j=1}^n  \frac{\gamma_j}{c(Y_{j-1})} \\
+\intertext{and}
+X_t &= \begin{cases}
+Y_n \text{ for $\tau_n \leq t < \tau_{n+1}$} \\
+s_0 \text{ for $t \geq \sup_n \tau_n$} \\
+\end{cases}
+\end{align*}
+If $\lim_{n \to \infty} \tau_n = \infty$ a.s. for every initial distribution
+  of $Y$ then $X$ is a pure jump-type Markov process with rate kernel $\alpha$.
+\end{thm}
+\begin{proof}
+We consider $(Y, \gamma)$ as a Markov chain on the state space $S
+\times \reals_+$.  (TODO: Show that independence of $Y$ and $\gamma_1,
+\gamma_2, \dotsc$ implies this is valid).  Define $\tau_n$ and $X$ as
+in the statement of the theorem, let $\mathcal{G}_n$ be the filtration
+generated by $(Y, \gamma)$ and let $\mathcal{F}_t$ be the filtration
+generated by $X$.
+
+We need leverage our knowledge that $(Y,\gamma)$ is a Markov process
+to show that $X$ has the Markov property.  In order to do this we want
+to be able use information about conditional expectations with respect
+to $\mathcal{G}$ in order to compute conditional expectations with
+respect to $\mathcal{F}$; thus we first clarify the relationship
+between the two filtrations.  The trick is that in general a given
+$X_t$ can be equal to any $Y_n$ and therefore to restrict the set of
+possible $Y_n$ we must restrict the number of jumps that occur before
+$t$.  In other words we must restrict the possible values of some
+$\tau_n$; in this way the random variables $\gamma_1, \gamma_2,
+\dotsc$ enter the picture.
+
+Claim: Let $t \geq 0$ and $n \in \naturals$ be fixed, then
+$\mathcal{G}_n \vee \lbrace \tau_{n+1} > t \rbrace$ and
+$\mathcal{F}_t$ agree on $\lbrace \tau_n \leq t < \tau_{n+1}\rbrace$.
+Furthermore $\lbrace \tau_n \leq t < \tau_{n+1}\rbrace$ is
+$\mathcal{G}_n \vee \lbrace \tau_{n+1} > t\rbrace\cap \mathcal{F}_t$-measurable.
+
+The $\mathcal{G}_n \vee \lbrace \tau_{n+1} > t \rbrace$ of $\lbrace
+\tau_n \leq t < \tau_{n+1}$ is immediate as $\tau_n$ is a function of
+$\gamma_1, \dotsc, \gamma_n$ and $Y_0, \dotsc, Y_{n-1}$ and therefore is
+$\mathcal{G}_n$ measurable.  To see $\mathcal{F}_t$-measurability
+first note that, by construction, $\tau_n$ is the $n^{th}$ jumping
+time of $X$ (TODO: What about the fact that we have probability zero
+event that $Y_m = Y_{m+1}$?  This seems like a real issue since $X$
+cannot detect $\tau_n$ unless the value of $X$ changes there.  What we
+do know is that if $X$ sees $n$ jumps then at least $n$ of the timers
+$\gamma$ have gone off; maybe this is enough...)
+TODO:
+
+Note that even here we have $Y$ assumed to be a Markov family and we
+are constructing $X$ as a Markov family.
+\end{proof}
 \section{Feller Processes}
 
 We now specialize to the case of time homogeneous Markov processes and
@@ -1432,12 +2787,12 @@ family of transition kernels is a single parameter family of kernels
 $\mu_t$.  Note that in the discrete time case it is clear that the
 entire family of kernels is generated by the single time unit kernel
 $\mu = \mu_1$ via kernel multiplication $\mu_n = \mu^{n}$ (in
-the case of Markov chains this is just matrix multiplication).  The
+the case of discrete time Markov chains this is just matrix multiplication).  The
 first question that we will pursue is whether there is an analogy in
 the continuous time case.  The Chapman Kolmogorov relation gives us a
 hint on how to proceed.  In the time homogeneous case the Chapman
 Kolmogorov relation says that $\mu_s \mu_t = \mu_{s+t}$ which is the
-\emph{semigroup property} and suggest that we may be able to write
+\emph{semigroup property} and suggests that we may be able to write
 $\mu_s$ as $exp(s A)$ for some appropriately defined $A$.  With
 some additional assumptions this may be done, but first we want to
 recast the transition kernels in a different light in which these

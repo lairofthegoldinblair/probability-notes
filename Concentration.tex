@@ -137,17 +137,16 @@ $\xi$, we turn to the case of the sum.
 Suppose $\xi$ is subgaussian and calculate:
 \begin{align*}
 \expectation{e^{t\xi}} &= \int_0^\infty \probability{e^{t\xi} \geq
-    \lambda} d\lambda \\
-&= \int_{-\infty}^\infty \probability{e^{t\xi} \geq e^{t\eta}} t
+    \lambda} d\lambda 
+= \int_{-\infty}^\infty \probability{e^{t\xi} \geq e^{t\eta}} t
 e^{t\eta} d\eta \\
-& = \int_{-\infty}^\infty \probability{\xi \geq \eta} t
-e^{t\eta} d\eta \\
-& \leq \int_{-\infty}^\infty C t
-e^{t\eta - c\eta^2} d\eta  \\
-& = C t e^{\frac{t^2}{4c}}\int_{-\infty}^\infty 
+&= \int_{-\infty}^\infty \probability{\xi \geq \eta} t
+e^{t\eta} d\eta 
+\leq \int_{-\infty}^\infty C t e^{t\eta - c\eta^2} d\eta  
+= C t e^{\frac{t^2}{4c}}\int_{-\infty}^\infty 
 e^{-\left(\sqrt{c}\eta - \frac{t}{2\sqrt{c}}\right)^2} d\eta \\
-&= C^\prime t e^{\frac{t^2}{4c}} \\
-&\leq C^\prime e^{\frac{5c t^2}{4c}} 
+&= C^\prime t e^{\frac{t^2}{4c}} 
+\leq C^\prime e^{\frac{5c t^2}{4c}} 
 \end{align*}
 
 Now assume that we have $\expectation{e^{t\xi}} \leq C e^{Ct^2}$ for
@@ -156,9 +155,9 @@ chosen later and proceed by using first order
 moment method:
 \begin{align*}
 \probability{\xi \geq \lambda} &= \probability{e^{t\xi} \geq
-  e^{t\lambda}} \\
-&\leq \frac{\expectation{e^{t\xi}}}{e^{t\lambda}} \\
-&\leq C e^{Ct^2 - t\lambda} \\
+  e^{t\lambda}} 
+\leq \frac{\expectation{e^{t\xi}}}{e^{t\lambda}} 
+\leq C e^{Ct^2 - t\lambda} \\
 \end{align*}
 Now we pick $t$ to minimize the upper bound derived above; simple
 calculus shows this occcurs at $t=\frac{\lambda}{2C}$.  Subtituting
@@ -179,12 +178,13 @@ therefore taking the union bound we get
 Now consider absolute moments of subgaussian variables.  We can assume
 that $\xi \geq 0$ and calculate as before:
 \begin{align*}
-\expectation{\xi^k} &= \int_0^\infty \probability{\xi^k \geq x} dx \\
-&= k\int_0^\infty \probability{\xi^k \geq y^k} y^{k-1} dy \\
-&= k C \int_0^\infty y^{k-1} e^{-cy^2} dy \\
-&= k C \frac{c^{k-3}}{2} \int_0^\infty x^{\frac{k}{2}-1} e^{-x} dx \\
-&= k C \frac{c^{k-3}}{2} \Gamma\left(\frac{k}{2}\right) \\
-&\leq k C \frac{c^{k-3}}{2} \left(\frac{k}{2}\right)^\frac{k}{2} \\
+\expectation{\xi^k} 
+&= \int_0^\infty \probability{\xi^k \geq x} dx 
+= k\int_0^\infty \probability{\xi^k \geq y^k} y^{k-1} dy \\
+&= k C \int_0^\infty y^{k-1} e^{-cy^2} dy 
+= k C \frac{c^{k-3}}{2} \int_0^\infty x^{\frac{k}{2}-1} e^{-x} dx \\
+&= k C \frac{c^{k-3}}{2} \Gamma\left(\frac{k}{2}\right) 
+\leq k C \frac{c^{k-3}}{2} \left(\frac{k}{2}\right)^\frac{k}{2} \\
 \end{align*}
 To go the other direction, assume $\expectation{|\xi|^k} \leq
 (Ck)^\frac{k}{2}$ and pick a constant $0 < c < \frac{e}{2C}$ 

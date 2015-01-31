@@ -1,4 +1,4 @@
-\section{Martingales and Optional Times}
+\chapter{Martingales and Optional Times}
 TODO:  First introduce discrete time martingales then do stopping
 times and lastly extend to continuous time martingales (at least the
 basics).
@@ -816,7 +816,7 @@ Another useful fact is
 TODO:
 \end{proof}
 
-\subsection{Discrete Time Martingales}
+\section{Discrete Time Martingales}
 For the special case of index set $T = \integers_+$, we often call a
 martingale a \emph{discrete time martingale}.  Discrete martingales are well
 undertsood objects and as it turns out many important results about discrete
@@ -1179,7 +1179,7 @@ Y_n^+ - Y_n^- = \lim_{m \to \infty}
 \end{align*}
 \end{proof}
 
-\subsubsection{Martingale Inequalities}
+\subsection{Martingale Inequalities}
 Intuitively one thinks of martingales as being essentially constant
 and submartingales as essentially increasing.  These intuitions can be
 helpful when thinking of the types of properties that martingales
@@ -2100,7 +2100,305 @@ $\cexpectationlong{\mathcal{F}_n}{\xi} \tolp{1} \xi$ follows from the
 almost sure convergence and Lemma \ref{LpConvergenceUniformIntegrability}.
 \end{proof}
 
-\subsection {Continuous Time Martingales and Weakly Optional Times}
+\subsection{Martingale Central Limit Theorem}
+
+Many of the important classical results of probability theory are
+statements about i.i.d. sequences of random variables (e.g. the Law of
+Large Numbers and the Central Limit Theorem).  In our presentation of
+the Lindeberg Central Limit Theorem we actually showed that the result
+holds under a weaker condition than identical distribution.  It is a
+natural question to understand whether one can also relax the
+condition of independence and still have Gaussian convergence.  Indeed
+this is true and the introduction of martingales was partly motivated
+by a desire to have a well defined dependence structure that could
+facilitate such investigations.  Indeed one of the first appearances
+of the martingale condition (which predated the use of the term
+martingale) was in Levy's proof of a central limit theorem.  Our next task is to extend the
+Lindeberg Central Limit Theorem to the case of \emph{martingale
+  differences}.  The proof we give uses characteristic functions but
+we note that with stronger hypotheses we can extend the proof
+technique of Theorem \ref{LindebergTheorem} to martingale differences
+as Levy did.
+
+\begin{defn}Let $\mathcal{F}_n$ be a filtration and let $X_n$ be a
+  sequence of random variables, then we say that $X_n$ is a
+  \emph{martingale difference sequence} if and only if $M_n =
+  \sum_{j=0}^n X_j$ is an $\mathcal{F}$-martingale.
+\end{defn}
+
+\begin{prop}$X_n$ is a martingale difference sequence if and only if
+  $X_n$ is $\mathcal{F}$-adapted, each $X_n$ is integrable and 
+  $\cexpectationlong{\mathcal{F}_{n-1}}{X_n} = 0$ a.s. for all $n \in \naturals$.
+\end{prop}
+\begin{proof}
+Clearly if $X_n$ is a martingale difference then we let $M_n =
+\sum_{j=0}^n X_j$ and write $X_n = M_n - M_{n-1}$ to see that $X_n$ is
+$\mathcal{F}$-adapted and integrable.  Moreover the martingale
+property of $M_n$ show
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{n-1}}{X_n} =
+  \cexpectationlong{\mathcal{F}_{n-1}}{M_n - M_{n-1}} =
+  \cexpectationlong{\mathcal{F}_{n-1}}{M_n }- M_{n-1} = 0
+\end{align*}
+
+On the other hand if $X_n$ is $\mathcal{F}$-adapted, integrable and
+$\cexpectationlong{\mathcal{F}_{n-1}}{X_n} = 0$ then if we define $M_n
+= \sum_{j=1}^n X_j$ it is easily seen that $M_n$ is $\mathcal{F}$
+adapted and integrable and moreover
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{n-1}}{M_n}  =
+  \cexpectationlong{\mathcal{F}_{n-1}}{X_n}+
+  \cexpectationlong{\mathcal{F}_{n-1}}{M_{n-1}}  = M_{n-1}
+\end{align*}
+which shows that $M_n$ is an $\mathcal{F}$-martingale.
+\end{proof}
+
+\begin{prop}\label{SquareIntegrableMartingaleDifferenceWhiteNoise}Let $X_n$ be a martingale difference sequence with
+  $\expectation{X_n^2} < \infty$ then it follows that
+  $\expectation{X_n X_m} = 0$ for $m \neq n$.
+\end{prop}
+\begin{proof}
+Assume $m < n$ then it follows that from Cauchy Schwartz that
+$\expectation{\abs{X_m} \abs{X_n}} \leq \expectation{X^2_m}^{1/2}
+\expectation{X^2_n}^{1/2} < \infty$ so $X_m X_n$ is integrable.  Thus
+we can compute using conditional expectations and the martingale
+difference property
+\begin{align}\label{MartingaleDifferenceLindebergCondition}
+\expectation{X_m X_n} &= \expectation{X_m
+                        \cexpectationlong{\mathcal{F}_m}{X_n} } = 0
+\end{align}
+\end{proof}
+
+\begin{thm}[Martingale Central Limit Theorem]Let $\mathcal{F}_n$ be a
+  filtration and let $X_n$ be a martingale
+  difference sequence such that there is a $\sigma^2 > 0$ such that $n^{-1} \sum_{j=1}^n
+  \cexpectationlong{\mathcal{F}_{j-1}}{X^2_j} \toprob \sigma^2$ and 
+\begin{align*}
+\frac{1}{n} \sum_{j=1}^n  \cexpectationlong{\mathcal{F}_{j-1}}{X^2_j
+  \characteristic{\abs{X_j} > \epsilon \sqrt{n}}} \toprob 0
+\end{align*}
+for every $\epsilon > 0$ then it follows that $\frac{1}{\sqrt{n}}
+\sum_{j=1}^n X_j \todist N(0,\sigma^2)$.
+\end{thm}
+\begin{proof}
+The first step of the proof is to set up a truncation so that we can
+reduce to a case in which we have some boundedness.
+For $k=1, \dotsc, n$, let $A^n_k = \lbrace n^{-1} \sum_{j=1}^k
+  \cexpectationlong{\mathcal{F}_{j-1}}{X^2_j} \leq 2 \sigma^2 \rbrace$
+  and to simplify notation in a few spots we define $A^n_m = \emptyset$ for any $m > n$.
+Note that $A^n_k$ is $\mathcal{F}_{k-1}$ measurable, that 
+  $A^n_n \subset A^n_{n-1} \subset \dotsb \subset A^n_1$ and 
+\begin{align*}
+\lim_{n \to \infty} \probability{A^n_n} &\leq \lim_{n \to \infty} \probability{\abs{n^{-1} \sum_{k=1}^n
+  \cexpectationlong{\mathcal{F}_{k-1}}{X^2_k} - \sigma^2} \leq \sigma^2}
+                                          = 1
+\end{align*}
+
+Now define $X_{n,k} = \frac{1}{\sqrt{n}} X_k \characteristic{A_k^n}$
+and observe that because $A^n_k$ is $\mathcal{F}_{k-1}$-measurable
+$X_{n,k}$ is also a martingale difference sequence.  In addition we
+can recast the hypotheses of the theorem in terms of the $X_{n,k}$:
+\begin{align*}
+\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{n,k}^2} 
+&\leq 2\sigma^2 \\
+\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{n,k}^2} 
+&\toprob \sigma^2 \\
+\sum_{k=1}^n  \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k}
+  \characteristic{\abs{X_{n,k}} > \epsilon}} 
+&\toprob 0
+\end{align*}
+To see the first inequality we use $\mathcal{F}_{k-1}$-measurability of $A^n_k$, the pull 
+out rule of conditional expectations and the definition of $A^n_k$ to compute
+\begin{align*}
+&\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{n,k}^2} (\omega) =
+\frac{1}{n} \sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{k}^2
+                                                               \characteristic{A^n_k}}
+                                                                        (\omega)
+=
+\frac{1}{n} \sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{k}^2
+                                                               }(\omega)\characteristic{A^n_k}(\omega)
+  \\
+&= \begin{cases}
+\frac{1}{n} 
+\characteristic{A^n_j}(\omega)
+\sum_{k=1}^j
+\cexpectationlong{\mathcal{F}_{k-1}}{X_{k}^2}(\omega)
+& \text{for $\omega \in A^n_j \setminus A^n_{j+1}$ and $j=1, \dotsc, n$} \\                                                               
+0 & \text{for $\omega \notin A^n_1$}
+\end{cases} \\
+&\leq 2\sigma^2
+\end{align*}
+To see the second claim use Exercise \ref{ExConvProb1}, the fact that 
+$\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{n,k}^2}$ equals 
+$\frac{1}{n}\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{k}^2}$ on $A^n_n$, the fact that
+$\probability{A^n_n} \to 1$ and the hypothesis that 
+$\frac{1}{n}\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X_{k}^2} \toprob \sigma^2$.
+
+The third fact follows from the fact that $X_{n,k}^2 \leq
+\frac{1}{n}X_k^2$ and the Lindeberg-like condition \eqref{MartingaleDifferenceLindebergCondition}.
+
+Having defined the truncated triangular array $X_{n,k}$ and given some
+estimates for it, we claim that it suffices to show that $\sum_{k=1}^n
+X_{n,k} \todist N(0, \sigma^2)$.  Indeed for any $\epsilon > 0$ we have
+\begin{align*}
+\probability{\abs{\sum_{k=1}^n X_{n,k} - \frac{1}{\sqrt{n}}
+  \sum_{k=1}^n X_k} > \epsilon}
+&\leq \probability{\sum_{k=1}^n X_{n,k} \neq \frac{1}{\sqrt{n}}
+  \sum_{k=1}^n X_k} \\
+&\leq 1 - \probability{A^n_n}  \to 0
+\end{align*}
+thus the claim follows by Slutsky's Theorem \ref{Slutsky}.
+
+
+Recall from Taylor's Theorem we have the $\abs{e^{ix} -1 -ix} \leq
+\frac{x^2}{2}$ and moreoer $\abs{e^{ix} -1 -ix + \frac{x^2}{2}} =
+x^2R(x)$ with $\lim_{x \to 0} R(x) = 0$ and $\abs{R(x)} \leq 1$ (see
+Theorem \ref{BasicComplexExponentialInequalities} where these specific
+estimates are worked out).  The first estimate is good for large $x$
+and the second is good for small $x$ so we combine them into single
+estimate.
+Let $\epsilon > 0$ be given and pick
+$\delta > 0$ such that $\abs{R(x)} < \epsilon$ for $\abs{x} \leq
+\delta$ then we have the estimate
+\begin{align*}
+\abs{e^{ix} -1 -ix + \frac{x^2}{2}} &\leq
+x^2 \characteristic{\abs{x} \geq \delta} + \epsilon x^2
+\end{align*}
+Define 
+\begin{align*}
+R_{n,k}(u) &= 
+\cexpectationlong{\mathcal{F}_{k-1}}{e^{iuX_{n,k}} -1-iuX_{n,k}}
+\end{align*}
+and we have estimates
+\begin{align*}
+\abs{R_{n,k}(u)}
+&\leq \cexpectationlong{\mathcal{F}_{k-1}}{\abs{e^{iuX_{n,k}} -1-iuX_{n,k}}}
+\leq \frac{u^2}{2} \cexpectationlong{\mathcal{F}_{k-1}}{\abs{X^2_{n,k}} }\\
+\sum_{k=1}^n \abs{R_{n,k}(u)} 
+&\leq
+\frac{u^2}{2} \sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{\abs{X^2_{n,k}} }
+\leq u^2 \sigma^2 \\
+\end{align*}
+
+Claim: For every $u \in \reals$ we have $\max_{1 \leq k \leq n} \abs{R_{n,k}(u)} \tolp{1} 0$.
+
+We have the following estimate
+\begin{align*}
+\max_{1 \leq k \leq n} \abs{R_{n,k}(u)}
+&\leq
+\frac{u^2}{2}\max_{1 \leq k \leq n} \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k}} \\
+&=
+\frac{u^2}{2}\max_{1 \leq k \leq n} \lbrace \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k} (\characteristic{\abs{X_{n,k}} > \delta}+ 
+\characteristic{\abs{X_{n,k}} > \delta})}  \rbrace \\
+&=
+\frac{u^2}{2}\max_{1 \leq k \leq n} \lbrace \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k} \characteristic{\abs{X_{n,k}} > \delta^2}} + 
+\delta \rbrace \\
+&=
+\frac{u^2}{2} \left(\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k} \characteristic{\abs{X_{n,k}} > \delta^2}} + 
+\delta \right ) \toprob \frac{u^2 \delta^2}{2}\\
+\end{align*}
+Now we can let $\delta \to 0$ to conclude that $\max_{1 \leq k \leq n} \abs{R_{n,k}(u)} \toprob 0$.  We also have
+$\max_{1 \leq k \leq n} \abs{R_{n,k}(u)} \leq \sum_{k=1}^n \abs{R_{n,k}(u)} < u^2 \sigma^2$.  In particular 
+$\max_{1 \leq k \leq n} \abs{R_{n,k}(u)}$ is uniformly integrable and thus by Lemma \ref{LpConvergenceUniformIntegrability} 
+$\max_{1 \leq k \leq n} \abs{R_{n,k}(u)} \tolp{1} 0$.
+
+
+Claim: $\lim_{n \to \infty} \expectation{\sum_{k=1}^n \abs{R_{n,k}(u)}^2} = 0$.
+
+We have 
+\begin{align*}
+\lim_{n \to \infty} \expectation{\sum_{k=1}^n \abs{R_{n,k}(u)}^2}
+&\leq \lim_{n \to \infty} \expectation{\max_{1 \leq k \leq n} \abs{R_{n,k}(u)} \sum_{k=1}^n \abs{R_{n,k}(u)}} \\
+&\leq u^2 \sigma^2 \lim_{n \to \infty} \expectation{\max_{1 \leq k \leq n} \abs{R_{n,k}(u)} } = 0\\
+\end{align*}
+
+Claim: $\sum_{k=1}^n R_{n,k} \toprob -u^2 \sigma^2/2$.
+
+We start with the estimate
+\begin{align*}
+\sum_{k=1}^n \abs{R_{n,k} + \frac{u^2}{2} \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k}}}
+&=
+\sum_{k=1}^n \abs{\cexpectationlong{\mathcal{F}_{k-1}}{e^{iuX_{n,k}} -1 - iuX_{n,k} + \frac{u^2 X^2_{n,k}}{2}}} \\
+&\leq
+\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{u^2 X^2_{n,k} \characteristic{\abs{X_{n,k}} > \delta/\abs{u}} + \epsilon u^2 X^2_{n,k}} \\
+&\leq
+u^2 \sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k} \characteristic{\abs{X_{n,k}} > \delta/\abs{u}}} +
+ 2 \epsilon u^2 \sigma^2 \toprob  2 \epsilon u^2 \sigma^2
+\end{align*}
+Now let $\epsilon \to 0$ to conclude that $\sum_{k=1}^n \abs{R_{n,k} + \frac{u^2}{2} \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k}}} \toprob 0$.  The fact that $\sum_{k=1}^n \cexpectationlong{\mathcal{F}_{k-1}}{X^2_{n,k}} \toprob \sigma^2$ means that the claim is proven.
+
+Claim: $\prod_{k=1}^n (1 - R_{n,k}) \tolp{1} e^{u^2 \sigma^2/2}$ and in addition $\prod_{k=1}^m \abs{1 - R_{n,k}} \leq e^{u^2 \sigma^2}$ for all $n \in \naturals$ and $1 \leq m \leq n$.
+
+By Taylor's Theorem (specifically Corollary \ref {TaylorsTheoremRemainderEstimate}) we may write $\log(1-x) = -x + xS(x)$ with $\lim_{x \to 0} S(x) = 0$.  Let $\epsilon > 0$ be given and select $\delta > 0$ such that $\abs{S(x)} < \epsilon$ for $\abs{x} < \delta$.  It follows that
+\begin{align*}
+\lim_{n \to \infty} \probability{\max_{1 \leq k \leq n} \abs{S(R_{n,k}(u))} \geq \epsilon} 
+&\leq \lim_{n \to \infty} \probability{\max_{1 \leq k \leq n} \abs{R_{n,k}(u)} \geq \delta}  = 0
+\end{align*}
+so $\max_{1 \leq k \leq n}  \abs{S(R_{n,k}(u))} \toprob 0$.   From this it follows that 
+\begin{align*}
+\abs{\sum_{k=1}^n R_{n,k}(u) S(R_{n,k}(u)) } 
+&\leq
+\max_{1 \leq k \leq n}  \abs{S(R_{n,k}(u))} \sum_{k=1}^n \abs{R_{n,k}(u)}  \\
+&\leq 
+u^2 \sigma^2 \max_{1 \leq k \leq n}  \abs{S(R_{n,k}(u))} \toprob 0
+\end{align*}
+Therefore  (TODO: What is the deal with what branch we need to be on?  Don't we need to know this is non-zero as well?)
+\begin{align*} 
+\prod_{k=1}^n (1 - R_{n,k})
+&=e^{\sum_{k=1}^n \log(1 - R_{n,k})}
+=e^{-\sum_{k=1}^n R_{n,k} }e^{\sum_{k=1}^n R_{n,k} S(R_{n,k})} \toprob e^{u^2 \sigma^2/2}
+\end{align*}
+We also have
+\begin{align*}
+\prod_{k=1}^n \abs{1 - R_{n,k}(u)} 
+&\leq \prod_{k=1}^n (1 + \abs{R_{n,k}(u)} ) 
+\leq \prod_{k=1}^n e^{\abs{R_{n,k}(u)} }
+= e^{\sum_{k=1}^n \abs{R_{n,k}(u)}} \leq e^{u^2 \sigma^2}
+\end{align*}
+From this we also know that $\prod_{k=1}^n (1 - R_{n,k})$ is uniformly integrable and therefore
+we can upgrade the convergence in probability to $L^1$ convergence (Lemma \ref{LpConvergenceUniformIntegrability}).
+
+Claim: $\lim_{n \to \infty} \abs{\expectation{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u)) - 1}}  = 0$.
+
+First note that because $R_{n,k}$ is $\mathcal{F}_{k-1}$-measurable and because $X_{n,k}$ is a martingale difference sequence we have for every $1 \leq k \leq n$,
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{k-1}}{e^{iuX_{n,k}} (1 - R_{n,k}(u))} &=
+(1 - R_{n,k}(u))\cexpectationlong{\mathcal{F}_{k-1}}{e^{iuX_{n,k}}} \\
+&=(1 - R_{n,k}(u))\cexpectationlong{\mathcal{F}_{k-1}}{e^{iuX_{n,k}} -1 -iuX_{n,k} + 1} \\
+&= (1 - R_{n,k}(u)) (1 + R_{n,k}(u)) = 1 - R_{n,k}^2(u)
+\end{align*}
+Applying this we can compute
+\begin{align*}
+&\expectation{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u)) }\\
+&=\expectation{\cexpectationlong{\mathcal{F}_{n-1}}{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u)) }} \\
+&=\expectation{\prod_{k=1}^{n-1} e^{iuX_{n,k}} (1 - R_{n,k}(u))\cexpectation{\mathcal{F}_{n-1}}{ e^{iuX_{n,n}} (1 - R_{n,n}(u))}} \\
+&=\expectation{\prod_{k=1}^{n-1} e^{iuX_{n,k}} (1 - R_{n,k}(u))} - \expectation{\prod_{k=1}^{n-1} e^{iuX_{n,k}} (1 - R_{n,k}(u)) R^2_{n,n}(u)} 
+\end{align*}
+This argument can be repeated $n-1$ more times to give us the identity
+\begin{align*}
+&\expectation{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u)) }\\
+&=1 - \sum_{m=1}^n \expectation{\prod_{k=1}^{m-1} e^{iuX_{n,k}} (1 - R_{n,k}(u)) R^2_{n,m}(u)} 
+\end{align*}
+from which we conclude 
+\begin{align*}
+\abs{\expectation{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u)) } - 1} 
+&\leq \sum_{m=1}^n \expectation{\abs{\prod_{k=1}^{m-1} e^{iuX_{n,k}} (1 - R_{n,k}(u)) R^2_{n,m}(u)}} \\
+&\leq \sum_{m=1}^n \expectation{\prod_{k=1}^{m-1} \abs{ 1 - R_{n,k}(u)} \abs{R_{n,m}(u)}^2}  \\
+&\leq e^{u^2\sigma^2} \sum_{m=1}^n \expectation{\abs{R_{n,m}(u)}^2}  \to 0\\
+\end{align*}
+
+Now we have everything to finish the proof of theorem.  We get
+\begin{align*}
+\lim_{n \to \infty} \abs{\expectation{e^{u^2 \sigma^2/2} \prod_{k=1}^n e^{iuX_{n,k}}} -1}  
+&\leq \lim_{n \to \infty} \abs{\expectation{e^{u^2 \sigma^2/2} \prod_{k=1}^n e^{iuX_{n,k}} - \prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u))} }  \\
+&+\lim_{n \to \infty} \abs{\expectation{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u))}-1} \\
+&\leq \lim_{n \to \infty} \expectation{ \prod_{k=1}^n \abs{e^{u^2 \sigma^2/2} - (1 - R_{n,k}(u))}} = 0
+\end{align*}
+from which we conclude that $\lim_{n \to \infty} \expectation{e^{iu\sum_{k=1}^n X_{n,k}}} = e^{-u^2 \sigma^2/2}$ which by
+the Glivenko-Levy Continuity Theorem \ref{GlivenkoLevyContinuity} shows $\sum_{k=1}^n X_{n,k} \todist N(0, \sigma^2)$.
+\end{proof}
+
+\section {Continuous Time Martingales and Weakly Optional Times}
 
 Our next goal is to extend the theory we've developed to a continuous
 time setting.  For the most part we proceed by using approximation
@@ -2387,11 +2685,6 @@ that $X_n$ is $L^1$ bounded (Lemma
 $\expectation{X_n}$ is bounded since $\abs{\expectation{X_n}} \leq \expectation{\abs{X_n}}$.
 \end{proof}
 
- TODO: Introduce complete right continuous filtration and existence of
-a cadlag version of martingales.  Say something about the nature of
-the modification (e.g. preservation of f.d.d.'s) and the fact that it
-is a modification.
-
 The martingale results for discrete time tell us quite a
 bit about what can happen in continuous time as well.  If we are given
 a submartingale on $\reals_+$ then we can restrict it to
@@ -2414,20 +2707,45 @@ specific type of regularity we aim for is that sample paths of the
 submartingale are right continuous and have left limits.  It is
 traditional to refer to such paths as cadlag which is an acronym
 derived from the French phrase \emph{continue \`{a} droits limite
-  \`{a} gauche}.  The reader may encounter the acronym derived from
-the English rcll but it seems to be less popular.
+  \`{a} gauche}.  The reader may encounter the acronym rcll derived from
+the English but the general consensus is that cadlag is more euphonious
+and is therefore preferred.  Moreover the French lends itself to the
+acronym caglad to describe paths that are continuous on the left and
+have right limits.  Processes with caglad paths are less common than
+those with cadlag paths but will come up as integrands in the theory
+of stochastic integration.
+
+One last subtle point is the difference between sample path properties
+being assumed to hold for every sample path versus only holding for
+almost every sample path.   As a general principle one might expect
+that we gloss over the distinction.  There is a subtle danger in doing
+so.  In the event that a process has a particular sample path property
+almost surely and is adapted to a given filtration $\mathcal{F}$,
+there is an indistinguishable process that has the sample path
+property everywhere but the latter process may no longer be adapted to
+$\mathcal{F}$.  Scenarios do come up in which the filtration must be
+repsected and therefore we call out the case of a process posessing
+cadlag sample paths almost surely as a separate case from the one in
+which it possess cadlag sample paths surely.
+
+\begin{defn}A stochastic process $X$ with time scale an subinterval of
+  $\reals$ is said to be \emph{cadlag} if every path $X_t$ has finite
+  left limits and is continuous on the right.  Such a process will be
+  said to be \emph{almost surely cadlag} if these path properties hold for
+  almost every sample path.
+\end{defn}
 
 The formal development of these ideas comes with a lot of technical
 baggage so before we jump into the details let's step
 back and think about what we can expect.  We discuss the martingale
 case here even though almost all of what we say applies equally to
-submartingales.  Lets suppose that we have an
+submartingales.  Let's suppose that we have an
 $\mathcal{F}$-martingale $X$ on $\reals_+$.  If we restrict a
-$X$ to $\rationals_+$ then the convergence
-theorems (and at their the base the upcrossing lemma) tells us that
+$X$ to $\rationals_+$ then the Martingale Convergence
+Theorem (and at its core the upcrossing lemma) tells us that
 almost surely on
 any bounded interval the restricted martingale has limits along all
-sequences.  Therefore at worst the restricted martingale on
+montone sequences.  Therefore at worst the restricted martingale on
 $\rationals_+$ has jump discontinuities (almost surely!).  This gives us hope that we
 can modify (in the colloquial sense) $X$ to create a new process $Y$
 on $\reals_+$ such that $Y$ is cadlag: simply define $Y_t$ for $t \in
@@ -2443,7 +2761,8 @@ with a right continuous one.
 
 We've already glossed over an issue that brings up a second key idea.
 The construction described only works \emph{almost surely}; we have to
-come up a different plan on the null set where $X_q$ is wild.  The easiest thing
+come up with a different plan on the null set where $X_q$ doesn't have
+limits.  The easiest thing
 to do is just to set $Y_t \equiv 0$ when this occurs.  Since the event
 of $X$ on $\rationals_+$ being ill-behaved has probability zero whatever it is we decide
 to do won't prevent $Y$ from being a version of $X$.  The issue is that
@@ -2537,30 +2856,31 @@ then $Z$ is a cadlag
 \item[(ii)]$X$ has a right
 continuous version if and only if $Z$ is a version of $X$.
 \item[(iii)]If $\mathcal{F}$ is right continuous then $Z$ is a version of $X$ if and only if $t \mapsto
-\expectation{X_t}$ is right continuous.  
+\expectation{X_t}$ is right continuous.  Moreover in this case, there
+is a version $\tilde{Z}$ with almost surely cadlag paths which is an $\mathcal{F}$-martingale.
 \end{itemize}
 \end{thm}
 \begin{proof}
-Pick $N \in \naturals$ and note that since $Y^+_q$ is a submartingale
-we have for all $q \in [0,N] \cap \rationals$
+Pick $t \geq 0$ and note that since $Y^+_q$ is a submartingale
+we have for all $q \in [0,t] \cap \rationals$
 \begin{align*}
 \expectation{Y^+_q} &\leq
-\expectation{\cexpectationlong{\mathcal{F}_q}{Y^+_N}} = \expectation{Y^+_N}
+\expectation{\cexpectationlong{\mathcal{F}_q}{Y^+_t}} = \expectation{Y^+_t}
 \end{align*}
 and by the same reasoning using the fact that $Y_q$ is a submartingale
 we know that $\expectation{Y_0} \leq \expectation{Y_q}$.  Together
 these imply 
 \begin{align*}
 \expectation{\abs{Y_q}} &= \expectation{Y^+_q}  + \expectation{Y^-_q}
-= 2\expectation{Y^+_q}  - \expectation{Y_q} \leq 2\expectation{Y^+_N}  - \expectation{Y_0} 
+= 2\expectation{Y^+_q}  - \expectation{Y_q} \leq 2\expectation{Y^+_t}  - \expectation{Y_0} 
 \end{align*}
-which implies that $Y_q$ restricted to $[0,N]$ is $L^1$-bounded.
+which implies that $Y_q$ restricted to $[0,t]$ is $L^1$-bounded.
 We can apply Theorem \ref{L1MartingaleConvergenceTheoremDiscrete} to
-the restricted submartingale $Y_q$ to construct $A_N \in \mathcal{F}_N$ with
-$\probability{A_N}=1$ such that for all increasing and decreasing
-sequences $q_n$ in $\rationals \cap [0,N]$ we have $Y_{q_n}$ converge
-on $A_N$.  So in particular $\lim_{q \to t^-} Y_q$ and $\lim_{q
-  \to t^+} Y_q$ exist for every $t \in [0,N]$ on $A_N$.  Taking the
+the restricted submartingale $Y_q$ to construct $A_t \in \mathcal{F}_t$ with
+$\probability{A_t}=1$ such that for all increasing and decreasing
+sequences $q_n$ in $\rationals \cap [0,t]$ we have $Y_{q_n}$ converges
+on $A_t$.  So in particular $\lim_{q \to t^-} Y_q$ and $\lim_{q
+  \to t^+} Y_q$ exist for every $t \in [0,t]$ on $A_t$.  Taking the
 intersection of $A = \cap_{N=1}^\infty A_N$ we see that  $\lim_{q \to t^-} Y_q$ and $\lim_{q
   \to t^+} Y_q$ exist for every $t \in \reals_+$ on $A \in
 \mathcal{F}_\infty$.  Note that the process $Z_t$ is
@@ -2584,7 +2904,7 @@ This shows $\lim_{s \to t^-} Z_s = \lim_{q \to t^-} Y_q$
 and in particular $Z_t$ has left limits.
 
 Now to see that $Z$ is a submartingale, let $0 \leq s < t < \infty$ be
-arbitrary and pick decreasing sequence $t_n \in \rationals_+$
+arbitrary and pick a decreasing sequence $t_n \in \rationals_+$
 such that $t_n \downarrow t$ and a decreasing sequence $s_n \in
 \rationals_+$ such that $s_n < t$ for all $n$ and  $s_n \downarrow s$.
 For each $n$ and $m$ we have
@@ -2593,9 +2913,10 @@ submartingale property of $X$.  By the Levy Downward Theorem
 \ref{JessenConditioningLimits} we know that $\lim_{m \to \infty}
 \cexpectationlong{\mathcal{F}_{s_m}}{Y_{t_n}} =
 \cexpectationlong{\mathcal{F}^+_{s}}{Y_{t_n}}$ a.s. and by definition
-$Z_s = \lim_{m \to \infty} Y_{s_m}$ therefore $Z_s
-\leq \cexpectationlong{\mathcal{F}_{s}}{Y_{t_n}}$ a.s.
-Again, by definition  $Y_{t_n} \toas Z_t$, furthermore as the sequence $t_n$ is bounded
+of $Z$ we know
+$Z_s = \lim_{m \to \infty} Y_{s_m}$ a.s. therefore $Z_s
+\leq \cexpectationlong{\mathcal{F}^+_{s}}{Y_{t_n}}$ a.s.
+Again, by the definition  of $Z$ we have $Y_{t_n} \toas Z_t$, furthermore as the sequence $t_n$ is bounded
 we have already shown
 $Y_{t_n}$ is $L^1$-bounded.  This allows us to apply Lemma
 \ref{BackwardSubmartingaleBoundedUniformlyIntegrable} to conclude that
@@ -2611,9 +2932,11 @@ where the last equality follows by Lemma \ref{ConditionalExpectationCompletions}
 
 It is worth noting that the submartingale property also holds with
 respect to the smaller filtration $\mathcal{G}_t$ alluded to above; the fact that the result is
-expressed in terms of the augmented filtration is due to the fact that
+expressed in terms of the augmented filtration is something of a
+tradition and is due to the fact that
 the augmented filtration proves to be necessary in subsequent theory.
-In fact when we get to the discussion of Girsanov theory it will be
+The tradition is not without its shortcomings; when we get to the
+discussion of Girsanov theory it will be
 inconvenient to require the full completion of $\mathcal{F}^+$.
 
 Suppose that $X$ has a right continuous version $W$.  Then by
@@ -2665,6 +2988,14 @@ argument backward, we conclude that
 \expectation{Z_t} = \lim_{t_n \to t} \expectation{X_{t_n}}
 \end{align*}
 which shows that $\expectation{X_t}$ is right continuous.
+
+To see that last piece, for each $t \geq 0$ define $\tilde{A}_t =
+\cap_{s > t} A_s$ and 
+$\tilde{Z}_t = \characteristic{\tilde{A}_t} \lim_{q \to t^+} X_q$.  Note that
+$\tilde{Z}$ is $\mathcal{F}$ adapted (by right continuity).
+Furthermore $\tilde{Z}$ and $Z$ are indistinguishable (specifically they agree on
+$A$). From the properties of $Z$ it follows that $\tilde{Z}$ is a
+version of $X$, has cadlag paths almost surely and is an $\mathcal{F}$ martingale.
 \end{proof}
 Since the condition of right continuity of $\expectation{X_t}$ is
 trivially satisfied in the case of a martingale we know that given any
@@ -2674,14 +3005,19 @@ filtration (actually the completion is quite a bit more than is required as
 seen from the proof).  For the most part we don't worry too much about
 the fact that the filtration has to be enlarged and in much of the
 theory we define the problem away by assuming that our filtration is
-both right continuous and complete to begin with.  There are however
+both right continuous and complete to begin with.  However, there are 
 cases in which passing to the completion can cause real issues
 (e.g. one loses the Borel space property by adding in additional
-sets).  Note that need to enlarge the space to the completion is deal
-with those places in which right limits do not exist.  If one know a priori
-(or is will to assume) that these limits exist then one can dispense
+sets).  Note that need to enlarge the space to the completion arises
+from handling
+those places in which right limits do not exist.  If one knows for
+some other reason
+(or is willing to assume) that these limits exist then one can dispense
 with the addition of null sets and it suffices to take the right
-continuous filtration.
+continuous filtration.  Alternatively if may be possible to make due
+with a version that is cadlag almost surely instead of everywhere and in that case we can
+make due with a right continuous filtration $\mathcal{F}$ by the last
+statement in the theorem.
 
 \begin{lem}\label{DoobMaximalInequalityContinuous}Let $X_t$ be a
   cadlag submartingale on $\reals_+$, then for any $t$ and $\lambda$ we have
@@ -2917,7 +3253,7 @@ X_{\tau \wedge \sigma}$ a.s. by the defining property and monotonicity
 of conditional expectation.
 \end{proof}
 
-\subsection{Progressive Measurability}
+\section{Progressive Measurability}
 For many applications the notion of an adapted process
 suffices.  However when dealing with continuous time processes there
 are anomalies that can occur with such processes that are inconvenient
@@ -2927,13 +3263,15 @@ $X_t(\omega)$ as a function of $\omega$ for fixed $t$.  If we take the
 sample path point of view and think of $X_t(\omega)$ as a function of
 $t$ for fixed $\omega$ then there little constraint on how horribly it
 can behave.  In fact the general definition of a process allows $T$ to
-be an arbitrary set so it isn't even in scope to talk about an type of
+be an arbitrary set so it isn't even possible to talk about the
 regularity of sample paths.  
 
-For the special case of processes indexed by $\reals_+$ we can discuss
+As we make additional assumptions about the structure of the time
+scale $T$, we can discuss
 measurability, continuity and even differentiability of sample paths.
 For the moment, there is a
-very mild restriction that we make.
+very mild restriction that we make that uses just the structure of  a
+measure space on the time scale.
 
 \begin{defn}Let $(\Omega, \mathcal{A})$, $(S, \mathcal{S})$  and
   $(T, \mathcal{T})$  be measurable spaces.  A process $X$ on $T$ with
@@ -2942,7 +3280,10 @@ very mild restriction that we make.
   \to S$ is $\mathcal{A} \otimes \mathcal{T}/\mathcal{S}$ measurable.
 \end{defn}
 
-
+When the time scale and state space of a process are topological
+spaces then we can discuss continuity of sample paths.  Here we begin
+with most important case of metric spaces and show that it implies
+joint measurability.
 \begin{lem}\label{JointMeasurabilityOfSampleContinuous}Let $S$ be a metric space and let $T$ be a separable metric
   space both given the Borel $\sigma$-algebra.  Suppose a process $X$
   on $T$ with values in $S$ has continuous sample paths, then $X$ is
@@ -3156,3 +3497,4 @@ measurability of $X$, the claim follows from Lemma
 $\mathcal{F}_t$-measurable for all $t \geq 0$ follows from the fact
 that progressive measurability implies adaptedness.
 \end{proof}
+

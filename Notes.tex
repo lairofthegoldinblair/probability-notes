@@ -17,15 +17,17 @@
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{lem}[thm]{Lemma}
 \newtheorem{prop}[thm]{Proposition}
-
-\theoremstyle{remark}
-\newtheorem{rem}[thm]{Remark}
+\newtheorem{alg}[thm]{Algorithm}
 
 \theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
-
 \newtheorem{ex}[thm]{Exercise}
+\newtheorem{xca}{Exercise}
 \newtheorem{examp}[thm]{Example}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{clm}{Claim}[thm]
 
 \newcommand{\Independent}{\perp \! \! \! \perp}
 \newcommand{\cindependent}[3]{#1 \Independent_{#3} #2}
@@ -85,9 +87,13 @@
 
 \mainmatter
 
+\tableofcontents
+
 \include{RealAnalysis}
 
 \include{MeasureTheory}
+
+\include{Probability}
 
 \include{Independence}
 
@@ -113,10 +119,12 @@
 
 \include{RealAnalysis2}
 
+\include{StochasticApproximation}
+
 \section{Exercises}
-\begin{ex}Let $f : \reals \to \reals$ be a right continuous function,
+\begin{xca}Let $f : \reals \to \reals$ be a right continuous function,
   show that $f$ is Borel measurable.
-\end{ex}
+\end{xca}
 \begin{proof}
 It suffices to show that $f^{-1}(t, \infty)$ is Borel measurable for
 all $t \in \reals$.  Let $x \in f^{-1}(t, \infty)$ then by right
@@ -136,10 +144,10 @@ From this it follows that $f^{-1}(t, \infty) = \cup_{q \in
 therefore measurable.
 \end{proof}
 
-\begin{ex}Let $f(x)$ be a Lebesgue integrable function on $\reals$.
+\begin{xca}Let $f(x)$ be a Lebesgue integrable function on $\reals$.
   Show that there exists a measurable $a(x)$ with $\lim_{x \to \infty}
   a(x) = \infty$ such that $a(x)f(x)$ remains integrable.
-\end{ex}
+\end{xca}
 \begin{proof}
 It suffices to assume that $f(x) \geq 0$ and $\int f(x) \, dx = 1$.
 We know from Fundamental Theorem of Calculus that $g(y) = \int_{-\infty}^y
@@ -163,13 +171,13 @@ but
     g(x)}} = \infty
 \end{align*}
 \end{proof}
-\begin{ex}Let $\xi$ be a random variable, show that for all $\lambda > 0$,
+\begin{xca}Let $\xi$ be a random variable, show that for all $\lambda > 0$,
 \begin{align*}
 \min_k \expectation{\xi^q} \lambda^{-k} \leq \inf_{s>0} \expectation{e^{s(\xi-\lambda)}}
 \end{align*}
 Note that this shows that the best moment bound for a tail
 probability is always better than the best Chernoff bound.
-\end{ex}
+\end{xca}
 \begin{proof}
 Let $q = \argmin_k \expectation{\xi^k} \lambda^{-k}$.  Now expand as a
 series
@@ -180,12 +188,12 @@ series
 \frac{s^k \lambda^k}{k!} = \expectation{\xi^q} \lambda^{-q}
 \end{align*}
 \end{proof}
-\begin{ex}Let $\xi$ be a nonnegative integer valued random variable.
+\begin{xca}Let $\xi$ be a nonnegative integer valued random variable.
   Show $\probability{\xi \neq 0} \leq \expectation{\xi}$ and 
 \begin{align*}
 \probability{\xi = 0} \leq \frac{\variance{\xi}}{\variance{\xi} + \left(\expectation{\xi}\right)^2}
 \end{align*}
-\end{ex}
+\end{xca}
 \begin{proof}
 For the first inequality,
 \begin{align*}
@@ -204,11 +212,11 @@ $\variance{\xi} = \expectation{\xi^2} -
 the result.
 \end{proof}
 
-\begin{ex}Let $f : S \to T$ be function.  If $\mathcal{T}$ is a
+\begin{xca}Let $f : S \to T$ be function.  If $\mathcal{T}$ is a
   $\sigma$-algebra on $T$ then $\mathcal{T} \subset f_*
   f^{-1}(\mathcal{T})$.  If $\mathcal{S}$ is a $\sigma$-algebra on
   $S$, then $f^{-1}f_*(\mathcal{S}) \subset \mathcal{S}$.  Find examples where the inclusions are strict.
-\end{ex}
+\end{xca}
 \begin{proof}
 To see the inclusions just unwind the definitions.  For the first inclusion
 \begin{align*}
@@ -229,9 +237,9 @@ f^{-1} f_* (\mathcal{S}) &= \lbrace f^{-1}(A) \mid A \in  f_*
 
 TODO: Find the examples of strict inclusion.
 \end{proof}
-\begin{ex}Let $f : S \to T$ be a set function and let $\mathcal{C}
+\begin{xca}Let $f : S \to T$ be a set function and let $\mathcal{C}
   \subset 2^T$ then $f^{-1}(\sigma(\mathcal{C})) = \sigma(f^{-1}(\mathcal{C}))$.
-\end{ex}
+\end{xca}
 \begin{proof}
 We know that $f^{-1}(\sigma(\mathcal{C}))$ is a $\sigma$-algebra and
 clearly $f^{-1}(\mathcal{C}) \subset f^{-1}(\sigma(\mathcal{C}))$
@@ -252,20 +260,20 @@ f^{-1}(\sigma(\mathcal{C})) &\subset
 f^{-1} (f_*(\sigma(f^{-1}(\mathcal{C})))) \subset \sigma(f^{-1}(\mathcal{C}))
 \end{align*}
 \end{proof}
-\begin{ex}Let $f(x) = \abs{x}$.  Show that $f_*(\mathcal{B}(\reals))$
+\begin{xca}Let $f(x) = \abs{x}$.  Show that $f_*(\mathcal{B}(\reals))$
   is a strict $\sigma$-subalgebra of $\mathcal{B}(\reals)$.
-\end{ex}
-\begin{ex}Let $f : S \to T$ be a function, $\mathcal{C} \in
+\end{xca}
+\begin{xca}Let $f : S \to T$ be a function, $\mathcal{C} \in
   2^S$ and define $f_*(\mathcal{C}) =  \{A \subset T \mid
     f^{-1}(A) \in \mathcal{C} \}$.  Show by counterexample that
     $\sigma(f_*(\mathcal{C})) \neq f_*(\sigma(\mathcal{C}))$.
-\end{ex}
+\end{xca}
 
-\begin{ex}Let $A_n$ be a sequence of events. Show that 
+\begin{xca}Let $A_n$ be a sequence of events. Show that 
 \begin{align*}
 \probability{A_n \text{ i.o.}} \geq \limsup_{n \to \infty} \probability{A_n}
 \end{align*}
-\end{ex}
+\end{xca}
 \begin{proof}
 Note that we know that for every $k\geq n$, $A_k \subset
 \cup_{k=n}^\infty A_k$ and therefore monotonicity of measure implies $\probability{A_k} \leq
@@ -283,11 +291,11 @@ By definition and continuity of measure and applying the above,
 \end{align*}
 \end{proof}
 
-\begin{ex}Suppose we toss a coin repeatedly and the probability of
+\begin{xca}Suppose we toss a coin repeatedly and the probability of
   heads is $0 < p < 1$ (i.e. the coin may be unfair but not
   pathological).  Without using the Strong Law of Large Numbers show
   that the probability of flipping only a finite number heads is $0$.
-\end{ex}
+\end{xca}
 \begin{proof}
 Let $A_n = \lbrace \text{heads is flipped on the }n^{th}\text{
   toss}\rbrace$.  We know that $\probability{A_n} = p >0$, therefore
@@ -298,14 +306,14 @@ Borel-Cantelli Theorem (Theorem \ref{BorelCantelli}) tells us that $\probability
 heads is $1 - \probability{ A_n \text{ i.o.}} = 0$.
 \end{proof}
 
-\begin{ex}A sequence of random variables $\xi_1, \xi_2, \dots$ is said
+\begin{xca}A sequence of random variables $\xi_1, \xi_2, \dots$ is said
   to be \emph{completely convergent} to $\xi$ if for every $\epsilon > 0$,
 \begin{align*}
 \sum_{n=1}^\infty \probability{\abs{\xi_n - \xi} > \epsilon} < \infty
 \end{align*}
 Show that if $\xi_n$ are independent then complete convergence is
 equivalent to almost sure convergence.
-\end{ex}
+\end{xca}
 \begin{proof}
 First assume that $\xi=0$.  
 
@@ -334,10 +342,10 @@ know that $\xi$ is almost surely a constant $c$.  Then we can define $\xi_n
 - c$ and note that $\xi_n - c$ are independent by Lemma \ref{IndependenceComposition}.
 \end{proof}
 
-\begin{ex}Suppose $\eta, \xi_1, \xi_2, \dots$ are random variables with
+\begin{xca}Suppose $\eta, \xi_1, \xi_2, \dots$ are random variables with
   $\abs{\xi_n} \leq \eta$ a.s. for all $n > 0$.  Show that $\sup_n
   \abs{\xi_n} \leq \eta$ a.s.
-\end{ex}
+\end{xca}
 \begin{proof}
 Let $A_n = \lbrace \xi_n \leq \eta \rbrace$ and $A = \cup_n A_n$.
 By assumption,
@@ -347,20 +355,36 @@ $n>0$, $\xi_n(\omega) \leq \eta(\omega)$ and therefore
 $\sup_n\xi_n(\omega) \leq \eta(\omega)$.
 \end{proof}
 
-\begin{ex}Suppose $\xi, \xi_1, \xi_2, \dots$ are random variables with
+\begin{xca}\label{ExConvProb1}Let $\xi, \xi_n$ be random elements in a metric space $S$
+  such that $\xi_n \toprob \xi$, let $A_n$ be events such that
+  $\probability{A_n} = 1$ and let $\eta_n$ be random elements in
+  $S$ such that $\eta_n = \xi_n$ on $A_n$, show that $\eta_n \toprob \xi$.
+\end{xca}
+\begin{proof}
+Fix $\epsilon > 0$ and note that
+\begin{align*}
+\lim_{n \to \infty} \probability{d(\eta_n, \xi) > \epsilon} &=
+\lim_{n \to \infty} \probability{d(\eta_n, \xi) > \epsilon ; A_n } +
+\lim_{n \to \infty} \probability{d(\eta_n, \xi) > \epsilon;A_n^c}
+\leq \lim_{n \to \infty} \probability{d(\xi_n, \xi) > \epsilon } +
+\lim_{n \to \infty} \probability{A^c_n} = 0
+\end{align*}
+\end{proof}
+
+\begin{xca}Suppose $\xi, \xi_1, \xi_2, \dots$ are random variables with
   $\xi_n \toas \xi$ and $\xi < \infty$ a.s.  Let $\eta = \sup_n
   \abs{\xi_n}$ and show that $\eta < \infty$ a.s.
-\end{ex}
+\end{xca}
 \begin{proof}
 TODO
 \end{proof}
 
-\begin{ex}[Kallenberg Ex 3.6]Let $\mathcal{F}_{t,n}$ with $t \in T$ and $n \in \naturals$
+\begin{xca}[Kallenberg Ex 3.6]Let $\mathcal{F}_{t,n}$ with $t \in T$ and $n \in \naturals$
   be $\sigma$-algebras such that for a fixed $t$ they are
   nondecreasing in $n$ and for a fixed $n$ they are independent in
   $t$.  Show that the $\sigma$-algebras $\bigvee_n \mathcal{F}_{t,n}$
   are independent.
-\end{ex}
+\end{xca}
 \begin{proof}
 Because for fixed $t \in T$, we have $\mathcal{F}_{t,0} \subset
 \mathcal{F}_{t,1} \subset \cdots$ we can see that $\bigcup_n
@@ -377,13 +401,13 @@ therefore $\probability {A_1 \cup \dotsb \cup A_m} = \probability{A_1}
 \dotsm \probability{A_m}$ and we are done.
 \end{proof}
 
-\begin{ex}[Kallenberg Ex 3.7]Let $T$ be an arbitrary index set and let
+\begin{xca}[Kallenberg Ex 3.7]Let $T$ be an arbitrary index set and let
   $(S_t, \mathcal{B}(S_t))$ be metric spaces with Borel
   $\sigma$-algebras.  For each $t\in T$ suppose have random elements
   random elements $\xi^t, \xi^t_n \in S_t$  for $n \in \naturals$ such
   that $\xi^t_n \toas \xi^t$.  If for each fixed $n \in \naturals$ the
   $\xi^t_n$ are independent show that $\xi^t$ are independent.
-\end{ex}
+\end{xca}
 \begin{proof}
 Pick a finite subset $\lbrace t_1, \dotsc, t_m \rbrace \subset T$ and
 assume we are given bounded continuous functions $f_j : S_{t_j} \to
@@ -438,7 +462,7 @@ show independence on open sets.
 \end{proof}
 
 A simpler subcase of the above
-\begin{ex}Let $\xi, \xi_n$ be random elements in a metric space $S$
+\begin{xca}Let $\xi, \xi_n$ be random elements in a metric space $S$
   such that $\xi_n \toprob \xi$ and each $\xi_n$ is
   $\mathcal{F}_n$-measurable.  Furthermore suppose $\mathcal{G}$ is a
   $\sigma$-algebra such that $\mathcal{F}_n \Independent \mathcal{G}$
@@ -447,7 +471,7 @@ A simpler subcase of the above
 TODO: In the proof we mention that $\mathcal{F}_1 \subset
 \mathcal{F}_2 \subset \cdots$.  Is that really required?  If not
 provide a counter example.
-\end{ex}
+\end{xca}
 \begin{proof}
 Since $\xi_n \toprob \xi$ we know there is a subsequence  that
 converges almost surely.  Note that all of the hypotheses restrict
@@ -465,12 +489,12 @@ that the nestedness of the $\mathcal{F}_n$ implies $\bigcup_n
 \mathcal{F}_n$ we get the result from Lemma \ref{IndependencePiSystem}.
 \end{proof}
 
-\begin{ex}Let $\xi_1, \xi_2, \dots$ be independent random variables with values in
+\begin{xca}Let $\xi_1, \xi_2, \dots$ be independent random variables with values in
   $[0,1]$.  Show that $\expectation{\prod_{n =1}^\infty \xi_n} =
   \prod_{n=1}^\infty \expectation{\xi_n}$.  In particular, for
   independent events $A_n$ we have $\probability{\cup_{n=1}^\infty
     A_n} = \prod_{n=1}^\infty \probability{A_n}$.
-\end{ex}
+\end{xca}
 \begin{proof}
 Note that because $\xi_n$ have values in $[0,1]$, the partial products
 $\prod_{k=1}^n \xi_k \leq 1$ and therefore by Dominated Convergence
@@ -482,16 +506,16 @@ and Lemma \ref{IndependenceExpectations}, we have
 \end{align*}
 \end{proof}
 
-\begin{ex}Provide an example of uncorrelated but non-independent
+\begin{xca}Provide an example of uncorrelated but non-independent
   random variables.
-\end{ex}
+\end{xca}
 \begin{proof}See Example \ref{UncorrelatedNotIndependent}.
 \end{proof}
 
-\begin{ex}Let $\xi_1, \xi_2, \dots$ be random variables.  Show that
+\begin{xca}Let $\xi_1, \xi_2, \dots$ be random variables.  Show that
   there exist constants $c_1 > 0, c_2 >0, \cdots$ such that
   $\sum_{n=1}^\infty c_n \xi_n$ converges almost surely.
-\end{ex}
+\end{xca}
 \begin{proof}First note that we can make a few assumptions about $\xi_n$ without
 loss of generality.  First, we can assume that $\xi_n \geq 0$ for all
 $n$; knowing that that will show absolute convergence for all series.  Next,
@@ -547,12 +571,12 @@ likely) provide a
 counterexample on general (non-finite) measure spaces (e.g. Lebesgue measure on $\reals$).
 \end{proof}
 
-\begin{ex}Let $\xi_1, \xi_2, \dots$ be positive independent random
+\begin{xca}Let $\xi_1, \xi_2, \dots$ be positive independent random
   variables, then $\sum_{n=1}^\infty \xi_n$ converges almost surely if
   and only if $\sum_{n=1}^\infty \expectation{\xi_n \wedge 1} <
   \infty$.
 TODO: Provide hints
-\end{ex}
+\end{xca}
 \begin{proof}One direction is easy and doesn't require the assumption
   of independence; namely assume that $\sum_{n=1}^\infty
   \expectation{\xi_n \wedge 1} < \infty$.
@@ -585,12 +609,12 @@ can assume $0 \leq \xi_n \leq 1$.
 which shows that $\sum_{n=1}^\infty \expectation{\xi_n} < \infty$.
 \end{proof}
 
-\begin{ex}Suppose $\xi$ is a random variable, let $\mathcal{F}$ be
+\begin{xca}Suppose $\xi$ is a random variable, let $\mathcal{F}$ be
   a $\sigma$-algebra and let $A$ be a measurable set.  Show that
   $\cexpectationlong{\mathcal{F},A}{\xi} =
   \frac{\cexpectationlong{\mathcal{F}}{\xi ;
       A}}{\cprobability{\mathcal{F}}{A}}$ on $A$.
-\end{ex}
+\end{xca}
 \begin{proof}
 Note by Localization we know that $\characteristic{A}
 \cexpectationlong{\mathcal{F},A}{\xi}  =
@@ -627,12 +651,12 @@ Since sets of the form $A \cap F$, $A^c \cap F$ and $F$ for $F \in
 \mathcal{F})$ we have shown the result.
 \end{proof}
 
-\begin{ex}Let $A_1, A_2, \cdots$ be a disjoint partition of $\Omega$
+\begin{xca}Let $A_1, A_2, \cdots$ be a disjoint partition of $\Omega$
   and let $\mathcal{F} = \sigma(A_1, A_2, \dots)$.  Show that for
   every integrable random variable $\xi$ we have
 $\cexpectationlong{\mathcal{F}}{\xi} = \sum_{\probability{A_n} \neq 0}
 \frac{\expectation{\xi ; A_n}}{\probability{A_n}} \characteristic{A_n}$ almost surely.
-\end{ex}
+\end{xca}
 \begin{proof}First note that it is trivial that $\sum_{\probability{A_n} \neq 0}
 \frac{\expectation{\xi ; A_n}}{\probability{A_n}}\characteristic{A_n}$ is
 $\mathcal{F}$-measurable.  Because the $A_n$ are a disjoint partition,
@@ -656,12 +680,12 @@ disjointness of the $A_n$ that
 \end{align*}
 \end{proof}
 
-\begin{ex}Suppose $\xi$ is a random element in $S$ such that
+\begin{xca}Suppose $\xi$ is a random element in $S$ such that
   $\cprobability{\mathcal{F}}{\xi \in \cdot}$ has a regular version
   $\nu$.  Let $f : S \to T$ be measurable.  Show that
   $\cprobability{\mathcal{F}}{f(\xi) \in \cdot}$ has a regular version
   given by $\pushforward{f} {\nu} (\omega, A) = \nu(\omega, f^{-1}(A))$.
-\end{ex}
+\end{xca}
 \begin{proof}
 Our hypothesis is that for every $A$, $\cprobability{\mathcal{F}}{\xi
   \in A}(\omega) = \mu(\omega, A)$.  We calculate 
@@ -675,13 +699,13 @@ Our hypothesis is that for every $A$, $\cprobability{\mathcal{F}}{\xi
 and we are done.
 \end{proof}
 
-\begin{ex}Let $\xi$ be a random element in $S$.  Show that $\xi$ is
+\begin{xca}Let $\xi$ be a random element in $S$.  Show that $\xi$ is
   $\mathcal{F}$-measurable if and only if $\delta_\xi$ is a regular
   version of 
   $\cprobability{\mathcal{F}}{\xi \in \cdot}$.
 
 TODO: Refine this statement to include almost sureness...
-\end{ex}
+\end{xca}
 \begin{proof}
 $\mathcal{F}$-measurability of $\xi$ is equivalent to
 $\mathcal{F}$-measurability of $\characteristic{A}(\xi)$ for all $A$
@@ -703,10 +727,10 @@ to be measurable since it is just the characteristic function of the
 measurable set $A$.
 \end{proof}
 
-\begin{ex}Let $\xi$ be an integrable random variable for which
+\begin{xca}Let $\xi$ be an integrable random variable for which
   $\cexpectationlong{\mathcal{F}}{\xi} \eqdist \xi$.  Show that in
   fact $\cexpectationlong{\mathcal{F}}{\xi} = \xi$ a.s.
-\end{ex}
+\end{xca}
 \begin{proof}
 Here is a simple and conceptual proof in the case that
 $\cexpectationlong{\mathcal{F}}{\xi}$ (and therefore $\xi$) take
@@ -767,10 +791,10 @@ this by showing that the conditional variance is $0$.  TODO: Define
 conditional variance and show the result.
 \end{proof}
 
-\begin{ex}Prove or disprove the following statement.  Suppose $\xi \eqdist \eta$, show that for every $A$, 
+\begin{xca}Prove or disprove the following statement.  Suppose $\xi \eqdist \eta$, show that for every $A$, 
   $\cprobability{\mathcal{F}}{\xi \in A} =
   \cprobability{\mathcal{F}}{\eta \in A}$ a.s.
-\end{ex}
+\end{xca}
 \begin{proof}
 This is false.  Let $\Omega = \lbrace 0,1 \rbrace$ with uniform distribution and
 power set $\sigma$-algebra.  Let
@@ -781,10 +805,10 @@ and $\cprobability{\mathcal{F}}{\eta \in A} = \characteristic{\eta \in
   A}$ and take $A = \lbrace 0 \rbrace$ or $A = \lbrace 1 \rbrace$.
 \end{proof}
 
-\begin{ex}Find $\xi, \eta, \mathcal{F}$ such that $\xi \eqdist \eta$
+\begin{xca}Find $\xi, \eta, \mathcal{F}$ such that $\xi \eqdist \eta$
   but $\cexpectationlong{\mathcal{F}}{\xi} \neq
   \cexpectationlong{\mathcal{F}}{\eta}$ a.s.
-\end{ex}
+\end{xca}
 \begin{proof}
 Pick sets $A,B,C$ such that $\probability{A} = \probability{B}$ but
 $\probability{A \cap C} \neq \probability{B \cap C}$.  Even more
@@ -794,11 +818,11 @@ $\eta$.  Now the statement is equivalent to show two random elements
 that not almost surely equal but have the same distribution.
 \end{proof}
 
-\begin{ex}Suppose $\xi, \tilde{\xi}$ are integrable random variables
+\begin{xca}Suppose $\xi, \tilde{\xi}$ are integrable random variables
   and $\eta, \tilde{\eta}$ are random elements in $(T, \mathcal{T})$
   such that $(\xi,\eta) \eqdist (\tilde{\xi}, \tilde{\eta})$.  Show
   that $\cexpectationlong{\eta}{\xi} \eqdist \cexpectationlong{\tilde{\eta}}{\tilde{\xi}}$.
-\end{ex}
+\end{xca}
 \begin{proof}
 First, note the intuition behind the statement.  As a result of
 $(\xi,\eta) \eqdist (\tilde{\xi}, \tilde{\eta})$ we can also conclude
@@ -844,10 +868,10 @@ Since $\eta \eqdist \tilde{\eta}$ it follows that $f(\eta) \eqdist
 f(\tilde{\eta})$ and the result is proven.
 \end{proof}
 
-\begin{ex}Suppose $\xi$ is a random element in a Borel space $(S, \mathcal{S})$, let
+\begin{xca}Suppose $\xi$ is a random element in a Borel space $(S, \mathcal{S})$, let
   $\mathcal{F}$ be a $\sigma$-algebra and let $\eta =
   \cprobability{\mathcal{F}}{\xi \in \cdot}$, show $\cindependent{\xi}{\mathcal{F}}{\eta}$.
-\end{ex}
+\end{xca}
 \begin{proof}
 First it is worth clarifying the question.  Since we have assume $S$
 is Borel then by Theorem \ref{ExistenceConditionalDistribution} be may
@@ -874,10 +898,10 @@ ev_A(\eta)$ which shows that $\cexpectationlong{\mathcal{F}}{\xi \in
   A}$ is in fact $\eta$-measurable.
 \end{proof}
 
-\begin{ex}Suppose $\cindependent{\xi}{\zeta}{\eta}$ and
+\begin{xca}Suppose $\cindependent{\xi}{\zeta}{\eta}$ and
   $\cindependent{\gamma}{(\xi,\eta, \zeta)}{}$, show that
   $\cindependent{\xi}{\zeta}{\eta,\gamma}$ and $\cindependent{\xi}{(\zeta,\gamma)}{\eta}$.
-\end{ex}
+\end{xca}
 \begin{proof}
 By Lemma \ref{ConditionalIndependenceChainRule},
 $\cindependent{\xi}{(\zeta,\gamma)}{\eta}$ is equivalent to
@@ -898,13 +922,13 @@ $\cindependent{\xi}{\zeta}{\eta, \gamma}$
 hence implies $\cindependent{\xi}{\zeta}{\eta, \gamma}$.
 \end{proof}
 
-\begin{ex}Suppose we have $\sigma$-algebras $\mathcal{F}$,
+\begin{xca}Suppose we have $\sigma$-algebras $\mathcal{F}$,
   $\mathcal{G}_1$, $\mathcal{G}_2$, $\mathcal{H}$ with $\mathcal{G}_1
   \subset \mathcal{G}_2$.  If
   $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}_1}$
 is it true that $\cindependent{\mathcal{F}}{\mathcal{H}}{\mathcal{G}_2}$?
 Prove or give a counterexample.
-\end{ex}
+\end{xca}
 \begin{proof}
 Here is a counterexample in which $\mathcal{G}_1$ is the trivial
 $\sigma$-algebra.  Perform two independent Bernoulli trials with rate
@@ -926,10 +950,10 @@ can condition that there is a relationship between them (here ``first toss
 equals the second toss'') and destroy independence.  
 \end{proof}
 
-\begin{ex}Suppose $\mathcal{F}$ is independent of $\mathcal{G}$ and
+\begin{xca}Suppose $\mathcal{F}$ is independent of $\mathcal{G}$ and
   $\mathcal{H}$, is it true that $\mathcal{F}$ is independent of
   $\sigma(\mathcal{G}, \mathcal{H})$?  Prove or give a counterexample.
-\end{ex}
+\end{xca}
 \begin{proof}
 Note that $\mathcal{F}$ is independent of
   $\sigma(\mathcal{G}, \mathcal{H})$ if and only if
@@ -960,10 +984,10 @@ To see the lack of joint independence consider $\probability {A \cap B
 \cap C} = 0$.
 \end{proof}
 
-\begin{ex}Suppose we are given random elements such that $(\xi, \eta,
+\begin{xca}Suppose we are given random elements such that $(\xi, \eta,
   \zeta) \eqdist (\tilde{\xi}, \tilde{\eta}, \tilde{\zeta})$, then
   $\cindependent{\xi}{\zeta}{\eta}$ if and only if $\cindependent{\tilde{\xi}}{\tilde{\zeta}}{\tilde{\eta}}$.
-\end{ex}
+\end{xca}
 \begin{proof}
 First we 
 \begin{align*}
@@ -971,7 +995,7 @@ First we
 \end{align*}
 \end{proof}
 
-\begin{ex}Suppose $\tau$ and $\sigma$ are discrete optional
+\begin{xca}Suppose $\tau$ and $\sigma$ are discrete optional
   times with respect the filtration $\mathcal{F}_0 \subset
   \mathcal{F}_1 \subset \cdots$. Then $\sigma \wedge \tau$ and
   $\sigma$ and $\sigma \vee \tau$ are optional times.  In addition, 
@@ -980,7 +1004,7 @@ First we
     \sigma} &\subset \mathcal{F}_\sigma \subset \mathcal{F}_{\tau \vee
     \sigma}
 \end{align*}
-\end{ex}
+\end{xca}
 \begin{proof}
 First we show that $\tau \wedge \sigma$ and $\tau \vee \sigma$ are
 actually optional times.  This is simple by noting
@@ -1023,10 +1047,10 @@ so
 which shows $A \in \mathcal{F}_\sigma$.
 \end{proof}
 
-\begin{ex}Suppose $\tau$ is a discrete optional
+\begin{xca}Suppose $\tau$ is a discrete optional
   time with respect the filtration $\mathcal{F}_0 \subset
   \mathcal{F}_1 \subset \cdots$, then $\tau$ is $\mathcal{F}_\tau$-measurable.
-\end{ex}
+\end{xca}
 \begin{proof}
 For any $n, m$, we have 
 \begin{align*}
@@ -1039,13 +1063,13 @@ For any $n, m$, we have
 hence in all cases is in $\mathcal{F}_n$.
 \end{proof}
 
-\begin{ex}Suppose $\tau$ and $\sigma$ are discrete optional
+\begin{xca}Suppose $\tau$ and $\sigma$ are discrete optional
   times with respect the filtration $\mathcal{F}_0 \subset
   \mathcal{F}_1 \subset \cdots$. Then each of $\lbrace \sigma < \tau
   \rbrace$, $\lbrace \sigma \leq \tau
   \rbrace$ and $\lbrace \sigma = \tau
   \rbrace$ is in $\mathcal{F}_{\sigma} \cap \mathcal{F}_{\tau}$.
-\end{ex}
+\end{xca}
 \begin{proof}
 It suffice to prove two of the three since the third set can be
 constructed using finite unions or intersections of the other two.
@@ -1075,7 +1099,7 @@ by what we have already proven. Apply the closure of $\sigma$-algebras
 under complement to get the result.
 \end{proof}
 
-\begin{ex}Let $\sigma$ and $\tau$ be optional times with respect to
+\begin{xca}Let $\sigma$ and $\tau$ be optional times with respect to
   the filtration $\mathcal{F}_0 \subset \mathcal{F}_1 \subset
   \cdots$.  Show that 
 \begin{align*}
@@ -1085,7 +1109,7 @@ under complement to get the result.
 {\mathcal{F}_\sigma}{\cexpectationlong{\mathcal{F}_\tau}{\xi}} = \cexpectationlong
 {\mathcal{F}_{\sigma \wedge \tau}}{\xi}
 \end{align*}
-\end{ex}
+\end{xca}
 \begin{proof}
 The first thing to do is show how to calculate conditional
 expectations with respect to $\sigma$-algebras of the form
@@ -1196,10 +1220,10 @@ up the sum properly,
 \end{align*}
 \end{proof}
 
-\begin{ex}\label{SumOfOptionalTimes}Let $\sigma$ and $\tau$ be $\mathcal{F}$-optional times on
+\begin{xca}\label{SumOfOptionalTimes}Let $\sigma$ and $\tau$ be $\mathcal{F}$-optional times on
   either $\integers_+$ or $\reals_+$.
   Show that $\sigma + \tau$ is $\mathcal{F}$-optional.
-\end{ex}
+\end{xca}
 \begin{proof}
 For the case of $\integers_+$ valued optional times we pick $n \geq 0$
 and note that
@@ -1232,19 +1256,52 @@ q\rbrace$.  If $\sigma(\omega) > t$ then it follows that $\omega \in
 \lbrace \sigma > t \rbrace$ so we are done.
 \end{proof}
 
-\begin{ex}Show that a random variable $\xi$ has subexponential tails
+\begin{xca}Show that a random variable $\xi$ has subexponential tails
   if and only if there exists $C > 0$ such that
   $\expectation{\abs{\xi}^k} \leq C k^C$ for all integers $k > 0$.
-\end{ex}
+\end{xca}
 \begin{proof}
 TODO: Mimic the proof of Lemma \ref{SubgaussianEquivalence}.
 \end{proof}
 
-\begin{ex}[Kallenberg Exercise 17.6]Let $B_t$ be a Brownian motion starting at zero and $\tau$ be an optional
+\begin{xca}Let $X$ be a right continuous
+  submartingale then almost surely $X$ is cadlag.
+\end{xca}
+\begin{proof}
+By Theorem \ref{CadlagModificationContinuousMartingale} we know that
+there is a null set $A$ such that
+the process $Z_t = \characteristic{A^c} \lim_{q \to t^+}X_q$ is a
+cadlag process (in fact a cadlag $\overline{\mathcal{F}}^+$-submartingale).
+As $X$ is almost surely right continuous, it follows that almost surely $Z = X$ and we
+conclude that almost surely $X$ has cadlag sample paths.
+\end{proof}
+
+\begin{xca}Suppose we are given $\sigma$-algebras $\mathcal{G},
+  \mathcal{H}, \mathcal{F}_1, \mathcal{F}_2, \dotsc$ and define
+  $\mathcal{F}_\infty = \bigvee_n \mathcal{F}_n$.  If
+  $\cindependent{\mathcal{G}}{\mathcal{H}}{\mathcal{F}_n}$ for all $n
+  \in \naturals$ then $\cindependent{\mathcal{G}}{\mathcal{H}}{\mathcal{F}_\infty}$.
+\end{xca}
+\begin{proof}
+By definition of conditional independence we see that for every $G \in
+\mathcal{G}$ and $H \in \mathcal{H}$ we have
+$\cprobability{\mathcal{F}_n}{G \cap H} =
+\cprobability{\mathcal{F}_n}{G} \cprobability{\mathcal{F}_n}{H}$.  By
+Levy-Jessen Theorem \ref{JessenConditioningLimits} we conclude
+\begin{align*}
+\cprobability{\mathcal{F}_\infty}{G \cap H} &=  \lim_{n \to \infty} \cprobability{\mathcal{F}_n}{G \cap H} =
+ \lim_{n \to \infty}\cprobability{\mathcal{F}_n}{G}
+ \cprobability{\mathcal{F}_n}{H} = \cprobability{\mathcal{F}_\infty}{G}
+ \cprobability{\mathcal{F}_\infty}{H}
+\end{align*}
+which shows the result.
+\end{proof}
+
+\begin{xca}[Kallenberg Exercise 17.6]Let $B_t$ be a Brownian motion starting at zero and $\tau$ be an optional
   time.  Show that $\expectation{\tau^{1/2}} < \infty$ implies
   $\expectation{B_\tau} = 0$ and $\expectation{\tau} < \infty$ implies
   $\expectation{B^2_\tau} = \expectation{\tau}$.
-\end{ex}
+\end{xca}
 \begin{proof}For $\tau$ bounded by a constant $T$ these are both consequences of
   Optional Stopping.  For then since $B_t$ is a martingale we have
 \begin{align*}
@@ -1287,11 +1344,11 @@ M_k = \sup_{0 \leq t \leq 1} \abs{B_{t+k} - B_k}
 TODO: Finish
 \end{proof}
 
-\begin{ex}Let $B_t$ be a standard Brownian motion and define $\tau =
+\begin{xca}Let $B_t$ be a standard Brownian motion and define $\tau =
   \inf \lbrace t > 0 \mid B_t = 1 \rbrace$.  Show that
   $B_\tau = 1$ almost surely and $\expectation{\tau^c} < \infty$ for
   all $0 \leq c < 1/2$.
-\end{ex}
+\end{xca}
 \begin{proof}
 Note that $\tau < \infty$ almost surely since $\limsup_{t \to \infty}
 B_t = \infty$ almost surely and $B_t$ is continuous.  For any $\lambda
@@ -1315,9 +1372,9 @@ $\expectation{\tau^c} = \infty$ for $c \geq 1/2$ (as we know must be
 true because of the BDG/Optional Stopping argument above).
 \end{proof}
 
-\begin{ex}Let $B_t$ be a standard Brownian motion show that for every
+\begin{xca}Let $B_t$ be a standard Brownian motion show that for every
   $c \in \reals$ the process $M_t = e^{c B_t - \frac{c^2t}{2}}$ is a martingale.
-\end{ex}
+\end{xca}
 \begin{proof}
 Adaptedness follows from the fact that $B_t$ is
 $\mathcal{F}_t$-measurable and $e^x$ is continuous hence Borel
@@ -1342,10 +1399,10 @@ the expectation to see that
 \end{align*}
 \end{proof}
 
-\begin{ex}Let $B_t$ be a standard Brownian motion, show that $\inf
+\begin{xca}Let $B_t$ be a standard Brownian motion, show that $\inf
   \lbrace t > 0 \mid B_t > 0 \rbrace = 0$ a.s.  (Hint: Use
   Blumenthal's 0-1 Law).
-\end{ex}
+\end{xca}
 \begin{proof}
 Let $\tau = \inf \lbrace t > 0 \mid B_t > 0 \rbrace$.  Clearly the
 event 
@@ -1362,10 +1419,10 @@ $\probability{\tau \leq s} \geq 1/2$ and by continuity of measure we
 know that $\probability {\tau = 0} = \lim_{s \downarrow 0} \probability{\tau \leq s} \geq 1/2$.
 \end{proof}
 
-\begin{ex}[Law of Large Numbers for Brownian Motion]Let $B_t$ be a standard Brownian motion show that $M_t =
+\begin{xca}[Law of Large Numbers for Brownian Motion]Let $B_t$ be a standard Brownian motion show that $M_t =
   t^{-1}B_t$ is a backward martingale.  From this conclude that
   $t^{-1}B_t \toas 0$ and $t^{-1}B_t \tolp{p} 0$ for all $p > 0$.
-\end{ex}
+\end{xca}
 \begin{proof}
 Adaptedness and integrability are immediate.  For the backward
 martingale property, let $s < t$ and we first find the density function for the
@@ -1403,12 +1460,12 @@ and by Jessen-Levy and triviality we have
 TODO: Finish the $L^p$ argument; presumably we need $L^p$ boundedness.
 \end{proof}
 
-\begin{ex}[Kallenberg Exercise 17.11]Let $X$ be a continuous
+\begin{xca}[Kallenberg Exercise 17.11]Let $X$ be a continuous
   semimartingale and let $U,V \in L(X)$ be such that $U = V$ a.s. on a
   set $A \in \mathcal{F}_0$.  Use Lemma
   \ref{StoppingIntegralsContinuousSemimartingale} to show that $\int U \, dX = \int V \, dX$
   a.s on $A$.
-\end{ex}
+\end{xca}
 \begin{proof}
 Define 
 \begin{align*}
@@ -1441,6 +1498,40 @@ $\int U \, dX$ starts at zero we get almost surely
 = \int_0^{t} \characteristic{[0,\tau]} U \, dM \\
 \end{align*}
 and similarly with $V$ and the result follows.
+\end{proof}
+
+\begin{xca}\label{ProductOfIndependentMarkov}Let $X$ be a Markov process in $(S, \mathcal{S})$  on time scale $T$ with
+  transition kernel $\mu_{s,t}$ and
+  let $Y$ be a Markov process in $(U, \mathcal{U})$ on time scale $T$ with 
+  transition kernel $\nu_{s,t}$.  Show that if $X$ and $Y$ are
+  independent
+  that $(X,Y)$ is a Markov process in $(S \times U, \mathcal{S}
+  \otimes \mathcal{U})$ on time scale $T$ with transition kernel $\mu_{s,t}
+  \otimes \nu_{s,t}$ (note that kernel $\mu_{s,t}
+  \otimes \nu_{s,t}$ is just the pointwise product measure).
+\end{xca}
+\begin{proof}
+TODO: Finish
+
+Pick $t < u \in T$.  Let $C \in \mathcal{S}$ and $D \in \mathcal{U}$ and compute using the
+independence of $X$ and $Y$, let
+\begin{align*}
+&\probability{(X_u,Y_u) \in A \times B ; (X_t, Y_t) \in C
+  \times D} \\
+&=\probability{X_u \in A ; X_t \in C} \probability{Y_u \in B ; Y_t \in  D} \\
+&=\expectation{\cprobability{X_u \in A}{X_t} ; X_t \in C}
+\expectation{\cprobability{Y_u \in B}{Y_t} ;  Y_t \in  D} \\
+&=\expectation{\cprobability{X_u \in A}{X_t} ; X_t \in C;
+\cprobability{Y_u \in B}{Y_t} ;  Y_t \in  D} \\
+\end{align*}
+which since sets of the form $ (X_t, Y_t) \in C
+  \times D$ are a generating
+$\pi$-system of $\sigma(X_t,Y_t)$ we the claim is shown by Lemma
+\ref{ConditionalExpectationExtension}.
+
+Finally we conclude that $\cprobability{(X_u, Y_u) \in
+  \cdot}{(X_t,Y_t)} = \mu_{t,u} \otimes \nu_{t,u}$ 
+by the uniqueness of product measure.
 \end{proof}
 
 \appendix
@@ -1518,7 +1609,14 @@ that one knows the answer beforehand (e.g. one usually wants to show
 $g(x) \leq h(x)$ and the bound $h(x)$ is what you are trying to figure
 out).  Sometimes the technique can be
 used to guess the answer by taking a simpler known inequality and
-antidifferentiating (see Lemma \ref{GaussianTailsElementary} for a non-trivial example).
+antidifferentiating (see Lemma \ref{GaussianTailsElementary} for a
+non-trivial example).
+
+\subsection{Using Taylor's Theorem}
+Taylor's Theorem is also a good way of both guessing and proving
+inequalities; if one can show that the remainder term (in either
+integral or Lagrange form usually) is of a particular sign over an
+interval an inequality follows.  
 
 \chapter{Integrals}
 \begin{align*}
@@ -1536,20 +1634,24 @@ them in one place since they are all proven by use of basic calculus.
 \begin{lem}\label{BasicExponentialInequalities}The following
   inequalities hold:
 \begin{itemize}
-\item[(i)] $1+x \leq e^x$ for all $x \in \bold{R}$.
+\item[(i)] $1+x \leq e^x$ for all $x \in \reals$.
 \item[(ii)] $e^x \leq 1 + 2x$ for all $x \in [0,1]$.
 \item[(iii)] $e^x \leq 1 + x + x^2$ for all $x \leq 1$.
-\item[(iv)] $\frac{1}{2}(e^x + e^{-x}) \leq e^{x^2/2}$ for all $x \in \bold{R}$.
-\item[(v)] $1 - \frac{x^2}{2} \leq \cos(x)$ for all $x \in \bold{R}$.
-\item[(vi)] $x + \log(1-x) \leq 0$ for all $x \in [0,1)$.
-\item[(vii)] $e^{-x} \leq 1 - (1 - e^{-1}) x$ for all $x \in [0,1]$.
+\item[(iv)] $\frac{1}{2}(e^x + e^{-x}) \leq e^{x^2/2}$ for all $x \in \reals$.
+\item[(v)] $\abs{\sin(x)} < \abs{x}$ for all $x  \neq 0$.
+\item[(vi)] $1 - \frac{x^2}{2} \leq \cos(x)$ for all $x \in \reals$.
+\item[(vii)] $x + \log(1-x) \leq 0$ for all $x \in [0,1)$.
+\item[(viii)] $e^{-x} \leq 1 - (1 - e^{-1}) x$ for all $x \in [0,1]$.
 \end{itemize}
 \end{lem}
 \begin{proof}
 Note that for ${x\geq0}$ we can consider $f(x) = e^x - x -1$ and note
 that $f(0)=0$ and moreover we can see that $f(x)$ has a global minimum
 at $x=0$ since $f'(x) = e^x - 1$ vanishes precisely at $x=0$ and
-$f''(x)=e^x$ is strictly positive.
+$f^{\prime \prime}(x)=e^x$ is strictly positive.  Alternative this can
+be seen by Taylor's Theorem.  One writes using the Lagrange form of
+the remainder $e^x = 1 + x + \frac{x^2}{2} e^c$ for some $c$.
+Since the remainder is positive the result follows.
 
 In a similar vein to show (ii), define $f(x) = 1+2x-e^x$ and notice that $f(x)$ has
 a global maximum at $x=\ln(2)$ and no other local maximum.  Thus, it
@@ -1564,23 +1666,23 @@ To show (iv) we just manipulate series expansions.
 & \leq \sum_{n=0}^\infty \frac{x^{2n}}{2^n n!} = e^{\frac{x^2}{2}}\\
 \end{align*}
 
-To show (v), define $f(x) = \frac{x^2}{2} -1 +  \cos(x)$.  Calculate
-the first derivative $f^\prime(x) = x - \sin(x)$.  The function
-$f^\prime(x) = 0$ if and only if $x=0$.  Clearly this is true if
-$x=0$, and clearly $f^\prime(x) \neq 0$ for $\abs{x} > 1$.  For the
-interval, $\abs{x} \leq 1$ calculate the second derivative
-$f^{\prime\prime}(x) = 1 - \cos(x)$ and note that it is strictly
-positive for $\abs{x} \leq 1$ and $x \neq 0$.  Thus, $f^\prime(x)$ is
-strictly increasing on the intervals $[-1,0)$ and $(0,1]$ and
-therefore $f^\prime(x) \neq 0$ on these intervals as well.  Note also
-that this argument shows that $f^\prime(x)$ changes sign at $x=0$
-which shows that $f(0) = 0$ is a global minimum.
+To see (v),  because the function $x - \sin(x)$ is odd, it suffices to
+show that it is strictly positive for $x > 0$.
+Clearly $x - \sin(x) > 0$ for $x > 1$.   For $0 < x < 1$ we just use
+Taylor's Theorem with Lagrange remainder to see that $\sin(x) = x -
+\frac{x^2}{2} \cos(c)$ for some $0 < c < x < 1$.  The remainder is
+negative so the result follows.
 
-To show (vi), define $f(x) = x + \log(1 -x)$ and differentiate to see
+To show (vi), define $f(x) = \frac{x^2}{2} -1 +  \cos(x)$.  Calculate
+the first derivative $f^\prime(x) = x - \sin(x)$.  The function
+$f^\prime(x) = 0$ if and only if $x=0$ by (v) and moreover $f^\prime(x)$ changes sign at $x=0$
+which shows that $f(0) = 0$ is a strict global minimum.
+
+To show (vii), define $f(x) = x + \log(1 -x)$ and differentiate to see
 that $f^\prime(x) = 1 - \frac{1}{1-x} = \frac{-x}{1-x} < 0$ for $x \in
 (0,1)$.  Therefore $f(x) \leq f(0)=0$ for $x \in [0,1)$.
 
-To show (vii), let $a = 1 - e^{-1}$ and $f(x) = 1 - ax - e^{-x}$.
+To show (viii), let $a = 1 - e^{-1}$ and $f(x) = 1 - ax - e^{-x}$.
 Take first derivative $f^\prime(x) = -a + e^{-x}$ which has a zero at
 $x = -\ln a \approx 0.5$.  Furthermore $f^{\prime \prime}(x) = -e^{-x}
 < 0$ so we have a global maximum at $x = -\ln a$, therefore to show
@@ -1588,4 +1690,46 @@ $f(x) \geq 0$  for $x \in [0,1]$ it suffices to show it at the
 endpoints: $f(0) = f(1) = 0$.
 \end{proof}
 
+When dealing with characteristic functions, it is useful to have
+estimates for the function $e^{ix}$.  We collect a few useful ones
+here.
+\begin{thm}\label{BasicComplexExponentialInequalities}The following
+  inequalities hold:
+\begin{itemize}
+\item[(i)] $\abs{e^{ix} -1 - ix} \leq \frac{x^2}{2}$ for all $x \in \reals$.
+\item[(ii)] $\abs{e^{ix} -1 - ix + \frac{x^2}{2}} \leq x^2 R(x)$ for
+  all $x \in \reals$ where $\abs{R(x)} \leq 1$ and $\lim_{x \to 0}
+  R(x) = 0$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+To see (i) we use Taylor's Theorem with the Lagrange form of the
+remainder to write $e^{ix} - 1 - ix = -\frac{x^2}{2} e^{ic}$ for some
+$c \in \reals$.  Now take absolute values and use the fact that
+$\abs{e^{ic}}=1$.
+
+To see (i) we use Taylor's Theorem with the integral form of the
+remainder to write $e^{ix} - 1 - ix = - \int_0^x (x - t) e^{it} \,
+dt$.  Now we write 
+\begin{align*}
+ \int_0^x (x - t) e^{it} \, dt &=  \int_0^x (x - t) (e^{it} - 1) \, dt
++ \int_0^x (x-t) \, dt 
+= \int_0^x (x - t) (e^{it} - 1) \, dt + \frac{x^2}{2}
+\end{align*}
+so that $x^2 R(x) = -\int_0^x (x - t) (e^{it} - 1) \, dt$.  Observe that on the one hand
+\begin{align*}
+\abs{R(x)}
+&=\frac{1}{x^2} \abs{\int_0^x (x - t) (e^{it} - 1) \, dt} 
+\leq \frac{\sup_{0 \leq t \leq x} \abs{e^{it} - 1}}{x^2} \int_0^x (x - t) \, dt \\
+&=\sup_{0 \leq t \leq x} \abs{e^{it} - 1}
+\end{align*}
+and thus continuity of $e^{ix}$ implies $\lim_{x \to 0} R(x) = 0$.
+On the other hand
+\begin{align*}
+\abs{\int_0^x (x - t) (e^{it} - 1) \, dt} 
+&\leq \int_0^x (x - t) \abs{e^{it} - 1} \, dt
+&\leq 2 \int_0^x (x - t) \, dt = x^2
+\end{align*}
+which shows $\abs{R(x)} \leq 1$.  
+\end{proof}
 \end{document}
