@@ -1,0 +1,42 @@
+\chapter{Stochastic Approximation}
+
+This chapter covers some of the basic results in the theory of stochastic approximation and in doing so provides some applications of discrete time martingale theory and weak convergence theory to optimization problems.  The statement of the stochastic approximation problem that one often encounters is so abstract and general that it can be difficult to understand how it could be relevant to any particular problem.  Indeed it is common to see stochastic approximation defined as the study of discrete time stochastic processes of the form 
+\begin{align*}
+\theta_{n+1} &= \theta_n + \epsilon_n Y_n
+\end{align*} 
+where $Y_n$ is a random vector.
+
+To motivate the form of the problem statement, let us tie this into the problem of optimization specifically gradient descent.  Given a function $f$ we have a globally convergent algorithm for minimization given by $x_{n+1} = x_n - \alpha_n \nabla f(x_n)$ where $\alpha_n$ is a sequence of real numbers that satisfies Armijo conditions.  Now suppose that we don't have the ability to measure $-\nabla f(x_n)$ exactly but that we have some noise corrupted  version thereof.  If we call the observed approximate gradient $Y_n$, then the gradient descent algorithm has the form of a stochastic approximation problem and we can ask whether we still have convergence in a appropriate stochastic sense (e.g. almost sure).  In line with this specific case, we often think of the process $Y_n$ as being a sequence of observations and though it doesn't have any real mathematical meaning, we shall use the terminology in what follows.
+
+As we've mentioned in our discussion of optimization, in practice constrained optimization is at least as important as unconstrained optimization and therefore we should look for how to incorporate constraints into stochastic approximation.  The way we shall do this at this point is to assume that the sequence $\theta_n$ is constrained to lie in some closed set $F$ and to maintain the constraint at each iteration by a brute force projection (say in $L^2$ norm) onto the set $F$.   Thus in the constrained case we are considering a stochastic process 
+\begin{align*}
+\theta_{n+1} &= \Pi_F \left[ \theta_n + \epsilon_n Y_n\right ]
+\end{align*} 
+where $Y_n$ is a random vector and $\Pi_F$ represents projection onto $F$.  It is common to define the projection correction term $Z_n =  \epsilon_n^{-1} \lbrace \Pi_F \left[ \theta_n + \epsilon_n Y_n\right ] -   \theta_n - \epsilon_n Y_n \rbrace$ so that we may write 
+\begin{align*}
+\theta_{n+1} &= \theta_n + \epsilon_n Y_n + \epsilon_n Z_n
+\end{align*} 
+
+In order to discuss the hypotheses that one might need to make on the stochastic process $Y_n$, it is convenient to assume a structural form for $Y_n$.  Let $\mathcal{F}_n = \sigma(\theta_0, Y_j ; j<n)$ be a filtration $\mathcal{F}$.  For our first results we shall assume that there exists functions $g_n$, an $\mathcal{F}$-martingale difference sequence $\delta M_n$ and a stochastic process $\beta_n$ such that $Y_n = g_n(\theta_n) + \delta M_n + \beta_n$.  The reader should think of these terms in the following way.  The term $g_n(\theta_n)$ represents the mean/true value of the process (e.g. the value of the gradient in the steepest descent case), the term $\delta M_n$ represents a noise term and $\beta_n$ represents a bias term in the observation.  The reason why the bias term $\beta_n$ is called out as being different from $g_n(\theta_n)$ is that we shall be assuming that it becomes asymptotically small.
+
+We shall now assume that we are in the situation of having a constraint set $F$ defined by continuously differentiable function $c_i(x)$ which satisfy the LICQ.  
+
+TODO:  Use the KKT  conditions applied to $\min_{x \in F} \norm{x - (\theta_n + \epsilon_n Y_n)}^2$ to show that $Z_n$ is in the normal cone 
+
+
+\begin{thm}Suppose 
+\begin{itemize}
+\item[(i)] $\sup_n \expectation{Y_n^2} < \infty$
+\item[(ii)] $\epsilon_n$ for $n \in \integers$ is a sequence with $\epsilon_n = 0$ for $n < 0$, $\epsilon_n \geq 0$ for $n \geq 0$, $\lim_{n \to \infty} \epsilon_n = 0$,  $\sum_{n=0}^\infty \epsilon_n = \infty$ and $\sum_{n=0}^\infty \epsilon^2_n < \infty$.  
+\item[(iii)] Suppose the $g_n(\theta)$ are uniformly continuous in $n$ and there is a continuous function $\overline{g}(\theta)$ such that for each $\theta \in F$ we have
+\begin{align*}
+\lim_{n \to \infty} \abs{\sum_{i=n}^{m(t_n+t)} \epsilon_i \lbrace g_i(\theta) - \overline{g}(\theta) \rbrace }&= 0
+\end{align*}
+\item[(iv)] $\beta_n \toas 0$
+\end{itemize}
+Then there is a set $A$ of probability zero such that for $\omega \notin A$ the set of functions $\lbrace \theta^n(\omega, \cdot), Z^n(\omega, \cdot); n < \infty \rbrace$ is equicontinuous.  If $(\theta(\omega, \cdot), Z(\omega, \cdot))$ is the limit of some convergent subsequence then the pair satisfies the projected ODE 
+\begin{align*}
+\dot{\theta} &= \overline{g}(\theta) + z \text{, $z \in \mathcal{N}(\theta)$}
+\end{align*}
+and $\theta_n(\omega)$ converges to a limit set of the projected ODE in $F$.  
+\end{thm}
