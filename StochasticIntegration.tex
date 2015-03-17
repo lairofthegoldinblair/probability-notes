@@ -294,7 +294,7 @@ showing $\int_0^t V \, dM$ is an $L^2$-martingale.
 \end{defn}
 
 While it is trivial that two indistinguishable processes are versions of one another it is also simple that for continuous processes on time scales that are separable the two notions are equivalent.  The following is the case that is most important for us.
-\begin{prop}Let $X$ and $Y$ be cadlag processes on a time scale $\reals_+$.  Then $X$ and $Y$ are versions of one another if and only if they are indistinguishable.
+\begin{prop}\label{VersionEquivalentIndistinguishableCadlag}Let $X$ and $Y$ be cadlag processes on a time scale $\reals_+$.  Then $X$ and $Y$ are versions of one another if and only if they are indistinguishable.
 \end{prop}
 \begin{proof}
 Let $A_X$ be the event that $X$ has cadlag sample paths and similarly with $Y$.  Let $B = \cap_{\substack{ q \geq 0 \\ q \in \rationals}} \lbrace X_q = Y_q\rbrace$.  If $X$ and $Y$ are versions then by taking a countable intersection of almost sure events we have $\probability{A_X \cap A_Y \cap B} = 1$.  Morever on the event $A_X \cap A_Y \cap B$ by right continuity we have for all $t \geq 0$, $X_t = \lim_{q \downarrow t} X_q = \lim_{q \downarrow t} Y_q = Y_t$ and therefore $A_X \cap A_Y \cap B = A_X \cap A_Y \cap \lbrace X_t = Y_t \text { for all } t\geq 0\rbrace$ and it follows that $\probability {X_t = Y_t \text { for all } t\geq 0} \geq \probability{A_X \cap A_Y \cap \lbrace X_t = Y_t \text { for all } t\geq 0\rbrace} = 1$.
@@ -580,7 +580,7 @@ c_p^{-1} \expectation{[M]^{p/2}_\infty} &\leq \expectation{(M^*)^p} \leq c_p \ex
 \begin{proof}
 TODO: Perform reduction to the bounded martingale case via localization and optional sampling (Kallenberg indicates that we may also assume $[M]$ is bounded).
 
-The following argument is quite elementary in each of its steps but is not entirely obvious so we spell it out in great detail.  To derive the inequalities for expectations we'll use Lemma \ref{TailsAndExpectations} and therefore we proceed by creating tail bounds for the random variables in question.  We first work on the right hand inequality of the result.  Let $r > 0$ be fixed and define $\tau = \inf \lbrace t \geq 0 \mid M_t^2 = r \rbrace$ (which is an optional time by continuity and Lemma \ref{HittingTimesContinuous}) and define $\tilde{M} = M - M^\tau$ and $N = \tilde{M}^2 - [\tilde{M}]$.  Pick any $0 < c < 1$ (we'll later refine the required bounds on $c$) and write
+The following argument is quite elementary in each of its steps but is not entirely obvious so we spell it out in great detail.  To derive the inequalities for expectations we'll use Lemma \ref{TailsAndExpectations} and therefore we proceed by creating tail bounds for the random variables in question.  We first work on the right hand inequality of the result.  Let $r > 0$ be fixed and define $\tau = \inf \lbrace t \geq 0 \mid M_t^2 = r \rbrace$ (which is an optional time by sample path continuity and Lemma \ref{HittingTimesContinuous}), $\tilde{M} = M - M^\tau$ and $N = \tilde{M}^2 - [\tilde{M}]$.  Pick any $0 < c < 1$ (we'll later refine the required bounds on $c$) and write
 \begin{align*}
 \probability{(M^*)^2 \geq 4r} &= \probability{(M^*)^2 \geq 4r ; [M]_\infty \geq cr} + \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} \\
 &\leq \probability{[M]_\infty \geq cr} + \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} 
@@ -589,18 +589,37 @@ we get
 \begin{align*}
 \probability{(M^*)^2 \geq 4r} - \probability{[M]_\infty \geq cr} &\leq \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} 
 \end{align*}
-Since $[\tilde{M}] = [M] - [M]^\tau$ and $[M]$ is non-decreasing it follows that $[\tilde{M}] \leq [M]$ and therefore $[M]_\infty < cr$ implies $[\tilde{M}]_\infty < cr$.  Since trivially $\tilde{M}^2 \geq 0$ we know that $[M]_\infty < cr$ implies $N > -cr$.  On $\lbrace (M^*)^2 \geq 4r \rbrace$ we know that $\tau < \infty$ and therefore $\abs{M_\tau} = \sqrt{r}$ and for any $\epsilon > 0$ we can find $t \geq 0$ such that $\abs{M_t} \geq 2\sqrt{r} - \epsilon$, thus $\abs{M_t - M_\tau} > \sqrt{r} - \epsilon$ which implies $\sup_t \tilde{M}^2_t \geq r$.  Putting these observations together we see that $\lbrace (M^*)^2 \geq 4r; [M]_\infty < cr \rbrace \subset \lbrace N > -cr; \sup_t N_t > r - cr \rbrace$ and we get 
+
+\begin{clm}\label{BDGClaim1} $\lbrace (M^*)^2 \geq 4r; [M]_\infty < cr \rbrace \subset \lbrace N > -cr; \sup_t N_t > r - cr \rbrace$
+\end{clm}
+
+From Theorem \ref{OptionalQuadraticCovariation} we compute
+\begin{align*}
+[\tilde{M}] &= [M - M^\tau, M - M^\tau] = [M,M] -  [M^\tau, M] - [M^\tau, M] + [M^\tau, M^\tau] = [M] - [M]^\tau
+\end{align*} 
+Since $[M]^\tau$ is non-negative it follows that $[\tilde{M}] \leq [M]$ and therefore $[M]_\infty < cr$ implies $[\tilde{M}]_\infty < cr$.  Trivially $\tilde{M}^2 \geq 0$ so we know that $[M]_\infty < cr$ implies 
+\begin{align*}
+N &= \tilde{M}^2 - [\tilde{M}] > -cr
+\end{align*}  
+On $\lbrace (M^*)^2 \geq 4r \rbrace$ we know that $\tau < \infty$ and therefore $\abs{M_\tau} = \sqrt{r}$ and for any $\epsilon > 0$ we can find a random $t \geq \tau$ such that $\abs{M_t} \geq 2\sqrt{r} - \epsilon$, thus $\abs{M_t - M_\tau} > \sqrt{r} - \epsilon$ which implies $\sup_t \tilde{M}^2_t \geq r$.  On $\lbrace (M^*)^2 \geq 4r ; [M]_\infty < cr \rbrace$ we therefore get 
+\begin{align*}
+\sup_t N_t &= \sup_t (\tilde{M}_t^2 - [\tilde{M}]_t) \geq \sup_t \tilde{M}_t^2 -  [\tilde{M}]_\infty \geq r - cr
+\end{align*}
+and the claim follows.
+
+From Claim \ref{BDGClaim1} we apply a union bound and get
 \begin{align*}
 \probability{(M^*)^2 \geq 4r} - \probability{[M]_\infty \geq cr} &\leq \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} \\
 &\leq \probability{N > -cr; \sup_t N_t > r - cr}
 \end{align*}
-Now since $N$ is a martingale with $N_0 = 0$, we can apply the Gambler's Ruin Lemma \ref{GamblersRuinContinuousMartingale} with $-cr < 0 < r - cr$ to and use the fact that $\lbrace N > -cr; \sup_t N_t > r - cr \rbrace \subset \lbrace \tau_{-cr} > \tau_{r - cr} ; N^* > 0 \rbrace$ to conclude that 
+To get a further bound we note that $N$ is a martingale with $N_0 = 0$ and introduce the hitting times $\tau_{-cr}$ and $\tau_{r-cr}$ for $N$.  We can apply the upper bound in the Gambler's Ruin Lemma \ref{GamblersRuinContinuousMartingale} with $-cr < 0 < r - cr$ and use the fact that $\lbrace N > -cr; \sup_t N_t > r - cr \rbrace \subset \lbrace \tau_{-cr} > \tau_{r - cr} ; N^* > 0 \rbrace$ to conclude that 
 \begin{align*}
 \probability {N > -cr; \sup_t N_t > r - cr} &\leq \probability{\tau_{-cr} > \tau_{r - cr} ; N^* > 0} \\
-&= 1 - \probability{\tau_{-cr} \leq \tau_{r - cr} ; N^* > 0} \\
+&= \probability{N^* > 0} - \probability{\tau_{-cr} \leq \tau_{r - cr} ; N^* > 0} \\
 &\leq (1 - \frac{r - cr}{r -cr + cr})\probability{N^* > 0} = c \probability{N^* > 0}
 \end{align*}
-It is clear from the nonnegativity of $[\tilde{M}]$ and the definition of $N$ that $N^* > 0$ implies $\tilde{M}^*= (M-M^\tau)^* > 0$ which $\tau < \infty$ and therefore $(M^*)^2 > r$.  Thus
+It is clear from the nonnegativity of $[\tilde{M}]$ and the definition of $N$ that $N^* > 0$ implies $\tilde{M}^*= (M-M^\tau)^* > 0$ which implies $\tau < \infty$ and therefore $(M^*)^2 > r$.  Summarizing 
+all of the bounds we get
 \begin{align*}
 \probability{(M^*)^2 \geq 4r} - \probability{[M]_\infty \geq cr} &\leq \probability{(M^*)^2 \geq 4r; [M]_\infty < cr} \\
 &\leq \probability{N > -cr; \sup_t N_t > r - cr} \\
@@ -612,9 +631,14 @@ Now we multiply by $\frac{p}{2}r^{p/2-1}$ and integrate to get
 &\frac{p}{2}\int_0^\infty r^{p/2-1}\probability{(M^*)^2 \geq 4r} \, dr - \frac{p}{2}\int_0^\infty r^{p/2-1}\probability{[M]_\infty \geq cr} \, dr \\
 &\leq \frac{cp}{2}\int_0^\infty r^{p/2-1} \probability{(M^*)^2 > r} \, dr \\
 \end{align*}
-which yields upon changing integration variables and applying Lemma \ref{TailsAndExpectations}
+ which yields upon changing integration variables ($2 \sqrt{r}$, $cr$ and $\sqrt{r}$ respectively)
 \begin{align*}
-2^{-p} \expectation{\abs{M^*}^{p}} - c^{-p/2} \expectation{\abs{[M]_\infty}^{p/2}} &\leq c \expectation{\abs{M^*}^{p}}
+&\frac{p}{2^p}\int_0^\infty r^{p-1}\probability{M^* \geq r} \, dr - c^{-p/2} \frac{p}{2}\int_0^\infty r^{p/2-1}\probability{[M]_\infty \geq r} \, dr \\
+&\leq cp\int_0^\infty r^{p-1} \probability{M^* > r} \, dr \\
+\end{align*}
+and applying Lemma \ref{TailsAndExpectations}
+\begin{align*}
+2^{-p} \expectation{(M^*)^{p}} - c^{-p/2} \expectation{\abs{[M]_\infty}^{p/2}} &\leq c \expectation{(M^*)^{p}}
 \end{align*}
 Thus we get the right hand inequality for $c_p = c^{-p/2}/(2^{-p} -c)$ which is a positive constant for any $0 < c < 2^{-p}$.
 
@@ -645,6 +669,50 @@ which upon changing variables and applying Lemma \ref{TailsAndExpectations}
 2^{p/2} \expectation{\abs{[M]_\infty}^{p/2}} - c^{-p/2} \expectation{\abs{M^*}^p} &\leq 4c \expectation{\abs{[M]_\infty}^{p/2}} 
 \end{align*}
 which yields the left hand inequality with $c_p = c^{-p/2}/(2^{-p/2} -4c)$ which is positive for any $0 < c < 2^{-p/2 - 2}$.
+\end{proof}
+
+Later on we will need the following extension of the BDG inequalities to the vector valued case.
+\begin{cor}\label{BDGVectorInequalities}Let $M = (M^{(1)}, \dotsc, M^{(d)})$ be a continuous vector valued local martingale such that $M_0 = 0$ and let 
+\begin{align*}
+\norm{M}^*_t &= \sup_{0 \leq s \leq t} \norm{M_s} \\
+[M]_t &= \sum_{i=1}^d [M^{(i)}]_t
+\end{align*}
+then for any $p > 0$ there exists a constant $d_p$ such that 
+\begin{align*}
+d_p^{-1} \expectation{[M]^{p/2}_\infty} &\leq \expectation{(\norm{M}^*)^p} \leq d_p \expectation{[M]^{p/2}_\infty}
+\end{align*}
+\end{cor}
+\begin{proof}
+Using definitions we have
+\begin{align*}
+(\norm{M}^*)^p &= 
+\sup_{0 \leq s < \infty} \left( (M^{(1)})^2 + \dotsm + (M^{(d)})^2 \right)^{p/2}
+\end{align*}
+From Proposition \ref{SimplePowerMean} we have 
+\begin{align*}
+\left( (M_t^{(1)})^2 + \dotsm + (M_t^{(d)})^2 \right)^{p/2} &\leq
+\left( \abs{M_t^{(1)}} + \dotsm + \abs{M_t^{(d)}} \right)^{p} \leq d^{p-1} \left( \abs{M_t^{(1)}}^p + \dotsm + \abs{M_t^{(d)}}^p \right)
+\end{align*}
+and therefore taking suprema and expectations and the scalar BDG inequality
+\begin{align*}
+\expectation{(\norm{M}^*)^p} &\leq d^{p-1} \left( \expectation{((M^{(1)})^*)^p} + \dotsm + \expectation{((M^{(d)})^*)^p} \right) \\
+&\leq d^{p-1} c_p \left( \expectation{[M^{(1)}]^{p/2}_\infty} + \dotsm + \expectation{[M^{(d)}]^{p/2}_\infty} \right) \\
+&\leq d^{p-1} c_p \expectation{[M]^{p/2}_\infty}
+\end{align*}
+
+To get the reverse inequality first note
+\begin{align*}
+\left( (M_t^{(1)})^2 + \dotsm + (M_t^{(d)})^2 \right)^{p/2} &\geq
+d^{-1} \left( \abs{M_t^{(1)}}^p + \dotsm + \abs{M_t^{(d)}}^p \right) 
+\end{align*}
+and therefore taking suprema (using the general fact that $\sup_t (f_1(t)) + \dotsm + \sup_t (f_d(t)) \leq  d \max_{1\leq i \leq d} \sup_t f_i(t) \leq d \sup_t (f_1(t) + \dotsm + f_d(t))$)
+and expectations and using the scalar BDG inequality and the Power Mean Inequality
+\begin{align*}
+\expectation{(\norm{M}^*)^p} &\geq
+d^{-2} \left( \expectation{((M^{(1)})^*)^p} + \dotsm + \expectation{((M_t^{(d)})^*)^p } \right)  \\
+&\geq d^{-2} c_p^{-1} \left( \expectation{[M^{(1)}]^{p/2}_\infty} + \dotsm + \expectation{[M^{(d)}]^{p/2}_\infty} \right) \\
+&\geq d^{p/2-2} c_p^{-1} \expectation{[M]^{p/2}_\infty}
+\end{align*}
 \end{proof}
 
 In the following Lemma we remind the reader of the notation $\int g \, \abs{dF}$ to denote integration with respect to the Lebesgue-Stieltjes measure determined by the total variation function of $F$.
@@ -776,12 +844,16 @@ With this Theorem proven we know that the following defintion makes sense.
 \begin{defn}Given a continuous local martingale $M$ and a progressive process $V$ such that $\int_0^t V^2_s \, d[M]_s < \infty$ for all $t \geq 0$, the \emph{stochastic integral} $\int V \, dM$ is the almost surely unique continuous local martingale for which $[\int V \, dM, N]_t = \int_0^t V_s \, d[M,N]_s$ for all $t \geq 0$ almost surely for every continuous local martingale $N$.
 \end{defn}
 
-Here we collect a few of the most elementary facts about the stochastic integral.  In particular we call attention to the Ito Isometry which doesn't figure prominently in our presentation but is a critical step in others; we shall have more to say about this later.  
+Here we collect a few of the most elementary facts about the stochastic integral.  In particular we call attention to the Ito Isometry which doesn't figure as prominently in our presentation as in others but is nonetheless very useful.  We shall have more to say about this later.  
 \begin{lem}\label{BasicPropertiesStochasticIntegralContinuousMartingale}Let $M$ be a continuous local martingales.  If $U,V \in L(M)$ such that $U_t=V_t$ for all $t \geq 0$ almost surely then $\int U \, dM = \int V \, dM$.  The stochastic integral is bilinear in both the integrand and integrator.
 TODO: Be very precise about assumptions here!  E.g. is $V \in L(aM + bN)$ equivalent to $V \in L(M)$ and $V \in L(N)$?  Clearly the latter is at least as strong as the former.
 If $M$ is a continuous local martingale and $V \in L(M)$ then we have $[\int V \, dM]_t = \int_0^t V^2_s \, d[M]_s$ for all $t \geq 0$ almost surely.  In particular, if $M$ is a continuous martingale then we have the \emph{Ito Isometry} 
 \begin{align*}
 \expectation{\left(\int_0^t V \, dM\right)^2} &= \int_0^t V_s^2 \, d[M]_s \text{ for all $t \geq 0$}
+\end{align*}
+If $M$ is a continuous martingale, $\tau$ is an optional time and almost surely $V_s = 0$ for all $s \leq \tau$ (i.e. $V_s \characteristic{s \leq \tau} = 0$ almost surely) then we have
+\begin{align*}
+\int_0^t V_s dM_s = 0 \text{ almost surely on $\lbrace t \leq \tau\rbrace$}
 \end{align*}
 \end{lem}
 \begin{proof}
@@ -816,7 +888,20 @@ In the special case that $M$ is a martingale we know that $\left(\int V \, dM\ri
 \begin{align*}
 \expectation{\left( \int_0^t V \, dM\right)^2} &= \expectation{[\int V \, dM]_t} = \expectation{\int_0^t V^2(s) \, d[M]_s}
 \end{align*}
+
+To see the last property note that since $M$ is a martingale and $\tau$ is $\mathcal{F}$-optional $\left(\int_0^{t \wedge \tau}  V \, dM\right)^2 - [\int V \, dM]_{t \wedge \tau}$ is a martingale starting at 0.   Let $t \geq 0$ be fixed and consider
+\begin{align*}
+\expectation{ \left( \int_0^{t \wedge \tau}  V_s \, dM_s \right)^2}
+&=\expectation{ [\int  V_s \, dM_s]_{t \wedge \tau} } = \expectation{ \int_0^{t \wedge \tau}  V^2_s \, d[M]_s] } \\
+&=\expectation{ \int_0^\infty \characteristic{s \leq t \wedge \tau} V^2_s \, d[M]_s] } \\
+&\leq \expectation{ \int_0^\infty \characteristic{s \leq \tau} V^2_s \, d[M]_s] } = 0
+\end{align*}
+from which it follows that $\int_0^{t \wedge \tau}  V_s \, dM_s$ almost surely.  Taking a countable intersection of almost sure events we conclude that
+$\int_0^{t \wedge \tau}  V_s \, dM_s$ for all $t \in \rationals \cap \reals_+$ almost surely and by continuity of $\int V_s \, dM_s$ we get $\int_0^{t \wedge \tau}  V_s \, dM_s$ 
+for all $0 \leq t < \infty$ almost surely.
 \end{proof}
+
+
 
 It is common for the details of defining the stochastic integral to unfold a bit differently than our presentation.  The alternative presentation begins just as we have defines the stochastic integral for predictable step process integrands but then notes the property of the Ito Isometry holds for such integrands.  The basic idea is to show that predictable step processes are dense in an $L^2$ space and the use the Ito isometry to extend the definition of the stochastic integral by a completion argument.  There is a subtlety to deal with.  We note that the isometry holds for every \emph{fixed} $t \geq 0$ and thus is a family of isometries between an $L^2$ space of integrands (predictable step processes on $[0,t]$) and an $L^2$ space of random variables; it is not a single isometry between a spaces of processes.  There are two ways to proceed.  In the first case (Steele, Peres and Morters, others) one stays with the \emph{one $t$ at a time} approach and shows that step processes are dense in the progressive processes in $L^2(\Omega \times [0,t])$ and then extends the stochastic integral pointwise in $t \geq 0$.  An extra step is necessary at this point to show that one may find a version of the resulting stochastic integral process that is indeed a continuous martingale.  In the second case (e.g. Karatzas and Shreve), one defines a norm on the space of $L^2$ continuous martingales (different from the Hilbert space structure we have used) and shows that the Ito isometries can be assembled into a single isometry between the space of integrands and this space of martingales; again one extends by completion.  What about Rogers and Williams; they use the Ito isometry approach but I think the details are slightly different.
  
@@ -837,7 +922,7 @@ that is to say $L(X) = L(M) \cap L(A)$ and for any $V \in L(X)$ we define $\int 
 \end{defn} 
 Note that the decomposition $X = M + A$ is almost surely unique as if $M + A = \tilde{M} + \tilde{A}$ then $M - \tilde{M} = \tilde{A} - A$ is a continuous local martingale of locally finite variation and is therefore $0$ almost surely by Lemma \ref{ContinuousLocalMartingaleBoundedVariation}.  As such, we refer to this as the \emph{canonical decomposition}.
 
-We want to develop the primary properties of the stochastic integral with a continuous semimartingale integrator.  Note that by the definition $\int V \, dX = \int V \, dM + \int V \, dA$ we can see that a stochastic integral with respect to a continuous semimartingale integrator is itself a continuous semimartingale.  Thus we can consider a stochastic integral as an integrator and the first result is a generalization of the ``chain rule'' proven in Lemma \ref{ChainRuleStieltjes}.
+ We want to develop the primary properties of the stochastic integral with a continuous semimartingale integrator.  Note that by the definition $\int V \, dX = \int V \, dM + \int V \, dA$ we can see that a stochastic integral with respect to a continuous semimartingale integrator is itself a continuous semimartingale.  Thus we can consider a stochastic integral as an integrator and the first result is a generalization of the ``chain rule'' proven in Lemma \ref{ChainRuleStieltjes}.
 \begin{lem}\label{ChainRuleContinuousSemimartingale}Let $X$ be a continuous semimartingale and let $V \in L(X)$ then $U \in L(\int V \, dX)$ if and only if $UV \in L(X)$ and $\int U \, d\int V \, dX = \int UV \, dX$ a.s.
 \end{lem}
 \begin{proof}
@@ -967,6 +1052,15 @@ XY &= \frac{1}{4} \left( (X + Y)^2 - (X-Y)^2 \right) \\
 &=X_0 Y_0 + \int X \, dY + \int Y \, dX + [X,Y]
 \end{align*}
 \end{proof}
+
+TODO: Figure out where to put this...
+
+It is also useful to have a short hand to discuss stochastic integrals with a vector value integrator and a matrix valued integrand.
+\begin{defn}Let $X^{(i)}$ be an semimartingale for each $1 \leq i \leq n$ and let $V^{ij}$ for $1 \leq i \leq m$ and $1 \leq j \leq n$ such that $V^{ij} \in L(X^j)$, then we define $\int V_s \, dX_s$ to be the semimartingale in $\reals^m$ such that
+\begin{align*}
+\left( \int_0^t V_s \, dX_s \right)^{(i)} &= \sum_{j=1}^n \int_0^t V^{ij}_s \, dX^{(j})_s \text{ for $1 \leq i \leq m$}
+\end{align*}
+\end{defn}
 
 We have mentioned that our introduction of the concept of semimartingales was not well motivated.  Though there is a much deeper justification for the relevance of the concept to be provided later, note that the integration by parts formula gives us an inkling that the concept is robust.  Even if we started with just local martingales, multiplying them together would not result in a local martingale but only a semimartingale.  The integration by parts formula shows us that the space of semimartingales forms an algebra.  Even more is true however.
 The following Theorem shows that the class of continuous semimartingales is closed under composition sufficiently smooth functions and provides a means of computing many stochastic integrals.  It is probably the most important theorem in stochastic calculus.
@@ -1343,6 +1437,49 @@ For any $A \in \tilde{\mathcal{F}}_0 = \mathcal{F}_S$ we have by the martingale 
 which shows us that $\cexpectationlong{\mathcal{F}_S}{e^{i \langle u, \tilde{B}_{T-S} \rangle}} = e^{-\frac{1}{2} (T-S) \langle u, u \rangle}$.  We may now apply uniqueness of conditional characteristic functions Lemma \ref{ConditionalCharacteristicFunctions} and Theorem \ref{GaussianVectorCharacteristicFunction} to conclude that the conditional probability distribution $\cprobability{\mathcal{F}_S}{ (B_{T}^1 - B_S^1,\dotsc, B_{T}^d - B_S^d) \in \cdot}$ is centered Gaussian with covariance matrix $(T-S)$ times the identity. As the conditional probability distribution is deterministic and we see that $B_T -B_S$ is independent of $\mathcal{F}_S$ as well.
 \end{proof}
 
+The Martingale Representation theorem shows that when we are given a Brownian motion, then all Brownian functionals (taken so broadly as to include continuous local martingales) are obtained as stochastic integrals.  There is related question that shall prove important going forward; given a continuous local martingale can we construct a Brownian motion such that the local martingale is a stochastic integral.  The following generalization of a theorem of Doob shows that this is possible.  TODO: The assumption on the covariance matrix is all we need for our application to weak solutions of SDE's but it can be derived by from more primitive assumptions (e.g. see Karatzas and Shreve).
+
+TODO: Define standard extension, prove that a continuous local martingale lifts with covariation preserved, progressive processes lift to progressive processes.
+
+\begin{thm}\label{DoobIntegralRepresentationTheoremContinuousLocalMartingale}Let $(\Omega, \mathcal{A}, P,  \mathcal{F}_t)$ be a filtered probability space and let $M$ be a continuous local $\mathcal{F}$-martingale in $\reals^d$ such that $M_0 = 0$ and $[M]_t = \int_0^t V V^T \, ds$ where $V$ is a $d \times n$ matrix valued $\mathcal{F}$-progressive process.  There exists a standard extension $(\tilde{\Omega}, \tilde{\mathcal{A}}, \tilde{P},  \tilde{\mathcal{F}}_t)$ and an $\tilde{\mathcal{F}}$-Brownian motion $B$ in $reals^n$ such that $M$ and $\int V_s \, dB_s$ are indistinguishable.
+\end{thm}
+\begin{proof}
+To clarify the notation in the hypothesis, we have $[M^{(i)}, M^{(j)}]_t = \sum_{k=1}^n \int_0^t V^{ik}_s V^{jk}_s \, ds$ where
+$V^{ik}$ is an $\mathcal{F}$-progressive process for each $1 \leq i \leq d$ and $1 \leq k \leq n$.
+
+TODO:  Show that we can create an independent Brownian motion $X$ in $\reals^d$ on a standard extension
+
+View the processes $V^{ik}$ as an $d X n$ matrix valued process that we call $V$.  Working pointwise in $\Omega$ and $0 \leq t < \infty$ by Corollary \ref{BorelMeasurabilitySVD} the singular value decomposition $V = A \Sigma B^T$ is a Borel measurable function of $V$.  We let $V^+ = B \Sigma^{-1} A^T$ be the Moore-Penrose pseudoinverse of $V$ and note that since the pseudoinverse is a Borel measurable function of $(A,\Sigma,B)$, it is a Borel measurable function of $V$ and therefore the $n \times d$ matrix valued process $V^+$ is also $\tilde{\mathcal{F}}$-progressive.  Let $\pi_N = 1 - BB^T$ be constructed pointwise as the projection onto the nullspace of $V$ and note that it too is an $d \times d$ matrix valued $\tilde{\mathcal{F}}$-progressive process.  In a similar fashion we get $\tilde{\mathcal{F}}$-progressive projection processes $\pi_{N^\perp} = BB^T$, $\pi_R = A A^T$ and $\pi_{R^\perp} = 1 - AA^T$ onto the orthogonal complement of the null space of $V$, the range space of $V$ and the orthogonal complement of the range space of $V$ respectively.  Now define a continuous local $\tilde{\mathcal{F}}$-martingale $B$ in $\reals^n$ as
+\begin{align*}
+B_t &= \int_0^t V^+_s \, dM_s + \int_0^t \pi_N(s) \, dX_s
+\end{align*}
+
+TODO: Justify that the integrals are well defined; or at least note that the computations below show this implicitly.
+
+TODO: Independence of $M$ and $X$ shows that $\left[\int_0^t V^+_s \, dM_s, \int_0^t \pi_N(s) \, dB_s \right] = 0$.
+
+Now applying independence of $M$ and $X$, Exercise \ref{QuadraticCovariationMatrixVectorStochasticIntegral}, the fact that $V^+ V = \pi_{N^\perp}$ and the fact that projections satisfy $\pi \pi^T = \pi^2 = \pi$
+\begin{align*}
+[B]_t &= \left[\int V^+_s \, dM_s\right]_t + \left[ \int_0^t \pi_N(s) \, dB_s \right]_t \\
+&=\int_0^t (V^+ V V^T (V^+)^T)_s \, ds + \int_0^t (\pi_N \pi_N^T)_s \, ds \\
+&=\int_0^t (\pi_{N^\perp} \pi_{N^\perp}^T)_s \, ds + \int_0^t (\pi_N \pi_N^T)_s \, ds \\
+&=\int_0^t (\pi_{N^\perp} + \pi_N)_s \, ds = t \IdentityMatrix\\
+\end{align*}
+where $\IdentityMatrix$ is the $n \times n$ identity matrix.  Now by Levy's Theorem \ref{LevyCharacterizationOfBrownianMotion} we conclude that $X$ is a $\tilde{\mathcal{F}}$-Brownian motion in $\reals^n$.
+
+Note also that by Exercise \ref{QuadraticCovariationMatrixVectorStochasticIntegral}, the hypothesis on the covariation matrix of $M$ and the fact that $\pi_{R^\perp} V = 0$ we get
+\begin{align*}
+[\int \pi_{R^\perp} \, dM]_t &= \int_0^t (\pi_{R^\perp} V V^t \pi_{R^\perp}^T)_s \, ds = 0
+\end{align*}
+and therefore $\int \pi_{R^\perp} \, dM = 0$ almost surely.  From these facts, Chain Rule Lemma \ref{ChainRuleContinuousSemimartingale} and $V \pi_N = 0$ we compute 
+\begin{align*}
+\int_0^t V_s \, dB_s &= \int_0^t V_s \, d \int_0^s V^+_u \, dM_u + \int_0^t V_s \, d \int_0^s \pi_N(u) \, dX_u \\
+&=\int_0^t V_s V^+_s \, dM_s + \int_0^t V_s \pi_N(s) \, dX_s \\
+&=\int_0^t \pi_R(s) \, dM_s \\
+&= \int_0^t (\pi_R + \pi_R)_s \, dM_s = M_t
+\end{align*}
+\end{proof}
+
 \subsection{Girsanov Theory}
 
 We now begin an investigation of how continuous local martingales behave as the underlying probability measure is changed.  
@@ -1520,3 +1657,438 @@ The following theorm clarifies when a deterministic drift term can be removed fr
 First assume that $P_0 \sim P_h$ on $\mathcal{F}_t$ for all $t \geq 0$.  By Lemma \ref{LikelihoodRatioProcesses} we know that there exists a $P_0$-martingale $Z$ with $Z_t > 0$ and $P_h = Z_t \cdot P_0$ on $\mathcal{F}_t$ for all $t \geq 0$.  Since $Z$  is a Brownian martingale we may apply the Martingale Representation Theorem \ref{MartingaleRepresentationTheorem} to conclude that $Z$ is almost surely continuous and therefore by Lemma \ref{RealExponentialContinuousMartingale} we may write $Z = \mathcal{E}(M)$ for some continuous local $P_0$-martingale $M$.  Applying the Martingale Representation Theorem to $M$ we know there are almost surely unique processes $V^j \in L(B^j)$ such that $M = M_0 + \sum_{j=1}^d \int V^j \, dB^j$.  Note that $V^j \in L(B^j)$ implies $\int_0^t (V^j(s))^2 \, ds < \infty$ for all $t \geq 0$ and therefore we have $V^j \in L^2_{loc}$.
 TODO: Finish
 \end{proof}
+
+\section{Stochastic Differential Equations}
+
+In this section we consider \emph{stochastic differential equations} of the form
+\begin{align*}
+dX_t = b(t,X_t) dt + \sigma(t,X_t) dB_t
+\end{align*}
+involving a continuous stochastic process $X_t$ and a Brownian motion $B_t$.   This equation is a traditional short hand for the integral equation
+\begin{align}\label{StochasticIntegralEquation}
+X_t &= X_0 + \int_0^t b(s, X_s) ds + \int_0^t \sigma(s,X_s) dB_s
+\end{align}
+
+As it turns out there a couple of different ways to think of a stochastic differential equation based on what one considers as known and what one is trying to solve for.  In the first way we consider a probability space and a Brownian motion as given and one tries to find a process adapted to the Brownian motion for which Equation \eqref{StochasticIntegralEquation} holds; such solutions are referred to as strong solutions.  In the second case one assumes that only $b$ and $\sigma$ are given and one seeks to construct a filtered probability space, a Brownian motion $B$ and an adapted $X$ such that Equation \eqref{StochasticIntegralEquation} holds; such solutions are called weak solutions.  As we will see it is important to examine both notions of solution as there are problems for which weak solutions exists yet strong solutions don't and the existence of weak solution is sufficient, yet there are situations in which strong solutions are necessary.
+
+In order to make sure that the stochastic differential equation makes sense it is required that the stochastic integrals is defined.  We first dispense with a preliminary measurability result that tells us conditions under which the candidate integrand is progressive.
+\begin{lem}Let $f : [0,\infty) \times C([0,\infty); \reals^d) \to \reals$, $\pi_{s, j} (f) = f_j(s)$ for $0 \leq s < \infty$, $1 \leq j \leq d$ and assume that $f$ is progressive for the filtration $\mathcal{G}_t = \sigma(\pi_{s,j} ; 0 \leq s \leq t, 1 \leq j \leq d)$.  Let $X$ be a continuous $\mathcal{F}$-adapted process in $\reals^d$ then $Y_t = f(t,X_t)$ is $\mathcal{F}$-progressive.
+\end{lem}
+\begin{proof}
+This amounts to unwinding the definitions involved.  First we recast the property of $\mathcal{F}$-adaptedness in terms of $\mathcal{G}$.  $X$ is $\mathcal{F}$-adapted if and only if $\pi_{s,j} \circ f$ is $\mathcal{F}_t$ measurable for all $0 \leq s \leq t$, $1\leq j \leq d$ if and only if $X^{-1}(\pi_{s,j}^{-1}(A)) \in \mathcal{F}_t$ for all $0 \leq s \leq t$, $1\leq j \leq d$,  $A \in \mathcal{B}(\reals)$ if and only if $X^{-1}(B) \in \mathcal{F}_t$ for all $0 \leq t < \infty$, $B \in \mathcal{G}_t$;  thus $X$ being $\mathcal{F}$-adapted is equivalent to saying that $X$ is $\mathcal{F}_t/\mathcal{G}_t$ for all $0 \leq t < \infty$.
+
+The property of $f$ being progressive means that $f \mid_{[0,t] \times  C([0,\infty); \reals^d)}$ is $\mathcal{B}([0,t]) \otimes \mathcal{G}_t$ measurable.  Thus by writing $Y \mid_{[0,t] \times \Omega} (s,\omega) = f(s, X(\omega))$ we see that $Y \mid_{[0,t] \times \Omega}$ is $\mathcal{B}([0,t]) \otimes \mathcal{F}_t$ measurable for all $0 \leq t < \infty$ i.e. $\mathcal{F}$-progressive.
+\end{proof}
+
+\subsection{Strong Solutions}
+
+The first task at hand is to record a precise definition of a strong solution for a stochastic differential equation.
+
+TODO: State clearly the assumptions on $(b,\sigma)$; do we want each to be progressive as above?
+
+\begin{defn}Suppose we are given a probability space $(\Omega, \mathcal{A}, P)$, a Brownian motion $B_t$ with values in $\reals^r$, a random vector $\xi$ in $\reals^d$ independent of $B$.  Let $\mathcal{F}_t$ be the completion of $\sigma(\xi, B_s ; 0 \leq s \leq t)$.  We say than continuous stochastic process $X_t$ with values in $\reals^d$ is a \emph{strong solution} if 
+\begin{itemize}
+\item[(i)] $X_t$ is $\mathcal{F}$-adapted 
+\item[(ii)] $X_0 = \xi$ almost surely
+\item[(iii)] $\int_0^t \abs{b_i(s,X_s)} \, ds < \infty$ almost surely and $\int_0^t \sigma^2_{ij}(s, X_s) \, ds < \infty$ almost surely for all $i=1, \dotsc, d$, $j=1, \dotsc, r$ and for all $0 \leq t < \infty$
+\item[(iv)] 
+\begin{align*}
+X_t &= X_0 + \int_0^t b(s,X_s) \, ds + \int_0^t \sigma(s,X_s) \, dB_s \text{ for all $0 \leq t < \infty$ almost surely}
+\end{align*} 
+\end{itemize}
+\end{defn}
+
+When one first learns about differential equations the most important tasks seem to be understanding existence and uniqueness results for solutions of differential equations and learning some techinques for finding closed form solutions for simple differential equations.  The agenda here is similar.
+
+The uniqueness theorems for strong solutions are a bit stronger than one might guess at first.  The idea is related to the $\mathcal{F}$-adaptedness of a strong solution.  By Lemma \ref{FunctionalRepresentation} we expect that there is a functional representation of a strong solution $X_t$ in terms of the driving Brownian motion $B_t$ and the initial condition $\xi$.  The existence of such a functional representation would obviously imply uniqueness.  However, it seems reasonable to expect that the functional representation will only depend on the pair $(b,\sigma)$ which would mean that the uniqueness would hold uniformly over all driving Brownian motions and initial conditions.  We record a precise definition here.
+\begin{defn}We say that \emph{strong uniqueness} holds for a pair $(b,\sigma)$ if for every probability space $(\Omega, \mathcal{A}, P)$, Brownian motion $B$, initial vector $\xi$ any two strong solutions are indistinguishable.
+\end{defn}
+
+The pair $(b,\sigma)$ being locally Lipschitz continuous is sufficient for strong uniqueness to hold.
+\begin{thm}\label{StrongUniquenessSDE}Suppose that for every $n \in \naturals$ there exists a constant $K_n$ with the property that for every $\norm{x} \leq n$ and $\norm{y} \leq n$ we have
+\begin{align*}
+\sup_{0 \leq t < \infty} \norm{b(t,x) - b(t,y)} + \norm{\sigma(t,x) - \sigma(t,y)} \leq K_n \norm{x-y}
+\end{align*}
+then strong uniqueness holds for $(b,\sigma)$.
+\end{thm}
+
+We have a need for the following basic tool from the theory of ordinary differential equations.
+\begin{prop}[Gronwall's Inequality]\label{GronwallsInequality}Suppose we have $0 \leq g(t) \leq \alpha(t) + \beta \int_0^t g(s) \, ds$ for all $0 \leq t \leq T$ with $\beta \geq 0$ and $\alpha : [0,T] \to \reals$ integrable then we have
+\begin{align*}
+g(t) &\leq \alpha(t) + \beta \int_0^t \alpha(s) e^{\beta(t-s)} \, ds \text{ for all $0 \leq t \leq T$}
+\end{align*}
+\end{prop}
+\begin{proof}
+We massage the hypothesis a bit by writing $g(t) - \beta \int_0^t g(s) \, ds \leq \alpha(t)$.  Multiplying by $e^{-\beta t}$ and using the product rule and the Fundamental Theorem of Calculus we get
+\begin{align*}
+\frac{d}{dt} e^{-\beta t} \int_0^t g(s) \, ds &\leq e^{-\beta t} \alpha(t)
+\end{align*}
+Now integrate both sides of the inequality to see that $\int_0^t g(s) \, ds \leq \int_0^t \alpha(s) e^{\beta(t-s)} \, ds$.  Plug this inequality back into the original hypothesis to see
+\begin{align*}
+0  &\leq g(t) \leq \alpha(t) + \beta \int_0^t \alpha(s) e^{\beta(t-s)}
+\end{align*}
+\end{proof}
+
+Now we can give the proof of the theorem.
+\begin{proof}
+Suppose that $(\Omega, \mathcal{A}, P$, $B$ and $\xi$ are given and let $X$ and $Y$ be strong solutions.  Let $\tau^X_n = \inf \lbrace t \geq 0 \mid \norm{X_t} \geq n \rbrace$,
+$\tau^Y_n = \inf \lbrace t \geq 0 \mid \norm{Y_t} \geq n \rbrace$ and let $\tau_n = \tau^X_n \wedge \tau^Y_n$.  By continuity of $X$ on $[0,\infty)$ we know that $\lim_{n \to \infty} \tau^X_n = \infty$ a.s. (if $\liminf_{n \to \infty} \tau^X_n < \infty$ then we get a subsequence $\tau^X_{n_j} \to T < \infty$ with $\norm{X_{\tau^X_{n_j}}} \geq n_j$ contradicting continuity of $X$ at $T$).  Since $X$ and $Y$ are strong solutions we have
+\begin{align*}
+X_{t \wedge \tau_n} - Y_{t \wedge \tau_n} &= \int_0^{t \wedge \tau_n} (b(s,X_s) - b(s,Y_s)) \, ds + \int_0^{t \wedge \tau_n} (\sigma(s,X_s) - \sigma(s,Y_s)) \, dB_s
+\end{align*}
+and by the using the inequality $\norm{x + y}^2 \leq 2(\norm{x}^2 + \norm{y}^2)$, the fact that $\norm{\int f(s) \, ds} \leq \int \norm{f(s)} \, ds$, the Cauchy Schwartz formula, the Ito Isometry (Lemma \ref{BasicPropertiesStochasticIntegralContinuousMartingale}), $[B^{(i)}, B^{(j)}]_t = \delta_{ij} t$ and the local Lipschitz continuity we get
+\begin{align*}
+&\expectation{\norm{X_{t \wedge \tau_n} - Y_{t \wedge \tau_n}}^2}  \\
+&\leq 2\expectation{\norm{\int_0^{t \wedge \tau_n} (b(s,X_s) - b(s,Y_s)) \, ds}^2} 
++2 \expectation{\norm{ \int_0^{t \wedge \tau_n} (\sigma(s,X_s) - \sigma(s,Y_s)) \, dB_s }^2} \\
+&\leq
+2\expectation{\left [ \int_0^{t \wedge \tau_n} \norm{b(s,X_s) - b(s,Y_s)} \, ds \right ]^2} 
++2 \sum_{i=1}^d \expectation{\left [\sum_{j=1}^r \int_0^{t \wedge \tau_n} (\sigma_{ij}(s,X_s) - \sigma_{ij}(s,Y_s)) \, dB^{(j)}_s \right]^2 } \\
+&\leq
+2t \expectation{\int_0^{t \wedge \tau_n} \norm{b(s,X_s) - b(s,Y_s)}^2 \, ds } 
++2 \sum_{i=1}^d \expectation{ \sum_{j=1}^r \int_0^{t \wedge \tau_n} (\sigma_{ij}(s,X_s) - \sigma_{ij}(s,Y_s))^2 \, ds } \\
+&=
+2t \expectation{\int_0^{t \wedge \tau_n} \norm{b(s,X_s) - b(s,Y_s)}^2 \, ds } 
++2 \expectation{ \int_0^{t \wedge \tau_n} \norm{\sigma(s,X_s) - \sigma(s,Y_s)}^2 \, ds } \\
+&\leq 2(T+1)K_n^2 \expectation{\int_0^{t \wedge \tau_n} \norm{X_s -Y_s}^2 \, ds }
+\end{align*}
+Apply the Gronwall Inequality with $g(t) = \norm{X_{t \wedge \tau_n} - Y_{t \wedge \tau_n}}^2$ and $\alpha(t) = 0$ to conclude that 
+$\expectation{\norm{X_{t \wedge \tau_n} - Y_{t \wedge \tau_n}}^2} = 0$ which implies that $X_{t \wedge \tau_n} = Y_{t \wedge \tau_n}$ a.s.  Letting $n \to \infty$ and
+using the fact that $\lim_{n \to \infty} \tau_n = \infty$ a.s. we see that $X_{t} = Y_{t}$ a.s. for all $t \geq 0$.  By continuity of $X$ and $Y$ it follows that $X$
+and $Y$ are indistinguishable.
+\end{proof}
+
+The same proof technique used in demonstrating uniqueness can be used to show a closely related result that is worth calling out.
+\begin{prop}\label{StrongUniquenessSDEExtended}Let $(\Omega, \mathcal{A}, P)$, the filtration $\mathcal {F}$ and $b$ and $\sigma$ be given.  Let $\xi$ and $\eta$ be $\mathcal{F}_0$-measurable and suppose that $X$ is the strong solution with initial condition $\xi$ and $Y$ is the strong solution with initial condition $\eta$, then $X = Y$ almost surely on $\lbrace \xi = \eta \rbrace$.
+\end{prop}
+\begin{proof}
+Let 
+\begin{align*}
+\tau &= \begin{cases}
+\infty & \text{ if $\xi = \eta$} \\
+0 & \text{ if $\xi \neq \eta$} \\
+\end{cases}
+\end{align*}
+and note that by $\mathcal{F}_0$-measurability of $\lbrace \xi = \eta \rbrace$ it follows that $\tau$ is $\mathcal{F}$-optional.  Now compute for all $0 \leq T < \infty$ and all $0 \leq t \leq T$ using the same steps
+as in Theorem \ref{StrongUniquenessSDE} 
+\begin{align*}
+\expectation{\norm{(X_t - Y_t) \characteristic{\xi = \eta}}^2} &=
+\expectation{\norm{(\int_0^t b(s,X_s) - b(s,Y_s) \, ds + \int_0^t \sigma(s,X_s) - \sigma(s,Y_s) \, dB_s) \characteristic{\xi = \eta}}^2} \\
+&=\expectation{\norm{\int_0^{t\wedge \tau}  b(s,X_s) - b(s,Y_s) \, ds + \int_0^{t \wedge \tau} \sigma(s,X_s) - \sigma(s,Y_s) \, dB_s}^2}  \\
+&\leq 2 K^2 (T + 1) \expectation{\int_0^{t \wedge \tau} \norm{X_s - Y_s}^2 \, ds} = 2 K^2 (T + 1) \expectation{\int_0^t \norm{(X_s - Y_s) \characteristic{\xi = \eta}}^2 \, ds} 
+\end{align*}
+from which an application of the Gronwall inequality implies that $X_t = Y_t$ almost surely on $\lbrace \xi = \eta \rbrace$.  Thus $X_t$ and $Y_t$ are indistinguishable on 
+$\lbrace \xi = \eta \rbrace$.
+\end{proof}
+
+Now we turn to proof of existence of strong solutions.  Local Lipschitz continuity is not enough for existence; for that we must assume a global Lipschitz property plus a growth condition on the coefficients to make sure that solutions don't blow up in finite time.
+\begin{thm}Suppose that there exists a constant $K$ with the properties that for every $0 \leq t < \infty$, $x,y \in \reals^d$ we have
+\begin{align}\label{ExistenceSDELipschitz}
+\norm{b(t,x) - b(t,y)} + \norm{\sigma(t,x) - \sigma(t,y)} &\leq K \norm{x-y} \\
+\label{ExistenceSDEGrowth}
+\norm{b(t,x)}^2 + \norm{\sigma(t,x)}^2 &\leq K^2 (1 + \norm{x}^2) 
+\end{align}
+Let $(\Omega, \mathcal{A}, P)$ be a probability space, $B$ a Brownian motion in $\reals^r$, $\xi$ be a random vector in $\reals^d$ independent of $B$ such that
+\begin{align*}
+\expectation {\norm{\xi}^2} < \infty
+\end{align*}
+and $\mathcal{F}_t$ be the completion of $\sigma(\xi, B_s ; 0 \leq s \leq t)$.  The there exists a continuous $\mathcal{F}$-adapted process $X$ which is a strong solution.  In addition it follows that for every $T > 0$ there exists a constant $C$ depending only on $K$ and $T$ such that for all $0 \leq t \leq T$,
+\begin{align}\label{ExistenceSDEL2Bound}
+\expectation{\norm{X_t}^2} &\leq C(1 + \expectation{\norm{\xi}^2}) e^{Ct}
+\end{align}
+\end{thm}
+\begin{proof}
+The approach is to define an approximation scheme mimicing Picard iteration using for ordinary differential equations.  
+
+TODO: What about $\mathcal{F}$-adaptedness (this is more or less obvious but needs to be called out)
+
+Let $X^{(0)}_t = \xi$ and then define for $k \in \naturals$
+\begin{align*}
+X^{(k)}_t &= \xi + \int_0^t b(s, X^{(k-1)}_s) \, ds + \int_0^t \sigma(s, X^{(k-1)}_s) \, dB_s
+\end{align*}
+Our first task is to show that the $X^{(k)}$ are well defined and provide some estimates on them.  In order for the integrals to exist
+we observe that
+\begin{align*}
+\norm{\int_0^t b(s, X^{(k)}_s) \, ds} 
+&\leq
+\int_0^t \norm{b(s, X^{(k)}_s)} \, ds 
+\leq  \left( t \int_0^t \norm{b(s, X^{(k)}_s)}^2 \, ds \right )^{1/2} 
+\leq \left( K t \int_0^t (1 + \norm{X^{(k)}_s}^2) \, ds\right )^{1/2}
+\end{align*}
+and 
+\begin{align*}
+\int_0^t \norm{\sigma(s, X^{(k)}_s)}^2 \, ds
+&\leq
+K^2\int_0^t (1 + \norm{X^{(k)}_s}^2) \, ds
+\end{align*}
+and therefore the integrals will exist if we can show that $\sup_{0 \leq t \leq T} \expectation{\norm{X^{(k)}_t}^2} < \infty$ for all $T \geq 0$.
+
+The proof of this is by induction.  For $k=0$ and $T \geq 0$, $\sup_{0 \leq t \leq T} \expectation{\norm{X^{(0)}_t}^2} = \expectation{\norm{\xi}^2}< \infty$. 
+The induction step follows using estimates very similar to those in the proof of uniqueness.  Suppose $\sup_{0 \leq t \leq T} \expectation{\norm{X^{(k)}_t}^2} < \infty$ and
+let $0 \leq t \leq T$,
+\begin{align*}
+&\expectation{\norm{X^{(k+1)}_t}^2}  \\
+&\leq
+4 \expectation{\norm{\xi}^2}
++ 4 \expectation{\norm{\int_0^t b(s,X^{(k)}_s) \, ds }^2}
++ 4 \expectation{\norm{\int_0^t \sigma(s,X^{(k)}_s) \, dB_s}^2} \\
+&\leq
+4 \expectation{\norm{\xi}^2}
++ 4 \expectation{\left [ \int_0^t \norm{ b(s,X^{(k)}_s) } \, ds \right]^2}
++ 4 \sum_{i=1}^d \expectation{ \left [ \sum_{j=1}^r \int_0^t \sigma_{ij}(s,X^{(k)}_s) \, dB^{(j)}_s\right ]^2} \\
+&\leq
+4 \expectation{\norm{\xi}^2}
++ 4t \expectation{ \int_0^t \norm{ b(s,X^{(k)}_s) }^2 \, ds }
++ 4 \sum_{i=1}^d \sum_{j=1}^r \expectation{ \int_0^t \sigma^2_{ij}(s,X^{(k)}_s) \, ds} \\
+&=
+4 \expectation{\norm{\xi}^2}
++ 4t \expectation{ \int_0^t \norm{ b(s,X^{(k)}_s) }^2 \, ds }
++ 4 \expectation{ \int_0^t \norm{\sigma(s,X^{(k)}_s)}^2 \, ds} \\
+&\leq
+4 \expectation{\norm{\xi}^2}
++ 4(T+1)K^2 \expectation{ \int_0^t (1 + \norm{X^{(k)}_s}^2) \, ds } \\
+&\leq C(1 + \expectation{\xi}^2 + \int_0^t \expectation{\norm{X^{(k)}}_s^2} \, ds)  \\
+&\leq C(1 + \expectation{\xi}^2 + \int_0^T \expectation{\norm{X^{(k)}}_s^2} \, ds) 
+\end{align*}
+where we have defined $C = 4(T+1)K^2 \vee 4(T+1)TK^2\vee 4$ which gives us the result.
+
+The estimate that we have just proven can also give a nice estimate of $\expectation{\norm{X^{(k)}_t}^2} $ in terms of only $C$ and $\xi$.  Noting that the 
+bounding constant $C$ depends only on $K$ and $T$, we can iterate the estimate.
+\begin{clm}For all $k \in \integers_+$ and $0 \leq t\leq T$, we have 
+\begin{align*}
+\expectation{\norm{X^{(k)}_t}^2} &\leq C(1 + \expectation{\norm{\xi}^2})(1 + Ct + \dotsm + \frac{C^kt^k}{k!})
+\end{align*}
+\end{clm}
+The proof of the claim is a simple induction, noting that it is trivially true for $k=0$ given that $C > 1$.  Now we just apply the estimate above and use the induction 
+hypothesis to see that
+\begin{align*}
+&\expectation{\norm{X^{(k+1)}_t}^2}  \\
+&\leq C(1 + \expectation{\xi}^2) + C \int_0^t \expectation{\norm{X^{(k)}}_s^2 } \, ds \\
+&\leq C(1 + \expectation{\xi}^2) + C^2 (1 + \expectation{\xi}^2) \int_0^t (1 + C s + \dotsm + \frac{C^k t^k}{k!}) \, ds \\
+&= C(1 + \expectation{\xi}^2) + C^2 (1 + \expectation{\xi}^2) (t + \frac{C t^2}{2!} + \dotsm + \frac{C^k t^{k+1}}{(k+1)!}) \\
+&= C(1 + \expectation{\xi}^2) (1 + Ct + \frac{C^2 t^2}{2!} + \dotsm + \frac{C^{k+1} t^{k+1}}{(k+1)!}) \\
+\end{align*}
+
+From the previous claim we conclude that $\expectation{\norm{X^{(k)}_t}^2}  \leq C(1 + \expectation{\xi}^2) e^{Ct}$ for all $0 \leq t \leq T$ and $k \in \integers_+$ where the
+constant $C$ depends only on $K$ and $T$.  
+
+\begin{clm}The sequence $X^{(k)}$ is almost surely Cauchy on every interval $[0,T]$.
+\end{clm}
+We need some estimates so that we can apply Borel Cantelli.  Pick $k \in \integers_+$ and consider the difference
+\begin{align*}
+X_t^{(k+1)} - X_t^{(k)} &=
+\int_0^t (b(s, X_s^{(k)}) - b(s, X_s^{(k-1)})) \, ds + \int_0^t (\sigma(s, X_s^{(k)}) - \sigma(s, X_s^{(k-1)})) \, dB_s 
+\end{align*}
+As for the first term here by the Lipschitz continuity assumption \eqref{ExistenceSDELipschitz} and Cauchy Schwartz we get
+\begin{align*}
+\sup_{0 \leq s \leq t} \norm{\int_0^s (b(u, X_u^{(k)}) - b(u, X_u^{(k-1)})) \, du}^2 &=
+\norm{\int_0^t (b(u, X_u^{(k)}) - b(u, X_u^{(k-1)})) \, du}^2 \\
+&\leq \left[\int_0^t \norm{ b(s, X_s^{(k)}) - b(s, X_s^{(k-1)})} \, ds \right]^2 \\
+&\leq K^2 t \int_0^t \norm{ X_s^{(k)} - X_s^{(k-1)}}^2 \, ds 
+\end{align*}
+For the second term we have to work harder.  Since $\int_0^t (\sigma(s, X_s^{(k)}) - \sigma(s, X_s^{(k-1)})) \, dB_s$ is a vector of martingales, we can
+apply the vector-valued BDG inequality (Corollary \ref{BDGVectorInequalities}), the defining property of stochastic integrals and the fact that
+$[B^{(i)}, B^{(j)}]_t = t \delta_{ij}$ to get
+\begin{align*}
+&\expectation{\sup_{0 \leq s \leq t} \norm{\int_0^s (\sigma(u, X_u^{(k)}) - \sigma(u, X_u^{(k-1)})) \, dB_u}^2}  \\
+&\leq d_2 \expectation{\sum_{i=1}^d \left[ \sum_{j=1}^r \int (\sigma_{ij}(s, X_s^{(k)}) - \sigma_{ij}(s, X_s^{(k-1)})) \, dB^{(j)}_s \right ]_t }  \\
+&= d_2 \expectation{\sum_{i=1}^d \sum_{j=1}^r \int_0^t (\sigma_{ij}(s, X_s^{(k)}) - \sigma_{ij}(s, X_s^{(k-1)}))^2 \, ds  }  \\
+&= d_2 \expectation{\int_0^t \norm{\sigma(s, X_s^{(k)}) - \sigma(s, X_s^{(k-1)})}^2 \, ds  }  \\
+&\leq d_2 K^2 \expectation{\int_0^t \norm{X_s^{(k)} - X_s^{(k-1)}}^2 \, ds  }  \\
+\end{align*}
+Putting these two estimates together we get for $0 \leq t \leq T$, 
+\begin{align*}
+\expectation{\sup_{0 \leq s \leq t} \norm{X_s^{(k+1)} - X_s^{(k)}}^2} 
+&\leq 2 \expectation{\sup_{0 \leq s \leq t}\norm{\int_0^t (b(u, X_u^{(k)}) - b(u, X_u^{(k-1)})) \, du}^2} + \\
+&\qquad 2\expectation{\sup_{0 \leq s \leq t} \norm{\int_0^s (\sigma(u, X_u^{(k)}) - \sigma(u, X_u^{(k-1)})) \, dB_u}^2 } \\
+&\leq 2K^2(T + d_2) \int_0^t \norm{ X_s^{(k)} - X_s^{(k-1)}}^2 \, ds 
+\end{align*}
+where none of the constants depend on $k$.  We iterate the estimate to yield
+\begin{align*}
+\expectation{\sup_{0 \leq s \leq t} \norm{X_s^{(k+1)} - X_s^{(k)}}^2} &\leq 
+\frac{(2K^2(T + d_2))^k}{k!}\sup_{0 \leq t \leq T} \expectation{\norm{ X_t^{(1)} - \xi}^2} \\
+&\leq 2 C(1 + \expectation{\norm{\xi}^2}) e^{CT} \frac{(2K^2(T + d_2))^k}{k!} 
+\end{align*}
+Now we can apply the Markov Inequality to see that
+\begin{align*}
+\probability{\sup_{0 \leq t \leq T} \norm{X_t^{(k+1)} - X_t^{(k)}} \geq \frac{1}{2^{k+1}}} 
+&= \probability{\sup_{0 \leq t \leq T} \norm{X_t^{(k+1)} - X_t^{(k)}}^2 \geq \frac{1}{4^{k+1}}} \\
+&\leq 4^{k+1} \expectation{\sup_{0 \leq t \leq T} \norm{X_t^{(k+1)} - X_t^{(k)}}^2} \\
+&\leq 8 C(1 + \expectation{\norm{\xi}^2}) e^{CT} \frac{(8K^2(T + d_2))^k}{k!} 
+\end{align*}
+thus $\sum_{k=0}^\infty \probability{\sup_{0 \leq t \leq T} \norm{X_t^{(k+1)} - X_t^{(k)}} \geq \frac{1}{2^{k+1}}} = 8 C(1 + \expectation{\norm{\xi}^2}) e^{CT +8K^2(T + d_2) } < \infty$
+and we may apply the Borel Cantelli Theorem \ref{BorelCantelli} to conclude that with probability one there exists a random $N$ such that
+$\sup_{0 \leq t \leq T} \norm{X_t^{(k+1)} - X_t^{(k)}} < \frac{1}{2^{k+1}}$ for all $k \geq N$.  Thus it also follows that for all $k \geq N$ and $m \geq 1$,
+\begin{align*}
+\sup_{0 \leq t \leq T} \norm{X_t^{(k+m)} - X_t^{(k)}}  &\leq \sum_{j=0}^{m-1} \sup_{0 \leq t \leq T} \norm{X_t^{(k+j+1)} - X_t^{(k+j)}} \\
+&\leq \sum_{j=0}^{m-1}  \frac{1}{2^{k+j+1}} \leq  \frac{1}{2^{k}}
+\end{align*}
+and thus almost surely $X^{(k)}_t$ is uniformly Cauchy on $[0,T]$.  Taking the intersection of a countable number of almost sure events, we see that almost surely
+$X^{(k)}_t$ is uniformly Cauchy on $[0,T]$ for $T \geq 0$.  By completeness of $C([0,\infty); \reals^d)$ we conclude that there is a continuous process $X$ such that
+$X^{(k)} \toas X$ in $C([0,\infty); \reals^d)$.  
+
+\begin{clm}$X$ is a strong solution.
+\end{clm}
+
+Since $X^{(k)}$ is $\mathcal{F}$-adapted for every $k \in \integers_+$,  it follows that $X_t$ is $\mathcal{F}$-adapted.  Since $X^{(k)}_0 = \xi$ for all $k \in \integers_+$ and $X^{(k)}_0 \toas X_0$ it follows that $X_0 = \xi$ almost surely.  In addition, by Cauchy Schwartz, \eqref{ExistenceSDEGrowth} and \eqref{ExistenceSDEL2Bound} we get
+\begin{align*}
+&\probability{\int_0^t \abs{b_i(s, X_s)} + \abs{\sigma_{ij}(s, X_s)}^2 \, ds < \infty} 
+\geq \probability{t\int_0^t \norm{b(s, X_s)}^2 + \norm{\sigma(s, X_s)}^2 \, ds < \infty} \\
+&\geq \probability{(t+1)\int_0^t (1+\norm{X_s}^2) \, ds < \infty} = \probability{\int_0^t \norm{X_s}^2 \, ds < \infty} \\
+&\geq \probability{ C(1 + \expectation{\norm{\xi}^2}) \int_0^t e^{Cs} \, ds < \infty} = 1
+\end{align*}
+By this we know that $\int_0^t b(s,X_s) \, ds$ and $\int_0^t \sigma(s, X_s) \, dB_s$ are defined and we claim that $X$ solves the stochastic differential equation
+\begin{align*}
+X_t &= X_0 + \int_0^t b(s,X_s) \, ds + \int_0^t \sigma(s,X_s) \, dB_s \text{ almost surely}
+\end{align*}
+where we have just shown that all of the terms in the equation are well defined.   Writing
+\begin{align*}
+X_t = \lim_{k \to \infty} X^{(k+1)}_t = \lim_{k \to \infty} \left[ \xi + \int_0^t b(s,X^{(k)}_s) \, ds + \int_0^t \sigma(s,X^{(k)}_s) \, dB_s \right]
+\end{align*}
+and using the fact that $X_0 = \xi$ a.s. it suffices to show that $\int_0^t b(s,X^{(k)}_s) \, ds \toas \int_0^t b(s,X_s) \, ds$ and $\int_0^t \sigma(s,X^{(k)}_s) \, dB_s \toas \int_0^t \sigma(s,X_s) \, dB_s$; in fact it suffices to show that some subsequence of converges almost surely so it suffices to show that the integrals converge in probability or some $L^p$.
+
+The almost sure convergence of the first integral follows from the Lipschitz continuity \eqref{ExistenceSDELipschitz} and the uniform convergence of $X^{(k)}$ on intervals $[0,t]$.
+\begin{align*}
+\norm{\int_0^t b(s,X_s) - b(s,X^{(k)}_s) \, ds} &\leq \int_0^t \norm{ b(s,X_s) - b(s,X^{(k)}_s)} \, ds \\
+&\leq K \int_0^t \norm{ X_s - X^{(k)}_s} \, ds \leq K t \sup_{0 \leq s \leq t} \norm{ X_s - X^{(k)}_s} \toas 0
+\end{align*}
+
+For the second integral we show $L^2$ convergence.  we first note that for every fixed $t$, $X^{k}_t \tolp{2} X_t$ as well as converging almost surely.  To see that simply note that for all $k \in \integers_+$ and $m \in \naturals$ with $m > k$,
+\begin{align*}
+\expectation{ \norm{X_t^{(m)} - X_t^{(k)}}^2} &\leq \sum_{j=k}^{m-1} \expectation{ \norm{X_t^{(j+1)} - X_t^{(j)}}^2} \\
+&\leq \sum_{j=0}^{m-1} \expectation{ \sup_{0 \leq s \leq t} \norm{X_s^{(j+1)} - X_s^{(j)}}^2} \\
+&\leq 8 C(1 + \expectation{\norm{\xi}^2}) e^{CT} \sum_{j=k}^{m-1} \frac{(8K^2(T + d_2))^{j}}{j!} \\
+&\leq  8 C(1 + \expectation{\norm{\xi}^2}) e^{CT} \sum_{j=k}^{\infty} \frac{(8K^2(T + d_2))^{j}}{j!} < \infty
+\end{align*}
+Moreover we know that $\lim_{k \to \infty} \sum_{j=k}^{\infty} \frac{(8K^2(T + d_2))^{j}}{j!} = 0$ and therefore we have shown that $X^{(k)}_t$ is Cauchy in $L^2$.  Since we know that $X^{(k)}_t \toas X_t$ it follows that $X^{(k)}_t \tolp{2} X_t$.
+
+Now we can estimate and use Fubini
+\begin{align*}
+\expectation{\norm{\int_0^t \sigma(s,X_s) - \sigma(s,X^{(k)}_s) \, dB_s }^2} 
+&=\expectation{\sum_{i=1}^d \left[ \sum_{j=1}^r \int_0^t \sigma_{ij}(s,X_s) - \sigma_ij(s,X^{(k)}_s) \, dB^{(j)}_s \right]^2 } \\
+&=\expectation{\int_0^t \norm{\sigma(s,X_s) - \sigma(s,X^{(k)}_s) }^2 \, ds } \\
+&\leq K^2 \int_0^t \expectation{\norm{X_s - X^{(k)}_s }^2 } \, ds 
+\end{align*}
+In addition,  for all $0 \leq s \leq t$, by \eqref{ExistenceSDEL2Bound}
+\begin{align*}
+\expectation{\norm{X_s - X^{(k)}_s }^2 }
+&\leq 2 \expectation{\norm{X_s }^2} + 2 \expectation{\norm{X^{(k)}_s }^2 }
+\leq 2 C (1 +\expectation{\norm{\xi}^2}) e^{Ct}
+\end{align*}
+where the upper bound is integrable, thus by the fact that $X^{k}_s \tolp{2} X_s$ for all
+$0 \leq s \leq t$ and Dominated Convergence
+\begin{align*}
+\lim_{k \to \infty} \expectation{\norm{\int_0^t \sigma(s,X_s) - \sigma(s,X^{(k)}_s) \, dB_s }^2} &\leq  K^2\lim_{k \to \infty} \int_0^t \expectation{\norm{X_s - X^{(k)}_s }^2 } \, ds = 0
+\end{align*}
+
+We now use a truncation argument to show that we can drop the assumption $\expectation{\norm{\xi}^2} < \infty$.  Let $\xi$ be random vector in $\reals^d$.  For every $k \in \naturals$, $\xi \characteristic{\norm{\xi} \leq k}$ is bounded so in particular $L^2$; let $X^{(k)}$ be strong solution with initial condition $\xi \characteristic{\norm{\xi} \leq k}$.  Let $m \in \naturals$ such that $k < m$, then because $\xi \characteristic{\norm{\xi} \leq k} = \xi \characteristic{\xi \leq m}$ on $\lbrace \norm{\xi} \leq k \rbrace$ so we may apply Proposition 
+\ref{StrongUniquenessSDEExtended} to conclude that $X^{(k)}$ and $X^{(m)}$ are indistinguishable on $\norm{\xi} \leq k$.  Because of this we may take the limit $X = \lim_{k \to \infty} X^{(k)}$ with the property that $X = X^{(k)}$ almost surely on $\norm{\xi} \leq k$.  
+
+It remains to show that $X$ is a strong solution with initial condition $\xi$.  $\mathcal{F}$-adaptedness of $X$ follows immediately from that of $X^{(k)}$ as does the condition $X_0 = \xi$ almost surely.  For a fixed $t \geq 0$ we see
+\begin{align*}
+\probability{\int_0^t \norm{b(s,X_s)} \, ds = \infty} &= \sum_{k=1}^\infty \probability{\int_0^t \norm{b(s,X_s)} \, ds = \infty; k-1 < \norm{\xi} \leq k} \\
+&= \sum_{k=1}^\infty \probability{\int_0^t \norm{b(s,X^{(k)}_s)} \, ds = \infty; k-1 < \norm{\xi} \leq k} \\
+&\leq \sum_{k=1}^\infty \probability{\int_0^t \norm{b(s,X^{(k)}_s)} \, ds = \infty} = 0
+\end{align*}
+and similarly for $\int_0^t \norm{\sigma(s,X_s)}^2 \, ds$. 
+
+Lastly note that
+$\lbrace \xi \leq k \rbrace$ is $\mathcal{F}_0$-measurable hence 
+\begin{align*}
+\tau_k &= \begin{cases}
+\infty & \text{ if $\xi \leq k$} \\
+0 & \text{ if $\xi > k$}
+\end{cases}
+\end{align*}
+is an $\mathcal{F}$-optional time.  Now we apply Lemma \ref{BasicPropertiesStochasticIntegralContinuousMartingale} to see that almost surely
+\begin{align*}
+X_t \characteristic{\norm{\xi} \leq k } &= X_t^{(k)} \characteristic{\norm{\xi} \leq k } \\
+&= \left( \xi + \int_0^t b(s, X^{(k)}_s) \, ds + \int_0^t \sigma(s, X^{(k)}_s) \, dB_s \right) \characteristic{\norm{\xi} \leq k }  \\
+&=\characteristic{\norm{\xi} \leq k } \xi + \int_0^{t \wedge \tau_k}  b(s, X^{(k)}_s) \, ds + \int_0^{t \wedge \tau_k} \sigma(s, X^{(k)}_s) \, dB_s \\
+&=\characteristic{\norm{\xi} \leq k } \xi + \int_0^{t \wedge \tau_k}  b(s, X_s) \, ds + \int_0^{t \wedge \tau_k} \sigma(s, X_s) \, dB_s \\
+&= \left( \xi + \int_0^t b(s, X_s) \, ds + \int_0^t \sigma(s, X_s) \, dB_s \right) \characteristic{\norm{\xi} \leq k } \\
+\end{align*}
+Taking the intersection of countably many almost sure events and using the fact that $\norm{\xi} < \infty$ almost surely we conclude that
+$X_t = \xi + \int_0^t b(s, X_s) \, ds + \int_0^t \sigma(s, X_s) \, dB_s$ almost surely for fixed $0 \leq t < \infty$.  By Proposition \ref{VersionEquivalentIndistinguishableCadlag}
+we conclude that $X$ and $\xi + \int_0^t b(s, X_s) \, ds + \int_0^t \sigma(s, X_s) \, dB_s$ are indistinguishable.
+\end{proof}
+
+TODO: We have presented existence and uniqueness proofs for the ``standard'' case of coefficients that are functions of $\reals_+ \times \reals^d$.  We already mentioned the case in which the coefficients are functions of $\reals_+ \times C([0,\infty); \reals^d)$ (in the context of weak solutions,  Karatzas and Shreve call this the functional case).   Kallenberg presents results in these terms so it is worth understanding them.  The functional case comes up again in the context of weak solutions.  It sounds like Rogers and Williams also covers the functional case but most other authors don't seem to bother in the strong case.
+
+\subsection{Weak Solutions and Martingale Problems}
+
+TODO: Note some of the motivations for weak solutions.  Apparently the original motivation for stochatic differential equations came from the desire to come up with a probabilistic proof of the existence of a diffusion process with a given $b$ and $\sigma$.  For that particular application weak solutions are perfectly sufficient.  What about stochastic control applications?
+
+Covariations of solutions to stochastic differential equations.  Suppose $b_i : [0,\infty) \times C([0,\infty), \reals^d) \to \reals$ and $\sigma_{ij} : [0,\infty) \times C([0,\infty), \reals^d) \to \reals$ are progressive.  Suppose that $X_t = X_0 + \int_0^t b(s,X) \, ds + \int_0^t \sigma(s,X) \, dB_s$, then for all $1 \leq i,j \leq d$ we have
+\begin{align*}
+[X^{(i)}, X^{(j)}]_t &= \sum_{k=1}^r \sum_{l=1}^r [\int_0^t \sigma_{ik}(s,X) \, dB^{(k)}_s, \int_0^t \sigma_{jl}(s,X) \, dB^{(l)}_s]_t \\
+&=\sum_{k=1}^r \sum_{l=1}^r \int_0^t \sigma_{ik}(s,X) \sigma_{jl}(s,X)  \, d[ B^{(k)}, B^{(l)}]_t \\
+&=\sum_{k=1}^r \int_0^t \sigma_{ik}(s,X) \sigma_{jk}(s,X)  \, dt
+=\int_0^t a_{ij}(s,X)  \, dt
+\end{align*}
+where recall we have defined the diffusion matrix $a(t,X_t) = \sigma(t,X_t) \sigma^T(t,X_t)$. 
+
+TODO: Figure out what the deal is with filtrations and martingale problems; specifically in the canonical process scenario do we just use the natural filtration on $C([0,\infty); \reals^d)$ or do we pass to the usual augmentation.  Under what circumstances does it not matter (Karatzas and Shreve have some info on this).
+
+Here are computations related to the martingale problem formulation of weak solutions.
+
+Note that if a process solves the local martingale problem in the restricted sense that $M^f$ is a local $\mathcal{F}$-martingale for $f \in C^2_0(\reals^d)$ then in fact it is a solution to the local martingale problem.  To see this suppose that $f \in C^2(\reals^d)$ and for each $n \in \naturals$ find a $f_n \in C^2_0(\reals^d)$ such that $f = f_n$ on  $\lbrace \norm{x} < n+1 \rbrace$.  If follows that the first and second derivatives of $f$ and $f_n$ also agree on $\lbrace \norm{x} \leq n \rbrace$.  Now define $\tau_n = \inf \lbrace t \geq 0 \mid \norm{X_t} \geq n \rbrace$.  By continuity of $X_t$ and closedness of $\lbrace \norm{x} \geq n \rbrace$ we know by Lemma \ref{HittingTimesContinuous} that $\tau_n$  is an optional time.  Moreover by almost sure continuity of $X_t$ we know that $\tau_n \uparrow \infty$ almost surely.  Note that for all $0 \leq t < \infty$
+\begin{align*}
+(M^f)_{\tau_n \wedge t} &= f(X_{\tau_n \wedge t}) - f(X_0) - \int_0^t \sum_{i=1}^d b_i(s,X) \frac{\partial f}{\partial x_i}(X_{\tau_n \wedge t} + \frac{1}{2} \sum_{i,j=1}^d a_{ij}(s,X) \frac{\partial^2 f}{\partial x_i \partial x_j}(X_{\tau_n \wedge t} \, ds \\
+&=f_n(X_{\tau_n \wedge t}) - f_n(X_0) - \int_0^t \sum_{i=1}^d b_i(s,X) \frac{\partial f_n}{\partial x_i}(X_{\tau_n \wedge t} + \frac{1}{2} \sum_{i,j=1}^d a_{ij}(s,X) \frac{\partial^2 f_n}{\partial x_i \partial x_j}(X_{\tau_n \wedge t} \, ds \\
+&=M^{f_n}_{\tau_n \wedge t}
+\end{align*}
+and therefore since $M^{f_n}$ it follows that $(M^{f_n})^{\tau_n} = (M^{f})^{\tau_n}$ is a local $\mathcal{F}$-martingale for all $n \in \naturals$.  By Lemma \ref{LocalMartingaleLocalProperty} it follows that $M^f$ is a local martingale.
+
+An immediate corollary of the above observation is the reassuring fact that an $X$ that solves the martingale problem also solves the corresponding local martingale problem.
+
+Suppose that $X_t = X_0 + \int_0^t b(s,X) \, ds + \int_0^t \sigma(s,X) \, dB_s$.  Thus we have By Ito's Formula
+\begin{align*}
+&f(t, X_t) - f(0, X_0) \\
+&= \int_0^t \frac{\partial f}{\partial t} (s,X_s) \, ds + \sum_{i=1}^d \int_0^t \frac{\partial f}{\partial x_i} (s,X_s) \, dX^{(i)}_s + \frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d \int_0^t \frac{\partial^2 f}{\partial x_i \partial x_j} (s, X_s) \, d[X^{(i)},X^{(j)}]_s \\
+&= \int_0^t \frac{\partial f}{\partial t} (s,X_s) \, ds + \sum_{i=1}^d \int_0^t b_i(s,X) \frac{\partial f}{\partial x_i} (s,X_s) \, ds + \sum_{i=1}^d \sum_{i=1}^r \int_0^t \sigma_{ij}(s,X) \frac{\partial f}{\partial x_i} (s,X_s) \, dB^{(j)}_s+ \\
+&\frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d \int_0^t a_{ij}(s,X) \frac{\partial^2 f}{\partial x_i \partial x_j} (s, X_s) \, ds \\
+\end{align*}
+from which we see that 
+\begin{align*}
+&M^f_t = \\
+&f(t, X_t) - f(0, X_0) - \int_0^t \frac{\partial f}{\partial t} (s,X_s) - \sum_{i=1}^d b_i(s,X) \frac{\partial f}{\partial x_i} (s,X_s)  - \frac{1}{2} \sum_{i=1}^d \sum_{j=1}^d a_{ij}(s,X) \frac{\partial^2 f}{\partial x_i \partial x_j} (s, X_s) \, ds \\
+&=\sum_{i=1}^d \sum_{j=1}^r \int_0^t \sigma_{ij}(s,X) \frac{\partial f}{\partial x_i} (s,X_s) \, dB^{(j)}_s
+\end{align*}
+is a local martingale.  Moreover from this formula, given $f$ and $g$ we can find the quadratic covariation of $M^f$ and $M^g$ by explicit calculation
+\begin{align*}
+[M^f,M^g]_t &= \sum_{i=1}^d \sum_{j=1}^r \sum_{k=1}^d \sum_{l=1}^r [\int \sigma_{ij}(s,X) \frac{\partial f}{\partial x_i} (s,X_s) \, dB^{(j)}_s, \int \sigma_{kl}(s,X) \frac{\partial g}{\partial x_k} (s,X_s) \, dB^{(l)}_s]_t \\
+&\sum_{i=1}^d \sum_{j=1}^r \sum_{k=1}^d \sum_{l=1}^r \int_0^t \sigma_{ij}(s,X) \sigma_{kl}(s,X) \frac{\partial f}{\partial x_i} (s,X_s) \frac{\partial g}{\partial x_k} (s,X_s) \, d[ B^{(j)}, B^{(l)}]_s \\
+&\sum_{i=1}^d \sum_{j=1}^r \sum_{k=1}^d \int_0^t \sigma_{ij}(s,X) \sigma_{kj}(s,X) \frac{\partial f}{\partial x_i} (s,X_s) \frac{\partial g}{\partial x_k} (s,X_s) \, ds \\
+&\sum_{i=1}^d \sum_{k=1}^d \int_0^t a_{ik}(s,X) \frac{\partial f}{\partial x_i} (s,X_s) \frac{\partial g}{\partial x_k} (s,X_s) \, ds \\
+\end{align*}
+
+Now we want to go the other way; show that if we have a $X$ solves the local martingale problem for a suitable class of functions $f$ then $X$ is a weak solution to the SDE.  Actually it suffices to show that $M^f$ is a local martingale for $f(x) = x_i$ and $f(x) = x_ix_j$ with $1 \leq i,j \leq d$.
+
+For each $1 \leq i \leq d$ let $f(x) = x_i$ and define 
+\begin{align*}
+M^{(i)}_t &= M^f_t = X^{(i)}_t - X^{(i)}_0 - \int_0^t b_i(s,X) \, ds
+\end{align*}
+so that $M^{(i)}$ is a continuous local martingale by hypothesis.
+
+\begin{clm}$[M^{(i)}, M^{(j)}]_t = \int_0^t a_{ij}(s,X) \, ds$
+\end{clm}
+
+Let $f(x) = x_ix_j$ so that
+\begin{align*}
+M^{(i,j)}_t &= M^f_t = X^{(i)}_t X^{(j)}_t - X^{(i)}_0 X^{(j)}_0 - \int_0^t \left( b_i(s,X) X^{(j)}_s + b_j(s,X) X^{(i)}_s + a_{ij}(s,X) \right ) \, ds 
+\end{align*}
+is a continuous local martingale by hypothesis.  If we now apply integration by parts (Lemma \ref{IntegrationByPartsContinuousSemimartingale}) and substitute using the definition of $M^{(i)}$ we get
+\begin{align*}
+&M^{(i,j)}_t = \\
+&\int_0^t X^{(i)}_s \,  dX^{(j)}_s + \int_0^t X^{(j)}_s \,  dX^{(i)}_s + [X^{(i)}, X^{(j)}]_t- \int_0^t \left( b_i(s,X) X^{(j)}_s + b_j(s,X) X^{(i)}_s + a_{ij}(s,X) \right ) \, ds \\
+&\int_0^t X^{(i)}_s \,  dM^{(j)}_s + \int_0^t X^{(j)}_s \,  dM^{(i)}_s + [M^{(i)}, M^{(j)}]_t- \int_0^t a_{ij}(s,X) \, ds \\
+\end{align*}
+which shows us that $[M^{(i)}, M^{(j)}]_t - \int_0^t a_{ij}(s,X) \, ds$ is a continuous local martingale of bounded variation hence is almost surely zero by Lemma \ref{ContinuousLocalMartingaleBoundedVariation}.  The claim is shown.
+
+Now we may apply Theorem \ref{DoobIntegralRepresentationTheoremContinuousLocalMartingale} to conclude that there exists a Brownian motion on an extension of $(\Omega, \mathcal{A}, P, \mathcal{F})$ such that $\int \sigma(s,X) \, dB_s$ and $M$ are indistinguishable.  Plugging this into the definition of $M$ we get
+\begin{align*}
+X_t &= X_0 + \int_0^t b(s,X) \, ds + \int_0^t \sigma(s,X) \, dB_s
+\end{align*}
+and we are done.
+

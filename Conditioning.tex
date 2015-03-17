@@ -1717,24 +1717,26 @@ element whose conditional distribution given the first random element is the ker
 The appropriate construction is thrust upon us by Theorem
 \ref{Disintegration}.  Note that if we succeed in constructing $\xi$
 then that result tells how to compute expectations on $\hat{\Omega}$.
-Following that lead, define
+Following that lead, let $(\Omega, \mathcal{A}, P)$ be the probability
+space underlying the random element $\eta$ and define
 $(\hat{\Omega}, \hat{\mathcal{A}}) = (S \times \Omega,
 \mathcal{S} \otimes \mathcal{A})$.  Define the probability measure 
 \begin{align*}
 \hat{P}(A) &= \expectation{\int \characteristic{A}(s,\omega) \,
-  d\mu(\eta, s)}
+  d\mu(\eta(\omega), s)}
 \end{align*}
-Note that $\hat{P}$ is an extension since for $A \in \mathcal{A}$, 
+Note that $(\hat{\Omega}, \hat{\mathcal{A}},\hat{P})$ is an extension
+of $(\Omega, \mathcal{A}, P)$ since for $A \in \mathcal{A}$, 
 \begin{align*}
 \hat{P}(S \times A) &= \expectation{\int \characteristic{S}(s)\characteristic{A}(\omega) \,
-  d\mu(\eta, s)} = \expectation{\characteristic{A}(\omega)} = P(A)
+  d\mu(\eta(\omega), s)} = \expectation{\characteristic{A}(\omega)} = P(A)
 \end{align*}
 
 Now define $\xi(s, \omega) = s$ and note that for $A \in \mathcal{S}$
 and $B \in \mathcal{A}$, 
 \begin{align*}
 \hat{P}(\xi \in A ; B) &=  \expectation{\int \characteristic{A}(s)\characteristic{B}(\omega) \,
-  d\mu(\eta, s)} = \expectation{\mu(\eta, A) ; B}
+  d\mu(\eta(\omega), s)} = \expectation{\mu(\eta, A) ; B}
 \end{align*}
 which shows $\cprobability{\mathcal{A}}{\xi \in A}= \mu(\eta, A)$ a.s. 
 by the defining property of conditional expectation (note that since
@@ -1747,8 +1749,25 @@ that $\cprobability{\mathcal{A}}{\xi \in A}=\cprobability{\eta}{\xi \in A} = \mu
 This last observation also shows $\cindependent{\xi}{\mathcal{A}}{\eta}$ by an application of Lemma \ref{ConditionalIndependenceDoob}.
 \end{proof}
 
-The next result is closely related but uses a different construction
-that shows how one may use a single uniform randomization variable.
+The next result is closely related to the previous lemma and provides
+an answer to a very natural question.  Suppose that one is given
+measure $\mu$ on a product space $S \times T$.  It is trivial that one can
+construct random elements $\xi$ and $\eta$ in $S$ and $T$ respectively
+such that the law of $(\xi, \eta)$ is $\mu$ (just take the probability
+space to be $(S \times T, \mathcal{S} \times \mathcal{T}, \mu)$ and
+then use the identity map).  Now suppose that one is given a random
+element $\eta$ in $T$ such that the law of $\eta$ is the marginal of
+$\mu$ (i.e. $\probability{\eta \in B} = \mu(S \times B)$); one may ask
+whether one can find a random element $\xi$ in $S$ such that the law
+of $(\xi, \eta)$ is $\mu$.  If $\mu$ is a product measure then this
+follows whenever $S$ is Borel by creating a $\xi$ independent of
+$\eta$ such that $\probability{\xi \in A} = \mu(A \times T)$.   In
+fact due to the existence of conditional distributions a similar proof
+works for general $\mu$.
+The result is expressed in terms of random elements in $S \times T$
+rather a probability measure $\mu$ and the proof shows that the
+construction can be done with a single uniform randomization variable
+in addition to $\eta$.
 
 \begin{lem}\label{Transfer}Let $(S, \mathcal{S})$ be a Borel space and $(T, \mathcal{T})$ be 
   a general measurable space.  Let $\xi$ be a random element in $S$

@@ -289,6 +289,14 @@ Lipschitz and therefore $f(x) \in C_b(S; \reals)$.  Because $F$ is
 closed we also know that $F = f^{-1}(\lbrace 0 \rbrace)$ and we are done.
 \end{proof}
 
+The theory of probability measures on separable metric spaces is simpler in many ways than its general counterpart 
+for non-separable metric spaces. The simplicity derives from the fact that a separable metric space is not too far being compact
+so in a sense doesn't have too many unbounded continuous functions with respect to which probability measures can misbehave.
+
+One way in which to understand the way in which a separable metric space is close to being compact is to consider the real line.  Through any number of homeomorphisms, the real line is homeomorhpic to the open unit interval $(0,1)$.  In this way, distances on the real line may be rescaled so as to make the real line bounded.  Then by completing the open interval we see that real line is a couple of points away from being compact.
+
+\begin{defn}Let $(S,d)$ be a metric space then we denote by $U^d(S)$ the set of uniformly continuous functions from $S$ to $\reals$ and by $U_b^d(S)$ the set of bounded uniformly continuous functions from $S$ to $\reals$.
+\end{defn}
 
 \begin{lem}\label{SeparabilityOfBoundedUniformlyContinuous}Let $(S,d)$ be a separable metric space, then $X$ is
   homeomorphic to a subset of $[0,1]^{\integers_+}$ and furthermore
@@ -296,8 +304,8 @@ closed we also know that $F = f^{-1}(\lbrace 0 \rbrace)$ and we are done.
 \item[(i)]$S$ has a metric making it totally bounded
 \item[(ii)]If $S$ is compact then $C(S; \reals)$ with the uniform
   topology is separable.
-\item[(iii)]If $\hat{d}$ is a totally bounded metric on $S$ then
-  $U_b(S)$ is separable
+\item[(iii)]If $\hat{d}$ is a totally bounded metric on $S$ then $U^{\hat{d}}(S) = U^{\hat{d}}_b(S)$ and 
+  $U^{\hat{d}}_b(S)$ is separable
 \end{itemize}
 \end{lem}
 \begin{proof}
@@ -419,29 +427,11 @@ from the fact that any continuous function of a compact set is bounded
 and uniformly continuous (Theorem \ref{ContinuousImageOfCompact} and
 Theorem \ref{UniformContinuityOnCompactSets} respectively) and these
 properties are preserved upon restriction.  To see surjectivity, let
-$g : S \to \reals$ be bounded and uniformly continuous.  TODO: Make
-this a separate Lemma (I think Proposition
-\ref{ExtensionOfUniformlyContinuousMapCompleteRange} does the trick).  Let $x \in \hat{S}$, pick a sequence $x_n$
-in $S$ such that $\lim_{n \to \infty} x_n = x$ and observe that by
-uniform continuity of $f(x)$, for
-any $\epsilon > 0$ there exists a $\delta > 0$ such that $\hat{d}(x,y)
-< \delta$ implies $\abs{f(x) - f(y)} < \epsilon$.  If we pick $N > 0$
-such that $\hat{d}(x_n,y) < \delta/2$ for $n \geq N$ then
-$\hat{d}(x_n, x_m) < \delta$ for all $n,m \geq N$ and thus $\hat{d}(f(x_n), f(x_m)) < \epsilon$ for all
-$n,m \geq N$.  This shows that the sequence $f(x_n)$ is Cauchy and by
-completeness of $\reals$ we can take the limit; we define $f(x) =
-\lim_{n\to infty} f(x_n)$.  We claim that this definition is
-independent of the sequence chosen.  Indeed, let $y_n$ be another
-sequence from $S$ such that $\lim_{n \to \infty} y_n = x$.  Pick an
-$\epsilon > 0$ and by uniform continuity of $f(x)$ let $\delta$ be
-chosen such that $\abs{f(x)-f(y)} < \epsilon/2$ whenever $\hat{d}(x,y) < \delta$.
-There exists $N_1 > 0$ such that $\rho(y_n, x_n) < \delta$ for every
-$n > N_1$ and there exists $N_2 > 0$ such that $\abs{f(x_n) - f(x)} <
-\epsilon/2$ for all $n \geq N_2$.  Then we have for all $n \geq N_1 \vee
-N_2$ by the triangle inequality $\abs{f(y_n) - f(x)} < \epsilon$.
-Note that this also shows that the extension $f(x)$ to $\hat{S}$ is
-continuous at $x \in \hat{S}$; since is was continuous at all points
-of $S$ we know the extension is continuous.  
+$g : S \to \reals$ be uniformly continuous.  We may apply Proposition
+\ref{ExtensionOfUniformlyContinuousMapCompleteRange} to see that $g$ has a unique extension
+to a continuous function from the closure of $S$ to $\reals$.  Since the closure of $S$ in $\hat{S}$ is
+$\hat{S}$ be are done with the claim.  Note that we did not need boundedness of $g$ in order to prove the existence of the extension;
+therefore we have shown $U^{\hat{d}}(S) = U^{\hat{d}}_b(S)$.
 
 Now the continuous image of a dense set under a surjective map is also
 dense.  This is easily seen by picking a point $f(x)$ in the image;
@@ -1450,6 +1440,13 @@ where the last inequality follows Lemma \ref
 \section{Skorohod Space}
 TODO: Currently going through this.  
 
+TODO:  The development below is using the absolute value notation even though
+paths take values in an arbitrary metric space.  Clean this up (which is actually pretty barfy because
+there are a bunch of different metrics floating around).
+
+TODO: Show that for $S$ complete, the sup norm makes $D([0,T];S)$ into a complete non-separable metric space.
+We actually use the completeness in showing that the metric $d$ is complete.
+
 Question 1:  In the definition of the $J_1$ topology on $D([0,\infty);
 S)$ given a time shift $\lambda(t)$ we define $d(f,g,\lambda, u) = \sup_{t \geq 0} q(f(t \wedge u),
 g(\lambda(t) \wedge u))$ and take the distance given the time shift as
@@ -1464,6 +1461,12 @@ of uniform continuity that can be preserved?  E.g. can we say that
 given $\epsilon > 0$ for
 all points of continuity $x$ of $f$  there exists a uniform $\delta > 0$
 such that $\abs{x-y} < \delta$ implies $q(f(x), f(y)) < \epsilon$?
+
+\begin{defn}Let $S$ be a topological space, then for every $0 < T < \infty$ we let $D([0,T]; S)$ denote the set of functions
+$f : [0,T] \to S$ such that for every $0 \leq t < T$ we have $f(t) = \lim_{s \to t^+} f(s)$ and for every $0 < t \leq T$ the limit 
+$\lim_{s \to t^{-}} f(s)$ exists and is finite.  The space $D([0,\infty); S)$ is the set of functions $f : [0,\infty)$ such that for all 
+$t \geq 0$ we have $f(t) = \lim_{s \to t^+} f(s)$ and for all $t >0$ we have $\lim_{s \to t^{-}} f(s)$ exists and is finite.
+\end{defn}
 
 \begin{lem}\label{CadlagCountableDiscontinuitySet}If $x \in D([0,T];
   S)$ or $x \in D([0,\infty); S)$ then $x$ is continuous at all but a
@@ -1507,13 +1510,13 @@ for $x \in D([0,\infty); S)$ is countable since it is equal to the
 union of the discontinuities of $x$ restricted to $[0,n]$ for $n \in \naturals$.
 \end{proof}
 
-\begin{defn}Let $\Lambda$ denote the set of all $\lambda : [0,T] \to
+\begin{defn}Let $(S,r)$ be a metric space, define $\Lambda$ denote the set of all $\lambda : [0,T] \to
   [0,T]$ such that $\lambda$ is continuous, strictly increasing and
   bijective.  Then for each $\lambda \in \Lambda$ we define 
 \begin{align*}
 \rho(x,y,\lambda) &= \abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
 \end{align*}
-and define $\rho : D([0,T]; E) \times D([0,T]; E) \to  \reals$ by 
+and define $\rho : D([0,T]; S) \times D([0,T]; S) \to  \reals$ by 
 \begin{align*}
 \rho(x,y) &= \inf_{\lambda \in \Lambda} \rho(x,y,\lambda)
 = \inf_{\lambda \in \Lambda} \sup_{t \in [0,T]}
@@ -1521,7 +1524,7 @@ and define $\rho : D([0,T]; E) \times D([0,T]; E) \to  \reals$ by
 \end{align*}
 \end{defn}
 
-\begin{lem}\label{SkorohodJ1RhoMetric}$\rho$ is a metric on $D([0,T];E)$.
+\begin{lem}\label{SkorohodJ1RhoMetric}$\rho$ is a metric on $D([0,T];S)$.
 \end{lem}
 \begin{proof}
 It is clear that $\rho(x,y) \geq 0$, now suppose that $\rho(x,y) =
@@ -1577,7 +1580,7 @@ inversion is a bijection on $\Lambda$ we then get
 \end{proof}
 
 The metric $\rho$ defines the Skorohod $J_1$ topology on the space
-$D([0,T];E)$.  We emphasize here that we are actually interested in
+$D([0,T];S)$.  We emphasize here that we are actually interested in
 the underlying topology as much as the metric space structure itself
 since $\rho$ is not a complete metric.
 
@@ -1619,7 +1622,7 @@ all $\lambda \in \Lambda$ we conclude that $\rho(f_n, 0) = 1$ hence
 $f_n$ does not converge.
 \end{examp}
 
-\begin{defn}Given $f \in D([0,T];E)$ the function
+\begin{defn}Given $f \in D([0,T];S)$ the function
 \begin{align*}
 w(f,\delta) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_n = T \\
   \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
@@ -1628,7 +1631,7 @@ w(f,\delta) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_n = T \\
 is called the modulus of continuity.
 \end{defn}
 
-\begin{lem}\label{SkorohodJ1ModulusOfContinuity}If $f \in D([0,T];E)$ then $\lim_{\delta \to 0} w(f,\delta)
+\begin{lem}\label{SkorohodJ1ModulusOfContinuity}If $f \in D([0,T];S)$ then $\lim_{\delta \to 0} w(f,\delta)
   = 0$.
 \end{lem}
 \begin{proof}
@@ -1727,7 +1730,7 @@ and for the second
 \begin{lem}\label{SkorohodEquivalenceA}For all $\lambda$ such that $\gamma(\lambda) < 1/2$ we have
   $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} \leq
   2T\gamma(\lambda)$.  For all $f,g \in D([0,T]; S)$ such that $d(f,g) < 1/2$ we
-  have $d(f,g) \leq 2T\rho(f,g)$.
+  have $\rho(f,g) \leq 2Td(f,g)$.
 \end{lem}
 \begin{proof}
 From the inequality $1+x \leq e^x$ we have
@@ -1769,10 +1772,58 @@ get that $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} < 2 T
 2T(d(f,g) + \epsilon)$.  Now let $\epsilon \to 0$.
 \end{proof}
 
-Now we are ready to show that $d$ is a metric and is equivalent to $\rho$.
-\begin{lem}\label{SkorohodJ1Metric}$d$ is a metric on $D([0,T];E)$ that is equivalent to
-  $\rho$.
+\begin{lem}\label{SkorohodEquivalenceB}For any $\delta>1/4$ if $\rho(f,g) < \delta^2$ then $d(f,g) \leq 4\delta + w(f,\delta)$.
 \end{lem}
+\begin{proof}
+Let $\delta > 0$ be given, by definition of $w(f,\delta)$ choose a partition $0=t_0 < t_1 < \dotsb < t_n=T$ such that 
+$t_i - t_{i-1} > \delta$ and $\sup_{t_{i-1} \leq s \leq t < t_i} \abs{f(t) - f(s)} < w(f,\delta) + \delta$ 
+for all $i=1, \dotsc, n$.  Using the fact that $\rho(f,g) < \delta^2$ to pick a $\mu \in \Lambda$ such that 
+$\sup_{0 \leq t \leq T} r(f(t),g(\mu(t))) < \delta^2$  and $\sup_{0 \leq t \leq T} \abs{\mu(t) - t} < \delta^2$.  Note that 
+by the properties of $\mu$ we also have $\sup_{0 \leq t \leq T} r(f(\mu^{-1}(t)), g(t)) < \delta^2$.
+
+Now we construct an appropriate $\lambda$ with which to bound $d(f,g)$.  
+Define $\lambda(t_i) = \mu(t_i)$ for each $i=0,\dotsc, n$ and extend by linear
+interpolation
+\begin{align*}
+\lambda(t) &= \frac{t-t_{i-1}}{t_i-t_{i-1}} \mu(t_i) + \frac{t-t_{i}}{t_{i-1}-t_{i}} \mu(t_{i-1}) \text{ for $t_{i-1} \leq t \leq t_i$}
+\end{align*}
+From the fact that $\mu(t_{i-1}) < \mu(t_i)$ it follows that $\lambda(t)$ is strictly increasing, $\lambda(0) = \mu(0) = 0$, 
+$\lambda(T) = \mu(T) = T$ and $\lambda$ is piecewise linear hence continuous; thus $\lambda \in \Lambda$.  Moreover by
+the increasingness of $\lambda$ and $\mu$ (and $\mu^{-1}$) we have $t_{i-1} \leq t \leq t_i$ is equivalent to $\lambda(t_{i-1}) \leq \lambda(t) \leq \lambda(t_i)$
+which is in turn equivalent to $\mu^{-1}(\lambda((t_{i-1})) = t_{i-1} \leq \mu^{-1}(\lambda(t)) \leq t_i = \mu^{-1}(\lambda( t_i))$.
+Thus
+\begin{align*}
+r(f(t), g(\lambda(t))) &\leq r(f(t), f(\mu^{-1}(\lambda(t))))  + r(f(\mu^{-1}(\lambda(t)))- g(\lambda(t))) \\
+&\leq w(f,\delta) + \sup_{0 \leq t \leq T}  f(\mu^{-1}(\lambda(t))) \leq w(f,\delta) + \delta^2
+\end{align*}
+As for bounding $\gamma(\lambda)$ we have
+\begin{align*}
+\abs{\lambda(t_i) - \lambda(t_{i-1}) - (t_i - t_{i-1})} &= \abs{\mu(t_i) - \mu(t_{i-1}) - (t_i - t_{i-1})} \\
+&\leq \abs{\mu(t_i) -  t_{i}}  + \abs{\mu(t_{i-1}) - t_{i-1}} \leq 2 \delta^2 < 2 \delta (t_i - t_{i-1})
+\end{align*}
+Recalling that $\lambda$ is linear on each interval $[t_{i-1},t_i]$ we note that this inequality simply says that the
+slope of $\lambda$ on the linear segment $[t_{i-1},t_i]$ is in the interval $(1 - 2\delta, 1-2\delta)$.  Thus the inequality trivial extends 
+to any $t_{i-1} \leq s \leq t \leq t_i$.  For other $s<t$  pick $i<j$ with $t_{i-1} \leq s \leq t_i$ and $t_{j-1} \leq t \leq t_j$.  Then we have
+\begin{align*}
+\abs{\lambda(t) - \lambda(s) - (t-s)} 
+&\leq \abs{\lambda(t) - \lambda(t_{j-1}) - (t-t_{j-1})} + \sum_{k=i}^{j-2} \abs{\lambda(t_{k+1}) - \lambda(t_{k}) - (t_{k+1}-t_{k})}  + \abs{\lambda(t_i) - \lambda(s) - (t_i-s)} \\
+&\leq 2 \delta (t-t_{j-1}) + 2 \delta \sum_{k=i}^{j-2} (t_{k+1}-t_{k})  + 2\delta (t_i-s) = 2\delta (t-s) \\
+\end{align*}
+and therefore 
+\begin{align*}
+\log(1 - 2\delta) \leq \log \left( \frac{\lambda(t) - \lambda(s)}{t-s} \right) \leq \log(1+2\delta)
+\end{align*}
+For arbitrary $\delta$ we have $\log(1+2\delta) \leq 2\delta < 4 \delta$ (Theorem \ref{BasicExponentialInequalities}) and by 
+Taylor's Theorem (Lemma \ref{LagrangeFormRemainder}) we have for any $0 < \delta < 1/4$ there is a $0 < c < \delta < 1/4$ such that
+\begin{align*}
+\log(1 - 2\delta) &= \frac{-2\delta}{1 - 2c} > -4\delta
+\end{align*}
+and therefore $\gamma(\lambda) < 4\delta$.
+\end{proof}
+Now we are ready to show that $d$ is a metric and is equivalent to $\rho$.
+\begin{thm}\label{SkorohodJ1Metric}$d$ is a metric on $D([0,T];S)$ that is equivalent to
+  $\rho$.
+\end{thm}
 \begin{proof}
 The fact that $d(f,g) \geq 0$ is immediate. Suppose $d(f,g)$ and pick $\lambda_n$ such that
 $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq
@@ -1793,6 +1844,19 @@ r(g(t), f(\lambda^{-1}(t))) = d(g,f)
 and similarly with the triangle inequality.
 
 TODO: Write out the triangle inequality part.
+
+To see that $\rho$ and $d$ define the same topology we first show that every ball
+in the $\rho$ metric contains a ball in the $d$ metric and vice versa.  For general notation
+let $B_\rho(f,\epsilon)$ and $B_d(f,\epsilon)$ denote balls of radius $\epsilon$ centered at $f$ in the $\rho$ and $d$ metric
+respectively.  Let $f$ and $r > 0$ be given.  Define $\delta < \frac{\epsilon}{2T} \wedge \frac{1}{4}$ and then apply Lemma \ref{SkorohodEquivalenceA}
+to conclude that $d(f,g) \leq \delta$ implies $\rho(f,g) \leq 2T d(f,g) < \epsilon$; thus $B_d(f,\delta) \subset B_\rho(f,\epsilon)$.  On the other hand for a given $\epsilon>0$
+because $\lim_{\delta \to 0} 4 \delta + w(f,\delta) = 0$ we can find $0 < \delta < 1/4$ such that $4 \delta + w(f,\delta) < \epsilon$ and therefore
+by Lemma \ref{SkorohodEquivalenceB} we have $B_\rho(f, \delta^2) \subset B_d(f, \epsilon)$.
+
+Now let $U$ be an open set in the topology defined by $d$.  For every $f \in U$, by openness of $U$ we find $\epsilon_f>0$ such that $B_d(f,\epsilon_f) \subset U$.
+By the above argument we may find $\delta_f>0$ such that $B_\rho(f, \delta_f) \subset B_d(f,\epsilon_f) \subset U$.  Therefore we can write $U = \cup_{f \in U} B_\rho(f, \delta_f)$
+which shows that $U$ is an open set in the topology defined by $\rho$ as well.  It is clear that the argument is symmetric in the role of $\rho$ and $d$ and therefore we
+have shown that $d$ and $\rho$ are equivalent metrics.
 \end{proof}
 
 The goal in introducing $d$ was to provide a complete metric; a useful
@@ -1801,10 +1865,10 @@ was not a complete metric.
 \begin{examp}Here we continue the Example
   \ref{NoncompletenessSkorohod} by showing directly that $f_n$ is not
   Cauchy in the metric $d$.  Because $f_n$ are indicator functions it
-  follows that $\sup_{0 \leq t \leq 1} \abs{f_{n+m}(t) - f_{n}(\lambda(t))}$ is
+  follows that $\sup_{0 \leq t \leq 1} r(f_{n+m}(t), f_{n}(\lambda(t)))$ is
   either $0$ or $1$.  Therefore if $f_n$ is Cauchy then we can find
-  $\lambda_{nm}(t)$ such that $\sup_{0 \leq t \leq 1} \abs{f_{n+m}(t) -
-    f_{n}(\lambda_{nm}(t))} = 0$.  By definition this tells us that
+  $\lambda_{nm}(t)$ such that $\sup_{0 \leq t \leq 1} r(f_{n+m}(t),
+    f_{n}(\lambda_{nm}(t))) = 0$.  By definition this tells us that
   $\lambda_{nm}([1/2,1/2 + 1/n+m+2]) =  [1/2,1/2+1/n]$ 
 (of course $\lambda_{nm}([0,1/2]) = [0,1/2]$ and
 $\lambda_{nm}([1/2 + 1/n+m+2, 1]) = [1/2 + 1/n,1]$ as well).  
@@ -1813,7 +1877,164 @@ From this fact we see that $\gamma(\lambda_{mn}) \geq
 $f_n$ is not Cauchy with respect to $d$.
 \end{examp}
 
-TODO: Show that $d$ is complete.
+Now we show that the metric $d$ is indeed complete.  In addition we show
+that the $J_1$ topology is separable which shows us that it defines a Polish space.
+This will allow us to apply our theory of weak convergence.
+\begin{thm}\label{SkorohodJ1MetricPolish}Let $S$ be a complete metric space, then the metric $d$ on $D([0,T]; S)$
+is complete.  Morever if $S$ is separable then $D([0,T];S)$ is separable in the $J_1$ topology.
+\end{thm}
+\begin{proof}
+Let $f_n$ be a Cauchy sequence in $D([0,T]; S)$ with the metric $d$.  As a general principle of metric spaces it
+suffices to show that $f_n$ has a convergence subsequence $f_{n_j}$.  Suppose that such a subsequence exists and converges
+to $f$.  Then we may find $n_j$ such that $d(f,f_{n_j}) < \epsilon/2$ and $d(f_m, f_{n_j}) < \epsilon/2$ for all $m \geq n_j$; it follows
+that in fact $d(f,f_m)<\epsilon$ for all $m \geq n_j$ and thus $f_n \to f$.
+
+Using the Cauchy property we can find a subsequence $n_j$ such that $d(f{n_j}, f_{n_{j+1}}) < 2^{-j}$.  Therefore we have $\lambda_j$ 
+such that $\gamma{\lambda_j} < 2^{-j}$ and $\sup_{0 \leq t \leq T} r(f_{n_j}(t), f_{n_{j+1}}(\lambda_j(t))) < 2^{-j}$.  Moreover from 
+Lemma \ref{SkorohodEquivalenceA} we have $\sup_{0 \leq t \leq T} \abs{\lambda_j(t) -t } < T 2^{-j+1}$ for all $j \in \naturals$.  
+Therefore for every $m,n \in \naturals$,
+\begin{align*}
+&\sup_{0 \leq t \leq T} \abs{\lambda_{m+n+1} \circ \lambda_{m+n} \circ \dotsb \circ \lambda_n(t) -  \lambda_{m+n} \circ \dotsb \circ \lambda_n(t)} \\
+&= \sup_{0 \leq t \leq T} \abs{\lambda_{m+n+1}(t) - t} \leq T 2^{-(m+n)}
+\end{align*}
+which shows us that for fixed $n \in \naturals$ the sequence $\lambda_{m+n} \circ \dotsc \circ \lambda_n$ is Cauchy in $C([0,T], \reals)$ with
+the sup norm.  Since this latter space is complete we know that there is  a limit $\nu_n$.  
+
+\begin{clm} $\nu_n \in \Lambda$ and $\gamma(\nu_n) \leq 2^{-n+1}$.
+\end{clm}
+
+It is clear that $\nu_n$ is continuous as the uniform limit of continuous functions.  Moreover $\nu_n(0) = \lim_{m \to \infty} \lambda_{m+n} \circ \dotsb \lambda_{n}(0) = 0$
+and similarly $\nu_n(T) = T$.  As a uniform limit of strictly increasing functions we also know that $\nu_n$ is non-decreasing.  To estimate $\gamma(\nu_n)$ we compute
+\begin{align*}
+&\abs{\log \frac{\lambda_{m+n} \circ \dotsb \circ \lambda_n(t) - \lambda_{m+n} \circ \dotsb \circ \lambda_n(s)}{t-s}} \\
+&\leq \gamma(\lambda_{m+n} \circ \dotsb \circ \lambda_n) \\
+&\leq \gamma(\lambda_{m+n}) + \dotsm +\gamma(\lambda_n) < 2^{-(m+n)} + \dotsm + 2^{-n} < 2^{-n+1}
+\end{align*}
+and therefore taking the limit as $m \to \infty$ we conclude 
+\begin{align*}
+\abs{\log \frac{\nu_n(t) - \nu_n(s)}{t-s}} &\leq 2^{-n+1}
+\end{align*}
+which show both that $\nu_n$ is strictly increasing (hence $\nu_n \in \Lambda$) and moreover that $\gamma(\nu_n) < 2^{-n+1}$ and the claim is shown.
+
+Now note that $\nu_n = \nu_{n+1} \circ \lambda_n$.  From this it follows that
+\begin{align*}
+\sup_{0 \leq t \leq T} r(f_{n_j}(\nu_j^{-1}(t)), f_{n_{j+1}}(\nu_{j+1}^{-1}(t))) &= \sup_{0 \leq t \leq T} r(f_{n_j}(t),  f_{n_{j+1}}(\lambda_j(t))) < 2^{-j}
+\end{align*}
+and therefore for $j,m \in \naturals$ we have
+\begin{align*}
+\sup_{0 \leq t \leq T} r(f_{n_j}(\nu_j^{-1}(t)), f_{n_{j+m}}(\nu_{j+m}^{-1}(t))) &\leq 2^{-j} + \dotsm + 2^{-j-m+1} < 2^{-j+1}
+\end{align*}
+which shows that $f_{n_j} \circ \nu_j^{-1}$ is a Cauchy sequence in $D([0,T]; S)$ with respect to the sup norm.  Recalling that the sup norm
+makes $D([0,T];S)$ into a complete (but not separable) space we can find a limit $f \in D([0,T]; S)$.  Thus $\sup_{0 \leq t \leq T} r(f_{n_j}(\nu_j^{-1}(t)), f(t)) \to 0$
+and moreover $\gamma(\nu_j) \to 0$ which shows us that $d(f_{n_j}, f) \to 0$.
+
+TODO: Show separability
+\end{proof}
+
+\subsection{Compactness and Tightness in Skorohod Space}
+
+The entire point behind constructing the $J_1$ topology on $D([0,T]; S)$ was to
+make it a Polish space so that Prohorov's Theorem can be applied to understand
+weak convergence of cadlag stochastic processes.  The other pieces of the puzzle
+in applying Prohorov's Theorem are being able to prove tightness and being able to
+characterize limits (e.g. by understanding the finite dimensional distributions).  The latter
+problem has little to do with topological aspects of path space (and to be honest in many
+cases is an impossibly difficult nut to crack).  The former problem is deeply tied into the
+nature of compactness in path space and we now turn to the consideration of such matters.
+
+The first thing to do is to prove an analogue of the Arzela-Ascoli theorem that characterizes
+relatively compact sets in $D([0,T]; S)$.  The proof of such a theorem ultimately rests on
+approximation by step functions so we first prove that certain collections of step functions
+are compact.
+
+\begin{lem}\label{SkorohodJ1CompactSetsOfStepFunctions}Let $(S,r)$ be a metric space and let $K \subset S$.  Let $\delta > 0$ and define
+$A(K, \delta) \subset D([0,T];S)$ be the set of functions $f$ for which there is a partition
+$0=t_0 < t_1 < \dotsb < t_n=T$ with $t_i-t_{i-1} >  \delta$ for $i=1, \dotsc, n$, points $x_1, \dotsc, x_n \in K$ with $x_j \neq x_{j-1}$ for $j=2, \dotsc, n$ such that $f(t) = x_i$ for $t_{i-1} \leq t < t_i$.  If $K$ is compact in $S$ then $A(K, \delta)$ is relatively compact in the $J_1$ topology.
+\end{lem}
+\begin{proof}
+It suffices to show that every sequence in $A(K,\delta)$ has a convergent subsequence. 
+For each $f_n$ we by the definition of $A(K,\delta)$, let $0=t_{0,n} < \dotsm < t_{m_n, n}=T$   be a partition with $t_{j,n}-t_{j-1,n}>\delta$ for $j=1, \dotsc, m_n$ and $x_{1, n}, \dotsc, x_{m_n, n}$ be elements of $K$ such that $f_n(t) = x_{j,n}$ for $t_{j-1,n} \leq t < t_{j,n}$.  Let $m = \liminf_{n \to \infty} m_n$; that is to say $m$ is the smallest $m_n$ for which there are an infinite number of $f_n$ whose partitions have length $m$.
+Note that $m \leq T/\delta < \infty$.  Since we are only looking for a convergence subsequence we can pass to the subsequence of $f_n$ for which $m_n = m$ and therefore we assume that all partitions have length $m$.
+
+Consider the sequence $t_{1,n}$ and the sequence $x_{1,n}$.  Let $t_1 = \limsup_{n \to \infty} t_{1,n}$.  We know that $\delta < t_{1,n} \leq T$ thus $t_1 \in [\delta,T]$; pick a subsequence $N^1$ such that $t_{1,n} \to t_1$ along $N^1$. 
+We also have $x_{1,n} \in K$ along $N^1$ so by compactness of  $K$ there 
+is $x_1 \in K$ and a subsequence $N^2 \subset N^1$ such that $t_{1,n} \to t_1$ and $x_{1,n} \to x_1$ along $N^2$.  
+In fact we can ask for another property of the sequence of $t_{1,n}$.  The function $g(t) = \abs{\frac{t_1}{t}}$ is continuous at $t_1$ 
+and equals $g(t_1) = 0$ thus $g(t_{1,n}) \to 0$ along $N^2$ and we may pass to a further subsequence $N^3 \subset N^2$ (which we now
+denote by $n_j$) to arrange that
+\begin{itemize}
+\item[(i)] $\lim_{j \to \infty} t_{1,n_j} = t_1$ with $\delta \leq t_1 \leq T$
+\item[(ii)] $\abs{\frac{t_1}{t_{1, n_j}}} < \frac{1}{j}$ for $j \in \naturals$
+\item[(iii)] $\lim_{j \to \infty} x_{1,n_j} = x_1$ with $x_1 \in K$
+\end{itemize}
+
+TODO: Get rid of the $k=1$ step since the induction step is clear once we define the trivial $k=0$ step.
+
+If $m = 1$ we stop here (and note that we must have $t_1 = T$), otherwise we iterate to find further subsequences. 
+To see the induction step we suppose that we have run the procedure $k<m$ times 
+so that we have a subsequence $N^k$ and for each
+$1 \leq i \leq k$ we have $i\delta \leq t_i < T$, $x_i \in K$ such that
+\begin{itemize}
+\item[(i)] $\lim_{j \to \infty} t_{i,n_j} = t_1$ 
+\item[(ii)] $\abs{\frac{t_i - t_{i-1}}{t_{i, n_j} - t_{i-1, n_j}}} < \frac{1}{j}$ for $j \in \naturals$
+\item[(iii)] $\lim_{j \to \infty} x_{i,n_j} = x_1$ 
+\end{itemize}
+We now let $t_{k+1} = \limsup_{j \to \infty} t_{k+1, n_j}$.  We know 
+that $(k+1) \delta \leq t_{k+1} \leq T - (m - k)\delta$ and in fact $t_{k+1} = T$ if and only if $k+1 = m$.  
+Now we replay the argument we used for $k=1$.  We extract a subsequence $N^{1,k} \subset N^k$ such that $t_{k+1, n_j} \to t_k$ along $N^{1,k}$.  Note also
+that $m_{n_j} \geq k+1$ along this subsequence.  We use
+compactness of $K$ to the get a further subsequence $N^{2,k}$ such that there is $x_{k+1} \in K$ with $x_{k+1, n_j} \to x_{k+1}$ along $N^{2,k}$.  The we use
+continuity of $\abs{\frac{t_{k+1} - t_{k}}{t - t_{k, n_j}}}$ at $t_k$ to arrange for a final subsequence $N^{3,k}$ so that if we redefine $n_j$ to be the subsequence
+$N^{3,k}$ we have $\abs{\frac{t_{k+1}- t_{k}}{t_{k+1, n_j} - t_{k, n_j}}} < \frac{1}{j}$ for all $j \in \naturals$.
+
+Define $f(t)$ to be equal to $x_k$ on $t_{k-1} \leq t < t_k$ for $k=1, \dotsc, m$ (clearly $f \in D([0,T]; S)$).  We claim $f_n \to f$ in the $J_1$ topology along the subsequence $N^m$.
+To see this, let $\lambda_j(t_{k, n_j}) = t_k$ for $k=1, \dotsc, m$ and extend by linear interpolation.  This is well defined because of the fact that $t_m = T$.  
+Moreover from the property (ii) we have $\gamma(\lambda_j) \leq \frac{1}{j}$ so that
+$\lim_{j \to \infty} \gamma(\lambda_j) = 0$.  We also have $r(f_{n_j}(t), f(\lambda_j(t))) = r(x_{n_j, k}, x_k)$ for $t_{k-1, n_j} \leq t < t_{k, n_j}$.  Thus because there are only finitely many
+$x_k$ we can conclude that $\lim_{j \to \infty} \sup_{0 \leq t \leq T} r(f_{n_j}(t), f(\lambda_j(t))) = 0$ and therefore $\lim_{j \to \infty} d(f_{n_j}, f) = 0$.
+
+TODO: Can the proof be simplified if we use the metric $\rho$ to demostrate convergence?
+\end{proof}
+
+\begin{thm}\label{ArzelaAscoliTheoremJ1Topology}Let $(S,r)$ be a complete metric space.  A set $A \subset D([0,T]; S)$ is relatively compact in the $J_1$ topology if and only if 
+\begin{itemize}
+\item[(i)]for each rational number
+$t \in [0,T] \cap \rationals$ there exists a compact set $K_t \subset S$ such that $\cup_{f \in A} f(t) \subset K_t$
+\item[(ii)]$\lim_{\delta \to 0} \sup_{f \in A} w(f, \delta) = 0$
+\end{itemize}
+\end{thm}
+\begin{proof}
+We consider $D([0,T];S)$ as a metric space with the complete metric $d$.  We first suppose that $A$ is a set satisfying (i) and (ii).
+Since a set $A$ is totally bounded if and only if 
+its closure is totally bounded and a closed set of  a complete metric space is complete, it suffices to
+show that $A$ is totally bounded with respect to $d$ (Theorem \ref{CompactnessInMetricSpaces}).  By (ii) every $k \in \naturals$ we
+pick $0 < \delta_k < 1$ such that $\sup_{f \in A} w(f, \delta_k) < \frac{1}{k}$.  Pick $m_k \in \naturals$ with $\frac{1}{m_k} < \delta_k$ and 
+define 
+\begin{align*}
+K^{(k)}  &= \cup_{i=1}^{T m_k} K_{i/m_k}
+\end{align*}
+so that $K^{(k)}$ is compact and $A_k = A(K^{(k)}, \delta_k)$ is relatively compact by Lemma \ref{SkorohodJ1CompactSetsOfStepFunctions}.
+Pick $f \in A$ and since $w(f,\delta_k) < \frac{1}{k}$ we may choose a partition $0=t_0 < t_1 < \dotsb < t_n=T$ such that  for $i=1, \dotsc, n$ we have 
+$t_i-t_{i-1} > \delta_k$ and $r(f(s), f(t)) < \frac{1}{k}$ for all $s,t \in [t_{i-1}, t_i)$.  Since we have chose $\frac{1}{m_k} < \delta_k < t_i - t_{i-1}$ note that every
+interval $[\frac{j-1}{m_k}, \frac{j}{m_k}]$ has either $0$ or $1$ element of $t_i$ in it.  Define $g \in D([0,T]; S)$ by
+\begin{align*}
+g(t) &= f(\frac{\floor{m_k t_{i-1}} + 1}{m_k}) \text{ for $t_{i-1} \leq t < t_i$ and $i=1, \dotsc, n$}
+\end{align*}
+(this says that we define $g(t)$ on $[t_{i-1}, t_i)$ to be the value $f(j/m_k)$ where $j$ is the smallest integer such that $t_{i-1} < j/m_k$).
+It is clear that $g \in A_k$ since $g$ is a step function on the partition $\lbrace t_j \rbrace$ and takes values in $K_{j/m_k}$ for appropriate $0 \leq j \leq T m_k$.
+Furthermore we have for $t_{i-1} \leq t < t_i$ we have
+\begin{align*}
+r(f(t), g(t)) &\leq r(f(t), f(\frac{\floor{m_k t_{i-1}} + 1}{m_k})) < \frac{1}{k}
+\end{align*}
+which shows that $d(f,g) < \frac{1}{k}$.  
+
+Now let $\epsilon > 0$ be given and pick $\frac{1}{k} < \epsilon /2$.  Since $A_k$ is relatively compact it
+is totally bounded and thus there exist $g_1, \dotsc, g_n$ such that the balls $B(g_i, \epsilon/2)$ cover
+$A_k$.  By the above argument for any $f \in A$ we can find $g \in A_k$ such that $d(f,g) < \frac{1}{k} < \epsilon/2$ 
+and therefore by the triangle inequality the balls $B(g_i, \epsilon)$ cover $A$ and $A$ is totally bounded.
+
+TODO: Do the converse.
+\end{proof}
 
 \section{Riesz Representation}
 
@@ -4239,7 +4460,109 @@ which implies that $Df(x^*) v \leq 0$ (divide by $t_n>0$ and let $n
 \to \infty$).
 \end{proof}
 
-TODO: Define the normal cone...
+TODO: Define the normal cone(s)...
+\begin{defn}Let $X$ be a Hilbert space, $F \subset X$ be closed and let
+  $x \in F$ then we say that $v \in X$ is a \emph{regular normal
+    vector to $F$ at $x$} if $\langle v, w \rangle \leq 0$ for all $w
+  \in T_F(x)$.  The set of all regular normal vectors to $F$ at $x$ is
+ called the \emph{regular normal cone} and is denoted
+ $\widehat{N}_F(x)$.  We say that $v \in X$ is a \emph{limiting normal vector to $F$
+    at $x$} or simply a \emph{normal vector to $F$
+    at $x$} if there are sequences $x_n$, $v_n$ with $v_n$ a regular
+  normal vector to $F$ at $x_n$ and $\lim_{n \to \infty} x_n = x$ and $\lim_{n \to \infty}
+  v_n =v$.
+\end{defn}
+
+Facts:
+
+The proximal normal cone is a convex cone but may not be closed
+The limiting normal cone is a closed cone but may not be convex.
+The limiting normal cone may be defined as the limit of proximal
+normal vectors as well as by using regular normal vectors.
+
+\begin{defn}Let $X$ be a Hilbert space, $F \subset X$ be closed and let
+  $x \in F$ we say that $F$ is \emph{Clarke regular at $x$} if $F$ is locally closed at $x$ and
+$\widehat{N}_F(x) = N_F(x)$.
+\end{defn}
+
+\begin{prop}\label{RegularNormalLittleO}$\widehat{N}_F(x)$ is a closed convex cone.  Moreover, $v$ is a regular normal to $F$ at $x$ if and only if
+  $\langle v, y-x \rangle \leq o(y -x)$ for $y \in F$ and $x \neq y$.  That is to say
+  for every sequence $x_n \in F$ with $x_n \neq x$ and $\lim_{n \to \infty} x_n = x$, we have 
+\begin{align*}
+\limsup_{n \to \infty} \frac{\langle v, x_n-x \rangle}{\norm{x_n - x}}
+&\leq 0
+\end{align*}
+\end{prop}
+\begin{proof}
+The fact that $\widehat{N}_F(x)$ is a closed convex cone follows from
+the fact that is is an intersection of closed halfspaces.
+
+Suppose that there exists an sequence $x_n \in F$ with $x_n \neq x$,
+$x_n \to x$ and 
+\begin{align*}
+\limsup_{n \to \infty} \frac{\langle v, x_n-x \rangle}{\norm{x_n - x}}
+&> 0
+\end{align*}
+By passing to a subsequence we may assume that the $\limsup$ may be
+replaced by a limit.  Let $w_n = \frac{x_n - x}{\norm{x_n - x}}$ and
+  by compactness we may pass to a further
+subsequence and assume that $w_n$ converges
+  to a unit vector $w$ and $\langle v,w \rangle = \lim_{n \to \infty} \langle v,w_n \rangle > 0$. 
+On the other hand, $w$ is seen to be a tangent vector to $F$ at $x$ because it is
+the limit $\frac{x_n - x}{\norm{x_n - x}}$ and $\norm{x_n -x} \to 0$.
+
+Now suppose that $\langle v, y-x \rangle \leq o(y -x)$ and let $w \in T_F(x)$.  Pick a defining
+sequence $x_n \to x$ with $x_n \in F$ and $t_n \downarrow 0$ such that $\lim_{n \to \infty} \frac{x_n - x}{t_n} = w$.
+\begin{align*}
+\langle v,w \rangle &= \lim_{n \to \infty} \langle v, \frac{x_n - x}{t_n} \rangle \\
+&\leq \limsup_{n \to \infty} \langle v, \frac{x_n - x}{\norm{x_n- x}} \rangle \lim_{n \to \infty} \frac{\norm{x_n - x}}{t_n} \\
+&= \norm{w} \limsup_{n \to \infty} \langle v, \frac{x_n - x}{\norm{x_n- x}} \rangle \leq 0\\
+\end{align*}
+\end{proof}
+
+\begin{thm}$v$ is a regular normal to $F$ at $x$ if and only if there exists a function $f$ differentiable at $x$ such that 
+$f$ has a local minimum on $F$ at $x$ and $\nabla f (x) = v$.  In fact, we can choose $f$ be differentiable on all of $\reals^n$ 
+with a global minimum at $x$.
+\end{thm}
+\begin{proof}
+TODO:  
+Let $v \in \widehat{N}_F(x)$ be given.  The first step to building $f$ is to define
+\begin{align*}
+\theta_0(r) = \sup \lbrace \langle v, y - x \rangle \mid y \in F \text{ and } \norm{y-x} \leq r \rbrace
+\end{align*}
+It is simple to see that $\theta_0$ is a non-decreasing function of $r$,  $\theta_0(0) = 0$ and
+$\theta_0(r) \leq \norm{v} r$ so $\lim_{r \downarrow 0} \theta_0(r) = 0$. 
+Moreover from Proposition \ref{RegularNormalLittleO} we get for any $\epsilon > 0$ there exists a $\delta > 0$ such that
+$\langle v, y-x \rangle \leq \epsilon \norm{y-x}$ for $y \in F$ and $\norm{y-x} \leq \delta$.    Thus for $0 \leq r \leq \delta$, 
+\begin{align*}
+\theta_0(r)&= \sup \lbrace \langle v, y - x \rangle \mid y \in F \text{ and } \norm{y-x} \leq r \rbrace \\
+&\leq \sup \lbrace \epsilon \norm{y-x} \mid y \in F \text{ and } \norm{y-x} \leq r \rbrace \\
+&\leq \epsilon r \\
+\end{align*}
+and thus $\theta_0(r) = o(r)$.
+Now let 
+\begin{align*}
+h_0(y) &= \langle v, y-x\rangle - \theta_0(\norm{y-x})
+\end{align*}
+and note since $\theta_0(r) = o(r)$,
+\begin{align*}
+\lim_{w \to 0} \frac{h_0(x+w) - h_0(x) - \langle v,w \rangle}{\norm{w}} =\lim_{w \to 0} \frac{-\theta_0(\norm{w})}{\norm{w}} =0\\
+\end{align*}
+which shows $h_0$ is differentiable at $x$ and moreover $\nabla h_0(x) = v$.
+\end{proof}
+
+\begin{defn}Let $X$ be a Hilbert space, $F \subset X$ be closed and let
+  $x \in F$ then we say that $v \in X$ is a \emph{proximal normal
+    vector to $F$ at $x$} if there exists an $M \geq 0$ such that
+  $\langle v, y - x \rangle \leq M \norm{y - x}$ for all $y \in F$.
+\end{defn}
+
+The following is (supposed to be) the interpretation of a proximal
+normal vector: $v$ is a proximal normal vector $F$ at $x$ if there
+exists a $y \in X$ such that $x$ is the closest point in $F$ to $y$
+and there exists $c > 0$ such that $v = c(y -x)$.  Also an interpretation is that
+$v$ is a proximal normal when there exists $y$ and $c \geq 0$ with $v = cy$ and
+a closed ball $B(y,r)$ with $B(y,r) \cap F = \lbrace x \rbrace$.
 
 For computational purposes (and in particular for numerical
 optimization problems) we are given a constraint set in some concrete
@@ -4466,3 +4789,181 @@ that give us convergence to a stationary point of $f$.
 
 
 
+\section{Linear Algebra}
+
+This is a little refresher on linear algebra with more of a focus on matrix factorizations.
+
+\begin{defn}Let $\mathds{F}$ be a field, then a \emph{vector space} over $\mathds{F}$ is an abelian group $(V,+,0)$ together with 
+a multiplication operator $\mathds{F} \times V \to V$ such that $a (v + w) = av + aw$.
+\end{defn}
+
+\begin{defn}If $W \subset V$ is a vector space then we say that $W$ is a \emph{subspace} of $V$.  We say that a set of elements  $v_1, \dotsc, v_n$ of $V$ is \emph{linearly independent} if and only if $a_1 v_1 + \dotsb + a_n v_n = 0$ implies
+$a_1 = \dotsb = a_n = 0$.  If a set is not linearly independent then we say it is  \emph{linearly dependent}.  The \emph{dimension} of a vector space $V$ is the supremum of cardinalities of linearly independent sets in $V$.  Given elements $v_\alpha$ in $V$ the \emph{linear span} is the intersection of all subspaces of $V$ containing the $v_\alpha$.  
+\end{defn}
+
+\begin{prop}Let $V$ be a vector space of $\mathds{F}$. 
+\begin{itemize}
+\item[(i)]Let $W_\alpha$ be a collection of subspaces of $V$, then $W = \cap_\alpha W_\alpha$ is a subspace.  
+\item[(ii)] Let $v_\alpha$ be elements in $V$ then the span of $v_\alpha$ is a subspace and moreover the span is precisely the set of finite linear combinations of elements of $v_\alpha$.  
+\item[(iii)]The dimension of the span of $\lbrace v_1, \dotsc, v_n \rbrace$ is less than or equal to $n$.  It is equal to $n$ if and only if $v_1, \dotsc, v_n$ are linearly independent.
+\item[(iv)]$\dim \lbrace v_1, \dotsc, v_{n+1} \rbrace \leq \dim \lbrace v_1, \dotsc, v_n \rbrace + 1$.
+\end{itemize}
+\end{prop}
+\begin{proof}
+The fact that $W$ is a subspace is simple and left to the read.  The fact that a linear span is a subspaces follows from the first assertion as it was defined as an intersection of subspaces.  
+
+To see that the set of finite linear combinations is indeed the span, first note that it is clear all finite linear combinations belong to every subspace containing the $v_\alpha$.  It suffices to show that the set of finite linear combinations is a vector space.  Given $u$ and $w$ which are finite linear combinations with index sets $A \subset \Lambda$ and $B \subset \Lambda$ respectively.  By use of zero coefficients we express both $u$ and $w$ using the index set $A \cup B$.  So to be concrete we write $u = \sum_{i=1}^n u_i v_{\alpha_i}$ and $w = \sum_{i=1}^n w_i v_{\alpha_i}$.  Let $a,b \in \mathds{F}$ and we compute $au + bw = \sum_{i=1}^n (au_i + bw_i) v_{\alpha_i}$.
+
+To see (iii) we use induction.  For $n=1$ it is clear that $\dim\lbrace v_1 \rbrace = 1$ if $v_1 \neq 0$ and $0$ if $v_1 = 0$ and that $v_1 \neq 0$ if and only if $\lbrace v_1 \rbrace$ is linearly independent.  Suppose the result is true for $n-1$ and consider $v_1, \dots, v_n$.  Suppose $w_1, \dotsc, w_m$ is a linearly independent set in the span of the $v_i$.  Write
+$w_i = \sum_{j=1}^n a_{ij} v_j$ for $1 \leq i \leq m$.  If $a_{in}=0$ for all $1 \leq i \leq n$
+
+TODO: Finish
+\end{proof}
+
+
+\begin{defn}Let $V$ and $W$ be vector spaces over $\mathds{F}$ then a function $A : V \to W$ is said to be a \emph{linear map} if $A (av + bw) = aAv + bAw$ for all $v,w \in V$ and $a,b \in \mathds{F}$.  In the special case that $W = \mathds{F}$ we may say that $A$ is a \emph{linear functional}.  The set of linear functionals on $V$ is denoted $V^*$ and is called the \emph{dual space} to $V$.  Given any linear map $A : V \to W$ we define the \emph{dual map} $A^* : W^* \to V^*$ by $A^*(\lambda)(v)= \lambda(Av)$.  
+\end{defn}
+Note that the dual map is well defined since 
+\begin{align*}
+A^*(\lambda)(av + bw) &= \lambda(A(av+bw)) = \lambda(aAv + b A w) = a \lambda(Av) + b\lambda(Aw) = aA^*(\lambda)(v) + b A^*(\lambda)(w)
+\end{align*}
+shows that $A^*(\lambda)$ is a linear functional.  The dual space is easily seen to be a vector space and the dual map is easily shown to be a linear map.
+
+\begin{prop}$V^*$ is a vector space over $\mathds{F}$ with addition and scalar multiplication defined pointwise as $(a\lambda + b\mu)(v) = a\lambda v + b \mu(v)$.  With repsect to this vector space structure the dual map $A^*$ is linear.  If $V$ is finite dimensional then $V^*$ is finite dimensional and $\dim V = \dim V^*$.
+\end{prop}
+\begin{proof}
+The proof that $V^*$ is a vector space is elementary and left to the reader.  To see that $A^*$  is a linear map we just compute using the definitions
+\begin{align*}
+A^*( a \lambda + b \mu)(v) &= (a \lambda + b\mu)(Av) = a \lambda (Av) + b \mu (Av) = (a A^*(\lambda) + b A^*(\mu)) (v) \text{ for all $v \in V$}
+\end{align*}
+
+Now if $V$ is finite dimensional we can select a basis $v_1, \dotsc, v_n$.  Define $v_i^* \in V^*$ by $v_i^*(v_j) = \delta_{ij}$ for $1 \leq i,j \leq n$.  We claim that $v^*_i$ is a basis for $V^*$.  Clearly $v^*_i$ spans $V^*$ since if we are given an arbitrary $\lambda$ then by linearity
+\begin{align*}
+\left( \sum_{i=1}^n \lambda(v_i) v^*_i \right) v &= \sum_{i=1}^n \lambda(v_i) v^*_i (\sum_{j=1}^n a_j v_j) = \sum_{i=1}^n a_i \lambda(v_i) = \lambda(v)
+\end{align*}
+Moreover the $v^*_i$ are seen to be linearly independent since if $\sum_{i=1}^n a_i v^*_i = 0$ then for each $1 \leq j \leq n$ we have $0 = \left(\sum_{i=1}^n a_i v^*_i \right)v_j = a_j$.
+Thus $v^*_i$ is a basis hence $\dim V  = \dim V^* = n$.
+\end{proof}
+
+The basis $v^*_i$ constructed from the basis $v_i$ in the above proof is referred to as the \emph{dual basis}.  
+
+\begin{defn}Let $A$ be an $m \times n$ real matrix, then a triple comprising an $m \times m$ orthogonal matrix $U$, an $n \times n$ orthogonal matrix $V$ and a $m \times n$ diagonal matrix $\Sigma$ with $\Sigma_{11} \geq \dotsb \Sigma_{pp}$ where $p = m \wedge n$ such that $A = U \Sigma V^T$ is called a \emph{singular value decomposition}.
+\end{defn}
+
+\begin{thm}\label{SingularValueDecomposition}Singular value decompositions exist.
+\end{thm}
+\begin{proof}
+The result is trivially true if $A = 0$ (let $\Sigma=0$, $U$ and $V$ be identity matrices), so assume that $A \neq 0$.  Let $\sigma_1$ be the $L^2$ operator norm of $A$.   By compactness of the unit sphere we can find a unit vector $x_1 \in \reals^n$ such that $0 \neq \sigma_1 = \norm{Ax}$.  Define $y_1 = \sigma^{-1}_1 Ax$ so that $y$ is a unit vector in $\reals^m$.  We can now find an orthonormal basis $\lbrace x_2, \dotsc, x_n \rbrace$ of $x_1^{\perp}$ and $\lbrace y_2, \dotsc, y_m \rbrace$ of $y_1^{\perp}$.  Define the orthogonal matrices $U_1 = [y_1, \dotsc, y_m]$ and $V = [x_1, \dotsc, x_n]$.  We may write
+\begin{align*}
+U_1^T A V_1 &=
+\begin{bmatrix}
+\sigma_1 & w^T \\
+0 & B
+\end{bmatrix}
+\end{align*}
+where $w \in \reals^{n-1}$ and $B$ is an $(m-1) \times (n-1)$ matrix.
+Observe that
+\begin{align*}
+U_1^T A V_1 \begin{bmatrix} \sigma_1 \\ w\end{bmatrix}
+&= \begin{bmatrix} \sigma_1^2 + w^T w \\ 
+B \begin{bmatrix} \sigma_1 \\ w\end{bmatrix}
+ \end{bmatrix}
+\end{align*}
+so that $\norm{U_1^T A V_1}^2 \geq (\sigma_1^2 + w^T w )$.  On the other hand, by orthogonality of $U_1$ and $V_1$ we know that
+$\norm{U_1^T A V_1} = \norm{A} = \sigma_1$ and therefore we see that $w = 0$.    Now we can use the induction hypothesis to conclude that there exist $U_2$ and $V_2$ such that
+$U_2^T B V_2 = \Sigma_2$ is diagonal and note that if we define 
+\begin{align*}
+U &= 
+U_1 \begin{bmatrix}
+1 & 0 \\
+0 & U_2
+\end{bmatrix}, &
+V &= V_1 
+\begin{bmatrix}
+1 & 0 \\
+0 & V_2
+\end{bmatrix}
+\end{align*}
+Then 
+\begin{align*}
+U^T A V 
+&=
+\begin{bmatrix}
+1 & 0 \\
+0 & U_2^T
+\end{bmatrix} U_1^T A V_1 
+\begin{bmatrix}
+1 & 0 \\
+0 & V_2
+\end{bmatrix} 
+= 
+\begin{bmatrix}
+1 & 0 \\
+0 & U_2^T
+\end{bmatrix}
+\begin{bmatrix}
+\sigma_1 & 0 \\
+0 & B
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 \\
+0 & V_2
+\end{bmatrix} \\
+&= 
+\begin{bmatrix}
+\sigma_1 & 0 \\
+0 & \Sigma_2
+\end{bmatrix} 
+\end{align*}
+\end{proof}
+
+The fact that we may perform matrix factorizations in linear algebra in a Borel measurable way is easy to verify with the following elegant method relying on the ``principle of measurable choice''.
+\begin{thm}\label{PrincipleOfMeasurableChoice}Let $S$ and $T$ be separable complete metric spaces and let $A \subset S \times T$ be closed and $\sigma$-compact.  Then $\pi_1(A)$ is Borel and there exists a Borel measurable function $f : \pi_1(A) \to T$ such that the graph of $f$ is contained in $A$.
+\end{thm}
+\begin{proof}
+We start with the following
+\begin{clm}Let $F$ be a closed set in $T$ then $\pi_1(A \cap S\times F)$ is Borel measurable.
+\end{clm}
+Write $A = \cup_n K_n$ with $K_n$ compact.  Since $F$ be a closed set it follows that $A \cap S\times F$ is closed $A \cap S\times F =  \cup_n K_n \cap S \times F$ where each $K_n \cap S \times F$ is compact.  Since $\pi_1$ is continuous each $\pi_1 (K_n \cap S \times F)$ is compact in $S$ and $\pi_1 (A \cap S\times F) = \cup_n \pi_1(K_n \cap S \times F)$ is therefore Borel.  
+
+Applying the claim with $F = T$ we see that $\pi_1(A)$ is Borel.
+
+Take a countable dense subset $\lbrace y_n \rbrace$ of $T$.  We define $f$ by an iterative approximation scheme.  
+For $x \in \pi_1(A)$ define $f_1(x)$ to be the first $y_n$ (in index order) such that $A \cap \lbrace x \rbrace \times \overline{B}(y_n, 1/2) \neq \emptyset$ where $\overline{B}(z,r)$ represents the closed ball of radius $r$ centered at $z$.  Clearly $f_1$ is well defined since there exists an $(x,y) \in A$ and by density of $\lbrace y_n \rbrace$ in $T$ for any $r > 0$ there exists a $y_n$ with $(x,y) \in \lbrace x \rbrace \times \overline{B}(y_n,r)$.
+
+Next observe that $f_1(x)$ is Borel measurable.  To see this, for each $r > 0$ and $n \in \naturals$ we define 
+\begin{align*}
+C_{n,r} &= \pi_1(A \cap S \times \overline{B}(y_n,r) )\\
+&= \lbrace x \in S \mid A \cap \lbrace x \rbrace \times \overline{B}(y_n,r) \neq \emptyset \rbrace
+\end{align*}
+which is Borel by the claim.  Moreover it follows that $f_1^{-1}(y_n) = C_{1, 1/2}^c \cap \dotsb \cap C_{n-1, 1/2}^c \cap C_{{n}, 1/2}$ is Borel.  Since $f_1$ is countably valued it follows that $f_1$ is Borel measurable.
+
+Now define $f_k(x)$ be the first $y_n$ such that $A \cap \lbrace x \rbrace \times \overline{B}(y_n, 1/2^k) \neq \emptyset$ and $d(f_{k-1}(x), y_n) \leq 1/2^{k-2}$; again density of the $\lbrace y_n \rbrace$ shows that $f_k(x)$ is well defined.  Borel measurability of $f_k$ follows by a simple induction as the Borel measurability of $f_{k-1}$ and Lipschitz continuity of $d$ imply that $D_{n,r} = \lbrace x \mid d(f_{k-1}(x), y_n) \leq r \rbrace$ is Borel measurable for every $n \in \naturals$ and $r > 0$.  Since 
+\begin{align*}
+&f_k^{-1}(y_n) = \\
+&(C_{1,1/2^k} \cap D_{1, 1/2^{k-2}})^c \cap \dotsb \cap (C_{n-1,1/2^k} \cap D_{n-1, 1/2^{k-2}})^c \cap  C_{n,1/2^k} \cap D_{n, 1/2^{k-2}}
+\end{align*}
+and $f_k$ is countably valued it follows that $f_k$ is Borel measurable.
+
+For a fixed $x$ note that for $j > k$ we have the triangle inequality
+\begin{align*}
+d(f_k(x), f_j(x)) &\leq \sum_{i=k}^{j-1} d(f_i(x), f_{i+1}(x)) \leq \sum_{i=k}^{j-1} 1/2^{i-1} \leq \sum_{i=k}^\infty 1/2^{i-1} = 1/2^{k-2}
+\end{align*}
+which shows that $f_k(x)$ is Cauchy.  By completeness of $T$, we can take 
+the limit of $f_k$ which is a Borel measurable function (Lemma \ref{LimitsOfMeasurableMetricSpace}).  Since $A$ is closed and $\lim_{k \to \infty} d(f_k(x), A) = 0$ it follows that $(x,f(x)) \in A$ and we are done.
+
+TODO: Do we ever use Polishness of $S$?  Note the reference Azoff ``Borel Measurability in Linear Algebra'' in the Proceedings of the AMS who in turn references Bourbaki.
+\end{proof}
+
+We now illustrate how matrix factorizations (and canonical forms) may be shown to be Borel measurable by using the singular value decomposition as an example.  
+\begin{cor}\label{BorelMeasurabilitySVD}There exists a Borel measurable function $f (A) = (U,\Sigma,V)$ from  $\reals^{m\times n}$ to $\reals^{m \times m} \times \reals^{m \times n} \times \reals^{n \times n}$ such that $A = U \Sigma V^T$ is a singular value decomposition.
+\end{cor}
+\begin{proof}
+Let 
+\begin{align*}
+F &= \lbrace (A, U,\Sigma, V) \mid \text{$U, V$ are orthogonal, $\Sigma$ is diagonal and $A = U \Sigma V^T$} \rbrace
+\end{align*}
+and note that $F$ is closed (because the spaces of orthognal and diagonal matrices are closed and matrix multiplication is continuous).  $F$ is also $\sigma$-compact because the ambient space is (just write $F = \cup_n F \cap \overline{B}(0,n)$).  Since singular value decompositions exist (Theorem \ref{SingularValueDecomposition}) we know that $\pi_1(F) = \reals^{m \times n}$ and therefore the result follows immediately from Theorem \ref{PrincipleOfMeasurableChoice}.
+\end{proof}
+
+B\'{e}la Sz Nagy also seems to prove measurability of eigenvalues and eigenvectors using the minimax criterion in ``Harmonic Analysis of Operators on Hilbert Space''.  From this one can bootstrap up to the measurability of the Schur decomposition and then get to the measurability of the SVD by considering Schur decompositions of $A^TA$ and $AA^T$.  There are also some more powerful section theorems that may have some relevance.

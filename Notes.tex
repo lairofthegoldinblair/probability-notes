@@ -1,6 +1,7 @@
 \documentclass{amsbook}
 
 \usepackage{dsfont}
+\usepackage{tikz}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -12,6 +13,7 @@
 \DeclareMathOperator*{\interior}{int}
 \DeclareMathOperator*{\diam}{diam}
 \DeclareMathOperator*{\sgn}{sgn}
+\DeclareMathOperator*{\IdentityMatrix}{Id}
 
 \newtheorem{thm}{Theorem}[chapter]
 \newtheorem{cor}[thm]{Corollary}
@@ -1534,6 +1536,37 @@ Finally we conclude that $\cprobability{(X_u, Y_u) \in
 by the uniqueness of product measure.
 \end{proof}
 
+\begin{xca}\label{QuadraticCovariationMatrixVectorStochasticIntegral}Let
+  $M$ be a continuous local martingale in $\reals^r$ and let $V \in L(X)$ be an $d
+  \times r$ matrix valued process in $L(M)$, then 
+\begin{align*}
+\left[ \left(\int V_s \, dM_s \right)^{(i)},  \left(\int V_s \, dM_s
+  \right)^{(i)} \right]_t &= \sum_{k=1}^r \sum_{l=1}^r \int_0^t
+                            V^{ik}_s V^{jl}_s \, d[M^k,M^l]_s \text{ for all
+                            $1 \leq i,j \leq d$}
+\end{align*}
+which we write stylistically as $[\int V \, dM] = \int V d[M] V^T$.
+\end{xca}
+\begin{proof}
+This just follows from bilinearity of quadratic covariation and Lemma \ref{BasicPropertiesStochasticIntegralContinuousMartingale}
+\begin{align*}
+\left[ \left(\int V_s \, dM_s \right)^{(i)},  \left(\int V_s \, dM_s
+  \right)^{(i)} \right]_t 
+&= \left[ 
+\sum_{k=1}^r \int V^{ik}_s \,dM^{k}_s, 
+\sum_{l=1}^r \int V^{jl}_s \,dM^{l}_s 
+\right]_t \\
+&=\sum_{k=1}^r \sum_{l=1}^r \left[ \int V^{ij}_s \,dM^{k}_s, \int V^{jl}_s \,dM^l_s \right]_t \\
+&=\sum_{k=1}^r \sum_{l=1}^r \int V^{ik}_s V^{jl}_s \, d[ M^{k}, M^l ]_s \\
+\end{align*}
+\end{proof}
+
+\begin{xca}Let $(S,d)$ be a totally bounded metric space.  Prove that $S$ is separable and that every uniformly continuous function $f : S \to \reals$ is bounded.
+\end{xca}
+\begin{proof}For each $n \in \integers$ we may find a finite set $x^n_1, \dots, x^n_{m_n}$ such that $B(x^n_j; 1/n)$ covers $S$.  The union of $x^n_{j}$ for $n \in \integers$ and $j=1, \dotsc, m_n$ is a countable dense subset of $S$.  Assume that $f$ is uniformly continuous, pick an $\epsilon > 0$ such that $d(x,y) < \epsilon$ implies $\abs{f(x) - f(y)} < 1$.  Now pick $x_1, \dotsc, x_n$ such that $B(x_1; \epsilon), \dotsc, B(x_n; \epsilon)$ covers $S$.  Let $K = \abs{f(x_1)} \vee \dotsb \vee \abs{f(x_n)}$ and note that for every $x$ we may pick $x_j$ such that $x \in B(x_j; \epsilon)$ and therefore $\abs{f(x)} \leq K + 1$.
+\end{proof}
+
+
 \appendix
 \chapter{Techniques}
 
@@ -1732,4 +1765,75 @@ On the other hand
 \end{align*}
 which shows $\abs{R(x)} \leq 1$.  
 \end{proof}
+
+\begin{thm}[Arithmetic Mean Geometric Mean Inequality]\label{AMGM}Let $x_1, \dotsc, x_n$ be non-negative real
+  numbers and let $p_1, \dotsc, p_n$ be non-negative real numbers such
+  that $\sum_{j=1}^n p_j = 1$ then
+\begin{align*}
+x_1^{p_1} \dotsm x_n^{p_n} &\leq p_1 x_1 + \dotsm + p_n x_n
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{prop}\label{SimplePowerMean}Let $x_1, \dotsc, x_n$ be non-negative real numbers and $m
+  \in \naturals$ then 
+\begin{align*}
+\left( \frac{x_1 + \dotsm + x_n}{n} \right)^m &\leq \frac{x^m_1 + \dotsm + x^m_n}{n}
+\end{align*}
+\end{prop}
+\begin{proof}
+We first validate the result for $m=2$.  To see this case observe that
+by Theorem \ref{AMGM} we have for arbitrary non-negative integers
+$\alpha$ and $\beta$ and non-negative reals $x,y$
+\begin{align*}
+x^\alpha y^\beta &= 
+(x^{\alpha+\beta})^{\frac{\alpha}{\alpha + \beta}}
++ (y^{\alpha+\beta})^{\frac{\beta}{\alpha + \beta}}
+\leq \frac{\alpha}{\alpha + \beta} x^{\alpha+\beta} + 
+\frac{\beta}{\alpha + \beta} y^{\alpha+\beta}
+\end{align*}
+Therefore by the Binomial Theorem and the fact that $\binom{m}{k} = \binom{m}{m-k}$
+\begin{align*}
+(x_1 + x_2)^m &= \sum_{k=0}^m \binom{m}{k} x_1^k x_2^{m-k}
+\leq \sum_{k=0}^m \binom{m}{k} \left(\frac{k}{m} x_1^m + \frac{m-k}{m} x_2^m \right) \\
+&= \begin{cases}
+\left(x_1^m + x_2^m \right) \sum_{k=0}^{\floor{\frac{m}{2}}} \binom{m}{k} \text{ if $m$ is odd}\\
+\left(x_1^m + x_2^m \right) \lbrace\sum_{k=0}^{\frac{m}{2} -1} \binom{m}{k} + \frac{1}{2}\binom{m}{m/2} \rbrace \text{ if $m$ is even}\\
+\end{cases} \\
+&= 2^{m-1} \left(x_1^m + x_2^m \right)
+\end{align*}
+
+Now an easy induction shows that the result holds for any $n=2^k$:
+\begin{align*}
+\left( \frac{x_1 + \dotsm + x_{2^k}}{2^k} \right)
+&\leq
+\frac{1}{2} \left \lbrace \left(\frac{x_1 + \dotsm + x_{2^{k-1}}}{2^{k-1}} \right) +
+\left(\frac{x_{2^{k-1} + 1} + \dotsm + x_{2^{k}}}{2^{k-1}} \right) \right \rbrace \\
+&\leq \frac{x_1^m + \dotsm + x_{2^k}^m}{2^k}
+\end{align*}
+
+It remains to extend the result to arbitrary $n$.  Suppose that $2^{k-1} \leq n < 2^k$ and 
+define 
+\begin{align*}
+A &= \left ( \frac{x_1^m + \dotsm + x_n^m}{n} \right)^{1/m}
+\end{align*}
+they by the result for $2^k$ we get
+\begin{align*}
+\left( \frac{x_1^m + \dotsm + x_n^m + (2^k - n)A}{2^k} \right)^m 
+&\leq
+\frac{x_1^m + \dotsm + x_n^m +  (2^k - n)A^m}{2^k} = A^m
+\end{align*}
+If we take $m^{th}$ roots and collect terms involving $A$ we get $\frac{x_1 + \dotsm + x_k}{k} \leq A$.
+Now take $m^{th}$ power and use the definition of $A$ to get the
+result.
+
+TODO: I actually think we need this result for non-integral $m$.  Get
+the full blown power mean inequality from Steele and then fix up the
+BDG vector inequality.
+\end{proof}
+
+\begin{thm}\label{StirlingsFormula}
+\end{thm}
 \end{document}

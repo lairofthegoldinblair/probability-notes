@@ -701,17 +701,17 @@ continuous  extension $\overline{f} : \overline{A} \to T$ to the closure of $A
 Let $x \in \overline{A}$, pick a sequence $x_n$
 in $A$ such that $\lim_{n \to \infty} x_n = x$ and observe that by
 uniform continuity of $f(x)$, for
-any $\epsilon > 0$ there exists a $\delta > 0$ such that $d(x,y)
-< \delta$ implies $d^\prime(f(x) , f(y)) < \epsilon$.  If we pick $N > 0$
-such that $d(x_n,y) < \delta/2$ for $n \geq N$ then
+any $\epsilon > 0$ there exists a $\delta > 0$ such that $d(z,w)
+< \delta$ implies $d^\prime(f(z) , f(w)) < \epsilon$.  If we pick $N > 0$
+such that $d(x_n,x) < \delta/2$ for $n \geq N$ then
 $d(x_n, x_m) < \delta$ for all $n,m \geq N$ and thus $d^\prime(f(x_n), f(x_m)) < \epsilon$ for all
 $n,m \geq N$.  This shows that the sequence $f(x_n)$ is Cauchy and by
 completeness of $T$ we can take the limit; we define $f(x) =
-\lim_{n\to infty} f(x_n)$.  We claim that this definition is
+\lim_{n\to \infty} f(x_n)$.  We claim that this definition is
 independent of the sequence chosen.  Indeed, let $y_n$ be another
 sequence from $A$ such that $\lim_{n \to \infty} y_n = x$.  Pick an
 $\epsilon > 0$ and by uniform continuity of $f(x)$ let $\delta$ be
-chosen such that $d^\prime(f(x),f(y)) < \epsilon/2$ whenever $d(x,y) < \delta$.
+chosen such that $d^\prime(f(z),f(w)) < \epsilon/2$ whenever $d(z,w) < \delta$.
 There exists $N_1 > 0$ such that $d(y_n, x_n) < \delta$ for every
 $n > N_1$ and there exists $N_2 > 0$ such that $d^\prime(f(x_n),f(x)) <
 \epsilon/2$ for all $n \geq N_2$.  Then we have for all $n \geq N_1 \vee

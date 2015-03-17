@@ -691,7 +691,7 @@ real benefit to the definition we've given is that it is more
 elementary.
 \begin{thm}\label{GaussianVectorCharacteristicFunction}A random vector
   $\xi$ in $\reals^N$ is Gaussian if and only if there is a $\mu \in
-  \reals^N$ and a symmetric nonnegative semi-definite matrix $Q \in
+  \reals^N$ and a symmetric positive semi-definite matrix $Q \in
   \reals^{N\times N}$ such that 
 \begin{align*}
 \varphi_\xi(u) &= e^{i\langle u, \mu\rangle - \frac{1}{2}\langle u, Qu
@@ -759,8 +759,24 @@ Q = \diag(\sigma_1^2, \dots, \sigma_N^2)
 then $\xi = N(\mu, Q)$.
 \end{examp}
 
+\begin{examp}\label{LinearTransformationGaussian}Let $(\xi_1, \dots, \xi_d)$ be $\xi = N(\mu, Q)$.  Let
+  $A$ be a $r \times d$ matrix then $A \xi$ is $N( A \mu, A Q
+  A^T)$.
+
+To see this note that if $a \in \reals^d$ then $\langle a , A \xi
+\rangle = \langle a^T A, \xi \rangle$ so we see that $A \xi$ is in
+fact Gaussian.  The fact that $\expectation{A \xi} =
+A\expectation{\xi}$ is immediate from linearity of expectation.  To
+calculate the covariance we 
+\begin{align*}
+\covariance{A\xi} &= \expectation{A(\xi - \mu) (\xi - \mu)^T A^T} =
+A\expectation{(\xi - \mu) (\xi - \mu)^T}A^T = 
+A Q A^T
+\end{align*}
+\end{examp}
+
 The characterization of Gaussian random vectors using characteristic
-functions allows us to see that limits of Gaussian random vectors are
+functions allows us to see that almost sure limits of Gaussian random vectors are
 Gaussian random vectors.  We will need this result when we construct
 Brownian motion later on.
 \begin{lem}\label{LimitOfGaussianRandomVectors}Let $\xi_1, \xi_2, \dots$ be a sequence of random
@@ -768,7 +784,7 @@ Brownian motion later on.
   random vector.  Suppose that $\xi$ is a random vector such
   that $\xi_n$ converges to $\xi$ almost surely.  If $\lim_{n \to
     \infty} \expectation{\xi_n} = \mu$ and $\lim_{n \to \infty}
-  \covariance(\xi_n) = C$ then $\xi$ is a $N(\mu, C)$ Gaussian random vector.
+  \covariance{\xi_n} = C$ then $\xi$ is a $N(\mu, C)$ Gaussian random vector.
 \end{lem}
 \begin{proof}
 Since $\xi_n$ converges almost surely to $\xi$ then it converges in
@@ -787,7 +803,7 @@ again shows that $\xi$ is $N(\mu, C)$.
 \end{proof}
 
 TODO: Gaussian Random Variables in $\reals^n$ and the multidimensional
-CLT.
+CLT.  Pretty sure this can be derived from the Cramer Wold device.
 TODO: Show that a
 given two independent Gaussian random variables their sum and
 difference are independent Gaussian (that probably doesn't require

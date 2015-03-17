@@ -571,7 +571,7 @@ M_n &= M_0 + \sum_{j=1}^n (M_j - M_{j-1})
 to represent the wealth at time $n$ as the initial wealth $M_0$ plus
 the sum of the return $M_j - M_{j-1}$ on the first $j$ bets.
 
-The second example shows how one can make a martinagale out of the
+The second example shows how one can make a martingale out of the
 variance of a base martinagle.
 \begin{examp}Suppose we have the setup of Example
   \ref{RandomWalkAsMartingale} except that we also assume a constant variance
@@ -590,6 +590,24 @@ variance of a base martinagle.
 &= M_{n-1}^2 - (n-1)\sigma^2
 \end{align*}
 \end{examp}
+
+The last example shows that martingales arise by ``centering'' an arbitrary integrable 
+process.
+\begin{examp}\label{CenteringAsMartingale}Let $\eta_n$ be an arbitrary sequence of integrable random variables.  Define $\mathcal{F}_n = \sigma(\eta_0, \dotsc, \eta_n)$
+and 
+\begin{align*}
+\xi_n &= 
+\sum_{j=1}^n \left( \eta_j - \cexpectationlong{\mathcal{F}_{j-1}}{\eta_j} \right)
+\end{align*}
+then $\xi_n$ is an $\mathcal{F}$-martingale.  It is clear that $\xi_n$ is integrable
+and $\mathcal{F}$-adapted.  The martingale property is an easy calculation
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{n-1}}{\xi_n} &= 
+\sum_{j=1}^n \left(\cexpectationlong{\mathcal{F}_{n-1}}{\eta_j} - \cexpectationlong{\mathcal{F}_{j-1}}{\eta_j} \right ) \\
+&= \sum_{j=1}^{n-1} \left ( \eta_j - \cexpectationlong{\mathcal{F}_{j-1}}{\eta_j} \right ) = \xi_{n-1}
+\end{align*}
+\end{examp}
+
 
 Returning to our gambling interpretation of martingales we discussed in Example
 \ref{RandomWalkAsMartingale}, one can 
@@ -2126,7 +2144,7 @@ as Levy did.
   \sum_{j=0}^n X_j$ is an $\mathcal{F}$-martingale.
 \end{defn}
 
-\begin{prop}$X_n$ is a martingale difference sequence if and only if
+\begin{prop}\label{MartingaleDifferenceSequence}$X_n$ is a martingale difference sequence if and only if
   $X_n$ is $\mathcal{F}$-adapted, each $X_n$ is integrable and 
   $\cexpectationlong{\mathcal{F}_{n-1}}{X_n} = 0$ a.s. for all $n \in \naturals$.
 \end{prop}
