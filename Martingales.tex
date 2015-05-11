@@ -1593,14 +1593,14 @@ for discrete submartingales $X_n$ but with a little attention to details
 we get a stronger result that applies over countable time indexes
 (e.g. $\rationals_+$) and paves the way for consideration of
 continuous time indexes such as $\reals_+$.
-\begin{thm}[$L^1$ Submartingale Convergence
+\begin{thm}[Submartingale Convergence
   Theorem]\label{MartingaleConvergenceBoundedL1Discrete}Let $X_t$ be a
   $\mathcal{F}$-submartingale with a countable time index $T$ such that $\sup_{t \in
     T} \norm{X_t}_1 <
   \infty$ then there exists an $A \in \mathcal{F}_\infty$ with
   $\probability{A} = 1$ such that for every increasing or
   decreasing sequence $t_n$ in $T$ there exists an integrable random variable $X$ such
-  that $X_{t_n} \to X$ on $A$.
+  that $X_{t_n} \to X$ on $A$ (so in particular $X_{t_n} \toas X$).
 \end{thm}
 \begin{proof}
 The first order of business here is leverage the Doob Upcrossing
@@ -2416,6 +2416,85 @@ from which we conclude that $\lim_{n \to \infty} \expectation{e^{iu\sum_{k=1}^n 
 the Glivenko-Levy Continuity Theorem \ref{GlivenkoLevyContinuity} shows $\sum_{k=1}^n X_{n,k} \todist N(0, \sigma^2)$.
 \end{proof}
 
+\section {Applications of Discrete Time Martingales}
+
+The theme of this section is the utility of martingales.  That is to
+say we are concerned with scenarios in which martingales aren't the
+primary objects of study rather martingales arise as a tool in the study of
+seemingly unrelated problems.
+
+\subsection{Exchangability and the Strong Law of Large Numbers}
+
+Here we see how almost sure convergence of bounded martingales implies the strong law of large
+numbers.  In fact we shall prove an generalization of the strong law to the class of 
+\emph{exchangable} random variables.  The notion of exchangability plays a role in the
+conceptual foundations of Bayesian statistics so it is worth developing some of the ideas
+related to it.
+
+TODO: Urn processes, parametric models.  Which of the following (or both?) is a proper example of a 
+parametric model: Give yourself a bag of coins with different biases, pick a coin and then perform an 
+infinite number of coin flips -or- do an infinite number of times: pick a coin with replacement and flip.
+
+\begin{defn}Let $T = \lbrace t_1, t_2, \dotsc \rbrace \subset \naturals$ be a finite or countably infinite set, let $(S, \mathcal{S})$ be a measurable space and suppose we are given random elements $\xi_t$ in $S$ for $t \in T$.  Then $\xi_t$ is said to be \emph{exchangeable} if for every $N \in \naturals$, every permutation $\pi : T \to T$ such that $\pi_t = t$ for all $t \geq N$ we have
+\begin{align*}
+(\xi_{t_1}, \xi_{t_2}, \dotsc) \eqdist (\xi_{\pi t_1}, \xi_{\pi t_2}, \dotsc) 
+\end{align*}
+\end{defn}
+
+Note that exchangeability is a generalization of i.i.d.
+\begin{prop}Let $\xi_t$ be an i.i.d. set of random elements, then $\xi_t$ is exchangable.
+\end{prop}
+\begin{proof}
+Since $\xi_t$ is i.i.d. then $\mathcal{L}(\xi_t)=\mathcal{L}(\xi_{t_1})$ for all $t \in T$, thus for all permutations $\pi$ of $T$, we have
+\begin{align*}
+\mathcal{L}(\xi_{\pi (t_1)}, \xi_{\pi( t_2)}, \dotsc) &= 
+\mathcal{L}(\xi_{\pi (t_1)}) \otimes \mathcal{L}(\xi_{\pi( t_2)}) = 
+\mathcal{L}(\xi_{t_1})^{\card{T}}
+\end{align*}
+which shows $\xi_t$ is exchangeable.
+\end{proof}
+
+\begin{thm}\label{SLLNExchangeableSequences}Let $\xi_n$ be an exchangeable sequence of integrable random variables then there exists a $\sigma$-algebra $\mathcal{I}_\infty$ such that
+\begin{align*}
+\frac{1}{n} \sum_{j=1}^\infty \xi_j \toas \cexpectationlong{\mathcal{I}_\infty}{\xi_1}
+\end{align*}
+If the $\xi_n$ are i.i.d. then $\cexpectationlong{\mathcal{I}_\infty}{\xi_1} = \expectation{\xi_1}$ almost surely.
+\end{thm}
+\begin{proof}
+The key idea of the proof is to realize that sample averages $\frac{1}{n} \sum_{j=1}^\infty \xi_j$ are in fact conditional expectations.  For fixed $n \in \naturals$ consider the set
+$\mathcal{C}_n$ of Borel subsets $A \subset \reals^\infty$ such that $\pi A = A$ for all permutations $\pi$ of the naturals $\naturals$ such that $\pi(j) = j$ for $j > n$.  In the following we will refer to such a permutation as an $n$-permutation.
+
+\begin{clm}$\mathcal{C}_n$ is a $\sigma$-algebra.
+\end{clm}
+Observe that we can write $\mathcal{C}_n = \cap_\pi \mathcal{C}_\pi$ where $\mathcal{C}_\pi$ is the set of Borel sets invariant under a single $n$-permutation; it therefore suffices to show that $\mathcal{C}_\pi$ is a $\sigma$-algebra.  It is elementary that every permutation $\pi$ induces a bijection on $\reals^\infty$: if $(x_{pi(1)}, x_{\pi(2)}, \dotsc) = (y_{pi(1)}, y_{\pi(2)}, \dotsc)$ the for any $n \in \naturals$ we know that$x_n = x_{\pi(\pi^{-1}(n)} =  y_{\pi(\pi^{-1}(n)} = y_n$ and given $(x_1, x_2, \dotsc)$ define $y_n  = x_{\pi^{-1}(n)}$ and observe $\pi(x_1, x_2, \dotsc) = (y_1, y_2, \dotsc)$.  From the fact that $\pi$ is a bijection and Lemma \ref{SetOperationsUnderPullback} we see $\pi A = A$ then also $\pi A^c = (\pi A)^c = A^c$.  Suppose that $A_1, A_2, \dotsc \in \mathcal{C}_\pi$ then since $\pi$ is a bijection and Lemma \ref{SetOperationsUnderPullback} 
+\begin{align*}
+\pi(A_1 \cap A_2 \cap \dotsb) &= \pi A_1 \cap \pi A_2 \cap \dotsb = A_1 \cap A_2 \cap \dotsb 
+\end{align*}
+
+Now let $\boldsymbol{\xi} = (\xi_1, \xi_2, \dotsc)$ and we define $\mathcal{I}_n = \boldsymbol{\xi}^{-1} \mathcal{C}_n$ and we see from Lemma \ref{SigmaAlgebraPullback} that $\mathcal{I}_n$ is a $\sigma$-algebra.
+\begin{clm}$\cexpectationlong{\mathcal{I}_n}{\xi_1} = \frac{1}{n} \sum_{j=1} \xi_j$ a.s.
+\end{clm}
+First we validate that $\sum_{j=1}^n \xi_j$ is $\mathcal{I}_n$ measurable.  To see this, let $\phi : \reals^\infty \to \reals$ be defined by $\phi(x_1, x_2, \dots) = x_1 + \dotsb + x_n$.  If$\pi$ is permutation of $\naturals$ such that $\pi(j) = j$ for $j > n$ then 
+\begin{align*}
+\phi(x_1, x_2, \dotsc ) &= x_1 + \dotsb + x_n = x_{\pi(1)} + \dotsb + x_{\pi(n)} = \phi(x_{\pi(1)}, x_{\pi(2)}, \dotsc)
+\end{align*}
+and we see that $\phi^{-1} A \in \mathcal{C}_n$ for all Borel sets $A \subset \reals$.  Writing $\sum_{j=1}^n \xi_j = \phi \circ \boldsymbol{\xi}$ we see that the sum is $\mathcal{I}_n$ measurable.  
+
+Next we show the defining property of conditional expectation, so let $A \in \mathcal{I}_n$ which we may write as $\boldsymbol{\xi}^{-1} B$ with $B \in \mathcal{C}_n$.  Pick an arbitrary $j \in \naturals$ with $j \leq n$ and an arbitrary $n$-permutation $\pi$ such that $\pi (j) = 1$ then we have by the expectation rule Lemma \ref{ExpectationRule}, the fact that $\pi B = B$ and exchangeability
+\begin{align*}
+\expectation{\xi_j ; A} 
+&= \int x_j \characteristic{B}(x) \, \boldsymbol{\xi}(dx) 
+= \int x_1 \characteristic{\pi B}(\pi(x)) \, \boldsymbol{\xi}(dx) \\
+&= \int x_1 \characteristic{B}(x) \, (\pi \circ \boldsymbol{\xi})(dx) 
+= \int x_1 \characteristic{B}(x) \, \boldsymbol{\xi}(dx) 
+= \expectation{\xi_1 ; A}
+\end{align*}
+Therefore by linearity of conditional expectation, $\expectation{\frac{1}{n} \sum_{j=1}^n \xi_j ; A} = \expectation{\xi_1 ; A}$ and the claim is verified.
+
+Now defining $\mathcal{I}_\infty = \cap_{n=1}^\infty \mathcal{I}_n$, the almost sure convergence follows from the Levy Downward Theorem \ref{JessenConditioningLimits}.  In the i.i.d. case we know from the Kolmogorov $0-1$ Law (specifically Corollary \ref{AlmostSureAverages}) we know that the limit $\cexpectationlong{\mathcal{A}_\infty}{\xi_1}$ is almost surely constant in which case it must be equal to $\expectation{\xi_1}$.
+\end{proof}
+
+
 \section {Continuous Time Martingales and Weakly Optional Times}
 
 Our next goal is to extend the theory we've developed to a continuous
@@ -2448,6 +2527,7 @@ associated the $\mathcal{F}$-optional times $\tau + \epsilon$
 \begin{align*}
 \mathcal{F}_{\tau^+} = \cup_{\epsilon > 0} \mathcal{F}_{\tau + \epsilon}
 \end{align*}
+
 \begin{lem}\label{WeaklyOptionalCharacterization}$\tau$ is $\mathcal{F}^+$-optional if and only if $\tau$ is
   weakly $\mathcal{F}$-optional.  In this case, 
 \begin{align*}
@@ -2537,7 +2617,7 @@ are optional times.
   $S$ is topological and $\mathcal{S}$ contains the Borel $\sigma$-algebra, 
   $B \in \mathcal{S}$ and $\tau_B = \inf \lbrace t > 0 \mid X_t \in
   B\rbrace$.  Then if $S$ is a metric space, $B$ is closed and $X_t$ is continuous
-$\tau_B$ is $\mathcal{F}$-optional and if $B$ is open and $X_t$ is right continuous then $\tau_B$ is weakly $\mathcal{F}$-option.
+$\tau_B$ is $\mathcal{F}$-optional and if $B$ is open and $X_t$ is right continuous then $\tau_B$ is weakly $\mathcal{F}$-optional.
 \end{lem}
 \begin{proof}
 To see the first case, by the countability and density of the
@@ -3117,7 +3197,7 @@ N_\omega$ we have $\abs{X_t(\omega) -
 
 
 NOTE: It is also true that a UI submartingale is $L^1$ convergent
-but it is not true that an $L^1$ convergence submartingale must be
+but it is not true that an $L^1$ convergent submartingale must be
 UI (while that is true in discrete time).  Make this into a result
 somewhere and provide the counterexample (I am pretty sure Rogers and
 Williams has one).
@@ -3126,8 +3206,7 @@ Williams has one).
   Theorem]\label{L1MartingaleConvergenceTheoremContinuous}Let $X_t$ be
   a cadlag martingale then the following are equivalent
 \begin{itemize}
-\item[(i)]$X_t$ is uniformly
-  integrable
+\item[(i)]$X_t$ is uniformly  integrable
 \item[(ii)]there exists an integrable $X$  such that
   $X_t \tolp{1} X$
 \item[(iii)]there exists an integrable $X$ such that
@@ -3172,6 +3251,19 @@ $X_s = \cexpectationlong{\mathcal{F}_s}{X_t}$ a.s. we have
 and we get that $X_s = \cexpectationlong{\mathcal{F}_s}{X}$ a.s.
 
 To see that (ii) implies (iii), we simply invoke Corollary \ref{ConditionalExpectationsUniformlyIntegrable}.
+\end{proof}
+
+The $L^p$ version of the Martingale Convergence Theorem follows just
+as in the discrete case.  
+\begin{thm}[$L^p$ Martingale
+  Convergence]\label{LpMartingaleConvergenceContinuous}Given a
+  martingale $M_t$ on $\reals_+$, then for $p > 1$, there exists an $M \in L^p$ such that $M_t
+  \tolp{p} M$ if and only if $M_t$ is $L^p$ bounded.  In fact, if $M_t
+  \tolp{1} M$ with $M \in L^p$ then $M_n \tolp{p} M$ and $M_n$
+  is $L^p$ bounded.
+\end{thm}
+\begin{proof}
+TODO: Make this an exercise.
 \end{proof}
 
 \begin{thm}\label{OptionalSamplingContinuous}Let $X_t$ be an $\mathcal{F}$-submartingale on $\reals_+$

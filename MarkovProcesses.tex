@@ -410,16 +410,27 @@ construction results in a Borel measurable kernel $\probabilityop_x$.
 However if one tries to modify the construction to get a
 right-continuous complete filtration (usual conditions) then one has
 to give up Borel measurability in the kernel and make due with
-universal measurability.
+universal measurability.  Perhaps it is worth having a definition of a Markov family 
+and a ``relaxed'' or ``complete'' Markov family.  What I don't have any intuition of 
+is the circumstances under which we are forced to pass to impose the usual conditions and
+therefore relax the kernel measurability to be universal rather than Borel.  Note also that the 
+concept of universal measurability comes up in the general theory of processes in which
+we have the Debut Theorem that states that every hitting time is universally measurable.  It can also be shown that
+analytic sets are universally measurable.  I am making a lot of sturm and drang about universal measurability as opposed
+to Borel measurability but there is something misguided about the discussion because I am also describing the
+definition in terms a arbitrary state space $(S, \mathcal{S})$ and there is nothing here that says $\mathcal{S}$ is a Borel
+$\sigma$-algebra (or that $S$ is a topological space).  
 
 \begin{defn}\label{MarkovFamilyDefn}
-A \emph{Markov family} is a stochastic process $X_t$ with a
+A \emph{time homogeneous Markov family} is a stochastic process $X_t$ with a
 probability space $(\Omega, \mathcal{A})$, a time scale $T
-\subset \reals_+$ and a state space $(S, \mathcal{S})$ and a family of
+\subset \reals_+$, a filtration $\mathcal{F}_t$, a state space $(S, \mathcal{S})$ and a family of
 probability measures $\probabilityop_x$ on $\Omega$ for $x \in S$ such that 
 \begin{itemize}
 \item[(i)]$\probabilityop_x$ is a (universally measurable?) kernel
-  from $S$ to $\Omega$.
+  from $S$ to $\Omega$.  TODO: Is this what we want?  Blumenthal and Getoor say that $\sprobability{X_t \in A}{x}$ is $\mathcal{S}$ measurable for every
+$0 \leq t < \infty$ and $A \in \mathcal{S}$; so $\probabilityop_x$ is a kernel to $(\Omega, \mathcal{F}^X_\infty)$ but not necessarily to $(\Omega, \mathcal{A})$ or 
+$(\Omega, \mathcal{F}_\infty)$.
 \item[(ii)]$\sprobability{X_0 = x}{x} = 1$ for all $x \in S$.
 \item[(iii)]$\cindependent{\mathcal{F}_s}{X_t}{X_s}$ under
   $\probabilityop_x$ for all $s \leq
@@ -439,15 +450,18 @@ $\pushforward{X}{\probabilityop_x}$ is a kernel from $S$ to
 $\mathcal{P}(S^T)$ (equivalently for each $t \in T$ and $A \in \mathcal{S}$ we have
 $\sprobability{X_t \in A}{x}$ is a measurable function of $x$ or again
 equivalently $\probabilityop_x$ is a kernel on the natural filtration
-$\mathcal{F}^X_\infty$; what I don't know if whether a universally
+$\mathcal{F}^X_\infty$ (this is the same as Blumenthal and Getoor as I mention above).  What I don't know if whether a universally
 measurable kernel $S \to  \mathcal{P}(\Omega)$ is necessarily Borel
-measurable when restricted to $\mathcal{F}^X_\infty$).
+measurable when restricted to $\mathcal{F}^X_\infty$; heck this isn't necessarily a well posed question since $S$ is not assumed to be
+a topological space at this point.  It is worth noting that Blumenthal and Getoor do show that every Markov family extends to a completed one with 
+the state space given the universal completion and they assume this completion is in place for much of the subsequent theory.  That said, they
+don't modify the defintion of Markov family in doing so.
 
-Question:  Given a Markov family as above then given an arbitrary
+TODO: Question:  Given a Markov family as above then given an arbitrary
 initial distribution $\nu$ on $S$ we can define $\probabilityop_\nu$
 by $\sprobability{A}{\nu} = \int \sprobability{A}{x} \, d\nu(x)$.  Is
 $X$ a Markov process with initial distribution $\nu$ under
-$\probabilityop_\nu$?
+$\probabilityop_\nu$?  Blumenthal and Getoor do this but alas universal measurability arises here as well!
 
 \section{Homogeneous Markov Processes}
 
@@ -2539,7 +2553,7 @@ function from $S^{[0,\infty)}$ to $\reals_+$.
 Before proceeeding to our structure theory for pure jump type Markov
 processes we establish the basic measurability properties of the
 functions just defined.
-\begin{lem}The rate function $c(x)$ is a measurable function on $S$
+\begin{lem}\label{MeasurabilityRateKernel}The rate function $c(x)$ is a measurable function on $S$
   and the jump transition kernel and rate kernel are both kernels from
   $S$ to $S^{[0,\infty)}$.  The rate kernel is a measurable function
   of the jump transition kernel.
@@ -2669,7 +2683,9 @@ TODO: Here is the crux of where I get confused.  Kallenberg says the
 following:
 let $\gamma_1^\prime, \gamma_2^\prime, \dotsc$ be i.i.d. exponentially
 distributed of mean 1 and such that $\gamma_n^\prime \Independent X$
-which means we must be willing to break out of the canonical case.  Define 
+which means we must be willing to break out of the canonical case (this is technically not
+true of Kallenberg's proof since he states that all randomization variables are assumed to exist
+in the canonical process setup).  Define 
 \begin{align*}
 \gamma_n &= (\tau_n - \tau_{n-1})c(Y_{n-1}) \characteristic{\tau_{n} <
   \infty} + \gamma_n^\prime \characteristic{\tau_{n} =
@@ -2693,7 +2709,8 @@ Definition \ref{MarkovFamilyDefn} and then consider $\probabilityop_x$
 in that context.  Of course, we have not proven that Markov families
 exist (though I believe that is implicit in the proof of Markov
 processes and the proof of Daniell-Kolmogorov) nor have we proven that
-Markov families are preserved under extension.  In any case if we
+Markov families are preserved under extension (see Blumenthal and Getoor for an exercise that
+is sufficient for the case of extending by $[0,1]$).  In any case if we
 succeed in doing that then $\probabilityop_x$ is the probability
 measure on $\Omega$ under which $X$ is a Markov process with $X_0 = x$
 almost surely and computation is a straightforward application of
@@ -2773,13 +2790,73 @@ TODO:
 Note that even here we have $Y$ assumed to be a Markov family and we
 are constructing $X$ as a Markov family.
 \end{proof}
+
+TODO: Kolmogorov Backward equation.
+
+Let $X$ be a pure jump-type Markov process on state space $S$, $\tau$
+be the first jump time and let $\sigma = \tau \wedge t$ for some $0
+\leq t < \infty$.  Now by the Strong Markov Property, the independence
+of $X_\tau$ and $\tau$ and the disintegration Lemma \ref{DisintegrationIndependentLaws}
+\begin{align*}
+T_tf(x) 
+&=\sexpectation{f(X_t)}{x} 
+=\sexpectation{f((\theta_\sigma X)_{t - \sigma})}{x} 
+=\sexpectation{\cexpectationlong{\mathcal{F}_\sigma}{f((\theta_\sigma  X)_{t - \sigma})}}{x} \\
+&=\sexpectation{\sexpectation{f(X_{t - \sigma})}{X_\sigma}}{x} 
+=\sexpectation{T_{t - \sigma}f(X_\sigma)}{x} \\
+&=\sexpectation{T_{t - \sigma}f(X_\sigma) ; \tau > t}{x} +
+  \sexpectation{T_{t - \sigma}f(X_\sigma); \tau \leq t}{x} \\
+&= \sexpectation{T_{0}f(X_0) ; \tau > t}{x}  +
+  \sexpectation{T_{t - \tau}f(X_\tau); \tau \leq t}{x} \\
+&=f(x) \sprobability{\tau > t}{x} +  \int_0^t \int c(x) e^{-sc(x)} T_{t - s}f(y) \,  \mu(x, dy) ds \\
+&=e^{-tc(x)}   \left( f(x) +  \int_0^t \int c(x) e^{-sc(x)} T_{s}f(y) \,  \mu(x, dy) ds \right )\\
+\end{align*}
+TODO: There is some measurability subtlety in applying disintegration; we need to know that $T_tf(x)$ is jointly measurable in $(t,x)$
+and then apply it to $(\tau, X_\tau)$ and use the fact that $X_\tau$ is progressively measurable by right continuity and thus $X_\tau$ is measurable
+by Lemma \ref{StoppedProgressivelyMeasurableProcess}.  TODO: How do the measurability considerations in the definition of Markov family enter into the picture here.
+
+\begin{clm}Let $(\Omega, \mathcal{A}, \mathcal{F}_t, X_t, \theta_t, P_x)$ be a Markov family with $X$ jointly measurable, let $f$ be a bounded or non-negative measurable function and define $T_tf(x) = \sexpectation{f(X_t)}{x}$ then $T_tf(x)$ is a jointly measurable function $[0,\infty) \times S \to \reals$.
+\end{clm}
+To see the claim we just use the kernel property of $P_x$ and write $T_tf(x) = \sexpectation{f(X_t)}{x} = \int X(t, \omega) \, P_x(d\omega)$ and apply Exercise \ref{MeasurabilityKernelExtraParameter}.  TODO:  Since $X$ is $\mathcal{B}([0,\infty)) \otimes \mathcal{F}^X_\infty$ measurable I don't think the universal measurability issues enter into the discussion here.
+
+
 \section{Feller Processes}
 
 We now specialize to the case of time homogeneous Markov processes and
 develop an approach that allow one to bring powerful tools of
 functional analysis to bear on the theory of Markov processes and
 ultimately elucidates a deep connection between Markov processes and
-partial differential equations.  
+partial differential equations.  Any treatment of this topic must make several pedagogical
+decisions.  The functional analysis tools we will use are part of the theory of operator
+semigroups and one could simply assume the reader has been exposed to them and quote the
+results with appropriate references.  We deem such an approach an undue burden on the reader
+as any treatment of semigroups is likely deeply embedded in a textbook in which the core results
+and difficult to extract efficiently.  Thus we have the choice of how to present the required functional
+analysis.  One choice is to present the results in a separate chapter or appendix and the other is to 
+present the results on an as needed basis.  While we have relegated the basic theory of Banach spaces to
+an appendix, we have chosen the second path for the theory of operator semigroups hoping that the 
+probabilistic development can provide motivation for the functional analysis and make it
+easier to digest.  The disadvantage in doing things this way is that functional analysis results become spread
+out thinly through the text and that a reader looking for a particular result cannot find it without knowing or guessing
+the places that it might be used.  We accept this disadvantage in hopes that the spirit of the interaction between
+the fields can be better appreciated.
+
+TODO:
+\begin{itemize}
+\item Chapman Kolmogorov relation is equivalent to semigroup property
+\item Feller process defined in terms of Feller semigroup properties
+\item Feller semigroup generators
+\item Feller semigroup strongly continuous (seen via Yosida approximation)
+\item Kolmogorov forward/backward equations follow from strong continuity
+\item Generators of strongly continuous semigroups and Feller semigroups characterized
+\item Convergence/Approximation of semigroups in terms of generators
+\item Convergence of Markov processes in terms of convergence of semigroups/generators
+\item Every Feller semigroup has an associated cadlag Feller process (approximation by pure jump-type processes or by Kinney regularization)
+\item Approximation of Feller semigroup by Markov chains
+\item Continuous sample paths and elliptic generators
+\end{itemize}
+
+\subsection{Semigroups and Generators}
 
 The first step is to change the point of view on transition kernels
 slightly.  In the case of a time homogeneous Markov process, the
@@ -2808,3 +2885,200 @@ functions to itself.  The first thing to observe is that the
 Chapman-Kolmogorov relations are equivalent to the semigroup property
 for these operators.
 
+TODO: Do this
+
+\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space, let $B(\Omega)$ be space of bounded measurable functions $f : \Omega \to \reals$ and define $\norm{f}_\infty = \sup_{\omega \in \Omega} \abs{f(\omega)}$.
+\end{defn}
+
+\begin{prop}The space $B(\Omega)$ is a Banach space.
+\end{prop}
+\begin{proof}
+It is elementary that $B(\Omega)$ is a vector space : if $f$ is bounded and measurable with $\norm{f}_\infty$ then clearly $af$ is bounded measurable with bound $\abs{a}\norm{f}_\infty$ for all $a \in \reals$ and if $f$ and $g$ are bounded and measurable with bounds $M$ and $N$ respectively then $f+g$ is bounded and measurable with bound $M+N$.
+
+To see that $\norm{\cdot}_\infty$ is in fact a norm, first note that it is immediate from the definition that $\norm{f}_\infty \geq 0$ and $\norm{f}_\infty$ if and only if $f = 0$.  Let $f \in B(\Omega)$ and let $a \in \reals$ with $a \neq 0$.  Then for every $\epsilon>0$ we may find $\omega \in \Omega$ such that $\norm{f}_\infty - \epsilon/\abs{a} \leq \abs{f(\omega)}$.  It follows that $\abs{a} \norm{f}_\infty - \epsilon \leq \abs{a f (\omega)} \leq \norm{af}_\infty$.  Since $\epsilon >0$  was arbitrary we may take $\epsilon \downarrow 0$ to conclude $\abs{a} \norm{f}_\infty \leq \norm{af}_\infty$.  In a similar way we may find an $\omega \in \Omega$ such that 
+\begin{align*}
+\norm{af}_\infty - \epsilon &\leq \abs{af(\omega)} = \abs{a}\abs{f(\omega)} \leq \abs{a} \norm{f}_\infty
+\end{align*}
+and since $\epsilon > 0$ was arbitrary we conclude the opposite inequality $\norm{af}_\infty \leq \abs{a} \norm{f}_\infty$.  To see the triangle inequality let $f, g \in B(\Omega)$ be given.  For every $\omega \in \Omega$ we have $\abs{(f+g)(\omega)} \leq \abs{f(\omega)}+\abs{g(\omega)} \leq \norm{f}_\infty + \norm{g}_\infty$.  Now take the supremum over all $\omega$ to conclude $\norm{f+g}_\infty \leq \norm{f}_\infty + \norm{g}_\infty$.
+
+Lastly we have to show that $B(\Omega)$ is complete.  Let $f_n$ be a Cauchy sequence in $B(\Omega)$.  Thus for every $\epsilon > 0$ there exists and $n \in \naturals$ such that for all $m \geq n$ we have $\norm{f_n - f_m} < \epsilon$.  In particular, for every $\omega \in \Omega$ we have $\abs{f_n(\omega) - f_m(\omega)} \leq \norm{f_n - f_m} < \epsilon$ so that $f_n(\omega)$ is a Cauchy sequence in $\reals$ for every $\omega \in \Omega$.  By completeness of $\reals$ we know that $f_n$ converges pointwise and by Lemma \ref{LimitsOfMeasurable} we know that there is a measurable function $f : \Omega \to \reals$ such that $f_n \to f$.  
+
+Now note that for any $\epsilon > 0$ we can pick $N \in \naturals$ such that for $m,n \geq N$ we have $\norm{f_n-f_m}_\infty < \epsilon$ so by using the triangle inequality and taking limits over $m \in \naturals$ we get for every $\omega \in \Omega$ and $n \geq N$,
+\begin{align*}
+\abs{f (\omega) -f_n(\omega)}_\infty &\leq \lim_{m \to \infty} \abs{f_m(\omega) -f_n(\omega)} + \lim_{m \to \infty} \abs{f(\omega) -f_m(\omega)} 
+\leq \lim_{m \to \infty} \norm{f_m -f_n}_\infty \leq \epsilon
+\end{align*}
+Now using the fact with the triangle inequality we get $\abs{f(\omega)} \leq \abs{f(\omega) - f_n(\omega)} + \abs{f_n(\omega)} \leq \epsilon + \norm{f_n}_\infty$ which shows $f$ is bounded.  Taking the supremum over $\omega$ shows that $\norm{f -f_n} \leq \epsilon$ for all $n \geq N$ which shows that $f_n$ converges to $f$ in $B(\Omega)$.
+\end{proof}
+
+\begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f : \Omega \to \reals$ be a measurable function.  We say that $a \in \reals$ is an \emph{essential upper bound of $f$} if $\mu(f^{-1}(a, \infty)) = 0$ (i.e. $f(x) \leq a \mu$-almost everywhere).  The \emph{essential supremum of $f$} is defined as the infimum of the set of essential upper bounds of $f$: 
+\begin{align*}
+\esssup f &= \inf \lbrace a \in \reals \mid \mu(f^{-1}(a,\infty)) = 0 \rbrace
+\end{align*}
+A measurable function $f$ is said to be \emph{essentially bounded} if $\esssup \abs{f} < \infty$.
+\end{defn}
+
+The set of essentially bounded functions on a measure space can be made into a Banach space under the essential supremum norm.  As is standard we have to pass to equivalence classes to do this so we first note when a function has an essential supremem of $0$.
+\begin{prop}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f : \Omega \to \reals$ be a measurable function then $\esssup \abs{f} = 0$ if and only if $f = 0$ $\mu$-almost everywhere.
+\end{prop}
+\begin{proof}
+Clearly if $f$ is almost everywhere $0$ then $\abs{f}^{-1}(0, \infty) = \lbrace f \neq 0 \rbrace$ hence by monotonicity of measure, $\mu(\abs{f}^{-1}(0,\infty)) = 0$.  Thus $\esssup \abs{f} \leq 0$.  On the other hand for every $a < 0$ we know that $\abs{f}^{-1}(a,\infty) \supset \lbrace f = 0 \rbrace$ and therefore $\mu(\abs{f}^{-1}(a,\infty)) = \mu(\Omega) > 0$ and therefore $\esssup \abs{f} \geq 0$.  
+
+On the other hand if $f$ is not almost everywhere zero then by Fatou's Lemma $0 < \mu(\abs{f}^{-1}(0,\infty)) \leq \liminf_{n \to \infty} \mu(\abs{f}^{-1}(1/n, \infty))$ which implies that $\mu(\abs{f}^{-1}(1/n, \infty)) > 0$ for some $n \in \naturals$ and therefore $\esssup \abs{f} \geq 1/n > 0$.
+\end{proof}
+
+\begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space then $L^\infty(\Omega, \reals)$ is space of equivalence classes of essentially bounded measurable functions under the equivalence relation of $\mu$-almost everywhere equality.
+\end{defn}
+
+\begin{thm}$L^\infty(\Omega, \reals)$ with essential supremum as a norm is a Banach space.
+\end{thm}
+\begin{proof}
+We have already seen that $\norm{f}_\infty = 0$ implies $f = 0$ in $L^\infty$.  Let $a \in \reals$ with $a \neq 0$ and $f \in L^\infty$ then we note that $b$ is an essential upper bound for $\abs{f}$ if and only if $\abs{a} b$ is an essential upper bound for $\abs{af}$.  This follows from the set identity that
+\begin{align*}
+\abs{f}^{-1}(b,\infty) &= \lbrace \omega \mid b < \abs{f(\omega)} \rbrace =  \lbrace \omega \mid \abs{a} b < \abs{af(\omega)} \rbrace = \abs{af}^{-1}(\abs{a}b, \infty)
+\end{align*}
+Thus we have 
+\begin{align*}
+\norm{af}_\infty = \inf \lbrace \abs{a} b \mid \mu(\abs{f}^{-1}(b,\infty)) = 0 \rbrace = \abs{a}\norm{f}_\infty
+\end{align*}
+If we are given $f, g \in L^\infty$ then if $a$ is an essential upper bound for $f$ and $b$ is an essential upper bound for $g$ then by the triangle inequality in $\reals$,  $\abs{f+g}^{-1}(a+b, \infty) \subset \abs{f}^{-1}(a,\infty) \cup \abs{g}^{-1}(b,\infty)$ and by subadditivity of $\mu$ we know that $\mu(\abs{f+g}^{-1}(a+b, \infty)) = 0$.  Thus $a+b$ is an essential upper bound of $\abs{f+g}$.  For any $\epsilon > 0$ we can find essential upper bounds $a$ and $b$ such that $a \leq \norm{f}_\infty + \epsilon/2$ and $b \leq \norm{g}_\infty + \epsilon/2$ and therefore $\norm{f+g}_\infty \leq a + b \leq \norm{f}_\infty + \norm{g}_\infty + \epsilon$.  As $\epsilon > 0$ was arbitrary the triangle inequality follows.
+
+To see completeness, suppose that $f_n$ is a Cauchy sequence.  We choose representatives of the equivalence class that are everywhere bounded on $\Omega$; thus there exist constants $M_n$ such that $\sup \abs{f} \leq M_n$.  For each $\epsilon > 0$ there exists an $N \in \naturals$ such that $\esssup \abs{f_n - f_m} < \epsilon$ for all $n,m \geq N$.  For each such pair $n,m$ if follows that $\abs{f_n - f_m} < \epsilon$ except on a set of $\mu$ null set.  Taking the union of such null sets over all rational $\epsilon > 0$ and all pairs $n,m$ we can take a countable union of null sets and find a single null set $\mathcal{N}$ such that for every $\epsilon \in \rationals_+$ there exists an $N \in \naturals$ such that $\abs{f_n(\omega) - f_m(\omega)} < \epsilon$ for all $n,m \geq N$ and $\omega \notin \mathcal{N}$.   Without changing equivalence classes of or the uniform bounds on the $f_n$ we may redefine $f_n$ to be zero on $\mathcal{N}$ and then it follows that for each $\epsilon \in \rationals_+$ there exists an $N \in \integers$ such that $\abs{f_n(\omega) - f_m(\omega)} < \epsilon$ for all $n,m \geq N$ and all $\omega \in \Omega$.  Thus $f_n$ is pointwise Cauchy and by completeness of $\reals$ we may define $f$ as the pointwise limit of $f_n$ and we know that $f$ is a measurable function.  In fact the convergence is easily seen to be uniform.  For every $\epsilon \in \rationals_+$ there exists an $n \in \naturals$ such that $\abs{f_n(\omega) - f_m(\omega)} \leq \epsilon$ for all $m \geq n$ and $\omega \in \Omega$ and therefore using the triangle inequality and pointwise convergence to $f$ we have
+\begin{align*}
+\abs{f_n(\omega) - f(\omega)} &\leq \lim_{m \to \infty} (\abs{f_n(\omega) - f_m(\omega)} + \abs{f_m(\omega) - f(\omega)} ) \leq \epsilon
+\end{align*} 
+for all $\omega \in \Omega$.  In particular by chosing $\epsilon = 1$, by the triangle inequality we have $\abs{f(\omega)} \leq \abs{f_n(\omega)} + \abs{f_n(\omega) - f(\omega)} \leq M_n + 1$ for all $\omega \in \Omega$ so $f \in L^\infty$.  
+\end{proof}
+
+\begin{prop}Let $X$ be a pure jump-type Markov process with state space $S$ and a bounded rate kernel $\alpha$.  For every bounded measurable function $f : S \to \reals$ define
+\begin{align*}
+Af (x) &= \int (f(y) - f(x)) \, \alpha(x, dy)
+\end{align*}
+then $A$ is a bounded linear operator from $B(S) \to B(S)$ and $T_t = e^{tA}$.
+\end{prop}
+\begin{proof}
+Linearity of $A$ is immediate from the linearity of the integral.  Write $\alpha(x,\cdot) = c(x) \mu(x, \cdot)$ so that $Af(x) = c(x) \int (f(y) - f(x)) \, \mu(x, dy) = c(x) (\int f(y) \, \mu(x, dy) - f(x))$ and the boundedness of $\alpha$ means that $\norm{c}_\infty < \infty$.  Now given $f \in B(S)$, the fact that $\alpha$ is a kernel (Lemma \ref{MeasurabilityRateKernel}) and Lemma \ref{KernelTensorProductMeasurability} imply that $Af$ is a measurable function on $S$.  In addition, we have $\abs{Af(x)} \leq \abs{c(x)} \int \abs{f(y) - f(x)} \mu(x, dy) \leq 2 \norm{c}_\infty \norm{f}_\infty$ which shows that $Af \in B(S)$ and moreover shows upon taking the supremum over $x \in S$ that $\norm{Af} \leq 2 \norm{c}_\infty \norm{f}_\infty$ so that $A$ is a bounded operator with $\norm{A} \leq 2 \norm{c}_\infty$.  
+
+TODO:  Finish.  Kallenberg's proof is very elegant as it reduces to the case in which $c(x)$ is constant and therefore we have a pseudo-Poisson process.  I haven't proven that result as it is tied up a bit in my confusion about how to sort out Markov families.  I should try to come up with a proof that avoids the reduction and just uses the Strong Markov property.
+\end{proof}
+
+Given a general operator semigroup $T_t$ we can think a bit about how find an operator $A$ such that $T_t = e^{tA}$.  There are a couple of ways to proceed, but perhaps the simplest is to observe that looking at the equality pointwise in $B(S)$  and formally differentiating at $t=0$ we'd get $\lim_{t \to 0} \frac{T_tf - f}{t} = Af$.  The trick in making this formal is to not assume that the resulting $A$ will be defined for all $B(S)$.
+\begin{defn}Let $T_t$ be an operator semigroup on a Banach space $X$ then the \emph{generator} is the operator $A$ defined by $A v = \lim_{t \to 0} \frac{T_tv -v}{t}$ for all $v \in X$ 
+for which the limit on the right exists.  
+\end{defn}
+We reiterate that $A$ is not necessarily defined everywhere and that part of the definition of the generator is its domain of definition.  Unless it is explicity noted otherwise we will use $\mathcal{D}$ to denote the domain of a generator.
+
+It is trivial to see the following.
+\begin{prop}The generator is a linear operator on its domain of definition.
+\end{prop}
+\begin{proof}
+This follows directly from linearity of the $T_t$ and linearity of limits.  If $v,w \in \mathcal{D}$ and $a \in \reals$ then
+\begin{align*}
+\lim_{t \to 0} \frac{T_t av - av}{t} &= a \lim_{t \to 0} \frac{T_t v - v}{t} = aAv \\
+\lim_{t \to 0} \frac{T_t (v+w) - (v+w)}{t} &= \lim_{t \to 0} \frac{T_t v - v}{t} + \lim_{t \to 0} \frac{T_t 2 - w}{t}= Av + Aw \\
+\end{align*}
+\end{proof}
+
+\subsection{Strongly Continuous and Feller Semigroups}
+
+We begin the process of seeing how the theory of operator semigroups and Markov processes interacts from the semigroup point of view.  We shall enumerate some properties of
+semigroups that make them well behaved in important ways and then define an associated class of Markov processes  as those whose semigroup posess these properties.
+
+\begin{defn}A \emph{semigroup of operators} $T_t$ on a Banach space $X$ is one parameter family of bounded continuous operators $T_t : X \to X$ such that
+for all $0 \geq s,t < \infty$ we have $T_s \circ T_t = T_{s+t}$.
+\end{defn}
+
+\begin{defn}A semigroup of operators $T_t$ on a Banach space $X$ is said to be \emph{strongly continuous} if $\lim_{t \to 0} T_tv = v$ for all $v \in X$.
+\end{defn}
+
+In fact paths of strongly continuous semigroups are continuous; to see this we first need the following result.
+\begin{lem}\label{StronglyContinuousSemigroupNormBound}Let $T_t$ be a strongly continuous semigroup on a Banach space $X$ then there exists constants $M \geq 1$ and $c > 0$ such that 
+$\norm{T_t} \leq M e^{ct}$.
+\end{lem}
+\begin{proof}
+\begin{clm}There exists a $t_0 > 0$ and $M \geq 1$ such that $\norm{T_s} \leq M$ for all $0 \leq s \leq t_0$
+\end{clm}
+Suppose that the claim is not true then clearly we can find $0 \leq t_1 \leq 1$ such that $\norm{T_{t_1}} > 1$; since $\norm{T_0} = 1$ we actually know that $t_1 > 0$.  If we have $0 \leq t_n \leq \dotsb \leq t_1$ with $t_j \leq 1/j$ and $T_{t_j} \geq j$ for $j=1, \dotsc, n$ then there must also be $0 \leq t_{n+1} \leq t_{n} \wedge 1/(n+1)$ such that $\norm{T_{t_{n+1}}} > n+1$; as before since $\norm{T_0} = 1$ we know that $0 < t_{n+1}$.  In this way,  we find a sequence $t_n \downarrow 0$ for which $\norm{T_{t_n}} \geq n$.  Now by the Principle of Uniform Boundedness Theorem \ref{PrincipleOfUniformBoundedness} we conclude that $T_{t_n}$ are not pointwise bounded so there must exist a $v \in X$ for which $sup_n \norm{T_{t_n} v} = \infty$.  It then follows that $\lim_{n \to \infty} T_{t_n} v \neq v$ which is a contradiction.
+
+Now let $c = t_0^{-1} \ln M$ and for an arbitrary $t \geq 0$ write $t = n t_0 + s$ for $0 \leq s < t_0$ then we have
+\begin{align*}
+\norm{T_t} &= \norm{T_s \circ T_{t_0}^k} \leq M M^{n} \leq M M^{t/t_0} = M e^{\frac{t}{t_0} \ln M} = M e^{ct}
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{StronglyContinuousSemigroupContinuousPaths}Let $T_t$ be a strongly continuous semigroup on a Banach space $X$ then for each $v \in X$ the function $T_t v : [0,\infty) \to X$ is a continuous function.
+\end{prop}
+\begin{proof}
+Let $v \in X$ and $t \geq 0$ then 
+\begin{align*}
+\lim_{h \downarrow 0} \norm{T_{t+h} v - T_t v} &= \lim_{h \downarrow 0} \norm{T_{t}(T_hv - v)} \leq M e^{ct} \lim_{h \downarrow 0}\norm{T_h v - v} = 0
+\end{align*}
+for $t > 0$ we have
+\begin{align*}
+\lim_{h \downarrow 0} \norm{T_{t-h} v - T_t v} &= \lim_{h \downarrow 0} \norm{T_{t-h}(v - T_hv)} \leq M e^{c(t-h)} \lim_{h \downarrow 0}\norm{v - T_h v} = 0
+\end{align*}
+\end{proof}
+
+The Kolmogorov backward equation generalizes to arbitrary strongly continuous semigroups.
+\begin{prop}\label{StronglyContinuousSemigroupKolomgorovBackwardEquation}Let $T_t$ be a strongly continuous semigroup on a Banach  space $X$ with generator $A$ then 
+\begin{itemize}
+\item[(i)] if $v \in X$ and $t \geq 0$ then $\int_0^t T_s v \, ds \in \mathcal{D}(A)$ and moreover $T_t v - v = A \int_0^t T_sv \, ds$
+\item[(ii)] if $v \in \mathcal{D}(A)$ then $T_t v \in \mathcal{D}(A)$ for all $t \geq 0$ and moreover $\frac{d}{dt} T_t v = A T_t v = T_t A v$
+\item[(iii)] for each $v \in X$ and $t \geq 0$ we have $T_t v - v = \int_0^t A T_sv \, ds = \int_0^t T_s A v \, ds$
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see (i), by strong continuity of $T_t$, Proposition \ref{StronglyContinuousSemigroupContinuousPaths} implies  that $T_tv$ is continuous hence Riemann integrable on all finite intervals.  The same follows for $T_u T_t v = T_{u+t}v$ thus we may calculate using Proposition \ref{ClosedOperatorOfRiemannIntegral}, a change of integration variable and the Fundamental Theorem of Calculus \ref{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals}
+\begin{align*}
+A \int_0^t T_sv \, ds &= \lim_{h \to 0}  \frac{T_h \int_0^t T_sv \, ds - \int_0^t T_sv \, ds}{h} \\
+&= \lim_{h \to 0}  \frac{\int_0^t T_{h+s} v \, ds - \int_0^t T_sv \, ds}{h} \\
+&= \lim_{h \to 0}  \frac{\int_h^{t+h} T_{s} v \, ds - \int_0^t T_sv \, ds}{h} \\
+&= \lim_{h \to 0}  \frac{\int_t^{t+h} T_{s} v \, ds - \int_0^h T_sv \, ds}{h} = T_t v - v\\
+\end{align*}
+
+To see (ii), note that a trivial consequence of the semigroup property is that for all $s,t \geq 0$ we have $T_s \circ T_t = T_{s+t} = T_t \circ T_s$.  Using this fact and
+the continuity of $T_t$ we calculate for any $v \in \mathcal{D}(A)$ 
+\begin{align*}
+A T_t v &= \lim_{h \to 0} \frac{T_h T_t v - T_t v}{h} =\lim_{h \to 0} \frac{T_t T_h v - T_t v}{h} \\
+&= T_t \lim_{h \to 0} \frac{T_h v - v}{h} = T_t A v
+\end{align*}
+It remains to show that for $t > 0$ we also have $\lim_{h \to 0} \frac{T_{t-h} v - T_t v}{-h} = T_t A v$.  
+We compute
+\begin{align*}
+\lim_{h \to 0} \frac{T_t v - T_{t-h} v}{h} &= \lim_{h \to 0} T_{t-h} \frac{T_h v - v}{h} 
+= \lim_{h \to 0} T_{t-h} \left[\frac{T_h v - v}{h} -Av\right] + \lim_{h \to 0} T_{t-h} Av \\
+&=\lim_{h \to 0} T_{t-h} \left[\frac{T_h v - v}{h} -Av\right] + T_t Av
+\end{align*}
+To see that the first limit on the last line is zero we can use Lemma \ref{StronglyContinuousSemigroupNormBound} and the fact that $v \in \mathcal{D}(A)$ to see for all $0 < h \leq t$,
+\begin{align*}
+\lim_{h \to 0} \norm{T_{t-h} \left[\frac{T_h v - v}{h} -Av\right]} &\leq M e^{ct} \lim_{h \to 0} \norm{\frac{T_h v - v}{h} -Av} = 0
+\end{align*}
+
+To see (iii) we apply the Fundamental Theorem of Calculus \ref{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals} and (ii) to see that
+\begin{align*}
+\int_0^t A T_s v \, ds &= \int_0^t A T_s v \, ds = \int_0^t \frac{d}{ds} T_s v \, ds = T_t v - v
+\end{align*}
+\end{proof}
+
+
+\begin{cor}Let $A$ be the generator of a strongly continuous semigroup on the Banach space $X$ then $A$ is a closed operator and $\mathcal{D}(A)$ is dense.
+\end{cor}
+\begin{proof}
+If we let $v \in X$ then by Proposition \ref{StronglyContinuousSemigroupKolomgorovBackwardEquation} we know that $\int_0^t T_s v \, ds \in \mathcal{D}(A)$ for all $t \geq 0$ so it follows that $t^{-1} \int_0^t T_s v \, ds \in \mathcal{D}(A)$ for all $t > 0$.  Now observe that $\lim_{t \to 0} t^{-1} \int_0^t T_s v \, ds = v$ and we see that $\mathcal{D}(A)$ is dense.
+
+Now suppose that $v_n \in \mathcal{D}(A)$ and suppose that $\lim_{n \to \infty} v_n = v$ and $\lim_{n \to \infty} A v_n  = w$.  Applying continuity of $T_t$ and Proposition \ref{StronglyContinuousSemigroupKolomgorovBackwardEquation}  we see that 
+\begin{align*}
+T_t v - v &= \lim_{n \to \infty} (T_t v_n - v_n) = \lim_{n \to \infty} \int_0^t T_s A v_n \, ds = \int_0^t T_s w \, ds
+\end{align*}
+TODO: Justify exchanging the limit and the integral...
+
+From this is follows that 
+\begin{align*}
+\lim_{t \to 0} \frac{T_t v - v}{t} = \lim_{t \to 0} t^{-1} \int_0^t T_s w \, ds = w
+\end{align*}
+which shows that $v \in \mathcal{D}(A)$ and $Av = w$.
+\end{proof}
+
+We now specialize the state space and assume that $S$ is a locally compact separable metric space.  
+
+\subsection{Approximation of Feller Processes}

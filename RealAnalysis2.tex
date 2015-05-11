@@ -2,6 +2,8 @@
 Holding area for more advanced topics in real analysis that are
 eventually required (and in some cases there may be some topics that I
 am just interested in).
+\section{Metric Spaces}
+
 \section{Topological Spaces}
 \begin{lem}\label{OpenAlternative}A set $U \subset X$ is open if and only if for every $x \in
   U$ there is an open set $V \subset U$ such that $x \in V$.
@@ -98,8 +100,11 @@ outline of proof is to pick a countable dense subset $\lbrace x_n
 \naturals$.  Show this is a base of the topology.
 \end{proof}
 
+TODO:  Fun fact, there is a non-first countable topological space which is compact but not sequentially compact!  In first countable spaces sequential compactness is equivalent to 
+
 TODO: The goal of the next set of results is to show that separable
-complete metric spaces are Borel.
+complete metric spaces (actually Polish spaces which are those with
+a separable topology which can be metrized by a complete metric) are Borel.
 
 
 The following appears in Royden as Theorem 8.11 (with proof delgated
@@ -1462,18 +1467,22 @@ given $\epsilon > 0$ for
 all points of continuity $x$ of $f$  there exists a uniform $\delta > 0$
 such that $\abs{x-y} < \delta$ implies $q(f(x), f(y)) < \epsilon$?
 
+TODO: It would be convenient to treat the case of $[0,\infty]$ below
+
 \begin{defn}Let $S$ be a topological space, then for every $0 < T < \infty$ we let $D([0,T]; S)$ denote the set of functions
 $f : [0,T] \to S$ such that for every $0 \leq t < T$ we have $f(t) = \lim_{s \to t^+} f(s)$ and for every $0 < t \leq T$ the limit 
 $\lim_{s \to t^{-}} f(s)$ exists and is finite.  The space $D([0,\infty); S)$ is the set of functions $f : [0,\infty)$ such that for all 
 $t \geq 0$ we have $f(t) = \lim_{s \to t^+} f(s)$ and for all $t >0$ we have $\lim_{s \to t^{-}} f(s)$ exists and is finite.
 \end{defn}
 
+In what follows we will often use the notation $f(t-)$ to denote the limit $\lim_{s \to t^{-}} f(s)$.
+
 \begin{lem}\label{CadlagCountableDiscontinuitySet}If $x \in D([0,T];
   S)$ or $x \in D([0,\infty); S)$ then $x$ is continuous at all but a
   countable number of points.
 \end{lem}
 \begin{proof}
-We begin by considering the case of $x \in D([0,t]; S)$.  Pick an
+We begin by considering the case of $x \in D([0,T]; S)$.  Pick an
 $\epsilon > 0$ and define
 \begin{align*}
 A_\epsilon &= \lbrace 0 \leq t \leq T \mid r(x(t-), x(t)) \geq
@@ -1514,12 +1523,12 @@ union of the discontinuities of $x$ restricted to $[0,n]$ for $n \in \naturals$.
   [0,T]$ such that $\lambda$ is continuous, strictly increasing and
   bijective.  Then for each $\lambda \in \Lambda$ we define 
 \begin{align*}
-\rho(x,y,\lambda) &= \abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
+\rho(x,y,\lambda) &= \sup_{t \in [0,T]}\abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
 \end{align*}
 and define $\rho : D([0,T]; S) \times D([0,T]; S) \to  \reals$ by 
 \begin{align*}
 \rho(x,y) &= \inf_{\lambda \in \Lambda} \rho(x,y,\lambda)
-= \inf_{\lambda \in \Lambda} \sup_{t \in [0,T]}
+= \inf_{\lambda \in \Lambda} 
 \sup_{t \in [0,T]}\abs{\lambda(t) - t} \vee \sup_{t \in [0,T]} r(x(t), y(\lambda(t))
 \end{align*}
 \end{defn}
@@ -1532,20 +1541,25 @@ It is clear that $\rho(x,y) \geq 0$, now suppose that $\rho(x,y) =
 that $\sup_{t \in [0,T]} \abs{\lambda_n(t) - t} < 1/n$ and $\sup_{t
   \in [0,T]} r(x(t), y(\lambda_n(t)) < 1/n$.  From the former
 inequality we see that $\lim_{n \to \infty} \lambda_n(t) = t$ and the second
-inequality we see that $\lim_{n \to \infty} y(\lambda_n(t) = x(t)$.
-By the cadlag nature of $y$ shows that either $x(t) = y(t)$ or $x(t) =
-y(t-)$; so in particular, $x(t) = y(t)$ at all continuity points of
-$y(t)$.  However, since the set of discontinuity points is countable
-it follows that the set of continuity points is dense in $[0,T]$ and
-therefore for every $t \in T$ we can find a set of continuity points
-$t_n$ such that $t_n \downarrow t$ and therefore by right continuity
-of $y$ we conclude $x(t) = y(t)$.
+inequality we see that $\lim_{n \to \infty} y(\lambda_n(t)) = x(t)$.
+The sequence $\lambda_n(t)$ has either a decreasing subsequence or a increasing subsequence
+therefore passing to that subsequence and using the fact that $y$ is cadlag we see that either $x(t) = y(t)$ or $x(t) =
+y(t-)$.  In particular, $x(t) = y(t)$ at all continuity points of
+$y(t)$ and since the set of discontinuity points of $y$ is countable
+it follows that the set of continuity points is dense in $[0,T]$.
+Therefore for every $0 \leq t < T$ we can find a sequence $t_n$ of continuity points of $y$
+such that $t_n \downarrow t$ and therefore by right continuity
+of $y$ we conclude $x(t) = y(t)$.  The fact that $x(T) = y(T)$ follows from
+the fact that $\lambda_n(T)=T$ for all $n \in \naturals$ thus 
+\begin{align*}
+y(T) &= \lim_{n \to \infty} y(\lambda_n(T)) = x(T)
+\end{align*}
 
 To see symmetry of $\rho$ we first note that $\lambda \in \Lambda$
 implies $\lambda^{-1} \in \Lambda$.   To see this, it is first off
 clear that $\lambda^{-1}$ exists because $\lambda$ is a bijection.
 The fact that $\lambda^{-1}$ is strictly increasing follows because
-if $0 \leq t < s \leq T$ and $0 \leq \lambda^{-1}(s) \leq lambda^{-1}(t) \leq T$ then strictly
+if $0 \leq t < s \leq T$ and $0 \leq \lambda^{-1}(s) \leq \lambda^{-1}(t) \leq T$ then strictly
 increasing and bijective nature of $\lambda$ tells $s \leq t$ which is
 contradiction.  To see that $\lambda^{-1}$ is continuous, pick $0 < t
 < T$ and let $\epsilon > 0$ be given such that $0 < \lambda^{-1}(t) -
@@ -1672,7 +1686,7 @@ non-decreasing function of $\delta$ we are done.
 \end{proof}
 
 Even though the metric $\rho$ is not complete, the underlying topology
-is Polish because we can define an equivalent metric that is
+is Polish because we can define a topologically equivalent metric that is
 complete.  To repair the incompleteness of $\rho$ we have to be a bit
 more strict about the types of time changes that are allowed; more
 specifically we have to prevent time changes are asymptotically flat
@@ -1692,7 +1706,7 @@ d(x,y) = \inf_{\substack{\lambda \in \Lambda \\ \gamma(\lambda) <
 \end{align*}
 \end{defn}
 
-The main goal is to prove that $d$ is a metric that is equivalent to $\rho$.
+The main goal is to prove that $d$ is a metric that is topologically equivalent to $\rho$.
 Before proving that we need a few facts about $\gamma$.
 \begin{lem}\label{SkorohodJ1GammaFacts}$\gamma(\lambda) = \gamma(\lambda^{-1})$ and
   $\gamma(\lambda_1 \circ \lambda_2) \leq \gamma(\lambda_1) +
@@ -1727,7 +1741,7 @@ and for the second
 \end{align*}
 \end{proof}
 
-\begin{lem}\label{SkorohodEquivalenceA}For all $\lambda$ such that $\gamma(\lambda) < 1/2$ we have
+\begin{lem}\label{SkorohodEquivalenceA}For all $\lambda \in \Lambda$ such that $\gamma(\lambda) < 1/2$ we have
   $\sup_{0 \leq t \leq T} \abs{\lambda(t) - t} \leq
   2T\gamma(\lambda)$.  For all $f,g \in D([0,T]; S)$ such that $d(f,g) < 1/2$ we
   have $\rho(f,g) \leq 2Td(f,g)$.
@@ -1802,12 +1816,14 @@ As for bounding $\gamma(\lambda)$ we have
 &\leq \abs{\mu(t_i) -  t_{i}}  + \abs{\mu(t_{i-1}) - t_{i-1}} \leq 2 \delta^2 < 2 \delta (t_i - t_{i-1})
 \end{align*}
 Recalling that $\lambda$ is linear on each interval $[t_{i-1},t_i]$ we note that this inequality simply says that the
-slope of $\lambda$ on the linear segment $[t_{i-1},t_i]$ is in the interval $(1 - 2\delta, 1-2\delta)$.  Thus the inequality trivial extends 
+slope of $\lambda$ on the linear segment $[t_{i-1},t_i]$ is in the interval $(1 - 2\delta, 1-2\delta)$.  Thus the inequality trivially extends 
 to any $t_{i-1} \leq s \leq t \leq t_i$.  For other $s<t$  pick $i<j$ with $t_{i-1} \leq s \leq t_i$ and $t_{j-1} \leq t \leq t_j$.  Then we have
 \begin{align*}
 \abs{\lambda(t) - \lambda(s) - (t-s)} 
-&\leq \abs{\lambda(t) - \lambda(t_{j-1}) - (t-t_{j-1})} + \sum_{k=i}^{j-2} \abs{\lambda(t_{k+1}) - \lambda(t_{k}) - (t_{k+1}-t_{k})}  + \abs{\lambda(t_i) - \lambda(s) - (t_i-s)} \\
-&\leq 2 \delta (t-t_{j-1}) + 2 \delta \sum_{k=i}^{j-2} (t_{k+1}-t_{k})  + 2\delta (t_i-s) = 2\delta (t-s) \\
+&\leq \abs{\lambda(t) - \lambda(t_{j-1}) - (t-t_{j-1})} + \sum_{k=i}^{j-2} \abs{\lambda(t_{k+1}) - \lambda(t_{k}) - (t_{k+1}-t_{k})}  + \\
+&\abs{\lambda(t_i) - \lambda(s) - (t_i-s)} \\
+&\leq 2 \delta (t-t_{j-1}) + 2 \delta \sum_{k=i}^{j-2} (t_{k+1}-t_{k})  + 2\delta (t_i-s) \\
+&= 2\delta (t-s) \\
 \end{align*}
 and therefore 
 \begin{align*}
@@ -1820,8 +1836,8 @@ Taylor's Theorem (Lemma \ref{LagrangeFormRemainder}) we have for any $0 < \delta
 \end{align*}
 and therefore $\gamma(\lambda) < 4\delta$.
 \end{proof}
-Now we are ready to show that $d$ is a metric and is equivalent to $\rho$.
-\begin{thm}\label{SkorohodJ1Metric}$d$ is a metric on $D([0,T];S)$ that is equivalent to
+Now we are ready to show that $d$ is a metric and generates the same topology as $\rho$.
+\begin{thm}\label{SkorohodJ1Metric}$d$ is a metric on $D([0,T];S)$ that is topologically equivalent to
   $\rho$.
 \end{thm}
 \begin{proof}
@@ -1856,7 +1872,7 @@ by Lemma \ref{SkorohodEquivalenceB} we have $B_\rho(f, \delta^2) \subset B_d(f, 
 Now let $U$ be an open set in the topology defined by $d$.  For every $f \in U$, by openness of $U$ we find $\epsilon_f>0$ such that $B_d(f,\epsilon_f) \subset U$.
 By the above argument we may find $\delta_f>0$ such that $B_\rho(f, \delta_f) \subset B_d(f,\epsilon_f) \subset U$.  Therefore we can write $U = \cup_{f \in U} B_\rho(f, \delta_f)$
 which shows that $U$ is an open set in the topology defined by $\rho$ as well.  It is clear that the argument is symmetric in the role of $\rho$ and $d$ and therefore we
-have shown that $d$ and $\rho$ are equivalent metrics.
+have shown that $d$ and $\rho$ are topologically equivalent metrics.
 \end{proof}
 
 The goal in introducing $d$ was to provide a complete metric; a useful
@@ -1885,7 +1901,7 @@ is complete.  Morever if $S$ is separable then $D([0,T];S)$ is separable in the 
 \end{thm}
 \begin{proof}
 Let $f_n$ be a Cauchy sequence in $D([0,T]; S)$ with the metric $d$.  As a general principle of metric spaces it
-suffices to show that $f_n$ has a convergence subsequence $f_{n_j}$.  Suppose that such a subsequence exists and converges
+suffices to show that $f_n$ has a convergent subsequence $f_{n_j}$.  Suppose that such a subsequence exists and converges
 to $f$.  Then we may find $n_j$ such that $d(f,f_{n_j}) < \epsilon/2$ and $d(f_m, f_{n_j}) < \epsilon/2$ for all $m \geq n_j$; it follows
 that in fact $d(f,f_m)<\epsilon$ for all $m \geq n_j$ and thus $f_n \to f$.
 
@@ -2034,6 +2050,429 @@ $A_k$.  By the above argument for any $f \in A$ we can find $g \in A_k$ such tha
 and therefore by the triangle inequality the balls $B(g_i, \epsilon)$ cover $A$ and $A$ is totally bounded.
 
 TODO: Do the converse.
+\end{proof}
+
+\begin{lem}\label{SkorohodBorelGeneratedByProjections}For every $t \in [0,T]$ let $\pi_t : D([0,T];S) \to
+  S$ be the evaluation map $\pi_t(f) = f(t)$.  The Borel $\sigma$-algebra on $D([0,T]; S)$ is
+  equal to $\sigma(\lbrace \pi_t \mid t \in [0,T] \rbrace)$ and
+  therefore $\mathcal{B}(D([0,T]; S)) = D([0,T];
+  S) \cap \mathcal{B}(\reals)^{\otimes [0,\infty)}$.
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+\subsection{The space $D([0,\infty); S)$}
+
+For applications it is equally or perhaps more important to deal with the space $D([0,\infty); S)$ of cadlag functions on the half infinite interval.  
+Essentially all of the results we have proven for $D([0,T]; S)$ hold but there is some subtlety in getting the definitions right so that the topology
+on $D([0,\infty); S)$ gives the right behavior to the restriction maps $D([0,\infty); S) \to D([0,T]; S)$.  The problem that has to be dealt with is best 
+illustrated with an example.  Consider the function 
+\begin{align*}
+f(x) &= \begin{cases}
+0 & \text{if $0 \leq x < 1$} \\
+1 & \text{if $1 \leq x$}
+\end{cases}
+\end{align*}
+and the approximating sequence
+\begin{align*}
+f_n(x) &= \begin{cases}
+0 & \text{if $0 \leq x < 1+1/n$} \\
+1 & \text{if $1+1/n \leq x$}
+\end{cases}
+\end{align*}
+Our intuition is the $J_1$ topology on $D([0,\infty); \reals)$ should make functions close if there is a small time change that makes them
+uniformly close; thus we should expect that $f_n$ converges to $f$.  However consider the restriction of these functions to $D([0,1]; \reals)$.  The restriction of
+$f$ has a jump discontinuity of size $1$ at the endpoint $x=1$ while the restrictions of $f_n$ are all identically zero.  Because the endpoint of the domain
+$[0,1]$ cannot be moved by a time change it is easy to see that $f_n$ does not converge to $f$ in the $J_1$ topology on $D([0,1]; \reals)$.  Another way of 
+looking at the example is to observe that is shows the restriction map $D([0,T]; S)$ to $D([0,1]; S)$ for $T > 1$ is not continuous in the $J_1$ topology.  As a
+side effect of this one cannot simply glue the spaces $D([0,n];S)$ for $n \in \naturals$ together (formally to create a projective limit) to get a topology on $D([0,\infty); S)$ in the 
+same way that one can do so with $C([0,T];S)$ and $C([0,\infty);S)$.  
+
+The good news is that the example we have given illustrates the only problem that has to be
+dealt with: namely restricting to a point of discontinuity of an element $f \in D([0,\infty), S)$.  For a given $f$ we have already seen that there are only a countable
+number of discontinuities of $f$ so in particular the set of discontinuities has Lebesgue measure zero.  The trick is that if we integrate the restrictions to $D([0,T];S)$ 
+over $0 \leq T < \infty$ then these discontinuities won't matter and we can create a metric on $D([0,\infty);S)$.  While one can proceed in this fashion by using the
+existing metric on $D([0,T];S)$ to create a metric on $D([0,\infty);S)$ it turns out to be about as much work to just start from scratch.  The advantage in doing so
+is that the development can be formally independent of the case of a finite interval (though we do refer to some proofs for details that are left out).  
+
+\begin{defn}Let $(S,r)$ be a metric space, define $\Lambda_\infty$ denote the set of all $\lambda : [0,\infty) \to
+  [0,\infty)$ such that $\lambda$ is continuous, strictly increasing and
+  bijective.  For $\lambda \in \Lambda_\infty$ define
+\begin{align*}
+\gamma(\lambda) =
+  \sup_{0 \leq s < t \leq T} \abs{\log \frac{\lambda(t) -
+      \lambda(s)}{t-s}}
+\end{align*}
+Then for each $\lambda \in \Lambda_\infty$ we define 
+\begin{align*}
+\psi(x,y,\lambda, T) &= \sup_{0 \leq t < \infty} r(x(t \wedge T), y(\lambda(t) \wedge T)) \wedge 1
+\end{align*}
+and define $\rho : D([0,\infty); S) \times D([0,\infty); S) \to  \reals$ by 
+\begin{align*}
+\rho(x,y) &= \inf_{\lambda \in \Lambda_\infty} 
+\int_0^\infty \gamma(\lambda) \vee e^{-T} \left[ \psi(x,y,\lambda,T) \vee (\sup_{0 \leq u \leq T}\abs{\lambda(t) - t} \wedge 1) \right] \, dT 
+\end{align*}
+$d : D([0,\infty); S) \times D([0,infty); S) \to  \reals$ by 
+\begin{align*}
+d(x,y) &= \inf_{\substack{\lambda \in \Lambda_\infty \\
+\gamma(\lambda) < \infty}} 
+\left[ \gamma(\lambda) \vee \int_0^\infty e^{-T} \psi(x,y,\lambda,T) \, dT \right]
+\end{align*}
+\end{defn}
+So note with this definition for each $T$ we are restricting each pair of cadlag functions $x,y$ to the interval $[0,T]$ but also
+implicitly thinking of $D([0,T])$ as being embedded in $D([0,\infty))$ by extending as a constant function.
+
+TODO: Note the measurability of $\psi(x,y,\lambda,T)$ as a function of $T$.
+
+Note that $\psi(x,y,\lambda,T)$ is not a continuous function of $T$ for fixed $x,y,\lambda$ (however I believe it is cadlag?)
+\begin{examp}
+Let $f = \characteristic{[1, \infty)}$ and $g = \characteristic{[2, \infty)}$ and $\lambda(1) = 2$, then $\psi(f,g,\lambda,t) = \characteristic{[0,1) \cup [2,\infty)}$.
+\end{examp}
+
+In general when thinking of convergence relative to $d$ (which we have not yet shown is a metric of course) we usually use 
+the following rendering of the definition.  We warn the reader that this result is used so frequently that we will rarely make explicit note
+of it.
+
+\begin{lem}\label{SkorohodInfinityConvergenceToZero}Let $f_n$ and $g_n$ be sequences in $D([0,\infty); S)$ then $\lim_{n \to \infty} d(f_n, g_n) = 0$ if and only if there exist $\lambda_n \in \Lambda_\infty$ such
+that $\gamma(\lambda_n) < \infty$ for all $n \in \naturals$, $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and 
+\begin{align*}
+\lim_{n \to \infty} m \lbrace t \in [0, T] \mid \sup_{0 \leq s < \infty} r(f_n(s \wedge t), g_n(\lambda_n(s) \wedge t)) > \epsilon \rbrace = 0
+\end{align*} 
+for all $0 < T < \infty$ and $0 < \epsilon < 1$.  Moreover if $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ then we also have $\lim_{n \to \infty}   \sup_{0 \leq t \leq T} \abs{\lambda_n(t) - t} = 0$ for every $T > 0$.
+\end{lem}
+\begin{proof}
+Suppose that such $\lambda_n$ exist then for every $0 < T < \infty$ and $0 < \epsilon < 1$, then it follows from the definition of $\psi$ that $\sup_{0 \leq s < \infty} r(f_n(s \wedge t), g_n(\lambda_n(s) \wedge t)) > \epsilon$ if and only if $\psi(f_n,g_n, \lambda_n, t) > \epsilon$
+\begin{align*}
+\lim_{n \to \infty} \int_0^\infty e^{-t} \psi(f_n,g_n, \lambda_n, t) \, dt
+&\leq \lim_{n \to \infty} \int_0^T e^{-t} \psi(f_n,g_n, \lambda_n, t) \, dt + \int_T^\infty e^{-t} dt \\
+&\leq \epsilon \int_0^T e^{-t} \, dt + \lim_{n \to \infty} m \lbrace t \in [0, T] \mid \psi(f_n,g_n,\lambda_n,t) > \epsilon \rbrace + e^{-T} \\
+&\leq  \epsilon + e^{-T}
+\end{align*}
+now let $T \to \infty$ and $\epsilon \to 0$ to see that $\lim_{n \to \infty} \int_0^\infty e^{-t} \psi(f_n,g_n, \lambda_n, t) \, dt = 0$.
+
+On the other hand, suppose that $\lim_{n \to \infty} d(f_n, g_n) = 0$ and pick $\lambda_n$ such that $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and 
+$\lim_{n \to \infty} \int_0^\infty e^{-t} \psi(f_n,g_n, \lambda_n, t) \, dt = 0$.  By a Markov bound we know that $\psi(f_n,g_n, \lambda_n, t)  \toprob 0$ with respect to
+the exponential distribution with rate $1$ on $[0,\infty)$.  Thus we have for every $T > 0$ and $\epsilon > 0$,
+\begin{align*}
+m \lbrace t \in [0, T] \mid \psi(f_n,g_n,\lambda_n,t) > \epsilon \rbrace 
+&= \int_0^T \characteristic{\psi(f_n,g_n,\lambda_n,t) > \epsilon} \, dt \\
+&\leq e^{T} \int_0^\infty e^{-t} \characteristic{\psi(f_n,g_n,\lambda_n,t) > \epsilon} \, dt = e^T \probability{\psi(f_n,g_n,\lambda_n,t) > \epsilon} \\
+\end{align*}
+and let $n \to \infty$.
+
+By the proof of Lemma \ref{SkorohodEquivalenceA} we know that for every $T > 0$ and for $n \in \naturals$ such that $\gamma(\lambda_n) < 1/2$ we have $\sup_{0 \leq t \leq T} \abs{\lambda_n(t) - t} \leq 2T \gamma(\lambda_n)$ and therefore $\lim_{n \to \infty} \sup_{0 \leq t \leq T} \abs{\lambda_n(t) - t} = 0$ for every $T > 0$.
+\end{proof}
+
+\begin{prop}$d$ is a metric on $D([0,\infty); S)$.
+\end{prop}
+\begin{proof}
+It is immediate from the definition that $d(f,g) \geq 0$.  Suppose $d(f,g) = 0$.  Pick $\lambda_n$ as per Lemma \ref{SkorohodInfinityConvergenceToZero} applied to constant sequences $f_n \equiv f$ and $g_n \equiv g$.  Thus,
+$\lim_{n \to \infty}   \sup_{0 \leq t \leq T} \abs{\lambda_n(t) - t} = 0$ for all $0 < T < \infty$ and $\lim_{n \to \infty} m \lbrace 0 \leq t \leq T \mid \sup_{0 \leq s < \infty} r(f(s \wedge t), g(\lambda_n(s) \wedge t)) > \epsilon \rbrace = 0$ for all $0 < T < \infty$ and $0 < \epsilon < 1$.  So for any fixed $0 \leq u < \infty$ we let $0 < \epsilon < 1$ be arbitrary and
+pick $T > u+\epsilon$. 
+Therefore $m \lbrace 0 \leq t \leq T \mid \sup_{0 \leq s < \infty} r(f(s \wedge t), g(\lambda_n(s) \wedge t)) > \epsilon \rbrace < T -u-\epsilon$ for sufficiently large $n$ thus 
+$(u+\epsilon,T) \cap \lbrace 0 \leq t \leq T \mid \sup_{0 \leq s < \infty} r(f(s \wedge t), g(\lambda_n(s) \wedge t)) \leq \epsilon \rbrace \neq \emptyset$ for sufficiently large $n$  
+and therefore for sufficiently large $n$ we may pick $u+\epsilon < w_n < T$ such that
+\begin{align*}
+r(f(u), g(\lambda_n(u) \wedge w_n)) \leq \sup_{0 \leq s < \infty} r(f(s \wedge w_n), g(\lambda_n(s) \wedge w_n)) \leq \epsilon
+\end{align*}
+We also know that $\lim_{n \to \infty} \lambda_n(u) = u$ and by passing to a subsequence $N$, we may assume that $\lambda_n(u) \geq u$ or $\lambda_n(u) \leq u$ along $N$. 
+In particular, $\lambda_n(u) < w_n$ for large $n$ and thus $\lim_{n \to \infty} r(f(u), g(\lambda_n(u) \wedge w_n)) = r(f(u), g(u))$ or $\lim_{n \to \infty} r(f(u), g(\lambda_n(u) \wedge w_n)) = r(f(u), g(u-))$ where the limits are taken along the subsequence $N$.  Now we argue as in Lemma \ref{SkorohodJ1RhoMetric},  $f(u) = g(u)$ at all continuity points of $g$ but the discontinuity points are a countable set thus $f(u) = g(u)$ everywhere by right continuity.
+
+Symmetry of $d$ follows just as for the $D([0,T])$ case Theorem \ref{SkorohodJ1Metric} by using the facts that $\gamma(\lambda) = \gamma(\lambda^{-1})$ and $\psi(f,g,\lambda,t) = \psi(g,f,\lambda^{-1},t)$ for all $f,g \in D([0,\infty),S)$ and $0 \leq t < \infty$.
+
+TODO: Finish the triangle inequality part...
+\end{proof}
+
+ Because the form of the Skorohod metric is a bit opaque, some effort will go into developing different criteria for convergence
+in the topology.  A first such result follows; note that this result is very close to saying that implies that $\lim_{n \to \infty} d(f_n,f) = 0$ precisely when the restrictions
+to $[0,T]$ converge in $D([0,T];S)$ whenever $T$ is a continuity point of $f$.  TODO: What extra work has to be done to massage the $\lambda_n$ so that the equivalence is proven???
+
+\begin{prop}\label{SkorohodInfiniteJ1EquivalenceA}Let $f,f_n \in D([0,\infty); S)$ then $\lim_{n \to \infty} d(f_n,f) = 0$ if and only if there exists $\lambda_n \in \Lambda_\infty$ such that $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and 
+\begin{align*}
+\lim_{n \to \infty} \psi(f_n,f,\lambda_n,t) = 0 \text{ for all continuity points of $f$}
+\end{align*}
+If $\lim_{n \to \infty} d(f_n,f) = 0$ then $\lim_{n \to \infty} f_n(t) = f(t)$ when $t$ is a continuity point of $f$.
+\end{prop}
+\begin{proof}
+Suppose that we have $\lambda_n$ as in the hypotheses.  Then as the the number of discontinuity points of $f$ is countable, $\lim_{n \to \infty} \psi(f_n,f,\lambda_n,t) = 0$ for almost every $0 \leq t < \infty$.   Since
+$0 \leq e^{-t} \psi(f_n,f,\lambda_n,t) \leq 1$ we may apply Dominated Convergence to conclude that $\lim_{n \to \infty} \int_0^\infty e^{-t} \psi(f_n,f,\lambda_n,t)  \, dt = 0$.
+
+On the other hand suppose $\lim_{n \to \infty} d(f_n,f) =0$ and let $0 \leq T < \infty$ be fixed.  
+\begin{clm}There exists $\lambda_n$ and $T < T_n < \infty$ such that $\lim_{n \to \infty} T_n = \infty$, $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and 
+\begin{align*}
+\lim_{n \to \infty} \sup_{0 \leq t < \infty} r(f_n(t \wedge T_n), f(\lambda_n(t) \wedge T_n)) = 0
+\end{align*}
+\end{clm}
+Pick $\lambda_n$ as per Lemma \ref{SkorohodInfinityConvergenceToZero} applied to sequences $f_n$ and $g_n \equiv f$.   So $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and for each
+$k \in \naturals$ we may find a $N_k$ such that 
+\begin{align*}
+m \lbrace 0 \leq t \leq T+k \mid \sup_{0 \leq s < \infty} r(f_n(s \wedge t), f(\lambda_n(s) \wedge t)) > 1/k \rbrace < 1/k \text{ for all $n \geq N_k$}
+\end{align*}
+It follows that $(T+k-1, T+k) \not \subset \lbrace 0 \leq t \leq T+k \mid \sup_{0 \leq s < \infty} r(f_n(s \wedge t), f(\lambda_n(s) \wedge t)) > 1/k \rbrace$ for every $n \geq N_k$.
+Now working inductively on $k$, for $0 \leq n < N_1$ pick $T_n$ arbitrarily and for $k \in \naturals$ and for each $N_k \leq n < N_{k+1}$, pick a $T_n$ with $T \leq T+k-1 < T_n < T+k$ such that 
+\begin{align*}
+\sup_{0 \leq s < \infty} r(f_{n}(s \wedge T_n), f(\lambda_{n}(s) \wedge T_n)) \leq 1/k
+\end{align*}
+By construction, $\lim_{n\to \infty} T_n = \infty$ and $\lim_{n \to \infty} \sup_{0 \leq s < \infty} r(f_{n}(s \wedge T_n), f(\lambda_{n}(s) \wedge T_n)) =0$.
+
+Let $\lambda_n$ and $T_n$ be chosen as in the claim, and by the triangle inequality
+\begin{align*}
+\sup_{0 \leq t < \infty} r(f_n(t \wedge T), f(\lambda_n(t) \wedge T)) 
+&\leq \sup_{0 \leq t < \infty} r(f_n(t \wedge T), f(\lambda_n(t \wedge T) \wedge T_n)) +\\
+&\sup_{0 \leq t < \infty} r(f(\lambda_n(t \wedge T) \wedge T_n), f(\lambda_n(t) \wedge T)) 
+\end{align*}
+We look at each of the terms on the right hand side in detail.  For the first term, since $T < T_n$,
+\begin{align*}
+\sup_{0 \leq t < \infty} r(f_n(t \wedge T), f(\lambda_n(t \wedge T) \wedge T_n))
+&=\sup_{0 \leq t \leq T} r(f_n(t), f(\lambda_n(t) \wedge T_n)) \\
+&=\sup_{0 \leq t \leq T} r(f_n(t \wedge T_n), f(\lambda_n(t) \wedge T_n))  \\
+&\leq \sup_{0 \leq t} r(f_n(t \wedge T_n), f(\lambda_n(t) \wedge T_n))
+\end{align*}
+and for the second term, 
+\begin{align*}
+&\sup_{0 \leq t < \infty} r(f(\lambda_n(t \wedge T) \wedge T_n), f(\lambda_n(t) \wedge T))  \\
+&=\sup_{0 \leq t \leq T} r(f(\lambda_n(t) \wedge T_n), f(\lambda_n(t) \wedge T))  \vee
+\sup_{T \leq t < \infty} r(f(\lambda_n(T) \wedge T_n), f(\lambda_n(t) \wedge T))  \\
+&=\sup_{T \leq t \leq (\lambda_n(T) \wedge T_n) \vee T} r(f(t), f(T))  \vee
+\sup_{\lambda_n(T) \wedge T \leq t \leq T} r(f(\lambda_n(T) \wedge T_n), f(t))  \\
+&\leq \sup_{T \leq t \leq \lambda_n(T) \vee T} r(f(t), f(T))  \vee
+\sup_{\lambda_n(T) \wedge T \leq t \leq T} r(f(T), f(t))  + 
+r(f(\lambda_n(T) \wedge T_n), f(T)))\\
+&\leq \sup_{\lambda_n(T) \wedge T\leq t \leq \lambda_n(T) \vee T} r(f(t), f(T)) + 
+r(f(\lambda_n(T) \wedge T_n), f(T)))\\
+\end{align*}
+Thus we have 
+\begin{align*}
+&\lim_{n \to \infty} \sup_{0 \leq t < \infty} r(f_n(t \wedge T), f(\lambda_n(t) \wedge T)) 
+\leq \lim_{n \to \infty} \sup_{0 \leq t < \infty} r(f_n(t \wedge T_n), f(\lambda_n(t) \wedge T_n)) + \\
+&\lim_{n \to \infty} \sup_{\lambda_n(T) \wedge T\leq t \leq \lambda_n(T) \vee T} r(f(t), f(T)) + 
+\lim_{n \to \infty} r(f(\lambda_n(T) \wedge T_n), f(T))) \\
+&=0
+\end{align*}
+where the first limit on the right hand side is zero by the claim and the second two limits are zero
+because $\lim_{n \to \infty} \lambda_n(T) = T$, $T < T_n$ and $f$ is continuous at $T$.
+\end{proof}
+
+In order to understand compactness in $D([0,\infty);S)$ we need to have a notion of equicontinuity.  The basic idea is that we
+express equicontinuity relative to bounded intervals $[0,T]$ and we must account for the existence jumps on such an interval
+and particularly at $T$ itself.
+\begin{defn}Let $(S,r)$ be a metric space and let $f \in D([0,\infty); S)$ be given then for each $\delta > 0$ and $T > 0$ we define the \emph{modulus of continuity}
+\begin{align*}
+w^\prime(f,\delta, T) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t))
+\end{align*}
+\end{defn}
+
+TODO: Unify the proofs here with the case of $D([0,T];S)$.
+
+Note that we allow the right hand endpoint of the partition $\lbrace t_i \rbrace$ to extend beyond $T$ in the definition above.  TODO: Presumably this makes dealing with jumps
+at $T$ easier; on the other hand we don't do this in the case of $D([0,T];S)$ ; is it necessary to define it this way?
+\begin{lem}
+Let $f, g\in D([0,\infty); S)$ then 
+\begin{itemize}
+\item[(i)] $w^\prime(f,\delta, T)$ is a non-decreasing function of $\delta$ and $T$
+\item[(ii)] For every $\delta > 0$ and $T > 0$
+\begin{align*}
+w^\prime(f,\delta, T) &\leq w^\prime(g,\delta, T) + 2 \sup_{0 \leq t \leq T+ \delta} r(f(t), g(t))
+\end{align*}
+\item[(iii)]For each fixed $T > 0$, $w^\prime(f,\delta, T)$ is a right continuous function of $\delta$ and
+\begin{align*}
+\lim_{\delta \to 0^+} w^\prime(f,\delta, T) &= 0
+\end{align*}
+\item[(iv)]If $f_n \in D([0,\infty); S)$ and $\lim_{n \to \infty} d(f_n,g) = 0$ then for every $\delta > 0$, $T > 0$ and $\epsilon > 0$ 
+\begin{align*}
+\limsup_{n \to \infty}  w^\prime(f_n,\delta, T)  &\leq  w^\prime(f,\delta, T+\epsilon) 
+\end{align*}
+\item[(v)]For fixed $\delta > 0$ and $T>0$, $ w^\prime(f,\delta, T)$ is a Borel measurable function of $f$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+(i) is immediate from the fact that the set of partitions over which the infimum is calculated is non-decreasing with respect to set inclusion as either $\delta$ decreases or $T$ increases.  Suppose $0 < \delta < \delta^\prime$, then if we have a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ and $t_i - t_{i-1} > \delta^\prime$ for all $i=1, \dotsc, n$ then it follows that $t_i - t_{i-1} > \delta$ for all $i=1, \dotsc, n$ as well.  Thus 
+\begin{align*}
+\lbrace (t_0, \dotsc, t_n) \mid t_0 < \dotsb < t_{n-1} < T \leq t_n \text{ and } t_i - t_{i-1} > \delta^\prime \rbrace 
+&\subset \lbrace (t_0, \dotsc, t_n) \mid t_0 < \dotsb < t_{n-1} < T \leq t_n \text{ and } t_i - t_{i-1} > \delta \rbrace 
+\end{align*}
+and taking unions over $n \in \naturals$ and infimums it follows that $w(f,\delta, T) \leq w(f,\delta^\prime, T)$.  Suppose that $0 < T < T^\prime$, given a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ with $t_i - t_{i-1} > \delta$ for all $i=1, \dotsc, n$ we may extend it to a partition $t^\prime_0 < \dotsb < t^\prime_{n^\prime-1} < T^\prime \leq t^\prime_{n^\prime}$ with $t^\prime_i - t^\prime_{i-1} > \delta$ for all $i=1, \dotsc, n^\prime$ and $t^\prime_i = t_i$ for all $0 \leq i \leq n$; moreover we have $\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) \leq \max_{1 \leq i \leq n^\prime} \sup_{t^\prime_{i-1} \leq s < t < t^\prime_i} r(f(s),f(t))$ and therefore
+\begin{align*}
+w^\prime(f,\delta, T) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \\
+&\leq \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n^\prime} \sup_{t^\prime_{i-1} \leq s < t < t^\prime_i} r(f(s), f(t)) \\
+&\leq \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T^\prime \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \\
+&= w(f, \delta, T^\prime)\\
+\end{align*}
+
+(ii) follows from the fact that for fixed $\delta > 0$, $T>0$ and any valid partition $t_1 < \dotsb < t_{n-1} < T \leq t_n$ we have $0 \leq t_i \leq T+\delta$ for all $1 \leq i \leq n$ and therefore by the triangle inequality
+\begin{align*}
+\sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) &\leq \sup_{t_{i-1} \leq s < t < t_i} r(f(s), g(s)) +\sup_{t_{i-1} \leq s < t < t_i} r(g(s), g(t)) + \sup_{t_{i-1} \leq s < t < t_i} r(g(t), f(t)) \\
+&\leq \sup_{t_{i-1} \leq s < t < t_i} r(g(s), g(t))  + 2 \sup_{0 \leq t \leq T+\delta} r(g(t), f(t))
+\end{align*}
+Now take the maximum over $1 \leq i \leq n$ and the infimum over all partitions.
+
+To see the right continuity in (iii), let $T>0$, $\delta>0$ and $\epsilon > 0$ be given and pick a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ such that $\min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta$ and $\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \leq w^\prime(f,\delta, T) + \epsilon$.  Using the fact that $w^\prime(f,\delta, T)$ is a nondecreasing function of $\delta$, the existence of this partition shows that $w^\prime(f,\delta^\prime, T) < w^\prime(f,\delta, T) +\epsilon$ for all $\delta^\prime -\delta < \frac{1}{2}\min_{1 \leq i \leq n} (t_i - t_{i-1})$.  The fact that $\lim_{\delta \to 0^+} w^\prime(f,\delta, T) = 0$ follows by the same argument as in Lemma \ref{SkorohodJ1ModulusOfContinuity}.
+
+To see (iv) we know that there exist $\lambda_n$ such that $\lim_{n \to \infty} \sup_{0 \leq t \leq T+\delta}\abs{\lambda_n(t) - t} = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq T+\delta} r(f_n(t), f(\lambda_n(t))) = 0$.  Define $\delta_n = \sup_{0 \leq t \leq T}\abs{\lambda_n(t+\delta) - \lambda_n(t)}$ and note that $\delta_n \to 0$.  If we let $t_0 < \dotsb t_{m-1} < \lambda(T) \leq t_m$ be a partition with $t_i - t_{i-1} > \delta_n$ for all $1 \leq i \leq m$ then it follows that $\lambda_n^{-1}(t_0) < \dotsb \lambda_n^{-1}(t_{m-1}) < T \leq \lambda_n^{-1}(t_m)$ and
+\begin{align*}
+\lambda^{-1}_n(t_i) - \lambda^{-1}_n(t_{i-1}) > \delta
+\end{align*}
+for all $1 \leq i \leq m$.  Since we also have $\sup_{\lambda^{-1}_n(t_{i-1})  \leq s < t < \lambda^{-1}_n(t_i) } r(f(s), f(t)) = \sup_{t_{i-1}  \leq s < t < t_i} r(f(\lambda_n(s)), f(\lambda_n(t)))$ it follows that $w^\prime(f \circ \lambda_n,\delta, T) \leq w^\prime(f,\delta_n, \lambda_n(T))$.  Using this fact, (i), (ii)  and $\lim_{n \to \infty} \lambda_n(T) = T$ we get for any $\epsilon > 0$,
+\begin{align*}
+\limsup_{n \to \infty}  w^\prime(f_n,\delta, T) 
+&\leq \limsup_{n \to \infty} \left[ w^\prime(f \circ \lambda_n,\delta, T) + 2 \sup_{0 \leq t \leq T+\delta} r(f_n(t), f(\lambda_n(t)) \right] \\
+&=\limsup_{n \to \infty}  w^\prime(f \circ \lambda_n,\delta, T) \\
+&\leq \limsup_{n \to \infty}  w^\prime(f , \delta_n, \lambda_n(T)) \\
+&\leq \limsup_{n \to \infty}  w^\prime(f , \delta \vee \delta_n, T+\epsilon) \\
+&=w^\prime(f,\delta, T+\epsilon) 
+\end{align*}
+
+To see (v) define $w^\prime(f,\delta, T+) = lim_{\epsilon \to 0^+} w^\prime(f,\delta, T+\epsilon)$, then by the fact that $w^\prime(f_n,\delta, T)$ is non-decreasing in $T$ and (iv) we for every $\epsilon > 0$,
+\begin{align*}
+\limsup_{n \to \infty}  w^\prime(f_n,\delta, T+) &\leq \limsup_{n \to \infty}  w^\prime(f_n,\delta, T+\epsilon) \leq w^\prime(f,\delta, T+2\epsilon) 
+\end{align*}
+Now let $\epsilon \to 0^+$ to conclude that  $w^\prime(f,\delta, T+)$ is an upper semicontinuous function of $f$, hence Borel measurable.  Now we claim that 
+$w^\prime(f,\delta, T) = \lim_{n \to \infty} w^\prime(f,\delta, (T-1/n)+)$ which shows that $w^\prime(f,\delta, T)$ is Borel measurable.
+
+
+I believe that this last statement is supported by the following (which we should add to the statement of the Lemma):
+\begin{clm}$w^\prime(f,\delta, T)$ is a left continuous function of $T$
+\end{clm}
+Let $\epsilon > 0$ be given and using the existence of the left limit $\lim_{t \to T^-} f(t)$, pick $\rho > 0$ such that $\sup_{T - \rho \leq s < t < T} r(f(s), f(t)) < \epsilon/2$.  Since 
+$w^\prime(f,\delta, T)$ is non-decreasing in $T$, we know that $\lim_{t \to T^-} w^\prime(f,\delta, t)$ exists and $w^\prime(f,\delta, s) \leq \lim_{t \to T^-} w^\prime(f,\delta, t)$ for all $0 \leq s < T$.  For every $\eta < \rho$ we can pick a partition $t^\eta_0 < \dotsb < t^{\eta}_{m^\eta -1} < T - \eta \leq t^{\eta}_{m^\eta}$ with $\min_{1 \leq i \leq m^\eta} (t^\eta_i - t^\eta_{i-1}) > \delta$ and 
+\begin{align*}
+\max_{1 \leq i \leq m^\eta} \sup_{t^\eta_{i-1} \leq s < t < t^\eta_i} r(f(s),f(t)) &< w^\prime(f,\delta, T-\eta) + \epsilon/2 \leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon/2
+\end{align*}
+If for some such partition we have $t^\eta_{m^\eta} \geq T$ then we can conclude $w(f,\delta,T) \leq \max_{1 \leq i \leq m^\eta} \sup_{t^\eta_{i-1} \leq s < t < t^\eta_i} r(f(s),f(t)) \leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon/2$.  It that is not the case then
+we modify these chosen partitions to make partitions with which we can bound $w(f,\delta,T)$.  Specifically for each $\eta < \rho$ for which $t^\eta_{m^\eta} < T$, we define $\tilde{t}^\eta_j = t^\eta_j$ for $0 \leq j < m^\eta$ and define $\tilde{t}^\eta_{m^\eta} = T$.  It is clear from the properties of the partition $\lbrace t^\eta_i \rbrace$ and the fact we have only moved the rightmost endpoint of the partition further to the right that $\tilde{t}^\eta_0 < \dotsb < \tilde{t}^\eta_{m^\eta -1} < T \leq \tilde{t}^\eta_{m^\eta}$, that
+$\min_{1 \leq i \leq m^\eta} (\tilde{t}^\eta_i - \tilde{t}^\eta_{i-1}) \geq \min_{1 \leq i \leq m^\eta} (t^\eta_i - t^\eta_{i-1}) > \delta$ and for $1 \leq i < m^\eta$
+\begin{align*}
+\sup_{\tilde{t}^\eta_{i-1} \leq s < t < \tilde{t}^\eta_i} r(f(s),f(t))  &= \sup_{t^\eta_{i-1} \leq s < t < t^\eta_i} r(f(s),f(t))  \leq \sup_{t^\eta_{i-1} \leq s < t < t^\eta_i} r(f(s),f(t)) + \epsilon/2
+\end{align*}
+Moreover by the fact that $\eta < \rho$, we may pick a point $T^*$ such that  
+\begin{align*}
+(T - \rho) \vee t^\eta_{m^\eta-1} &< T^* < T - \eta \leq t^\eta_{m^\eta} < T
+\end{align*} 
+and therefore by breaking down the supremum into cases and using the triangle inequality 
+\begin{align*}
+&\sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < t < \tilde{t}^\eta_{m^\eta}} r(f(s),f(t)) \\
+&=\sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < t \leq T^*} r(f(s),f(t)) \vee \sup_{T^* \leq s < t < \tilde{t}^\eta_{m^\eta}} r(f(s),f(t)) \vee \sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < T^* < t < \tilde{t}^\eta_{m^\eta}} r(f(s),f(t)) \\
+&\leq \sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < t < \leq t^\eta_{m^\eta}} r(f(s),f(t)) \vee \sup_{T - \rho < s < t \leq T} r(f(s),f(t)) \vee \\
+&\sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < T^* < t < \tilde{t}^\eta_{m^\eta}} \left[ r(f(s),f(T^*)) + r(f(T^*), f(t)) \right] \\
+&\leq \sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < t < \leq t^\eta_{m^\eta}} r(f(s),f(t)) \vee \sup_{T - \rho < s < t \leq T} r(f(s),f(t)) \vee \\
+&(\sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < t < \leq t^\eta_{m^\eta}} r(f(s),f(t)) + \sup_{T - \rho < s < t \leq T} r(f(s),f(t)) ) \\
+&\leq \sup_{\tilde{t}^\eta_{m^\eta-1} \leq s < t < \leq t^\eta_{m^\eta}} r(f(s),f(t)) + \epsilon/2
+\end{align*}
+Thus we have 
+\begin{align*}
+w^\prime(f,\delta, T) \leq \max_{1 \leq i \leq m^\eta} \sup_{\tilde{t}^\eta_{i-1} \leq s < t < \tilde{t}^\eta_i} r(f(s),f(t))  &\leq 
+\max_{1 \leq i \leq m^\eta} \sup_{t^\eta_{i-1} \leq s < t < t^\eta_i} r(f(s),f(t)) + \epsilon/2 \\
+&\leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon
+\end{align*}
+Now since $\epsilon > 0$ was arbitrary we let $\epsilon \to 0$ and conclude $w^\prime(f,\delta, T)  \leq \lim_{t \to T^-} w^\prime(f,\delta, t) $.
+On the other hand it is clear from the fact that $w(f,\delta,T)$ is non-decreasing in $T$ that $\lim_{t \to T^-} w^\prime(f,\delta, t)  \leq w^\prime(f,\delta, T)$ and therefore $\lim_{t \to T^-} w^\prime(f,\delta, t)  = w^\prime(f,\delta, T)$.
+\end{proof}
+
+\begin{lem}\label{SkorohodInfiniteBorelGeneratedByProjections}For every $t \in [0,\infty)$ let $\pi_t : D([0,\infty); S) \to
+  S$ be the evaluation map $\pi_t(f) = f(t)$.  The Borel $\sigma$-algebra on $D([0,\infty); S)$ is
+  equal to $\sigma(\lbrace \pi_t \mid t \in [0,\infty) \rbrace)$ and
+  therefore $\mathcal{B}(D([0,\infty); S)) = D([0,\infty);
+  S) \cap \mathcal{B}(S)^{\otimes [0,\infty)}$.
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+TODO: Understand the Either and Kurtz construction and its relationship with Lindvall's.  One proposal is that the only difference is the manner in which we are embedding $D([0,\infty))$ in $D_0^\infty$ (accounting for the lack of linearity).  Here we define for each $n \in \naturals$ the map $c_n : D([0,\infty)) \to D([0,\infty])$ by $c_n(f)(t) = f(t \wedge n)$ and then map $f$ to $\Psi(f) = (c_1(f), c_2(f), \dotsc)$. The key things that we need to have be true are that
+\begin{itemize}
+\item[(i)] $\Psi$ is an injection
+\item[(ii)] $\Psi(D([0,\infty)))$ is closed in $D_0[0,\infty]^\infty$.
+\end{itemize}
+
+It is obvious that $\Psi$ is linear and furthermore if $f \neq 0$ the we pick $0 \leq t < \infty$ such that $f(t) \neq 0$ and then $n > t$ and it follows that $c_n(f)(t) = f(t) \neq 0$ thus $\Psi(f) \neq 0$.  
+
+\begin{lem}For each $m \in \naturals$, $c_m$ is continuous on the set 
+\begin{align*}
+D_0 = \lbrace f \in D([0,\infty);S) \mid \lim_{t \to \infty} f(t) \text{ exists and is finite} \rbrace
+\end{align*}  
+Furthermore, $\Psi(D)$ is closed.
+\end{lem}
+\begin{proof}
+Suppose $f_n \to f$ in $D_0$.  Then there exist $\lambda_n$ such that $\lim_{n \to \infty} \sup_{0 \leq t < \infty} r(f_n(\lambda_n(t)) , f(t)) = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t < \infty} \abs{\lambda_n(t) - t} = 0$.  We apply the sequence $c_m(f_n)(t) = f_n(t \wedge m)$.  
+\begin{align*}
+\sup_{0 \leq t < \infty} r(c_m(f_n)(\lambda_n(t)) , c_m(f)(t)) 
+&=\sup_{0 \leq t < \infty} r(f_n(\lambda_n(t) \wedge m) , f(t \wedge m)) \\
+&=\sup_{0 \leq t < \infty} r(f_n(\lambda_n(t) \wedge m) , f_n(\lambda_n(t \wedge m)))+ r( f_n(\lambda_n(t \wedge m)) , f(t \wedge m)) \\
+\end{align*}
+
+Note that 
+\begin{align*}
+\sup_{0 \leq t < \infty} r( f_n(\lambda_n(t \wedge m)) , f(t \wedge m)) = \sup_{0 \leq t \leq m} r( f_n(\lambda_n(t)) , f(t)) 
+\leq \sup_{0 \leq t < \infty} r( f_n(\lambda_n(t)) , f(t)) \to 0
+\end{align*}
+
+Oops.  It is not true that $\sup_{0 \leq t < \infty} r(f_n(\lambda_n(t) \wedge m) , f_n(\lambda_n(t \wedge m))) \to 0$ for a counterexample
+let $0 < x < \infty$ and define 
+\begin{align*}
+\lambda_n(t) = \begin{cases}
+(1-1/nx) t & 0 \leq t \leq x \\
+2t - x - 1/n & x < t < x+1/n \\
+t & t \geq x+1/n
+\end{cases}
+\end{align*}
+so that $f_n(\lambda_n(x) \wedge x) = f_n((x - 1/n) \wedge x) = f_n(x-1/n)$ and $f_n(\lambda_n(x \wedge x) = f_n(x)$.  If $f_n$ all have a jump of the same size $\epsilon>0$ at 
+$t=x$ it follows that $\sup_{0 \leq t < \infty} r(f_n(\lambda_n(t) \wedge m) , f_n(\lambda_n(t \wedge m))) \geq \epsilon > 0$.
+
+Note that this doesn't imply that $f \to f(\cdot \wedge n)$ isn't a continuous map necessarily we might just need to be more creative in finding the sequence $\lambda_n$.
+In fact the example $f = \characteristic{[x, \infty)}$ and $f_n = \characteristic{[x+1/n)}$ provide an example showing that $c_x$ is not continuous.  Can it still be true that $\Psi(D)$ is closed?
+\end{proof}
+
+TODO: Lindvall's approach only works with $S$ a linear space since we use multiplication to tamp things down.  Maybe there are some worthwhile exercises to be culled from that.
+For each $n \in \naturals$ we define 
+\begin{align*}
+g_n(t) &= \begin{cases}
+1 & 0 \leq t \leq n \\
+1 - t - n & n < t < n + 1 \\
+0 & t \geq n+1
+\end{cases}
+\end{align*}
+and for every $f \in D([0,\infty)$.
+
+\section{Banach Spaces}
+
+\begin{thm}[Principle of Uniform Boundedness]\label{PrincipleOfUniformBoundedness}Let $X$ be a Banach space, $Y$ be a normed vector space and
+  $A_\alpha : X \to Y$ be a family of bounded linear maps.  If for all
+  $v \in X$ we have $\sup_\alpha \norm{A_\alpha v} <\infty$ then
+  $\sup_\alpha \norm{A_\alpha} < \infty$.
+\end{thm}
+\begin{proof}
+For each $n \in \naturals$ let 
+\begin{align*}
+V_n &= \lbrace x \in X \mid \sup_\alpha
+\norm{A_\alpha x} > n \rbrace
+= \cup_\alpha \lbrace x \in X \mid \norm{A_\alpha x} > n \rbrace
+\end{align*}
+ and note that $V_n$ is open.
+Furthermore by our hypothesis we know that $\cap_{n=1}^\infty V_n =
+\emptyset$.  If follows from the Baire Category Theorem
+\ref{BaireCategoryTheorem} that some $V_n$ is not dense.  Thus there
+exists an $n \in \naturals$, $x \in X$ and $r > 0$ such that
+$\overline{B}(x,r) \cap V_n = \emptyset$; that is to say for all $y
+\in X$ such that $\norm{x-y} \leq r$ we have $\sup_\alpha
+\norm{A_\alpha y} \leq n$.  
+Now let $u \in X$ with
+$\norm{u} \leq 1$ and observe that by linearity for all $\alpha$ 
+\begin{align*} 
+\norm{A_\alpha u} &=
+r^{-1} \norm{A_\alpha ru}  \leq r^{-1}( \norm{A_\alpha (x + ru) } +
+                    \norm{A x}) \leq 2 r^{-1} n
+\end{align*}
+Therefore $\sup_\alpha \norm{A_\alpha} = \sup_\alpha \sup_{\norm{u}
+  \leq 1} \norm{A_\alpha u}  \leq 2 r^{-1} n < \infty$.
 \end{proof}
 
 \section{Riesz Representation}
@@ -2503,10 +2942,17 @@ Given a Radon measure on a locally compact Hausdorff space, all
 compactly supported continuous functions are integrable: $\int \abs{f}
 \, d\mu \leq \norm{f}_\infty \mu(supp(f)) < \infty$.  Thus such a
 measure yields a linear functional on $C_c(X)$.  Such functionals
-share another simple property.
+possess another simple property in addition to linearity.
 \begin{defn}A linear functional $\Lambda$ on $C_c(X)$ is said to be
   \emph{positive} if $f \geq 0$ implies $\Lambda(f) \geq 0$.
 \end{defn}
+
+The reader should be careful that we have not been using any type of
+topology on $C_c(X)$ at this point and in particular we are not claiming
+that the function defined by a Radon measure is continuous with respect to 
+any underlying topology.  In fact as we will see later, $C_c(X)$ is a normed vector space 
+(not complete) under the sup norm but it is only for finite Radon measures that the
+corresponding functional is continuous.
 
 It is clear that the linear functional defined by integration with
 respect to a Radon measure is positive.  The Riesz-Markov Theorem
@@ -2834,6 +3280,9 @@ from which we conclude that $\abs{\Lambda(f) - \int f \, d\mu} \leq
 2\epsilon$.  Since $\epsilon > 0$ was arbitrary we are done.
 \end{proof}
 
+TODO: The Riesz Representation Theorem itself; namely the dual space of $C_0(X)$ for a locally compact Hausdorff $X$ is 
+isomorphic to the Banach space of finite signed Radon measures with the total variation norm.
+
 \begin{defn}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
 Hausdorff topological space $S$.  
 \begin{itemize}
@@ -3078,13 +3527,15 @@ TODO: Specialize the definition of Radon measure in the presence of
 more assumptions on $X$ (in particular local compactness,
 $\sigma$-compactness, second countability).
 
-TODO: Are Radon measures automatically outer regular?
+TODO: Are Radon measures automatically outer regular?  Finite ones are
+I believe.
 
-Tao proves Riesz representation under assumption of local compactness
+Tao proves Riesz representation under assumption of local compactness, Hausdorff
 and $\sigma$-compactness.
 
-Kallenberg proves Riesz representation under assumption of LCH and second countability (this is more general than the Tao
-result as $\sigma$-compactness implies second countability (I think))
+Kallenberg proves Riesz representation under assumption of LCH and
+second countability (this is less general than the Tao
+result as lcscH implies LCH $\sigma$-compact)
 and targets Radon measures.  Our results taken from Arveson are more
 general as the remove the second countability assumption.
 
@@ -3096,7 +3547,10 @@ measures adds anything to the picture.
 Arveson has some well known lecture notes that prove Riesz on general
 LCH spaces
 and emphasizes Radon measures (it also explores how Baire measures figure in the
-picture).  I have chosen to follow these notes.
+picture).  I have chosen to follow these notes.  Note that Arveson
+mentions that the lcscH approach of Kallenberg avoids the distinction
+between Baire and Borel sets (sounds like the $\sigma$-algebras agree
+in this case).
 
 Fremlin probably has some very general account of Reisz representation
 (of course).
@@ -3265,7 +3719,7 @@ For $A$ and $s$ as above define
 \section{Integration in Banach Spaces}
 
 Our prior development of measure and integration theory made use of the
-order structure on the reals in various places and as a
+special properties of the reals in various places and as a
 result the theory does not hold for functions with values in arbitrary
 vector spaces.  As we shall soon see it is useful to be able to
 integrate functions with vector space values (in particular Banach
@@ -3370,6 +3824,7 @@ Now we have the following extension result
   $Y$.  Moreover if $C$ is a bound on $A$ the $C$ is also a bound on $\overline{A}$.
 \end{lem}
 \begin{proof}
+TODO:
 \end{proof}
 
 As is usual to compute with integrals it is imperative to connect the
@@ -3418,9 +3873,125 @@ TODO
 TODO
 \end{proof}
 
+\begin{prop}\label{ClosedOperatorOfRiemannIntegral}Let $X$ and $Y$ be
+  Banach spaces, let $A$ be a closed linear map from $X$ to $Y$ and
+  let $f : [a,b] \to X$ be continuous such that
+\begin{itemize}
+\item[(i)] $f(t) \in \mathcal{D}(A)$ for all $a \leq t \leq b$
+\item[(ii)] $Af : [a,b] \to Y$ is continuous
+\end{itemize}
+then it follows that $\int_a^b f(t) \, dt \in \mathcal{D}(A)$ and
+\begin{align*}
+A \int_a^b f(t) \, dt &= \int_a^b A f(t) \, dt
+\end{align*}
+\end{prop}
+\begin{proof}
+
+TODO
+\end{proof}
+
 \subsection{Bochner Integrals}
 
+TODO: We develop Bochner integrals on $\sigma$-finite measure spaces;
+does it exist without that assumption?  What if one uses nets for
+convergence of simple functions instead of sequences?
+
+TODO: Preliminaries on norming subspaces.
+
 TODO:
+The Bochner integral is the analogue of a vector valued integral using
+general measure theory.  Though it can be developed in a bit more
+generality, we define it here for Banach space valued functions.  
+The first thing to do is to observe that the defintion of simple functions
+extends trivially to this context.
+\begin{defn}Given a set $(\Omega, \mathcal{A})$, a Banach space $X$
+  sets $A_1, \dotsc, A_n \subset \Omega$ and $v_1, \dotsc, v_n \in X$ a
+  linear combination $v_1
+  \characteristic{A_1} + \cdots + v_n \characteristic{A_n}$ is called
+  a \emph{simple function}.
+\end{defn}
+
+\begin{lem}\label{SimpleVectorValuedFunctions}A function $f : \Omega \to X$ is simple if and only it
+  takes a finite number of values.  A simple function is measurable if
+  an only if $f^{-1}(v_j)$ is measurable for each of its distinct
+  values $v_j \in X$.
+\end{lem}
+\begin{proof}
+The proof of Lemma \ref{SimpleFunctions} applies here with essentially
+no changes.
+\end{proof}
+
+From this point on we will tacitly assume that all simple functions
+are measurable. Integrals of simple functions can be defined in the obvious way.
+
+The natural way to proceed would be to observe that $X$ can be given
+the Borel $\sigma$-algebra and thus we can talk of measurable
+functions.  One might then try to show that all measurable functions
+can be approximated by simple functions and the integral can be
+extended by use of such approximations.  In fact that is a little too much to hope for in a
+non-separable Banach space (not all measurable functions can be thus
+approximated) 
+and we have to restrict ourselves to the class of functions that can be approximated
+by simple functions.  We'll have to spend a bit of time understanding
+this class of functions. 
+
+\begin{defn}Let $(\Omega,\mathcal{A})$ be a measurable space and let
+  $X$ be a Banach space then a function $f : \Omega \to X$ is said to
+  be \emph{strongly measurable} if and only if there exist simple
+  functions $f_n : \Omega \to X$ such that $f_n(\omega)$ converges to 
+$f(\omega)$ for  all $\omega \in \Omega$.
+\end{defn}
+
+Intuitively strongly measurable functions must have some kind of
+countability restriction since they are a limit of a countable number
+of finite valued functions.  This is indeed true and is at the heart
+of matter why can't approximate a general Borel measurable function
+with simple functions.  To make this precise we need a couple of
+definitions before stating a theorem that provides a descriptive
+characterization of strongly measurable functions.
+
+\begin{defn}Let $\Omega$ be a set, a function $f : \Omega \to X$ is
+  \emph{separably valued} if there exists a closed separable subspace $V
+  \subset X$ such that $f(\Omega) \subset V$.  
+\end{defn}
+
+\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space, a function $f : \Omega \to X$ is
+  \emph{weakly measurable} if for every $\lambda \in X^*$ the function
+  $\lambda \circ f : \Omega \to \reals$ is measurable. 
+\end{defn}
+
+\begin{thm}Let $(\Omega, \mathcal{A})$ be a measurable space and $X$
+  be a Banach space then $f$ is strongly measurable if and only if $f$
+  is separably valued and weakly measurable.  In fact it suffices to
+  show that $f$ is separably valued and $\lambda \circ f$ is
+  measurable for $\lambda$ in a norming subspace of $E^*$.
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
+It is useful to note that one cannot approximate any more functions by
+using strongly measurable functions rather than just simple functions.
+\begin{cor}A pointwise limit of strongly measurable functions is strongly measurable.
+\end{cor}
+\begin{proof}
+TODO
+\end{proof}
+
+We also have the following useful consequence that shows that a
+strongly measurable function is a separably valued Borel measurable
+function.  In particular, all measurable functions with values in a
+separable Banach space are strongly measurable.
+
+Now we introduce a $\sigma$-finte measure and consider the measure
+space $(\Omega, \mathcal{A}, \mu)$.  
+\begin{defn}Given a set $(\Omega, \mathcal{A})$, a Banach space $X$,
+  sets $A_1, \dotsc, A_n \in \mathcal{A}$ with $\mu(A_j) < \infty$ for
+  $j=1, \dotsc, n$ and $v_1, \dotsc, v_n \in X$ a
+  linear combination $v_1
+  \characteristic{A_1} + \cdots + v_n \characteristic{A_n}$ is called
+  a \emph{$\mu$-simple function}.
+\end{defn}
 
 \section{Differentiation in Banach Spaces}
 

@@ -871,3 +871,48 @@ An alternative approach is a more constructive one using the Fejer kernel.
     p_n(x)} = 0$.
 \end{cor}
 
+\section{Baire Category}
+The following theorem is surprisingly important; particularly in
+laying down the foundational results of functional analysis.
+\begin{thm}\label{BaireCategoryTheorem}Let $U_n$ be a countable collection of open dense sets in a
+  complete metric space $(S,d)$, then $\cap_{n=1}^\infty U_n$ is dense.
+\end{thm}
+\begin{proof}
+To see that $\cap_{n=1}^\infty U_n$ is dense it suffices to show that
+intersects every open set in $S$.  So let $V$ be an open set be given.
+
+By density of $U_1$ we
+know that $U_1 \cap V$ is nonempty and open.  Pick an arbitrary point
+$x_1 \in U_1 \cap V$ and select an open ball $B(x_1;
+r_1)$ such that $\overline{B}(x_1, r_1) \subset U_1 \cap V$ and $r_1 \leq 1$.  By density of $U_2$ we
+know that $U_2 \cap B(x_1, r_1) \neq \emptyset$ and therefore we can
+select an $x_2 \in U_2 \cap B(x_1, r_1)$.  Since $U_2 \cap B(x_1,
+r_1)$ is open we may pick an $r_2 > 0$ such that $B(x_2, r_2) \subset
+U_2 \cap B(x_1, r_1)$ and moreover by assuming that $0 < r_2 <(
+r_1-d(x_1,x_2))/2 \wedge 1/2$ we get $\overline{B}(x_2, r_2) \subset
+B(x_1, r_1)$ as well (since if $d(y,x_2) \leq r_2$ then by triangle
+inequality $d(x_1,y) \leq d(x_1,x_2) + d(x_2,y) < (r_1 + d(x_1,x_2))/2
+< r_1$). 
+
+Suppose we have constructed $x_1, \dotsc, x_n$ and $r_1, \dotsc, r_n$
+with the property that $B_j(x_j, r_j) \subset U_j \cap B(x_{j-1},
+r_{j-1}) \subset U_1 \cap \dotsb \cap U_j$, $\overline{B}(x_j, x_j)
+\subset B(x_{j-1}, r_{j-1})$ and $r_j < 1/j$ for all $j=2, \dotsc, n$.  The arguing
+just as above by density of $U_{n+1}$ we know that $B(x_n, r_n) \cap
+U_{n+1}$ is nonempty and open and therefore we may pick $x_{n+1} \in
+B(x_n, r_n) \cap U_{n+1}$ and $0 < r_{n+1} \leq 1/(n+1)$ small enough such that
+$\overline{B}(x_{n+1}, r_{n+1}) \subset B(x_n,r_n) \cap U_{n+1}$.
+
+\begin{clm}$x_1, x_2, \dotsc$ is a Cauchy sequence and $\lim_{n\to
+    \infty} x_n \in \cap_{n=1}^\infty U_n$.
+\end{clm}
+For a given $N \in \naturals$ and $n,m \geq N$, we know that $x_n,x_m
+\in B(x_N, r_N)$ and thus $d(x_m, x_n) < 2 r_N \leq 2/N$; thus $x_1,
+x_2, \dotsc$ is Cauchy.  By completeness of $S$ we may take the limit $x =
+\lim_{n \to \infty} x_n$.  Let $n \in \naturals$.  By construction,
+$x_m \in B(x_n, r_n)$ for all $m \geq n$ and therefore $x \in
+\overline{B}(x_n, r_n)$.  Also by construction $\overline{B}(x_{n+1}, r_{n+1})
+\subset B(x_n, r_n) \subset U_{n}$ so we see that $x \in
+\cap_{n=1}^\infty U_n$.
+\end{proof}
+

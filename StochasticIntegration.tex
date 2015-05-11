@@ -37,6 +37,19 @@ Let $\tau_n$ be a localizing sequence for $M$ so that $M_{t \wedge \tau_n} - M_0
 almost surely.  Thus $M$ is a martingale.  Since $M$ is bounded, in fact it is uniformly integrable by Example \ref{DominatedImpliesUniformlyIntegrable}
 \end{proof}
 
+There is property that characterizes when a local martingale is in fact a martingale.  We give the definition; the concept will reappear in a subsequent chapter when discussing the Doob Decomposition for continuous time submartingales. 
+\begin{defn}An $\mathcal{F}$-adapted process $X$ is said to be of \emph{class D} if and only if the set $\lbrace X_\tau \characteristic{\tau < \infty} \mid \tau \text{ is an $\mathcal{F}$-optional time}\rbrace$ is uniformly integrable.  $X$ is said to be of \emph{class DL} (or \emph{locally of class D}) if for every $0 \leq C < \infty$ the set
+$\lbrace X_\tau \mid \tau \text{ is an $\mathcal{F}$-optional time with }\tau \leq C\rbrace$ is uniformly integrable.
+\end{defn}
+TODO: Maybe a better exercise since I'm not sure we'll ever use this result.
+\begin{prop}A local martingale is a martingale if and only if is of class DL.
+\end{prop}
+\begin{proof}
+The fact that a martingale is of class DL follows immediately from the Optional Sampling Theorem \ref{OptionalSamplingContinuous} and Corollary \ref{ConditionalExpectationsUniformlyIntegrable}  for by Optional Sampling for any $0 \leq C < \infty$ and $\mathcal{F}$-optional time $\tau$ we have $X_\tau = \cexpectationlong{\mathcal{F}_\tau}{X_C}$.  
+
+Now suppose that a local martingale $X$ is of class DL.  Since $X$ is a local martingale we know that it is adapted.  Apply the class DL property to constant optional times we see that $X_t$ is integrable for every $0 \leq t < \infty$.  Let $\tau_n$ be a localizing sequence for $X$ so that for all $0 \leq s < t < \infty$ and $n \in \naturals$ we have $\cexpectationlong{\mathcal{F}_s}{X_{\tau_n \wedge t}} = X_{\tau_n \wedge s}$ a.s.  Since $\tau_n \uparrow \infty$ a.s. we know that $X_{\tau_n \wedge s} \toas X_s$ and $X_{\tau_n \wedge t} \toas X_t$.  Since $X$ is of class DL we know that $X_{\tau_n \wedge t}$ is uniformly integrable we conclude know that $\cexpectationlong{\mathcal{F}_s}{X_{\tau_n \wedge t}} \toas \cexpectationlong{\mathcal{F}_s}{X_{t}}$ and therefore stringing the equalities together we see that $X$ is a martingale.
+\end{proof}
+
 \begin{lem}Let $\mathcal{F}$ be a right continuous filtration, $M$ be a cadlag $\mathcal{F}$-local martingale with localizing sequence $\tau_n$ and let $\sigma_n$ be an arbitrary sequence of bounded optional times such that $\sigma_n \uparrow \infty$, then $\tau_n \wedge \sigma_n$ is a localizing sequence for $M$.  In particular the space of cadlag $\mathcal{F}$-local martingales is a linear space.
 \end{lem}
 \begin{proof}
@@ -47,7 +60,7 @@ Given $\tau_n$ and $\sigma_n$ as in the hypothesis and by our first claim we ass
 Lastly if we are given $M$ and $N$ local martingales, take $\tau_n$ and $\sigma_n$ to be bounded localizing sequences for $M$ and $N$ respectively and by the previous claim, we know that $\tau_n \wedge \sigma_n$ is a joint localizing sequence for $M$ and $N$.   Therefore $(aM + bN)^{\tau_n \wedge \sigma_n} - a M_0 - b N_0$ is a martingale for all $n \geq 0$.
 \end{proof}
 
-\begin{lem}\label{LocalMartingaleLocalProperty}Let $\tau_n$ be a sequence of optional times such that $\tau_n \uparrow \infty$ a.s.  and let $M$ be an $\mathcal{F}$-adapted process.  Then $M$ is a local martingale if an only if $M^{\tau_n}$ is for all $n\geq 0$.
+\begin{lem}\label{LocalMartingaleLocalProperty}Let $\tau_n$ be a sequence of optional times such that $\tau_n \uparrow \infty$ a.s.  and let $M$ be an $\mathcal{F}$-adapted process.  Then $M$ is a local martingale if an only if $M^{\tau_n}$ is for all $n\geq 0$.9
 \end{lem}
 \begin{proof}
 TODO:
@@ -340,7 +353,7 @@ TODO: We used continuity of the local martingale $M$ to reduce ourselves to the 
 \begin{align*}
 [M,N]^\tau = [M^\tau, N^\tau] = [M^\tau, N] \text{ a.s.}
 \end{align*}
-If we define $[M] = [M,M]$ then it is the case that $[M]$ is almost surely non-decreasing.  The process $[M,N]$ is called the \emph{quadratic covariation} of $M$ and $N$ and the process $[M]$ is called the \emph{quadratic variation} of $M$.
+If we define $[M] = [M,M]$ then it is the case that $[M]$ is almost surely non-decreasing.  If $M$ is a bounded martingale then $M^2 - [M]$ is an $L^2$ bounded martingale.  The process $[M,N]$ is called the \emph{quadratic covariation} of $M$ and $N$ and the process $[M]$ is called the \emph{quadratic variation} of $M$.
 \end{thm}
 \begin{proof}
 We first consider the case when $M=N$ and we first assume that $M$ is a bounded martingale such that $M_0=0$ and $\abs{M_t} \leq C$ for some deterministic constant $C > 0$.  To motivate the construction recall the basic fact that for a function $f$ of bounded variation we have the Lebesgue-Stieltjes integral $f^2 = 2 \int f \, df$.  We suspect that in a stochastic setting such an identity won't quite work (because the Stieltjes integral doesn't work).  That suspicion is correct and what does turn out to be true is that once we have defined a stochastic integral, $M^2 - 2 \int M \, dM = [M]$.  Of course our plan is to use the quadratic variation to define stochastic integrals so this reasoning is getting pretty circular here; nonetheless if we suspend belief for moment and define something that \emph{looks like} it could be $\int M \, dM$ then we might get the right definition for quadratic variation.  Motivated by these observations, our first step is to come up with an approximation of $M$ by predictable step processes so we can create an approximation of $\int M \, dM$.  For each $n > 0$ define the sequence of optional times $\tau^n_0, \tau^n_1, \dotsc$ by $\tau^n_0 = 0$ and 
@@ -349,15 +362,20 @@ We first consider the case when $M=N$ and we first assume that $M$ is a bounded 
 &=\tau^n_{k-1} + \tau^n_1 \circ \theta_{\tau^n_{k-1}}
 \end{align*}
 
-Claim: Either $\tau^n_k = \infty$ or $M_{\tau^n_k} = j/2^n$ for some random $j \in \integers$.
+\begin{clm}$\lim_{k \to \infty} \tau^n_k = \infty$ almost surely for every $n \in \naturals$.
+\end{clm}
+This follows from the continuity of $M_t$.  Indeed if $\lim_{k \to \infty} \tau^n_k = T < \infty$ then there exists a $\delta$ such that $\abs{M_t - M_T} < 2^{-n-1}$ for all $T-\delta < t \leq T$.  Because $\lim_{k \to \infty} \tau^n_k = T$ there exists a $K$ such that $T-\delta < \tau^n_K < \tau^n_{K+1} \leq T$ and thus by the triangle inequality we have $\abs{M_{\tau^n_{K+1}} - M_{\tau^n_K}} < 2^{-n}$.  On the other hand, by the definition of $\tau^n_{K+1}$ we know that $\abs{M_{\tau^n_{K+1}} - M_{\tau^n_K}} = 2^{-n}$ which is a contradiction.
 
+\begin{clm}Either $\tau^n_k = \infty$ or $M_{\tau^n_k} = j/2^n$ for some random $j \in \integers$.
+\end{clm}
 This is a simple induction on $k$ for each $n$ using continuity of $M_t$, the fact that $M_0 = 0$ and $\tau^n_0=0$.
 
-Claim: Suppose $M_t = j/2^n$ for some $n \geq 0$ and $k \geq 0$ and let $K = \max \lbrace k \mid \tau^n_k \leq t$, then $M_{\tau^n_K} = j/2^n$.
-
+\begin{clm}Suppose $M_t = j/2^n$ for some $n \in \naturals$ and $j \in \integers$ and let $K = \max \lbrace k \mid \tau^n_k \leq t \rbrace$, then $M_{\tau^n_K} = j/2^n$.
+\end{clm}
 The claim is trivially true if $\tau^n_K = t$.  If this is not true by the previous claim we have $i \in \integers$ such that $M_{\tau^n_k} = i/2^n$.  By definition of $K$, we have $\tau^n_K < t < \tau^n_{K+1}$ and by definition of $\tau^n_{K+1}$, continuity of $M_t$ and the intermediate value theorem we know that $\abs{M_t - M_{\tau^n_K}} = \abs{i-j}2^{-n}< 2^{-n}$.  Thus $i=j$ and the claim is verified.
 
-Claim: For every $n \geq 0$ and $k \geq 0$ there exists a random integer $l \geq 0$ such that $\tau^n_k = \tau^{n+1}_l$.
+\begin{clm}For every $n \geq 0$ and $k \geq 0$ there exists a random integer $l \geq 0$ such that $\tau^n_k = \tau^{n+1}_l$.
+\end{clm}
 
 We proceed by induction on $k$ with the case $k=0$ being true because $\tau^n_0 = 0$ for all $n \geq 0$.  Having assumed $M_0 = 0$ we see that we can pick $0 \leq j < \infty$ such that $M_{\tau^n_k} = j/2^n$. (TODO: what to say when $\tau^n_k = \infty$; not clear that we can assert some $\tau^{n+1}_l=\infty$ since we may be oscillating with small enough amplitude?)  Let $i$ be the largest index such that $\tau^{n+1}_i \leq \tau^n_k$.  Since $M_{\tau^n_k} = j/2^n = 2j/2^{n+1}$ we can apply the previous claim to see that $M_{\tau^{n+1}_i}  = M_{\tau^n_k}$.  By the intermediate value theorem we know that $M_{\tau^n_{k-1}} < M_{\tau^{n+1}_i}  \leq M_{\tau^n_k}$. Because $\abs{M_{\tau^{n+1}_i} - M_{\tau^n_{k-1}}} = \abs{M_{\tau^{n}_k} - M_{\tau^n_{k-1}}} = 2^{-n}$ by definition of $\tau^n_k$ we know that $\tau^{n+1}_i \geq \tau^n_k$ and therefore $\tau^{n+1}_i = \tau^n_k$.
 
@@ -404,7 +422,8 @@ Having defined the quadratic variation $[M]$, we now extend it to the quadratic 
 
 Now we reduce the definition of $[M,N]$ to the case $[M]$ with $M_0 = 0$ by a pair of reductions.
 
-Claim: $[M-M_0,N-N_0] = [M,N]$ a.s.
+\begin{clm}$[M-M_0,N-N_0] = [M,N]$ a.s.
+\end{clm}
 
 Simply note that 
 \begin{align*}
@@ -412,7 +431,8 @@ MN - (M-M_0)(N-N_0) &= M_0 N_0 + M_0 N + N_0 M
 \end{align*}
 is a local martingale and therefore $(M-M_0)(N-N_0) - [M,N] = -(MN - (M-M_0)(N-N_0) ) + MN - [M,N]$ is a local martingale.
 
-Claim: $[M,N] = \frac{1}{4} ([M+N] - [M-N])$
+\begin{clm}$[M,N] = \frac{1}{4} ([M+N] - [M-N])$
+\end{clm}
 
 Note that 
 \begin{align*}
@@ -421,7 +441,8 @@ Note that
 is a local martingale.
 
 Lastly we prove the behavior of localization under optional times.
-Claim: Let $\tau$ be an optional time, then $[M,N]^\tau = [M^\tau, N^\tau] = [M^\tau,N]$ a.s.
+\begin{clm}Let $\tau$ be an optional time, then $[M,N]^\tau = [M^\tau, N^\tau] = [M^\tau,N]$ a.s.
+\end{clm}
 
 For the first reduction, suppose that $\tau$ is an optional time then we know that
 \begin{align*}
@@ -432,18 +453,66 @@ which is a local martingale by Lemma \ref{LocalMartingaleLocalProperty} and more
 M^\tau N - [M,N]^\tau &= M^\tau (N - N^\tau)  + M^\tau N^\tau - [M,N]^\tau
 \end{align*}
 is a local martingale which shows that $[M,N]= [M^\tau,N]$ a.s.
-
-TODO: This proof does not make it clear that when $M$ is a martingale we know $M^2 - [M]$ is in fact a martingale (is that always true?  According to Rogers and Williams we know that $[M]$ is a uniformly integrable martingale whenever $M$ is $L^2$-bounded).  Here is an argument that may too complicated but shows that if $[M]$ exists for bounded martingales $M$ then $[M]$ exists for $L^2$ bounded martingales $M$ and $M^2 - [M]$ is a uniformly integrable martingale.
-
-By $L^2$ boundedness we know that for every optional time $\tau$ we have $\abs{M^2_\tau} \leq (M^*)^2$ and moreover by Doob's inequality $\expectation{(M^*)^2} \leq 2 \norm{M} < \infty$ so $\lbrace M^2_\tau \mid \tau \text{ is an optional time}\rbrace$ is a uniformly integrable family (Example \ref{DominatedImpliesUniformlyIntegrable}).  Therefore by Lemma \ref{LpConvergenceUniformIntegrability} for any sequence of optional times $\tau_n$ such that $\tau_n \uparrow \infty$ a.s. we have not only $M^2_{\tau_n} \toas M^2_\infty$ but also $M_{\tau_n} \tolp{2} M_\infty$.
-
-Now, define $\tau_n = \inf \lbrace t \geq 0 \mid M_t = n \rbrace$ which is an optional time by Lemma \ref{HittingTimesContinuous}.  TODO: Show $\tau_n \uparrow \infty$ a.s.  As in the proof above we know that $[M^{\tau_m}] = [M^{\tau_n}]$ on $[0,\tau_m]$ for any $m \leq n$ and therefore we can define $[M] = \lim_{n \to \infty} [M^{\tau_n}]$ and we have $[M]^{\tau_n} = [M^{\tau_n}]$ on $[0,\tau_n]$.  Moreover, since each $[M^{\tau_n}]$ is increasing we know that $[M^{\tau_n}]_\infty = [M^{\tau_n}]_{\tau_n} \uparrow [M]_\infty$ and therefore we can apply Monotone Convergence to conclude $[M^{\tau_n}]_\infty \tolp{1} [M]_\infty$.  TODO: Finish.
 \end{proof}
 
+The behavior of continuous local martingales is intimately connected with the behavior of its quadratic variation process.  This is actually a very useful thing because, as we will see later on, the quadratic variation is generally a simpler object (in particular the quadratic variation of a stochastic integral will be an random Stieltjes integral rather than a full blown stochastic integral).  The source of the close connection is the local martingale property of $M^2 - [M]$.  The connection is much more direct in the case that $M^2 - [M]$ is a regular martingale since then we conclude $\expectation{M^2_t} = \expectation{[M]_t}$.  For this reason it is useful to have some conditions that guarantee that $M^2 - [M]$ is a martingale. In the proof of Theorem \ref{OptionalQuadraticCovariation} we have already seen that this is true when $M$ is a bounded continuous martingale (in fact in this case $M^2 - [M]$ is an $L^2$ bounded martingale).  Without too much more work we show that $M^2-[M]$ is a martingale whenever $M$ is $L^2$ bounded. 
+
+\begin{prop}\label{OptionalQuadraticCovariationL2BoundedMartingale}A continuous local martingale $M$ is an $L^2$ bounded martingale if and only if $\expectation{M_0^2} < \infty$ and $\expectation{[M]_\infty} < \infty$.  In this case it is also true that $M^2 - [M]$ is a uniformly integrable martingale.
+\end{prop}
+\begin{proof}
+First we reduce the first equivalence to the case in which $M_0=0$.  Suppose we have the equivalence in this case. If $M$ is an $L^2$ bounded martingale then it follows that $M_0$ is $L^2$ and by the triangle inequality $M_t - M_0$ is an $L^2$ bounded martingale starting at zero thus we know $\expectation{[M]_\infty}= \expectation{[M-M_0]_\infty} < \infty$.  On the other hand if $M$ is a continuous local martingale with $\expectation{M_0^2} < \infty$ and $\expectation{[M]_\infty}<\infty$ then $M-M_0$ is a continuous local martingale starting at zero with $\expectation{[M-M_0]_\infty} = \expectation{[M]_\infty}<\infty$ thus $M-M_0$ is an $L^2$ bounded martingale; it follows that $M$ is an $L^2$ bounded martingale.
+
+Next we note a simple fact that we'll use a few times during the remaining proof.  Suppose that $\tau_n$ is a localizing sequence for $M$ such that $M^{\tau_n}$ is a bounded martingale.  Then from Theorem \ref{OptionalQuadraticCovariation} we have $(M^{\tau_n})^2 - [M^{\tau_n}] = (M^2 - [M])^{\tau_n}$ is an $L^2$ bounded martingale; in particular $\tau_n$ is a localizing sequence for $M^2 - [M]$ as well.
+
+
+Suppose that $M$ is an $L^2$ bounded martingale.  By the $L^2$ Martingale Convergence Theorem \ref{LpMartingaleConvergenceContinuous} we know that there is a square integrable random variable $M_\infty$ such that $M_t \toas M_\infty$, $M_t \tolp{2} M_\infty$ and $M_t = \cexpectationlong{\mathcal{F}_t}{M_\infty}$ for all $0 \leq t < \infty$.  Letting $\tau_n$ be a localizing sequence for $M$ with $M^{\tau_n}$ a bounded martingale.  Then by the above comment we know that $\expectation{M^2_{\tau_n \wedge t}} = \expectation{[M]_{\tau_n \wedge t}}$ for all $0 \leq t < \infty$ and $n \in \naturals$.  By Doob's $L^2$ inequality we have $\expectation{\sup_{0 \leq t \leq \infty} M_t^2} \leq 4 \expectation{M^2_\infty}$ and therefore by two applications of Dominated Convergence
+\begin{align*}
+\lim_{t \to \infty} \lim_{n \to \infty} \expectation{M^2_{\tau_n \wedge t}} &= \expectation{M^2_\infty}
+\end{align*}
+By two applications of Monotone Convergence and the above
+\begin{align*}
+\expectation{[M]_{\infty}} &=\lim_{t \to \infty} \lim_{\tau_n \to \infty} \expectation{[M]_{\tau_n \wedge t}} = \lim_{t \to \infty} \lim_{\tau_n \to \infty} \expectation{M^2_{\tau_n \wedge t}}
+=\expectation{M^2_\infty} < \infty
+\end{align*}
+
+Conversely suppose that $M$ is a continuous local martingale starting at zero such that $\expectation{[M]_\infty} < \infty$.  Again, let $\tau_n$ localize $M$ to a bounded martingale so that we have $\expectation{M^2_{\tau_n \wedge t}} = \expectation{[M]_{\tau_n \wedge t}}$ for all $0 \leq t < \infty$ and $n \in \naturals$.  Now we apply Fatou's Lemma and the fact that $[M]$ is increasing to see that
+\begin{align*}
+\expectation{M^2_{t}} &\leq \lim_{n \to \infty} \expectation{M^2_{\tau_n \wedge t}} = 
+\lim_{n \to \infty} \expectation{[M]_{\tau_n \wedge t}} \leq \expectation{[M]_{\infty}} < \infty
+\end{align*}
+and thus $M$ is $L^2$ bounded.  The same reasoning without taking the limits shows that for a fixed $0 \leq t < \infty$ and all $n \in \naturals$
+\begin{align*}
+\expectation{M^2_{\tau_n \wedge t}} &= \expectation{[M]_{\tau_n \wedge t}} \leq
+\expectation{[M]_{\infty}} < \infty
+\end{align*}
+so by Lemma \ref{BoundedLpImpliesUniformlyIntegrable} we know that $M_{\tau_n \wedge t}$ is uniformly integrable.  Thus from $\tau_n \uparrow \infty$ a.s. we conclude that for every $s < t$ we have
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{M_t} &= 
+\lim_{n \to \infty}\cexpectationlong{\mathcal{F}_s}{M_{\tau_n \wedge t}} = 
+\lim_{n \to \infty} M_{\tau_n \wedge s} = M_s \text{ a.s. }
+\end{align*}
+and we see that $M$ is a martingale.
+
+Now suppose that $M$ is an $L^2$ bounded martingale.  Again we have $M_\infty$ with $M_t \tolp{2} M_\infty$ and by  Doob's $L^2$ inequality \ref{DoobLpInequalityContinuous} we have $\expectation{\sup_{0 \leq t \leq \infty} M^2_t} \leq 4 \expectation{M_\infty^2} < \infty$.  Moreover by the first part of the proposition we know that $\expectation{[M]_\infty} < \infty$.    From the fact that $[M]$ is increasing we know that for all $0 \leq t < \infty$ we have $\abs{M^2_{t} - [M]_{t}} \leq \sup_{0 \leq u \leq \infty} M^2_u + [M]_\infty$ where we have noted the right hand side is integrable. Thus by Example \ref{DominatedImpliesUniformlyIntegrable} we know that $M^2 - [M]$ is uniformly integrable.
+
+To show the martingale property, let $\tau_n$ be a localizing sequence for $M^2 - [M]$ and let $0 \leq s < t < \infty$ be fixed.  We know that
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{M^2_{\tau_n \wedge t} - [M]_{\tau_n \wedge t}} = M^2_{\tau_n \wedge s} - [M]_{\tau_n \wedge s} \text{ a.s.}
+\end{align*}
+As above we know that $\abs{M^2_{\tau_n \wedge t} - [M]_{\tau_n \wedge t}} \leq \sup_{0 \leq u \leq \infty} M^2_u + [M]_\infty$ and therefore $M^2_{\tau_n \wedge t} - [M]_{\tau_n \wedge t}$ is uniformly integrable.  Therefore
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{M^2_{t} - [M]_{t}} 
+&= \lim_{n \to \infty} \cexpectationlong{\mathcal{F}_s}{M^2_{\tau_n \wedge t} - [M]_{\tau_n \wedge t}} \\
+&= \lim_{n \to \infty}   M^2_{\tau_n \wedge s} - [M]_{\tau_n \wedge s}  
+= M^2_{s} - [M]_{s} \text{ a.s.}
+\end{align*}
+\end{proof}
+
+We can leverage the above facts to prove a type of continuity property of quadratic variation that is the root of what will become our dominated convergence theorem for stochastic integrals.
 \begin{lem}\label{QuadraticCovariationAndContinuity}Let $M_n$ be a sequence of continuous local martingales, then $M_n^* \toprob 0$ if and only if $[M_n]_\infty \toprob 0$.
 \end{lem}
 \begin{proof}
-First we assume that $M_n^* \toprob 0$.  Let $\epsilon > 0$ be given and define $\tau_n = \inf \lbrace t \geq 0 \mid (M_n)_t > \epsilon \rbrace$ which is an optional time because of the continuity of $M_n$.  Moreover, we know that $M^{\tau_n}_n$ is a bounded continuous martingale and therefore $(M^2_n - [M_n])^{\tau_n} = (M^{\tau_n}_n)^2 - [M^{\tau_n}_n]$ is a martingale starting at zero which shows that for all $t \geq 0$,
+First we assume that $M_n^* \toprob 0$.  Let $\epsilon > 0$ be given and define $\tau_n = \inf \lbrace t \geq 0 \mid (M_n)_t > \epsilon \rbrace$ which is an optional time because of the continuity of $M_n$ and the right continuity of $\mathcal{F}$ (Lemma \ref{HittingTimesContinuous} and Lemma \ref{WeaklyOptionalCharacterization}).  Moreover, we know that $M^{\tau_n}_n$ is a bounded continuous martingale and therefore $(M^2_n - [M_n])^{\tau_n} = (M^{\tau_n}_n)^2 - [M^{\tau_n}_n]$ is a martingale starting at zero which shows that for all $t \geq 0$,
 \begin{align*}
 \expectation{[M^{\tau_n}_n]_t} &=  \expectation{(M^{\tau_n}_n)_t^2} \leq \epsilon^2
 \end{align*}
@@ -456,29 +525,13 @@ Now we can use a Markov bound to see that
 \end{align*}
 To see that this shows convergence in probability, first note that by our assumption that $M^*_n \toprob 0$ we have $\lim_{n \to \infty} \probability{[M_n]_\infty > \epsilon} \leq \epsilon$.  But now note that the left hand limit is a decreasing function of $\epsilon$ and therefore 
 \begin{align*}
-\lim_{n \to \infty} \probability{[M_n]_\infty > \epsilon} &\leq \lim_{\epsilon \to 0^+} \lim_{n \to \infty} \probability{[M_n]_\infty > \epsilon} \leq \lim_{\epsilon \to 0^+} \epsilon
+\lim_{n \to \infty} \probability{[M_n]_\infty > \epsilon} &\leq \lim_{\delta \to 0^+} \lim_{n \to \infty} \probability{[M_n]_\infty > \delta} \leq \lim_{\delta \to 0^+} \delta = 0
 \end{align*}
 thus as $\epsilon > 0$ was arbitrary we have shown $[M_n]_\infty \toprob 0$.
 
-Now we assume that $[M_n]_\infty \toprob 0$.  As before let $\epsilon > 0$ be given and this time define $\tau_n = \inf \lbrace t \geq 0 \mid [M_n]_t > \epsilon^2$ which is an optional time by continuity of $[M_n]$.  
+Now we assume that $[M_n]_\infty \toprob 0$.  As before let $\epsilon > 0$ be given and this time define $\tau_n = \inf \lbrace t \geq 0 \mid [M_n]_t > \epsilon^2 \rbrace$ which is an $\mathcal{F}$-optional time by $\mathcal{F}$-adaptedness of $[M_n]$, continuity of $[M_n]$ and the right continuity of $\mathcal{F}$.  
 
-Claim: Let $N$ be a continuous local martingale with $N_0 = 0$ and $\expectation{[N]_\infty} < \infty$, the $N$ is in fact an $L^2$ bounded martingale.
-
-To see the claim, pick $\sigma_n = \inf \lbrace t \geq 0 \mid \abs{N_t} > n \rbrace$ and we have seen that $\sigma_n$ is a localizing sequence for $N$ such that $N^{\sigma_n}$ is a bounded martingale.  Therefore $(N^{\sigma_n})_t^2 - [N^{\sigma_n}]$ is a martingale starting at zero and for all $t \geq 0$ because $[N]_t$ is increasing
-\begin{align*}
-\expectation {(N^{\sigma_n})_t^2} &= \expectation{[N^{\sigma_n}]_t} \leq \expectation{[N]_\infty} < \infty
-\end{align*}
-Therefore for fixed $t \geq 0$, the sequence $(N^{\sigma_n})^2_t$ is $L^2$ bounded and therefore the sequence $N^{\sigma_n}_t$ is uniformly integrable (Lemma \ref{BoundedLpImpliesUniformlyIntegrable}) which shows us that 
-\begin{align*}
-\cexpectation{\mathcal{F}_s}{N_t}   &= \lim_{n \to \infty} \cexpectation{\mathcal{F}_s}{N^{\sigma_n}_t} = \lim_{n \to \infty} N^{\sigma_n}_s = N_s
-\end{align*}
-and by Fatou's Lemma we have 
-\begin{align*}
-\expectation{N_t^2} &\leq \liminf_{n \to \infty} \expectation { (N^{\sigma_n})_t^2} \leq \expectation{[N]_\infty}
-\end{align*}
-which shows that $N$ is an $L^2$ bounded martingale.
-
-Now we can apply the claim to the local martingale $M^{\tau_n}_n$ for which by definition of $\tau_n$ we have $[M^{\tau_n}_n]_\infty = [M_n]_{\tau_n} \leq \epsilon^2$ and therefore a fortiori $\expectation {[M^{\tau_n}_n]_\infty} < \infty$.  Thus we conclude that $M^{\tau_n}_n$ is an $L^2$-bounded martingale and therefore $(M^{\tau_n}_n)^2 - [M^{\tau_n}_n]$ is a uniformly integrable martingale starting at zero.  We are now in a position to mimic the first part of the proof.   By the martingale property and the defintion of $\tau_n$ we have for all $0 \leq t \leq \infty$,
+Now we can apply Proposition \ref{OptionalQuadraticCovariationL2BoundedMartingale} to the local martingale $M^{\tau_n}_n$ for which, by definition of $\tau_n$, we have $[M^{\tau_n}_n]_\infty = [M_n]_{\tau_n} \leq \epsilon^2$ and therefore $\expectation {[M^{\tau_n}_n]_\infty} < \infty$.  We conclude that $M^{\tau_n}_n$ is an $L^2$-bounded martingale and therefore $(M^{\tau_n}_n)^2 - [M^{\tau_n}_n]$ is a uniformly integrable martingale starting at zero.  We are now in a position to mimic the first part of the proof.   By the martingale property and the defintion of $\tau_n$ we have for all $0 \leq t \leq \infty$,
 \begin{align*}
 \expectation{(M^{\tau_n}_n)_t^2} &= \expectation{ [M^{\tau_n}_n]_t } = \expectation{ [M_n]_{\tau_n \wedge t} } \leq \epsilon^2
 \end{align*}
@@ -487,8 +540,8 @@ and by a Markov bound and Doob's $L^2$ inequality applied to the $L^2$ bounded m
 \probability{M^*_n \geq \epsilon} &\leq \probability{M^*_n \geq \epsilon; \tau_n < \infty }  + \probability{M^*_n \geq \epsilon ; \tau_n = \infty} \\
 &\leq \probability{\tau_n < \infty }  + \probability{(M^{\tau_n}_n)^* \geq \epsilon} \\
 &\leq \probability{\tau_n < \infty }  + \epsilon^{-1} \expectation{(M^{\tau_n}_n)^*} \\
-&\leq \probability{[M_n]_\infty > \epsilon^2 }  + 2 \epsilon^{-1} \expectation{(M^{\tau_n}_n)^2_\infty} \\
-&\leq \probability{[M_n]_\infty > \epsilon^2 }  + 2 \epsilon \\
+&\leq \probability{[M_n]_\infty > \epsilon^2 }  + 4 \epsilon^{-1} \expectation{(M^{\tau_n}_n)^2_\infty} \\
+&\leq \probability{[M_n]_\infty > \epsilon^2 }  + 4 \epsilon \\
 \end{align*}
 and as before take the limit as $n \to \infty$ and then as $\epsilon \to 0$ to see that $M^*_n \toprob 0$.
 \end{proof}
@@ -1176,7 +1229,8 @@ V^{(n,s)}_t(\omega)  &= \sum_{j=0}^{\ceil{2^n T}} V_{j/2^n + s}(\omega) \charact
 \end{align*}
 Note that $V^{(n,s)} \in \mathcal{E}$ and moreover it is jointly measurable in $(s,t,\omega)$.  Also note that $V^{(n,s)}_t = V^{(n, s+1/2^n)}_t$ for all $s \geq 0$ and all $t \geq 0$.
 
-Claim: Let $f \in L^2([0,T])$ then $\lim_{h \downarrow 0} \int_0^T (f(s) - f((s - h) \vee 0))^2 \, ds= 0$.
+\begin{clm}Let $f \in L^2([0,T])$ then $\lim_{h \downarrow 0} \int_0^T (f(s) - f((s - h) \vee 0))^2 \, ds= 0$.
+\end{clm}
 
 By Lemma \ref{LpApproximationByContinuous} we can find bounded continuous $f_n$ such that $f_n \tolp{2} f$.  By the triangle inequality, continuity of $f_n$, Dominated Convergence and the translation invariance of Lebesgue measure we get for every $n$
 \begin{align*}
@@ -1194,7 +1248,8 @@ It is a simple matter to extend this result to a bounded adapted process $V$.  I
 \lim_{h \downarrow 0} \expectation{\int_0^T (V_s - V_{(s-h) \vee 0})^2 \, ds} &= \expectation{\lim_{h \downarrow 0} \int_0^T (V_s - V_{(s-h) \vee 0})^2 \, ds} = 0
 \end{align*}
 
-Claim: $\lim_{n \to \infty } \expectation {\int_0^T \int_0^1 (V^{(n,s)}_t - V_t)^2 \, ds \, dt} = 0$.
+\begin{clm}$\lim_{n \to \infty } \expectation {\int_0^T \int_0^1 (V^{(n,s)}_t - V_t)^2 \, ds \, dt} = 0$.
+\end{clm}
 
 First off, from $V^{(n,s)}_t = V^{(n, s+1/2^n)}_t$, the definition of $V^{(n,s)}_t$ and a change of integration variable we write
 \begin{align*}

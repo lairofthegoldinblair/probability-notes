@@ -14,6 +14,8 @@
 \DeclareMathOperator*{\diam}{diam}
 \DeclareMathOperator*{\sgn}{sgn}
 \DeclareMathOperator*{\IdentityMatrix}{Id}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator*{\essinf}{ess\,inf}
 
 \newtheorem{thm}{Theorem}[chapter]
 \newtheorem{cor}[thm]{Corollary}
@@ -609,6 +611,24 @@ can assume $0 \leq \xi_n \leq 1$.
 &= e^{-a \sum_{n=1}^\infty \expectation{\xi_n} }
 \end{align*}
 which shows that $\sum_{n=1}^\infty \expectation{\xi_n} < \infty$.
+\end{proof}
+
+\begin{xca}\label{MeasurabilityKernelExtraParameter}Let $\mu : S \times \mathcal{T} to [0,1]$ be a probability kernel and let $f : U \times T \to \reals$ be measurable then $\int f(u, t) \, \mu(s, dt)$ is $\mathcal{U} \times \mathcal{S}$ measurable.
+\end{xca}
+\begin{proof}
+Assume first that $f$ is the characteristic function of a set $A \times B \in \mathcal{U} \otimes \mathcal{T}$.  Then 
+\begin{align*}
+\int \characteristic{ A\times B} (u, t) \, \mu(s, dt) &= \characteristic{A}(u) \mu(s, B)
+\end{align*}
+which is clearly measurable since $\mu$ is a kernel.  We know that sets $A \times B$ are a $\pi$-system generating $\mathcal{U} \otimes \mathcal{T}$ so can argue with monotone classes to extend to general characteristic functions.  To be specific, let 
+\begin{align*}
+\mathcal{C} &= \lbrace C \in \mathcal{U} \otimes \mathcal{T}  \mid \int \characteristic{C}(u,t) \, \mu(s,dt) \text{ is measurable} \rbrace
+\end{align*}
+If $A \in \mathcal{C}$ and $B \in \mathcal{C}$ with $A \subset B$ then 
+$\int \characteristic{ B \setminus A} (u, t) \, \mu(s, dt) = \int \characteristic{ B } (u, t) \, \mu(s, dt) - \int \characteristic{A} (u, t) \, \mu(s, dt)$ is measurable so that $B \setminus A \in \mathcal{C}$.  Similarly if $A_1 \subset A_2 \subset \dotsb$ with $A_n \in \mathcal{C}$ then defining $A = \cup_{n=1}^\infty A_n$ we have by Monotone Convergence 
+$\int \characteristic{A}(u,t) \, \mu(s, dt) = \lim_{n \to \infty} \int \characteristic{A_n}(u,t) \, \mu(s, dt)$ is a limit of measurable function hence is measurable.  This shows that $\mathcal{C}$ is a $\lambda$-system and therefore by the $\pi$-$\lambda$ Theorem \ref{MonotoneClassTheorem} we know that $\mathcal{C} \subset \mathcal{U}\otimes \mathcal{T}$.  By linearity it follows that $\int f(u,t) \, \mu(s, dt)$ is measurable for all simple functions.
+
+Now given an arbitrary non-negative measurable $f : U \times T \to [0,\infty)$ we find an increasing sequence of simple functions $f_n \uparrow f$, note that for each fixed $u \in U$ it remains true that the sections $f_n(u, \cdot) \uparrow f(u, \cdot)$ and thus we can use Monotone Convergence to see that $\int f(u,t) \, \mu(s,dt) = \lim_{n \to \infty} \int f_n(u,t) \, \mu(s,dt)$ for every $(u,s) \in U \times S$ so that $\int f(u,t) \, \mu(s,dt)$ is measurable.  For an arbitrary measurable function $f$ just write $f = f_+ - f_-$ and use the result for non-negative measurable functions.
 \end{proof}
 
 \begin{xca}Suppose $\xi$ is a random variable, let $\mathcal{F}$ be
@@ -1299,53 +1319,6 @@ Levy-Jessen Theorem \ref{JessenConditioningLimits} we conclude
 which shows the result.
 \end{proof}
 
-\begin{xca}[Kallenberg Exercise 17.6]Let $B_t$ be a Brownian motion starting at zero and $\tau$ be an optional
-  time.  Show that $\expectation{\tau^{1/2}} < \infty$ implies
-  $\expectation{B_\tau} = 0$ and $\expectation{\tau} < \infty$ implies
-  $\expectation{B^2_\tau} = \expectation{\tau}$.
-\end{xca}
-\begin{proof}For $\tau$ bounded by a constant $T$ these are both consequences of
-  Optional Stopping.  For then since $B_t$ is a martingale we have
-\begin{align*}
-\expectation{B_\tau} &=
-\expectation{\cexpectationlong{\mathcal{F}_\tau}{B_T}} =
-\expectation{B_T} = 0
-\end{align*}
-and since $B^2_t - t$ is a martingale we have
-\begin{align*}
-\expectation{B^2_\tau} - \expectation{\tau}&=
-\expectation{\cexpectationlong{\mathcal{F}_\tau}{B^2_T - T}} =
-\expectation{B^2_T - T} = 0
-\end{align*}
-Now consider the sequence of bounded optional times $\tau \wedge n$.
-If we have $\expectation{\tau^{1/2}} < \infty$ the we can apply the
-BDG inequality (Lemma \ref{BDGInequalities}) to the stopped process
-$B^\tau$ (which is a priori only a continuous local martingale) to see that there is a
-constant $c_1 > 0$ such that $\expectation{\sup_{0 \leq t \leq \tau}
-  \abs{B_t}} \leq c \expectation{\tau^{1/2}} < \infty$ and therefore
-since $\abs{B_{\tau \wedge n}} \leq \sup_{0 \leq t \leq \tau}
-\abs{B_t}$ we can use Dominated Convergence to see that
-$\expectation{B_\tau} = \lim_{n\to \infty} \expectation{B_{\tau \wedge
-    n}} = 0$.  Similarly when $\expectation{\tau} < \infty$, we get a constant $c_2 > 0$ such that $\expectation{\sup_{0 \leq t \leq \tau}
-  \abs{B^2_t}} \leq c_2 \expectation{\tau} < \infty$ and therefore
-Dominated Convergence gives us 
-\begin{align*}
-\expectation{B^2_\tau} &= \lim_{n \to \infty} \expectation{B^2_{\tau
-    \wedge n}} = \lim_{n \to \infty} \expectation{\tau \wedge n} = \expectation{\tau}
-\end{align*}
-
-While we're at it, we can provide a different proof that
-$\expectation{B_\tau} = 0$ under the weaker assumption
-$\expectation{\tau} < \infty$ that doesn't rely on the BDG
-inequalities.  As above, it suffices to show that $\abs{B_{\tau \wedge
-    t}}$ is dominated by an integrable random variable.  The proof here is taken from Peres and Morters.  For
-each integer $k \geq 0$ consider 
-\begin{align*}
-M_k = \sup_{0 \leq t \leq 1} \abs{B_{t+k} - B_k}
-\end{align*}
-TODO: Finish
-\end{proof}
-
 \begin{xca}Let $B_t$ be a standard Brownian motion and define $\tau =
   \inf \lbrace t > 0 \mid B_t = 1 \rbrace$.  Show that
   $B_\tau = 1$ almost surely and $\expectation{\tau^c} < \infty$ for
@@ -1447,8 +1420,8 @@ with mean $\frac{s}{t} B_t$.  Thus $\cexpectationlong{B_t}{s^{-1} B_s}
   shows the backward martingale property.
 
 Now we need to show that $\cap_{t > 0} \bigvee_{u \geq t} \sigma(B_u)$
-is a trivial $\sigma$-field (Lemma \ref{Blumenthal01LawBrownianMotion})
-for then for all $t > 1$, 
+is a trivial $\sigma$-field (Lemma \ref{Blumenthal01LawBrownianMotion});
+from that it follows that for all $t > 1$, 
 \begin{align*}
 t^{-1} B_t &= \cexpectationlong{\bigvee_{u \geq t} \sigma(B_u)}{B_1} 
 \end{align*}
@@ -1460,6 +1433,232 @@ and by Jessen-Levy and triviality we have
 \end{align*}
 
 TODO: Finish the $L^p$ argument; presumably we need $L^p$ boundedness.
+\end{proof}
+
+\begin{xca}[Kallenberg Exercise 13.19]\label{BrownianBridgeMartingale}Let $X$ be a Brownian bridge,
+  show that $(1-t)^{-1}X_t$ is a martingale with respect to the
+  induced filtration and is not $L^1$ bounded on $[0,1)$.
+\end{xca}
+\begin{proof}
+Since $X_t$ is Gaussian with variance $t -t^2$ we have 
+\begin{align*}
+\frac{1}{1-t} \expectation{\abs{X_t}} &= \frac{1}{1-t}\frac{2}{\sqrt{2\pi(t - t^2)}}
+                          \int_0^\infty x e^{-x^2/2(t - t^2)} \, dx = \sqrt{\frac{2t}{\pi(1-t)}}
+\end{align*}
+which shows that $(1 -t)^{-1}X_t$ is integrable on $[0,1)$ but not
+$L^1$ bounded.  
+
+Let $\mathcal{F}_t = \sigma((1-s)^{-1} X_s; 0 \leq s \leq t)$.  If we let $B$ be a Brownian motion then for $0 \leq s < t < 1$ we have
+\begin{align*}
+\frac{1}{(1-t)(1-s)} \expectation{X_t X_s} 
+&=\frac{s(1-t)}{(1-t)(1-s)} = \frac{s}{1-s}
+\end{align*}
+which is does not depend on $t$.  Since $(1-t)^{-1}X_t$ is Gaussian this implies that for every $0 \leq r_1 < \dotsb < r_m \leq s < t < 1$ we have
+$((1-r_1)^{-1}X_{r_1}, \dotsc, (1-r_m)^{-1}X_{r_m}, (1-s)^{-1}X_{s}, (1-t)^{-1}X_{t})$ is a Gaussian random vector and the same is true of
+$((1-r_1)^{-1}X_{r_1}, \dotsc, (1-r_m)^{-1}X_{r_m}, (1-t)^{-1}X_{t} - (1-s)^{-1}X_{s})$ (Example \ref{LinearTransformationGaussian}).
+By Proposition \ref{GaussianIndependence} we know that $(1-t)^{-1}X_{t} - (1-s)^{-1}X_{s} \Independent ((1-r_1)^{-1}X_{r_1}, \dotsc, (1-r_m)^{-1}X_{r_m})$ and
+thus for all $0 \leq s < t < 1$ by Lemma \ref{IndependencePiSystem} we have $(1-t)^{-1}X_{t} - (1-s)^{-1}X_{s} \Independent \mathcal{F}_s$. 
+The martingale property follows in the standard way,
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{(1-t)^{-1}X_t}
+&=\cexpectationlong{\mathcal{F}_s}{(1-t)^{-1}X_t - (1-s)^{-1}X_s} + 
+\cexpectationlong{\mathcal{F}_s}{(1-s)^{-1}X_s} \\
+&=\expectation{(1-t)^{-1}X_t - (1-s)^{-1}X_s} + (1-s)^{-1}X_s =   (1-s)^{-1}X_s\\
+\end{align*}
+\end{proof}
+
+\begin{xca}\label{ProductOfIndependentMarkov}Let $X$ be a Markov process in $(S, \mathcal{S})$  on time scale $T$ with
+  transition kernel $\mu_{s,t}$ and
+  let $Y$ be a Markov process in $(U, \mathcal{U})$ on time scale $T$ with 
+  transition kernel $\nu_{s,t}$.  Show that if $X$ and $Y$ are
+  independent
+  that $(X,Y)$ is a Markov process in $(S \times U, \mathcal{S}
+  \otimes \mathcal{U})$ on time scale $T$ with transition kernel $\mu_{s,t}
+  \otimes \nu_{s,t}$ (note that kernel $\mu_{s,t}
+  \otimes \nu_{s,t}$ is just the pointwise product measure).
+\end{xca}
+\begin{proof}
+TODO: Finish
+
+Pick $t < u \in T$.  Let $C \in \mathcal{S}$ and $D \in \mathcal{U}$ and compute using the
+independence of $X$ and $Y$, let
+\begin{align*}
+&\probability{(X_u,Y_u) \in A \times B ; (X_t, Y_t) \in C
+  \times D} \\
+&=\probability{X_u \in A ; X_t \in C} \probability{Y_u \in B ; Y_t \in  D} \\
+&=\expectation{\cprobability{X_u \in A}{X_t} ; X_t \in C}
+\expectation{\cprobability{Y_u \in B}{Y_t} ;  Y_t \in  D} \\
+&=\expectation{\cprobability{X_u \in A}{X_t} ; X_t \in C;
+\cprobability{Y_u \in B}{Y_t} ;  Y_t \in  D} \\
+\end{align*}
+which since sets of the form $ (X_t, Y_t) \in C
+  \times D$ are a generating
+$\pi$-system of $\sigma(X_t,Y_t)$ we the claim is shown by Lemma
+\ref{ConditionalExpectationExtension}.
+
+Finally we conclude that $\cprobability{(X_u, Y_u) \in
+  \cdot}{(X_t,Y_t)} = \mu_{t,u} \otimes \nu_{t,u}$ 
+by the uniqueness of product measure.
+\end{proof}
+
+\begin{xca}[Kallenberg Exercise 17.1]Show that if $M$ is a local
+  martingale and $\xi$ is a $\mathcal{F}_0$-measurable random variable 
+then $N_t = \xi M_t$ is also a local martingale.
+\end{xca}
+\begin{proof}
+Let $\tau_n$ be a localizing sequence for $(M-M_0)$ so that
+$(M-M_0)^{\tau_n}$ is a martingale for all $n \in \naturals$ and
+$\tau_n \uparrow \infty$ almost surely.  Let $\sigma_n = \tau_n
+\characteristic{\abs{\xi} \leq n}$.  Since $\xi$ is almost surely
+finite then it follows that $\sigma_n \uparrow \infty$ almost surely
+(specifically on the intersection of the event that $\tau_n \uparrow
+\infty$ and $\abs{\xi} < \infty$).  Moreover since $\lbrace \sigma_n
+\leq t \rbrace = \lbrace\tau_n \leq t \rbrace \cup \lbrace \abs{\xi}
+\leq n \rbrace$ and $\xi$ is $\mathcal{F}_0$-measurable it follows
+that $\sigma_n$ are $\mathcal{F}$-optional times.  Now note that
+$\xi M$ is $\mathcal{F}$-adapted since $\xi$ is
+$\mathcal{F}_0$-measurable
+and for each $n \in \naturals$  and $0 \leq t < \infty$ we have
+\begin{align*}
+\expectation{\abs{\xi M_{t \wedge \sigma_n} - \xi M_0}} 
+&= \expectation{\abs{\xi} \abs{M_{t \wedge \tau_n} - M_0} ; \abs{\xi}
+  \leq n} 
+\leq  n \expectation{( M -
+  M_0)^{\tau_n}} < \infty
+\end{align*} 
+and moreover by the pullout rule of
+conditional expectation and the fact that $\tau_n$ localizes $M$,
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{(\xi M_{\sigma_n \wedge t} - \xi M_0)}
+&=\cexpectationlong{\mathcal{F}_s}{\xi  (M_{\sigma_n \wedge t} - M_0)
+  ; \abs{\xi} \leq n} \\
+&= \xi \characteristic{\abs{\xi} \leq n}  \cexpectationlong{\mathcal{F}_s}{M_{\tau_n \wedge t} - M_0} \\
+&= \xi \characteristic{\abs{\xi} \leq n} (M_{\tau_n \wedge s} - M_0) \\
+&= \xi M_{\sigma_n \wedge s} - \xi M_0
+\end{align*}
+showing that $(M-M_0)^{\sigma_n}$ is a martingale.
+\end{proof}
+
+\begin{xca}[Kallenberg Exercise 17.2]Show that a
+  local martingale $M$ with $M \geq 0$ for all $0 \leq t < \infty$
+  almost surely and $\expectation{M_0} < \infty$ is a
+  supermartingale.  Give an example to show that $M$ is not necessarily a martingale.
+\end{xca}
+\begin{proof}
+Let $\tau_n$ be a localizing sequence for $M$.  We know that $(M -
+M_0)^{\tau_n}$ is a martingale but by the integrability and 
+$\mathcal{F}_0$-measurability of $M_0$ we
+see that in fact $M^{\tau_n}$ is a martingale.  Now 
+since $M \geq 0$, $M_{\tau_n \wedge t} \toas M_t$ for all $0 \leq t < \infty$ and 
+Fatou's Lemma for conditional expectations we have for all $0 \leq s < t < \infty$
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{M_t} &\leq 
+\liminf_{n \to \infty}\cexpectationlong{\mathcal{F}_s}{M_{\tau_n \wedge t}}
+= \liminf_{n \to \infty} M_{\tau_n \wedge t} = M_{s}
+\end{align*}
+almost surely.  Choosing $s=0$ and taking expectations shows that $\expectation{M_t} \leq \expectation{M_0} < \infty$ 
+and therefore $M$ is a supermartingale.
+
+TODO: Do the last part.
+\end{proof}
+\begin{xca}[Kallenberg Exercise 17.4]Let $M_n$ be a sequence of continuous local
+  martingales starting at zero and let $\tau_n$ be a sequence of
+  optional times, then $(M^*_n)_{\tau_n} \toprob 0$ if and only if
+  $[M_n]_{\tau_n} \toprob 0$.  State and prove a corresponding result
+  for stochastic integrals.
+\end{xca}
+\begin{proof}
+Define $\tilde{M}_n = M_n^{\tau_n}$ and apply Lemma
+\ref{QuadraticCovariationAndContinuity} to conclude that
+$\tilde{M}_n^* \toprob 0$ if and only if $[\tilde{M}_n]_\infty \toprob
+0$.  Now note that 
+\begin{align*}
+\tilde{M}^*_n 
+&= \sup_{0 \leq t < \infty} \abs{(\tilde{M}_n)_t} 
+= \sup_{0 \leq t < \infty} \abs{(M_n)_{\tau_n \wedge t}} 
+= (M_n)^*_{\tau_n}
+\end{align*}
+and by Theorem \ref{OptionalQuadraticCovariation} we get
+\begin{align*}
+[\tilde{M}_n]_\infty
+&= [M^{\tau_n}_n]_\infty
+=[M_n]^{\tau_n}_\infty
+=[M_n]_{\tau_n}
+\end{align*}
+
+The corresponding result for stochastic integrals says that
+given continuous local martingales $M_n$, processes $V_n \in
+L(M_n)$ and optional times $\tau_n$ we have $\left(\int V_n \,
+dM_n\right)^*_{\tau_n} \toprob 0$ if and only if $\int_0^{\tau_n} V_n^2(s) \, d[M_n](s)
+\toprob 0$.  This follows from what we have just proven and 
+Lemma \ref{BasicPropertiesStochasticIntegralContinuousMartingale} to see
+\begin{align*}
+[\int V_n \, dM_n]_{\tau_n} &= \int_0^{\tau_n} V_n(s) \, d[M_n](s)
+\end{align*}
+\end{proof}
+
+\begin{xca}[Kallenberg Exercise 17.6]Let $B_t$ be a Brownian motion starting at zero and $\tau$ be an optional
+  time.  Show that $\expectation{\tau^{1/2}} < \infty$ implies
+  $\expectation{B_\tau} = 0$ and $\expectation{\tau} < \infty$ implies
+  $\expectation{B^2_\tau} = \expectation{\tau}$.
+\end{xca}
+\begin{proof}For $\tau$ bounded by a constant $T$ these are both consequences of
+  Optional Stopping.  For then since $B_t$ is a martingale we have
+\begin{align*}
+\expectation{B_\tau} &=
+\expectation{\cexpectationlong{\mathcal{F}_\tau}{B_T}} =
+\expectation{B_T} = 0
+\end{align*}
+and since $B^2_t - t$ is a martingale we have
+\begin{align*}
+\expectation{B^2_\tau} - \expectation{\tau}&=
+\expectation{\cexpectationlong{\mathcal{F}_\tau}{B^2_T - T}} =
+\expectation{B^2_T - T} = 0
+\end{align*}
+Now consider the sequence of bounded optional times $\tau \wedge n$.
+If we have $\expectation{\tau^{1/2}} < \infty$ the we can apply the
+BDG inequality (Lemma \ref{BDGInequalities}) to the stopped process
+$B^\tau$ (which is a priori only a continuous local martingale) to see that there is a
+constant $c_1 > 0$ such that $\expectation{\sup_{0 \leq t \leq \tau}
+  \abs{B_t}} \leq c \expectation{\tau^{1/2}} < \infty$ and therefore
+since $\abs{B_{\tau \wedge n}} \leq \sup_{0 \leq t \leq \tau}
+\abs{B_t}$ we can use Dominated Convergence to see that
+$\expectation{B_\tau} = \lim_{n\to \infty} \expectation{B_{\tau \wedge
+    n}} = 0$.  Similarly when $\expectation{\tau} < \infty$, we get a constant $c_2 > 0$ such that $\expectation{\sup_{0 \leq t \leq \tau}
+  \abs{B^2_t}} \leq c_2 \expectation{\tau} < \infty$ and therefore
+Dominated Convergence gives us 
+\begin{align*}
+\expectation{B^2_\tau} &= \lim_{n \to \infty} \expectation{B^2_{\tau
+    \wedge n}} = \lim_{n \to \infty} \expectation{\tau \wedge n} = \expectation{\tau}
+\end{align*}
+
+While we're at it, we can provide a different proof that
+$\expectation{B_\tau} = 0$ under the weaker assumption
+$\expectation{\tau} < \infty$ that doesn't rely on the BDG
+inequalities.  As above, it suffices to show that $\abs{B_{\tau \wedge
+    t}}$ is dominated by an integrable random variable.  The proof here is taken from Peres and Morters.  For
+each integer $k \geq 0$ consider 
+\begin{align*}
+M_k = \sup_{0 \leq t \leq 1} \abs{B_{t+k} - B_k}
+\end{align*}
+TODO: Finish
+\end{proof}
+
+\begin{xca}[Kallenberg Exercise 17.8] Let $X$ and $Y$ be continuous semimartingales show that
+  $[X+Y]_t^{1/2} \leq [X]_t^{1/2} + [Y]_t^{1/2}$ for all $0 \leq t <
+  \infty$ almost surely.
+\end{xca}
+\begin{proof}
+From bilinearity and the Cauchy Schwartz inequality Lemma
+\ref{CourregeCauchySchwartz} we have
+\begin{align*}
+[X+Y]_t &= [X]_t + 2[X,Y]_t + [Y]_t \leq  [X]_t + 2\abs{[X,Y]_t} +
+          [Y]_t \leq 
+[X]_t + 2[X]_t^{1/2}[Y]_t^{1/2} + [Y]_t = ([X]_t^{1/2} + [Y]_t^{1/2})^2
+\end{align*}
+for all $0 \leq t < t$ almost surely.
+The result follows by noting the non-negativity of quadratic
+variation and taking square rooots.
 \end{proof}
 
 \begin{xca}[Kallenberg Exercise 17.11]Let $X$ be a continuous
@@ -1502,38 +1701,21 @@ $\int U \, dX$ starts at zero we get almost surely
 and similarly with $V$ and the result follows.
 \end{proof}
 
-\begin{xca}\label{ProductOfIndependentMarkov}Let $X$ be a Markov process in $(S, \mathcal{S})$  on time scale $T$ with
-  transition kernel $\mu_{s,t}$ and
-  let $Y$ be a Markov process in $(U, \mathcal{U})$ on time scale $T$ with 
-  transition kernel $\nu_{s,t}$.  Show that if $X$ and $Y$ are
-  independent
-  that $(X,Y)$ is a Markov process in $(S \times U, \mathcal{S}
-  \otimes \mathcal{U})$ on time scale $T$ with transition kernel $\mu_{s,t}
-  \otimes \nu_{s,t}$ (note that kernel $\mu_{s,t}
-  \otimes \nu_{s,t}$ is just the pointwise product measure).
+\begin{xca}[Kallenberg Exercise 17.13]Let $X$ be Brownian bridge then
+  $X_{t \wedge 1}$ is a semimartingale.
 \end{xca}
 \begin{proof}
-TODO: Finish
-
-Pick $t < u \in T$.  Let $C \in \mathcal{S}$ and $D \in \mathcal{U}$ and compute using the
-independence of $X$ and $Y$, let
+We know from Exercise \ref{BrownianBridgeMartingale} that
+$Y_t = (1-t)^{-1}X_t$ is a martingale on $[0,1)$.  Now apply the local Ito
+Lemma to the semimartingale $(1 \wedge t ,(1-t)^{-1}X_t)$ using the
+function $f(t,x) = (1-t) x$ on the domain $(-\infty,1) \times \reals$ to see that
 \begin{align*}
-&\probability{(X_u,Y_u) \in A \times B ; (X_t, Y_t) \in C
-  \times D} \\
-&=\probability{X_u \in A ; X_t \in C} \probability{Y_u \in B ; Y_t \in  D} \\
-&=\expectation{\cprobability{X_u \in A}{X_t} ; X_t \in C}
-\expectation{\cprobability{Y_u \in B}{Y_t} ;  Y_t \in  D} \\
-&=\expectation{\cprobability{X_u \in A}{X_t} ; X_t \in C;
-\cprobability{Y_u \in B}{Y_t} ;  Y_t \in  D} \\
+X_{t \wedge 1} &= f(t,Y_t) - f(0,Y_0) = 
+\int_0^t (1-s) \, dY_s -\int_0^t Y_s \, ds
 \end{align*}
-which since sets of the form $ (X_t, Y_t) \in C
-  \times D$ are a generating
-$\pi$-system of $\sigma(X_t,Y_t)$ we the claim is shown by Lemma
-\ref{ConditionalExpectationExtension}.
+where the first stochastic integral is continuous local martingale and the second random Stieltjes integral is of finite variation.
 
-Finally we conclude that $\cprobability{(X_u, Y_u) \in
-  \cdot}{(X_t,Y_t)} = \mu_{t,u} \otimes \nu_{t,u}$ 
-by the uniqueness of product measure.
+TODO: Get all the details around the local Ito stuff spelled out.
 \end{proof}
 
 \begin{xca}\label{QuadraticCovariationMatrixVectorStochasticIntegral}Let
