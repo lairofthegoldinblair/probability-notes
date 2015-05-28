@@ -254,8 +254,10 @@ The version of Taylor's Formula above expresses the ``integral form''
 of the remainder term.  It is often useful to transform the remainder term in Taylor's Formula
 into the \emph{Lagrange form}.
 \begin{lem}\label{LagrangeFormRemainder}There is a number $c \in
-  (a,b)$ such that $\int_a^b
-R_n(b)= f^{(n+1)}(c) \frac{(b-a)^{n+1}}{(n+1)!}$
+  (a,b)$ such that 
+\begin{align*}
+\int_a^b R_n(b)&= f^{(n+1)}(c) \frac{(b-a)^{n+1}}{(n+1)!}
+\end{align*}
 \end{lem}
 \begin{proof}
 If $f^{(n+1)}(x)$ is constant on the interval $[a,b]$ then by explicit
@@ -640,8 +642,9 @@ therefore $x=y$ and $f(x)=f(y)$.
 
 Again using the triangle inequality we see
 \begin{align*}
-\lim_{j \to \infty} d^\prime(f(x_{n_j}), f(y_{n_j})) \leq \lim_{j \to \infty}
-d^\prime(f(x_{n_j}), f(x)) + d^\prime(f(x), f(y)) + d^\prime(f(y), f(y_{n_j})) = 0
+\lim_{j \to \infty} d^\prime(f(x_{n_j}), f(y_{n_j})) &\leq \lim_{j \to \infty}
+d^\prime(f(x_{n_j}), f(x)) + d^\prime(f(x), f(y)) + d^\prime(f(y), f(y_{n_j}))  \\
+&= 0
 \end{align*}
 which is the desired contradiction.
 \end{proof}
