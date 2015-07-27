@@ -100,7 +100,9 @@ outline of proof is to pick a countable dense subset $\lbrace x_n
 \naturals$.  Show this is a base of the topology.
 \end{proof}
 
-TODO:  Fun fact, there is a non-first countable topological space which is compact but not sequentially compact!  In first countable spaces sequential compactness is equivalent to 
+TODO:  Fun fact, there is a non-first countable topological space
+which is compact but not sequentially compact!  In first countable
+spaces sequential compactness is equivalent to 
 
 TODO: The goal of the next set of results is to show that separable
 complete metric spaces (actually Polish spaces which are those with
@@ -170,6 +172,12 @@ which implies $w \in V$ providing a contradiction of $U \cap V =
 \end{thm}
 \begin{proof}
 TODO:
+\end{proof}
+
+\begin{thm}\label{PolishImpliesBorel}A Polish space is Borel.
+\end{thm}
+\begin{proof}
+TODO
 \end{proof}
 
 Separation axioms tells us that we have enough open sets in a topology
@@ -1450,6 +1458,162 @@ where the last inequality follows Lemma \ref
 
 \section{Banach Spaces}
 
+We start with some of the standard examples of Banach spaces.
+
+\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space, let $B(\Omega)$ be space of bounded measurable functions $f : \Omega \to \reals$ and define $\norm{f}_\infty = \sup_{\omega \in \Omega} \abs{f(\omega)}$.
+\end{defn}
+
+\begin{prop}The space $B(\Omega)$ is a Banach space.
+\end{prop}
+\begin{proof}
+It is elementary that $B(\Omega)$ is a vector space : if $f$ is bounded and measurable with $\norm{f}_\infty$ then clearly $af$ is bounded measurable with bound $\abs{a}\norm{f}_\infty$ for all $a \in \reals$ and if $f$ and $g$ are bounded and measurable with bounds $M$ and $N$ respectively then $f+g$ is bounded and measurable with bound $M+N$.
+
+To see that $\norm{\cdot}_\infty$ is in fact a norm, first note that it is immediate from the definition that $\norm{f}_\infty \geq 0$ and $\norm{f}_\infty$ if and only if $f = 0$.  Let $f \in B(\Omega)$ and let $a \in \reals$ with $a \neq 0$.  Then for every $\epsilon>0$ we may find $\omega \in \Omega$ such that $\norm{f}_\infty - \epsilon/\abs{a} \leq \abs{f(\omega)}$.  It follows that $\abs{a} \norm{f}_\infty - \epsilon \leq \abs{a f (\omega)} \leq \norm{af}_\infty$.  Since $\epsilon >0$  was arbitrary we may take $\epsilon \downarrow 0$ to conclude $\abs{a} \norm{f}_\infty \leq \norm{af}_\infty$.  In a similar way we may find an $\omega \in \Omega$ such that 
+\begin{align*}
+\norm{af}_\infty - \epsilon &\leq \abs{af(\omega)} = \abs{a}\abs{f(\omega)} \leq \abs{a} \norm{f}_\infty
+\end{align*}
+and since $\epsilon > 0$ was arbitrary we conclude the opposite inequality $\norm{af}_\infty \leq \abs{a} \norm{f}_\infty$.  To see the triangle inequality let $f, g \in B(\Omega)$ be given.  For every $\omega \in \Omega$ we have $\abs{(f+g)(\omega)} \leq \abs{f(\omega)}+\abs{g(\omega)} \leq \norm{f}_\infty + \norm{g}_\infty$.  Now take the supremum over all $\omega$ to conclude $\norm{f+g}_\infty \leq \norm{f}_\infty + \norm{g}_\infty$.
+
+Lastly we have to show that $B(\Omega)$ is complete.  Let $f_n$ be a Cauchy sequence in $B(\Omega)$.  Thus for every $\epsilon > 0$ there exists and $n \in \naturals$ such that for all $m \geq n$ we have $\norm{f_n - f_m} < \epsilon$.  In particular, for every $\omega \in \Omega$ we have $\abs{f_n(\omega) - f_m(\omega)} \leq \norm{f_n - f_m} < \epsilon$ so that $f_n(\omega)$ is a Cauchy sequence in $\reals$ for every $\omega \in \Omega$.  By completeness of $\reals$ we know that $f_n$ converges pointwise and by Lemma \ref{LimitsOfMeasurable} we know that there is a measurable function $f : \Omega \to \reals$ such that $f_n \to f$.  
+
+Now note that for any $\epsilon > 0$ we can pick $N \in \naturals$ such that for $m,n \geq N$ we have $\norm{f_n-f_m}_\infty < \epsilon$ so by using the triangle inequality and taking limits over $m \in \naturals$ we get for every $\omega \in \Omega$ and $n \geq N$,
+\begin{align*}
+\abs{f (\omega) -f_n(\omega)}_\infty &\leq \lim_{m \to \infty} \abs{f_m(\omega) -f_n(\omega)} + \lim_{m \to \infty} \abs{f(\omega) -f_m(\omega)} 
+\leq \lim_{m \to \infty} \norm{f_m -f_n}_\infty \leq \epsilon
+\end{align*}
+Now using the fact with the triangle inequality we get $\abs{f(\omega)} \leq \abs{f(\omega) - f_n(\omega)} + \abs{f_n(\omega)} \leq \epsilon + \norm{f_n}_\infty$ which shows $f$ is bounded.  Taking the supremum over $\omega$ shows that $\norm{f -f_n} \leq \epsilon$ for all $n \geq N$ which shows that $f_n$ converges to $f$ in $B(\Omega)$.
+\end{proof}
+
+\begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f : \Omega \to \reals$ be a measurable function.  We say that $a \in \reals$ is an \emph{essential upper bound of $f$} if $\mu(f^{-1}(a, \infty)) = 0$ (i.e. $f(x) \leq a \mu$-almost everywhere).  The \emph{essential supremum of $f$} is defined as the infimum of the set of essential upper bounds of $f$: 
+\begin{align*}
+\esssup f &= \inf \lbrace a \in \reals \mid \mu(f^{-1}(a,\infty)) = 0 \rbrace
+\end{align*}
+A measurable function $f$ is said to be \emph{essentially bounded} if $\esssup \abs{f} < \infty$.
+\end{defn}
+
+The set of essentially bounded functions on a measure space can be made into a Banach space under the essential supremum norm.  As is standard we have to pass to equivalence classes to do this so we first note when a function has an essential supremum of $0$.
+\begin{prop}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f : \Omega \to \reals$ be a measurable function then $\esssup \abs{f} = 0$ if and only if $f = 0$ $\mu$-almost everywhere.
+\end{prop}
+\begin{proof}
+Clearly if $f$ is almost everywhere $0$ then $\abs{f}^{-1}(0, \infty) = \lbrace f \neq 0 \rbrace$ hence by monotonicity of measure, $\mu(\abs{f}^{-1}(0,\infty)) = 0$.  Thus $\esssup \abs{f} \leq 0$.  On the other hand for every $a < 0$ we know that $\abs{f}^{-1}(a,\infty) \supset \lbrace f = 0 \rbrace$ and therefore $\mu(\abs{f}^{-1}(a,\infty)) = \mu(\Omega) > 0$ and therefore $\esssup \abs{f} \geq 0$.  
+
+On the other hand if $f$ is not almost everywhere zero then by Fatou's Lemma $0 < \mu(\abs{f}^{-1}(0,\infty)) \leq \liminf_{n \to \infty} \mu(\abs{f}^{-1}(1/n, \infty))$ which implies that $\mu(\abs{f}^{-1}(1/n, \infty)) > 0$ for some $n \in \naturals$ and therefore $\esssup \abs{f} \geq 1/n > 0$.
+\end{proof}
+
+\begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space then $L^\infty(\Omega, \reals)$ is space of equivalence classes of essentially bounded measurable functions under the equivalence relation of $\mu$-almost everywhere equality.
+\end{defn}
+
+\begin{thm}$L^\infty(\Omega, \reals)$ with essential supremum as a norm is a Banach space.
+\end{thm}
+\begin{proof}
+We have already seen that $\norm{f}_\infty = 0$ implies $f = 0$ in $L^\infty$.  Let $a \in \reals$ with $a \neq 0$ and $f \in L^\infty$ then we note that $b$ is an essential upper bound for $\abs{f}$ if and only if $\abs{a} b$ is an essential upper bound for $\abs{af}$.  This follows from the set identity that
+\begin{align*}
+\abs{f}^{-1}(b,\infty) &= \lbrace \omega \mid b < \abs{f(\omega)} \rbrace =  \lbrace \omega \mid \abs{a} b < \abs{af(\omega)} \rbrace = \abs{af}^{-1}(\abs{a}b, \infty)
+\end{align*}
+Thus we have 
+\begin{align*}
+\norm{af}_\infty = \inf \lbrace \abs{a} b \mid \mu(\abs{f}^{-1}(b,\infty)) = 0 \rbrace = \abs{a}\norm{f}_\infty
+\end{align*}
+If we are given $f, g \in L^\infty$ then if $a$ is an essential upper bound for $f$ and $b$ is an essential upper bound for $g$ then by the triangle inequality in $\reals$,  $\abs{f+g}^{-1}(a+b, \infty) \subset \abs{f}^{-1}(a,\infty) \cup \abs{g}^{-1}(b,\infty)$ and by subadditivity of $\mu$ we know that $\mu(\abs{f+g}^{-1}(a+b, \infty)) = 0$.  Thus $a+b$ is an essential upper bound of $\abs{f+g}$.  For any $\epsilon > 0$ we can find essential upper bounds $a$ and $b$ such that $a \leq \norm{f}_\infty + \epsilon/2$ and $b \leq \norm{g}_\infty + \epsilon/2$ and therefore $\norm{f+g}_\infty \leq a + b \leq \norm{f}_\infty + \norm{g}_\infty + \epsilon$.  As $\epsilon > 0$ was arbitrary the triangle inequality follows.
+
+To see completeness, suppose that $f_n$ is a Cauchy sequence.  We choose representatives of the equivalence class that are everywhere bounded on $\Omega$; thus there exist constants $M_n$ such that $\sup \abs{f} \leq M_n$.  For each $\epsilon > 0$ there exists an $N \in \naturals$ such that $\esssup \abs{f_n - f_m} < \epsilon$ for all $n,m \geq N$.  For each such pair $n,m$ if follows that $\abs{f_n - f_m} < \epsilon$ except on a set of $\mu$ null set.  Taking the union of such null sets over all rational $\epsilon > 0$ and all pairs $n,m$ we can take a countable union of null sets and find a single null set $\mathcal{N}$ such that for every $\epsilon \in \rationals_+$ there exists an $N \in \naturals$ such that $\abs{f_n(\omega) - f_m(\omega)} < \epsilon$ for all $n,m \geq N$ and $\omega \notin \mathcal{N}$.   Without changing equivalence classes of or the uniform bounds on the $f_n$ we may redefine $f_n$ to be zero on $\mathcal{N}$ and then it follows that for each $\epsilon \in \rationals_+$ there exists an $N \in \integers$ such that $\abs{f_n(\omega) - f_m(\omega)} < \epsilon$ for all $n,m \geq N$ and all $\omega \in \Omega$.  Thus $f_n$ is pointwise Cauchy and by completeness of $\reals$ we may define $f$ as the pointwise limit of $f_n$ and we know that $f$ is a measurable function.  In fact the convergence is easily seen to be uniform.  For every $\epsilon \in \rationals_+$ there exists an $n \in \naturals$ such that $\abs{f_n(\omega) - f_m(\omega)} \leq \epsilon$ for all $m \geq n$ and $\omega \in \Omega$ and therefore using the triangle inequality and pointwise convergence to $f$ we have
+\begin{align*}
+\abs{f_n(\omega) - f(\omega)} &\leq \lim_{m \to \infty} (\abs{f_n(\omega) - f_m(\omega)} + \abs{f_m(\omega) - f(\omega)} ) \leq \epsilon
+\end{align*} 
+for all $\omega \in \Omega$.  In particular by chosing $\epsilon = 1$, by the triangle inequality we have $\abs{f(\omega)} \leq \abs{f_n(\omega)} + \abs{f_n(\omega) - f(\omega)} \leq M_n + 1$ for all $\omega \in \Omega$ so $f \in L^\infty$.  
+\end{proof}
+
+\begin{defn}Let $X$ be a topological space the $C_c(X)$ is the set of
+  all continuous function $f : X \to \reals$ with compact support
+  (i.e. $supp(f) = \overline{\{x \in X \mid f(x) \neq 0 \}}$ is
+  compact).
+\end{defn}
+
+\begin{defn}Let $X$ be a topological space the $C_0(X)$ is the set of
+  all continuous function $f : X \to \reals$ which vanish at infinity
+  in the sense that for every $\lambda >0$ the set $\lbrace x \in X \mid
+  \abs{f(x)} \geq \lambda \rbrace$ is  compact.
+\end{defn}
+
+\begin{prop}\label{BanachSpaceOfFunctionsVanishingAtInfinity}If $X$ is a topological space, then  for each $f \in C_0(X)$
+  define $\norm{f} = \sup_{x \in X} \abs{f(x)}$ then $\norm{f}$ is a
+  norm on $C_0(X)$ and $C_0(X)$ is a Banach space.  Furthermore
+  $C_c(X)$ is dense in $C_0(X)$.
+\end{prop}
+\begin{proof}
+TODO:
+\end{proof}
+
+Note that if $X$ is compact then every continuous function vanishes at infinity so it follows that the space of 
+all continuous functions on $X$ is a Banach space under the uniform norm.  In the case that $X$ is locally compact
+and Hausdorff but not necessarily compact we can embed $X$ in its one point compactification $\tilde{X}$.  It is useful to understand
+the relationship between $C_0(X)$ and $C(\tilde{X})$; in fact the following justifies the use of the phrase ``vanishing at infinity''.
+\begin{prop}\label{IsometricEmbeddingVanishingAtInfinityIntoCompact}Let $X$ be a locally compact Hausdorff space and let $\tilde{X}$ be the one point compactification of $X$.  Every $f \in C_0(X)$ extends
+uniquely to an element $\tilde{f} \in C(\tilde{X})$ by defining $\tilde{f}(\Delta) = 0$.  This defines an isometry of $C_0(X)$ with the subspace $\lbrace g \in C(\tilde{X}) \mid g(\Delta) = 0 \rbrace$.  
+\end{prop}
+\begin{proof}
+We first show that defining $\tilde{f}(\Delta) =0$ makes $\tilde{f} : \tilde{X} \to \reals$ continuous.  Suppose $U \subset \reals$ be open.  If $0 \notin U$ then
+$\tilde{f}^{-1}(U) = f^{-1}(U) \subset U$ which is open $X$ by continuity of $f$; it is also open  in $\tilde{X}$ by the definition of the topology on $\tilde{X}$.  If $0 \in U$ then
+there exists $\epsilon > 0$ such that $(-\epsilon, \epsilon) \subset U$ and it follows from the fact that $f$ vanishes at infinity that $K = \lbrace \abs{f(x)} \geq \epsilon \rbrace$ is
+compact.  Since we can write $\tilde{f}^{-1}(U) = f^{-1}(U) \cup (X \setminus K) \cup \lbrace \Delta \rbrace$ which is open in $\tilde{X}$ we see that $\tilde{f}$ is continuous.
+
+Since $\tilde{X}$ is Hausdorff it follows that the value of $\tilde{f}$ at $\Delta$ is determined by the restriction to $X$ and thus the uniqueness of the continuous extension $\tilde{f}$ is determined.  It is elementary that the assignment $f \mapsto \tilde{f}$ is linear and it is trivial that $\sup_{v \in X} \abs{f(v)} \leq \sup_{v \in \tilde{X}} \abs{\tilde{f}(v)}$.  On the other hand for arbitrary $\epsilon > 0$ we have 
+\begin{align*}
+\sup_{v \in \tilde{X}} \abs{\tilde{f}(v)} &\leq \sup_{\substack{v \in X \\ \abs{f(v)} \geq \epsilon}} \abs{f(v)} + \epsilon \leq \sup_{v \in X} \abs{f(v)} + \epsilon
+\end{align*}
+Since $\epsilon>0$ was arbitrary we let $\epsilon \to 0$ and see that we have an isometry; in particular the mapping is injective.
+
+It remains to characterize the range.  For that suppose that $g \in C(\tilde{X})$ is such that $g(\Delta) = 0$, it suffices to show that restriction of $g$ to $X$ vanishes at infinity.
+For every $\epsilon > 0$ by continuity of $g$ there exists an open neighborhood $V$ of $\Delta$ such that $g(V) \subset (-\epsilon, \epsilon)$.  By definition of the topology on $\tilde{X}$ we can write $V = U \cap (X \setminus K) \cup \lbrace \Delta \rbrace$ with $U \subset X$ open and $K \subset X$ compact.  In particular it follows that $\abs{g(v)} < \epsilon$ for all $v \in X \setminus K$ which is to say that $\lbrace v \in X \mid \abs{g(v)} \geq \epsilon \rbrace \subset K$.  As a closed subset of a compact set in a Hausdorff space it follows that $\lbrace v \in X \mid \abs{g(v)} \geq \epsilon \rbrace$ is compact and thus $g \mid_X$ vanishes at infinity.
+\end{proof}
+
+As an example of the utility of this result consider the following
+\begin{cor}\label{VanishingAtInfinityLocallyCompactAttainsNormInfSup}Let $X$ be locally compact Hausdorff and suppose that $f \in C_0(X)$ then it follows that there exists $x_0 \in X$ such that $\abs{f(x_0)} = \norm{f}$.  
+\end{cor}
+\begin{proof}
+If $f=0$ the result is trivial so assume that $f$ is non-zero.  Apply Proposition \ref{IsometricEmbeddingVanishingAtInfinityIntoCompact} to extend $f$ by zero to $\tilde{f}$.  We know that $\abs{\tilde{f}(x)}$ is a continuous positive function on $\tilde{X}$ such that $\abs{\tilde{f}(\Delta)}=0$.  Since $\tilde{X}$ is compact we know that it attains its 
+supremum (TODO: Where do we show this???) so that there exists $x_0 \in \tilde{X}$ such that $\abs{\tilde{f}(x_0)} = \norm{\tilde{f}} = \norm{f}  > 0$; it follows that $x_0 \in X$.
+
+To see that $f$ attains its supremum, first assume that $f(x) \geq 0$ for all $x \in S$, then $\sup_{x \in X} f(x) = \norm{f}$.  Now we apply the result for norm attainment to $f$.  For general $f$ we simply consider $f - \inf_{x \in S} f(x)$.  The result for infimums follow from that for supremums since there exists $x_0$ such that $-f(x_0) = \sup_{x \in X} -f(x) = - \inf_{x \in X} f(x)$.
+\end{proof}
+
+We will also have reason to use the following simple fact.
+\begin{cor}\label{VanishingAtInfinityLocallyCompactSupInfContinuity}Let $X$ be locally compact Hausdorff then $f \mapsto \inf_{x \in X} f(x)$ and $f \mapsto \sup_{x \in X} f(x)$ are 
+continuous.
+\end{cor}
+\begin{proof}
+Since $\inf_{x \in X} f(x) = - \sup_{x \in X} (-f(x))$ it suffices to handle the case of $\sup_{x \in X} f(x)$.  Let $f \in C_0(X)$ and $\epsilon > 0$ be given.  By Corollary \ref{VanishingAtInfinityLocallyCompactAttainsNormInfSup} we see that there exists $x_0 \in X$ such that $f(x_0) = \sup_{x \in X} f(x)$ therefore if $\norm{g - f} < \epsilon$
+we have 
+\begin{align*}
+\sup_{x \in X} g(x) &\geq g(x_0) \geq f(x_0) - \epsilon = \sup_{x \in X} f(x) - \epsilon
+\end{align*}
+and if we pick $x_1$ such that $g(x_1) = \sup_{x \in X} g(x)$ then
+\begin{align*}
+\sup_{x \in X} g(x) &= g(x_1) \leq f(x_1) + \epsilon \leq \sup_{x \in X} f(x)  + \epsilon
+\end{align*}
+
+TODO: Prefer the following argument using sequences?  In a metric space (or any first countable topological space) convergence is determined by sequences right?
+Using Corollary \ref{VanishingAtInfinityLocallyCompactAttainsNormInfSup}  for each $n \in \naturals$ we select
+$x_n \in S$ such that $f_n(x_n) = \inf_{x \in S} f_n(x)$ and select $x_0 \in S$ such that $f(x_0) = \inf_{x \in S} f(x)$.  From the definition of $x_n$ and $\lim_{n \to \infty} f_n = f$ we see that $\lim_{n \to \infty} f_n(x_n) \leq \lim_{n \to \infty} f_n(x_0) = f(x_0)$.  On the other hand for every $\epsilon > 0$
+there exists $N$ such that $\sup_{x \in S} \abs{f_n(x) - f(x)} < \epsilon$ for $n \geq N$ and therefore $f(x_0) - \epsilon \leq f(x_n) - \epsilon \leq f_n(x_n)$ for $n \geq N$.  This implies $f(x_0) - \epsilon \leq \lim_{n \to \infty} f_n(x_n)$ and since $\epsilon >0$ was arbitrary we get $f(x_0) \leq \lim_{n \to \infty} f_n(x_n)$.
+\end{proof}
+
+\begin{cor}\label{VanishingAtInfinityLocallyCompactSeparable}Let $X$
+  be locally compact separable Hausdorff then $C_0(X)$ is separable.
+\end{cor}
+\begin{proof}
+We know that $C(\tilde{X})$ is separable (Lemma
+\ref{SeparabilityOfBoundedUniformlyContinuous}) so we may take a
+countable dense set $f_n$.  We claim that $f_n - f_n(\Delta)$ is dense
+in $C_0(X)$.  To see this, note that for any $f \in C_0(X)$ we know
+that $f_n \to f$ in $C(\tilde{X})$ along some subsequence $N$.  On the
+other hand, $f \mapsto f - f(\Delta)$ is a continuous map from
+$C(\tilde{X})$ to $C_0(X)$ and therefore $f_n - f_n(\Delta) \to f$
+along $N$.
+\end{proof}
+
+Question: is there a compact non-Hausdorff space that is not locally compact?
+
 \begin{thm}[Principle of Uniform Boundedness]\label{PrincipleOfUniformBoundedness}Let $X$ be a Banach space, $Y$ be a normed vector space and
   $A_\alpha : X \to Y$ be a family of bounded linear maps.  If for all
   $v \in X$ we have $\sup_\alpha \norm{A_\alpha v} <\infty$ then
@@ -1535,7 +1699,41 @@ $\overline{U}$ is compact.
 (iii) implies (ii) is immediate.
 \end{proof}
 
-\begin{prop}\label{CompleteRegularityLCH}A locally compact Hausdorff space X is completely regular
+A locally compact space can be embedded in a compact space by adding a single point.
+\begin{defn}\label{OnePointCompactificationDefinition}Let $X$ be a locally compact Hausdorff space with topology $\tau$.  The \emph{one point compactification} of $X$ is the set
+$X \cup \lbrace \Delta \rbrace$ where $\Delta \notin X$ and topology given by $\tau$ and sets of the form $X \setminus K \cup \lbrace \Delta \rbrace$
+where $K \subset X$ is compact.  The point $\Delta$ is called the \emph{point at infinity}.
+\end{defn}
+The one point compactification is indeed compact.
+\begin{thm}\label{OnePointCompactification}The one point compactification is a compact space.
+\end{thm}
+\begin{proof}
+First we show that $\tilde{\tau} = \tau \cup \cup_{\substack{K \in \tau \\ K \text{ is compact}}} X \setminus K \cup \lbrace \Delta \rbrace$ is a topology.  It is clear that
+$\emptyset \in \tilde{\tau}$ since $\emptyset \in \tau$ and moreover since $\emptyset$ is compact we see that $X \cup \lbrace \Delta \rbrace = (X \setminus \emptyset) \cup \lbrace \Delta\rbrace \in \tilde{\tau}$.  
+Let $U_1, \dotsc, U_n$ be open and and $K_1, \dotsc, K_m$ be compact then if $n > 0$
+\begin{align*}
+&U_1 \cap \dotsb \cap U_n \cap (X \setminus K_1 \cup \lbrace \Delta \rbrace) \cap \dotsb \cap (X \setminus K_m \cup \lbrace \Delta \rbrace) \\
+&=U_1 \cap \dotsb \cap U_n \cap (X \setminus K_1 \cap \dotsb \cap X \setminus K_m  \in \tau \subset \tilde{\tau}
+\end{align*}
+and if $n = 0$ then 
+\begin{align*}
+(X \setminus K_1 \cup \lbrace \Delta \rbrace) \cap \dotsb \cap (X \setminus K_m \cup \lbrace \Delta \rbrace)
+&= (X \setminus K_1 \cap \dotsb \cap X \setminus K_m) \cup \lbrace \Delta \rbrace \in \tilde{\tau}
+\end{align*}
+
+If $A$ and $B$ are arbitrary index sets and we have $U_\alpha$ for $\alpha \in A$ open in $X$ and $K_\beta$ for $\beta \in B$ compact in $X$ then
+if we define $U = \cup_{\alpha \in A} U_\alpha$ and $K= \cap_{\beta \in B} K_\beta$ note that $U \in \tau$ and $K$ is a closed subset of a compact set hence compact.  Furthermore, $U^c \cap K$ is compact for the same reason.  We compute using De Morgan's Law
+\begin{align*}
+\cup_{\alpha \in A} U_\alpha \cup \cup_{\beta \in B} (X \setminus K_\beta) \cup \lbrace \Delta \rbrace &=
+\left[ U \cup \cup_{\beta \in B} (X \setminus K_\beta) \right ] \cup \lbrace \Delta \rbrace \\
+&=X \setminus (U^c \cap K) \cup \lbrace \Delta \rbrace \in \tilde{\tau}
+\end{align*}
+
+Lastly note that $X \cup \lbrace \Delta \rbrace$ is compact.  If $U_\alpha$ and $(X \setminus K_\beta) \cup \lbrace \Delta \rbrace$ cover $X \cup \lbrace \Delta \rbrace$.  As before $\cap_{\beta \in B} K_\beta$ is compact and it follows that the $U_\alpha$ for $\alpha \in A$ form a cover.  Thus we may find a finite subcover $U_{\alpha_1}, \dotsc, U_{\alpha_n}$
+and it follows that $U_{\alpha_1}, \dotsc, U_{\alpha_n}, (X \setminus \cap_{\beta \in B} K_\beta) \cup \lbrace \Delta \brace$ is a finite subcover of $X \cup \lbrace \Delta \rbrace$.
+\end{proof}
+
+\begin{prop}\label{CompleteRegularityLCH}A locally compact Hausdorff space $X$ is completely regular
   (i.e. for every $x \in X$ and closed set $F \subset X$ such that $x
   \notin F$ there is are disjoint open sets $U$ and $V$ such that $x
   \in U$ and $F \subset V$).
@@ -1553,6 +1751,9 @@ V_{y_n}$ of $\overline{U_0} \cap F$.  Now define $U = U_0 \cap U_{y_1}
 \cap \dotsb U_{y_n}$.  This is an open neighborhood of $x$ and
 moreover $\overline{U} \cap F = \emptyset$.  Define $V = X \setminus \overline{U}$.
 \end{proof}
+
+TODO: Show that a locally compact separable Hausdorff space is
+metrizable (in fact Polish).
 
 \begin{defn}Let $X$ be a topological space, then a subset $A \subset
   X$ is said to be \emph{bounded} if there exists a compact set $K$
@@ -1693,27 +1894,6 @@ Now take the limit as $n \to \infty$ to conclude that
 \end{align*}
 and as $\epsilon > 0$ was arbitrary inner regularity of $\mu$ on
 $\sigma$-bounded Borel sets is proven.
-\end{proof}
-
-\begin{defn}Let $X$ be a topological space the $C_c(X)$ is the set of
-  all continuous function $f : X \to \reals$ with compact support
-  (i.e. $supp(f) = \overline{\{x \in X \mid f(x) \neq 0 \}}$ is
-  compact).
-\end{defn}
-
-\begin{defn}Let $X$ be a topological space the $C_0(X)$ is the set of
-  all continuous function $f : X \to \reals$ which vanish at infinity
-  in the sense that for every $\lambda >0$ the set $\{ x \in X \mid
-  \abs{f(x)} \geq \lambda \}$ is  compact.
-\end{defn}
-
-\begin{prop}\label{BanachSpaceOfFunctionsVanishingAtInfinity}If $X$ is a topological space, then  for each $f \in C_0(X)$
-  define $\norm{f} = \sup_{x \in X} \abs{f(x)}$ then $\norm{f}$ is a
-  norm on $C_0(X)$ and $C_0(X)$ is a Banach space.  Furthermore
-  $C_c(X)$ is dense in $C_0(X)$.
-\end{prop}
-\begin{proof}
-TODO:
 \end{proof}
 
 The difficult part of the Riesz-Markov Theorem is the construction of
@@ -2286,8 +2466,30 @@ from which we conclude that $\abs{\Lambda(f) - \int f \, d\mu} \leq
 2\epsilon$.  Since $\epsilon > 0$ was arbitrary we are done.
 \end{proof}
 
+\begin{defn}Let $X$ be a locally compact Hausdorff space then a
+  bounded signed
+  measure $\mu$ is said to be a \emph{finite signed Radon measure} if its
+  total variation $\mu_+ + \mu_-$ is a Radon measure on $X$.
+\end{defn}
+
+\begin{thm}\label{BanachSpaceRadonMeasuresLCH}Let $X$ be a locally compact Hausdorff space then the space
+  of finite signed Radon measures is a Banach space with norm given by
+  $\norm{\mu} = \mu_+(X) + \mu_-(X)$.
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
+
 TODO: The Riesz Representation Theorem itself; namely the dual space of $C_0(X)$ for a locally compact Hausdorff $X$ is 
-isomorphic to the Banach space of finite signed Radon measures with the total variation norm.
+isomorphic to the Banach space of finite signed Radon measures with
+the total variation norm.
+\begin{thm}\label{RieszRepresentationLCH}Let $X$ be a locally compact
+  Hausdorff space then the dual space of $C_0(X)$ is isomorphic to the
+  space of finite signed Radon measures under the total variation norm.
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
 
 \begin{defn}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
 Hausdorff topological space $S$.  
@@ -2543,12 +2745,13 @@ Kallenberg proves Riesz representation under assumption of LCH and
 second countability (this is less general than the Tao
 result as lcscH implies LCH $\sigma$-compact)
 and targets Radon measures.  Our results taken from Arveson are more
-general as the remove the second countability assumption.
+general as the remove the second countability assumption and the $\sigma$-compactness
+assumptions.
 
-Evans and Gareipy prove Riesz representation only on $\reals^n$ using
+Evans and Gariepy prove Riesz representation only on $\reals^n$ using
 Radon outer measures.  This is probably subsumed by our results taken
 from Arveson but I need to understand whether the use of outer
-measures adds anything to the picture.
+measures adds anything to the picture in general.
 
 Arveson has some well known lecture notes that prove Riesz on general
 LCH spaces
@@ -2868,6 +3071,17 @@ By continuity
 TODO
 \end{proof}
 
+\begin{prop}\label{NormRiemannIntegralBanachSpace}Let $X$ be a
+  Banach space and let $f : [a,b] \to L(X,Y)$ be regulated then it
+  follows that 
+\begin{align*}
+\norm{\int_a^b f(t) \, dt} &\leq \int_a^b \norm{f(t)} \, dt
+\end{align*}
+\end{prop}
+\begin{proof}
+TODO
+\end{proof}
+
 \begin{prop}\label{RiemannIntegralOfContinuousMaps}Let $X$ and $Y$ be
   Banach spaces and let $f : [a,b] \to L(X,Y)$ be regulated then it
   follows that for every $x \in X$ we have
@@ -2879,14 +3093,35 @@ TODO
 TODO
 \end{proof}
 
+\begin{defn}Let $X$ and $Y$ be Banach spaces then an \emph{unbounded
+    operator} is $A$ a linear
+  map of a subspace of $X$ into $Y$.  We let $\domain{A}$ be the
+  domain of $A$.  We say that $A$ is a \emph{closed
+  operator} if its graph is a closed linear subspace of $X \times Y$;
+  that is to say if $v_n \to v$ in $X$ and $A v_n \to w$  in $Y$ then
+  $v \in \domain{A}$ and $y = A v_n$.
+\end{defn}
+
+The domain of a linear operator is a crucial part of its definition
+and there is no small amount of pain in having to be careful about
+handling to be careful when dealing with these domains.  In
+particular, if one is given two linear operators $A : X \to Y$ and $B
+: X \to Y$ then we
+can define $A+B : X \to Y$ where $\domain{A+B} = \domain{A} \cap
+\domain{B}$.  
+Given two linear operators $A : X \to Y$ and $B
+: Y \to Z$ then we
+can define $B \circ A: X \to Z$ where $\domain{B \circ A} = \lbrace v
+\in \domain{A} \mid Av \in \domain{B} \rbrace$.
+
 \begin{prop}\label{ClosedOperatorOfRiemannIntegral}Let $X$ and $Y$ be
-  Banach spaces, let $A$ be a closed linear map from $X$ to $Y$ and
+  Banach spaces, let $A$ be a closed linear operator from $X$ to $Y$ and
   let $f : [a,b] \to X$ be continuous such that
 \begin{itemize}
-\item[(i)] $f(t) \in \mathcal{D}(A)$ for all $a \leq t \leq b$
+\item[(i)] $f(t) \in \domain{A}$ for all $a \leq t \leq b$
 \item[(ii)] $Af : [a,b] \to Y$ is continuous
 \end{itemize}
-then it follows that $\int_a^b f(t) \, dt \in \mathcal{D}(A)$ and
+then it follows that $\int_a^b f(t) \, dt \in \domain{A}$ and
 \begin{align*}
 A \int_a^b f(t) \, dt &= \int_a^b A f(t) \, dt
 \end{align*}
@@ -3371,6 +3606,8 @@ f(x+y) &= g(1) = g(0) + g^\prime(0) + \dotsm + \frac{g^{(p-1)} (0)}{(p-1)!} +
          \frac{D^{p}f(x + cy) y^{(p)}}{p!}
 \end{align*}
 \end{proof}
+
+TODO: Analytic functional calculus and beyond.
 
 \subsection{Inverse and Implicit Function Theorems}
 
@@ -3960,6 +4197,32 @@ It is trivial to see that $0 \in T_F(x)$ since we can just pick the
 $x_n \equiv x$.  Let $v \in T_F(x)$, $\alpha > 0$ and pick sequences $x_n$ and $t_n$ such that $x_n \to x$, $t_n \to 0$ and
 $\frac{x_n - x}{t_n} = v$.  Then let $\tilde{t}_n = t_n/\alpha$ and note that
 $\tilde{t}_n \to 0$ and $\frac{x_n -x}{\tilde{t}_n} = \alpha v$.
+\end{proof}
+
+It is also useful to note the following equivalent form of the definition of a tangent vector.
+\begin{prop}Let $X$ be a Banach space, let $F$ be a closed subset and
+  let $x \in F$ then = $v \in X$ is a tangent vector to $F$
+  at $x$ if and only if
+\begin{align*}
+\liminf_{t \to 0^+} \frac{d(F, x+tv)}{t} &= 0
+\end{align*}
+\end{prop}
+\begin{proof}
+Suppose $\liminf_{t \to 0^+} \frac{d(F, x+tv)}{t} = 0$.  Since $\frac{d(F, x+tv)}{t}$ is non-negative it is equivalent that $\inf_{0 < t < h} \frac{d(F, x+tv)}{t} = 0$ for every $h >0$.  Thus for every $n \in \naturals$ there exists $0 < t_n < 1/n$
+and $x_n \in F$ such that 
+\begin{align*}
+\frac{d(x_n, x+t_n v)}{t_n} &= \norm{\frac{ x_n - x}{t_n}-v} < 1/n
+\end{align*}
+By construction, $\lim_{n \to \infty} t_n = 0$ and by the triangle inequality, 
+\begin{align*}
+\lim_{n \to \infty} \norm{x-x_n} &< \lim_{n \to \infty} (\norm{v}t_n + t_n/n) = 0
+\end{align*}
+thus $v$ is a tangent vector.
+
+If $v$ is a tangent vector to $F$ at $x$ then pick $x_n \in F$ and $t_n$ such that $\lim_{n \to \infty} x_n = x$ and $\lim_{n \to \infty} (x-x_n)/t_n = v$.  Let $\epsilon>0$ be 
+given and pick an $N>0$ such that $\norm{x - x_n -t_n v}/t_n < \epsilon$ for all $n \geq N$.  Then since $\lim_{n \to \infty} t_n = 0$ it follows that for any $h>0$ there exist
+$0 < t_n < h$ such that $\norm{x - x_n -t_n v}/t_n < \epsilon$ which implies 
+$\inf_{0 < t < h} \frac{d(F, x+tv)}{t} = 0$ for all $h > 0$.
 \end{proof}
 
 The first hint that we have the correct notion of tangent vector is

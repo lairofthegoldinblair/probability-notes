@@ -204,6 +204,29 @@ clearly false (since otherwise we could write the reals as a countable
 union of countable sets which would imply the reals themselves are countable).
 \end{proof}
 
+The following is a useful variant on the diagonal argument.
+\begin{prop}\label{ArrayPathArgumentMetricSpace}Let $(S,d)$ be a metric space and suppose we are given
+  elements $x$, $x_n$ and $x_{m,n}$ for $m,n \in \naturals$
+  satisfying, $\lim_{m \to \infty} x_{m,n} = x_n$ for all $n \in \naturals$ and $\lim_{n \to \infty} x_n = x$, then
+there exists a sequence $l_m$ with $\lim_{m \to \infty} l_m = \infty$ such that $\lim_{m \to \infty} x_{m, l_m} = x$.
+\end{prop}
+\begin{proof}
+Let $k_1 = 1$ and for each $n \geq 2$ let $k_n$ be chosen so that $k_n > k_{n-1}$ and $d(x_{m,n}, x_n) < \frac{1}{n}$ for all $m \geq k_n$.  Define
+\begin{align*}
+l_m &= \begin{cases}
+1 & \text{for $k_1 \leq m < k_2$} \\
+2 & \text{for $k_2 \leq m < k_3$} \\
+...
+\end{cases}
+\end{align*}
+so that we have $\lim_{m \to \infty} l_m = \infty$ by construction and also $d(x_{m, l_m}, x_m) < 1/l_m$ for $m \geq 2$.
+To see that $\lim_{m \to \infty} x_{m, l_m} = x$, pick $\epsilon > 0$ and then pick $M \geq 2$ such that $l_m > 2/\epsilon$ and $d(x_m, x) < \epsilon/2$ for all $m \geq M$.  Then
+by the definition of $l_m$ and the triangle inequality for all $m \geq M$,
+\begin{align*}
+d(x_{m, l_m}, x) &\leq d(x_{m, l_m}, x_m) + d(x_m, x) < 1/l_m + \epsilon/2 < \epsilon
+\end{align*}
+\end{proof}
+
 Just as an aside at this point, we note that notions of open and
 closed set are really all that is needed to make sense of the notions
 of convergence and continuity.

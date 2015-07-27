@@ -16,6 +16,7 @@
 \DeclareMathOperator*{\IdentityMatrix}{Id}
 \DeclareMathOperator*{\esssup}{ess\,sup}
 \DeclareMathOperator*{\essinf}{ess\,inf}
+\DeclareMathOperator*{\bplim}{bp-lim}
 
 \newtheorem{thm}{Theorem}[chapter]
 \newtheorem{cor}[thm]{Corollary}
@@ -35,9 +36,6 @@
 
 \newcommand{\Independent}{\perp \! \! \! \perp}
 \newcommand{\cindependent}[3]{#1 \Independent_{#3} #2}
-\newcommand{\mymacro}{This text was produced by a macro}
-\newcommand{\withparams}[2]{This text was produced by a macro with two
-  parameters #1, #2}
 \newcommand{\expectation}[1]{\textbf{E}\left[#1\right]} 
 \newcommand{\expectationop}{\textbf{E}}
 \newcommand{\sexpectation}[2]{\textbf{E}_{#2}[#1]} 
@@ -76,7 +74,10 @@
 \newcommand{\eqdist}{\overset{d}=}
 \newcommand{\kldiv}[2]{D\left( #1 \mid\mid #2 \right)}
 \newcommand{\sample}[1]{\boldsymbol{#1}}
-
+\newcommand{\range}[1]{\Re(#1)}
+\newcommand{\domain}[1]{\mathcal{D}(#1)}
+\newcommand{\resolventset}[1]{\rho(#1)}
+\newcommand{\law}[1]{\mathcal{L}(#1)}
 \newcommand{\andop}{\wedge}
 \newcommand{\orop}{\vee}
 
@@ -124,6 +125,8 @@
 \include{RealAnalysis2}
 
 \include{SkorohodSpace}
+
+\include{FellerProcesses}
 
 \include{StochasticApproximation}
 
@@ -1748,6 +1751,51 @@ This just follows from bilinearity of quadratic covariation and Lemma \ref{Basic
 \begin{xca}Let $(S,d)$ be a totally bounded metric space.  Prove that $S$ is separable and that every uniformly continuous function $f : S \to \reals$ is bounded.
 \end{xca}
 \begin{proof}For each $n \in \integers$ we may find a finite set $x^n_1, \dots, x^n_{m_n}$ such that $B(x^n_j; 1/n)$ covers $S$.  The union of $x^n_{j}$ for $n \in \integers$ and $j=1, \dotsc, m_n$ is a countable dense subset of $S$.  Assume that $f$ is uniformly continuous, pick an $\epsilon > 0$ such that $d(x,y) < \epsilon$ implies $\abs{f(x) - f(y)} < 1$.  Now pick $x_1, \dotsc, x_n$ such that $B(x_1; \epsilon), \dotsc, B(x_n; \epsilon)$ covers $S$.  Let $K = \abs{f(x_1)} \vee \dotsb \vee \abs{f(x_n)}$ and note that for every $x$ we may pick $x_j$ such that $x \in B(x_j; \epsilon)$ and therefore $\abs{f(x)} \leq K + 1$.
+\end{proof}
+
+\begin{xca}\label{SkorohodInfiniteJ1PushForwardContinuous}Let $(S,r)$ and $(T, r^\prime)$ be metric spaces and $g : S  \to T$ be a continuous.  Define $g_* : D([0,\infty); S) \to D([0,\infty); T)$ by $g_*(f)(t) = g(f(t))$ then $g_*$ is
+continuous in the $J_1$ topology.
+\end{xca}
+\begin{proof}
+Since the $J_1$ topology is metrizable it suffices to show that $g_*$ takes convergence sequences convergent sequences.  Let $f, f_1, f_2, \dotsc \in  D([0,\infty); S)$ be such that
+$f_n \to f$.  Then by Proposition \ref{SkorohodInfiniteJ1EquivalenceC} we know that for every $T >0$ and every $t, t_1, t_2, \dotsc \in [0,T]$ with $\lim_{n \to \infty} t_n = t$ we have 
+\begin{itemize}
+\item[(i)] $\lim_{n \to \infty} r(f_n(t_n), f(t)) \wedge r(f_n(t_n), f(t-)) = 0$. 
+\item[(ii)] If $\lim_{n \to \infty} r(f_n(t_n), f(t)) = 0$ then for every sequence
+$s_n$ such that $t_n \leq s_n \leq T$ and $\lim_{n \to \infty} s_n = t$ we have $\lim_{n \to \infty} r(f_n(s_n), f(t)) = 0$
+\item[(iii)] If $\lim_{n \to \infty} r(f_n(t_n), f(t-)) = 0$ then for every sequence
+$s_n$ such that $0 \leq s_n \leq t_n$ and $\lim_{n \to \infty} s_n = t$ we have $\lim_{n \to \infty} r(f_n(s_n), f(t-)) = 0$
+\end{itemize}
+Using continuity of $g$ at $f(t)$ and $f(t-)$ for every $\epsilon>0$ there exists $\delta > 0$ such that $r(x, f(t)) < \delta$ implies $r^\prime(g(x), g(f(t))) < \epsilon$ and 
+$r(x, f(t-)) < \delta$ implies $r^\prime(g(x), g(f(t-))) < \epsilon$.  By (i) we may find $N$ such that for all $n \geq N$ we have $r(f_n(t_n), f(t)) \wedge r(f_n(t_n), f(t-)) < \delta$; thus
+$r^\prime(g(f_n(t_n)), g(f(t))) \wedge r^\prime(g(f_n(t_n)), g(f(t-))) < \epsilon$ which shows $\lim_{n \to \infty} r^\prime(g(f_n(t_n)), g(f(t))) \wedge r^\prime(g(f_n(t_n)), g(f(t-))) = 0$.
+
+Also that $\lim_{s \to t^-} g(f(s)) = g(f(t-))$ since  $g$ is continuous at $f(t-)$: given $\epsilon > 0$ we take $\delta > 0$ such that $r(x, f(t-)) < \delta$ implies $r^\prime(g(x), g(f(t-))) < \epsilon$; now take $\rho > 0$ such that $t - \rho < s < t$ implies $r(f(s), f(t-)) < \delta$.  For the moment we fix $T>0$ and $0 \leq t \leq T$.  We consider two cases separately.
+
+Case 1: $g(f(t)) = g(f(t-))$.  In this conditions (i), (ii) and (iii) reduce to the assertion that for all $t_n \to t$ we have $g(f_n(t_n)) \to g(f(t))$. From the continuity of $g$ given $\epsilon > 0$ then $g^{-1}(B(g(f(t)), \epsilon))$ is open in $S$ and contains both $f(t)$ and $f(t-)$ (it doesn't matter whether $f(t) = f(t-)$ or not).  We may find a $\delta >0$ such that $B(f(t), \delta) \subset g^{-1}(B(g(f(t)), \epsilon))$ and $B(f(t-), \delta) \subset g^{-1}(B(g(f(t)), \epsilon))$.  By the property (i) of $f$ and the $f_n$ we may find $N>0$ such that $f_n(t_n) \in B(f(t), \delta) \cup B(f(t-), \delta)$ for all $n \geq N$ and we are done.  I think this even easier because for this case (i) is equivalent to (i), (ii) and (iii) for $g_*(f)$ and $g_*(f_n)$ and we have already shown that (i) implies (i).
+ 
+Case 2:  $g(f(t)) = g(f(t-))$ and $f(t) \neq f(t-)$.   We already know that (i) holds for $g_*(f)$ and $g_*(f_n)$.  Suppose $t_n \to t$ and $g(f_n(t_n)) \to g(f(t))$.  Then because $f_n \to f$ we know that $r(f_n(t_n), f(t)) \wedge r(f_n(t_n), f(t-)) \to 0$. If it is not true that $r(f_n(t_n), f(t)) \to 0$ then we can find a subsequence $n_k$ such that $f_{n_k}(t_{n_k}) \to f(t-)$ but by continuity of $g$ we conclude $g(f_{n_k}(t_{n_k})) \to g(f(t-))$ which is a contradiction (recall that $g(f(t-)) = \lim_{s \to t^-} g \circ f(s)$ by continuity of $g$).  Therefore we get $f_n(t_n) \to f(t)$ and for any $s_n \geq t_n$ with $s_n \to t$ we conclude $f_n(s_n) \to f(t)$ hence $g(f_n(t_n)) \to g(f(t))$ by continuity of $g$.  By a similar argument, if we assume that $g(f_n(t_n)) \to g(f(t-))$ then we conclude that $f_n(t_n) \to f(t-)$ and therefore for all $s_n \leq t_n$ with $s_n \to t$ we have $g(f_n(s_n)) \to g(f(t-))$ and thus (iii) holds.
+
+Now we apply Proposition \ref{SkorohodInfiniteJ1EquivalenceC} in the opposite direction to conclude that $g \circ f_n \to g \circ f$ in the $J_1$ topology.
+\end{proof}
+
+\begin{xca}Define $\psi : D([0,\infty); \reals) \to D([0,\infty); \reals)$ by $\psi (f) (t) = \sup_{0 \leq s \leq t} f(s)$.  Show that $\psi$ is continuous in the $J_1$ topology.
+\end{xca}
+\begin{proof}
+$\psi(f)$ is non-decreasing and finite therefore it cadlag.  To see continuity suppose that $f_n \to f$ in the $J_1$ topology.  Pick $\lambda_n$ such that $\gamma(\lambda_n) \to 0$
+and $\lim_{n \to \infty} \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))} =0$ for all $T > 0$.  Fix $T >0$ and note that
+for any $\delta > 0$, $n \in \naturals$ and $0 \leq t \leq T$ we may pick $0 \leq w_n, u_n \leq t \leq T$ such that $\sup_{0 \leq s \leq t} f_n(s) \leq f_n(u_n) + \delta$ and 
+$\sup_{0 \leq s \leq t} f(\lambda_n(s)) \leq f(\lambda_n(w_n)) + \delta$.  From these two inequalities and the fact that $\psi(f)(\lambda_n(t)) = \sup_{0 \leq s \leq \lambda_n(t)} f(s) = \sup_{0 \leq s \leq t} f(\lambda_n(s))$, we get
+\begin{align*}
+\psi(f_n)(t) &\leq f_n(u_n) + \delta \leq f(\lambda_n(u_n)) + \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))}  \\
+&\leq \sup_{0 \leq s \leq t} f(\lambda_n(s)) + \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))}  \\
+&= \psi(f)(\lambda_n(t)) + \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))}  \\
+\intertext{and}
+\psi(f)(\lambda_n(t)) &\leq f(u) + \delta \leq f_n(w_n) + \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))}  \\
+&\leq \sup_{0 \leq s \leq t} f_n(s) + \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))}  \\
+&=\psi(f_n)(t) + \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))} 
+\end{align*}
+thus $\sup_{0 \leq t \leq T} \abs{\psi(f_n)(t) - \psi(f)(\lambda_n(t))} \leq \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))}$ and the result follows by taking the limit as $n \to \infty$ and then letting $\delta \to 0$.
 \end{proof}
 
 

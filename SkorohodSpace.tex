@@ -1,11 +1,7 @@
 \chapter{Skorohod Space}
 TODO: Currently going through this.  
 
-TODO:  The development below is using the absolute value notation even though
-paths take values in an arbitrary metric space.  Clean this up (which is actually pretty barfy because
-there are a bunch of different metrics floating around).
-
-TODO: Show that for $S$ complete, the sup norm makes $D([0,T];S)$ into a complete non-separable metric space.
+TODO: Show that for $S$ complete, the sup norm makes $D([0,T];S)$ into a complete non-separable metric (Banach?) space.
 We actually use the completeness in showing that the metric $d$ is complete.
 
 Question 1:  In the definition of the $J_1$ topology on $D([0,\infty);
@@ -21,9 +17,10 @@ $f$ has only countably many jump discontinuities; is there some notion
 of uniform continuity that can be preserved?  E.g. can we say that
 given $\epsilon > 0$ for
 all points of continuity $x$ of $f$  there exists a uniform $\delta > 0$
-such that $\abs{x-y} < \delta$ implies $q(f(x), f(y)) < \epsilon$?
+such that $\abs{x-y} < \delta$ implies $q(f(x), f(y)) < \epsilon$?  I think the
+modulus of continuity addresses this question.
 
-TODO: It would be convenient to treat the case of $[0,\infty]$ below
+TODO: It would be convenient to treat the case of $[0,\infty]$ below?
 
 \begin{defn}Let $S$ be a topological space, then for every $0 < T < \infty$ we let $D([0,T]; S)$ denote the set of functions
 $f : [0,T] \to S$ such that for every $0 \leq t < T$ we have $f(t) = \lim_{s \to t^+} f(s)$ and for every $0 < t \leq T$ the limit 
@@ -192,6 +189,16 @@ all $\lambda \in \Lambda$ we conclude that $\rho(f_n, 0) = 1$ hence
 $f_n$ does not converge.
 \end{examp}
 
+An extremely fundamental and useful fact is that a continuous function on is uniformly continuous on any compact interval;
+so in particular a continuous function on $[0,T]$ is uniformly continuous.  For a cadlag function on $[0,T]$ it is reasonable to 
+ask whether there is some analogue of uniform continuity that can be used to control the variation over small intervals.  It is worth
+pondering a bit what kind of control we could have.  Suppose we were given an $\epsilon > 0$, we know that there are only a finite number of
+jumps on $[0,T]$ that are of size bigger than $\epsilon$.  If we have two adjacent jumps at $s$ and $t$  we don't have a continuous function on $[s,t)$ 
+but the deviations from continuity are bounded in some sense by $\epsilon$.  Furthermore if we restrict our function to $[s,t)$ and then extend to
+$[s,t)$ using the left limit at $t$ then we have an ``approximately'' continuous function on a compact interval and we might how to extend that
+to some type of uniform approximate continuity.  Indeed that can be done but the language for doing so is a bit indirect and uses a modulus of continuity
+that is appropriate for cadlag functions.
+
 \begin{defn}Given $f \in D([0,T];S)$ the function
 \begin{align*}
 w(f,\delta) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_n = T \\
@@ -241,7 +248,134 @@ r(f(s),f(t)) < 2 \epsilon$ so it we define $\delta = \frac{1}{2} \min_{1 \leq i
 non-decreasing function of $\delta$ we are done.
 \end{proof}
 
-Even though the metric $\rho$ is not complete, the underlying topology
+In order to understand compactness in $D([0,\infty);S)$ we need to have a notion of equicontinuity.  The basic idea is that we
+express equicontinuity relative to bounded intervals $[0,T]$ and we must account for the existence jumps on such an interval
+and particularly at $T$ itself.
+\begin{defn}Let $(S,r)$ be a metric space and let $f \in D([0,\infty); S)$ be given then for each $\delta > 0$ and $T > 0$ we define the \emph{modulus of continuity}
+\begin{align*}
+w^\prime(f,\delta, T) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t))
+\end{align*}
+\end{defn}
+
+TODO: Unify the proofs here with the case of $D([0,T];S)$.
+
+Note that we allow the right hand endpoint of the partition $\lbrace t_i \rbrace$ to extend beyond $T$ in the definition above.  TODO: Presumably this makes dealing with jumps
+at $T$ easier; on the other hand we don't do this in the case of $D([0,T];S)$ ; is it necessary to define it this way?
+\begin{lem}\label{SkorohodInfiniteJ1ModulusOfContinuity}
+Let $f, g\in D([0,\infty); S)$ then 
+\begin{itemize}
+\item[(i)] $w^\prime(f,\delta, T)$ is a non-decreasing function of $\delta$ and $T$
+\item[(ii)] For every $\delta > 0$ and $T > 0$
+\begin{align*}
+w^\prime(f,\delta, T) &\leq w^\prime(g,\delta, T) + 2 \sup_{0 \leq t \leq T+ \delta} r(f(t), g(t))
+\end{align*}
+\item[(iii)]For each fixed $T > 0$, $w^\prime(f,\delta, T)$ is a right continuous function of $\delta$ and
+\begin{align*}
+\lim_{\delta \to 0^+} w^\prime(f,\delta, T) &= 0
+\end{align*}
+\item[(iv)]If $f_n \in D([0,\infty); S)$ and $\lim_{n \to \infty} d(f_n,g) = 0$ then for every $\delta > 0$, $T > 0$ and $\epsilon > 0$ 
+\begin{align*}
+\limsup_{n \to \infty}  w^\prime(f_n,\delta, T)  &\leq  w^\prime(f,\delta, T+\epsilon) 
+\end{align*}
+\item[(v)]For fixed $\delta > 0$ and $T>0$, $ w^\prime(f,\delta, T)$ is a Borel measurable function of $f$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+(i) is immediate from the fact that the set of partitions over which the infimum is calculated is non-decreasing with respect to set inclusion as either $\delta$ decreases or $T$ increases.  Suppose $0 < \delta < \delta^\prime$, then if we have a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ and $t_i - t_{i-1} > \delta^\prime$ for all $i=1, \dotsc, n$ then it follows that $t_i - t_{i-1} > \delta$ for all $i=1, \dotsc, n$ as well.  Thus 
+\begin{align*}
+&\lbrace (t_0, \dotsc, t_n) \mid t_0 < \dotsb < t_{n-1} < T \leq t_n \text{ and } t_i - t_{i-1} > \delta^\prime \rbrace \subset  \\
+&\lbrace (t_0, \dotsc, t_n) \mid t_0 < \dotsb < t_{n-1} < T \leq t_n \text{ and } t_i - t_{i-1} > \delta \rbrace 
+\end{align*}
+and taking unions over $n \in \naturals$ and infimums it follows that $w(f,\delta, T) \leq w(f,\delta^\prime, T)$.  Suppose that $0 < T < T^\prime$, given a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ with $t_i - t_{i-1} > \delta$ for all $i=1, \dotsc, n$ we may extend it to a partition $t^\prime_0 < \dotsb < t^\prime_{n^\prime-1} < T^\prime \leq t^\prime_{n^\prime}$ with $t^\prime_i - t^\prime_{i-1} > \delta$ for all $i=1, \dotsc, n^\prime$ and $t^\prime_i = t_i$ for all $0 \leq i \leq n$; moreover we have $\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) \leq \max_{1 \leq i \leq n^\prime} \sup_{t^\prime_{i-1} \leq s < t < t^\prime_i} r(f(s),f(t))$ and therefore
+\begin{align*}
+w^\prime(f,\delta, T) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \\
+&\leq \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n^\prime} \sup_{t^\prime_{i-1} \leq s < t < t^\prime_i} r(f(s), f(t)) \\
+&\leq \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T^\prime \leq t_n \\
+  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
+\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \\
+&= w(f, \delta, T^\prime)\\
+\end{align*}
+
+(ii) follows from the fact that for fixed $\delta > 0$, $T>0$ and any valid partition $t_1 < \dotsb < t_{n-1} < T \leq t_n$ we have $0 \leq t_i \leq T+\delta$ for all $1 \leq i \leq n$ and therefore by the triangle inequality
+\begin{align*}
+\sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) &\leq \sup_{t_{i-1} \leq s < t < t_i} r(f(s), g(s)) +\sup_{t_{i-1} \leq s < t < t_i} r(g(s), g(t)) + \sup_{t_{i-1} \leq s < t < t_i} r(g(t), f(t)) \\
+&\leq \sup_{t_{i-1} \leq s < t < t_i} r(g(s), g(t))  + 2 \sup_{0 \leq t \leq T+\delta} r(g(t), f(t))
+\end{align*}
+Now take the maximum over $1 \leq i \leq n$ and the infimum over all partitions.
+
+To see the right continuity in (iii), let $T>0$, $\delta>0$ and $\epsilon > 0$ be given and pick a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ such that $\min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta$ and $\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \leq w^\prime(f,\delta, T) + \epsilon$.  Using the fact that $w^\prime(f,\delta, T)$ is a nondecreasing function of $\delta$, the existence of this partition shows that $w^\prime(f,\delta^\prime, T) < w^\prime(f,\delta, T) +\epsilon$ for all $\delta^\prime -\delta < \frac{1}{2}\min_{1 \leq i \leq n} (t_i - t_{i-1})$.  The fact that $\lim_{\delta \to 0^+} w^\prime(f,\delta, T) = 0$ follows by the same argument as in Lemma \ref{SkorohodJ1ModulusOfContinuity}.
+
+To see (iv) we know that there exist $\lambda_n$ such that $\lim_{n \to \infty} \sup_{0 \leq t \leq T+\delta}\abs{\lambda_n(t) - t} = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq T+\delta} r(f_n(t), f(\lambda_n(t))) = 0$.  Define $\delta_n = \sup_{0 \leq t \leq T}\abs{\lambda_n(t+\delta) - \lambda_n(t)}$ and note that $\delta_n \to 0$.  If we let $t_0 < \dotsb t_{m-1} < \lambda(T) \leq t_m$ be a partition with $t_i - t_{i-1} > \delta_n$ for all $1 \leq i \leq m$ then it follows that $\lambda_n^{-1}(t_0) < \dotsb \lambda_n^{-1}(t_{m-1}) < T \leq \lambda_n^{-1}(t_m)$ and
+\begin{align*}
+\lambda^{-1}_n(t_i) - \lambda^{-1}_n(t_{i-1}) > \delta
+\end{align*}
+for all $1 \leq i \leq m$.  Since we also have $\sup_{\lambda^{-1}_n(t_{i-1})  \leq s < t < \lambda^{-1}_n(t_i) } r(f(s), f(t)) = \sup_{t_{i-1}  \leq s < t < t_i} r(f(\lambda_n(s)), f(\lambda_n(t)))$ it follows that $w^\prime(f \circ \lambda_n,\delta, T) \leq w^\prime(f,\delta_n, \lambda_n(T))$.  Using this fact, (i), (ii)  and $\lim_{n \to \infty} \lambda_n(T) = T$ we get for any $\epsilon > 0$,
+\begin{align*}
+\limsup_{n \to \infty}  w^\prime(f_n,\delta, T) 
+&\leq \limsup_{n \to \infty} \left[ w^\prime(f \circ \lambda_n,\delta, T) + 2 \sup_{0 \leq t \leq T+\delta} r(f_n(t), f(\lambda_n(t)) \right] \\
+&=\limsup_{n \to \infty}  w^\prime(f \circ \lambda_n,\delta, T) \\
+&\leq \limsup_{n \to \infty}  w^\prime(f , \delta_n, \lambda_n(T)) \\
+&\leq \limsup_{n \to \infty}  w^\prime(f , \delta \vee \delta_n, T+\epsilon) \\
+&=w^\prime(f,\delta, T+\epsilon) 
+\end{align*}
+
+To see (v) define $w^\prime(f,\delta, T+) = \lim_{\epsilon \to 0^+} w^\prime(f,\delta, T+\epsilon)$, then by the fact that $w^\prime(f_n,\delta, T)$ is non-decreasing in $T$ and (iv) we for every $\epsilon > 0$,
+\begin{align*}
+\limsup_{n \to \infty}  w^\prime(f_n,\delta, T+) &\leq \limsup_{n \to \infty}  w^\prime(f_n,\delta, T+\epsilon) \leq w^\prime(f,\delta, T+2\epsilon) 
+\end{align*}
+Now let $\epsilon \to 0^+$ to conclude that  $w^\prime(f,\delta, T+)$ is an upper semicontinuous function of $f$, hence Borel measurable.  Now we claim that 
+$w^\prime(f,\delta, T) = \lim_{n \to \infty} w^\prime(f,\delta, (T-1/n)+)$ which shows that $w^\prime(f,\delta, T)$ is Borel measurable.
+
+
+I believe that this last statement is supported by the following (which we should add to the statement of the Lemma):
+\begin{clm}$w^\prime(f,\delta, T)$ is a left continuous function of $T$
+\end{clm}
+Let $\epsilon > 0$ be given and using the existence of the left limit $\lim_{t \to T^-} f(t)$, pick $\rho > 0$ such that $\sup_{T - \rho \leq s < t < T} r(f(s), f(t)) < \epsilon/2$.  Since 
+$w^\prime(f,\delta, T)$ is non-decreasing in $T$, we know that $\lim_{t \to T^-} w^\prime(f,\delta, t)$ exists and $w^\prime(f,\delta, s) \leq \lim_{t \to T^-} w^\prime(f,\delta, t)$ for all $0 \leq s < T$.  We can pick a partition $t_0 < \dotsb < t_{m -1} < T - \rho \leq t_{m}$ with $\min_{1 \leq i \leq m} (t_i - t_{i-1}) > \delta$ and 
+\begin{align*}
+\max_{1 \leq i \leq m} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) &< w^\prime(f,\delta, T-\rho) + \epsilon/2 \leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon/2
+\end{align*}
+If we have $t_{m} \geq T$ then we can conclude 
+\begin{align*}
+w^\prime(f,\delta,T) &\leq \max_{1 \leq i \leq m} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) \leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon/2
+\end{align*}  
+It that is not the case then
+we modify these chosen partition to make one with which we can bound $w^\prime(f,\delta,T)$.  Specifically supposing $t_{m} < T$, we define $\tilde{t}_j = t_j$ for $0 \leq j < m$ and define $\tilde{t}_{m} = T$.  It is clear from the properties of the partition $\lbrace t_i \rbrace$ and the fact we have only moved the rightmost endpoint of the partition further to the right that $\tilde{t}_0 < \dotsb < \tilde{t}_{m -1} < T = \tilde{t}_{m}$, that
+$\min_{1 \leq i \leq m} (\tilde{t}_i - \tilde{t}_{i-1}) \geq \min_{1 \leq i \leq m} (t_i - t_{i-1}) > \delta$ and for $1 \leq i < m$
+\begin{align*}
+\sup_{\tilde{t}_{i-1} \leq s < t < \tilde{t}_i} r(f(s),f(t))  &= \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t))  \leq \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) + \epsilon/2
+\end{align*}
+Moreover we may pick a point $T^*$ such that  
+\begin{align*}
+\tilde{t}_{m-1} &= t_{m-1} < T - \rho < T^*  < t_{m} < T = \tilde{t}_m
+\end{align*} 
+and use this to break down the supremum into cases:
+\begin{align*}
+&\sup_{\tilde{t}_{m-1} \leq s < t < \tilde{t}_{m}} r(f(s),f(t)) \\
+&=\sup_{\tilde{t}_{m-1} \leq s < t \leq T^*} r(f(s),f(t)) \vee \sup_{T^* \leq s < t < \tilde{t}_{m}} r(f(s),f(t)) \vee \sup_{\tilde{t}_{m-1} \leq s < T^* < t < \tilde{t}_{m}} r(f(s),f(t)) \\
+&\leq \sup_{t_{m-1} \leq s < t <  t_{m}} r(f(s),f(t)) \vee \sup_{T - \rho < s < t < T} r(f(s),f(t)) \vee \\
+&\sup_{t_{m-1} \leq s < T^* < t < T} \left[ r(f(s),f(T^*)) + r(f(T^*), f(t)) \right] \\
+&\leq \sup_{t_{m-1} \leq s < t < t_{m}} r(f(s),f(t)) \vee \sup_{T - \rho < s < t < T} r(f(s),f(t)) \vee \\
+&\left(\sup_{t_{m-1} \leq s < t < t_{m}} r(f(s),f(t)) + \sup_{T - \rho < s < t \leq T} r(f(s),f(t)) \right) \\
+&\leq \sup_{t_{m-1} \leq s < t < t_{m}} r(f(s),f(t)) + \epsilon/2
+\end{align*}
+Thus we have 
+\begin{align*}
+w^\prime(f,\delta, T) &\leq \max_{1 \leq i \leq m} \sup_{\tilde{t}_{i-1} \leq s < t < \tilde{t}_i} r(f(s),f(t))  \\
+&\leq \max_{1 \leq i \leq m} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) + \epsilon/2 \\
+&\leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon
+\end{align*}
+Now since $\epsilon > 0$ was arbitrary we let $\epsilon \to 0$ and conclude $w^\prime(f,\delta, T)  \leq \lim_{t \to T^-} w^\prime(f,\delta, t) $.
+On the other hand it is clear from the fact that $w^\prime(f,\delta,T)$ is non-decreasing in $T$ that $\lim_{t \to T^-} w^\prime(f,\delta, t)  \leq w^\prime(f,\delta, T)$ and therefore $\lim_{t \to T^-} w^\prime(f,\delta, t)  = w^\prime(f,\delta, T)$.
+\end{proof}
+
+ Even though the metric $\rho$ is not complete, the underlying topology
 is Polish because we can define a topologically equivalent metric that is
 complete.  To repair the incompleteness of $\rho$ we have to be a bit
 more strict about the types of time changes that are allowed; more
@@ -838,6 +972,14 @@ of open balls as done in the $D([0,T])$ case that I culled from Bass?
 \begin{align*}
 \lim_{n \to \infty} \sup_{0 \leq t \leq T} r(f_n(t), f(\lambda_n(t)) = 0
 \end{align*}
+\item[(iv)] there exists $\lambda_n \in \Lambda_\infty$ with $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and 
+\begin{align*}
+\lim_{n \to \infty} \sup_{0 \leq t \leq T} r(f_n(\lambda_n(t)), f(t) = 0 \text{ for all $T > 0$}
+\end{align*}
+\item[(v)] for every $T > 0$ there exists $\lambda_n \in \Lambda_\infty$ with $\lim_{n \to \infty} \sup_{0 \leq t \leq T} \abs{\lambda_n(t) -t} = 0$ and 
+\begin{align*}
+\lim_{n \to \infty} \sup_{0 \leq t \leq T} r(f_n(\lambda_n(t)), f(t) = 0
+\end{align*}
 \end{itemize}
 \end{prop}
 \begin{proof}
@@ -904,135 +1046,184 @@ For $1 \leq n < n_1$ define $\hat{\lambda}_n \in \Lambda_\infty$ satisfy $\gamma
 &=\sup_{0\leq t \leq N} r(f_n(t), f(\mu^N_n(t)))  \leq \sup_{0\leq t \leq N} r(f_n(t), f(\lambda^N_n(t))) + 2/N < 3/N
 \end{align*}
 which shows that $\lim_{n \to \infty} \sup_{0\leq t \leq T} r(f_n(t), f(\hat{\lambda}_n(t)))$.
+
+We now show that (iv) is equivalent to (ii).  Suppose that (ii) holds then pick $\lambda_n$ with $\lim_{n \to \infty} \gamma(\lambda_n) = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq T} r(f_n(t), f(\lambda_n(t))) = 0$.  Define $\tilde{\lambda}_n =\lambda^{-1}_n$ and $\lim_{n \to \infty} \gamma(\tilde{\lambda}_n) = \lim_{n \to \infty} \gamma(\lambda_n) = 0$ by Lemma \ref{SkorohodJ1GammaFacts}.  Furthermore for any $T > 0$ we have
+\begin{align*}
+\lim_{n \to \infty} \sup_{0 \leq t \leq T} r(f_n(\tilde{\lambda}_n(t)), f(t)) &= \lim_{n \to \infty} \sup_{0 \leq t \leq \tilde{\lambda}_n(T)} r(f_n(t), f(\lambda_n(t))) = 0
+\end{align*}
+The same argument shows that (iv) implies (ii).
+
+We now show that (v) is equivalent to (iii).  Suppose (iii) holds.  Let $T>0$ be given.  Pick $\lambda_n$ such that $\lim_{n \to \infty} \sup_{0 \leq t \leq T+1} \abs{\lambda_n(t) - t} =0$
+and $\lim_{n \to \infty} r(f_n(t), f(\lambda_n(t))) = 0$.  Define $\tilde{\lambda}_n =\lambda^{-1}_n$.  Then for any $0 < \epsilon \leq 1$ we pick $N >0$ such that $\sup_{0 \leq t \leq T+1} \abs{\lambda_n(t) - t} < \epsilon$ (in particular $\lambda_n(T) < T + \epsilon \leq T+1$) and $ r(f_n(t), f(\lambda_n(t))) < \epsilon$ for all $n \geq N$.  Then for all $n \geq N$,
+\begin{align*}
+\sup_{0 \leq t \leq T} \abs{\tilde{\lambda}_n(t) - t} &= \sup_{0 \leq t \leq \lambda_n(T)} \abs{t - \lambda_n(t)} \leq \sup_{0 \leq t \leq T+1} \abs{\lambda_n(t) - t} < \epsilon
+\end{align*}
+and
+\begin{align*}
+\sup_{0 \leq t \leq T} \abs{f_n(\tilde{\lambda}_n(t)) - f(t)} &= \sup_{0 \leq t \leq \lambda_n(T)} \abs{f_n(t) - f(\lambda_n(t))} \leq \sup_{0 \leq t \leq T+1} \abs{f_n(t) - f(\lambda_n(t))}< \epsilon
+\end{align*}
+which shows (v).  The same argument shows that (v) implies (iii).
 \end{proof}
 
-In order to understand compactness in $D([0,\infty);S)$ we need to have a notion of equicontinuity.  The basic idea is that we
-express equicontinuity relative to bounded intervals $[0,T]$ and we must account for the existence jumps on such an interval
-and particularly at $T$ itself.
-\begin{defn}Let $(S,r)$ be a metric space and let $f \in D([0,\infty); S)$ be given then for each $\delta > 0$ and $T > 0$ we define the \emph{modulus of continuity}
-\begin{align*}
-w^\prime(f,\delta, T) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
-  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
-\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t))
-\end{align*}
-\end{defn}
+Thus far, we have several different characterizations of convergence in the $J_1$ topology but all of them involve uniform convergence on compact sets.  There
+are occasions in which it is more convenient to have a characterization in terms of sequential convergence.  
 
-TODO: Unify the proofs here with the case of $D([0,T];S)$.
+TODO: Back in the $C([0,\infty); S)$ section state and prove the corresponding result.
 
-Note that we allow the right hand endpoint of the partition $\lbrace t_i \rbrace$ to extend beyond $T$ in the definition above.  TODO: Presumably this makes dealing with jumps
-at $T$ easier; on the other hand we don't do this in the case of $D([0,T];S)$ ; is it necessary to define it this way?
-\begin{lem}\label{SkorohodInfiniteJ1ModulusOfContinuity}
-Let $f, g\in D([0,\infty); S)$ then 
+\begin{prop}\label{SkorohodInfiniteJ1EquivalenceC}Let $(S,r)$ be a metric space, $f, f_1, f_2, \dotsc \in D([0,\infty); S)$ then $\lim_{n \to \infty} f_n = f$ in the $J_1$ topology if and only if 
 \begin{itemize}
-\item[(i)] $w^\prime(f,\delta, T)$ is a non-decreasing function of $\delta$ and $T$
-\item[(ii)] For every $\delta > 0$ and $T > 0$
-\begin{align*}
-w^\prime(f,\delta, T) &\leq w^\prime(g,\delta, T) + 2 \sup_{0 \leq t \leq T+ \delta} r(f(t), g(t))
-\end{align*}
-\item[(iii)]For each fixed $T > 0$, $w^\prime(f,\delta, T)$ is a right continuous function of $\delta$ and
-\begin{align*}
-\lim_{\delta \to 0^+} w^\prime(f,\delta, T) &= 0
-\end{align*}
-\item[(iv)]If $f_n \in D([0,\infty); S)$ and $\lim_{n \to \infty} d(f_n,g) = 0$ then for every $\delta > 0$, $T > 0$ and $\epsilon > 0$ 
-\begin{align*}
-\limsup_{n \to \infty}  w^\prime(f_n,\delta, T)  &\leq  w^\prime(f,\delta, T+\epsilon) 
-\end{align*}
-\item[(v)]For fixed $\delta > 0$ and $T>0$, $ w^\prime(f,\delta, T)$ is a Borel measurable function of $f$.
+\item[(i)] For every sequence $t, t_1, t_2, \dotsc \in [0,\infty)$ such that $\lim_{n \to \infty} t_n = t$ we have $\lim_{n \to \infty} r(f_n(t_n), f(t)) \wedge r(f_n(t_n), f(t-)) = 0$. 
+\item[(ii)] If we have a sequence $t, t_1, t_2, \dotsc \in [0,\infty)$ such that $\lim_{n \to \infty} t_n = t$ and $\lim_{n \to \infty} r(f_n(t_n), f(t)) = 0$ then for every sequence
+$s_n$ such that $t_n \leq s_n \leq T$ and $\lim_{n \to \infty} s_n = t$ we have $\lim_{n \to \infty} r(f_n(s_n), f(t)) = 0$
+\item[(ii)] If we have a sequence $t, t_1, t_2, \dotsc \in [0,\infty)$ such that $\lim_{n \to \infty} t_n = t$ and $\lim_{n \to \infty} r(f_n(t_n), f(t-)) = 0$ then for every sequence
+$s_n$ such that $0 \leq s_n \leq t_n$ and $\lim_{n \to \infty} s_n = t$ we have $\lim_{n \to \infty} r(f_n(s_n), f(t-)) = 0$
 \end{itemize}
-\end{lem}
+\end{prop}
 \begin{proof}
-(i) is immediate from the fact that the set of partitions over which the infimum is calculated is non-decreasing with respect to set inclusion as either $\delta$ decreases or $T$ increases.  Suppose $0 < \delta < \delta^\prime$, then if we have a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ and $t_i - t_{i-1} > \delta^\prime$ for all $i=1, \dotsc, n$ then it follows that $t_i - t_{i-1} > \delta$ for all $i=1, \dotsc, n$ as well.  Thus 
+First suppose that $f_n \to f$ in the $J_1$ topology and we are given $t, t_1, t_2, \dotsc$ with $\lim_{n \to \infty} t_n = t$.  Pick a $T>0$ such that $t_n \leq T$ for all $n \in \naturals$ and therefore $t \leq T$ as well.  Then there exists $\lambda_n$ such that $\lim_{n \to \infty} \sup_{0 \leq t \leq T} \abs{\lambda_n(t) - t} = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq T} r(f_n(t), f(\lambda_n(t))) = 0$.  We have by the triangle inequality
 \begin{align*}
-&\lbrace (t_0, \dotsc, t_n) \mid t_0 < \dotsb < t_{n-1} < T \leq t_n \text{ and } t_i - t_{i-1} > \delta^\prime \rbrace \subset  \\
-&\lbrace (t_0, \dotsc, t_n) \mid t_0 < \dotsb < t_{n-1} < T \leq t_n \text{ and } t_i - t_{i-1} > \delta \rbrace 
+&r(f_n(t_n), f(t)) \wedge r(f_n(t_n), f(t-)) \\
+&\leq (r(f_n(t_n), f(\lambda_n(t_n)))+r(f(\lambda_n(t_n)), f(t))) \wedge (r(f_n(t_n), f(\lambda_n(t_n))) + r(f(\lambda_n(t_n)), f(t-))) \\
+&\leq \sup_{0 \leq s \leq T} r(f_n(s), f(\lambda_n(s))) + r(f(\lambda_n(t_n)), f(t)) \wedge r(f(\lambda_n(t_n)), f(t-)) \\
 \end{align*}
-and taking unions over $n \in \naturals$ and infimums it follows that $w(f,\delta, T) \leq w(f,\delta^\prime, T)$.  Suppose that $0 < T < T^\prime$, given a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ with $t_i - t_{i-1} > \delta$ for all $i=1, \dotsc, n$ we may extend it to a partition $t^\prime_0 < \dotsb < t^\prime_{n^\prime-1} < T^\prime \leq t^\prime_{n^\prime}$ with $t^\prime_i - t^\prime_{i-1} > \delta$ for all $i=1, \dotsc, n^\prime$ and $t^\prime_i = t_i$ for all $0 \leq i \leq n$; moreover we have $\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) \leq \max_{1 \leq i \leq n^\prime} \sup_{t^\prime_{i-1} \leq s < t < t^\prime_i} r(f(s),f(t))$ and therefore
+Now take the limit at $n \to \infty$.  (Note that $\lim_{n \to \infty} r(f(\lambda_n(t_n)), f(t)) \wedge r(f(\lambda_n(t_n)), f(t-)) = 0$ since $\lambda(t_n) \to t$ and for any sequence $s_n \to s$ we have $r(f(s_n), f(s+)) \wedge r(f(s_n), f(s-)) = r(f(s_n), f(s)) \wedge r(f(s_n), f(s-)) \to 0$).
+
+To see that (ii) holds, suppose that $s_n \to t$ and $t_n \leq s_n \leq T$.  The triangle inequality shows
 \begin{align*}
-w^\prime(f,\delta, T) &= \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
-  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
-\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \\
-&\leq \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T \leq t_n \\
-  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
-\max_{1 \leq i \leq n^\prime} \sup_{t^\prime_{i-1} \leq s < t < t^\prime_i} r(f(s), f(t)) \\
-&\leq \inf_{\substack{0=t_0 < t_1 < \dotsb < t_{n-1} <  T^\prime \leq t_n \\
-  \min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta \\ n \in \naturals}}
-\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \\
-&= w(f, \delta, T^\prime)\\
+r(f(\lambda_n(t_n)), f(t)) &\leq r(f(\lambda_n(t_n)), f_n(t_n)) + r(f_n(t_n), f(t))\\
+&\leq \sup_{0 \leq s \leq T} r(f_n(s), f(\lambda_n(s))) + r(f_n(t_n), f(t))
 \end{align*}
-
-(ii) follows from the fact that for fixed $\delta > 0$, $T>0$ and any valid partition $t_1 < \dotsb < t_{n-1} < T \leq t_n$ we have $0 \leq t_i \leq T+\delta$ for all $1 \leq i \leq n$ and therefore by the triangle inequality
+Thus if we assume that $\lim_{n \to \infty} r(f_n(t_n), f(t)) = 0$ then we also have $\lim_{n \to \infty} r(f(\lambda_n(t_n)), f(t)) = 0$.  By monotonicity of $\lambda_n$ we know that
+$\lambda_n(s_n) \geq \lambda_n(t_n)$ and $\lim_{n \to \infty} \lambda_n(s_n) = t$ (let $\epsilon > 0$ be given and pick $N$ such that $\sup_{0 \leq s \leq T} \abs{\lambda(s) - s} < \epsilon/2$ and $\abs{s_n - t} < \epsilon/2$ for $n \geq N$ then $\abs{\lambda_n(s_n) -t} \leq \abs{\lambda_n(s_n) - s_n} + \abs{s_n -t} \leq \sup_{0 \leq s \leq T} \abs{\lambda_n(s) - s} + \abs{s_n -t} < \epsilon$) and therefore $\lim_{n \to \infty} r(f(\lambda_n(s_n)), f(t)) = 0$ (one way to see this is break down into two cases; either $f$ is continuous at $t$ or not.  In the former case $\lim_{n \to \infty} f(\lambda_n(s_n)) = f(t)$ and in the later case we know that there must exist an $N > 0$ such that $\lambda_n(t_n) \geq t$ so the same is true of $\lambda(s_n)$ and $\lim_{n \to \infty} f(\lambda_n(s_n)) = f(t+) = f(t)$ by right continuity of $f$; TODO: Is there a simpler argument that avoids the case breakdown?).   Another application of the triangle inequality shows that
 \begin{align*}
-\sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) &\leq \sup_{t_{i-1} \leq s < t < t_i} r(f(s), g(s)) +\sup_{t_{i-1} \leq s < t < t_i} r(g(s), g(t)) + \sup_{t_{i-1} \leq s < t < t_i} r(g(t), f(t)) \\
-&\leq \sup_{t_{i-1} \leq s < t < t_i} r(g(s), g(t))  + 2 \sup_{0 \leq t \leq T+\delta} r(g(t), f(t))
+r(f_n(s_n), f(t)) &\leq r(f_n(s_n), f(\lambda_n(s_n))) + r(f(\lambda_n(s_n)), f(t)) \\
+&\leq \sup_{0 \leq s \leq T} r(f_n(s), f(\lambda_n(s))) + r(f(\lambda_n(s_n)), f(t)) \\
 \end{align*}
-Now take the maximum over $1 \leq i \leq n$ and the infimum over all partitions.
+and therefore we can conclude that $\lim_{n \to \infty} r(f_n(s_n), f(t)) = 0$.
 
-To see the right continuity in (iii), let $T>0$, $\delta>0$ and $\epsilon > 0$ be given and pick a partition $t_0 < \dotsb < t_{n-1} < T \leq t_n$ such that $\min_{1 \leq i \leq n} (t_i - t_{i-1}) > \delta$ and $\max_{1 \leq i \leq n} \sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t)) \leq w^\prime(f,\delta, T) + \epsilon$.  Using the fact that $w^\prime(f,\delta, T)$ is a nondecreasing function of $\delta$, the existence of this partition shows that $w^\prime(f,\delta^\prime, T) < w^\prime(f,\delta, T) +\epsilon$ for all $\delta^\prime -\delta < \frac{1}{2}\min_{1 \leq i \leq n} (t_i - t_{i-1})$.  The fact that $\lim_{\delta \to 0^+} w^\prime(f,\delta, T) = 0$ follows by the same argument as in Lemma \ref{SkorohodJ1ModulusOfContinuity}.
+TODO: Show (iii) by the same type of argument.
 
-To see (iv) we know that there exist $\lambda_n$ such that $\lim_{n \to \infty} \sup_{0 \leq t \leq T+\delta}\abs{\lambda_n(t) - t} = 0$ and $\lim_{n \to \infty} \sup_{0 \leq t \leq T+\delta} r(f_n(t), f(\lambda_n(t))) = 0$.  Define $\delta_n = \sup_{0 \leq t \leq T}\abs{\lambda_n(t+\delta) - \lambda_n(t)}$ and note that $\delta_n \to 0$.  If we let $t_0 < \dotsb t_{m-1} < \lambda(T) \leq t_m$ be a partition with $t_i - t_{i-1} > \delta_n$ for all $1 \leq i \leq m$ then it follows that $\lambda_n^{-1}(t_0) < \dotsb \lambda_n^{-1}(t_{m-1}) < T \leq \lambda_n^{-1}(t_m)$ and
+Now we assume that (i), (ii) and (iii) hold.  We are going to need a couple of observations.
+
+\begin{clm}\label{SkorohodInfiniteJ1EquivalenceC:ClaimContinuityPoint}Suppose $f$ is continuous at $s$ then 
 \begin{align*}
-\lambda^{-1}_n(t_i) - \lambda^{-1}_n(t_{i-1}) > \delta
+\lim_{n \to \infty} f_n(s) &= \lim_{n \to \infty} f_n(s-) = f(s)
 \end{align*}
-for all $1 \leq i \leq m$.  Since we also have $\sup_{\lambda^{-1}_n(t_{i-1})  \leq s < t < \lambda^{-1}_n(t_i) } r(f(s), f(t)) = \sup_{t_{i-1}  \leq s < t < t_i} r(f(\lambda_n(s)), f(\lambda_n(t)))$ it follows that $w^\prime(f \circ \lambda_n,\delta, T) \leq w^\prime(f,\delta_n, \lambda_n(T))$.  Using this fact, (i), (ii)  and $\lim_{n \to \infty} \lambda_n(T) = T$ we get for any $\epsilon > 0$,
-\begin{align*}
-\limsup_{n \to \infty}  w^\prime(f_n,\delta, T) 
-&\leq \limsup_{n \to \infty} \left[ w^\prime(f \circ \lambda_n,\delta, T) + 2 \sup_{0 \leq t \leq T+\delta} r(f_n(t), f(\lambda_n(t)) \right] \\
-&=\limsup_{n \to \infty}  w^\prime(f \circ \lambda_n,\delta, T) \\
-&\leq \limsup_{n \to \infty}  w^\prime(f , \delta_n, \lambda_n(T)) \\
-&\leq \limsup_{n \to \infty}  w^\prime(f , \delta \vee \delta_n, T+\epsilon) \\
-&=w^\prime(f,\delta, T+\epsilon) 
-\end{align*}
-
-To see (v) define $w^\prime(f,\delta, T+) = \lim_{\epsilon \to 0^+} w^\prime(f,\delta, T+\epsilon)$, then by the fact that $w^\prime(f_n,\delta, T)$ is non-decreasing in $T$ and (iv) we for every $\epsilon > 0$,
-\begin{align*}
-\limsup_{n \to \infty}  w^\prime(f_n,\delta, T+) &\leq \limsup_{n \to \infty}  w^\prime(f_n,\delta, T+\epsilon) \leq w^\prime(f,\delta, T+2\epsilon) 
-\end{align*}
-Now let $\epsilon \to 0^+$ to conclude that  $w^\prime(f,\delta, T+)$ is an upper semicontinuous function of $f$, hence Borel measurable.  Now we claim that 
-$w^\prime(f,\delta, T) = \lim_{n \to \infty} w^\prime(f,\delta, (T-1/n)+)$ which shows that $w^\prime(f,\delta, T)$ is Borel measurable.
-
-
-I believe that this last statement is supported by the following (which we should add to the statement of the Lemma):
-\begin{clm}$w^\prime(f,\delta, T)$ is a left continuous function of $T$
 \end{clm}
-Let $\epsilon > 0$ be given and using the existence of the left limit $\lim_{t \to T^-} f(t)$, pick $\rho > 0$ such that $\sup_{T - \rho \leq s < t < T} r(f(s), f(t)) < \epsilon/2$.  Since 
-$w^\prime(f,\delta, T)$ is non-decreasing in $T$, we know that $\lim_{t \to T^-} w^\prime(f,\delta, t)$ exists and $w^\prime(f,\delta, s) \leq \lim_{t \to T^-} w^\prime(f,\delta, t)$ for all $0 \leq s < T$.  We can pick a partition $t_0 < \dotsb < t_{m -1} < T - \rho \leq t_{m}$ with $\min_{1 \leq i \leq m} (t_i - t_{i-1}) > \delta$ and 
+By (i) for all sequences $s_n$ such that $\lim_{n \to \infty} s_n = s$ we have $\lim_{n \to \infty} f_n(s_n) = f(s)$.   In particular if we pick $s_n \equiv s$ then we get $\lim_{n \to \infty} f_n(s) = f(s)$.  Furthermore if we let $\epsilon > 0$ be given then for each $n \in \naturals$ we may pick $s - 1/n < s_n < s$ such that $r(f_n(s_n), f_n(s-)) < \epsilon$; but then $\lim_{n \to \infty} s_n = s$ and so by the triangle inequality and (i) we get
 \begin{align*}
-\max_{1 \leq i \leq m} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) &< w^\prime(f,\delta, T-\rho) + \epsilon/2 \leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon/2
+\lim_{n \to \infty} r(f_n(s-), f(s)) &\leq \lim_{n \to \infty} r(f_n(s-), f_n(s_n)) + \lim_{n \to \infty} r(f_n(s_n), f(s)) \leq \epsilon
 \end{align*}
-If we have $t_{m} \geq T$ then we can conclude 
-\begin{align*}
-w^\prime(f,\delta,T) &\leq \max_{1 \leq i \leq m} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) \leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon/2
-\end{align*}  
-It that is not the case then
-we modify these chosen partition to make one with which we can bound $w^\prime(f,\delta,T)$.  Specifically supposing $t_{m} < T$, we define $\tilde{t}_j = t_j$ for $0 \leq j < m$ and define $\tilde{t}_{m} = T$.  It is clear from the properties of the partition $\lbrace t_i \rbrace$ and the fact we have only moved the rightmost endpoint of the partition further to the right that $\tilde{t}_0 < \dotsb < \tilde{t}_{m -1} < T = \tilde{t}_{m}$, that
-$\min_{1 \leq i \leq m} (\tilde{t}_i - \tilde{t}_{i-1}) \geq \min_{1 \leq i \leq m} (t_i - t_{i-1}) > \delta$ and for $1 \leq i < m$
-\begin{align*}
-\sup_{\tilde{t}_{i-1} \leq s < t < \tilde{t}_i} r(f(s),f(t))  &= \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t))  \leq \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) + \epsilon/2
-\end{align*}
-Moreover we may pick a point $T^*$ such that  
-\begin{align*}
-\tilde{t}_{m-1} &= t_{m-1} < T - \rho < T^*  < t_{m} < T = \tilde{t}_m
-\end{align*} 
-and use this to break down the supremum into cases:
-\begin{align*}
-&\sup_{\tilde{t}_{m-1} \leq s < t < \tilde{t}_{m}} r(f(s),f(t)) \\
-&=\sup_{\tilde{t}_{m-1} \leq s < t \leq T^*} r(f(s),f(t)) \vee \sup_{T^* \leq s < t < \tilde{t}_{m}} r(f(s),f(t)) \vee \sup_{\tilde{t}_{m-1} \leq s < T^* < t < \tilde{t}_{m}} r(f(s),f(t)) \\
-&\leq \sup_{t_{m-1} \leq s < t <  t_{m}} r(f(s),f(t)) \vee \sup_{T - \rho < s < t < T} r(f(s),f(t)) \vee \\
-&\sup_{t_{m-1} \leq s < T^* < t < T} \left[ r(f(s),f(T^*)) + r(f(T^*), f(t)) \right] \\
-&\leq \sup_{t_{m-1} \leq s < t < t_{m}} r(f(s),f(t)) \vee \sup_{T - \rho < s < t < T} r(f(s),f(t)) \vee \\
-&\left(\sup_{t_{m-1} \leq s < t < t_{m}} r(f(s),f(t)) + \sup_{T - \rho < s < t \leq T} r(f(s),f(t)) \right) \\
-&\leq \sup_{t_{m-1} \leq s < t < t_{m}} r(f(s),f(t)) + \epsilon/2
-\end{align*}
-Thus we have 
-\begin{align*}
-w^\prime(f,\delta, T) &\leq \max_{1 \leq i \leq m} \sup_{\tilde{t}_{i-1} \leq s < t < \tilde{t}_i} r(f(s),f(t))  \\
-&\leq \max_{1 \leq i \leq m} \sup_{t_{i-1} \leq s < t < t_i} r(f(s),f(t)) + \epsilon/2 \\
-&\leq \lim_{t \to T^-} w^\prime(f,\delta, t) + \epsilon
-\end{align*}
-Now since $\epsilon > 0$ was arbitrary we let $\epsilon \to 0$ and conclude $w^\prime(f,\delta, T)  \leq \lim_{t \to T^-} w^\prime(f,\delta, t) $.
-On the other hand it is clear from the fact that $w^\prime(f,\delta,T)$ is non-decreasing in $T$ that $\lim_{t \to T^-} w^\prime(f,\delta, t)  \leq w^\prime(f,\delta, T)$ and therefore $\lim_{t \to T^-} w^\prime(f,\delta, t)  = w^\prime(f,\delta, T)$.
-\end{proof}
+Since $\epsilon >0$ was arbitrary we get $\lim_{n \to \infty} r(f_n(s-), f(s)) =0$ as well.
 
+\begin{clm}\label{SkorohodInfiniteJ1EquivalenceC:ClaimAnBn}Let $0 < t < \infty$, there exist sequences $a_n$ and $b_n$ with $a_n < t < b_n$, $\lim_{n \to \infty} a_n = \lim_{n \to \infty} b_n =t$ and $a_n, b_n$ continuity points of $f$ such that 
+\begin{align*}
+\lim_{n \to \infty} f_n(a_n) &= \lim_{n \to \infty} f_n(a_n-) = \lim_{n \to \infty} f(a_n) = f(t-) \\
+\intertext{and}
+\lim_{n \to \infty} f_n(b_n) &= \lim_{n \to \infty} f_n(b_n-) = \lim_{n \to \infty} f(b_n) = f(t) \\
+\end{align*}
+\end{clm}
+We first construct $a_n$.  By Lemma \ref{CadlagCountableDiscontinuitySet} we know that the set of continuity points of $f$ is the complement of a countable set hence is dense in $[0,\infty)$ (Lemma \ref{ComplementOfCountableSetDense}).  Thus we may find a sequence $\alpha_n$ of continuity points such that $\alpha_m < t$ and $\lim_{n \to \infty} \alpha_n = t$.  By the previous claim we know that 
+\begin{align*}
+\lim_{n \to \infty} f_n(\alpha_m) &= \lim_{n \to \infty} f_n(\alpha_m-) = f(\alpha_m)
+\end{align*}
+and clearly $\lim_{m \to \infty} f(\alpha_m) = f(t-)$.  By a simple modification of Proposition \ref{ArrayPathArgumentMetricSpace} we can find $l_n$ such that $\lim_{n \to \infty} l_n = \infty$ and $\lim_{n \to \infty} f_n(\alpha_{l_n}) = \lim_{n \to \infty} f_n(\alpha_{l_n}-)  = f(t-)$.  Define $a_n = \alpha_{l_n}$.  Since $l_n \to \infty$ it follows that $\lim_{n \to \infty} a_n = t$ and therefore $\lim_{n \to \infty} f(a_n) = f(t-)$.  The construction of $b_n$ follows by essentially the same argument.
+
+Fix a $T > 0$.  Two challenges are how to construct the time changes $\lambda_n$ to align jumps in the $f_n$ and $f$ and then how to lift ourselves up the closeness along sequences to uniform closeness over $[0,T]$.  If we pick a $n \in \naturals$ and a $0 \leq t \leq T$ and then think about which $0 \leq s < \infty$ we to to map to $t$ under $lambda_n$ we know that we want both $\lim_{u \to s^-} r(f_n(u), f(\lambda_n(u))) = r(f_n(s-), f(t-))$ and $\lim_{u \to  s^+} r(f_n(u), f(\lambda_n(u))) = r(f_n(s), f(t))$ to be small.  Moreover we want to pick $s$ to be as close to $t$ as possible (to give ourselves a hope that $\lambda_n$ converges uniformly to the identity on $[0,T]$).  With this motivation in hand for fixed $0 \leq t \leq T$, $\epsilon > 0$ and $n \in \naturals$ we define the set of candidate preimages of $t$ under our to-be-constructed $\lambda_n$:
+\begin{align*}
+\Gamma(t, n, \epsilon) &= \lbrace s \in (t - \epsilon, t+\epsilon) \cap [0,\infty) \mid r(f_n(s), f(s)) < \epsilon \text{ and } r(f_n(s-), f(s-)) < \epsilon \rbrace
+\end{align*}
+For each $n \in \naturals$ we want to be able to pick a candidate for every $0 \leq t \leq T$ that is as close as possible and we want that closeness to be uniform over $[0,T]$ thus we define
+\begin{align*}
+\epsilon_n &= 2 \inf \lbrace \epsilon > 0 \mid \Gamma(t,n, \epsilon) \neq \emptyset \text{ for all } 0\leq t \leq T \rbrace
+\end{align*}
+(the point behind multiplying by 2 is simply that we want to define $\epsilon_n$ in such a way that $\Gamma(t, n, \epsilon_n) \neq \emptyset$ and $\epsilon_n$ is within a constant factor of being optimal).
+
+A critical point is that optimal candidate distance converges to zero (of course this still leaves us with problem of picking candidates to make a continuous $\lambda_n$ but given prior constructions the reader shouldn't be too surprised that a piecewise linear $\lambda_n$ will suffice provided we take the modulus of continuity of $f$ into consideration).  
+\begin{clm} $\lim_{n \to \infty} \epsilon_n = 0$.
+\end{clm}
+The proof of the claim is by contradiction.  Suppose that $\epsilon_n$ does not converge to $0$.  Then there exists an $\epsilon$ such that $\epsilon_{n_j} \geq \epsilon$ for some subsequence $\lim_{j \to \infty} n_j = \infty$.  From the definition of $\epsilon_n$ we see that this implies there exists $0 \leq t_j \leq T$ and such that $\Gamma(t_j, n_j, \epsilon) = \emptyset$ for all $j \in \naturals$.  By passing to a further subsequence we may assume that there exists $0 \leq t \leq T$ such that $\lim_{j \to \infty} t_j = t$ and passing yet another subsequence we may assume that either $t_j < t$ for all $j \in \naturals$, $t_j > t$ for all $j \in \naturals$ or $t_j=t$ for all $j \in \naturals$.  Let $a_n$ and $b_n$ be chosen as in Claim \ref{SkorohodInfiniteJ1EquivalenceC:ClaimAnBn}.  We examine each case in turn.
+
+Case 1 :  If $t_j < t$ for all $j \in \naturals$ then for each $\epsilon > 0$ we pick $\delta > 0$ such that $t - \delta < s < t$ implies $r(f(s), f(t-)) < \epsilon$.  For $N > 0$ such that
+$t - \delta < t_j < t$ for all $j \geq N$ we also have $r(f(t_j), f(t-)) < \epsilon$ which shows $\lim_{j \to \infty} f(t_j) = f(t-)$.  Moreover for all such $j \geq N$ we may also pick an
+$t - \delta < s_j < t_j$ such that $r(f(s_j), f(t_j-)) < \epsilon$ and therefore 
+\begin{align*}
+\lim_{j \to \infty} r(f(t_j-), f(t-)) &\leq \lim_{j \to \infty} r(f(t_j-), f(s_j)) + \lim_{j \to \infty} r(f(s_j), f(t-)) < 2 \epsilon
+\end{align*}
+which shows that $\lim_{j \to \infty} f(t_j-) = f(t-)$ as well.  From this and Claim \ref{SkorohodInfiniteJ1EquivalenceC:ClaimAnBn} the following facts
+\begin{itemize}
+\item $t_j - \epsilon < a_{n_j} < t_j + \epsilon$ for all $j$ sufficiently large since for $j$ sufficiently large we can arrange for $t - \epsilon < t_j < t$ and $t - \epsilon < a_{n_j} < t$.
+\item $r(f_{n_j}(a_{n_j}), f(t_j)) < \epsilon$ for $j$ sufficiently large follows since $\lim_{j \to \infty} f_{n_j}(a_{n_j}) = \lim_{j \to \infty} f(t_j) = f(t-)$ 
+\item $r(f_{n_j}(a_{n_j}-), f(t_j-)) < \epsilon$ for $k$ sufficiently large follows since $\lim_{j \to \infty} f_{n_j}(a_{n_j}-) = \lim_{j \to \infty} f(t_j-) = f(t-)$ 
+\end{itemize}
+which show that $a_{n_j} \in \Gamma(t_j,  n_j, \epsilon)$ for $j$ sufficiently large which is a contradiction.
+
+Case 2 : This follows by contradiction as in Case 1 by showing $\lim_{j \to \infty} f(t_j) = \lim_{j \to \infty} f(t_j) = f(t)$ and using $\lim_{j \to \infty} f_{n_j}(b_{n_j}) = \lim_{j \to \infty} f_{n_j}(a_{n_j}-) = f(t)$ to conclude $b_{n_j} \in \Gamma(t_j, n_j, \epsilon)$ for $j$ sufficiently large.
+
+Case 3 :  We assume that $t_j = t$ for all $j \in \naturals$.  If $t$ is a continuity point of $f$ then as we have seen in Claim \ref{SkorohodInfiniteJ1EquivalenceC:ClaimContinuityPoint} that $\lim_{n \to \infty} f_n(t) = \lim_{n \to \infty} f_n(t-) = f(t)$ so $t \in \Gamma(t, n, \epsilon)$ for sufficiently large $n$; in particular this is also true for all $n_j$ for $j$ sufficiently large which is contradiction.  Therefore we assume that $r(f(t), f(t-)) = \delta > 0$.  Since $\lim_{n \to \infty} f_n(a_n) = f(t-)$ and $\lim_{n \to \infty} f_n(b_n) = f(t)$ we may find an $N_1 > 0$ such that 
+\begin{align}\label{SkorohodInfiniteJ1EquivalenceC:Case3.1}
+r(f_n(a_n), f(t-)) \vee r(f_n(b_n), f(t)) &< \frac{\delta \wedge \epsilon}{2}
+\end{align}
+for all $n \geq N_1$.
+We can find $N_2 > 0$ such that
+\begin{align}\label{SkorohodInfiniteJ1EquivalenceC:Case3.2}
+\sup_{a_n \leq s \leq b_n} r(f_n(s), f(t-)) \wedge r(f_n(s), f(t)) &< \frac{\delta \wedge \epsilon}{2}
+\end{align}
+for all $n \geq N_2$ since otherwise we could find a subsequence $n_k$ and $a_{n_k} \leq s_k \leq b_{n_k}$ such that $r(f_{n_k}(s_k), f(t-)) \wedge r(f_{n_k}(s_k), f(t)) \geq \frac{\delta \wedge \epsilon}{2}$.  Since $\lim_{k \to \infty} a_{n_k}  = \lim_{k \to \infty} b_{n_k} = t$ it follows that $\lim_{k \to \infty} s_k = t$ and this contradicts (i).
+Since $\lim_{n \to \infty} a_n = \lim_{n \to \infty} b_n = t$ we can find $N_3>0$ such that $t - \epsilon < a_n < t < b_n < t + \epsilon$ for all $n \geq N_3$.  Let $N = N_1 \vee N_2 \vee N_3$ suppose $n \geq N$ and define
+\begin{align*}
+s_n &= \inf \lbrace s > a_n \mid r(f_n(s), f(t)) < \frac{\delta \wedge \epsilon}{2} \rbrace
+\end{align*}
+From \eqref{SkorohodInfiniteJ1EquivalenceC:Case3.1} we know that $s_n \leq b_n$.  By right continuity of $f_n$ we have $r(f_n(s_n), f(t)) \leq \frac{\delta \wedge \epsilon}{2}$.  This last fact also shows that $a_n < s_n$ since otherwise 
+\begin{align*}
+r(f(t), f(t-)) &\leq r(f(t), f_n(a_n)) + r(f_n(a_n), f(t-)) \\
+&\leq \frac{\delta \wedge \epsilon}{2} + r(f_n(a_n), f(t-)) \vee r(f_n(b_n), f(t)) < \delta
+\end{align*}
+which is a contradiction.  We have 
+\begin{align*}
+t - \epsilon < a_n < s_n  \leq b_n < t + \epsilon
+\end{align*} 
+Since $a_n < s_n$ we know from the definition of $s_n$ that for all $a_n < s < s_n$ we have $r(f_n(s), f(t)) \geq \frac{\delta \wedge \epsilon}{2}$. and therefore taking the limit $r(f_n(s_n-), f(t)) \geq \frac{\delta \wedge \epsilon}{2}$.  Since \eqref{SkorohodInfiniteJ1EquivalenceC:Case3.2} tells that either $r(f_n(s_n-), f(t-)) < \frac{\delta \wedge \epsilon}{2}$  or $r(f_n(s_n-), f(t)) < \frac{\delta \wedge \epsilon}{2}$ we see that in fact we must have $r(f_n(s_n-), f(t-)) < \frac{\delta \wedge \epsilon}{2}$.  All of these facts together show that $s_n \in \Gamma(t, n, \epsilon)$ for $n \geq N$ which is a contradiction.
+
+Now we turn to the construction of $\lambda_n$.  For each $n \in \naturals$ pick an arbitrary partition $0 = t^n_0 < t^n_1 < \dotsb < t^n_{m_n -1} < T \leq t^n_{m_n}$ with
+$\min_{1 \leq i \leq m_n} (t^n_i - t^n_{i-1}) > 3\epsilon_n$ and 
+\begin{align*}
+\max_{1 \leq i \leq m_n} \sup_{t^n_{i-1} \leq s < t < t^n_i} r(f(s), f(t)) &< w^\prime(f, 3\epsilon_n, T) + \epsilon_n
+\end{align*}
+and define $m^*_n = m_n -1$ if $t^n_{m_n} > T$ and $m^*_n = m_n$ if $t^n_{m_n} = T$.  Define $\lambda_n$ by defining $\lambda_n(0) = 0$, picking an arbitrary $s^n_i \in \Gamma(t^n_i, n, \epsilon_n)$ and defining $\lambda_n(t^n_i) = s^n_i$ for each
+$1 \leq i \leq m^*_n$, extending $\lambda_n$ by linearity on each $[t^n_{i-1}, t^n_i]$ for $1 \leq i \leq m^*_n$ and defining $\lambda_n(t) = t^n_{m^*_n} + (t - s^n_{m^*_n})$ for $t > s^n_{m^*_n}$.  By definition, $\abs{\lambda_n(t^n_i) - t^n_i} < \epsilon_n$ and it follows that 
+\begin{align*}
+\sup_{0 \leq t \leq T} \abs{\lambda_n(t) - t} &\leq \sup_{0 \leq t < \infty} \abs{\lambda_n(t) - t} &\leq \max_{0 \leq i \leq m^*_n} \abs{\lambda_n(t^n_i) - t^n_i} \leq \epsilon_n
+\end{align*}
+and therefore $\lim_{n \to \infty} \sup_{0 \leq t \leq T} \abs{\lambda_n(t) - t} = 0$.  Monotonicity of $\lambda_n$ follows from 
+\begin{align*}
+\lambda_n(t^n_{i}) - \lambda(t^n_{i-1}) &> (t^n_i - \epsilon_n) - (t^n_{i-1} + \epsilon_n) > \epsilon_n
+\end{align*}
+and the fact that $\lambda_n$ is linear on each $[t^n_{i-1}, t^n_i]$.
+
+By Proposition \ref{SkorohodInfiniteJ1EquivalenceB} the result is proven by the following claim.
+\begin{clm} $\lim_{n \to\infty} \sup_{0 \leq t \leq T} r(f_n(\lambda_n(t)), f(t)) = 0$.
+\end{clm}
+To see the claim it suffices to show that for each $t, t_1, t_2, \dots \in [0,T]$ such that $\lim_{n \to \infty} t_n = t$ we have $\lim_{n \to \infty} r(f_n(\lambda_n(t_n)), f(t_n)) = 0$.
+
+TODO: Put this in a separate lemma back in the $C([0,T];S)$ section.  If $f_n,f \in C([0,T];S)$ are such that $\lim_{n \to \infty} \sup_{0 \leq t \leq T} r(f_n(t), f(t)) \neq 0$ then there exists an $\epsilon > 0$ and a sequence $n_j$ and $0 \leq t_j \leq T$ such that $r(f_{n_j}(t_j), f(t_j)) \geq \epsilon$.  By compactness of $[0,T]$ and passing to a further subsequence we can actually assume that there exists $0 \leq t \leq T$ such that $\lim_{j \to \infty} t_j = t$.  Now by continuity of $f$ we can find $N > 0$ such that $r(f(t), f(t_j)) < \epsilon/2$ for all
+$j \geq N$ and therefore $r(f_{n_j}(t_j), f(t)) \geq r(f_{n_j}(t_j), f(t_j)) - r(f(t_j), f(t)) \geq \epsilon/2$ for all $j \geq N$ such shows that $\limsup_{n \to \infty} r(f_n(\lambda_n(t_n)), f(t_n)) \geq \epsilon/2$.
+
+If $f$ is continuous at $t$ then by the triangle inequality
+\begin{align*}
+r(f_n(\lambda_n(t_n)), f(t_n)) &\leq r(f_n(\lambda_n(t_n)), f(t)) + r(f(t), f(t_n)) \\
+&=r(f_n(\lambda_n(t_n)), f(t)) \wedge r(f_n(\lambda_n(t_n)), f(t-)) + r(f(t), f(t_n)) 
+\end{align*}
+and the claim follows in this case by taking the limit as $n \to \infty$ and applying (i) and the continuity of $f$ at $t$.
+
+Now if $f$ is not continuous at $t$ then since both $\epsilon_n \to 0$ and $w^\prime(f, 3\epsilon_n, T) \to 0$ there exists $N > 0$ such that $\max_{1 \leq i \leq m_n} \sup_{t^n_{i-1} \leq s < t < t^n_i} r(f(s), f(t)) < r(f(t), f(t-))$ for all $n \geq N$; in particular for every $n \geq N$ there exists $0 \leq i_n \leq m^*_n$ such that $t^n_{i_n} = t$.  It suffices to consider separately cases in which $t \leq t_n \leq T$ for all $n \in \naturals$ and $0 \leq t_n < t$ for all $n \in \naturals$.  
+
+If $t \leq t_n \leq T$ for all $n \in \naturals$ then since by definition of $\lambda_n(t^n_{i_n}) \in \Gamma(t, n, \epsilon_n)$ we have $r(f_n(\lambda_n(t^n_{i_n})), f(t)) < \epsilon_n$ and therefore $\lim_{n \to \infty} r(f_n(\lambda_n(t^n_{i_n})), f(t)) = 0$.  However $t^n_{i_n} = t \leq t_n$, therefore by monotonicity of $\lambda_n$ we have $\lambda(t^n_{i_n} ) \leq \lambda_n(t_n)$.  By continuity of $\lambda_n$ and the fact that $\lim_{n \to \infty} t_n = t$ we know that $\lim_{n \to \infty} \lambda_n(t_n) = t$ and therefore we may apply (ii) to conclude that $\lim_{n \to \infty} r(f_n(\lambda_n(t_n)), f(t)) = 0$.  By right continuity of $f$ we get $\lim_{n \to \infty} r(f_n(\lambda_n(t_n)), f(t_n)) = 0$.
+
+If $0 \leq t_n < t$ then since by definition of $\lambda_n(t^n_{i_n}) \in \Gamma(t, n, \epsilon_n)$ we have $r(f_n(\lambda_n(t^n_{i_n})-), f(t-)) < \epsilon_n$.  Also we know that 
+$t_n < t = t^n_{i_n}$ and therefore by monotonicity of $\lambda_n$ we get $\lambda_n(t_n) < \lambda(t^n_{i_n})$; we may therefore pick $\lambda_n(t_n) < s_n \leq \lambda(t^n_{i_n})$
+such that $r(f_n(s_n), f(t-)) < \epsilon_n$.  By (iii) we conclude that $\lim_{n \to \infty} r(f_n(\lambda_n(t_n)), f(t-)) = 0$ and therefore since $0 \leq t_n < t$ we have $\lim_{n \to \infty} r(f_n(\lambda_n(t_n)), f(t_n))=0$.
+\end{proof}
 
 \begin{lem}\label{SkorohodInfiniteBorelGeneratedByProjections}For every $t \in [0,\infty)$ let $\pi_t : D([0,\infty); S) \to
   S$ be the evaluation map $\pi_t(f) = f(t)$.  
@@ -1063,7 +1254,7 @@ To see (ii) let $0 \leq t < \infty$ be given and pick a sequence $t_1, t_2, \dot
 of $D([0,\infty); S)$ we see that $\pi_t = \lim_{n \to \infty} \pi_{t_n}$.
 
 To see (iii) we first set about showing that open balls are in $\sigma(\pi_t ; 0 \leq t < \infty)$.  To show that is equivalent to showing that for fixed $g \in D([0,\infty); S)$ the function
-$d(\cdot, g) : D([0,\infty);S) \to reals$ is $\sigma(\pi_t ; 0 \leq t < \infty)$-measurable, so we set to work on that.  To create approximations of $d(\cdot, g)$, we assume that
+$d(\cdot, g) : D([0,\infty);S) \to \reals$ is $\sigma(\pi_t ; 0 \leq t < \infty)$-measurable, so we set to work on that.  To create approximations of $d(\cdot, g)$, we assume that
 a partition $0=t_0 < t_1 < \dotsb < t_n < t_{n+1}=\infty$ is given and define $\eta : S^{n+1} \to D([0,\infty);S)$ by
 \begin{align*}
 \eta(x_0, \dotsc, x_n)(t) = \sum_{j=0}^n x_j \characteristic{[t_j,t_{j+1})}(t)
@@ -1096,7 +1287,7 @@ $t \in [0,\infty) \cap \rationals$ there exists a compact set $K_t \subset S$ su
 TODO: Not significantly different than the case of $D([0,T];S)$.
 \end{proof}
 
-\begin{lem}\label{SkorohodInfiniteTightnessOfJ1Topology}A set of Borel probability measures $\mu_\alpha$ on $D([0,\infty); S)$ is tight if and only if 
+\begin{thm}\label{SkorohodInfiniteTightnessInJ1Topology}A set of Borel probability measures $\mu_\alpha$ on $D([0,\infty); S)$ is tight if and only if 
 \begin{itemize}
 \item[(i)]For every $\epsilon >0$ and $t \in [0,\infty) \cap \rationals$ there exists a compact set $K_{\epsilon, t} \subset S$ such that $\sup_\alpha \mu_\alpha(f(t) \in K_{\epsilon, t}) > 1 - \epsilon$.
 \item[(ii)] For every $\lambda > 0$ and $T > 0$ 
@@ -1104,7 +1295,7 @@ TODO: Not significantly different than the case of $D([0,T];S)$.
 \lim_{\delta \to 0} \sup_\alpha \mu_\alpha(w^\prime(f, \delta, T) \geq \lambda) &= 0
 \end{align*}
 \end{itemize}
-\end{lem}
+\end{thm}
 \begin{proof}
 Let $\mu_\alpha$ be tight.  Let $\epsilon > 0$ be given and pick
 $K \subset D^\infty([0,\infty); S)$ compact with $\mu_\alpha(K) >
@@ -1213,7 +1404,8 @@ and for every $f \in D([0,\infty)$.
 
 \section{Aldous Criterion}
 
-TODO: How to tie this in with what Ethier and Kurtz claim to be the Aldous criterion.
+TODO: How to tie this in with what Ethier and Kurtz claim to be the Aldous criterion.  I am pretty sure that the EK development provides a necessary and sufficient condition for tightness that makes it more or less clear that the Aldous criterion is a sufficient condition.
+Here is how Aldous describes the criterion: ``if you try to predict a jump you are right with probability close to 0''.
 \begin{thm}Let $X^n$ be a sequence of processes in $D([0,T];S)$ with $(S,r)$ a metric space and suppose for every $\epsilon > 0$ and $t \in [0,T] \cap \rationals$ there exists a compact set $K_{\epsilon,t}$ such that $\probability{X^n_t \in K_{\epsilon,t}} > 1 - \epsilon$, then for every $\lambda > 0$ $X^n$ satisfies $\lim_{\delta \to 0} \sup_n \probability{w(X^n, \delta) \geq \lambda} =0$ if and only if for any sequence of $\mathcal{F}^{X^n}$-optional times $\tau_n$ and any sequence $\delta_n > 0$ with $\lim_{n \to \infty} \delta_n =0$ we have
 \begin{align*}
 r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \toprob 0
@@ -1223,9 +1415,28 @@ r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \toprob 0
 TODO:
 \end{proof}
 
+Equivalent formulation of the criterion: $r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \toprob 0$ is equivalent to $\lim_{n \to \infty} \expectation{r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \wedge 1} = 0$.  So suppose we have $X^\alpha$,  TODO:  Finish up the equivalent condition.
+
 In practice it turns out that it is difficult to apply the criterion $\lim_{\delta \to 0} \sup_{\alpha} \mu_\alpha( w^\prime(f, \delta, T) \geq \lambda) = 0$ to show tightness of a family of
 measures $\mu_\alpha$ on Skorohod space.  In some sense this is not surprising as, being an infimum over a set of partitions, the modulus of continuity is a rather complicated object.  What we need to develop are tools for estimating $w^\prime(f, \delta, T)$ that are strong enough to imply the tightness condition.  One technique for finding upper bounds of $w^\prime(f, \delta, T)$ is clear; one simply needs to find a particular partition $0=t_0 < \dotsb < t_{n-1} < T \leq t_n$ for which we can calculate (or upper bound) each term
 $\sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t))$.  
+
+TODO: Motivate the appearance of terms of the form $(r(x+u,x) \wedge 1)(r(x, x-v) \wedge 1)$ in the following.  Suppose we have a cadlag function $f$ and we are given the 
+value of $w^{\prime}(f, \delta, T)$.  We ask a simple question: what kinds of expressions involving $f$ can be bounded by $w^{\prime}(f, \delta, T)$?  The case of a continuous 
+function and the corresponding modulus of continuity provides bounds on terms $r(f(t+u), f(t))$ for any $0 \leq t \leq T-\delta$ and $-\delta < u < \delta$.  In the cadlag case we allow
+for jump discontinuities to occur (manifested by the partitions over which we take the infimum) and only provide bounds in between adjacent jumps; 
+thus we cannot bound a term $r(f(t+u), f(t))$ because we can always place a node of the partition between $t$ and $t+u$.  What comes the rescue is that the definition
+of $w^{\prime}(f, \delta, T)$ restricts the distance between adjacent nodes of the partition to be bigger than $\delta$.  Therefore if we place a node of the partition between $t$ and $t+u$ then we know that there cannot be a node of the partition between $t$ and $t-v$ provided $\abs{u-v} \leq \delta$.  This discussion motivates the following 
+simple proposition whose purpose is to set the stage for the types of expressions we will be using in the ensuing discussion.
+
+\begin{prop}\label{SkorohodInfiniteModulusOfContinuityBound}Let $(S,r)$ be a metric space and let $f \in D([0,\infty); S)$, then for all $T>0$, $\delta >0$, $0 \leq u \leq \delta$ and $0 \leq v \leq \delta \wedge t$
+\begin{align*}
+(r(f(t+u), f(t)) \wedge 1) (r(f(t), f(t-v)) \wedge 1) &\leq (r(f(t+u), f(t)) \wedge 1)  \wedge (r(f(t), f(t-v)) \wedge 1) \leq w^{\prime}(f, 2\delta, T+\delta)
+\end{align*}
+\end{prop}
+\begin{proof}
+TODO:
+\end{proof}
 
 Our first step is to work pointwise in $D([0,\infty); S)$ and show how create a useful partition for an arbitrary cadlag function $f$.  For the construction we assume that $\epsilon > 0$ and $f \in D([0,\infty); S)$ are both given.  First define inductively $\tau_0=0$ and $n \in \naturals$
 \begin{align*}
@@ -1412,3 +1623,405 @@ If we have (ii) then by the claim,
 and then applying Lemma \ref{SkorohodInfiniteModulusOfContinuityPullOutMin} and  Lemma \ref{SkorohodInfiniteModulusOfContinuityEquivalences}  we get (i).
 \end{proof}
 
+Having arrived at an alternative criterion for equicontinuity we want to develop some techniques for estimating the probabilities therein.
+\begin{lem}Let $(S,r)$ be a separable metric space, let $X$ be a process with paths in $D([0,\infty); S)$ and let $T >0$ and $\beta > 0$ be given.  Then for each $\delta >0$,
+$\lambda >0$ and weakly $\mathcal{F}^X$-optional time $\tau$ with $\tau \leq T$
+\begin{align*}
+\probability{\sup_{0 \leq u \leq \delta} r(X_{\tau + u}, X_\tau) \wedge 1 \geq \lambda, \sup_{0 \leq v \leq \delta \wedge \tau} r(X_{\tau}, X_{\tau-v}) \wedge 1 \geq \lambda} &\leq \lambda^{-2\beta} (a_\beta + 2 a_\beta^2 (a_\beta + 4 a_\beta^2))C(\delta)
+\end{align*}
+and 
+\begin{align*}
+\probability{\sup_{0 \leq u \leq \delta} r(X_{u}, X_0) \wedge 1 \geq \lambda} &\leq \lambda^{-2\beta} \left [ ( a_\beta (a_\beta + 4 a_\beta^2))C(\delta) + 
+a_\beta \expectation{r^\beta(X_{\delta}, X_0) \wedge 1} \right]
+\end{align*}
+where $a_\beta$ is any number that satisfies $(x+y)^\beta \leq a_\beta(x^\beta + y^\beta)$ for all $x,y \geq0$ (e.g. $a_\beta = 2^{(\beta-1) \vee 0}$) and 
+\begin{align*}
+C(\delta) &= \sup_{\tau \in \mathfrak{S}(T + 2 \delta)} \sup_{0 \leq u \leq 2\delta} 
+\expectation{\sup_{0 \leq v \leq 3\delta \wedge \tau} (r^\beta(X_{\tau+u}, X_\tau) \wedge 1) (r^\beta(X_{\tau}, X_{\tau-v}) \wedge 1)}
+\end{align*}
+\end{lem}
+\begin{proof}
+We start off with Markov bound.  For that we use an optional time to transform one of the suprema to a more managable form.  
+Suppose we are given $0 < \eta < \lambda$ and a weakly $\mathcal{F}^X$-optional time $\tau$ and define
+\begin{align*}
+\Delta &= \inf \lbrace t >0 \mid X_{\tau + t} - X_\tau > \lambda - \eta \rbrace
+\end{align*}
+so that $\Delta$ is a weakly $\mathcal{F}^X$-optional by right continuity of $X$ openness of $(\lambda-\eta,\infty)$ and Lemma \ref{HittingTimesContinuous}.  \begin{clm} For all $0 < \eta < \lambda$, l
+\begin{align*}
+&\probability{\sup_{0 \leq u \leq \delta} r(X_{\tau + u}, X_\tau) \wedge 1 \geq \lambda, \sup_{0 \leq v \leq \delta \wedge \tau} r(X_{\tau}, X_{\tau-v}) \wedge 1 \geq \lambda} \\
+&\qquad \leq \frac{1}{(\lambda - \eta)^\beta \lambda^\beta} 
+\expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge 1)}
+\end{align*}
+\end{clm}
+If $\sup_{0 \leq u \leq \delta} r(X_{\tau + u}, X_\tau) \wedge 1 \geq \lambda$ then for all $0 < \eta < \lambda$ there exists some $0 \leq u \leq \delta$ such that
+$r(X_{\tau + u}, X_\tau) \wedge 1 > \lambda - \eta$.  This implies $\Delta \leq u \leq \delta$ which in turn by right continuity of $X$ implies that 
+\begin{align*}
+r(X_{\tau + \Delta \wedge \delta}, X_\tau) \wedge 1 &= r(X_{\tau + \Delta}, X_\tau) \wedge 1 \geq \lambda - \eta
+\end{align*}
+Therefore the claim follows from a Markov bound
+\begin{align*}
+&\probability{\sup_{0 \leq u \leq \delta} r(X_{\tau + u}, X_\tau) \wedge 1 \geq \lambda, \sup_{0 \leq v \leq \delta \wedge \tau} r(X_{\tau}, X_{\tau-v}) \wedge 1 \geq \lambda} \\
+&\leq \probability{r(X_{\tau + \Delta \wedge \delta}, X_\tau) \wedge 1 \geq \lambda-\eta, \sup_{0 \leq v \leq \delta \wedge \tau} r(X_{\tau}, X_{\tau-v}) \wedge 1 \geq \lambda} \\
+&\leq \probability{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_\tau) \wedge 1) (r^\beta(X_{\tau}, X_{\tau-v}) \wedge 1) \geq (\lambda-\eta)^\beta\lambda^\beta} \\
+&\leq \frac{1}{(\lambda - \eta)^\beta \lambda^\beta}  \expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_\tau) \wedge 1) (r^\beta(X_{\tau}, X_{\tau-v}) \wedge 1)}
+\end{align*}
+
+We turn our attention to bounding the right hand side of the claim.  Let $0 \leq v \leq \delta \wedge \tau$ and use two applications of the triangle inequality to see
+\begin{align*}
+&(r^\beta(X_{\tau + \Delta \wedge \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge 1) \\
+&\leq a_\beta (r^\beta(X_{\tau + \Delta \wedge \delta}, X_{\tau + \delta}) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge 1)  + \\
+&a_\beta (r^\beta(X_{\tau + \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge  1) \\
+&\leq a^2_\beta (r^\beta(X_{\tau + \Delta \wedge \delta}, X_{\tau + \delta}) \wedge 1)(r^\beta(X_\tau, X_{\tau +\Delta \wedge \delta}) \wedge 1)  + \\
+& a^2_\beta (r^\beta(X_{\tau + \Delta \wedge \delta}, X_{\tau + \delta}) \wedge 1)(r^\beta(X_{\tau+\Delta \wedge \delta}, X_{\tau - v}) \wedge 1)  + \\
+&a_\beta (r^\beta(X_{\tau + \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge  1) 
+\end{align*}
+taking the supremum and expectation we get
+\begin{align*}
+&\expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge 1)} \\
+&\leq 2 a^2_\beta \expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_{\tau + \delta}) \wedge 1)(r^\beta(X_{\tau+\Delta \wedge \delta}, X_{\tau - v}) \wedge 1) } + \\
+&a_\beta \expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge  1)} 
+\end{align*}
+
+As for the second term on the right hand side the situation is pretty straightforward, using the fact that $\tau \leq T < T + 2\delta$ we get the bound
+\begin{align*}
+a_\beta \expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge  1)} 
+&\leq a_\beta \expectation{\sup_{0 \leq v \leq 2\delta \wedge \tau} (r^\beta(X_{\tau + \delta}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge  1)} 
+&\leq a_\beta \sup_{\tau \in \mathfrak{S}(T + 2\delta)} \sup_{0 \leq u \leq \delta} \expectation{\sup_{0 \leq v \leq 2\delta \wedge \tau} (r^\beta(X_{\tau + u}, X_\tau) \wedge 1)(r^\beta(X_\tau, X_{\tau - v}) \wedge  1)} 
+= a_\beta C(\delta)
+\end{align*}
+
+As for the first term on the right hand side, we have to work harder.  We prove the following
+\begin{clm}Let $\delta>0$, $T>0$, $\tau$ be weakly $\mathcal{F}^X$-optional time such that $\tau \leq T+\delta$ and let $\xi$ be a random variable such that $0 \leq \xi \leq \delta$ then
+\begin{align*}
+\expectation{\sup_{0\leq u \leq 2\delta \wedge \tau} (r^\beta(X_{\tau + \xi}, X_\tau) \wedge 1) (r^\beta(X_{\tau}, X_{\tau-u}) \wedge 1)} &\leq (a_\beta + 4a_\beta) C(\delta)
+\end{align*}
+\end{clm}
+First note that by the triangle inequality, a change of integration variables and the fact that $0 \leq \xi \leq \delta$ we have
+\begin{align*}
+r^\beta(X_{\tau + \xi}, X_\tau) \wedge 1 
+&= \delta^{-1} \int_\delta^{2\delta} r^\beta(X_{\tau + \xi}, X_\tau) \wedge 1 \, d\theta \\
+&\leq \delta^{-1} a_\beta \int_\delta^{2\delta} (r^\beta(X_{\tau + \xi}, X_{\tau+\theta}) \wedge 1 + r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1 ) \, d\theta \\
+&\leq \delta^{-1} a_\beta \int_{\delta-\xi}^{2\delta-\xi} r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1 \, d\theta + \\
+& \delta^{-1} a_\beta \int_\delta^{2\delta} r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1  \, d\theta \\
+&\leq \delta^{-1} a_\beta \int_{0}^{2\delta} r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1 \, d\theta + \\
+& \delta^{-1} a_\beta \int_\delta^{2\delta} r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1  \, d\theta \\
+\end{align*}
+From the previous inequality, the triangle inequality and the fact that $[(\tau-2\delta) \vee 0, \tau] \subset [(\tau+\xi-3\delta) \vee 0, \tau+\xi]$
+\begin{align*}
+&\sup_{0 \leq u \leq 2\delta \wedge \tau}  (r^\beta(X_{\tau + \xi}, X_\tau) \wedge 1)(r(X_\tau, X_{\tau-u})\wedge 1) \\
+&\leq \delta^{-1} a_\beta \int_{0}^{2\delta} \sup_{0 \leq u \leq 2\delta \wedge \tau} ( r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1) (r(X_\tau, X_{\tau-u})\wedge 1) \, d\theta + \\
+& \delta^{-1} a_\beta \int_\delta^{2\delta} \sup_{0 \leq u \leq 2\delta \wedge \tau} (r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1)  (r(X_\tau, X_{\tau-u})\wedge 1) \, d\theta \\
+&\leq \delta^{-1} a^2_\beta \int_{0}^{2\delta} ( r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1) (r(X_\tau, X_{\tau+\xi})\wedge 1) \, d\theta + \\
+& \delta^{-1} a^2_\beta \int_{0}^{2\delta} \sup_{0 \leq u \leq 2\delta \wedge \tau} ( r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1) (r(X_{\tau+\xi}, X_{\tau-u})\wedge 1) \, d\theta + \\
+& \delta^{-1} a_\beta \int_\delta^{2\delta} \sup_{0 \leq u \leq 2\delta \wedge \tau} (r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1)  (r(X_\tau, X_{\tau-u})\wedge 1) \, d\theta \\
+&\leq 2 \delta^{-1} a^2_\beta \int_{0}^{2\delta} \sup_{0 \leq u \leq 3\delta \wedge (\tau+\xi)} ( r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1) (r(X_{\tau+\xi}, X_{\tau+\xi-u})\wedge 1) \, d\theta + \\
+& \delta^{-1} a_\beta \int_\delta^{2\delta} \sup_{0 \leq u \leq 2\delta \wedge \tau} (r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1)  (r(X_\tau, X_{\tau-u})\wedge 1) \, d\theta \\
+&\leq 2 \delta^{-1} a^2_\beta \int_{0}^{2\delta} \sup_{0 \leq u \leq 3\delta \wedge (\tau+\xi)} ( r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1) (r(X_{\tau+\xi}, X_{\tau+\xi-u})\wedge 1) \, d\theta + \\
+& \delta^{-1} a_\beta \int_\delta^{2\delta} \sup_{0 \leq u \leq 3\delta \wedge \tau} (r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1)  (r(X_\tau, X_{\tau-u})\wedge 1) \, d\theta 
+\end{align*}
+Now note that $\tau \leq T + \delta$ implies $\tau+\xi \leq T+2\delta$ (it is still weakly optional since $\xi$ is nonnegative) so by taking expectations, using Tonelli's Theorem and the definition of $C(\delta)$ we get
+\begin{align*}
+&\expectation{\sup_{0 \leq u \leq 2\delta \wedge \tau}  (r^\beta(X_{\tau + \xi}, X_\tau) \wedge 1)(r(X_\tau, X_{\tau-u})\wedge 1) }\\
+&\leq 2 \delta^{-1} a^2_\beta \int_{0}^{2\delta} \expectation{\sup_{0 \leq u \leq 3\delta \wedge (\tau+\xi)} ( r^\beta(X_{\tau + \xi}, X_{\tau+\xi + \theta}) \wedge 1) (r(X_{\tau+\xi}, X_{\tau+\xi-u})\wedge 1)} \, d\theta + \\
+& \delta^{-1} a_\beta \int_\delta^{2\delta} \expectation{\sup_{0 \leq u \leq 3\delta \wedge \tau} (r^\beta(X_{\tau + \theta}, X_{\tau}) \wedge 1)  (r(X_\tau, X_{\tau-u})\wedge 1)} \, d\theta \\
+&\leq 2 \delta^{-1} a^2_\beta \int_{0}^{2\delta} C(\delta) \, d\theta + \delta^{-1} a_\beta \int_\delta^{2\delta} C(\delta) \, d\theta 
+= (4 a^2_\beta + a_\beta) C(\delta)
+\end{align*}
+and the claim is proven.  (TODO: Make explicit where we use the $\mathcal{F}^X_{\tau+}$-measurability of $\xi$).
+
+Now we return to the first term on the right hand side, $\tau \leq T$ implies $\tau + \Delta \wedge \delta \leq T + \delta$ and since $\Delta + \delta > 0$ we know $\tau + \Delta \wedge \delta \in \mathfrak{S}(T + \delta)$.  Also $0 \leq \delta - \Delta \wedge \delta \leq \delta$ and $\delta - \Delta \wedge \delta$ is $\mathcal{F}^X_{\tau + \Delta \wedge \delta +}$ measurable (TODO: Show this).  Lastly we have $0 \leq v \leq \delta \wedge \tau$ implies $0 \leq \Delta \wedge \delta + v \leq \Delta \wedge \delta + \delta \wedge \tau \leq 2 \delta$ and $\Delta \wedge \delta + v \leq \tau + \Delta \wedge \delta$.  Thus we apply Claim with weakly optional time $\tau + \Delta \wedge \delta$ and $\xi = \delta - \Delta \wedge \delta$,
+\begin{align*}
+&2 a^2_\beta \expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_{\tau + \delta}) \wedge 1)(r^\beta(X_{\tau+\Delta \wedge \delta}, X_{\tau - v}) \wedge 1) } \\
+&=2 a^2_\beta \expectation{\sup_{0 \leq v \leq \delta \wedge \tau} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_{\tau + \Delta \wedge \delta+ (\delta - \Delta \wedge \delta)})\wedge 1)
+(r^\beta(X_{\tau+\Delta \wedge \delta}, X_{\tau + \Delta \wedge \delta- (v + \Delta \wedge \delta)}) \wedge 1)} \\
+&=2 a^2_\beta \expectation{\sup_{0 \leq v \leq 2\delta \wedge (\tau + \Delta \wedge \delta)} (r^\beta(X_{\tau + \Delta \wedge \delta}, X_{\tau + \Delta \wedge \delta+ (\delta - \Delta \wedge \delta)})\wedge 1)
+(r^\beta(X_{\tau+\Delta \wedge \delta}, X_{\tau + \Delta \wedge \delta- v}) \wedge 1)} \\
+&\leq 2 a^2_\beta (a_\beta + 2a^2_\beta)C(\delta)
+\end{align*}
+
+Putting everything together we see that for all $0 < \eta < \lambda$,
+\begin{align*}
+&\probability{\sup_{0 \leq u \leq \delta} r(X_{\tau + u}, X_\tau) \wedge 1 \geq \lambda, \sup_{0 \leq v \leq \delta \wedge \tau} r(X_{\tau}, X_{\tau-v}) \wedge 1 \geq \lambda} \\
+&\qquad \leq \frac{1}{(\lambda - \eta)^\beta \lambda^\beta} (a_\beta + 2 a^2_\beta (a_\beta + 2a^2_\beta))C(\delta)
+\end{align*}
+and we simply let $\eta \to 0$.
+
+Now define 
+\begin{align*}
+\Delta &= \inf \lbrace t >0 \mid X_{t} - X_0 > \lambda - \eta \rbrace
+\end{align*}
+and we get
+\begin{align*}
+r^{2\beta}(X_{\Delta \wedge \delta}, X_0) \wedge 1
+&\leq a_\beta (r^{\beta}(X_{\Delta \wedge \delta}, X_\delta) \wedge 1) (r^{\beta}(X_{\Delta \wedge \delta}, X_\delta) \wedge 1) + \\
+&a_\beta (r^{\beta}(X_0, X_\delta)\wedge 1)( r^{\beta}(X_{\Delta \wedge \delta}, X_\delta) \wedge 1) \\
+\end{align*}
+TODO: Finish
+\end{proof}
+
+\begin{thm}\label{SkorohodInfiniteKurtzAldousCriterion}Let $(S,r)$ be a complete, separable metric space, let $A$ be an arbitrary index set and let $X^\alpha$ be a stochastic process with values in $D([0,\infty); S)$ for all $\alpha \in A$.  Suppose that for every $\epsilon > 0$ and $t \in \rationals_+$ there exists a compact set $K_{\epsilon,t}$ such that $\sup_{\alpha \in A} \probability{X^\alpha_t \in K_{\epsilon,t}} > 1 - \epsilon$ then the following are equivalent
+\begin{itemize}
+\item[(i)] $\lbrace X^\alpha \rbrace$ is relatively compact
+\item[(ii)] For every $T>0$ there exists $\beta > 0$ and non-negative random variables $\gamma_{\alpha, \delta}$ for $\alpha \in A$, $0 < \delta < 1$ such that
+\begin{itemize}
+\item[a)] $\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{\gamma_{\alpha, \delta}} = 0$
+\item[b)] For all $0 \leq t \leq T$, $0 \leq u \leq \delta$ and $0 \leq v \leq \delta \wedge t$
+\begin{align*}
+\cexpectationlong{\mathcal{F}^{X^\alpha}_t}{r^\beta(X^\alpha_{t+u}, X^\alpha_t) \wedge 1} (r^\beta(X^\alpha_{t}, X^\alpha_{t -v}) \wedge 1) 
+&\leq \cexpectationlong{\mathcal{F}^{X^\alpha}_t}{\gamma_{\alpha, \delta}} \text{ a.s.}
+\end{align*}
+\item[c)] $\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{r^\beta(X^\alpha_\delta, X^\alpha_0) \wedge 1} = 0$
+\end{itemize}
+\item[(iii)]For every $T>0$ there exists $\beta > 0$ such that 
+\begin{align*}
+C(\alpha, \delta) &= \sup_{\tau \in \mathfrak{S}^\alpha_0(T)} \sup_{0 \leq u \leq \delta} 
+\expectation{\sup_{0 \leq v \leq \delta \wedge \tau} 
+(r^\beta(X^\alpha_{\tau+u}, X^\alpha_\tau) \wedge 1)
+(r^\beta(X^\alpha_{\tau}, X^\alpha_{\tau -v}) \wedge 1)}
+\end{align*}
+is defined for all $\alpha \in A$ and $0 < \delta < 1$ and 
+\begin{itemize}
+\item[a)] $\lim_{\delta \to 0} \sup_{\alpha \in A} C(\alpha, \delta) = 0$
+\item[b)] $\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{r^\beta(X^\alpha_\delta, X^\alpha_0) \wedge 1} = 0$
+\end{itemize}
+($\mathfrak{S}^\alpha_0(T)$ is the set of countably valued $\mathcal{F}^{X^\alpha}$-optional times $\tau$ such that $\tau \leq T$).
+\end{itemize}
+\end{thm}
+\begin{proof}
+(i) $\implies$ (ii).  Suppose $0 < \delta < 1$ and $T > 0$ are given and we select $0 \leq t \leq T$, 
+$0 \leq u \leq \delta$ and $0 \leq v \leq \delta \wedge t$.  If we let $0=t_0 < t_1 < \dotsb < t_{n-1} < T \leq t_n$ be any partition such that $\max_{1 \leq i \leq n} (t_{i} - t_{i-1}) > 2\delta$ then since $(t+u) - (t-v) \leq 2\delta$ it follows that there is an $1 \leq i \leq n$ such that either $t_{i-1} \leq t-v < t < t_i$ or $t_{i-1} \leq t < t + u < t_i$ or both.  Thus we have
+\begin{align*}
+(r(X^\alpha_{t+u}, X^\alpha_t) \wedge 1) (r(X^\alpha_{t}, X^\alpha_{t -v}) \wedge 1)
+&\leq (r(X^\alpha_{t+u}, X^\alpha_t) \vee r(X^\alpha_{t}, X^\alpha_{t -v})) \wedge 1 \\
+&\leq \max_{1 \leq i \leq n} \sup_{t_{i-1} \leq x < y < t_{i}} r(X^\alpha_x,X^\alpha_y) \wedge 1
+\end{align*}
+Taking the infimum over all partitions we get $(r(X^\alpha_{t+u}, X^\alpha_t) \wedge 1) (r(X^\alpha_{t}, X^\alpha_{t -v}) \wedge 1) \leq w^{\prime}(X^\alpha, 2\delta, T) \wedge 1$ and by monotonicity of conditional expectation (iib) follows with $\gamma_{\alpha, \delta} = w^{\prime}(X^\alpha, 2\delta, T) \wedge 1$.  Property (iia) follows from Theorem \ref{SkorohodInfiniteTightnessInJ1Topology}; for any $0 < \lambda < 1$,
+\begin{align*}
+\expectation{w^{\prime}(X^\alpha, 2\delta, T) \wedge 1} &= 
+\expectation{w^{\prime}(X^\alpha, 2\delta, T) \wedge 1 ; w^{\prime}(X^\alpha, 2\delta, T) \geq \lambda} + \\
+&\expectation{w^{\prime}(X^\alpha, 2\delta, T) \wedge 1 ; w^{\prime}(X^\alpha, 2\delta, T) < \lambda} \\
+&\leq \probability{w^{\prime}(X^\alpha, 2\delta, T) \geq \lambda} + \lambda \\
+&\leq \sup_{\alpha \in A} \probability{w^{\prime}(X^\alpha, 2\delta, T) \geq \lambda} + \lambda \\
+\end{align*}
+and let $\delta \to 0$ and $\lambda \to 0$.  By similar reasoning,  we see that $r^\beta(X^\alpha_\delta, X^\alpha_0) \wedge 1 \leq w^{\prime}(X^\alpha, \delta, 1) \wedge 1$ and therefore (iic) follows.
+
+(ii) $\implies$ (iii).  First let $\tau \in \mathfrak{S}^\alpha_0(T)$ with range $\lbrace t_n \rbrace_{n=1}^\infty$.  Then by Lemma \ref{LocalizationOfStoppedFiltration} $\mathcal{F}^{X^\alpha}_\tau$ agrees with $\mathcal{F}^{X^\alpha}_{t_n}$ on $\lbrace \tau = t_n \rbrace$ thus we may apply localization of conditional expectation Lemma \ref{ConditionalExpectationIsLocal}  and (ii) to conclude for all $0 < \delta < 1$, $0 \leq u \leq \delta$ and $0 \leq v \leq \delta \wedge \tau$,
+\begin{align*}
+&\cexpectationlong{\mathcal{F}^{X^\alpha}_\tau}{r^\beta(X^\alpha_{\tau +u}, X^\alpha_\tau) \wedge 1} (r^\beta(X^\alpha_{\tau}, X^\alpha_{\tau-v}) \wedge 1) \\
+&=\sum_{n=1}^\infty \cexpectationlong{\mathcal{F}^{X^\alpha}_{t_n}}{r^\beta(X^\alpha_{t_n +u}, X^\alpha_{t_n}) \wedge 1} (r^\beta(X^\alpha_{t_n}, X^\alpha_{t_n-v}) \wedge 1) \characteristic{\tau = t_n} \\
+&\leq \sum_{n=1}^\infty \cexpectationlong{\mathcal{F}^{X^\alpha}_{t_n}}{\gamma_{\alpha, \delta}}\characteristic{\tau = t_n} \\
+&= \cexpectationlong{\mathcal{F}^{X^\alpha}_\tau}{\gamma_{\alpha, \delta}}\\
+\end{align*}
+where the equalities are all almost sure (taking a countable intersection of the almost sure events for each $t_n$).  Now taking another countable intersection of almost sure events, we may take the supremum over $v \in [0, \delta \wedge \tau] \cap \rationals$ to get 
+\begin{align*}
+\cexpectationlong{\mathcal{F}^{X^\alpha}_\tau}{r^\beta(X^\alpha_{\tau +u}, X^\alpha_\tau) \wedge 1} \sup_{v \in [0, \delta \wedge \tau] \cap \rationals} (r^\beta(X^\alpha_{\tau}, X^\alpha_{\tau-v}) \wedge 1)
+&\leq \cexpectationlong{\mathcal{F}^{X^\alpha}_\tau}{\gamma_{\alpha, \delta}} \text{ a.s.}
+\end{align*}
+and by right continuity of $X^\alpha$ we may extend this to the supremum over all $0 \leq v \leq \delta \wedge \tau$.
+Now take the expectation and then the supremum over $0 \leq u \leq \delta$ and $\tau \in \mathfrak{S}^\alpha_0(T)$ to conclude $C(\alpha, \delta) \leq \expectation{\gamma_{\alpha, \delta}}$;  (iiia) follows directly from (iia).
+
+(iii) $\implies$ (i).  
+\begin{clm}
+\begin{align*}
+C(\alpha, \delta) &= \sup_{\tau \in \mathfrak{S}^\alpha_0(T)} \sup_{0 \leq u \leq \delta} 
+\expectation{\sup_{0 \leq v \leq \delta \wedge \tau} 
+(r^\beta(X^\alpha_{\tau+u}, X^\alpha_\tau) \wedge 1)
+(r^\beta(X^\alpha_{\tau}, X^\alpha_{\tau -v}) \wedge 1)}
+\end{align*}
+\end{clm}
+TODO: Finish
+\end{proof}
+
+\section{Test Function Methods}
+Is this really the same as what Kushner calls the perturbed test function method?
+
+\begin{thm}\label{SkorohodInfiniteTightnessViaTestFunctions}Let $(S,r)$ be a complete, separable metric space, let $A$
+  be an arbitrary index set and let $X^\alpha$ be a process with values in $D([0,\infty); S)$
+for every $\alpha \in A$.  Suppose for every $\epsilon > 0$ and $T > 0$ there exists
+a compact set $K_{\epsilon, T} \subset S$ such that
+\begin{align*}
+\inf_{\alpha \in A} \probability{X^\alpha_t \in K_{\epsilon,T} \text{ for all } 0 \leq t \leq T} &\geq 1 - \epsilon
+\end{align*}
+Suppose that $H$ is a dense subset of $C_b(S; \reals)$ (topology of uniform convergence on compacts).  Then 
+$\lbrace X^\alpha \rbrace$ is relatively compact if and only if $\lbrace h \circ X^\alpha \rbrace$ is relatively compact
+for every $h \in H$.  
+\end{thm}
+\begin{proof}
+If we assume that $\lbrace X^\alpha \rbrace$ is relatively compact then since $X \mapsto g \circ X$ is a continuous map 
+from $D([0,\infty); S)$ to $D([0,\infty); \reals)$ for every continuous $g : S \to \reals$ (Exercise \ref{SkorohodInfiniteJ1PushForwardContinuous})
+we know that $\lbrace g \circ X^\alpha \rbrace$ is relatively compact by the Continuous Mapping Theorem; a fortiori for every $h \in H$.
+
+Now suppose $H$ is as above and $\lbrace h \circ X^\alpha \rbrace$ is relatively compact
+for every $h \in H$.  Let $g : S \to \reals$ be an arbitrary continuous function, $\epsilon > 0$ and $T > 0$ and note that
+$g(K_{\epsilon, T})$ is compact and 
+\begin{align*}
+\inf_{\alpha \in A} \probability{g(X^\alpha_t) \in g(K_{\epsilon,T}) \text{ for all } 0 \leq t \leq T} &\geq 
+\inf_{\alpha \in A} \probability{X^\alpha_t \in K_{\epsilon,T} \text{ for all } 0 \leq t \leq T} 
+\geq 1 - \epsilon
+\end{align*}
+thus the compact containment condition holds for every $h \in H$ and $g \in C_b(S; \reals)$.
+
+We now observe that the relative compactness of $h \circ X^\alpha$ for $h \in H$ extends to the closure of $H$.
+\begin{clm} $\lbrace g \circ X^\alpha \rbrace$ is relatively compact
+for every $g \in C_b(S; \reals)$.  
+\end{clm}
+Let $g \in  C_b(S; \reals)$, $T > 0$, $\lambda > 0$ and $0 < \epsilon < \lambda$ be given.  Select $h \in H$ such that
+\begin{align*}
+\sup_{x \in K_{\epsilon, T+1}} r(h(x), g(x)) < \epsilon/2
+\end{align*}
+and $\alpha \in A$.   Using the fact that 
+\begin{align*}
+w^{\prime}(g \circ X^\alpha, \delta, T) &\leq w^{\prime}(h \circ X^\alpha, \delta, T) + 2 \sup_{0 \leq t \leq T+\delta} r(g(X^\alpha_t), h(X^\alpha_t))
+\end{align*}
+we get for all $0 < \delta < 1$
+\begin{align*}
+\probability{w^\prime(g \circ X^\alpha, \delta, T) \geq \lambda} &\leq
+\probability{w^\prime(g \circ X^\alpha, \delta, T) \geq \lambda ; X^\alpha_t \in K_{\epsilon,T+1} \text{ for all } 0 \leq t \leq T+1} + \epsilon \\
+&\leq \probability{w^\prime(h \circ X^\alpha, \delta, T) \geq \lambda-\epsilon} + \epsilon 
+\end{align*}
+Take the supremum over $\alpha$ and the limit $\delta \to 0$ and use Theorem \ref{SkorohodInfiniteTightnessInJ1Topology}
+\begin{align*}
+\lim_{\delta \to 0} \sup_{\alpha \in A} \probability{w^\prime(g \circ X^\alpha, \delta, T) \geq \lambda} &\leq \epsilon
+\end{align*}
+Letting $\epsilon \to 0$ and using Theorem \ref{SkorohodInfiniteTightnessInJ1Topology} we conclude that $\lbrace g \circ X^\alpha \rbrace$ is
+relatively compact.
+
+Pick $\epsilon > 0$, $T > 0$ and $\eta  > 0$.  By compactness of $K_{\epsilon, T}$ we may find a finite set $z_1, \dotsc, z_N$ such that
+the open balls $B(z_i, \eta)$ cover $K_{\epsilon, T}$.  By the claim we know that $(r(\circ, z_i) \wedge 1) \circ X^\alpha$ is relatively compact for each
+$i = 1, \dotsc, N$.  
+\begin{clm}For every $y \in K_{\epsilon, T}$ and $x \in S$ then
+\begin{align*}
+(r(x,y) \wedge 1) &\leq \max_{1 \leq i \leq N} \abs{(r(x,z_i) \wedge 1) - (r(z_i,y) \wedge 1)} + 2 \eta
+\end{align*}
+\end{clm}
+Pick $1 \leq i \leq N$ such that $r(y, z_i) < \eta$.  By the triangle inequality
+\begin{align*}
+(r(x,y) \wedge 1) &\leq (r(x,z_i) \wedge 1) + (r(z_i,y) \wedge 1)
+\end{align*}
+If $r(x,z_i) \leq r(z_i, y) < \eta$ then 
+\begin{align*}
+(r(x,z_i) \wedge 1) + (r(z_i,y) \wedge 1) &= (r(z_i,y) \wedge 1) - (r(x,z_i) \wedge 1)  + 2 (r(x,z_i) \wedge 1) \\
+&\leq \abs{(r(x,z_i) \wedge 1) - (r(z_i,y) \wedge 1)} + 2 \eta
+\end{align*}
+and if $r(z_i, y) < r(x,z_i)$ then
+\begin{align*}
+(r(x,z_i) \wedge 1) + (r(z_i,y) \wedge 1) &= (r(x,z_i) \wedge 1) -  (r(z_i,y) \wedge 1) + 2 (r(z_i,y) \wedge 1) \\
+&\leq \abs{(r(x,z_i) \wedge 1) - (r(z_i,y) \wedge 1)} + 2 \eta
+\end{align*}
+
+From the claim and Proposition \ref{SkorohodInfiniteModulusOfContinuityBound}, for all $0 \leq t \leq T$, $0 \leq u \leq \delta$ and $0 \leq v \leq \delta \wedge t$
+\begin{align*}
+&(r(X^\alpha_{t + u}, X^\alpha_t) \wedge 1) (r(X^\alpha_{t}, X^\alpha_{t-v}) \wedge 1) \\
+&\leq (r(X^\alpha_{t + u}, X^\alpha_t) \wedge 1) (r(X^\alpha_{t}, X^\alpha_{t-v}) \wedge 1) \characteristic{X^\alpha_t \in K_{\epsilon, T}\text{ for all } 0 \leq t \leq T} + \characteristic{X^\alpha_t \notin K_{\epsilon, T} \text{ for some } 0 \leq t \leq T} \\
+&\leq \max_{1 \leq i \leq N} (\abs{(r(X^\alpha_{t+u},z_i) \wedge 1) - (r(z_i,X^\alpha_{t}) \wedge 1)} + 2 \eta) (\abs{(r(X^\alpha_{t},z_i) \wedge 1) - (r(z_i,X^\alpha_{t-v}) \wedge 1)} + 2 \eta) \characteristic{X^\alpha_t \in K_{\epsilon, T} \text{ for all } 0 \leq t \leq T} \\
+&+ \characteristic{X^\alpha_t \notin K_{\epsilon, T} \text{ for some } 0 \leq t \leq T} \\
+&\leq \max_{1 \leq i \leq N} \abs{(r(X^\alpha_{t+u},z_i) \wedge 1) - (r(z_i,X^\alpha_{t}) \wedge 1)} \abs{(r(X^\alpha_{t},z_i) \wedge 1) - (r(z_i,X^\alpha_{t-v}) \wedge 1)} + 4( \eta + \eta^2) \\
+&+ \characteristic{X^\alpha_t \notin K_{\epsilon, T} \text{ for some } 0 \leq t \leq T} \\
+&\leq \max_{1 \leq i \leq N} w^\prime((r(\cdot , z_i) \wedge 1) \circ X^\alpha, 2\delta, T+ \delta) \wedge 1 + 4( \eta + \eta^2) + \characteristic{X^\alpha_t \notin K_{\epsilon, T} \text{ for some } 0 \leq t \leq T} \\
+&\leq \sum_{i=1}^N w^\prime((r(\cdot , z_i) \wedge 1) \circ X^\alpha, 2\delta, T+ \delta) \wedge 1 + 4( \eta + \eta^2) + \characteristic{X^\alpha_t \notin K_{\epsilon, T} \text{ for some } 0 \leq t \leq T} \\
+\end{align*}
+This estimate is just about what we need in order to apply Theorem \ref{SkorohodInfiniteKurtzAldousCriterion}.  The right hand side of the estimate has quite a few parameters (e.g. $\epsilon$, $\eta$, $\delta$) and we just need to make some choices in order get upper bounds $\gamma_{\alpha, \delta}$ such that $\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{\gamma_{\alpha, \delta}} = 0$.  For each
+$n \in \naturals$, we pick $K_{1/3n, T}$ and $\eta_n>0$ such that $4(\eta_n + \eta_n^2) < 1/3n$.  Now choose $z_1, \dotsc, z_N$ and use the fact that  for each $1 \leq i \leq N$
+\begin{align*}
+\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{w^\prime((r(\cdot , z_i) \wedge 1) \circ X^\alpha, 2\delta, T+ \delta) \wedge 1}=0
+\end{align*} 
+(relative compactness of $\lbrace (r(\cdot, z_i) \wedge 1) \circ X^\alpha \rbrace$ and Theorem \ref{SkorohodInfiniteTightnessInJ1Topology}) to pick $\delta_n < \delta_{n-1}$ such that 
+\begin{align*}
+\sum_{i=1}^N \sup_{\alpha \in A} \expectation{w^\prime((r(\cdot , z_i) \wedge 1) \circ X^\alpha, 2\delta, T+ \delta) \wedge 1} < 1/3n \text{ for all } \delta \leq \delta_n
+\end{align*}  
+Lastly define for $\delta_{n+1} < \delta \leq \delta_n$, 
+\begin{align*}
+\gamma_{\alpha, \delta} &= \sum_{i=1}^N w^\prime((r(\cdot , z_i) \wedge 1) \circ X^\alpha, 2\delta, T+ \delta) \wedge 1 + 1/3n + \characteristic{X^\alpha_t \notin K_{1/3n, T} \text{ for some } 0 \leq t \leq T} 
+\end{align*}
+and we have 
+\begin{align*}
+\sup_{\substack{0 \leq t \leq T \\ 0 \leq u \leq \delta \\ 0 \leq v \leq \delta \wedge t}}
+(r(X^\alpha_{t + u}, X^\alpha_t) \wedge 1) (r(X^\alpha_{t}, X^\alpha_{t-v}) \wedge 1) 
+&\leq \gamma_{\alpha, \delta} 
+\end{align*}
+and
+\begin{align*}
+\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{\gamma_{\alpha, \delta}} &= 0
+\end{align*}
+which imply conditions (iia) and (iib) of Theorem \ref{SkorohodInfiniteKurtzAldousCriterion}.
+
+By a similar but easier argument, we see that with $\epsilon > 0$ $z_1, \dotsc, z_N$ and $\eta>0$ chosen as above we get
+\begin{align*}
+\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{r(X^\alpha_\delta, X^\alpha_0) \wedge 1} 
+&\leq \lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{\max_{1 \leq i \leq N} \abs{(r(X^\alpha_\delta, z_i) \wedge 1) - (r(X^\alpha_0, z_i) \wedge 1)} + 2\eta + \characteristic{X^\alpha_0 \notin K_{\epsilon, T}}} \\
+&\leq \sum_{i=1}^N \lim_{\delta \to 0} \sup_{\alpha \in A} 
+\expectation{\abs{(r(X^\alpha_\delta, z_i) \wedge 1) - (r(X^\alpha_0, z_i) \wedge 1)}}+ 
+2\eta + 
+\probability{X^\alpha_0 \notin K_{\epsilon, T}}\\
+\end{align*}
+where we have applied Theorem \ref{SkorohodInfiniteKurtzAldousCriterion} to the relatively compact families $\lbrace (r(\cdot , z_i) \wedge 1) \circ X^\alpha \rbrace$.  Now we may let $\eta \to 0$ and then $\epsilon \to 0$ to conclude $\lim_{\delta \to 0} \sup_{\alpha \in A} \expectation{r(X^\alpha_\delta, X^\alpha_0) \wedge 1} = 0$.  Now apply Theorem \ref{SkorohodInfiniteKurtzAldousCriterion} to conclude that $\lbrace X^\alpha \rbrace$ is relatively compact.
+\end{proof}
+
+\begin{thm}Let $(S,r)$ be a metric space, let $A$ be an arbitrary set and for each $\alpha \in A$ let $(\Omega^\alpha, \mathcal{A}^\alpha, P^\alpha)$ be a probability space with filtration $\mathcal{F}^\alpha$ and let $X^\alpha$ be an $\mathcal{F}^\alpha$-adapted stochastic process with values in $D([0,\infty); S)$.  Let $C$ be a subalgebra of $C_b(S; \reals)$ where for every $f \in C$ and $\epsilon > 0$, $T>0$ and $\alpha \in A$ there exist $\mathcal{F}^\alpha$-progressive processes $Y^\alpha$ and $Z^\alpha$ satisfying
+\begin{itemize}
+\item[(i)]$\sup_{0 \leq t < \infty} \expectation{\abs{Y^\alpha_t}} < \infty$
+\item[(ii)]$\sup_{0 \leq t < \infty} \expectation{\abs{Z^\alpha_t}} < \infty$
+\item[(iii)]$Y^\alpha_t - \int_0^t Z^\alpha_s \, ds$ is an $\mathcal{F}^\alpha$-martingale
+\item[(iv)]$\sup_{\alpha \in A} \expectation{\sup_{t \in [0,T] \cap \rationals} \abs{Y^\alpha_t - f(X^\alpha_t)}} < \epsilon$
+\item[(v)]$\sup_{\alpha \in A} \norm{Z^\alpha}_{p, T} < \infty$ for some $1 < p \leq \infty$ where $\norm{Z}_{p, T} = \expectation{(\infty_0^T \abs{Z_s}^p \, ds)^{1/p}}$ for $1 < p < \infty$ and $\norm{Z}_{\infty, T} = \expectation{\esssup_{0 \leq t \leq T} \abs{Z_t}}$
+\end{itemize}
+Then $\lbrace f \circ X^\alpha \rbrace$ is relatively compact for every $f \in C$ and in fact the family $\lbrace (f_1, \dotsc, f_k) \circ X^\alpha \rbrace$ is relatively compact for every $f_1, \dotsc, f_k \in C$.
+\end{thm}
+\begin{proof}
+Let $f \in C$, $\epsilon > 0$ and $T>0$ be given.  Pick $Y^\alpha$ and $Z^\alpha$ be selected satisfying the hypotheses for $f \in C$ and $T+1$ and let $\tilde{Y}^\alpha$ and $\tilde{Z}^\alpha$ be selected satisfying the hypotheses of the theorem for $f^2 \in C$ and $T+1$.  Thus we have
+\begin{align*}
+&\sup_{\alpha \in A} \expectation{\sup_{t \in [0,T+1] \cap \rationals} \abs{Y^\alpha_t - f(X^\alpha_t)}} < \epsilon \\
+&\sup_{\alpha \in A} \expectation{\sup_{t \in [0,T+1] \cap \rationals} \abs{\tilde{Y}^\alpha_t - f^2(X^\alpha_t)}} < \epsilon \\
+&\sup_{\alpha \in A} \norm{Z^\alpha}_{p, T+1} < \infty \text{ for some $1 < p \leq \infty$} \\
+&\sup_{\alpha \in A} \norm{\tilde{Z}^\alpha}_{\tilde{p}, T+1} < \infty \text{ for some $1 < \tilde{p} \leq \infty$} \\
+\end{align*}
+
+Let $0 < \delta < 1$ be given and choose $t \in [0,T] \cap \rationals$ and $u \in [0,\delta] \cap \rationals$ then
+\begin{align*}
+&\cexpectationlong{\mathcal{F}^\alpha_t}{(f(X^\alpha_{t+u}) - f(X^\alpha_t))^2} \\
+&=\cexpectationlong{\mathcal{F}^\alpha_t}{f^2(X^\alpha_{t+u}) -2 f(X^\alpha_t) f(X^\alpha_{t+u}) + f^2(X^\alpha_t)} \\
+&=\cexpectationlong{\mathcal{F}^\alpha_t}{f^2(X^\alpha_{t+u}) - f^2(X^\alpha_t) -2 f(X^\alpha_t) (f(X^\alpha_{t+u}) - f(X^\alpha_t))} \\
+&=\cexpectationlong{\mathcal{F}^\alpha_t}{f^2(X^\alpha_{t+u}) - \tilde{Y}^\alpha_{t+u}} +
+\cexpectationlong{\mathcal{F}^\alpha_t}{\tilde{Y}^\alpha_t - f^2(X^\alpha_t) } + 
+\cexpectationlong{\mathcal{F}^\alpha_t}{\tilde{Y}^\alpha_{t+u} - \tilde{Y}^\alpha_t } - \\
+&2 f(X^\alpha_t) \lbrace
+\cexpectationlong{\mathcal{F}^\alpha_t}{f(X^\alpha_{t+u}) - Y^\alpha_t} +
+\cexpectationlong{\mathcal{F}^\alpha_t}{Y^\alpha_{t+u} - f(X^\alpha_t)} +
+\cexpectationlong{\mathcal{F}^\alpha_t}{Y^\alpha_{t+u} - Y^\alpha_t} \rbrace \\
+&\leq 2 \cexpectationlong{\mathcal{F}^\alpha_t}{\sup_{s \in [0,T+1] \cap \rationals} \abs{\tilde{Y}^\alpha_s - f^2(X^\alpha_s)}}  +
+\cexpectationlong{\mathcal{F}^\alpha_t}{ \sup_{0 \leq r \leq T} \int_r^{r+\delta} \abs{\tilde{Z}^\alpha_s} \, ds} + \\
+&4 \norm{f}_\infty \cexpectationlong{\mathcal{F}^\alpha_t}{\sup_{s \in [0,T+1] \cap \rationals} \abs{Y^\alpha_s - f(X^\alpha_s)}} +
+2 \norm{f}_\infty \cexpectationlong{\mathcal{F}^\alpha_t}{ \sup_{0 \leq r \leq T} \int_r^{r+\delta} \abs{Z^\alpha_s} \, ds} 
+\end{align*}
+Take the conjugate pairs $q$ and $\tilde{q}$ so that $\frac{1}{p} + \frac{1}{q} = 1$ and $\frac{1}{\tilde{p}} + \frac{1}{\tilde{q}} = 1$.  By H\"{o}lder's Inequality we have
+\begin{align*}
+\int_r^{r+\delta} \abs{Z^\alpha_s} \, ds &\leq \left(\int_r^{r+\delta} \abs{Z^\alpha_s}^p \, ds \right)^{1/p} \left(\int_r^{r+\delta} \, ds \right)^{1/q} \\
+&\leq \delta^{1/q} \left(\int_0^{T+1} \abs{Z^\alpha_s}^p \, ds \right)^{1/p}
+\end{align*}
+and thus if we define 
+\begin{align*}
+\gamma_{\alpha, \delta} = 2 \sup_{s \in [0,T+1] \cap \rationals} \abs{\tilde{Y}^\alpha_s - f^2(X^\alpha_s)} + 
+\delta^{1/\tilde{q}} \left(\int_0^{T+1} \abs{\tilde{Z}^\alpha_s}^{\tilde{p}} \, ds\right)^{1/\tilde{p}} \\
+4 \norm{f}_\infty \sup_{s \in [0,T+1] \cap \rationals} \abs{Y^\alpha_s - f(X^\alpha_s)} + 
+2 \delta^{1/q} \left(\int_0^{T+1} \abs{Z^\alpha_s}^{p} \, ds\right)^{1/p}
+\end{align*}
+we have $\cexpectationlong{\mathcal{F}^\alpha_t}{(f(X^\alpha_{t+u}) - f(X^\alpha_t))^2} \leq \cexpectationlong{\mathcal{F}^\alpha_t}{\gamma_{\alpha, \delta}}$  for all 
+$t \in [0,T] \cap \rationals$.  Note that this extends to all $0 \leq t \leq T$ and all $0 \leq u \leq \delta$ by right continuity of $f \circ X^\alpha$, monotone convergence for conditional expectations and the tower property of conditional expectations.  For example to extend to arbitrary $t$,
+\begin{align*}
+\cexpectationlong{\mathcal{F}^\alpha_t}{(f(X^\alpha_{t+u}) - f(X^\alpha_t))^2} &=
+\lim_{\substack{r \to t^+ \\ r \in \rationals}} \cexpectationlong{\mathcal{F}^\alpha_t}{(f(X^\alpha_{r+u}) - f(X^\alpha_r))^2} \\
+&=\lim_{\substack{r \to t^+ \\ r \in \rationals}} \cexpectationlong{\mathcal{F}^\alpha_t}{\cexpectationlong{\mathcal{F}^\alpha_r}{(f(X^\alpha_{r+u}) - f(X^\alpha_r))^2}} \\
+&\leq \lim_{\substack{r \to t^+ \\ r \in \rationals}} \cexpectationlong{\mathcal{F}^\alpha_t}{\cexpectationlong{\mathcal{F}^\alpha_r}{\gamma_{\alpha, \delta}}} \\
+&= \cexpectationlong{\mathcal{F}^\alpha_t}{\gamma_{\alpha, \delta}} \\
+\end{align*}
+and the argument for extending to arbitrary $u$ is even easier.
+
+We also have the bound
+\begin{align*}
+\sup_{\alpha \in A} \expectation{\gamma_{\alpha, \delta}} &\leq 2 \epsilon + \delta^{1/\tilde{q}} \sup_{\alpha \in A} \norm{\tilde{Z}^\alpha}_{\tilde{p}, T} \\
+& + 4 \norm{f}_\infty \epsilon + 2 \delta^{1/q} \sup_{\alpha \in A} \norm{Z^\alpha}_{p, T}
+\end{align*}
+This bound implies conditions (iia), (iib) and (iic) of Theorem \ref{SkorohodInfiniteKurtzAldousCriterion} from which we conclude that $\lbrace f \circ X^\alpha \rbrace$ is relatively compact.  (TODO: Write down the song and dance about selecting $\epsilon$ decreasing to make this work as in the proof of Theorem \ref{SkorohodInfiniteTightnessViaTestFunctions})
+
+TODO: Finish the case of $(f_1, \dotsc, f_k)$.
+\end{proof}
