@@ -3,6 +3,8 @@ TODO:  First introduce discrete time martingales then do stopping
 times and lastly extend to continuous time martingales (at least the
 basics).
 
+\section{Stochastic Processes}
+
 We first begin with a very general notion of \emph{stochastic process}
 which we rather quickly specialize.  
 \begin{defn}Suppose one has a measurable space $(S, \mathcal{S})$ and an
@@ -406,14 +408,14 @@ said sets.  Pick $U \subset T$ and let $A \in \mathcal{S}_U$ then we
 define $\mu$ by $\mu(A \times S_{T \setminus U} ) = \mu_U(A)$.  We first
 claim that the $\mu$ is well defined.  Suppose we have countable
 subset $U,V \subset T$, $A \in \mathcal{S}_U$ and $B \in
-\mathcal{S}_V$ such that $A \times S_{T setminus U} = B \times S_{T
+\mathcal{S}_V$ such that $A \times S_{T \setminus U} = B \times S_{T
   \setminus V}$.  We can write 
 \begin{align*}
-A \times S_{T setminus U} &= A \times S_{V \setminus U} \times S_{T
-  setminus (U \cup V)}
+A \times S_{T \setminus U} &= A \times S_{V \setminus U} \times S_{T
+  \setminus (U \cup V)}
 \intertext{and}
-B \times S_{T setminus V} &= B \times S_{U \setminus V} \times S_{T
-  setminus (U \cup V)}
+B \times S_{T \setminus V} &= B \times S_{U \setminus V} \times S_{T
+  \setminus (U \cup V)}
 \end{align*}
 from which it follows that $A \times S_{V \setminus U}  =  B \times
 S_{U \setminus V}$.  Using this equality along with projectivity we get
@@ -455,8 +457,8 @@ There are a great many things to be said about stochastic processes in
 general, however we will wait a bit to travel that road and instead begin to
 look at a special subclass of stochastic processes.
 
-The first specialization is to assume our index set $T \subset \overline{\reals}$ (e.g. $\integers$,
-$\reals$).  A good intuition here is that $T$ represents time and that
+The first specialization is to assume our index set $T \subset \overline{\reals}$ (e.g. $\integers_+$,
+$\reals_+$).  A good intuition here is that $T$ represents time and that
 $X_t$ repsesents the dynamics of a time-varying random variable.
 
 Remaining in the land of intuition, we know that as time progress we
@@ -506,13 +508,13 @@ with which well spend some time.
 \begin{itemize}
 \item[(i)]$M_t$ is integrable for all $t \in T$
 \item[(ii)]$M$ is adapted to $\mathcal{F}$
-\item[(iii)]$\cexpectation{\mathcal{F}_s}{M_t} = M_s$ a.s. for all
+\item[(iii)]$\cexpectationlong{\mathcal{F}_s}{M_t} = M_s$ a.s. for all
   $s,t \in T$ with $s \leq t$.
 \end{itemize}
 If we replace the condition (iii) by the condition
-$M_s \leq \cexpectation{\mathcal{F}_s}{M_t}$ a.s., then $M$ is said to
+$M_s \leq \cexpectationlong{\mathcal{F}_s}{M_t}$ a.s., then $M$ is said to
 be a \emph{submartingale} and if we replace it with
-$M_s \geq \cexpectation{\mathcal{F}_s}{M_t} $ a.s. then $M$ is said to be a
+$M_s \geq \cexpectationlong{\mathcal{F}_s}{M_t} $ a.s. then $M$ is said to be a
 \emph{supermartingale}.
 \end{defn}
 
@@ -521,7 +523,7 @@ following Lemma.
 \begin{lem}\label{ClosedMartingales}Given a probability space $(\Omega,  \mathcal{A})$, an
   index set $T \subset \overline{\reals}$, a
   filtration $\mathcal{F}_t$ for $t \in T$ and a integrable random
-  variable $\xi$, the process $M_t = \cexpectation{\mathcal{F}_t}{\xi}$ is
+  variable $\xi$, the process $M_t = \cexpectationlong{\mathcal{F}_t}{\xi}$ is
   an $\mathcal{F}$-martingale.
 \end{lem}
 \begin{proof}Integrability $\mathcal{F}$-adaptedness of $M_t$ follows from the definition of
@@ -529,9 +531,9 @@ following Lemma.
   have $\mathcal{F}_s \subset \mathcal{F}_t$, the chain rule for
   conditional expectation shows 
 \begin{align*}
-\cexpectation{\mathcal{F}_s}{M_t} &=
-\cexpectation{\mathcal{F}_s}{\cexpectation{\mathcal{F}_t}{\xi}} =
-\cexpectation{\mathcal{F}_s}{\xi} = M_s
+\cexpectationlong{\mathcal{F}_s}{M_t} &=
+\cexpectationlong{\mathcal{F}_s}{\cexpectationlong{\mathcal{F}_t}{\xi}} =
+\cexpectationlong{\mathcal{F}_s}{\xi} = M_s
 \end{align*}
 \end{proof}
 A martingale that can be expressed in the form given by the Lemma is
@@ -544,7 +546,7 @@ arguably less transparent defintion
 definition of a closed martingale as one for which $\sup T \in T$ (see
 Kallenberg for example; what we call a closed martingale he calls a
 \emph{closable} martingale).  Also thinking about the case  in which
-$\infty \ in T$ (or more generally when $\sup T \in T$) suggests a
+$\infty \in T$ (or more generally when $\sup T \in T$) suggests a
 relationship between a closing $\xi$ and a limit $\lim_{t \to \infty}
 M_t$.  Such a relationship indeed exists and is explained in
 Martingale convergence theorems that follow.
@@ -664,8 +666,10 @@ computation
 \begin{proof}For $s,t \in T$ with $s < t$, by the
   martingale property and the chain rule of
   conditional expectations we have
-$\expectation{M_s} = \expectation{\cexpectation{\mathcal{F}_s}{M_t}} = \expectation{M_t}$.
+$\expectation{M_s} = \expectation{\cexpectationlong{\mathcal{F}_s}{M_t}} = \expectation{M_t}$.
 \end{proof}
+
+\section{Optional Times}
 
 \begin{defn}Given a set $T \subset \overline{\reals}$, we call a $T
   \cup \lbrace \sup T \rbrace$-valued random variable a \emph{random
@@ -683,16 +687,16 @@ place a condition on what happens at $\sup T$.
 
 Provided with an optional time there is a $\sigma$-algebra of events
 that is associated with it.
-\begin{defn}Given an optional time $\tau$, we define 
+\begin{defn}Given an $\mathcal{F}$-optional time $\tau$, we define 
 \begin{align*}
-F_\tau &= \lbrace
+\mathcal{F}_\tau &= \lbrace
   A \in \mathcal{A} \mid A \cap \lbrace \tau \leq t \rbrace\in
     \mathcal{F}_t \text{ for all } t \in T \rbrace
 \end{align*}
 \end{defn}
 
- Note that we have not taken the generated $\sigma$-algebra in the
-above definition, because of the following.
+Before going any further we have to validate that we have indeed
+defined a $\sigma$-algebra.
 \begin{lem}\label{StoppedFiltration}Given an optional time $\tau$, $\mathcal{F}_\tau$ is a
   $\sigma$-algebra.  Furthermore, $\tau$ is $\mathcal{F}_\tau$-measurable.
 \end{lem}
@@ -752,7 +756,7 @@ available at time $t$ to determine whether $A$ has occurred or not.
 More suggestively one may say that $\mathcal{F}_\tau$ as being the
 events that happen before $\tau$.
 
-\begin{lem}Let $\sigma$ and $\tau$ be optional times with $\sigma \leq
+\begin{lem}\label{StoppedFiltrationContainment}Let $\sigma$ and $\tau$ be optional times with $\sigma \leq
   \tau$, then $\mathcal{F}_\sigma \subset \mathcal{F}_\tau$.
  \end{lem}
 \begin{proof}Suppose we have an $A \in \mathcal{F}_\sigma$.  Because
@@ -794,15 +798,15 @@ that it shows stopped processes can be represented as martingale transforms.
   process on $T$ adapted to $\mathcal{F}$. Then the random element $X_\tau$ is $\mathcal{F}_\tau$-measurable.
 \end{lem}
 \begin{proof}
-TODO
+TODO: We actually prove this later on...
 \end{proof}
 
-The $\sigma$-algebra maybe thought of as being constructed by patching
+The $\sigma$-algebra $\mathcal{F}_\tau$ maybe thought of as being constructed by patching
 together the individual $\sigma$-algebras $\mathcal{F}_t$ of the
 filtration; many arguments make use of this idea.  A precise statement
 that allows localization of conditional expectations with respect to
 $\mathcal{F}_\tau$ is given here.  The reader should translate the
-following lemma into the intuitively obvious prose assertion that ``given
+following lemma into the intuitively obvious prose assertion ``given
 that $\tau = t$, an event $A$ happens before
 $\tau$ if and only if $A$ happens before $t$''.
 \begin{lem}\label{LocalizationOfStoppedFiltration}Given a filtration $\mathcal{F}_t$ and an
@@ -828,10 +832,37 @@ A & \text{if $s \geq t$} \\
 Another useful fact is 
 \begin{prop}\label{StoppedAlgebraMinOfOptionalTimes}Let $\sigma$ and $\tau$ be $\mathcal{F}$-optional times
   then $\mathcal{F}_\sigma \cap \lbrace \sigma \leq \tau \rbrace \subset
-  \mathcal{F}_{\sigma \wedge \tau} = \mathcal{F}_\sigma \cap \mathcal{F}_\tau$.
+  \mathcal{F}_{\sigma \wedge \tau} = \mathcal{F}_\sigma \cap
+  \mathcal{F}_\tau$.  In particular, $\mathcal{F}_\sigma = \mathcal{F}_\tau$ on $\lbrace \sigma = \tau \rbrace$.
 \end{prop}
 \begin{proof}
-TODO:
+Let $A \in \mathcal{F}_\sigma$ and let $t \in T$.
+\begin{align*}
+A \cap \lbrace \sigma \leq \tau \rbrace \cap \lbrace \tau \leq t \rbrace 
+&=(A \cap \lbrace \sigma \leq t \rbrace) \cap \lbrace \sigma \leq \tau \rbrace 
+\cap \lbrace \sigma \wedge t \leq \tau \wedge t \rbrace
+\in \mathcal{F}_t
+\end{align*}
+where we have used the facts that $\sigma$ and $\tau$ is $\mathcal{F}$-optional and both $\sigma \wedge t$ and $\tau \wedge t$ are $\mathcal{F}_t$-measurable (Lemma \ref{StoppedFiltration} and Lemma \ref{StoppedFiltrationContainment}).  The first containment follows from this fact applied to $\sigma$ and $\sigma \wedge \tau$ (observing that $\lbrace \sigma \leq \sigma \wedge \tau \rbrace = \lbrace \sigma \leq \tau \rbrace$).  Now applying this fact again,
+\begin{align*}
+\mathcal{F}_{\sigma \wedge \tau}  &=\mathcal{F}_{\sigma \wedge \tau} \cap \lbrace \sigma \wedge \tau \leq \tau \rbrace \subset \mathcal{F}_\tau
+\end{align*}
+and thus $\mathcal{F}_{\sigma \wedge \tau} \subset \mathcal{F}_\sigma \cap \mathcal{F}_\tau$ by reversing the roles of $\sigma$ and $\tau$.  On the other hand if
+$A \in \mathcal{F}_\sigma \cap \mathcal{F}_\tau$ and $t \in T$, then
+\begin{align*}
+A \cap \lbrace \sigma \wedge \tau \leq t \rbrace
+&=(A \cap \lbrace \sigma \leq t \rbrace) \cup (A \cap \lbrace \tau \leq t \rbrace)
+\in \mathcal{F}_t
+\end{align*}
+which shows $\mathcal{F}_{\sigma \wedge \tau} = \mathcal{F}_\sigma \cap \mathcal{F}_\tau$.
+
+The last statement follows from observing $\lbrace \sigma \geq \tau \rbrace \in \mathcal{F}_\sigma \cap \mathcal{F}_\tau \subset \mathcal{F}_\sigma$ thus if $A \in \mathcal{F}_\sigma$, we also have
+$A  \cap \lbrace \sigma \geq \tau \rbrace\in \mathcal{F}_\sigma$.  Therefore if we write
+\begin{align*}
+A \cap \lbrace \sigma = \tau \rbrace  &=  (A \cap \lbrace \sigma \geq  \tau \rbrace) \cap  \lbrace \sigma \leq  \tau \rbrace
+\end{align*}
+this shows $\mathcal{F}_\sigma \cap \lbrace \sigma = \tau \rbrace \subset \mathcal{F}_\sigma \cap \lbrace \sigma \leq \tau \rbrace \subset \mathcal{F}_\tau$ which
+in turn shows $\mathcal{F}_\sigma \cap \lbrace \sigma = \tau \rbrace \subset \mathcal{F}_\tau \cap \lbrace \sigma = \tau \rbrace$.  Now the result follows by the same argument with the role of $\sigma$ and $\tau$ reversed.
 \end{proof}
 
 \section{Discrete Time Martingales}
@@ -846,19 +877,19 @@ The first thing to note is a simple observation that the definition
 for the special case of discrete martingales can be simplified.
 \begin{lem}Let $\mathcal{F}_n$ be a filtration and $M_n$ be a sequence
   of $\mathcal{F}$-adapted integrable random variables.  If
-  $\cexpectation{\mathcal{F}_{n-1}}{M_n} = M_{n-1}$ for $n > 0$ then $M_n$
+  $\cexpectationlong{\mathcal{F}_{n-1}}{M_n} = M_{n-1}$ for $n > 0$ then $M_n$
   is an $\mathcal{F}$-martingale.
 \end{lem}
 \begin{proof}We only have to show that
-  $\cexpectation{\mathcal{F}_m}{M_n} = M_m$ for all $m \leq n$.
+  $\cexpectationlong{\mathcal{F}_m}{M_n} = M_m$ for all $m \leq n$.
   Because we know $M_n$ is $\mathcal{F}_n$-measurable then we have
-  $\cexpectation{\mathcal{F}_n}{M_n} = M_n$.  If $m < n-1$, then we
+  $\cexpectationlong{\mathcal{F}_n}{M_n} = M_n$.  If $m < n-1$, then we
   proceed by induction
   assuming the result is true for $m+1$,
 \begin{align*}
-\cexpectation{\mathcal{F}_m}{M_n} &=
-\cexpectation{\mathcal{F}_m}{\cexpectation{\mathcal{F}_{m+1}}{M_n}} \\
-&=\cexpectation{\mathcal{F}_m}{M_{m+1}} & & \text{by induction hypothesis}\\
+\cexpectationlong{\mathcal{F}_m}{M_n} &=
+\cexpectationlong{\mathcal{F}_m}{\cexpectationlong{\mathcal{F}_{m+1}}{M_n}} \\
+&=\cexpectationlong{\mathcal{F}_m}{M_{m+1}} & & \text{by induction hypothesis}\\
 &= M_m & & \text{by hypothesis}
 \end{align*}
 \end{proof}
@@ -2389,7 +2420,7 @@ Applying this we can compute
 \begin{align*}
 &\expectation{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u)) }\\
 &=\expectation{\cexpectationlong{\mathcal{F}_{n-1}}{\prod_{k=1}^n e^{iuX_{n,k}} (1 - R_{n,k}(u)) }} \\
-&=\expectation{\prod_{k=1}^{n-1} e^{iuX_{n,k}} (1 - R_{n,k}(u))\cexpectation{\mathcal{F}_{n-1}}{ e^{iuX_{n,n}} (1 - R_{n,n}(u))}} \\
+&=\expectation{\prod_{k=1}^{n-1} e^{iuX_{n,k}} (1 - R_{n,k}(u))\cexpectationlong{\mathcal{F}_{n-1}}{ e^{iuX_{n,n}} (1 - R_{n,n}(u))}} \\
 &=\expectation{\prod_{k=1}^{n-1} e^{iuX_{n,k}} (1 - R_{n,k}(u))} - \expectation{\prod_{k=1}^{n-1} e^{iuX_{n,k}} (1 - R_{n,k}(u)) R^2_{n,n}(u)} 
 \end{align*}
 This argument can be repeated $n-1$ more times to give us the identity

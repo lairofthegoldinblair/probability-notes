@@ -130,6 +130,8 @@
 
 \include{StochasticApproximation}
 
+\include{GeneralTheoryOfProcesses}
+
 \section{Exercises}
 \begin{xca}Let $f : \reals \to \reals$ be a right continuous function,
   show that $f$ is Borel measurable.
@@ -1798,6 +1800,11 @@ $\sup_{0 \leq s \leq t} f(\lambda_n(s)) \leq f(\lambda_n(w_n)) + \delta$.  From 
 thus $\sup_{0 \leq t \leq T} \abs{\psi(f_n)(t) - \psi(f)(\lambda_n(t))} \leq \delta + \sup_{0 \leq t \leq T} \abs{f_n(t) - f(\lambda_n(t))}$ and the result follows by taking the limit as $n \to \infty$ and then letting $\delta \to 0$.
 \end{proof}
 
+\begin{xca}Suppose that $T_t$ is a strongly continuous contraction semigroup for which $T_t v$ is differentiable for all $v \in X$, show that $T_t$ is of the form $e^{tA}$ for a bounded operator $A : X \to X$.
+\end{xca}
+\begin{proof}
+TODO:  I think on uses the closed graph theorem to show that the generator is bounded, then use the fact that generators uniquely determine the semigroup (Corollary \ref{SCCSGeneratorDeterminesSemigroup}).
+\end{proof}
 
 \appendix
 \chapter{Techniques}

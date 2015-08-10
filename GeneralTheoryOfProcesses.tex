@@ -1,0 +1,14 @@
+\chapter{The General Theory of Processes}
+
+\section{The Debut Theorem}
+
+In studying cadlag processes in this book we have made repeated use that hitting times of open and closed sets are usually optional times.  These facts were very easy to prove
+and appear in Lemma \ref{HittingTimesContinuous}.   In the general theory of processes we don't want to require continuity properties but at the same time we want to have
+optional times handy.  In this section we prove that given a filtration satisfying the usual conditions, hitting times of progressively measurable sets are optional times.  
+
+\begin{thm}[The Debut Theorem]\label{DebutTheorem}Let $(\Omega, \mathcal{A}, P)$ be a probability space with a filtration $\mathcal{F}_t$ for $0 \leq t < \infty$ that satisfies the usual conditions.  Let $A \subset [0, \infty) \times \Omega$ be progressively measurable and define $\tau_A = \inf \lbrace t \geq 0 \mid (t, \omega) \in A \rbrace$ then $\tau_A$ is an $\mathcal{F}$-optional time.
+\end{thm}
+
+The proof of the theorem is a bit involved and requires a series of lemmas to which we turn our attention.
+
+\section{The Section Theorem}

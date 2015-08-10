@@ -15,6 +15,7 @@ from simple intuition and building in the complexity by stages.  Some
 readers may prefer to first jump to the end of this section to peer at
 the final defintion so that it can be kept in mind during the journey.
 
+\subsection{The Markov Property}
 \begin{defn}Let $X$ be a process in $(S, \mathcal{S})$ with time scale
   $T$ which is adapted to a filtration $\mathcal{F}_t$.  We say that
   $X$ has the \emph{Markov property} if 
@@ -49,6 +50,45 @@ Since the union of the $\sigma$-algebras $\sigma(X_{t_1}, X_{t_2},
   clearly a $\pi$-system that generates $\sigma(\bigvee_{u \geq t_0}X_u)$, the result follows by montone classes (specifically Lemma \ref{ConditionalIndependencePiSystem}).
 \end{proof}
 
+TODO: Merge previous lemma into this propostion.
+By Lemma \ref{ConditionalIndependenceDoob} the conditional independence in the Markov property can be captured by statements about conditional probabilities; it useful to have alternative equivalent characterizations of the Markov property in terms of conditional expectations of more general functions.
+\begin{prop}\label{MarkovPropertyViaConditionalExpectations}Let $X$ be a process in $(S, \mathcal{S})$ with time scale
+  $T$ which is adapted to a filtration $\mathcal{F}_t$.  Then the
+  following are equivalent
+\begin{itemize}
+\item[(i)] $X$ has the Markov property
+\item[(ii)] for all $t \in T$ and non-negative bounded $\sigma(\bigvee_{u \geq t}  X_u)$-measurable random variables $\xi$ we have
+\begin{align*}
+\cexpectationlong{\mathcal{F}_t}{\xi} &= \cexpectationlong{X_t}{\xi} \text{ a.s.}
+\end{align*}
+\item[(iii)] for all $s \leq t \in T$ and non-negative or bounded Borel measurable $f : S \to \reals$ we have
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{f(X_t)} &= \cexpectationlong{X_s}{f(X_t)} \text{ a.s.}
+\end{align*}
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see that (i) implies (ii) suppose that $X$ has the Markov property and let $A \in \sigma(\bigvee_{u \geq t}  X_u)$.  By Lemma \ref{ExtendedMarkovProperty}
+and Lemma \ref{ConditionalIndependenceDoob} we have
+\begin{align*}
+\cprobability{X_t}{A} &=
+  \cprobability{\mathcal{F}_t, X_t}{A} =   \cprobability{\mathcal{F}_t}{A} \text{ a.s.}
+\end{align*}
+thus (ii) holds for indicator functions.  By linearity of conditional expectation (ii) holds for $\sigma(\bigvee_{u \geq t}  X_u)$-measurable simple functions.  By approximation by simple functions and Monotone Convergence for conditional expectations (ii) holds for non-negative $\sigma(\bigvee_{u \geq t}  X_u)$-measurable functions.  By linearity of conditional expectations we get (ii) for bounded $\sigma(\bigvee_{u \geq t}  X_u)$-measurable functions.
+
+(ii) implies (iii) is immediate as any $f(X_t)$ if $\sigma(\bigvee_{u \geq t})$-measurable.
+
+To see that (iii) implies (i) let $A \in \mathcal{S}$ and $s \leq t \in T$, then (iii) implies that 
+\begin{align*}
+\cprobability{X_s}{X_t \in A} 
+&=  \cprobability{\mathcal{F}_s}{X_t \in A} 
+= \cprobability{\mathcal{F}_s, X_s}{X_t \in A} \text{ a.s.}
+\end{align*}
+and Lemma \ref{ConditionalIndependenceDoob} implies that $\cindependent{\mathcal{F}_s}{X_t}{X_s}$.
+\end{proof}
+
+\subsection{Markov Transition Kernels}
+ 
 TODO: Introduce the example of Markov Chains here as it is quite a bit
 simpler and helps the
 understanding of the abstract case quite a bit.
@@ -152,12 +192,11 @@ for all $s \in S$ and $A \in \mathcal{S}$.
 \end{defn}
 \begin{examp}
 Let $S$ be a finite set and view $\mu$ and $\nu$ as $S \times S$
-matrices.  Then $\mu \nu$ is just matrix multiplication:
+matrices as in Example \ref{ProbabilityKernelFiniteSampleSpace}.  Then $\mu \nu$ is just matrix multiplication:
 \begin{align*}
 \mu \nu (s, \lbrace t \rbrace) 
-&= \iint \characteristic{\lbrace t  \rbrace \times S}(u,v) \nu(u, dv) \mu(s, du) 
-=\int \nu(u, \lbrace t \rbrace) \mu(s,du) 
-=\sum_{u \in S} \nu_{u, t} \mu_{s, u}
+&= \int \nu(u, \lbrace t \rbrace) \mu(s,du) 
+=\sum_{u \in S} \nu_{u, t} \mu_{s, u} = (\mu \nu)_{s,t}
 \end{align*}
 \end{examp}
 \begin{cor}[Chapman-Kolmogorov
@@ -175,14 +214,25 @@ Since we have assume $S$ is a Borel space we know from Theorem \ref{ExistenceCon
 versions $\mu_{s,t}$ exist.  By definition of $\mu_{s,t} \mu_{t,u}$, Lemma
 \ref{MarkovDistributions} and the uniqueness clause of Theorem \ref{ExistenceConditionalDistribution}
 \begin{align*}
-\mu_{s,t} \mu_{t,u}(x, A) &= 
-(\mu_{s,t} \otimes \mu_{t,u})(x, S \times A) \\
+\mu_{s,t} \mu_{t,u}(X_s, A) &= 
+(\mu_{s,t} \otimes \mu_{t,u})(X_s, S \times A) \\
 &= \cprobability{\mathcal{F}_s}{(X_t, X_u) \in S \times A} \\
 &=\cprobability{\mathcal{F}_s}{ X_u \in A} \\
 &=\cprobability{X_s}{ X_u \in A} \\
-&= \mu_{s,u}(x, A) \text{  a.s. $\nu_s$}
+&= \mu_{s,u}(X_s, A) \text{  a.s.}
 \end{align*}
+Therefore for each $A \in \mathcal{S}$,
+\begin{align*}
+\nu_s(\mu_{s,t} \mu_{t,u} (\cdot, A) \neq \mu_{s,u}(\cdot, A)) &= \probability{\mu_{s,t} \mu_{t,u}(X_s, A) \neq \mu_{s,u}(X_s, A)} = 0
+\end{align*}
+Since $S$ is Borel we can choose a common null set for all $A \in \mathcal{S}$ (when $S=[0,1]$ just pick the union of null sets for $A$ an
+interval with rational endpoints, show that this null set works for all intervals by continuity of measure and then use monotone classes; for general $S$ just
+use the Borel isomorphism to reduce to the above case).
 \end{proof}
+
+\subsection{Existence of Markov Processes}
+
+TODO: Example of process with the Markov property but for which the Chapman-Kolmogorov relations do not hold identically.
 
 The ability to derive the almost sure version of the
 Chapman-Kolmogorov relations is really just motivational for our
@@ -191,18 +241,41 @@ what follows.  Absent a workable set of conditions from which we can
 derive this fact, we build it into our definitions.  Collecting all of
 the conditional independence and regularity properties we've
 identified we finally make the formal definition of a Markov process.
-\begin{defn}
-A \emph{Markov process} is a stochastic process $X_t$ on a time scale $T
-\subset \reals_+$ and a state space $(S, \mathcal{S})$ such that 
-\begin{itemize}
-\item[(i)]$\cindependent{\mathcal{F}_s}{X_t}{X_s}$ for all $s \leq t$
-\item[(ii)]there exists a regular version $\mu_{s,t} :
-  S \times \mathcal{S} \to [0,1]$ of $\cprobability{\mathcal{F}_s}{X_t
-    \in \cdot}$ for each $s \leq t$.
-\item[(iii)]$\mu_{s,t} \mu_{t,u} = \mu_{s,u}$ everywhere on $S$ for
-  each $s \leq t \leq u$.
-\end{itemize}
+\begin{defn}A \emph{Markov transition kernel} on time scale $T$ and 
+state space $(S, \mathcal{S})$ is a probability  kernel $\mu_{s,t} : S \times \mathcal{S} \to [0,1]$ 
+for each $s \leq t \in T$ such that 
+\begin{align*}
+\mu_{s,t} \mu_{t,u} &= \mu_{s,u}  \text{ everywhere on $S$ for  each $s \leq t \leq u$}
+\end{align*}
 \end{defn}
+
+\begin{defn}
+Let stochastic process $X_t$ on a time scale $T
+\subset \reals_+$ and  state space $(S, \mathcal{S})$ such that $X_t$ is adapted to a filtration $\mathcal{F}_t$.  We say that
+$X_t$ is a \emph{Markov process} if there exists a
+Markov transition kernel $\mu_{s,t}$ such that for all $s \leq t \in T$
+\begin{align*}
+\cprobability{\mathcal{F}_s}{X_t \in \cdot} &= \mu_{s,t}(X_s, \cdot) \text{ a.s.}
+\end{align*}
+\end{defn}
+
+Note that we have not specified in the definition that a Markov process posesses the Markov property; showing that
+it does is not hard however.
+\begin{prop}A Markov process has the Markov property.  Moreover for any non-negative or bounded function $f : S \to \reals$ we have
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{f(X_t)} &= \cexpectationlong{X_s}{f(X_t)} = \int f(u) \, \mu_{s,t}(X_s, du)
+\end{align*}
+\end{prop}
+\begin{proof}
+Since we know $\cprobability{\mathcal{F}_s}{X_t \in A} = \mu_{s,t}(X_s, A)$ it follows that $\cprobability{\mathcal{F}_s}{X_t \in A}$ is $X_s$-measurable and therefore 
+$\cprobability{\mathcal{F}_s}{X_t \in A} = \cprobability{X_s}{X_t \in A}$ a.s.  The Markov property follows by Proposition \ref{MarkovPropertyViaConditionalExpectations}.
+
+Since $\mu_{s,t}(X_s, \cdot)$ is a regular version for $\cprobability{\mathcal{F}_s}{X_t \in \cdot}$ we apply Theorem \ref{Disintegration} to see
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{f(X_t)} &= \int f(u) \, \mu_{s,t}(X_s, du)
+\end{align*}
+\end{proof}
+
 
 TODO: Note that in the discrete (or countable?) state space case we
 can in fact assume that Chapman-Kolmogorov are satisfied identically.
@@ -228,9 +301,9 @@ not quite yet!
 \mu_{s,t} \mu_{t,u} &= \mu_{s,u} \text{ for all $s\leq
   t\leq u \in T$}
 \end{align*}
+\end{itemize} 
 then there exists a Markov process $X_t$ with initial distribution
 $\nu$ and transition kernels $\mu_{s,t}$.
-\end{itemize} 
 \end{thm}
 \begin{proof}
 This is an application of the Daniell-Kolmogorov Theorem.  We first
@@ -238,62 +311,62 @@ define the finite dimensional distributions and show that they form a
 projective family.  For every $n \in \naturals$ and $0 \leq t_1 \leq
 \dotsb \leq t_n$ we define
 \begin{align*}
-\nu_{t_1, \dotsc, t_n} &= \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
-\otimes \dotsb \otimes \mu_{t_{n-1}, t_n}
+\nu_{t_1, \dotsc, t_n}(A) 
+&= \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2} \otimes \dotsb \otimes \mu_{t_{n-1}, t_n}(A) \\
+&=\nu \otimes \mu_{0,t_1} \otimes \mu_{t_1, t_2} \otimes \dotsb \otimes \mu_{t_{n-1}, t_n}(S \times A) 
 \end{align*}
-Let $B \in \mathcal{S}^{\otimes n-1}$ and let $1 \leq k \leq n$.
+Let $A \in \mathcal{S}^{\otimes n-1}$ and let $1 \leq k \leq n$.
 Define
 \begin{align*}
-B_k &= \lbrace (x_1, \dotsc, x_n) \in S^n \mid (x_1, \dotsc, x_{k-1},
-x_{k+1}, \dotsc, x_n) \in B \rbrace
+A_k &= \lbrace (x_1, \dotsc, x_n) \in S^n \mid (x_1, \dotsc, x_{k-1},
+x_{k+1}, \dotsc, x_n) \in A \rbrace
 \end{align*}
 and calculate
 \begin{align*}
-&\nu_{t_1, \dotsc, t_n}(B_k) = ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
-\otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(B_k) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B_k}(s_1,
+&\nu_{t_1, \dotsc, t_n}(A_k) = ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
+\otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(A_k) \\
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A_k}(s_1,
     \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb
 \right] \, \mu_{t_1, t_2}(s_1, ds_2) \right ] \, \nu \mu_{0,
 t_1}(ds_1) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
     \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_1, t_2}(s_1, ds_2) \right ] \, \nu \mu_{0, t_1}(ds_1)
 \end{align*}
 
-The point here is that for every fixed $s_1, \dotsc, s_{k-1}$, the inner integral
+The point here is that the integral
 \begin{align*}
-\int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
-    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_k, t_{k+1}}(s_k, ds_{k+1}) 
+\int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
+    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_k, t_{k+1}}(s_{k+1}, ds_{k+2}) 
 \end{align*}
-is a function of $s_{k+1}$ only.  From the Chapman-Kolmogorov relation
+is a function of $s_1, \dotsc, s_{k-1}, s_{k+1}$ only (i.e. it has no dependence on $s_k$).  From the Chapman-Kolmogorov relation
 $\mu_{t_{k-1}, t_k} \mu_{t_{k}, t_{k+1}}  = \mu_{t_{k-1}, t_{k+1}}$ we
 know that for any function of $f : S \to \reals$ we have 
 \begin{align*}
 \int \left [
   \int
-f(z) \, \mu_{t_{k}, t_{k+1}} (y, dz) \right ] \, \mu_{t_{k-1}, t_k}
-(x, dy) &= \int
-f(z) \, \mu_{t_{k-1}, t_{k+1}} (x, dz) 
+f(s_{k+1}) \, \mu_{t_{k}, t_{k+1}} (s_k, ds_{k+1}) \right ] \, \mu_{t_{k-1}, t_k}
+(s_{k-1}, ds_{k}) &= \int
+f(s_{k+1}) \, \mu_{t_{k-1}, t_{k+1}} (s_{k-1}, ds_{k+1}) 
 \end{align*}
-which when applied to the inner integral above yields
+which when applied to the integral above with $s_1, \dotsc, s_{k-2}$ fixed yields
 \begin{align*}
-&\int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
+&\int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
     \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
     \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_{k-1},
 t_{k}}(s_{k-1}, ds_{k}) \\
-&=\int \left[ \dotsb \left [ \int \characteristic{B}(s_1,
+&=\int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
     \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
     \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \,
 \mu_{t_{k-1}, t_{k+1}}(s_{k-1}, ds_{k+1})
 \end{align*}
-for every fixed $s_1, \dotsc, s_{k-1}$.  Now we can use this to
-conclude that 
+Now we can use this to conclude that 
 \begin{align*}
-\nu_{t_1, \dotsc, t_n}(B_k) &= ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
-\otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(B_k) \\
+\nu_{t_1, \dotsc, t_n}(A_k) &= ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
+\otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(A_k) \\
 &= ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2} \otimes \dotsb \otimes
-\mu_{t_{k-1}, t_{k+1}} \otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(B)
+\mu_{t_{k-1}, t_{k+1}} \otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(A)
 \\
-&=\nu_{t_1, \dotsc, t_{k-1}, t_{k+1}, \dotsc, t_n}(B)
+&=\nu_{t_1, \dotsc, t_{k-1}, t_{k+1}, \dotsc, t_n}(A)
  \end{align*}
 and we have show that the $\nu_{t_1, \dotsc, t_n}$ are a projective
 family.
@@ -312,28 +385,33 @@ For every $t \in T$ define $\mathcal{F}_t = \sigma(X_s ; s \leq t)$ to
 be filtration induced by $X$.  We must show that $X_t$ is a Markov process with transition
 kernels $\mu_{s,t}$ (the fact that the initial distribution is $\nu$
 was already noted).  Let $s \leq t$ be given and suppose that we have
-$s_1 \leq \dotsb \leq s_n = s$.  Pick $B \in \mathcal{S}^{\otimes n}$
-and $C \in \mathcal{S}$ and calculate using the FDDs of $X_t$ and the
+$s_1 \leq \dotsb \leq s_n = s$.  Pick $A \in \mathcal{S}^{\otimes n}$
+and $B \in \mathcal{S}$ and calculate using the FDDs of $X_t$ and the
 expectation rule (Lemma \ref{ExpectationRule})
 \begin{align*}
-&\probability{(X_{s_1}, \dotsc, X_{s_n}) \in B ; X_t \in C}  = \probability{(X_{s_1}, \dotsc, X_{s_n}, X_t) \in B \times C} =
-\nu_{s_1, \dotsc, s_n, t}(B \times C) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B}(u_1,
-    \dotsc, u_n) \characteristic{C}(u_{n+1})\, \mu_{s,t}(u_{n}, du_{n+1}) \right] \dotsb
+&\probability{ X_t \in B ; (X_{s_1}, \dotsc, X_{s_n}) \in A}  = \probability{(X_{s_1}, \dotsc, X_{s_n}, X_t) \in A \times B} =
+\nu_{s_1, \dotsc, s_n, t}(A \times B) \\
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A}(u_1,
+    \dotsc, u_n) \characteristic{B}(u_{n+1})\, \mu_{s,t}(u_{n}, du_{n+1}) \right] \dotsb
 \right] \, \mu_{s_1, s_2}(u_1, du_2) \right ] \, \nu \mu_{0,
 s_1}(du_1) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{B}(u_1,
-    \dotsc, u_n) \mu_{s,t}(u_{n}, C)\, \mu_{s_{n-1},s_n}(u_{n-1}, du_{n}) \right] \dotsb
+&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A}(u_1,
+    \dotsc, u_n) \mu_{s,t}(u_{n}, B)\, \mu_{s_{n-1},s_n}(u_{n-1}, du_{n}) \right] \dotsb
 \right] \, \mu_{s_1, s_2}(u_1, du_2) \right ] \, \nu \mu_{0,
 s_1}(du_1) \\
-&=\expectation{\mu_{s,t}(X_s, C) ; (X_{s_1}, \dotsc, X_{s_n}) \in B}
+&=\expectation{ \mu_{s,t}(X_s, B) ; (X_{s_1}, \dotsc, X_{s_n}) \in A }
 \end{align*}
-Sets of the form $(X_{s_1}, \dotsc, X_{s_n}) \in B$ for $s_1 \leq
+Sets of the form $(X_{s_1}, \dotsc, X_{s_n}) \in A$ for $s_1 \leq
 \dotsb \leq s_n=s$ are a $\pi$-system generating $\mathcal{F}_s$ and
 therefore by a monotone class argument (specifically Lemma \ref{ConditionalExpectationExtension}) we may
 conclude that $\cexpectationlong{\mathcal{F}_s}{X_t \in \cdot} =
 \mu_{s,t}(X_s, \cdot)$ a.s.
 \end{proof}
+
+The previous theorem constructs a Markov process with an arbitrary initial distribution.  As it turns out in many cases
+it is useful to consider the collection of Markov processes indexed by the initial distribution.  Such a collection has a
+nice structure that results from the Markov property.  The uncover the structure the first thing to do is to move all of the 
+constructed Markov processes into the canonical picture so that we have a family of probability measures on $S^T$.
 
 \begin{defn}Suppose that a family of transition kernels $\mu_{s,t}$ is
   given.  For a distribution $\nu$ on $(S, \mathcal{S})$, let
@@ -350,19 +428,18 @@ conclude that $\cexpectationlong{\mathcal{F}_s}{X_t \in \cdot} =
 \end{lem}
 \begin{proof}
 First assume that $A = (\pi_{t_1}, \dots, \pi_{t_n})^{-1}(B)$ for some
-$B \in \mathcal{S}^{\otimes n}$.  We can use Lemma \ref{MarkovDistributions} to compute for
-any $\nu$,
+$B \in \mathcal{S}^{\otimes n}$ and $\pi_t : S^T \to S$ is the evaluation map $\pi_t f = f(t)$.  
+We can use Lemma \ref{MarkovDistributions} and the expectation rule Lemma \ref{ExpectationRule}
+to compute for any $\nu$,
 \begin{align*}
-\sprobability{A}{\nu} &= \probability{(\pi_0, \pi_{t_1}, \dots,
-  \pi_{t_n})^{-1}(S \times B)} \\
-&=\nu \otimes \mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(S \times
-B) \\
-&= \int \mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(x,B) \, d\nu(x)
+\sprobability{A}{\nu} &= \sprobability{(\pi_{t_1}, \dotsc,  \pi_{t_n}) \in B}{\nu} \\
+&=\sexpectation{\cprobability{\mathcal{F}_0}{(\pi_{t_1}, \dotsc,  \pi_{t_n}) \in B}}{\nu} \\
+&=\sexpectation{\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(X_0, B)}{\nu} \\
+&= \int \mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(x,B) \, \nu(dx)
 \end{align*}
 In particular, for $\nu = \delta_x$ we get
 \begin{align*}
-\sprobability{A}{x} &=\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1},
-  t_n}(x,B)
+\sprobability{A}{x} &=\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1},  t_n}(x,B)
 \end{align*}
 which shows both that $\sprobability{A}{x}$ is a measurable function
 of $x$ for fixed $A$ (Lemma
@@ -415,37 +492,118 @@ right-continuous complete filtration (usual conditions) then one has
 to give up Borel measurability in the kernel and make due with
 universal measurability.  Perhaps it is worth having a definition of a Markov family 
 and a ``relaxed'' or ``complete'' Markov family.  What I don't have any intuition of 
-is the circumstances under which we are forced to pass to impose the usual conditions and
-therefore relax the kernel measurability to be universal rather than Borel.  Note also that the 
+is the circumstances under which we are forced to pass to impose the usual conditions and/or require measurability of $\sprobability{A}{x}$ for arbitrary $A \in \mathcal{A}$.  
+The most obvious answer is that we can't consider mixed initial states $\sprobability{A}{\nu}$ to be defined (via $\sprobability{A}{\nu} = \int \sprobability{A}{x}  \, \nu(dx)$) unless we have measurability of $\sprobability{A}{x}$ and therefore we don't even get measures $\probabilityop_{\nu}$ on all of $\mathcal{A}$ until we deal with the measurability issue (but we can always define $\probabilityop_{\nu}$ on $\mathcal{F}^X_\infty$).  Note also that the 
 concept of universal measurability comes up in the general theory of processes in which
 we have the Debut Theorem that states that every hitting time is universally measurable.  It can also be shown that
-analytic sets are universally measurable.  I am making a lot of sturm and drang about universal measurability as opposed
-to Borel measurability but there is something misguided about the discussion because I am also describing the
-definition in terms a arbitrary state space $(S, \mathcal{S})$ and there is nothing here that says $\mathcal{S}$ is a Borel
-$\sigma$-algebra (or that $S$ is a topological space).  
+analytic sets are universally measurable.  
 
 \begin{defn}\label{MarkovFamilyDefn}
 A \emph{time homogeneous Markov family} is a stochastic process $X_t$ with a
 probability space $(\Omega, \mathcal{A})$, a time scale $T
-\subset \reals_+$, a filtration $\mathcal{F}_t$, a state space $(S, \mathcal{S})$ and a family of
+\subset \reals_+$, a filtration $\mathcal{F}_t$, a ($\mathcal{F}_t$?) measureable $\theta_t : \Omega \to \Omega$, a state space $(S, \mathcal{S})$ and a family of
 probability measures $\probabilityop_x$ on $\Omega$ for $x \in S$ such that 
 \begin{itemize}
 \item[(i)]$\probabilityop_x$ is a (universally measurable?) kernel
   from $S$ to $\Omega$.  TODO: Is this what we want?  Blumenthal and Getoor say that $\sprobability{X_t \in A}{x}$ is $\mathcal{S}$ measurable for every
 $0 \leq t < \infty$ and $A \in \mathcal{S}$; so $\probabilityop_x$ is a kernel to $(\Omega, \mathcal{F}^X_\infty)$ but not necessarily to $(\Omega, \mathcal{A})$ or 
 $(\Omega, \mathcal{F}_\infty)$.
-\item[(ii)]$\sprobability{X_0 = x}{x} = 1$ for all $x \in S$.
+\item[(ii)]$\sprobability{X_0 = x}{x} = 1$ for all $x \in S$ (note Blumenthal and Getoor do not assume this).
 \item[(iii)]$\cindependent{\mathcal{F}_s}{X_t}{X_s}$ under
   $\probabilityop_x$ for all $s \leq
   t$ and $x \in S$ (i.e. for all $x \in S$, $A \in \mathcal{S}$ and $s \leq t$ we have
   $\csexpectationlong{\mathcal{F}_s}{X_t \in A}{x} =
-  \csexpectationlong{X_s}{X_t \in A}{x}$ $\probabilityop_x$-a.s.)
+  \csexpectationlong{X_s}{X_t \in A}{x}$ $\probabilityop_x$-a.s.)  Alternatively do we just say:
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{f (X_t \circ \theta_s)} &= \sexpectation{f(X_t)}{X_s}
+\end{align*}
 \item[(iv)]there exists a regular version $\mu^x_{s,t} :
   S \times \mathcal{S} \to [0,1]$ of $\csprobability{\mathcal{F}_s}{X_t
     \in \cdot}{x}$ for each $s \leq t$ and $x \in S$ (is there any coherence
   requirement with respect to $x \in S$ here???).
 \end{itemize}
 \end{defn}
+
+\begin{lem}\label{AugmentingMeasurableSpace}Let $(S, \mathcal{S})$ be a measurable space and take a point $\Delta \notin S$, let $S^{\Delta} = S \cup \lbrace \Delta \rbrace$ and let $\mathcal{S}^\Delta$ be the $\sigma$-algebra on $S^\Delta$ generated by $\mathcal{S}$, then 
+\begin{align*}
+\mathcal{S}^\Delta &= \mathcal{S} \cup \lbrace A \cup \lbrace \Delta \rbrace \mid A \in \mathcal{S}\rbrace
+\end{align*}
+\end{lem}
+\begin{proof}
+Since $S \in \mathcal{S}$ and $\lbrace \Delta \rbrace = S^\Delta \setminus S$ it follows that $\lbrace \Delta \rbrace$ is $\mathcal{S}^\Delta$-measurable and therefore the right hand side is included in $\mathcal{S}^\Delta$.  It suffices to show that the right hand side is a $\sigma$-algebra.  Clearly $\emptyset \in \mathcal{S} \subset \mathcal{S}^\Delta$ and for any $A \in \mathcal{S}$ we have both $S^\Delta \setminus A = (S\setminus A) \cup \lbrace \Delta \rbrace$ and $S^\Delta \setminus (A \cup \lbrace \Delta \rbrace) = S \setminus A$ and therefore the right hand side is closed under set complement.  Given countable index sets $I$ and $J$ and sets $A_i \in \mathcal{S}$ and $B_j \in \mathcal{S}$ we have
+\begin{align*}
+\cup_{i \in I} A_i \cup \cup_{j \in J} (B_j \cup \lbrace \Delta \rbrace) &=
+\begin{cases}
+(\cup_{i \in I} A_i \cup \cup_{j \in J} B_j) \cup \lbrace \Delta \rbrace & \text{if $J \neq \emptyset$} \\
+\cup_{i \in I} A_i & \text{if $J = \emptyset$} \\
+\end{cases}
+\end{align*}
+which shows that the right hand side is closed under countable unions. 
+\end{proof}
+Adjoining a point to a measurable space as in the previous lemma will be referred to as \emph{augmenting} the space with the point $\Delta$.
+
+\begin{defn}\label{HomogeneousMarkovFamilyBlumenthalGetoor}
+A \emph{Markov family} is a
+probability space $(\Omega, \mathcal{A})$ with a distinguished point $\omega_\Delta$, a time scale $T
+\subset [0,\infty]$ with $\infty \in T$, a filtration $\mathcal{F}_t$, a measurable $\theta_t : \Omega \to \Omega$ such that $\theta_\infty \equiv \omega_\Delta$, a state space $(S, \mathcal{S})$ augmented with a point $\Delta$, an $\mathcal{F}$-adapted stochastic process $X_t$ with time scale $T$ and state space $S^\Delta$ and a family of
+probability measures $\probabilityop_x$ on $(\Omega, \mathcal{A})$ for $x \in S^\Delta$ such that 
+\begin{itemize}
+\item[(i)] $X_t(\omega_\Delta) \equiv \Delta$ for all $t \in T$
+\item[(ii)] $X_t(\omega) = \Delta$ for some $t \in T$ and $\omega \in \Omega$ then $X_u(\omega) = \Delta$ for all $u \geq t$.
+\item[(iii)] $X_\infty(\omega) = \Delta$ for all $\omega \in \Omega$.
+\item[(iv)] $\sprobability{X_0 = \Delta}{\Delta} = 1$
+\item[(v)] For all $t \in T \setminus \lbrace \infty \rbrace$, $A \in \mathcal{S}$, $\sprobability{X_t \in A}{x}$ is $\mathcal{S}$-measurable (i.e. $\pushforward{X_t}{\probabilityop_x}$ is a kernel $S \times \mathcal{S} \to [0,1]$ for all $t \in T \setminus \lbrace \infty \rbrace$).
+\item[(vi)] For all $s,t \in T$, $A \in \mathcal{S}^\Delta$ and $x \in S^\Delta$
+\begin{align*}
+\csprobability{\mathcal{F}_s}{X_{t} \circ \theta_s \in A}{x}&= \sprobability{X_t \in A}{X_s}
+\end{align*}
+\end{itemize}
+If in addition we have $X_t \circ \theta_s = X_{t+s}$ for all $t,s \in T$ then we say that the Markov family is \emph{time-homogeneous}.
+\end{defn}
+
+It is worth calling out some subtle points of the defintion.  One of the more significant subtleties is the fact that we do not require that $\probabilityop_x : S^\Delta \times \mathcal{A} \to [0,1]$ is a kernel; while for fixed $x \in S^\Delta$ we know that $\probabilityop_x$ is a probability measure we do not assume that for fixed $A \in \mathcal{A}$ we have $\sprobability{A}{x}$ is $\mathcal{S}^\Delta$-measurable.  This issue will be discussed in some detail later on.  The other most notable issue is that our guiding intuition is that under the probability measure $\probabilityop_x$ $X_t$ is a Markov process starting at $x \in S$, yet we haven't stated that clearly as part of the definition.  At least the fact that $X_t$ is a Markov process under $\probabilityop_x$ $X_t$ can be proven.
+
+\begin{prop} Let $(\Omega, \mathcal{A}, \mathcal{F}_t, X_t, \theta_t, \probabilityop_x)$ be a Markov family then
+\begin{itemize}
+\item[(i)]For all $t \in T$, $A \in \mathcal{S}^\Delta$, $\sprobability{X_t \in A}{x}$ is $\mathcal{S}^\Delta$-measurable (i.e. $\pushforward{X_t}{\probabilityop_x}$ is a kernel $S^\Delta \times \mathcal{S}^\Delta \to [0,1]$ for all $t \in T$).
+\item[(ii)] If $X_t$ is time homogeneous then $\theta_t$ is $\mathcal{F}^X_\infty/\mathcal{F}^X_\infty$-measurable.
+\item[(ii)] If $X_t$ is time homogeneous then $\mu_t(x,A) = \probabilityop_x(X_t \in A)$ defines a Markov transition kernel and the pair $X_t$, $\mu_t$ is a Markov process under $\probabilityop_x$.
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see (i) note that for $T = \infty$ we have for all $A \in \mathcal{S}^\Delta$ and $x \in S^\Delta$
+\begin{align*}
+\sprobability{X_\infty \in A}{x} &= \sprobability{\Delta \in A}{x} = \begin{cases}
+1 & \text{if $\Delta \in A$} \\
+0 & \text{if $\Delta \notin A$} 
+\end{cases}
+\end{align*}
+so is a constant function of $x$ and therefore $\mathcal{S}^\Delta$-measurable.  For $t \in T$ with $t \neq \infty$ and $A \in \mathcal{S}$ then as a function of $S^\Delta$,
+\begin{align*}
+\sprobability{X_t \in A}{x} &= \characteristic{S}(x) \sprobability{X_t \in A}{x} + \characteristic{\Delta}(x) \sprobability{X_t \in A}{\Delta} 
+\end{align*}
+which is $\mathcal{S}^\Delta$-measurable since $S, \lbrace \Delta \rbrace \in \mathcal{S}^\Delta$ and $\sprobability{X_t \in A}{x}$ is $\mathcal{S}$-measurable.
+
+For $t \in T$ with $t \neq \infty$ and $B \in \mathcal{S}^\Delta \setminus \mathcal{S}$ by Lemma \ref{AugmentingMeasurableSpace} we know that $B = A \cup \lbrace \Delta \rbrace$ for some $A \in \mathcal{S}$ and thus
+\begin{align*}
+\sprobability{X_t \in A \cup \lbrace \Delta \rbrace }{x} &=\sprobability{X_t \in A}{x} + \sprobability{X_t = \Delta }{x} = \sprobability{X_t \in A}{x} + 1 - \sprobability{X_t \in S}{x} 
+\end{align*}
+is seen to be $\mathcal{S}^\Delta$-measurable.
+
+To see (ii) note that by time homogeneity we have for $s, t \in T$ and $A \in \mathcal{S}^\Delta$, $\theta_s^{-1} X_t^{-1}(A) = X_{t+s}^{-1}(A)$ which shows that $\theta_s$ is $\mathcal{F}^X_t/\mathcal{F}^X_{t+s}$-measurable.  In particular, (ii) follows.
+
+To see (iii) we first show that $\mu_t(x,A) = \sprobability{X_t \in A}{x}$ is a Markov transition kernel.  By (i) we have shown that it is a kernel from $S^\Delta$ to $\mathcal{P}(S^\Delta)$ so it remains to show the Chapman Kolmogorov relations.  Let $t,s \in T$, $x \in S^\Delta$ and $A \in \mathcal{S}^\Delta$ then by the tower property of conditional expectation, property (vi) of the defintion of a Markov family and the Expectation Rule Lemma \ref{ExpectationRule} (applied to $\pushforward{X_s}{\probabilityop_X} = \mu_s(x, \cdot)$)
+\begin{align*}
+\mu_{s+t}(x, A) &= \sprobability{X_{s+t} \in A}{x} \\
+&=\sexpectation{\csprobability{\mathcal{F}_s}{X_{t+s} \in A}{x}}{x} \\
+&=\sexpectation{\sprobability{X_{t} \in A}{X_s}}{x} \\
+&=\sexpectation{\mu_t(X_s, A)}{x} \\
+&=\int \mu_t(u, A) \mu_s(x, du) = \mu_s \mu_t (x, A) \\
+\end{align*}
+showing the Chapman-Kolmogorov relations.  Now property (vi) of the definition of a Markov family shows $\csprobability{\mathcal{F}_s}{X_{t+s} \in A}{x} = \mu_t(X_s,A)$ and
+therefore $X_t$ is a Markov process under $\probabilityop_x$ for every $x \in S^\Delta$.
+TODO: A non-homogeneous version of this proof and the proper definition of a non-homogeneous Markov family????
+\end{proof}
 
 Note that Bass doesn't require that $\probabilityop_x$ is a kernel $S
 \to \mathcal{P}(\Omega)$ rather he only requires that
@@ -457,14 +615,15 @@ $\mathcal{F}^X_\infty$ (this is the same as Blumenthal and Getoor as I mention a
 measurable kernel $S \to  \mathcal{P}(\Omega)$ is necessarily Borel
 measurable when restricted to $\mathcal{F}^X_\infty$; heck this isn't necessarily a well posed question since $S$ is not assumed to be
 a topological space at this point.  It is worth noting that Blumenthal and Getoor do show that every Markov family extends to a completed one with 
-the state space given the universal completion and they assume this completion is in place for much of the subsequent theory.  That said, they
+the state space given by the universal completion and they assume this completion is in place for much of the subsequent theory.  That said, they
 don't modify the defintion of Markov family in doing so.
 
 TODO: Question:  Given a Markov family as above then given an arbitrary
 initial distribution $\nu$ on $S$ we can define $\probabilityop_\nu$
 by $\sprobability{A}{\nu} = \int \sprobability{A}{x} \, d\nu(x)$.  Is
 $X$ a Markov process with initial distribution $\nu$ under
-$\probabilityop_\nu$?  Blumenthal and Getoor do this but alas universal measurability arises here as well!
+$\probabilityop_\nu$?  Blumenthal and Getoor do this but alas universal measurability arises here as well (not when defining
+$\sprobability{A}{\nu}$ for $A \in \sigma(\bigvee_{t \in T} X_t)$ but only when trying to extend to $\mathcal{F}_\infty$)!
 
 \section{Homogeneous Markov Processes}
 
@@ -702,11 +861,25 @@ transitions.  Time homogeneity is the property that all of these
 transition kernels are the same and therefore the Markov process is
 determined by a single kernel (and the initial distribution).
 
-\begin{defn}A Markov process on $\integers_+$ or $\reals_+$ is said to
-  be \emph{time homogeneous} if and only for all $s,t,u \in T$ and $B
+\begin{defn}A family of transition kernels $\mu_{s,t}$  $\integers_+$ or $\reals_+$ is said to
+  be \emph{time homogeneous} if and only if there exist a family of
+  kernels $\tilde{\mu}_t$ such that $\mu_{s,t}(x, B) =
+  \tilde{\mu}_{t-s}(x,B)$ for all $x \in S$ and $B \in \mathcal{A}$.
+  A Markov process $X$ is said to be time homogeneous if it has a
+  family of time homogeneous transition kernels.
+\end{defn}
+
+\begin{prop}If $X$ is a time homogeneous Markov process then
+for all $s,t,u \in T$ and $B
   \in \mathcal{S}^T$ we have
   $\cexpectationlong{\mathcal{F}_s}{X_t \in B} = \cexpectationlong{\mathcal{F}_{s+u}}{X_{t+u} \in B}$.
-\end{defn}
+\end{prop}
+\begin{proof}
+Immediate from the defintions,
+\begin{align*}
+\cexpectationlong{\mathcal{F}_s}{X_t \in B} = \mu_{t-s}(X_s, B) = \cexpectationlong{\mathcal{F}_{s+u}}{X_{t+u} \in B}
+\end{align*}
+\end{proof}
 
 \section{Strong Markov Property}
 
@@ -876,7 +1049,7 @@ space and pull back (i.e. forming $\sigma \circ X + \tau \circ
 case is a bit ugly so sometimes we will simply use the notation $\sigma + \tau \circ
 \theta_{\sigma} $ as a shorthand.
 
-\begin{thm}\label{StrongMarkovPropertyMarkovProcessCountableValues}Let $X$ be a time homogeneous Markov process on
+\begin{thm}[Strong Markov Property]\label{StrongMarkovPropertyMarkovProcessCountableValues}Let $X$ be a time homogeneous Markov process on
   $\integers_+$ or $\reals_+$ and let $\tau$ be an optional
   time with at most countably many values.  Then for every measurable
   $A \subset S^T$,
@@ -916,10 +1089,8 @@ the proof of Lemma \ref{MarkovMixtures}
 \cprobability{\mathcal{F}_t}{\theta_t X \in A} &=
 \cprobability{\mathcal{F}_t}{((\theta_t X)_{t_1}, \dotsc,
   (\theta_t X)_{t_n}) \in B} \\
-&= \cprobability{\mathcal{F}_t}{(X_{t
-    + t_1}, \dotsc, X_{t+ t_n}) \in B} \\
-&= \mu_{t, t + t_1} \otimes \cdots \otimes \mu_{t+t_{n-1}, t+t_n}(X_t,
-B) \\
+&= \cprobability{\mathcal{F}_t}{(X_{t  + t_1}, \dotsc, X_{t+ t_n}) \in B} \\
+&= \mu_{t, t + t_1} \otimes \cdots \otimes \mu_{t+t_{n-1}, t+t_n}(X_t,B) \\
 &=\mu_{0, t_1} \otimes \cdots \otimes \mu_{t_{n-1}, t_n}(X_t, B) \\
 &= \sprobability {A}{X_t}
 \end{align*}
@@ -970,7 +1141,101 @@ TODO: What about the $\mathcal{F}_\tau$-measurability of
 $\sprobability{A}{X_\tau}$?  Note that this is a consequence of result
 since we haven't assumed $X$ is progressive(see Lemma
 \ref{StrongIndependentIncrements} below where we make this implication explicit).  Double check that we
-don't assume it in the proof above.
+don't assume it in the proof above (note that Ethier and Kurtz do make the progressive assumption in their
+discussion of the strong markov property).
+\end{proof}
+
+The key part of the above proof is the computation of finite dimensional distributions as a bridge to
+lift the simple Markov property $\cprobability{\mathcal{F}_s}{X_{t+s} \in A} = \mu_{t}(X_s, A) = \sprobability{X_t \in A}{X_s}$ 
+on one dimensional distributions to the full $\sigma$-algebra $\mathcal{S}^T$.  For an arbitrary optional time $\tau$ we have an analogous
+argument using finite dimensional distributions to show the strong Markov property for the one dimensional case is sufficient to 
+prove the full strong Markov property for that optional time.  This result will be used later in the text when we want to show that 
+special classes of Markov processes have the strong Markov property.  Note that in this case we are now dealing with arbitrary 
+optional times $\tau$ and therefore we must assume the process $X$ is progressive so that $X_\tau$ is $\mathcal{F}_\tau$-measurable 
+(Lemma \ref{StoppedProgressivelyMeasurableProcess}).
+
+\begin{prop}\label{StrongMarkovFromOneDimensionalDistribution}Let $X$ be a progressive time homogeneous Markov process on
+  $\reals_+$ and let $\tau$ be a finite optional
+  time.  If for every $s,t \geq 0$ and $B \in \mathcal{S}$ we have
+\begin{align*}
+\cprobability{\mathcal{F}_{\tau+s}}{X_{\tau + t + s} \in B} &= \mu_t(X_{\tau+s}, B) \text{ a.s.}
+\end{align*}
+then for every measurable
+  $A \subset S^T$,
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A} &= \sprobability{A}{X_\tau} \text{ a.s.}
+\end{align*}
+\end{prop}
+\begin{proof}
+The crux of the proof is to show the result for finite dimensional distributions.
+\begin{clm}Let $n \in \naturals$ and $f_1, \dotsc, f_n$ be bounded measurable functions from $S$ to $\reals$ and
+let $t_1 \leq \dotsc \leq t_n$ then 
+\begin{align*}
+\cexpectationlong{\mathcal{F}_\tau}{\prod_{i=1}^n f_i(X_{\tau + t_i})} 
+&= \int \prod_{i=1}^n f_i(u_i) \, \mu_{t_1} \otimes \dotsb \otimes \mu_{t_n - t_{n-1}}(X_\tau, du_1, \dotsc, du_n)
+\end{align*}
+\end{clm}
+The proof is by induction on $n$.  For $n=1$ we have by hypothesis 
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{X_{\tau + t} \in \cdot} &= \mu_t(X_\tau, \cdot)
+\end{align*} 
+and therefore
+by Theorem \ref{Disintegration} we have 
+\begin{align*}
+\cexpectationlong{\mathcal{F}_\tau}{f(X_{\tau + t})} &= \int f(u) \, \mu_t(X_\tau, du)
+\end{align*}
+which is the claim for $n=1$.  For the induction step, assume the result for all 
+$m \in \naturals$ such that $1 \leq m \leq n$ and let $f_1, \dotsc, f_{n+1}$ and $t_1 \leq \dotsb \leq t_{n+1}$ be given then we apply the tower and pullout properties of conditional expectation, the induction 
+hypothesis for cases $n=1$ and $n$ and then the definition of kernel products to see
+\begin{align*}
+&\cexpectationlong{\mathcal{F}_\tau}{\prod_{i=1}^{n+1} f_i(X_{\tau + t_i})}  \\
+&=\cexpectationlong{\mathcal{F}_\tau}{\cexpectationlong{\mathcal{F}_{\tau+t_n}}{\prod_{i=1}^{n+1} f_i(X_{\tau + t_i})} } \\
+&=\cexpectationlong{\mathcal{F}_\tau}{\prod_{i=1}^n f_i(X_{\tau + t_i}) \cexpectationlong{\mathcal{F}_{\tau+t_n}}{f_{n+1}(X_{\tau + t_{n+1}})} } \\
+&=\cexpectationlong{\mathcal{F}_\tau}{\prod_{i=1}^n f_i(X_{\tau + t_i}) \int f_{n+1}(u_{n+1}) \, \mu_{t_{n+1} - t_n}(X_{\tau + t_n}, du_{n+1})} \\
+&=\int \prod_{i=1}^n f_i(u_i) \left[\int f_{n+1}(u_{n+1}) \, \mu_{t_{n+1} - t_n}(u_n, du_{n+1}) \right] \, \mu_{t_1} \otimes \dotsb \otimes \mu_{t_n - t_{n-1}}(X_\tau, du_1, \dotsc, du_n)\\
+&=\int \prod_{i=1}^{n+1} f_i(u_i) \mu_{t_1} \otimes \dotsb \otimes \mu_{t_{n+1} - t_{n}}(X_\tau, du_1, \dotsc, du_{n+1})\\
+\end{align*}
+and the claim is proved.
+
+From the claim and the proof of Lemma \ref{MarkovMixtures} we see that for arbitrary $B_1, \dotsc B_n \in \mathcal{S}$ and $t_1 \leq \dotsb \leq t_n$ if we
+define $A = (\pi_{t_1}, \dotsc, \pi_{t_n})^{-1}(B_1 \times \dotsb \times B_n)$ (where $\pi_t : S^T \to S$ is the evaluation map $\pi_t f = f(t)$) we have
+\begin{align*}
+&\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A} \\
+&=\cprobability{\mathcal{F}_\tau}{(X_{\tau+t_1}, \dotsc, X_{\tau+t_n}) \in B_1 \times \dotsb \times B_n} \\
+&=\mu_{t_1} \otimes \dotsb \otimes \mu_{t_n - t_{n-1}}(X_\tau, B_1 \times \dotsb \times B_n) \\
+&= \sprobability{A}{X_\tau}
+\end{align*}
+The set of such $A$ is clearly a $\pi$-system and generates $\mathcal{S}^T$ (the latter being generated by the one dimensional $\pi_t^{-1}(B)$ in fact).  By montone classes as in Theorem \ref{StrongMarkovPropertyMarkovProcessCountableValues} we get the result for all $\mathcal{S}^T$.
+\end{proof}
+
+The previous result that shows how to establish the Strong Markov property for finite optional times is in fact sufficient to establish the Strong Markov property for all optional times by virtue of the following argument.
+\begin{prop}\label{StrongMarkovFromStrongMarkovFiniteOptional}Let $X$ be a progressive time homogeneous Markov process on
+  $\reals_+$ and suppose that for all finite optional
+  times $\tau$ and all measurable sets
+  $A \subset S^T$ we have
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A} &= \sprobability{A}{X_\tau} \text{ a.s.}
+\end{align*}
+then for all optional times $\tau$ and measurable sets
+  $A \subset S^T$ we have
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A} &= \sprobability{A}{X_\tau} \text{ a.s. on $\tau < \infty$}
+\end{align*}
+\end{prop}
+\begin{proof}
+The fact that the terms in the conclusion of the result are in fact well defined see the discussion in Theorem \ref{StrongMarkovPropertyMarkovProcessCountableValues}.  Given an arbitrary optional time $\tau$, let $n \in \naturals$ and note that $\mathcal{F}_\tau = \mathcal{F}_{\tau \wedge n}$, $\theta_\tau X = \theta_{\tau \wedge n}$ and $\sprobability{A}{X_\tau}=\sprobability{A}{X_{\tau \wedge n}}$ on $\lbrace \tau \leq n \rbrace = \lbrace \tau = \tau \wedge n \rbrace$ (see Proposition \ref{StoppedAlgebraMinOfOptionalTimes} for the first assertion).  Observe that for $t \geq n$, 
+\begin{align*}
+\lbrace \tau \leq n \rbrace \cap \lbrace \tau \wedge n \leq t \rbrace &= \lbrace \tau \leq n \rbrace \in \mathcal{F}_n
+\end{align*} 
+and for $t < n$
+\begin{align*}
+\lbrace \tau \leq n \rbrace \cap \lbrace \tau \wedge n \leq t \rbrace &= \lbrace \tau \leq t \rbrace \in \mathcal{F}_t \subset \mathcal{F}_n
+\end{align*} 
+Thus $\lbrace \tau \leq n \rbrace  \in \mathcal{F}_\tau \cap \mathcal{F}_{\tau \wedge n} = \mathcal{F}_{\tau \wedge n}$ and we may apply  localization of conditional expectations Lemma \ref{ConditionalExpectationIsLocal} to see that on $\lbrace \tau \leq n \rbrace$,
+\begin{align*}
+\cprobability{\mathcal{F}_\tau}{\theta_\tau X \in A} &= \cprobability{\mathcal{F}_{\tau \wedge n}}{\theta_{\tau  \wedge n} X \in A} = \sprobability{A}{X_{\tau \wedge n}}  = \sprobability{A}{X_\tau}  \text{ a.s.}
+\end{align*}
+Now write $\lbrace \tau < \infty \rbrace = \cup_{n=1}^\infty \lbrace \tau \leq n \rbrace$ and the the union of a countable number of null sets.
 \end{proof}
 
 In the case of a space homogeneous Markov process the strong Markov

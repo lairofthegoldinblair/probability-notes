@@ -9,7 +9,8 @@ decisions.  The functional analysis tools we will use are part of the theory of 
 semigroups and one could simply assume the reader has been exposed to them and quote the
 results with appropriate references.  We deem such an approach an undue burden on the reader
 as any treatment of semigroups is likely deeply embedded in a textbook in which the core results
-and difficult to extract efficiently.  Thus we have the choice of how to present the required functional
+and difficult to extract efficiently (much of semigroup theory is motivated by differential equations and
+not probability theory).  Thus we have the choice of how to present the required functional
 analysis.  One choice is to present the results in a separate chapter or appendix and the other is to 
 present the results on an as needed basis.  While we have relegated the basic theory of Banach spaces to
 an appendix, we have chosen the second path for the theory of operator semigroups hoping that the 
@@ -57,8 +58,11 @@ probability kernel $\mu : S \to \mathcal{P}(S)$, by
 Lemma \ref{KernelTensorProductMeasurability} we know that $\int f(t)
 \, \mu(s,dt)$ is a itself a measurable function of $s$ that is non-negative
 or bounded when $f$ is.  Thus if we are given the transition kernels
-of a time homogeneous Markov process we may define an operator $T_tf
-(s) = \int f(u) \, \mu_t(s, du)$ on an appropriate space of measurable
+of a time homogeneous Markov process we may define an operator 
+\begin{align*}
+T_tf (s) &= \int f(u) \, \mu_t(s, du) 
+\end{align*} 
+on an appropriate space of measurable
 functions to itself (say the space of bounded measurable functions).  The first thing to observe is that the
 Chapman-Kolmogorov relations are equivalent to the semigroup property
 for these operators.
@@ -82,6 +86,29 @@ Moreover $T_t f_n (x)$ is increasing by positivity of integral and therefore ano
 T_t T_s f(x) &= \lim_{n \to \infty} T_t T_s f_n (x) = \lim_{n \to \infty} T_{t + s} f_n (x) = T_{t+s} f(x)
 \end{align*}
 The semigroup property extends to arbitrary bounded measurable $f$ by writing $f = f_+ - f_-$ with $f_\pm \geq 0$ and using linearity of $T_t$.
+\end{proof}
+
+In the case that the kernels $\mu_t$ are the transition kernels of a Markov process we will call the semigroup $T_t$ the transition semigroup of the Markov process.  It is worth
+recording for future use the expression for the transition semigroup in terms of the underlying Markov process.
+\begin{prop}\label{TransitionSemigroupAsExpectation}Let $X$ be a homogeneous Markov process with time scale $\reals_+$ and state space $S$ then for every bounded measurable function $f : S \to \reals$ and $s \geq 0$,
+\begin{align*} 
+T_t f (X_s) &= \cexpectationlong{X_s}{f(X_{t+s})} = \cexpectationlong{\mathcal{F}_s}{f(X_{t+s})} 
+\end{align*}
+in particular, if $X_t$ is a Markov family (e.g. $X$ is canonical) then
+\begin{align*} 
+T_t f (x) &= \sexpectation{f(X_t)}{x}
+\end{align*}
+\end{prop}
+\begin{proof}
+By definition we know that $\cprobability{X_s}{X_{t+s} \in \cdot} (\omega) = \mu_t(X_s(\omega), \cdot)$ and therefore by distintigration (Theorem \ref{Disintegration}) we have 
+\begin{align*}
+\cexpectationlong{X_s}{f(X_{t+s})}(\omega) &= \int f(s) \mu_t(X_s(\omega), ds) = T_t f(X_s)
+\end{align*}
+If $X$ is a Markov family then for $x \in S$ under the measure $P_x$ we have by the Markov property (Theorem \ref{StrongMarkovPropertyMarkovProcessCountableValues}) and the
+first part of this result
+\begin{align*}
+\sexpectation{f(X_t)}{x} &= \cexpectationlong{X_0}{f(X_{t})} = T_t f(X_0) = T_t f(x)
+\end{align*}
 \end{proof}
 
 \begin{prop}Let $X$ be a pure jump-type Markov process with state space $S$ and a bounded rate kernel $\alpha$.  For every bounded measurable function $f : S \to \reals$ define
@@ -116,7 +143,7 @@ This follows directly from linearity of the $T_t$ and linearity of limits.  If $
 \section{Strongly Continuous and Feller Semigroups}
 
 We begin the process of seeing how the theory of operator semigroups and Markov processes interacts from the semigroup point of view.  We shall enumerate some properties of
-semigroups that make them well behaved in important ways and then define an associated class of Markov processes  as those whose semigroup posess these properties.
+semigroups that make them well behaved in important ways and then define an associated class of Markov processes  as those whose semigroup posess these properties.  
 
 \begin{defn}A \emph{semigroup of operators} $T_t$ on a Banach space $X$ is one parameter family of bounded continuous operators $T_t : X \to X$ such that
 for all $0 \geq s,t < \infty$ we have $T_s \circ T_t = T_{s+t}$.
@@ -157,7 +184,8 @@ for $t > 0$ we have
 \end{align*}
 \end{proof}
 
-The Kolmogorov backward equation generalizes to arbitrary strongly continuous semigroups.
+Note that if $A$ is a bounded generator then paths $e^{tA}v$ are actually differentiable and are solutions of the abstract Cauchy problem $\frac{d}{dt} f(t) = A f(t)$ with $f(0) = v$.   As it turns out, for an arbitrary strongly continuous contraction semigroup, paths $T_t v$ are differentiable solutions of an abstract Cauchy problem so long as $v \in \domain{A}$.  In this context we may also refer to the differential equation $\frac{d}{dt} T_t v = A T_t v$  as the Kologorov forward equation.  
+It also turns out that the Kolmogorov backward equation generalizes to arbitrary strongly continuous semigroups.
 \begin{prop}\label{StronglyContinuousSemigroupKolomgorovBackwardEquation}Let $T_t$ be a strongly continuous semigroup on a Banach  space $X$ with generator $A$ then 
 \begin{itemize}
 \item[(i)] if $v \in X$ and $t \geq 0$ then $\int_0^t T_s v \, ds \in \domain{A}$ and moreover $T_t v - v = A \int_0^t T_sv \, ds$
@@ -197,7 +225,7 @@ To see (iii) we apply the Fundamental Theorem of Calculus \ref{FundamentalTheore
 \int_0^t A T_s v \, ds &= \int_0^t A T_s v \, ds = \int_0^t \frac{d}{ds} T_s v \, ds = T_t v - v
 \end{align*}
 \end{proof}
-
+As a consequence of the fact $\frac{d}{dt} T_t v = A T_t v$ for $v \in \domain{A}$ by analogy it is sometime helpful to think of general paths $T_t v$ as being a type of generalized or weak solution to the forward equation.
 
 \begin{cor}\label{StronglyContinuousSemigroupGeneratorClosedDomainDense}Let $A$ be the generator of a strongly continuous semigroup on the Banach space $X$ then $A$ is a closed operator and $\domain{A}$ is dense.
 \end{cor}
@@ -219,6 +247,10 @@ which shows that $v \in \domain{A}$ and $Av = w$.
 
 \subsection{The Hille-Yosida Theorem}
 
+Our next goal is to prove a significant theorem that characterizes completely the unbounded operators $A$ that are generators of strongly continuous contraction semigroups.  In particular, we need to be able to take a given operator $A$ and construct from it the corresponding semigroup $T_t$.  Due to the Kolmogorov Forward Equation in Proposition \ref{StronglyContinuousSemigroupKolomgorovBackwardEquation} one useful way of think about the problem (which is in fact the historical motivation for the theory we present) is that we are trying to construct solutions to the differential equation $\frac{d}{dt} f(t) = A f(t)$ given an unbounded operator $A$.  If one chooses to stress the analogy with the case of a bounded operator $A$, another way of thinking about the task is that we are trying characterize those unbounded operators $A$ for which we can define $e^{tA}$ for $t \geq 0$.  In fact the problem that we are posing is a bit more restricted than we've indicated.  Since we are considering contraction semigroups that means that we are looking for \emph{bounded} solutions to the aforementioned problems.  
+
+TODO : Motivate the study of the resolvent by showing what bad thing would happen if we have a singular value in $(0,\infty)$.  Note that a bounded operator can arbitrary spectrum since the exponential function is entire however if there is positive real spectrum then the contraction property is not obeyed.  We really don't need spectral theory in what follows; essentially we just need a proper definition of a value that \emph{isn't} in the spectrum of an unbounded operator.
+
 \begin{defn}Let $A : X \to X$ be a closed linear operator and the \emph{resolvent set} $\resolventset{A}$ is the set of $\lambda \in \reals$ such that
 \begin{itemize}
 \item[(i)] $\lambda - A$ is injective on $\domain{A}$.
@@ -227,6 +259,7 @@ which shows that $v \in \domain{A}$ and $Av = w$.
 \end{itemize}
 The operator $R_\lambda = (\lambda -A)^{-1}$ the \emph{resolvent} of $A$.
 \end{defn}
+Though we don't make use of the concept, the complement of the resolvent set (actually extended to the complex numbers case) is called the spectrum of $A$.
 
 The resolvent operator of the generator of a strongly continuous contraction semigroup is also the Laplace transform of the semigroup.
 \begin{prop}\label{SCCSResolventAsLaplaceTransform}Let $T_t$ be a strongly continuous contraction semigroup on $X$ with generator $A$ then $(0,\infty) \subset \resolventset{A}$ and 
@@ -1015,6 +1048,61 @@ Now let $f \in C_0(S)$ with $f > 0$ on $S$ (e.g. $f(x) = \rho(\Delta, x)$).  Not
 If $T_t$ is conservative on $C_0(S)$ and we assume that $\nu(\lbrace \Delta \rbrace) = 0$ then it follows that $\tilde{X}_t \in S$ a.s. for every $t \geq 0$ (TODO: Why?)  Therefore we must have $\tau > t$ a.s. for all $t \geq 0$ which implies that $\tau = \infty$ a.s.  Pick an arbitrary $x \in S$ and make an additional modification of $\tilde{X}$ to set $\tilde{X}_t \equiv x$ on $\tau < \infty$ and therefore $\tau = \infty$ everywhere.  This implies that $\tilde{X}_t$ and $\tilde{X}_{t-}$ take values in $S$.
 \end{proof}
 
+TODO:  Show that we get a homogeneous cadlag Markov family out of this construction.  At a minimum we can see that we get probability measures $\sprobabilityop{x}$ for each $x \in S^\Delta$ and this is a kernel from $S$ to $S^{[0,\infty)}$ (by Lemma \ref{MarkovMixtures}).
+
+\begin{thm}\label{StrongMarkovFellerProcess} Let $X$ be a Feller family, $A \in (\mathcal{S}^\Delta)^{[0,\infty)}$  and let $\tau$ be an $\mathcal{F}^X_+$-optional time, then
+\begin{align*}
+\cprobability{\mathcal{F}^X_{\tau+}}{\theta_{\tau} X \in A} &= \sprobability{A}{X_\tau} \text{ a.s. on $\tau < \infty$}
+\end{align*}
+Let $X$ be the canonical Feller process, $\nu$ be an initial distribution, $\tau$ an $\mathcal{F}^X_+$-optional time, $\xi$ a non-negative random variable then
+\begin{align*}
+\csexpectationlong{\mathcal{F}^X_{\tau+}}{\xi \circ \theta_{\tau} }{\nu} &= \sexpectation{\xi}{X_\tau} \text{ $\sprobabilityop{\nu}$ a.s. on $\tau < \infty$}
+\end{align*}
+\end{thm}
+\begin{proof}
+By Proposition \ref{StrongMarkovFromStrongMarkovFiniteOptional} it suffices to assume that $\tau<\infty$ almost surely.  Let $A \in (\mathcal{S}^\Delta)^{[0,\infty)}$.  Define $\tau_n = 2^{-n}\floor{2^n \tau + 1}$ so that by Lemma \ref{DiscreteApproximationOptionalTimes} we know that $\tau_n$ are $\mathcal{F}^X$-optional times and $\tau_n \downarrow \tau$.  Since $\tau < \tau_n$ we also know that $\mathcal{F}^X_{\tau+} \subset \mathcal{F}^X_{\tau_n}$ for all $n \in \naturals$.  Since $\tau_n$ is countably valued $X$ is strong Markov at $\tau_n$ (Theorem \ref{StrongMarkovPropertyMarkovProcessCountableValues}) and
+\begin{align*}
+\cprobability{\mathcal{F}^X_{\tau_n}}{\theta_{\tau_n} X \in A} &=
+\sprobability{A}{X_{\tau_n}} \text{ a.s. on $\tau_n < \infty$}
+\end{align*}
+
+It is useful to avoid appeal to Theorem \ref{StrongMarkovPropertyMarkovProcessCountableValues} so that the role of the Feller properties can be appreciated even in the case of countably valued $\tau$ (not sure I agree because the same continuity argument seems to appear when approximating by countably valued).  So let $\tau$ be $\mathcal{F}^X_+$-optional and let $T$ be the countable range of $\tau$, $f \in C(S^\Delta)$, $s \geq 0$ and $A \in \mathcal{F}^X_{t+}$.  Thus,
+for every $t \geq 0$, $\epsilon > 0$ we have $A \cap \lbrace \tau=t \rbrace \in \mathcal{F}^X_{t+} \subset \mathcal{F}^X_{t+\epsilon}$.  Let $0 \leq \epsilon \leq s$ and use
+the tower property of conditional expectation and Proposition \ref{TransitionSemigroupAsExpectation} to get
+\begin{align*}
+\expectation{f(X_{\tau + s}) ; A} &= \sum_{t \in T} \expectation{f(X_{t + s}) ; A \cap \lbrace \tau=t \rbrace } \\
+&= \sum_{t \in T} \expectation{\cexpectationlong{\mathcal{F}^X_{t+\epsilon}}{f(X_{t + s})} ; A \cap \lbrace \tau=t \rbrace} \\
+&= \sum_{t \in T} \expectation{T_{s-\epsilon} f (X_{t + \epsilon}) ; A \cap \lbrace \tau=t \rbrace} \\
+&= \expectation{T_{s-\epsilon} f (X_{\tau + \epsilon}) ; A} \\
+\end{align*}
+By strong continuity of $T_tf$ and right continuity of $X_t$ we know that $\lim_{\epsilon \to 0} T_{s-\epsilon} f (X_{\tau + \epsilon}) = T_s f(X_\tau)$ (TODO: Show this in more detail; actually we don't need this since we only need countably valued $\mathcal{F}^X$-optional times) and therefore by Dominated Convergence
+we get $\expectation{f(X_{\tau + s}) ; A} = \expectation{T_{s} f (X_{\tau }) ; A} $.   Since $T_s f (X_\tau)$ is $\mathcal{F}^X_{\tau+}$-measurable we conclude 
+\begin{align*}
+\cexpectationlong{\mathcal{F}^X_{\tau+}}{f(X_{\tau + s})} = T_s f (X_\tau)
+\end{align*}
+To extend this fact to arbitrary $\tau$ with $\tau < \infty$,
+
+
+In what follows we are using a claim that $\sigma < \tau$ implies $\mathcal{F}_{\sigma+} \subset \mathcal{F}_\tau$.  TODO: Prove it or disprove it (if it turns out not to be true then we use the $\epsilon$ argument above taken from EK).
+
+Let  $\tau_n = 2^{-n}\floor{2^n \tau + 1}$ so that $\tau_n$ are countably valued $\mathcal{F}^X$-optional times
+such that  $\tau < \tau_n$  and $\tau_n \downarrow \tau$(Lemma \ref{DiscreteApproximationOptionalTimes}).  Now we use continuity of $T_sf$, Dominated Convergence for conditional expectations and the $\mathcal{F}^X_{\tau+}$-measurability of $T_s f (X_{\tau})$ (since $X$ is cadlag, it is progressive by Lemma \ref{ContinuityAndProgressiveMeasurability} thus $X_\tau$ is $\mathcal{F}^X_{\tau+}$-measurable by Lemma \ref{StoppedProgressivelyMeasurableProcess}) to see
+\begin{align*}
+&\cexpectationlong{\mathcal{F}^X_{\tau+}}{f(X_{\tau + s})} \\
+&= \cexpectationlong{\mathcal{F}^X_{\tau+}}{\lim_{n \to \infty}  f(X_{\tau_n + s})} && \text{right continuity of $X$, continuity of $f$}\\
+&= \lim_{n \to \infty}  \cexpectationlong{\mathcal{F}^X_{\tau+}}{f(X_{\tau_n + s})} && \text{Dominated Convergence}\\
+&= \lim_{n \to \infty} \cexpectationlong{\mathcal{F}^X_{\tau+}}{\cexpectationlong{\mathcal{F}^X_{\tau_n}}{f(X_{\tau_n + s})}} && \text{chain rule of conditional expectations}\\
+&=\lim_{n \to \infty} \cexpectationlong{\mathcal{F}^X_{\tau+}}{T_s f (X_{\tau_n})} &&  \text{Theorem \ref{StrongMarkovPropertyMarkovProcessCountableValues} and Proposition \ref{TransitionSemigroupAsExpectation}}\\
+&=\cexpectationlong{\mathcal{F}^X_{\tau+}}{\lim_{n \to \infty} T_s f (X_{\tau_n})}  && \text{Dominated Convergence}\\
+&=\cexpectationlong{\mathcal{F}^X_{\tau+}}{T_s f (X_{\tau})} && \text{right continuity of $X$, continuity of $T_sf$}\\
+&=T_s f (X_{\tau}) && \text{$\mathcal{F}^X_{\tau+}$-measurability of $T_s f (X_{\tau})$}\\
+&=\int f(u) \, \mu_s (X_{\tau}, du) \\
+\end{align*}
+Now we may apply Proposition \ref{StrongMarkovFromOneDimensionalDistribution} to complete the proof.
+
+TODO: Show the canonical case...
+\end{proof}
+
 We first need to introduce the formalize notation and concepts surrounding bounded pointwise limits and closure.
 
 \begin{defn}Let $S$ be a metric space and let $B_b(S)$ be the space of bounded measurable functions then given $f, f_1, f_2, \dotsc \in B_b(S)$ we say that $f = \bplim_{n \to \infty} f_n$ if and only if $sup_n \sup_{x \in S} \abs{f(x)} < \infty$ and $\lim_{n \to \infty} f_n(x) = f(x)$ for all $x \in S$.  We say that a set $M \subset S$ is \emph{bp-closed} if $f_1, f_2, \dotsc \in M$ and $f = \bplim_{n \to \infty} f_n$ implies $f \in M$.  
@@ -1047,8 +1135,8 @@ Now since $A$ is conservative we conclude that $(1,0)$ is in the right hand set 
 
 In this section we begin considering the weak convergence theory of
 Feller Processes.  Semigroup theory plays a central role and we begin by proving a convergence
-theorem for strongly continuous contraction semigroups that will be applied in the Feller case.  We begin with a
-two lemma. The first extends Lemma \ref{SemigroupBoundInTermsOfBoundedGenerator}.
+theorem for strongly continuous contraction semigroups that will be applied in the Feller case.  We begin with 
+two lemmas. The first extends Lemma \ref{SemigroupBoundInTermsOfBoundedGenerator}.
 
 \begin{lem}\label{SemigroupBoundInTermsOfBoundedGenerator2}Let $X$ and $Y$ be Banach spaces, let $T_t$ be a strongly continuous contraction semigroup on $X$ with generator $A$,
 let $S_t$ be a strongly continuous contraction semigroup on $Y$ with generator $B$ and let $\pi : X \to Y$ be a bounded linear operator.  Let
@@ -1132,7 +1220,7 @@ v &= R_\lambda w = \int_0^\infty e^{- \lambda t} T_t w \, dt
 \end{align*}
 Now define
 \begin{align*}
-v_n &= \int_0^\infty e^{- \lambda t} T_{n,t} \pi_n w \, dt
+v_n &= \int_0^\infty e^{- \lambda t} T_{n,t} \pi_n w \, dt = R_{n,\lambda} \pi_n w
 \end{align*}
 and note that by (ii) we have $\lim_{n \to \infty} \norm{T_{n,t} \pi_n w - \pi_n T_t w} = 0$ and since $T_{n,t}$ and $T_t$ are contractions we have $\sup_n \norm{T_{n,t} \pi_n w - \pi_n T_t w} \leq 2 \sup_n \norm{\pi_n} \norm{w} < \infty$. Now apply Proposition \ref{ClosedOperatorOfRiemannIntegral}, Proposition \ref{NormRiemannIntegralBanachSpace} and Dominated Convergence
 \begin{align*}
@@ -1141,11 +1229,64 @@ and note that by (ii) we have $\lim_{n \to \infty} \norm{T_{n,t} \pi_n w - \pi_n
 &\leq \lim_{n \to \infty} \int_0^\infty e^{- \lambda t} \norm{T_{n,t} \pi_n w \, dt - \pi_n  T_t w} \, dt \\
 &= \int_0^\infty e^{- \lambda t} \lim_{n \to \infty} \norm{T_{n,t} \pi_n w \, dt - \pi_n  T_t w} \, dt = 0\\
 \end{align*}
+Also note that
+\begin{align*}
+\norm{A_n v_n - \pi_n A v} &= \norm{\lambda v_n - (\lambda - A_n) v_n - \lambda \pi_n v + \pi_n w} \\
+&\leq \norm{\lambda v_n - \lambda \pi_n v + \pi_n (\lambda - A) v} + \norm{\pi_n w - (\lambda - A_n) v_n} \\
+&= \norm{\lambda v_n - \lambda \pi_n v + \pi_n (\lambda - A) v} + \norm{\pi_n w - (\lambda - A_n) R_{n,\lambda} \pi_n w} \\
+&= \norm{\lambda v_n - \lambda \pi_n v + \pi_n (\lambda - A) v} \\
+\end{align*}
+and therefore (iii) is proven.
 
-TODO: Finish...
+To see that (iii) implies (i) let $A^\lambda_n$ and $A^\lambda$ be the Yosida approximations of $A_n$ and $A$ respectively; let $T^\lambda_{n,t} = e^{t A^\lambda_n}$ and $T^\lambda_t = e^{tA^\lambda}$ be the corresponding strongly continuous contraction semigroups.  Let $v \in D$ and choose $v_n \in \domain{A_n}$ such that $\lim_{n \to \infty} \norm{v_n - \pi_n v}=0$ and $\lim_{n \to \infty} \norm{A_n v_n - \pi_nA v}=0$.  Use the triangle inequality to write
+\begin{align*}
+\norm{T_{n,t} \pi_n v - \pi_n T_t v} &\leq \norm{T_{n,t}(\pi_n v - v_n)} + \norm{T_{n,t}v_n - T^\lambda_{n,t}v_n } + \norm{T^\lambda_{n,t} (v_n - \pi_n v)}  \\
+&+\norm{T^\lambda_{n,t} \pi_n v - \pi_n T^\lambda_{t} v } + \norm{\pi_n ( T^\lambda_{t} v - T_t v)}
+\end{align*}
+Now we consider estimates of each of the five terms on the right hand side.  Let $t \geq 0$ be fixed.  For the first term note that since $T_{n,t}$ is a contraction
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T_{n,s}(\pi_n v - v_n)}  &\leq \lim_{n \to \infty} \norm{\pi_n v - v_n}  = 0
+\end{align*}
+and the same argument works for the third term as well.  For the second term, apply Corollary \ref{YosidaApproximationContinuity}, the triangle inequality, Lemma \ref{SCCSYosidaContinuity} and the fact that $\norm{A^\lambda_n} \leq 2 \lambda$ to see that
+\begin{align*}
+&\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T_{n,s}v_n - T^\lambda_{n,s}v_n } 
+\leq t \limsup_{n \to \infty} \norm{A_n v_n - A^\lambda_n v_n} \\
+&\leq t \limsup_{n \to \infty} \left [ \norm{A_n v_n -\pi_n A v} + \norm{\pi_n A v - \pi_n A^\lambda v} + \norm{\pi_n A^\lambda v - A^\lambda_n \pi_n v} + \norm{A^\lambda_n \pi_n v - A^\lambda_n v_n} \right]\\
+&\leq t \sup_n \norm{\pi_n}  \norm{A v - A^\lambda v}
+\end{align*}
+
+For the fourth term we apply Lemma \ref{SemigroupBoundInTermsOfBoundedGenerator2} to see that 
+\begin{align*}
+\sup_{0 \leq s \leq t} \norm{T^\lambda_{n,s} \pi_n v - \pi_n T^\lambda_{s} v } 
+&\leq \int_0^t \norm{(A^\lambda_n \pi_n - \pi_n A^\lambda) T^\lambda_s v} \, ds
+\end{align*}
+By Lemma \ref{SCCSYosidaContinuity} we know that $\lim_{n \to \infty} \norm{(A^\lambda_n \pi_n - \pi_n A^\lambda) T^\lambda_s v} = 0$ and moreover $\norm{(A^\lambda_n \pi_n - \pi_n A^\lambda) T^\lambda_s v} \leq 4 \lambda \sup_n \norm{\pi_n} \norm{v}$ so that by Dominated Convergence we get  
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T^\lambda_{n,s} \pi_n v - \pi_n T^\lambda_{s} v } = 0
+\end{align*}
+For the fifth and final term we apply Corollary \ref{YosidaApproximationContinuity} to get
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{\pi_n ( T^\lambda_{s} v - T_s v)} &\leq \sup_{n} \norm{\pi_n} \sup_{0 \leq s \leq t} \norm{T^\lambda_{s} v - T_s v} \\
+&\leq t \sup_{n} \norm{\pi_n} \norm{A^\lambda v - A v}
+\end{align*}
+
+Putting all of the estimates together we see that
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T_{n,t} \pi_n v - \pi_n T_t v}  &\leq 2 t \sup_{n} \norm{\pi_n} \norm{A^\lambda v - A v}
+\end{align*}
+Letting $\lambda \to \infty$ and using Lemma \ref{ClosedDissipativeYosidaApproximation} we see that $\lim_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T_{n,t} \pi_n v - \pi_n T_t v} =0$ for 
+$v \in D$.  Since $D$ is dense by the Hille-Yosida Theorem \ref{HilleYosidaTheoremClosable} for $v \in X$ we may take $v_m \in D$ such that $\lim_{m \to \infty} v_m = v$ and then
+\begin{align*}
+&\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T_{n,t} \pi_n v - \pi_n T_t v} \\
+&\leq \limsup_{n \to \infty} \sup_{0 \leq s \leq t} \left[\norm{T_{n,t} \pi_n v- T_{n,t} \pi_n v_m} + \norm{T_{n,t} \pi_n v_m - \pi_n T_t v_m} + \norm{\pi_n T_t v - \pi_n T_t v_m}  \right] \\
+&\leq 2 \sup_n \norm{\pi_n} \norm{v - v_m} + \lim_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T_{n,t} \pi_n v_m - \pi_n T_t v_m} = 2 \sup_n \norm{\pi_n} \norm{v - v_m} 
+\end{align*}
+Now let $m \to \infty$ and (i) follows.
 \end{proof}
 
-TODO: Compare Kallenberg and EK accounts of the following theorem and understand the differences and similarities.
+TODO: Compare Kallenberg and EK accounts of the following theorem and understand the differences and similarities.  The main difference is that the Theorem in Kallenberg is really
+a combination of two theorems in EK.  The first theorem is Theorem \ref{KurtzSovaSemigroupConvergence} and simply addresses equivalent conditions for convergence of sccs.  The second theorem is what we have as Theorem \ref{KurtzMackevicius} below and shows that Feller semigroup convergence implies weak convergence of Markov processes (using the standard FDD and tightness approach).  EK and Kallenberg use the same argument to show FDD convergence whereas Kallenberg uses the Aldous criterion directly but EK use a more sophisticated argument for tightness using the martingale property (which may ultimately boil down to the Aldous criterion).  Also EK are careful to prove the Theorem in such a way that the existence of $X$ is not assumed but rather it is derived whereas Kallenberg has already proved that a cadlag $X$ may be created from $T_t$.
+
 \begin{thm}\label{KurtzMackevicius}Let $(S,r)$ be a locally compact and separable metric space and let $X^n$ for $n \in \naturals$ be
 cadlag Feller processes in $S$ with semigroup $T_{n,t}$ on $C_0(S)$ respectively.  Suppose that $T_t$ is a Feller semigroup on $C_0(S)$ and
 \begin{align*}
@@ -1156,5 +1297,46 @@ $T_t$ and initial distribution $\nu$ and $X^n \todist X$.
 \end{thm} 
 \begin{proof}
 For $n \in \naturals$ let $A_n$ be the generator of $T_{n,t}$.
+
+First we assume that $S$ is compact.  
+
+\begin{clm} For all $m \in \integers_+$, $0=t_0 < t_1 < \dotsb < t_m$ and $f_i \in C(S)$ for $i=0, \dotsc, m$ we have
+\begin{align*}
+\lim_{n \to \infty} \expectation{f_0(X^n_{t_0}) \dotsb f_m(X^n_{t_m})} = \expectation{f_0(X_{t_0}) \dotsb f_{m}(X_{t_{m}})}
+\end{align*}
+\end{clm}
+To see the claim, note that the case $m=0$ is simply the statement that $X^n_0 \todist X_0$ which is an assumption.  For $m > 0$, 
+we apply Proposition \ref{TransitionSemigroupAsExpectation}
+\begin{align*}
+\lim_{n \to \infty} \expectation{f_0(X^n_{t_0}) \dotsb f_m(X^n_{t_m})} 
+&=\lim_{n \to \infty} \expectation{f_0(X^n_{t_0}) \dotsb f_{m-1}(X^n_{t_{m-1}}) \cexpectationlong{X^n_{t_{m-1}}}{f_m(X^n_{t_m})}} \\
+&=\lim_{n \to \infty} \expectation{f_0(X^n_{t_0}) \dotsb f_{m-1}(X^n_{t_{m-1}}) T_{n,t_m-t_{m-1}} f_m(X^n_{t_{m-1}})}\\
+&=\lim_{n \to \infty} \expectation{f_0(X^n_{t_0}) \dotsb f_{m-1}(X^n_{t_{m-1}}) T_{t_m-t_{m-1}} f_m(X^n_{t_{m-1}})}\\
+&=\expectation{f_0(X_{t_0}) \dotsb f_{m-1}(X_{t_{m-1}}) T_{t_m-t_{m-1}} f_m(X_{t_{m-1}})}\\
+&=\expectation{f_0(X_{t_0}) \dotsb f_{m-1}(X_{t_{m-1}}) \cexpectationlong{X_{t_{m-1}}}{f_m(X_{t_{m}})}}\\
+&=\expectation{f_0(X_{t_0}) \dotsb f_{m-1}(X_{t_{m-1}}) f_m(X_{t_{m}})}\\
+\end{align*}
+where in the third line we have the fact that $T_{n,t} f$ converges to $T_t f$  for every $f \in C(S)$ to see
+\begin{align*}
+&\lim_{n \to \infty} \abs{\expectation{f_0(X^n_{t_0}) \dotsb f_{m-1}(X^n_{t_{m-1}}) (T_{n,t_m - t_{m-1}} - T_{t_m-t_{m-1}}) f_m(X^n_{t_{m-1}})}}  \\
+&\leq \norm{f_0} \dotsb \norm{f_{m-1}} \lim_{n \to \infty} \norm{(T_{n,t_m - t_{m-1}} - T_{t_m-t_{m-1}}) f_m} = 0
+\end{align*}
+and in the fourth line applied the induction hypothesis to the continuous functions $f_0, \dotsc, f_{m-2}, f_{m-1} T_{t_m-t_{m-1}} f_m$.
+
+Because $S$ is separable we know that the finite dimensional distributions of $X^n$ converge to those of $X$.  (TODO: prove this; basically we use induction and the standard approximation of indicators by continuous functions to show that $\lim_{n \to \infty} \probability{(X^n_{t_0}, \dotsc, X^n_{t_m}) \in A_1 \times \dotsb \times A_m}$ and then use separability of $S$ to conclude that we have a generating $\pi$-system and therefore monotone classes apply).
+
+Now we need to show tightness of the family $X^n$.  We appeal to the Aldous criterion so we must show that for every bounded sequence of optional times $\tau_n$ and deterministic sequence $d_n$ such that $\lim_{n \to \infty} d_n = 0$ we have $r(X^n_{\tau_n}, X^n_{\tau_n + d_n}) \toprob 0$.
+TODO: Finish
+
+TODO: Modify the argument to look like EK and in this way get a different proof of the Kinney regularization.
 \end{proof}
 
+\subsection{Approximating Feller Processes by Markov Chains}
+
+TODO: Trotter product formula and Chernoff product formula.  The Trotter product formula is inspired by the Lie product formula for matrix groups.
+
+Possible exercise: According to Bratelli (who attributes to Hille) the Trotter product formula implies the Weierstrass approximation theorem.  Let $X$ be Banach space of bounded uniformly continuous functions and let $T_tf(x) = f(x+t)$ be the translation semigroup with generator $A=\frac{d}{dx}$.  Then let $A_n = (T_{1/n} -1)/(1/n)$ and the Trotter product formula then shows 
+\begin{align*}
+f(t) &= \lim_{n \to \infty} \sum_{m=1}^\infty t^m (A^m_n f)(0)/m!
+\end{align*} 
+where the convergence is uniform on compacts.  Apparently this implies the result.  Also chase down and understand how Goldstein uses the Chernoff product formula to show the central limit theorem.
