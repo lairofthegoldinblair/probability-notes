@@ -1406,13 +1406,141 @@ and for every $f \in D([0,\infty)$.
 
 TODO: How to tie this in with what Ethier and Kurtz claim to be the Aldous criterion.  I am pretty sure that the EK development provides a necessary and sufficient condition for tightness that makes it more or less clear that the Aldous criterion is a sufficient condition.
 Here is how Aldous describes the criterion: ``if you try to predict a jump you are right with probability close to 0''.
-\begin{thm}Let $X^n$ be a sequence of processes in $D([0,T];S)$ with $(S,r)$ a metric space and suppose for every $\epsilon > 0$ and $t \in [0,T] \cap \rationals$ there exists a compact set $K_{\epsilon,t}$ such that $\probability{X^n_t \in K_{\epsilon,t}} > 1 - \epsilon$, then for every $\lambda > 0$ $X^n$ satisfies $\lim_{\delta \to 0} \sup_n \probability{w(X^n, \delta) \geq \lambda} =0$ if and only if for any sequence of $\mathcal{F}^{X^n}$-optional times $\tau_n$ and any sequence $\delta_n > 0$ with $\lim_{n \to \infty} \delta_n =0$ we have
+
+\begin{lem}\label{AldousCriterionExponentialEstimate}Let $\xi_1, \dotsc, \xi_n$ be nonnegative random variables, $S_n = \sum_{k=1}^n \xi_k$ and $t,c > 0$ then
+\begin{align*}
+\expectation{e^{-S_n}; S_n < t} &\leq e^{-nc} + \max_{1 \leq k \leq n} \probability{\xi_k < c; S_n < t}
+\end{align*}
+\end{lem}
+\begin{proof}
+By the multivariate H\"{o}lder Inequality (the one you get from the AMGM inequality) and a Markov bound
+\begin{align*}
+\expectation{e^{-S_n}; S_n < t} &= \expectation{\prod_{k=1}^n e^{-\xi_k}; S_n < t} \leq \prod_{k=1}^n\left(\expectation{ e^{-n\xi_k}; S_n < t} \right)^{1/n} \\
+&=\prod_{k=1}^n\left(\expectation{ e^{-n\xi_k}; S_n < t; \xi_k < c} + \expectation{ e^{-n\xi_k}; S_n < t; \xi_k \geq c} \right)^{1/n}  \\
+&\leq\prod_{k=1}^n\left(e^{-nc}+ \probability{S_n < t; \xi_k \geq c} \right)^{1/n}  \\
+&\leq \left(\left(e^{-nc} + \max_{1 \leq k \leq n} \probability{S_n < t; \xi_k \geq c} \right)^{1/n} \right)^n \\
+&= e^{-nc} + \max_{1 \leq k \leq n} \probability{S_n < t; \xi_k \geq c} \\
+\end{align*}
+\end{proof}
+
+TODO: Update the following statement and proof to use arbitrary familiies of processes (and replace the $\limsup_{n \to \infty}$ with $\sup_{\alpha \in A}$)
+\begin{thm}Let $X^n$ be a sequence of processes in $D([0,T];S)$ with $(S,r)$ a metric space and suppose for every $\epsilon > 0$ and $t \in [0,T] \cap \rationals$ there exists a compact set $K_{\epsilon,t}$ such that $\probability{X^n_t \in K_{\epsilon,t}} > 1 - \epsilon$, then for every $\lambda > 0$ $X^n$ satisfies $\lim_{\delta \to 0} \sup_n \probability{w(X^n, \delta) \geq \lambda} =0$ if and only if for any bounded sequence of $\mathcal{F}^{X^n}$-optional times $\tau_n$ and any sequence $\delta_n > 0$ with $\lim_{n \to \infty} \delta_n =0$ we have
 \begin{align*}
 r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \toprob 0
 \end{align*}
 \end{thm}
 \begin{proof}
-TODO:
+In the proof we need to take suprema over a few different families of optional times, so let's first setup some notation for them.
+For $\delta > 0$, $t > 0$ and $n \in \naturals$ let
+\begin{align*}
+\mathfrak{S}_{n,t} &= 
+\lbrace \tau \mid \tau \text{ is an $\mathcal{F}^{X^n}$-optional time with $\tau \leq t$} \rbrace \\
+\mathfrak{S}_{\delta,n,t} &= 
+\lbrace (\sigma, \tau) \mid \sigma, \tau \in \mathfrak{S}_{n,t} \text{ and } \sigma \leq \tau \leq \sigma + \delta \rbrace 
+\end{align*}
+
+The first task is a couple of claims to establish equivalent stronger forms of the Aldous criterion.
+\begin{clm}The Aldous criterion is equivalent to the statement that
+\begin{align*}
+\lim_{\delta \to 0} \limsup_{n \to \infty} \sup_{\tau \in \mathfrak{S}_{n,t}} \sup_{0\leq h \leq \delta} \expectation{r(X^n_\tau, X^n_{\tau+h}) \wedge  1} &= 0 \text{ for every $t > 0$}
+\end{align*}
+\end{clm}
+Suppose that the condition in the claim does not hold then there exists $\epsilon > 0$, $t>0$, a sequence $\delta_m > 0$ such that $\lim_{m \to \infty} \delta_m = 0$ and \begin{align*}
+\limsup_{n \to \infty} \sup_{\tau \in \mathfrak{S}_{n,t}} \sup_{0\leq h \leq \delta_m} \expectation{r(X^n_\tau, X^n_{\tau+h}) \wedge  1} &> \epsilon \text{ for every $m \in \naturals$}
+\end{align*}
+Thus the inequality holds for infinitely many $n$ for each fixed $m$ and therefore we can pick a subsequence $n_m$ of $\naturals$, $\tau_{m} \in \mathfrak{S}_{n_m,t}$ and $0 \leq h_{m} \leq \delta_m$ such that
+\begin{align*}
+\expectation{r(X^{n_m}_{\tau_{m}}, X^{n_m}_{\tau_{m} + h_{m}}) \wedge  1} \geq \epsilon \text{ for all $m \in \naturals$}
+\end{align*}
+Since $\lim_{m \to \infty} \delta_m = 0$ it follows that $\lim_{m \to \infty} h_m = 0$ and thus the Aldous criterion fails as well by Lemma \ref{ConvergenceInProbabilityAsConvergenceInExpectation}. On the other hand, if the Aldous criterion fails then by Lemma \ref{ConvergenceInProbabilityAsConvergenceInExpectation} and taking an appropriate subsequence
+there exists a $t > 0$, $\epsilon > 0$, a sequence $\delta_m>0$ with $\lim_{m \to \infty} \delta_m= 0$ and a subsequence $n_m$ of $\naturals$ such that
+\begin{align*}
+\expectation{r(X^{n_m}_{\tau_m}, X^{n_m}_{\tau_m + \delta_m})  \wedge 1} > \epsilon \text{ for all $m \in \naturals$}
+\end{align*}
+Since $\lim_{m \to \infty} \delta_m= 0$, for any fixed $m \in \naturals$ there are infinitely many $j \geq m$ such that $\delta_j \leq \delta_m$ and therefore
+\begin{align*}
+\limsup_{n \to \infty} \sup_{\tau \in \mathfrak{S}_{n,t}} \sup_{0\leq h \leq \delta_m} \expectation{r(X^n_\tau, X^n_{\tau+h}) \wedge  1} >\epsilon
+\end{align*}
+and the condition in the claim fails.
+
+\begin{clm}The Aldous criterion is equivalent to the statement that
+\begin{align*}
+\lim_{\delta \to 0} \limsup_{n \to \infty} \sup_{(\sigma, \tau) \in
+  \mathfrak{S}_{\delta,n,t}} \expectation{r(X^n_\sigma, X^n_\tau) \wedge
+  1} &= 0 \text{ for every $t > 0$}
+\end{align*}
+\end{clm}
+That this condition implies the Aldous criterion follows from the prior claim and the fact that for every $\tau \in \mathfrak{S}_{n,t}$ and $0 \leq h \leq \delta$, we have $(\tau, \tau+h) \in \mathfrak{S}_{\delta, n,t}$.
+Let $(\sigma, \tau) \in \mathfrak{S}_{\delta,n,t}$ so that $\sigma \leq \tau \leq \sigma +\delta$.  From this it follows that $[\tau, \tau+ \delta] \subset [\sigma, \sigma + 2\delta]$ and therefore
+\begin{align*}
+r(X^n_\sigma, X^n_\tau) \wedge 1 &= \frac{1}{\delta} \int_0^\delta r(X^n_\sigma, X^n_\tau) \wedge 1 \, dh \\
+&\leq \frac{1}{\delta} \int_0^\delta (r(X^n_\sigma, X^n_{\tau+h}) + r(X^n_\tau, X^n_{\tau+h}) \wedge 1 \, dh \\
+&\leq \frac{1}{\delta} \left[ \int_0^\delta r(X^n_\sigma, X^n_{\tau+h}) \wedge 1 \, dh + \int_0^\delta r(X^n_\tau, X^n_{\tau+h} \wedge 1 \, dh \right ] \\
+&\leq \frac{1}{\delta} \left[ \int_0^{2\delta} r(X^n_\sigma, X^n_{\sigma+h}) \wedge 1 \, dh + \int_0^\delta r(X^n_\tau, X^n_{\tau+h} \wedge 1 \, dh \right ] \\
+\end{align*}
+Taking expectations using we get by Tonelli's Theorem and the fact that $\sigma, \tau \leq \mathfrak{S}_{n,t}$
+\begin{align*}
+\expectation{r(X^n_\sigma, X^n_\tau) \wedge 1} &\leq \frac{1}{\delta} \left[ \int_0^{2\delta} \expectation{r(X^n_\sigma, X^n_{\sigma+h}) \wedge 1} \, dh + 
+\int_0^\delta \expectation{r(X^n_\tau, X^n_{\tau+h} \wedge 1} \, dh \right ] \\
+&\leq 3 \sup_{\tau \in \mathfrak{S}_{n,t}} \sup_{0 \leq h \leq 2\delta} \expectation{r(X^n_\tau, X^n_{\tau+h} \wedge 1}
+\end{align*}
+and the claim follows from the prior claim by taking the supremum over $(\sigma, \tau) \in \mathfrak{S}_{\delta,n,t}$ and the limits  over $n$ and $\delta$.
+
+\begin{clm}The Aldous criterion is equivalent to the statement that
+\begin{align*}
+\lim_{\delta \to 0} \limsup_{n \to \infty} \sup_{(\sigma, \tau) \in
+  \mathfrak{S}^+_{\delta,n,t}} \expectation{r(X^n_\sigma, X^n_\tau) \wedge
+  1} &= 0 \text{ for every $t > 0$}
+\end{align*}
+\end{clm}
+TODO: Prove the claim
+
+Now for every $n \in \naturals$ and $\epsilon > 0$ we define a sequence of weakly $\mathcal{F}^{X^n}$-optional times via recursion
+\begin{align*}
+\sigma^n_{k+1} &= \inf \lbrace s > \sigma^n_k \mid r(X^n_{\sigma^n_k}, X^n_s) > \epsilon \rbrace
+\end{align*}
+By this definition, provided $\sigma^n_k <\infty$ for all $\sigma^n_k \leq s < t < \sigma^n_{k+1}$ we have via the triangle inequality
+\begin{align*}
+r(X^n_s, X^n_t) &\leq r(X^n_{\sigma^n_k}, X^n_s) + r(X^n_{\sigma^n_k}, X^n_t) \leq 2\epsilon
+\end{align*}
+Thus we can use the $\sigma^n_k$ to give an upper bound on the modulus of continuity provided they form a valid partition.  Our task is to bound the probability that they do not form a valid partition.  In formulating that bound we need the following simple fact.
+\begin{clm} Given $T > 0$ and $0 < \delta < T$ and numbers $0=t_0 < t_1 < \dotsb < t_m$ with $t_m \geq T$ then if there is no $1 \leq k \leq m$ such that
+$0=t_0 < t_1 < \dots < T \leq t_k$ and $t_{j}-t_{j-1}>\delta$ for all $j=1, \dotsc, k$ then there exists $0 \leq k \leq m-1$ such that $t_k < T$ and $t_{k+1} - t_k \leq \delta$.
+\end{clm}
+This follows easily by contradiction.  Suppose that for every $0 \leq k \leq m-1$ such that $t_k \geq T$ or $t_{k+1} - t_k > \delta$.  If there is $0 \leq k \leq m-1$ such that $t_k \geq T$ then let $k$ be the smallest such (note such a $k$ is nonzero) and it follows that $0=t_0 < \dotsb < t_{k-1} < T \leq t_k$ and we are guaranteed $t_{j}-t_{j-1} > \delta$ for all $1 \leq j \leq k$.  It $t_k \geq T$ for all $0\leq k \leq m-1$ then it follows that $0=t_0 < \dotsb < t_{m-1} < T \leq t_m$ and we are guaranteed $t_{j}-t_{j-1} > \delta$ for all $1 \leq j \leq m$.
+
+Now we apply a few union bounds using the above claim
+\begin{align*}
+&\expectation{w^\prime(X^n, \delta, T) \wedge 1} \\
+&\expectation{w^\prime(X^n, \delta, T) \wedge 1; T \leq \sigma^n_m} + \expectation{w^\prime(X^n, \delta, T) \wedge 1; \sigma^n_m < T} \\
+&= \expectation{w^\prime(X^n, \delta, T) \wedge 1; \cup_{k=1}^n \lbrace 0=\sigma^n_0 < \sigma^n_1 < \dotsb < \sigma^n_{k-1} < T \leq \sigma^n_k; \sigma^n_1 - \sigma^n_0 > \delta; \dotsb;\sigma^n_k - \sigma^n_{k-1} > \delta \rbrace} \\
+&+\expectation{w^\prime(X^n, \delta, T) \wedge 1; \cup_{k=0}^{m-1} \lbrace\sigma^n_{k+1} \leq \sigma^n_k+\delta; \sigma^n_k <T \rbrace} 
+&+ \expectation{w^\prime(X^n, \delta, T) \wedge 1; \sigma^n_m < T} \\
+&\leq 2 \epsilon + \sum_{k=0}^{m-1} \probability{\sigma^n_{k+1} \leq \sigma^n_k+\delta; \sigma^n_k <T} + \probability{\sigma^n_m < T} \\
+\end{align*}
+Now note that for any $\epsilon < 1$ and $\delta < 1$,
+\begin{align*}
+\probability{\sigma^n_{k+1} < \sigma^n_k + \delta ; \sigma^n_k < T} 
+&=\probability{r(X^n_{\sigma^n_k}, X^n_{\sigma^n_{k+1}})  \geq \epsilon ; \sigma^n_{k+1} < \sigma^n_k + \delta ; \sigma^n_k < T} \\
+&=\probability{r(X^n_{\sigma^n_k \wedge (T+1)}, X^n_{\sigma^n_{k+1} \wedge (T+1)})  \geq \epsilon ; \sigma^n_{k+1} < \sigma^n_k + \delta ; \sigma^n_k < T} \\
+&\leq \probability{(r(X^n_{\sigma^n_k \wedge (T+1)}, X^n_{\sigma^n_{k+1} \wedge (T+1)})  \wedge 1) \geq \epsilon} \\
+&\leq \epsilon^{-1} \expectation{r(X^n_{\sigma^n_k \wedge (T+1)}, X^n_{\sigma^n_{k+1} \wedge (T+1)}) \wedge 1} \\
+&\leq \epsilon^{-1} \sup_{(\sigma, \tau) \in \mathfrak{S}^+_{\delta,n,T+1}} \expectation{r(X^n_\sigma, X^n_\tau) \wedge 1} 
+\end{align*}
+
+We also get for any $0 < c < 1$ 
+\begin{align*}
+\probability{\sigma^n_m < T} &< e^T \expectation{e^{-\sigma^n_m}; \sigma^n_m < T} = e^T \expectation{e^{-\sum_{k=1}^m (\sigma^n_k-\sigma^n_{k-1})}; \sigma^n_m < T} \\
+&\leq e^T (e^{-mc} + \max_{1 \leq k \leq m} \probability{\sigma^n_k-\sigma^n_{k-1} < c ; \sigma^n_m < T}) \\
+&\leq e^T (e^{-mc} + \epsilon^{-1} \sup_{(\sigma, \tau) \in \mathfrak{S}^+_{c,n,T+1}} \expectation{r(X^n_\sigma, X^n_\tau) \wedge 1})
+\end{align*}
+Putting the estimates together and using Lemma \label{AldousCriterionExponentialEstimate}
+\begin{align*}
+&\lim_{\delta \to 0} \limsup_{n \to \infty} \expectation{w^\prime(X^n, \delta, T) \wedge 1} \\
+&\leq \lim_{\delta \to 0} \limsup_{n \to \infty} \left[ 2 \epsilon + \epsilon^{-1} \sup_{(\sigma, \tau) \in \mathfrak{S}^+_{\delta,n,T+1}} \expectation{r(X^n_\sigma, X^n_\tau) \wedge 1} + e^T (e^{-mc} + \epsilon^{-1} \sup_{(\sigma, \tau) \in \mathfrak{S}^+_{c,n,T+1}} \expectation{r(X^n_\sigma, X^n_\tau) \wedge 1})\right] \\
+&=2\epsilon + e^T e^{-mc}
+\end{align*}
+Now let $m \to \infty$, $c \to 0$ and $\epsilon \to 0$.
 \end{proof}
 
 Equivalent formulation of the criterion: $r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \toprob 0$ is equivalent to $\lim_{n \to \infty} \expectation{r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \wedge 1} = 0$.  So suppose we have $X^\alpha$,  TODO:  Finish up the equivalent condition.

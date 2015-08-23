@@ -9,6 +9,118 @@ optional times handy.  In this section we prove that given a filtration satisfyi
 \begin{thm}[The Debut Theorem]\label{DebutTheorem}Let $(\Omega, \mathcal{A}, P)$ be a probability space with a filtration $\mathcal{F}_t$ for $0 \leq t < \infty$ that satisfies the usual conditions.  Let $A \subset [0, \infty) \times \Omega$ be progressively measurable and define $\tau_A = \inf \lbrace t \geq 0 \mid (t, \omega) \in A \rbrace$ then $\tau_A$ is an $\mathcal{F}$-optional time.
 \end{thm}
 
-The proof of the theorem is a bit involved and requires a series of lemmas to which we turn our attention.
+The proof of the theorem is a bit involved and requires some definitions and lemmas.  Before turning to those let's understand the main issue that the theorem has to deal with.  We have made the assumption that $\mathcal{F}$ is right continuous so we only need to show that $\tau_A$ is weakly $\mathcal{F}_t$-optional and this amounts to
+\begin{align*}
+\lbrace \tau_A < t \rbrace &= \lbrace \omega \in \Omega \mid \text{ there exists } 0 \leq s < t \text{ such that } (s, \omega) \in A \rbrace \\
+&=\pi([0,t) \times \Omega \cap A) \in \mathcal{F}_t
+\end{align*}
+where $\pi : [0,t] \times \Omega \to \Omega$ is projection on the second coordinate.  Now by progressive measurability of $A$ we know that $[0,t] \times \Omega \cap A \in \mathcal{B}([0,t]) \otimes \mathcal{F}_t$ however there is nothing that tells us that the projection on the second coordinate lives in $\mathcal{F}_t$.  The proof of the Debut Theorem thus boils down to two key tasks.  First we must find a class of sets in $\mathcal{B}([0,t]) \otimes \mathcal{F}_t$ whose projection on $\Omega$ are in $\mathcal{F}_t$.  Secondly we must show that for progressively measurable $A$, the intersections $A \cap [0,t] \times \Omega$ are in this class.
+
+We now begin on the first task.  We define the class of t-approximable subsets $[0,t] \times \Omega$ and show that they project to sets in $\mathcal{F}_t$.  We first define a simple constructive class of sets and show that they have the properties we seek.
+\begin{defn}For $0 \leq t < \infty$ let $\mathcal{K}^0(t)$ be the set of subsets $K \times A \subset [0,t] \times \Omega$ where $K$ is compact and $A \in \mathcal{F}_t$.  Let $\mathcal{K}(t)$ the set of finite unions of elements of $\mathcal{K}^0(t)$ and let $\mathcal{K}_\delta(t)$ be the set of countable intersections of sets in $\mathcal{K}(t)$.  \end{defn}
+\begin{lem}\label{KDeltaAsNestedIntersection}For every $A \in \mathcal{K}_\delta(t)$ there exist a nested sequence $A_1 \supset A_2 \supset \dotsb$ with $A_n \in \mathcal{K}(t)$ and $A = \cap_n A_n$.  
+\end{lem}
+\begin{proof}
+By definition we know that there exists $A_1, A_2, \dotsc \in \mathcal{K}(t)$ such that $\cap_n A_n = A$.  The result will follow if we can show that $\cap_{j=1}^n A_j \in \mathcal{K}(t)$ for all $n \in \naturals$.  By induction this reduces to showing that $\mathcal{K}(t)$ is closed under pairwise intersection.  Let $A = \cup_{i=1}^n K_i \times C_i$ and 
+$B = \cup_{j=1}^n L_j \times D_j$ with $K_i$ and $L_j$ all compact subsets of $[0,t]$ and $C_i, D_j \in \mathcal{F}_t$.  The intersection is an elementary computation
+\begin{align*}
+A \cap B &= (\cup_{i=1}^n K_i \times C_i) \cap (\cup_{j=1}^m L_j \times D_j) = \cup_{i=1}^n\cup_{j=1}^m (K_i \times C_i) \cap (L_j \times D_j) \\
+&= \cup_{i=1}^n\cup_{j=1}^m (K_i \cap L_j) \times (C_i \times D_j)
+\end{align*}
+and each $K_i \cap L_j$ is compact and $C_i \times D_j \in \mathcal{F}_t$.
+\end{proof}
+
+The next result shows members of $\mathcal{K}_\delta(t)$ project into $\mathcal{F}_t$.
+\begin{lem}\label{KDeltaProjection}If $A \in \mathcal{K}_\delta(t)$ then $\pi(A) \in \mathcal{F}_t$.  If $A, A_1, A_2, \dotsc \in \mathcal{K}_\delta(t)$, $A_1 \supset A_2 \supset \dotsb$ and $\cap_n A_n = A$ then $\pi(A) = \cap_n \pi(A_n)$.
+\end{lem}
+\begin{proof}
+First consider $\mathcal{K}^0(t)$ and $\mathcal{K}(t)$.  If $K \times A \in \mathcal{K}^0(t)$ then by assumption, $\pi(K \times A) = A \in \mathcal{F}_t$.  If $A \in \mathcal{K}(t)$ then
+write $A = \cup_{i=1}^n K_i \times A_i$ and note that $\pi(A) = \cup_{i=1}^n A_i \in \mathcal{F}_t$.  
+
+To handle $A \in \mathcal{K}_\delta(t)$ we introduce the notation
+\begin{align*}
+S(A)(\omega) &= \lbrace s \in [0,t] \mid (s,\omega) \in A \rbrace = \pi_1 ([0,t] \times \lbrace \omega \rbrace \cap A)
+\end{align*}
+where $\pi_1$ is the projection onto $[0,t]$.  Note that if $A \subset B$ it follows that $S(A)(\omega) \subset S(B)(\omega)$ for all $\omega \in \Omega$ and moreover if $A = \cap_{n=1}^\infty A_n$ then $S(A)(\omega) = \cap_{n=1}^\infty S(A_n)(\omega)$ (if $s \in S(A_n)(\omega)$ for all $n \in \naturals$ then $(s, \omega) \in \cap_{n=1}^\infty A_n$ which implies $s \in S(A)(\omega)$).  
+
+Clearly if $A = K \times C \in \mathcal{K}^0(t)$ then 
+\begin{align*}
+S(A)(\omega)
+\end{align*}
+\end{proof}
+
+\begin{defn}A set $A \in \mathcal{B}([0,t]) \otimes \mathcal{F}_t$ is said to be \emph{t-approximable} if for every $\epsilon > 0$ there exists $B \in \mathcal{K}_\delta(t)$ such that $B \subset A$ and 
+\begin{align*}
+\oprobability{\pi (A)} &\leq \oprobability{\pi(B)} + \epsilon
+\end{align*}
+\end{defn}
+Note that at this point we must use outer probabilities since we don't know about the measurability of $\pi(A)$ and $\pi(B)$.  
 
 \section{The Section Theorem}
+
+\section{The Doob-Meyer Decomposition}
+
+The Doob-Meyer decomposition for continuous time stochastic processes turns out to be significantly more subtle that one might guess given how easily most of the results for discrete time martingales translated to the continuous time setting once the regularization Theorem \ref{CadlagModificationContinuousMartingale} was proven.   We finally turn to 
+the extension here.  
+
+One of the obvious approaches that one could take in proving a decomposition for continuous time is discretize the continuous time process, take the Doob Decomposition of the discrete time process and then try to take a limit.  As it turns out, finding the correct setting in which to prove that such a limit exists takes some effort.  One approach is to show that the decompositions converge the weak $L^1$ norm.  With this approach it is not too hard to show that the decompositions converge,  but it is hard to prove properties of the limiting process.  
+
+Here we use an approach that gives normal $L^1$ convergence at the expense of using convex combinations.  We develop some general machinery for proving such limits exist.  We start with a simple motivational fact : very general convex combinations of convergent sequences also converge.
+
+\begin{defn}Let $A$ be an arbitrary index sets, $\lbrace v_\alpha \rbrace_{\alpha in A}$ be a set of elements in a vector space $X$ then the \emph{convex hull} $\convexhull{v_\alpha}$ is the set of all vectors of the form $\sum_{n=1}^N c_n v_{\alpha_n}$ for $N \in \integers$, $\alpha_n \in A$, $c_n \geq 0$ for all $n = 1, \dotsc, N$ and $\sum_{n=1}^N c_n = 1$.
+\end{defn}
+
+\begin{prop}\label{LimitsOfConvexCombinations}Let $v, v_1, v_2, \dotsc$ be elements of a normed vector space such that $\norm{v_n - v} < \epsilon$ for some $\epsilon > 0$, then for every $w \in \convexhull{v_1, v_2, \dotsc}$ we have $\norm{w - v} < \epsilon$.  In particular if $\lim_{n \to \infty} v_n = v$ then for every sequence $w_n \in \convexhull{v_n, v_{n+1}, \dotsc}$ we have $\lim_{n \to \infty} w_n = v$.
+\end{prop}
+\begin{proof}
+Let $w = c_1 v_1 + \dotsb + c_N v_N$ with $c_n \geq 0$ for $n=1, \dotsc, N$ and $\sum_{n=1}^N c_n =1$.  Then by the triangle inequality
+\begin{align*}
+\norm{w - v} &= \norm{\sum_{n=1}^N c_n (v_n - v)} \leq \sum_{n=1}^N c_n \norm{v_n - v} < \epsilon \sum_{n=1}^N c_n = \epsilon
+\end{align*}
+
+Now if $\lim_{n \to \infty} v_n = v$ and let $w_n \in \convexhull{v_n, v_{n+1}, \dotsc}$ for every $n \in \naturals$.  For every $\epsilon > 0$ there exists $N > 0$ such that $\norm{v_n - v} < \epsilon$ for all $n \geq N$ so by the first part of the proposition $\norm{w_n - v} < \epsilon$ for all $n \geq N$ and it follows that $\lim_{n \to \infty} w_n = v$.
+\end{proof}
+
+The key observation is a type of converse of the trivial observation above: with simply hypotheses we can show there exist convergent convex combinations of sequences.  We start with a simple case.
+\begin{lem}\label{KomlosHilbertSpace}Let $H$ be a Hilbert space and suppose that we are given a bounded sequence $v_1, v_2, \dotsc \in H$, then there exists a convergent sequence $w_n$ where $w_n$ is finite convex combination of $v_n, v_{n+1}, \dotsc$.  
+\end{lem}
+\begin{proof}
+For each $n \in \naturals$ let $K_n$ be the convex hull of $\lbrace v_n, v_{n+1}, \dotsc \rbrace$ (the set of finite convex combinations of $v_n, v_{n+1}, \dotsc$) and define
+\begin{align*}
+A_n &= \inf \lbrace \norm{g} \mid g \in K_n \rbrace \\
+A &= \sup_{n} A_n
+\end{align*}
+Note that the $A_n$ are an increasing sequence and moreover since $v_n \in K_n$ we know that $A_n \leq \norm{v_n}$ and therefore 
+\begin{align*}
+A &= \sup_n A_n = \lim_{n \to \infty} A_n \leq \sup_{n} \norm{v_n} < \infty
+\end{align*}
+
+\begin{clm}For each $n \in \naturals$ select $w_n \in K_n$ such that $w_n \leq A_n + \frac{1}{n} \leq A + \frac{1}{n}$, then $w_n$ is a Cauchy sequence.
+\end{clm}
+Let $\epsilon > 0$ be given and pick $N > 0$ such that $\frac{1}{N} < \epsilon$ and $A_n > A - \epsilon$ for all $n \geq N$.  Note that for all $n,m \geq N$ we have $(w_n + w_m)/2 \in K_{N}$ and therefore
+$\norm{(w_m+w_n)/2} \geq A_N > A - \epsilon$.  Therefore for all $m,n \geq N$
+\begin{align*}
+\norm{w_m - w_n}^2 &= 2\norm{w_m}^2 + 2 \norm{w_n} - \norm{w_m + w_n} \leq 2(A + \frac{1}{m})^2 + 2(A + \frac{1}{n})^2 - 4 (A - \epsilon)^2 \\
+&\leq 4(A + \frac{1}{N})^2 - 4(A - \epsilon)^2 = 8 A (\frac{1}{N} + \epsilon) + (\frac{1}{N^2} - \epsilon^2) < 16 A \epsilon
+\end{align*}
+and the claim is proven.
+
+Now since $H$ is complete it follows that $w_n$ converges in $H$.
+\end{proof}
+
+We now use a truncation procedure to extend the result from Hilbert spaces to uniformly integrable sequences in $L^1$ spaces.
+\begin{prop}\label{KomlosUniformlyIntegrable}Let $\xi_1, \xi_2, \dotsc$ be a uniformly integrable sequence of random variables then there exists $\eta, \eta_1, \eta_2, \dotsc$ with $\eta_n$ a finite convex combination of $\xi_n, \xi_{n+1}, \dotsc$  and $\eta_n \tolp{1} \eta$.
+\end{prop}
+\begin{proof}
+For each $N \in \integers$ we define the truncated sequence $\xi_{n, \leq N} = \xi_n \cdot \characteristic{\xi_n \leq N}$.  Since each sequence $\xi_{n, \leq N} $ is pointwise bounded, it is also $L^2$ bounded and we can apply Lemma \ref{KomlosHilbertSpace} to get a convergent convex combination.  However with a bit of care we can do more.
+\begin{clm}For each $n \in \naturals$ there exist an $M_n \in \integers$ and $c^n_{n}, \dotsc, c^n_{M_n}$ with $c^n_j \geq 0$ for $j=n, \dotsc, M_n$ and $\sum_{j=n}^{M_n} c^n_j = 1$ such that $\sum_{j=n}^{M_n} c^n_j \xi_{n, \leq N}$ converges in $L^2$ for every $N \in \integers$.  
+\end{clm}
+Applying Lemma \ref{KomlosHilbertSpace} to the sequence $\xi_{n, \leq 1}$ we get $N^1_n \in \integers$ and convex coefficients $c^{1,n}_n, \dotsc, c^{1,n}_{N^1_n}$ such that 
+$\sum_{j=n}^{N^1_n} c^{1,n}_j \xi_{j, \leq 1}$ converges in $L^2$.  Now consider the sequence $\sum_{j=n}^{N^1_n} c^{1,n}_j \xi_{j, \leq 2}$ and observe that it is also pointwise bounded hence $L^2$ bounded.  Thus we can find positive integers $M_n$ and convex coefficients $d^{n}_n, \dotsc, d^{n}_{N^2_n}$ such that $\sum_{m=n}^{M_n} d^{n}_m \sum_{j=m}^{N^1_m} c^{1,m}_j \xi_{j, \leq 2}$ converges.  Moreover by Proposition \ref{LimitsOfConvexCombinations} we know that the sequence $\sum_{m=n}^{M_n} d^{n}_m \sum_{j=m}^{N^1_m} c^{1,m}_j \xi_{j, \leq 1}$ also converges (in fact to the same limit as $\sum_{j=n}^{N^1_n} c^{1,n}_j \xi_{j, \leq 1}$).  Defining $N^2_n = N^1_{M_n}$ and $c^{2,n}_j = $ we see that 
+\begin{align*}
+\sum_{j=n}^{N^2_n} c^{2,n}_j \xi_{j, \leq 2} &= 
+\end{align*}
+and similarly with $\xi_{j, \leq 1}$.
+
+TODO: Finish
+\end{proof}
