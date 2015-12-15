@@ -669,6 +669,19 @@ computation
 $\expectation{M_s} = \expectation{\cexpectationlong{\mathcal{F}_s}{M_t}} = \expectation{M_t}$.
 \end{proof}
 
+\begin{prop}\label{ConvexFunctionOfMartingale}Let $X_t$ be an $\reals^d$ valued $\mathcal{F}$-adapted and let $f : \reals^d \to \reals$ be convex such that $f(X_t)$ is integrable for every $t \in T$.  If either $X$ is a martingale or $X$ is a submartingale and $f$ is non-decreasing then $f(X_n)$ is an $\mathcal{F}$-submartingale.
+\end{prop}
+\begin{proof}
+The fact that $f(X_n)$ is $\mathcal{F}$-adapted follows immediately from the $\mathcal{F}$-adaptedness of $M$ and Lemma \ref{CompositionOfMeasurable}.  Integrability of $f(M_n)$ is an explicit hypothesis.  By Jensen's Inequality for conditional expectations (Theorem \ref{JensenConditionalExpectation}), if $X_t$ is a martingale then for $s < t$,
+\begin{align*}
+f(X_s) &= f(\cexpectationlong{\mathcal{F}_s}{X_t}) \leq \cexpectationlong{\mathcal{F}_s}{f( X_t)}
+\end{align*}
+and if $f$ is non-decreasing and $X_t$ is a submartingale and $s < t$ then
+\begin{align*}
+f(X_s) &\leq f(\cexpectationlong{\mathcal{F}_s}{X_t}) \leq \cexpectationlong{\mathcal{F}_s}{f( X_t)}
+\end{align*}
+\end{proof}
+
 \section{Optional Times}
 
 \begin{defn}Given a set $T \subset \overline{\reals}$, we call a $T
@@ -863,6 +876,12 @@ A \cap \lbrace \sigma = \tau \rbrace  &=  (A \cap \lbrace \sigma \geq  \tau \rbr
 \end{align*}
 this shows $\mathcal{F}_\sigma \cap \lbrace \sigma = \tau \rbrace \subset \mathcal{F}_\sigma \cap \lbrace \sigma \leq \tau \rbrace \subset \mathcal{F}_\tau$ which
 in turn shows $\mathcal{F}_\sigma \cap \lbrace \sigma = \tau \rbrace \subset \mathcal{F}_\tau \cap \lbrace \sigma = \tau \rbrace$.  Now the result follows by the same argument with the role of $\sigma$ and $\tau$ reversed.
+\end{proof}
+
+\begin{cor}\label{MeasurabilityOfOptionalHalfIntervals}Let $\tau$ be an $\mathcal{F}$-optional time then for every $t \in T$ we have $\lbrace \tau \leq t \rbrace \in \mathcal{F}_{\tau \wedge t}$.
+\end{cor}
+\begin{proof}
+By definition, $\lbrace \tau \leq t \rbrace \in \mathcal{F}_t$ and by $\mathcal{F}_\tau$-measurability of $\tau$ (Lemma \ref{StoppedFiltration}) we know that $\lbrace \tau \leq t \rbrace \in \mathcal{F}_\tau$.  Now the result follows from $\mathcal{F}_{\tau \wedge t} = \mathcal{F}_\tau \cap \mathcal{F}_t$ (Proposition \ref{StoppedAlgebraMinOfOptionalTimes}).
 \end{proof}
 
 \section{Discrete Time Martingales}
@@ -1240,7 +1259,10 @@ There are several fundamental inequalities that describe
 these intuitions in a precise way.  The first result we prove is a maximal
 inequality that can be viewed as an analogue of Kolmogorov's Maximal
 Inequality (Lemma \ref{KolmogorovMaximalInequality}) for a special
-class of dependent random variables.
+class of dependent random variables.  The reader may want to take a look at the proof of the Kolmogorov Maximal Inequality
+to see that the critical property that the proof relied on was the fact that the square of a random walk is a submartingale; beyond that
+independence was not utilized.  Indeed the
+proof of the following maximal inequality is essentially the same as our proof of the Kolmogorov Maximal Inequality.
 \begin{lem}[Doob's Maximal
   Inequality]\label{DoobMaximalInequalityDiscrete}Let $X_t$ be a
   submartingale on a countable index set $T$, then for every $\lambda
@@ -1253,31 +1275,47 @@ where $X_t^+ = X_t \vee 0$.
 \end{lem}
 \begin{proof}
 First we assume that $T$ is a finite set.  By reindexing we may as
-well assume that $T = \lbrace n \mid n \leq N \text{ and } n \in
-\integers_+ \rbrace$ for some $N \geq 0$.  Now pick an $n \in T$.
+well assume that $T = \lbrace 0, \dotsc, n\rbrace$ for some $n \geq 0$.  Now pick an $n \in T$.
 The first thing to note is that for any submartingale $X_n$, $n\geq m$ and $A_m
-\in \mathcal{F}_m$, $\expectation{X_n ; A_m} =
+\in \mathcal{F}_m$,
+\begin{align}\label{DoobMaximalInequalityDiscrete:Expectations}
+\expectation{X_n ; A_m} &=
 \expectation{\cexpectationlong{\mathcal{F}_m}{X_n} ; A_m}
-\geq \expectation{X_m ; A_m}$.
+\geq \expectation{X_m ; A_m}
+\end{align}
 
-Now the event $\lbrace \sup_{0 \leq k \leq n} X_k \geq \lambda
-\rbrace$ can be nicely reexpressed in terms of optional times.  Define
+Now we can use \eqref{DoobMaximalInequalityDiscrete:Expectations} together with a decomposition of the event $\lbrace \sup_{1 \leq k \leq n} X_k \geq \lambda \rbrace$
+as the disjoint union of the events in which the first of the $X_k$ equals or exceeds $\lambda$,
+\begin{align*}
+\lambda \probability{\sup_{0 \leq k \leq n} X_k \geq \lambda} 
+&=\lambda \probability{\cup_{k=0}^n \lbrace X_0 < \lambda; \dotsb;  X_{k-1} < \lambda; X_k \geq \lambda \rbrace } \\
+&=\lambda \sum_{k=0}^n \probability{X_0 < \lambda; \dotsb;  X_{k-1} < \lambda; X_k \geq \lambda} \\
+&\leq \sum_{k=0}^n \expectation{X_k ; X_0 < \lambda; \dotsb;  X_{k-1} < \lambda; X_k \geq \lambda} \\
+&\leq \sum_{k=0}^n \expectation{X_n ; X_0 < \lambda; \dotsb;  X_{k-1} < \lambda; X_k \geq \lambda} \\
+&= \expectation{X_n ;\sup_{0 \leq k \leq n} X_k \geq \lambda}
+\end{align*}
+
+The above argument may be nicely rephrased in terms of optional times; it is a good exercise in the language and tools we have developed so we provide a second proof.  Define
 \begin{align*}
 \tau &= \min \lbrace  n \mid X_n \geq \lambda \rbrace
 \end{align*}
 where we assume the minimum of the empty set is positive infinity. 
 Note that $\lbrace \sup_{0 \leq k \leq n} X_k \geq \lambda
-\rbrace = \lbrace \tau \leq n \rbrace$.  If we consider the stopped
-process $X_\tau \characteristic{\tau \leq n} = \sum_{m=0}^n X_m
-\characteristic{\tau = m}$, take expectations and use the initial
-observation,
-$\expectation{X_\tau \characteristic{\tau \leq n}} \leq \sum_{m=0}^n
-\expectation{X_n \characteristic{\tau = m}} = \expectation {X_n
-  \characteristic{\tau \leq n}}$.  But on the other hand, by defintion
-of $\tau$, we know that $\expectation{X_\tau \characteristic{\tau \leq
-    n}} \geq \lambda \expectation{\characteristic{\tau \leq n}} =
-\lambda \probability{\sup_{0 \leq k \leq n} X_k \geq \lambda}$ which
-shows the first inequality.
+\rbrace = \lbrace \tau \leq n \rbrace$.  and if we consider the stopped
+process $X_{\tau \wedge n}$ we have
+\begin{align*}
+X_{\tau  \wedge n} \characteristic{\tau \leq n} &= \sum_{k=0}^n X_{\tau \wedge n}
+\characteristic{\tau = k}  = \sum_{k=0}^n X_k
+\characteristic{\tau = k} \geq \lambda \sum_{k=0}^n
+\characteristic{\tau = k} = \lambda \characteristic{\tau \leq n} 
+\end{align*}
+Use these two facts, the Optional Sampling Theorem \ref{OptionalSamplingSubmartingaleDiscrete} and the fact that $\lbrace \tau \leq t \rbrace \in \mathcal{F}_{\tau \wedge t}$ (Corollary \ref{MeasurabilityOfOptionalHalfIntervals}) we get
+\begin{align*}
+\lambda \probability{\sup_{0 \leq k \leq n} X_k \geq \lambda} &= \lambda \expectation{\characteristic{\tau \leq n}} 
+\leq \expectation{X_{\tau \wedge n} \characteristic{\tau \leq n}} 
+\leq \expectation{\cexpectationlong{\mathcal{F}_{\tau \wedge n}} {X_{n}} \characteristic{\tau \leq n}} \\
+&=\expectation{X_{n} \characteristic{\tau \leq n}} = \expectation {X_n; \sup_{0 \leq k \leq n} X_k \geq \lambda}
+\end{align*}
 
 The second inequality is true because nonnegativity of $X_n^+$ implies 
 \begin{align*}
@@ -1557,7 +1595,7 @@ result for $T$ will follow from the result for finite time indexes.
 
 The second step of the proof is a reduction to a notationally simpler
 case.  As the function $f(x) = (x -a)_+$ is convex and nondecreasing we know
-that $(X_t - a)_+$ is a positive submartingale.  Furthermore $X_t \geq b$ if
+from Proposition \ref{ConvexFunctionOfMartingale} that $(X_t - a)_+$ is a positive submartingale.  Furthermore $X_t \geq b$ if
 and only if $(X_t - a)_+ \geq b-a$ and $X_t \geq a$ if and only if
 $(X_t -a)_+ = 0$ and therefore the number of upcrossings of $X_t$
 between $a$ and $b$ is the same as the number of upcrossings of $(X_t
@@ -2454,6 +2492,27 @@ say we are concerned with scenarios in which martingales aren't the
 primary objects of study rather martingales arise as a tool in the study of
 seemingly unrelated problems.
 
+As a warm up we give a martingale proof of the Kolmogorov $0-1$ Law
+(Theorem \ref{Kolmogorov01Law}).
+\begin{proof}
+Suppose that $\xi_1, \xi_2, \dotsc$ are independent random variables
+and let $\mathcal{A}_n = \sigma(\xi_m; m \geq n)$ and
+$\mathcal{T}_\infty = \cap_{n =1}^\infty \mathcal{A}_n$.  Let $A \in
+\mathcal{T}_\infty$.  Let $\mathcal{F}_n = \sigma(\xi_1, \dotsc,
+\xi_n)$ and observe that for every $n \in \naturals$ we have $A \in
+\sigma(\xi_{n+1}, \xi_{n+2}, \dotsc)$ and by Lemma \ref{IndependenceGrouping} we know
+$\mathcal{F}_n \Independent \sigma(\xi_{n+1}, \xi_{n+2}, \dotsc)$ thus
+$\cprobability{\mathcal{F}_n}{A} = \probability{A}$.  On the other
+hand we know that $\cprobability{\mathcal{F}_n}{A}$ is a closed
+martingale and therefore by the Levy Upward Theorem
+\ref{JessenConditioningLimits} and hence
+$\cprobability{\mathcal{F}_n}{A} \toas
+\cprobability{\mathcal{F}_\infty}{A} = \characteristic{A}$ where we have
+used the fact that $A \in \mathcal{F}_\infty = \sigma(\xi_1, \xi_2,
+\dotsc)$.  Putting everything together we see that $\probability{A} =
+\characteristic{A}$ a.s. hence $\probability{A}  \in \lbrace 0,1 \rbrace$.
+\end{proof}
+
 \subsection{Exchangability and the Strong Law of Large Numbers}
 
 Here we see how almost sure convergence of bounded martingales implies the strong law of large
@@ -2524,6 +2583,7 @@ Therefore by linearity of conditional expectation, $\expectation{\frac{1}{n} \su
 
 Now defining $\mathcal{I}_\infty = \cap_{n=1}^\infty \mathcal{I}_n$, the almost sure convergence follows from the Levy Downward Theorem \ref{JessenConditioningLimits}.  In the i.i.d. case we know from the Kolmogorov $0-1$ Law (specifically Corollary \ref{AlmostSureAverages}) we know that the limit $\cexpectationlong{\mathcal{A}_\infty}{\xi_1}$ is almost surely constant in which case it must be equal to $\expectation{\xi_1}$.
 \end{proof}
+
 
 
 \section {Continuous Time Martingales and Weakly Optional Times}

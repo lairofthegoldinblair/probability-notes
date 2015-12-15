@@ -80,7 +80,6 @@ possible for a person to toss a coin an infinite number of times and
 get only heads.  It is possible by extremely improbable; so improbable
 in fact that its probability is zero.
 
-TODO: Motivation for concept of convergence in probability.
 Motivation for convergence in mean is pretty clear.
 
 There is also some useful technical intuition around how one might
@@ -176,23 +175,6 @@ claim that $\probability{\cap_j \lbrace d(\xi_{n_j}, \xi) > \epsilon
 positive measure.
 \end{proof}
 
-\begin{examp}\label{ConvergeProbabilityNotAlmostSure}[Sequence converging in probability but not almost
-  surely]Consider the $(\reals, \mathcal{B}(\reals))$ with Lebesgue
-  measure.  For a sequence of intervals $I_n \subset \reals$ observe
-  that $\characteristic{I_n} \toprob 0$ if and only if $\abs{I_n} \to
-  0$.  For every $n > 0$ consider the events $A_{n,j} =
-  [\frac{j-1}{n}, \frac{j}{n}]$ for $j=1, \dots, n$.  Now consider the
-  sequence of random variables obtained by taking the lexicographic
-  order of pairs $(n,j)$ for $n>0$ and $j=1,\dots, n$ and the
-  indicator functions $\characteristic{A_{n,j}}$; call the
-  resulting sequence $f_m$.  
-Note that $f_m
-\toprob 0$ by the
-above discussion.  On the the other hand, the sequence does not
-converge pointwise anywhere on $[0,1]$ because for every $x \in [0,1]$, we can
-see $\limsup_{m \to \infty} f_m(x) = 1$ but $\liminf_{m \to \infty} f_m(x) = 0$.
-\end{examp}
-
 \begin{lem}\label{ConvergenceInMeanImpliesInProbability}Let $\xi,
   \xi_1, \xi_2, \dots$ be random variables, if $\xi_n \tolp{p} \xi$, then $\xi_n \toprob \xi$.
 \end{lem}
@@ -205,6 +187,43 @@ This is a simple application of Markov's Inequality (Lemma \ref{MarkovInequality
 \end{align*}
 but the right hand side converges to $0$ by assumption.
 \end{proof}
+
+TODO: Motivation for concept of convergence in probability.  Almost
+sure convergence has a lot of intuitive appeal but it has a
+technical deficiency: it is not a topological notion.  To see that this is true, consider
+$x, x_1, x_2, \dotsc$ in a topological space, we
+first claim that 
+if for every subsequence $N^\prime \subset \naturals$ there is a further subsequence
+$N^{\prime \prime} \subset N^\prime$ such that $\lim_{\substack{n \to \infty \\ n \in N^{\prime \prime}}} x_n = x$
+then it follows that $\lim_{n \to \infty} x_n = x$.  This is easily seen by contradiction, for if $\lim_{n \to \infty} x_n \neq x$
+then there is an open neighborhod $x \in U$ and a subsequence $N^\prime \subset \naturals$ such that $x_n \notin U$ for all
+$n \in N^\prime$.  It is clear that $x_n$ cannot converge to $x$ along any subsequence of $N^\prime$.  We now give an example
+that shows that almost sure convergence does not have the above property.
+
+\begin{examp}\label{ConvergeProbabilityNotAlmostSure}[Sequence converging in probability but not almost
+  surely]Consider the $(\reals, \mathcal{B}(\reals))$ with Lebesgue
+  measure.  For a sequence of intervals $I_n \subset \reals$ observe
+  that $\characteristic{I_n} \toprob 0$ if and only if $\abs{I_n} \to
+  0$.  For every $n > 0$ consider the events $A_{n,j} =
+  [\frac{j-1}{2^n}, \frac{j}{2^n}]$ for $j=1, \dots, 2^n$.  Now consider the
+  sequence of random variables obtained by taking the lexicographic
+  order of pairs $(n,j)$ for $n>0$ and $j=1,\dots, n$ and the
+  indicator functions $\characteristic{A_{n,j}}$; call the
+  resulting sequence $f_m$.  
+Note that $f_m
+\toprob 0$ by the
+above discussion.  On the the other hand, the sequence does not
+converge pointwise anywhere on $[0,1]$ because for every $x \in [0,1]$, we can
+see $\limsup_{m \to \infty} f_m(x) = 1$ but $\liminf_{m \to \infty} f_m(x) = 0$.  On the other hand
+we claim that for every subsequence $N^\prime$ there is a further subsequence that does converge almost surely.
+To see this by the nesting structure of the intervals, note that there are an we can create a subsequence $N^{(1)}$ such
+that either $f_m \subset [0,1/2]$ for all $m \in N^{(1)}$ or  $f_m \subset [1/2,1]$ for all $m \in N^{(2)}$; let $b_1=0$ in the former case and
+$b_1 = 1$ in the latter case.  Then by induction
+we create nested subsequences $N^{(k)} \subset N^{(k-1)}$ such that there exists $b_k \in \lbrace 0,1 \rbrace$ such that if we
+define $j_k=0.b_1 \dotsb b_k$ we have
+$f_m \subset [j_k,j_k+1/2^{k}]$ for all $m \in N^{(k)}$.  Now take a diagonal subsequence.  TODO: show that
+the diagonal subsequence converges to $\characteristic{0.b_1b_2\dotsb}$.
+\end{examp}
 
 \begin{examp}[Sequence converging in probability but in mean]To see
   that a sequence of random elements can converge in probability but
@@ -269,7 +288,9 @@ then $d(\xi_n, \xi) \wedge 1 \toas 0$ and Dominated Convergence
 implies $\expectation{d(\xi_n, \xi) \wedge 1} \to 0$.
 
 The relationship between almost sure convergence and convergence in
-probability can be made even tighter than Lemma \ref{ConvergenceAlmostSureImpliesInProbability}.
+probability can be made even tighter than Lemma \ref{ConvergenceAlmostSureImpliesInProbability}.  This suggests that perhaps convergence
+in probability is a topological notion; in fact we shal later see that there is a metric called the Ky-Fan metric which topologizes convergence
+in probability.
 \begin{lem}\label{ConvergenceInProbabilityAlmostSureSubsequence}Suppose $(S,d)$ is a metric space and let $\xi,
   \xi_1, \xi_2, \dots$ be random elements in $S$.  Then $\xi_n \toprob
   \xi$ if and only for every subsequence $N^\prime \subset \naturals$ there is a
@@ -591,13 +612,19 @@ applied to sums).
 It is clear we may assume that $\expectation{\xi_n} = 0$ for all $n >
 0$.  
 
-Before we start in on the result to be proven, we need an small
-observation.  To clean up notation a bit we define $S_n = \sum_{k=1}^n    \xi_k$.
+To clean up notation a bit we define $S_n = \sum_{k=1}^n    \xi_k$.
+The proof of the result rests upon the following crucial fact.
+\begin{clm} For any $N > n >0$, and any $A_n \in \sigma(\xi_1, \dotsc,
+  \xi_n)$ we have
+\begin{align*}
+\expectation{S_n ; A_n} \leq \expectation{S_N ; A_n}
+\end{align*}
+\end{clm}
 Pick $N > n > 0$ and observe $0 \leq (S_N-S_n)^2 =  S_N^2 - 2 S_N S_n + S_n^2
 = S_N^2 - S_n^2 - 2(S_N - S_n)S_n$ and therefore 
 $S_N^2 - S_n^2 \geq 2(S_N - S_n)S_n$.  Now using the fact that by Lemma
 \ref{IndependenceGrouping} we know $S_N - S_n$ is independent of
-$S_n$.  Therefore for any $A_n \in \sigma(S_n)$ we have
+$\sigma(\xi_1, \dotsc, \xi_n)$.  Therefore for any $A_n \in \sigma(\xi_1, \dotsc, \xi_n)$ we have
 \begin{align*}
 \expectation{S_N^2 - S_n^2 ; A_n} \geq 2\expectation{(S_N - S_n)S_n;
   A_n} = 2\expectation{S_N - S_n}\expectation{S_n;  A_n} = 0
@@ -1055,7 +1082,7 @@ definition that $0 < \frac{p(n)}{n} \leq 1$ we conclude that $\eta_n
 \toas 0$.
 \end{proof}
 
-\subsection{Empirical Distributions and the Glivenko-Cantelli Theorem}
+\subsection{Empirical Distribution Functions and the Glivenko-Cantelli Theorem}
 
 Here is a simple application of the Strong Law of Large Numbers that
 has important applications in statistics.  Consider the process of
@@ -2479,7 +2506,7 @@ and $\lim_{x \to \infty} g(x) = \infty$.  Though the computation above
 isn't rigorous since we haven't justified the change of variables in
 the integral, this idea tells us that we
 should assume $f$ of the form $f(x) = \int_0^x g(y) \, dy$ and for
-such an $f$ we can rigorously calculate using Tonneli's Theorem
+such an $f$ we can rigorously calculate using Tonelli's Theorem
 \begin{align*}
 \expectation{f(\xi)} &= \expectation{\int_0^{\abs{\xi}} g(y) \, dy} =
 \expectation{\int_0^\infty g(y) \characteristic{\abs{\xi} \geq y} \,

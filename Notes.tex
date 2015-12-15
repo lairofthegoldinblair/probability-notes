@@ -5,7 +5,7 @@
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\card}{card}
+\DeclareMathOperator*{\cardfun}{card}
 \DeclareMathOperator*{\RePart}{Re}
 \DeclareMathOperator*{\ImPart}{Im}
 \DeclareMathOperator*{\median}{Med}
@@ -39,7 +39,7 @@
 \newcommand{\cindependent}[3]{#1 \Independent_{#3} #2}
 \newcommand{\expectation}[1]{\textbf{E}\left[#1\right]} 
 \newcommand{\expectationop}{\textbf{E}}
-\newcommand{\sexpectation}[2]{\textbf{E}_{#2}[#1]} 
+\newcommand{\sexpectation}[2]{\textbf{E}_{#2}\left [#1 \right]} 
 \newcommand{\cexpectationop}[1]{\textbf{E}^#1} 
 \newcommand{\cexpectation}[2]{\textbf{E}^{#1} #2} 
 \newcommand{\cexpectationlong}[2]{\textbf{E}\left[ #2 \mid #1 \right]} 
@@ -49,7 +49,7 @@
 \newcommand{\scovariance}[2]{\textbf{Cov} \left (#1, #2 \right )} 
 \newcommand{\probabilityop}{\textbf{P}} 
 \newcommand{\probability}[1]{\textbf{P}\{#1\}} 
-\newcommand{\sprobability}[2]{\textbf{P}_{#2}\{#1\}} 
+\newcommand{\sprobability}[2]{\textbf{P}_{#2}\{#1\}}
 \newcommand{\sprobabilityop}[1]{\textbf{P}_{#1}}
 \newcommand{\cprobability}[2]{\textbf{P}\{#2 \mid #1\}} 
 \newcommand{\csprobability}[3]{\textbf{P}_{#3}\{#2 \mid #1\}} 
@@ -82,7 +82,15 @@
 \newcommand{\law}[1]{\mathcal{L}(#1)}
 \newcommand{\andop}{\wedge}
 \newcommand{\orop}{\vee}
+\newcommand{\minop}{\wedge}
+\newcommand{\maxop}{\vee}
 \newcommand{\convexhull}[1]{\convexhullop\{#1\}} 
+\newcommand{\type}[1]{\mathcal{T}(#1)}
+\newcommand{\types}[1]{\mathcal{T}_{#1}}
+\newcommand{\typeop}{\mathcal{T})}
+\newcommand{\typeclass}[1]{\mathfrak{T}(#1)}
+\newcommand{\shannon}[1]{H(#1)}
+\newcommand{\card}[1]{\cardfun(#1)}
 
 \begin{document}
 
@@ -126,6 +134,8 @@
 \include{StochasticIntegration}
 
 \include{RealAnalysis2}
+
+\include{Optimization}
 
 \include{SkorohodSpace}
 
@@ -1286,6 +1296,19 @@ If $\sigma(\omega) \leq t$ then by density of rationals we can pick $q \in
 we have $\omega \in \lbrace \sigma > q \rbrace \cap \lbrace \tau > t -
 q\rbrace$.  If $\sigma(\omega) > t$ then it follows that $\omega \in
 \lbrace \sigma > t \rbrace$ so we are done.
+\end{proof}
+
+\begin{xca}Reprove the Kolmogorov Maximal Inequality Proposition
+  \ref {KolmogorovMaximalInequality} using the Doob Maximal Inequality Lemma \ref{DoobMaximalInequalityDiscrete}.
+\end{xca}
+\begin{proof}
+The random walk $\sum_{k=1}^n \xi_k$ is a martingale, by assumption $\expectation{\left(\sum_{k=1}^n \xi_k \right )^2} = \sum_{k=1}^n \expectation{\xi_k^2} < \infty$ thus by Proposition \ref{ConvexFunctionOfMartingale} we know that $\left( \sum_{k=1}^n \xi_k \right)^2$ is a submartingale therefore
+\begin{align*}
+\probability{\sup_{1 \leq m \leq n} \abs{\sum_{k=1}^m \xi_k } \geq \lambda} &= \probability{\sup_{1 \leq m \leq n} \left(\sum_{k=1}^m \xi_k \right)^2 \geq \lambda^2} \\
+&\leq \lambda^{-2} \expectation{\left(\sum_{k=1}^n \xi_k \right)^2} = \lambda^{-2} \sum_{k=1}^n \expectation{ \xi_k^2} 
+\leq  \lambda^{-2} \sum_{k=1}^\infty \expectation{ \xi_k^2} 
+\end{align*}
+Now take let $n \to \infty$ and use continuity of measure.
 \end{proof}
 
 \begin{xca}Show that a random variable $\xi$ has subexponential tails

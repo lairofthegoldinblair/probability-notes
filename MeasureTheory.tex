@@ -1474,7 +1474,7 @@ this fact in Lemma \ref{ProcessLawsAndFDDs} and Theorem \ref{ExistenceMarkovProc
 
 \section{Null Sets and Completions of Measures}
 \begin{lem}Let $f \geq 0$ be a measurable function then $\int f \,
-  d\mu$ = 0 if and only if $f = 0$ almost everywhere.
+  d\mu$ = 0 if and only if $f = 0$ $\mu$-almost everywhere.
 \end{lem}
 \begin{proof}
 First suppose that $f$ is simple with canonical representation $f = c_1
@@ -2398,7 +2398,7 @@ TODO: Royden has some exercises that demonstrate how each of these
 hypotheses is necessary (e.g. Counterexample to Fubini for
 non-integrable f).  Incorporate them.
 \begin{examp}Define the measure space $(\naturals, 2^\naturals,
-  \mu)$ where $\mu(A) = \card(A)$.  $\mu$ is called the \emph{counting
+  \mu)$ where $\mu(A) = \card{A}$.  $\mu$ is called the \emph{counting
     measure}.  
 Consider the function 
 \begin{align*}
@@ -2548,10 +2548,33 @@ of two measure, one does not get a measure.  However there is a clever
 observation that helps to repair the defect.  
 \begin{defn}A \emph{ bounded signed measure} on a measurable space $(\Omega,
   \mathcal{A})$ is a bounded function $\nu : \mathcal{A} \to
-  \reals$ such that for every disjoint $A_1, A_2, \dots \in
+  \reals$ such that $\nu(\emptyset) = 0$ and for every disjoint $A_1, A_2, \dots \in
   \mathcal{A}$ such that $\sum_{n=1}^\infty \abs{\nu (A_n)}  < \infty$, we have $\nu(\bigcup_{n=1}^\infty A_n ) =
   \sum_{n=1}^\infty \nu (A_n)$ 
 \end{defn}
+Note that a bounded signed measure is finitely additive (just take infinitely many copies of the empty set use countable additivity).
+It is important to note that a bounded signed measure is continuous in
+the same way that an ordinary measure is.
+\begin{prop}\label{ContinuityOfSignedMeasure}Let $\nu$ be a bounded
+  signed measure on the measurable space $(\Omega,  \mathcal{A})$.
+If $A, A_1, A_2, \dotsc \in \mathcal{A}$, $\sum_{n=1}^\infty \abs{\nu(A_n \setminus A_{n-1})} < \infty$ and $A_n \uparrow A$ then $\nu(A) = \lim_{n \to \infty} \nu(A_n)$. If $A, A_1, A_2, \dotsc \in \mathcal{A}$, $\sum_{n=1}^\infty \abs{\nu(A_n \setminus A_{n+1})} < \infty$ and $A_n \downarrow A$ then $\nu(A) = \lim_{n \to \infty} \nu(A_n)$.
+\end{prop}
+\begin{proof}
+Continuity follows from the same proof as Lemma \ref{ContinuityOfMeasure}.  Defining $B_1 = A_1$ and $B_n = A_n \setminus A_{n-1}$ for $n > 1$ we see that $B_n$ are disjoint, $A_n = \cup_{j=1}^n B_j$ and $A = \cup_{j=1}^\infty B_j$.  By assumption, $\sum_{j=1}^\infty \abs{\nu(B_j)} < \infty$ and therefore we may apply countable and finite additivity to see
+\begin{align*}
+\nu(A) = \sum_{j=1}^\infty \nu(B_j) = \lim_{n \to \infty} \sum_{j=1}^n \nu(B_j) = \lim_{n \to \infty} \nu(A_n)
+\end{align*}
+To see continuity under decreasing sequences of sets 
+\begin{align*}
+\nu(A_1) - \nu(\cap_{j=1}^\infty A_j) &= \nu(A_1 \setminus \cap_{j=1}^\infty A_j) = \nu(\cup_{j=1}^\infty A_j \setminus A_{j+1}) \\
+&= \sum_{j=1}^\infty\nu(A_j \setminus A_{j+1}) = \lim_{n \to \infty} \sum_{j=1}^n\nu(A_j \setminus A_{j+1}) 
+\end{align*}
+\end{proof}
+
+Equally important to note is that monotonicity and subadditivity fail for signed measures.
+\begin{examp}Let $\Omega = \lbrace 1,2,3 \rbrace$ and define $\nu(1) = \nu(2) = 1$ and $\nu(3) = -1$ then $0=\nu(\lbrace 1,3 \rbrace) < \nu(\lbrace 1 \rbrace)=1$ and $1 = \nu(\lbrace 1,3 \rbrace \cup \lbrace 2,3 \rbrace) > \nu(\lbrace 1,3 \rbrace) +  \nu(\lbrace 2,3 \rbrace) = 0$.
+\end{examp}
+
 \begin{defn}Two measures $\mu$ and $\nu$ on a measurable space $(\Omega,
   \mathcal{A})$ are said to be \emph{mutually singular} if there
   exists $A \in \mathcal{A}$ such that $\mu A = 0$ and $\nu A^c = 0$.
@@ -2583,29 +2606,58 @@ observation that helps to repair the defect.
 \end{thm}
 \begin{proof}Let $c=\sup_{A \in \mathcal{A}} \nu(A)$.  The first claim
   is that there is a $A_+ \in \mathcal{A}$ such that $\nu A_+ = c$.
-  To see this, first we note the following crude bound.  Suppose we
-  are given $A,A^\prime \in \mathcal{A}$ such that $\nu A \geq c -
-  \epsilon$ and $\nu A^\prime \geq c - \epsilon^\prime$.  Then 
+By continuity of measure Proposition \ref{ContinuityOfSignedMeasure} we expect to
+be able to show this by taking a limit over sets with $\nu(A)$ getting arbitrarily close to $c$.  
+Reflecting for a moment one realizes there are two reasons that a set $A$ may have measure less than 
+$c$.  The first reason is that the set may be missing some positive mass that can be added and the second
+reason is that the set may have some negative mass that can be subtracted; of course these two reasons are not 
+mutually exclusive.  In the first case taking a union of sets improves the approximation in the second case taking an 
+intersection improves the approximation therefore we expect our limiting process to involve both unions and intersections.
+
+A trick is that signed measures are not subadditive hence taking a union does not always increase measure. 
+The first thing we need is a simple bound on the damage that
+taking a union can do to approximations to the supremum.
+\begin{clm}Suppose we  are given $A,A^\prime \in \mathcal{A}$ such that $\nu A \geq c -
+  \epsilon$ and $\nu A^\prime \geq c - \epsilon^\prime$ then $\nu(A \cup A^\prime) \geq c - \epsilon - \epsilon^\prime$.
+ If $B \subset A \setminus A^\prime$ then $-\epsilon \leq \nu(B) \leq \epsilon + \epsilon^\prime$.
+\end{clm}
+To see the first part of the claim,
 \begin{align*}
-\nu (A \cup A^\prime) &= \nu A + \nu A^\prime - \nu A \cap A^\prime \\
+\nu (A \cup A^\prime) &= \nu (A \setminus (A \cap A^\prime)) + \nu (A^\prime  \setminus (A \cap A^\prime)) + \nu (A \cap A^\prime) \\
+&=\nu (A) + \nu (A^\prime) - \nu (A \cap A^\prime) \\
 &\geq \nu A + \nu A^\prime - c & &\text{by bound on $\nu$} \\
 &\geq c - \epsilon - \epsilon^\prime & &\text{by bounds on $A,A^\prime$}
 \end{align*}
+For the second part of the claim, the lower bound actually holds for any subset of $A$; if $B \subset A$ then
+$\nu(B) + \nu(A\setminus B) = \nu(A) \geq c - \epsilon$ by $\nu(A \setminus B) \leq c$ hence
+$\nu(B) \geq -\epsilon$ follows.  For the upper bound, if $B \subset A \setminus A^\prime$ then by finite additivity
+and the two lower bounds already established,
+\begin{align*}
+\nu(B) &= \nu(A \cup A^\prime) - \nu(A^\prime) - \nu(A \setminus A^\prime \setminus B) \\
+&\leq c - (c - \epsilon^\prime) - (-\epsilon) = \epsilon + \epsilon^\prime
+\end{align*}
 
 Now approximate the supremum by taking $A_1, A_2, \dots \in \mathcal{A}$ such that $\nu
-  A_n \geq c - 2^{-n}$ and apply the bound above with countably
-  additivity to see 
+  A_n \geq c - 2^{-n}$.  By the first part of the above claim and a simple induction we have
+$\nu(\cup_{j=n+1}^m A_j) \geq c - \sum_{j=n+1}^m 2^{-j}$ for all $n < m$.  Note that
 \begin{align*}
-\nu \bigcup_{i=n+1}^\infty A_i \geq c - \sum_{i=n+1}^\infty 2^{-i} = c - 2^{-n}
+\cup_{j=n+1}^{m+1} A_j \setminus \cup_{j=n+1}^{m} A_j &= A_{m+1} \setminus \cup_{j=n+1}^{m} A_j \subset A_{m+1} \setminus A_m
 \end{align*}
-There is something a bit confusing about this bound; namely as $n$
-is increasing the sets are getting smaller but the bound on the
-measure is increasing.  TODO: It is probably worth sorting out exactly
-what this is telling us (I think it is just that all of the tails are
-equal up to null sets and of measure $c$).
-Let $A_+ = \bigcap_{n=1}^\infty \bigcup_{i=n+1}^\infty A_i$ and note by
-countable additivity and the boundedness of $\nu$ (see proof of Lemma
-\ref{ContinuityOfMeasure}) we have 
+and therefore by the second part of the prior claim, $\abs{\nu(\cup_{j=n+1}^{m+1} A_j \setminus \cup_{j=n+1}^{m} A_j)} \leq 2^{-m-1} + 2^{-m} < 2^{-m+1}$
+so that we may apply continuity of measure (Proposition \ref{ContinuityOfSignedMeasure}) to conclude
+\begin{align*}
+\nu \bigcup_{i=n+1}^\infty A_i &= \lim_{m \to \infty} \nu \bigcup_{i=n+1}^m A_i
+\geq \lim_{m \to \infty} c - \sum_{i=n+1}^m 2^{-i} = c - 2^{-n}
+\end{align*}
+Let $A_+ = \bigcap_{n=1}^\infty \bigcup_{i=n+1}^\infty A_i$ and by the same argument as above we have
+\begin{align*}
+\bigcup_{i=n}^\infty A_i \setminus \bigcup_{i=n+1}^\infty A_i \subset A_n \setminus A_{n+1}
+\end{align*}
+and therefore 
+\begin{align*}
+\sum_{n=1}^\infty \abs{ \nu \bigcup_{i=n}^\infty A_i \setminus \bigcup_{i=n+1}^\infty A_i} &\leq \sum_{n=1}^\infty 2^{-n+1} < \infty
+\end{align*}
+and we may apply Proposition \ref{ContinuityOfSignedMeasure} to conclude
 \begin{align*} \nu A_+ = \lim_{n \to \infty} \nu
   \bigcup_{i=n+1}^\infty A_i \geq c
 \end{align*}
@@ -2613,9 +2665,28 @@ By the definition of $c$ we see that $\nu A_+ = c$.  Now define $A_- =
 A_+^c$ and define the restrictions 
 \begin{align*}
 \nu_+ B &= \nu (A_+ \cap B ) \\
-\nu_- B &= \nu ( A_- \cap B )
+\nu_- B &= -\nu ( A_- \cap B )
 \end{align*}
-TODO: prove decomposition property and uniqueness.
+
+\begin{clm}$\nu_\pm$ are both measures.
+\end{clm}
+We prove this for $\nu_+$, this will imply that $\nu_-$ is also a measure by considering $-\nu$.  Since $\nu(A_+) = \sup_{A \in \mathcal{A}} \nu(A)$ it follows that $\nu_+(B) \geq 0$ for all $B$; if not then $\nu(A_+ \setminus B) = \nu(A_+) - \nu(A_+ \cap B) > \nu(A_+)$ which is a contradiction.  Let $B_1, B_2, \dotsc \in \mathcal{A}$ be disjoint then $\sum_{j=1}^n \nu(A_+ \cap B_j) \leq \nu(A_+)$ and is an increasing sequence thus $\sum_{j=1}^\infty \abs{\nu(A_+ \cap B_j)} = \sum_{j=1}^\infty \nu(A_+ \cap B_j)$ exists and is finite.  There since $\nu$ is a bounded signed measure
+\begin{align*}
+\sum_{j=1}^\infty \nu_+(B_j) &= \sum_{j=1}^\infty \nu(A_+ \cap B_j) = \nu(A_+ \cap \cup_{j=1}^\infty  B_j) = \nu_+(\cup_{j=1}^\infty  B_j)
+\end{align*}
+and the claim follows.  
+
+Since $\nu_+(A_+^c) = \nu(\emptyset) = 0$ and $\nu_-(A_+) = -\nu ( \emptyset ) = 0$ it follows that $\nu_+$ and $\nu_-$ are mutually singular.  Furthermore by finite additivity we know that $\nu(B) = \nu(B \cap A_+) + \nu(B \cap A_-) = \nu_+(B) - \nu_-(B)$.
+
+If $\nu = \mu_+ - \mu_-$ with $\mu_\pm$ bounded mutually singular measures then pick $B$ such that $\mu_+(B^c) = 0$ and $\mu_-(B) = 0$ then we have
+\begin{align*}
+\nu_+(A_+) &= \nu(A_+) = \mu_+(A_+ \cap B) - \mu_-(A_+ \cap B^c)
+\end{align*}
+from which it follows that $\mu_-(A_+ \cap B^c)=0$ since otherwise 
+\begin{align*}
+\mu_+(A_+ \cap B) = \nu(A_+ \cap B) > \nu(A_+) = \sup_{A \in \mathcal{A}} \nu(A)
+\end{align*}
+therefore $\mu_-(A_+) = \mu_-(A_+ \cap B) + \mu_-(A_+\cap B^c) = 0$.  By a similar argument we conclude that $\mu_+(A_-) = 0$ thus we may assume that $B=A_+$ and it follows that $\mu_\pm = \nu \mid_{A_\pm} = \nu_\pm$.
 \end{proof}
 
 \begin{thm}[Radon-Nikodym Theorem]\label{RadonNikodym}Let $\mu, \nu$

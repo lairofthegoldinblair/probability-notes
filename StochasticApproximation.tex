@@ -22,7 +22,51 @@ In order to discuss the hypotheses that one might need to make on the stochastic
 One of the key techniques in proving theorems in stochastic approximation is the ODE method.  The basic idea is that one can view the process $\theta_n$ as a discretization of an ordinary differential equation 
 that is described by the conditional means of $Y_n$.  
 
-In many of the proofs we will considering the continuous time limits of discrete time processes.  To do this we be making interpolations of the discrete time processes and want to have recourse to compactness results that will give conditions under which limits exist.  A natural tool for this would be to use the Arzela-Ascoli Theorem for continuous functions or the Skorohod topology versions of that for cadlag functions.  As it turns out neither of these is the exact fit for what we do since we'll be considering cadlag processes that converge to continuous functions and we want uniform convergence on compact sets.  So what we want is a slight extension of Arzela-Ascoli.
+In many of the proofs we will considering the continuous time limits of discrete time processes.  To do this we be making interpolations of the discrete time processes and want to have recourse to compactness results that will give conditions under which limits exist.  A natural tool for this would be to use the Arzela-Ascoli Theorem for continuous functions or the Skorohod topology versions of that for cadlag functions.  As it turns out neither of these is the exact fit for what we do since we'll be considering cadlag processes that converge to continuous functions and we want uniform convergence on compact sets.  So what we want is a slight extension of Arzela-Ascoli Theorem.
+
+The following is a version of the Arzela Ascoli Theorem \ref{ExtendedArzelaAscoliTheorem} that gives a
+sufficent criteria for a sequence of possibly discontinuous functions
+to have a continuous limit.  The referenced version of the Arzela Ascoli Theorem
+doesn't apply in a non-trivial way since the criterion for
+equicontinuity $\lim_{\delta \to 0} \sup_{f \in A} m(T, f, \delta) = 0$ implies that every $f$ is continuous.  However, note that if $f_n$ is a sequence of
+functions in $C([0,\infty); \reals^d)$ then $\lbrace f_n \rbrace$ is equicontinuous if
+and only if $\lim_{\delta \to 0} \limsup_{n \to \infty} m(T, f_n,
+\delta) = 0$.  This criterion does not imply that each $f_n$ is
+continuous and turns out to be a useful extension of equicontinuity
+for sequences of non-continuous functions.
+\begin{thm}[Extended Arzela-Ascoli
+  Theorem]\label{ExtendedArzelaAscoliTheorem}Let $f_n : [0,\infty) \to
+ \reals^d$ be measurable functions such that  
+\begin{itemize}
+\item[(i)]$\sup_{n} \abs{f_n(0)} < \infty$
+\item[(ii)] $\lim_{\delta \to 0} \limsup_{n \to \infty} m(T, f_n,
+  \delta) = 0$ for all $T > 0$.
+\end{itemize}
+then there exists $f \in C([0,\infty), \reals^d)$ such that $f_n$
+converges to $f$ uniformly on compact sets.
+\end{thm}
+\begin{proof}
+First note that if (i) and (ii) hold for the sequence $f_n$ then the conditions also hold for any subsequence of $f_n$.  
+Suppose that $f_n$ satisfy (i) and (ii) and let $T > 0$.  By (ii) there exists a $\delta > 0$ such that 
+\begin{align*}
+\limsup_{n \to \infty} m(T, f_n,  \delta)  < 1
+\end{align*}
+hence there exists an $N \in \naturals$ such that $m(T, f_n,  \delta)  < 1$ for all $n \geq N$.  Now pick $m \in \naturals$ such 
+that $m \delta < T \leq (m+1)\delta$ and just as in Theorem \ref{ArzelaAscoliTheorem}  by considering  the grid $0, \delta, 2\delta, \dotsc,
+m\delta, T$ we can write the telescoping sum
+\begin{align*}
+f_n(T) - f_n(0) = f_n(T) - f_n(m\delta) + \sum_{k=1}^m f_n(k \delta) - f_n((k-1)\delta)
+\end{align*}
+and use the triangle inequality to conclude that $\abs{f_n(T)}
+\leq \abs{f_n(0)} + m+1$ for every $n \geq N$.  Coupled with (i) this shows that
+$\sup_{n \geq N} \abs{f_n(T)} < \infty$.  By local compactness of $\reals$ we see that  $f_n(T)$ converges 
+along a subsequence of $\lbrace n, n+1, \dotsc \rbrace$.  Using the observation that $f_n$ along this subsequence still satisfies
+(i) and (ii) we see that we can enumerate $T \in \rationals_+$ and use induction and a diagonal subsequence argument to get a 
+single subsequence of $f_n$ that converges for all $T \in \rationals_+$.  Define $f(T)$ for $T \in \rationals_+$ as the limit of this subsequence of $f_n$.  
+
+The proof that $f \in C([0,\infty); \reals^d)$ and that $f_n$ converges to $f$ uniformly on compact sets is almost exactly the same as the proof in Theorem
+\ref{ArzelaAscoliTheorem}.  The only difference is that the condition (ii) applied the sequence $f_n$ only constrains terms $\abs{f_n(s) - f_n(t)}$ for $n$ sufficiently large.  Examining the proof of Theorem \ref{ArzelaAscoliTheorem} one will see that this is all that is required.
+\end{proof}
 
 We also need a partial converse, namely that a convergence sequence of functions is equicontinuous in the extended sense.
 \begin{prop}\label{PartialConverseExtendedArzelaAscoli}Let $f_n : \reals \to \reals^d$ be a sequence of measurable functions that converges to a continuous function with convergence uniform on compact sets, then $f_n$ is equicontinuous in the extended sense.
@@ -40,10 +84,6 @@ m(T,f_n,\delta) &= \sup_{\substack{
 \end{align*}
 and it follows that $\limsup_{n \to \infty} m(T, f_n, \delta) < \epsilon$ and thus $\lim_{\delta \to 0} \limsup_{n \to \infty} m(T, f_n, \delta) = 0$.
 \end{proof}
-
-\begin{tikzpicture}
-\draw[thick,rounded corners=8pt] (0,0) -- (0,2) --(1,3.25) -- (2,2) -- (2,0) -- (0,2) -- (2,2) -- (0,0) -- (2,0);
-\end{tikzpicture}
 
 We shall now assume that we are in the situation of having a constraint set $F$ defined by continuously differentiable function $c_i(x)$ which satisfy the LICQ.  
 
@@ -146,17 +186,21 @@ so the result follows from the fact that $\lim_{n \to \infty} m(t_n -T) = \infty
 
 \begin{clm}$\theta_{n+1} - \theta_n \toas 0$.
 \end{clm}
-From the Markov Inequality, $\sup_n \expectation{\abs{Y_n}^2} < \infty$ and $\sum_{n=0}^\infty \epsilon_n^2 <\infty$ we get for any $\lambda > 0$,
+Using the Markov Inequality, $\sup_n \expectation{Y_n^2} < \infty$ and $\sum_{n=0}^\infty \epsilon_n^2 <\infty$ we get for any $\lambda > 0$,
 \begin{align*}
 \sum_{n=0}^\infty \probability{\epsilon_n \abs{Y_n} \geq \lambda} &\leq 
-\sum_{n=0}^\infty \frac{\epsilon_n^2 \expectation{\abs{Y_n}^2}}{\lambda^2} \\
-&\leq \frac{\sup_n \expectation{\abs{Y_n}^2}}{\lambda^2} \sum_{n=0}^\infty \epsilon_n^2  < \infty
+\sum_{n=0}^\infty \frac{\epsilon_n^2 \expectation{Y_n^2}}{\lambda^2} \\
+&\leq \frac{\sup_n \expectation{Y_n^2}}{\lambda^2} \sum_{n=0}^\infty \epsilon_n^2  < \infty
 \end{align*}
-and therefore the Borel Cantelli Theorem \ref{BorelCantelli} implies that $\probability{\epsilon_n \abs{Y_n} \geq \lambda \text{ i.o.}} = 0$ and therefore taking the union
-for all $\lambda = 1/m$ we conclude that $\epsilon_n \abs{Y_n} \toas 0$.  Thus the definition of $\Pi_F$ and the fact that $\theta_n \in F$, we see that
+and therefore the Borel Cantelli Theorem \ref{BorelCantelli} implies that $\probability{\epsilon_n \abs{Y_n} \geq \lambda \text{ i.o.}} = 0$ and therefore by Lemma \ref{ConvergenceAlmostSureByInfinitelyOften} we conclude that $\epsilon_n \abs{Y_n} \toas 0$.  Thus the definition of $\Pi_F$ and the fact that $\theta_n \in F$, we see that (we are using the argument that $\Pi_F(\theta_n + \epsilon_n Y_n) = \argmin_{x \in F} \abs{\theta_n + \epsilon_n Y_n - x}$ hence since $\theta_n \in F$,
 \begin{align*}
-\lim_{n \to \infty} \abs{\theta_{n+1} - \theta_n }&= \lim_{n \to \infty} \abs{ \Pi_F \left[ \theta_n + \epsilon_n Y_n \right] - \theta_n } 
-\leq \lim_{n \to \infty} \epsilon_n \abs{ Y_n}  = 0
+\abs{\theta_n + \epsilon_n Y_n - \Pi_F(\theta_n + \epsilon_n Y_n)} &\leq \abs{\theta_n + \epsilon_n Y_n - \theta_n} = \epsilon_n \abs{Y_n}
+\end{align*}
+is this always true or does it require some assumption like prox-regularity????)
+\begin{align*}
+\lim_{n \to \infty} \abs{\theta_{n+1} - \theta_n } &= \lim_{n \to \infty} \abs{ \Pi_F \left[ \theta_n + \epsilon_n Y_n \right] - \theta_n } \\
+&\leq  \lim_{n \to \infty} \lbrace \abs{ \Pi_F \left[ \theta_n + \epsilon_n Y_n \right] - \theta_n - \epsilon_n Y_n} + \epsilon_n \abs{Y_n} \rbrace \\
+&\leq 2 \lim_{n \to \infty} \epsilon_n \abs{ Y_n}  = 0
 \end{align*}
 almost surely.
 
@@ -165,17 +209,152 @@ By prior claims and Proposition \ref{PartialConverseExtendedArzelaAscoli} we kno
 
 \begin{clm}$Z^n$ is almost surely equicontinuous in the extended sense.
 \end{clm}
-Here is the hyperrectangle case.  We work pathwise so lets assume that $\omega \in \Omega$ is fixed.  If $Z^n$ is not equicontinuous in the extended sense then there is a $T > 0$ such that $\lim_{\delta \to 0} \limsup_{n \to \infty} m(T, f_n, \delta) > 0$ i.e. an $\epsilon > 0$, a sequence $\delta_k$ with $\delta_k \to 0$, a sequence $n_k$ with $n_k \to \infty$ and $s_k, t_k$ with $-T \leq s_k < t_k \leq T$ and $t_k - s_k < \delta_k$ such that $\abs{Z^{n_k}(t_k) - Z^{n_k}(s_k)} \geq \epsilon$.  
+Here is the hyperrectangle case.  We work pathwise so lets assume that $\omega \in \Omega$ is fixed.  
+
+\begin{clm}If $Z^n(\omega)$ is not equicontinuous in the extended sense then there is an $\epsilon > 0$, a sequence $n_k \in \naturals$ with $\lim_{k \to \infty} n_k = \infty$ and a sequence $\delta_k > 0$ with $\lim_{k \to \infty} \delta_k = 0$ such that $\abs{Z^{n_k}(\omega, \delta_k)} \geq \epsilon$.
+\end{clm}
+ If $Z^n$ is not equicontinuous in the extended sense then there is a $T > 0$ such that $\lim_{\delta \to 0} \limsup_{n \to \infty} m(T, Z^n, \delta) > 0$ i.e. an $\epsilon > 0$, a sequence $\delta_k$ with $\delta_k \to 0$, a sequence $n_k$ with $n_k \to \infty$ and $s_k, u_k$ with $-T \leq s_k < u_k \leq T$ and $u_k - s_k < \delta_k$ such that $\abs{Z^{n_k}(u_k) - Z^{n_k}(s_k)} \geq \epsilon$.  Recalling $Z^n(t) = Z^0(t_n+t) - Z^0(t_n)$  we see that $\abs{Z^{n_k}(u_k) - Z^{n_k}(s_k)} \geq \epsilon$ is equivalent to $\abs{Z^{0}(t_{n_k} + u_k) - Z^0(t_{n_k} + s_k)} \geq \epsilon$ and therefore if we define $m_k$ such that .  By redefining the sequence $n_k$ to be $\tilde{n}_k = m(t_{n_k} + s_k)$, $\tilde{s}_k = s_k  + t_{n_k} - t_{\tilde{n}_k}$  and $\tilde{u}_k = u_k + t_{n_k} - t_{\tilde{n}_k}$ we get $\abs{Z^{\tilde{n}_k}(\tilde{u}_k) - Z^{\tilde{n}_k}(\tilde{s}_k)} \geq \epsilon$ where by definition $t_{\tilde{n}_k} \leq s_k < t_{\tilde{n}_k + 1} = t_{\tilde{n}_k } + \epsilon_{\tilde{n}_k+1}$ and thus $0 \leq \tilde{s}_k < \epsilon_{\tilde{n}_k+1}$   but still 
+\begin{align*}
+\lim_{k \to \infty} \tilde{n}_k &= \lim_{k \to \infty} m(t_{\tilde{n}_k}) \geq \lim_{k \to \infty} m(t_{n_k} - T) = \infty
+\end{align*} 
+from which it also follows that $\lim_{k \to \infty} \tilde{s}_k = 0$ and therefore $\lim_{k \to \infty} \tilde{u}_k \leq  \lim_{k \to \infty} \tilde{s}_k + \delta_k = 0$.  Since $0 \leq \tilde{s}_k < \epsilon_{\tilde{n}_k+1}$ we also have $Z^{\tilde{n}_k}(\tilde{s}_k) = Z^{\tilde{n}_k}(0) = 0$ so the sequences $\tilde{n}_k$ and $\tilde{u}_k$ satisfy the claim.
+
+TODO: Note that $\delta_k$ doesn't necessarily go to 0 faster than $\epsilon_{n_k} + \epsilon_{n_k + 1}$ so $Z^{n_k}(\delta_k)$ may be a sum of multiple jumps $\epsilon_{n_k} Z_{n_k} + \dotsb + \epsilon_{n_k + m_k} Z_{n_k + m_k}$.  This makes the geometry a tad confusing for me.  Can we reduce to a case in which $0 \leq \delta_k + \epsilon_{n_k} < \epsilon_{n_k+1}$?
+
 
 TODO: I still don't see the geometry here.  Relevant facts: 
 \begin{itemize}
-\item $\theta_{n+1} \in \interior(F)$ implies $Z_n = 0$
+\item $\theta_{n+1} \in \interior(F)$ implies $Z_n = 0$ (this follows from the next item and the fact that $N_F(\theta_{n+1}) = \lbrace 0 \rbrace$ if $\theta_{n+1} \in \interior(F)$
 \item $Z_n \in N_F(\theta_{n+1})$
-\item $\epsilon_n Y_n \toas 0$
+\item $\epsilon_n Z_n \toas 0$
 \item $M^n(t) \toas 0$ uniformly on compacts
 \item $B^n(t) \toas 0$ uniformly on compacts
 \end{itemize}
-In prose, a asymptotic jump in $Z^{n_k}$ cannot be into the interior because that would imply that $Z_{n_k} = 0$.  The claim is that in the limit, the jump therefore must be from the boundary of $F$ (I don't see this yet but I suspect it follows from $\theta_{n+1} - \theta_n \toas 0$) to another point on the boundary of $F$ (I get this follows from $Z_n \in N_F(\theta_{n+1})$) and that this contradicts the fact that $Z_n \in N_F(\theta_{n+1})$ (I don't see this yet).
+In prose, a asymptotic jump in $Z^{n_k}$ cannot be into the interior because that would imply that $Z_{n_k} = 0$.  The claim is that in the limit, the jump therefore must be from the boundary of $F$ (I don't see this yet but I suspect it follows from $\theta_{n+1} - \theta_n \toas 0$) to another point on the boundary of $F$ (I get this follows from $Z_n \in N_F(\theta_{n+1})$) and that this contradicts the fact that $Z_n \in N_F(\theta_{n+1})$ (I don't see this yet).  The basic intuition is this: 
+\begin{itemize}
+\item asymptotically since $\epsilon_n Z_n \to 0$ a.s. we know that any jump $Z^n(0)$ in the limit must be from the boundary of $F$
+\item jumps in $Z_n$ are always to the boundary and not to the interior thus in the limit this is true and therefore the asymptotic jump is from a boundary point to another boundary point
+\item since $Z_n \in N_F(\theta_{n+1})$ and the normal cone points \emph{into} $F$ it is impossible for the jump to be between boundary points
+\end{itemize}
+So the relevant geometry here just precludes some kind of limit of $Z_n$ pointing out of the normal cone (this seems like it will be true with regularity assumptions for then we know that any limit of proximal normals is a limiting normal but with appropriate regularity assumptions we know that proximal normals are the same thing as limiting normals).
 
 TODO: Finish
 \end{proof}
+
+\section{Dynamical Systems Approach}
+
+This section follows Benaim's notes (which in turn summarize a bunch of the Benaim and Hirsch work).
+
+\begin{defn}Let $(S,r)$ be a metric space a continuous map $\Phi : [0,\infty) \times S \to S$. We write $\Phi_t(x) = \Phi(t,x)$ for $0 \leq t < \infty$ and $\Phi^x(t) = \Phi(t,x)$ for $x \in S$.  $\Phi$ is said to be a \emph{semiflow} if 
+\begin{itemize}
+\item[(i)] $\Phi_0 = \IdentityMatrix$
+\item[(ii)] $\Phi_s \circ \Phi_t = \Phi_{t+s}$ for all $0 \leq t,s < \infty$.
+\end{itemize}
+A continuous map $\Phi : (-\infty, \infty) \times S \to S$ with properties (i) and (ii) is called a \emph{flow}.  Given $x \in S$ we often refer to $\Phi^x$ as an \emph{orbit}.
+\end{defn}
+
+\begin{defn}Let $(S,r)$ be a metric space and let $\Phi$ be a semiflow on $S$, then $X \in C([0,\infty) ; S)$ is said to be an \emph{asymptotic pseudotrajectory} of $\Phi$ if for all $T > 0$ we have 
+\begin{align*}
+\lim_{t \to \infty} \sup_{0 \leq h \leq T} r(X(t+h), \Phi_h(X(t))) = 0
+\end{align*}
+If the image $X([0,\infty))$ has compact closure we often say that $X$ is \emph{precompact}.
+\end{defn}
+
+Our first goal is formulate some conditions that are equivalent to an $X$ being an asymptotic pseudotrajectory.  The idea is to investigate the orbits of $X$ under a canonical flow on the space $C((-\infty, \infty); S)$.  The first step is to define the \emph{translation flow} on $C((-\infty, \infty); S)$.  Recall that $C((-\infty, \infty); S)$ is a metric space with metric
+\begin{align*}
+d(f,g) &= \sum_{n=1}^\infty 2^{-n} (\sup_{-n \leq t \leq n} r(f(t), g(t)) \wedge 1)
+\end{align*}
+
+\begin{prop}Let $(S,r)$ be a metric space define $\Theta : (-\infty, \infty) \times C((-\infty, \infty); S) \to C (-\infty, \infty); S)$ by $\Theta(t,f)(s) =f(t+s)$, then $\Theta$ is a flow.
+\end{prop}
+\begin{proof}
+The only non-trivial part is the proof that $\Theta$ is continuous.  Suppose that $(t, f), (t_n,f_n) \in  (-\infty, \infty) \times C((-\infty, \infty); S)$ and $\lim_{n \to \infty} (t_n, f_n) = (t,f)$.  Let $\epsilon > 0$ and $T > 0$ be given.  $f$ is uniformly continuous on $[-T-\abs{t}-1,T+\abs{t}+1]$ so we may pick a $\delta > 0$ such that 
+\begin{align*}
+\sup_{\substack{\abs{u}, \abs{v} \leq T + \abs{t}+1 \\ \abs{u-v} < \delta}} r(f(u), f(v)) < \epsilon/2
+\end{align*}
+Since $\lim_{n \to \infty} t_n = t$ and $\lim_{n \to \infty} f_n = f$ we may pick $N > 0$ such that $\abs{t_n - t} < \delta \wedge 1$ and $\sup_{\abs{s} \leq T + \abs{t} + 1} r(f_n(s), f(s)) < \epsilon/2$ for all $n \geq N$
+Therefore for all $n \geq N$
+\begin{align*}
+\sup_{-T \leq s \leq T} r(\Theta(t_n, f_n)(s), \Theta(t,f)(s)) &= \sup_{-T \leq s \leq T} r(f_n(t_n +s), f(t+s)) \\
+&\leq \sup_{-T \leq s \leq T} r(f_n(t_n +s), f(t_n+s)) + \sup_{-T \leq s \leq T} r(f(t_n +s), f(t+s)) \\
+&\leq \sup_{\abs{s} \leq T+\abs{t}+1} r(f_n(s), f(s)) + \sup_{\abs{s} \leq T+\abs{t}+1} r(f(s), f(s)) < \epsilon \\
+\end{align*}
+\end{proof}
+
+TODO: Is there a translation flow on $D((-\infty, \infty); S)$ in the uniform topology?  in the Skorohod topology?
+
+If we are given a semiflow $\Phi : [0,\infty) \times S \to S$ it is often convenient to consider it as a flow $\Phi : (-\infty,\infty) \times S \to S$ by defining $\Phi(-t,x) = \Phi(0,x) = x$.  TODO: Exercise to show this is a flow (specifically continuity)
+
+In order to compare the flow $\Phi$ with the flow $\Theta$ we use the following
+\begin{prop}Let $(S,r)$ be a metric space and let $\Phi$ be a semiflow or flow on $S$.  If we define $H(x) = \Phi^x \in C((-\infty, \infty); S)$ and $S_\Phi = \range{H}$ then $H$ is a homeomorphism of $S$ and $S_\Phi$ and moreover
+\begin{align*}
+\Theta_t (H(x)) &= H(\Phi_t(x))
+\end{align*}
+where we assume that $t \geq 0$ if $\Phi$ is a semiflow and $-\infty < t < \infty$ is $\Phi$ is a flow.  Therefore $S_\Phi$ is a closed subset of $C((-\infty, \infty); S)$ and is invariant under $\Theta$.  The map $\hat{\Phi} : C((-\infty, \infty);S) \to S_\Phi$ defined by $\hat{\Phi}(X) = H(X(0)) = \Phi^{X(0)}$ is continuous retraction.
+\end{prop}
+\begin{proof}
+TODO
+\end{proof}
+
+We can now reformulate the definition of asymptotic pseudotrajectory in terms of behavior under the translation flow.
+\begin{lem}Let $(S,r)$ be a metric space, $X \in C([0,\infty); S)$ and $\Phi$ a semiflow on $S$ then $X$ is an asymptotic pseudotrajectory of $\Phi$ if and only if
+\begin{align*}
+\lim_{t \to \infty} d(\Theta_t(X), \hat{\Phi}(\Theta_t(X))) &= 0
+\end{align*}
+\end{lem}
+\begin{proof}
+By Lemma \ref{UniformConvergenceOnCompacts} we know that $\lim_{t \to \infty} d(\Theta_t(X), \hat{\Phi}(\Theta_t(X))) = 0$ if and only if $\lim_{t \to \infty} \sup_{0 \leq s \leq T} r(\Theta_t(X)(s), \hat{\Phi}(\Theta_t(X))(s)) $ for every $T>0$.  Substituting definitions of $\Theta$ and $\hat{\Phi}$ we see that this is equivalent to
+$\lim_{t \to \infty} \sup_{0 \leq s \leq T} r(X(t+s), \Phi_s(X_t)) $ for every $T>0$.  
+\end{proof}
+
+\begin{thm}Let $(S,r)$ be a metric space, $X \in C((-\infty, \infty); S)$ such that $\range{X}$ has compact closure in $S$ and $\Phi : [0,\infty) \times S \to S$ be a semiflow.  The $X$ is an asymptotic pseudotrajectory of $\Phi$ is and only if $X$ is uniformly continuous and every limit point of $\Theta_t(X)$ is in $S_\Phi$.  In either case $\lbrace \Theta_t(X) \rbrace$ is relatively compact in $C((-\infty, \infty); S)$.  
+\end{thm}
+\begin{proof}
+To see (i) implies (ii) first assume that $X$ is an asymptotic pseudotrajectory; for every $T>0$ we have $\lim_{t \to \infty} \sup_{0 \leq s \leq T} r(X_{t+s}, \Phi_s(X_t)) =0$.  Let $K$ be the closure of $\range{X}$ so that $K$ is compact in $S$.  
+\begin{clm}Let $\epsilon > 0$ be given and then there exists $\delta>0$ such that $r(\Phi_t(y), y)<\epsilon$ for all $\abs{t} < \delta$
+\end{clm}
+Let $x \in S$ be arbitrary.  Consider 
+\begin{align*}
+\Phi^{-1}( B(x, \epsilon/2)) &= \lbrace (t,y) \mid r(\Phi_t(y), x) < \epsilon/2 \rbrace
+\end{align*}
+Since $\Phi_0$ is identity, we know that $(0,x) \in \Phi^{-1}( B(x, \epsilon/2)) $ and therefore we can find a $0 < \delta_x < \epsilon/2$ such that $B((0,x), \delta_x) \subset \Phi^{-1}( B(x, \epsilon/2))$.  Moreover we assume are using the metric $\abs{\cdot} \vee r(\cdot, \cdot)$ on $[0,\infty) \times S$ so that  $B((0,x), \delta_x) = (-\delta_x, \delta_x) \times B(x,\delta_x)$ From these two facts it follows that for all $y \in B(x, \delta_x)$ then for all $\abs{t} < \delta_x$
+\begin{align*}
+r(\Phi_t(y), y) &\leq r(\Phi_t(y), x) + r(x,y) < \epsilon
+\end{align*}
+Now the set of $B(x, \delta_x)$ with $x \in K$ is an open cover of $K$ hence there is a finite subcover $B(x_1, \delta_{x_1}), \dotsc, B(x_n, \delta_{x_n})$.  Let $\delta = \delta_{x_1} \wedge \dotsb \wedge \delta_{x_n}$.  Every $y \in K$ belongs to some $B(x_j, \delta_{x_j})$ and therefore $r(\Phi_t(y), y) < \epsilon$ for $\abs{t} < \delta_{x_j}$ an a fortiori for $\abs{t} < \delta$.
+
+\begin{clm}$X$ is uniformly continuous
+\end{clm}
+Let $\epsilon>0$ be given and pick $\delta>0$ as in the previous claim.  Because $X$ is an asymptotic pseudotrajectory we may pick a $t_0>0$ such that for all $t \geq t_0$ we have $\sup_{0 \leq h \leq \delta} r(X_{t+h}, \Phi_h(X_t)) < \epsilon$.  Thus
+\begin{align*}
+\sup_{0 \leq h \leq \delta} r(X_{t+h}, X_t) &\leq \sup_{0 \leq h \leq \delta} r(X_{t+h}, \Phi_h(X_t)) + \sup_{0 \leq h \leq \delta} r(\Phi_h(X_t), X_t) < 2\epsilon
+\end{align*}
+and uniformly continuity follows. 
+
+Suppose that $Y$ is a limit point of $\Theta_t(X)$ and $Y \notin S_\Phi$.  Since $S_\Phi$ is closed it follows that $d(Y, S_\Phi) > 0$.  Let $n_k$ be a subsequence such that $\lim_{k \to \infty} \Theta_{n_k}(X) = Y$ and observe
+\begin{align*}
+\lim_{k \to \infty} d(\Theta_{t_k}(X), \hat{\Phi}(\Theta_{t_k}(X))) &\geq \lim_{k \to \infty} \lbrace d(Y, \hat{\Phi}(\Theta_{t_k}(X))) - d(\Theta_{t_k}(X),Y)\rbrace \geq d(Y, S_\Phi) > 0
+\end{align*}
+which is a contradiction.
+
+Now to see that (ii) implies (i) suppose that $X$ is uniformly continuous and all the limit points of $\Theta_t(X)$ are in $S_\Phi$.  First we show that (ii) implies (iii).
+\begin{clm}The family $\lbrace \Theta_t(X) \rbrace$ is relatively compact.
+\end{clm}
+First we establish equicontinuity of $\lbrace \Theta_t(X) \rbrace$.  Let $T > 0$ and $\epsilon > 0$ be given.  By uniform continuity there exists $\delta > 0$ such that $r(X(t), X(s)) < \epsilon$ for all $\abs{t-s}<\delta$. Therefore
+\begin{align*}
+\sup_{\substack{-T \leq u<v \leq T \\ v-u<\delta}} r(\Theta_t(X)(u), \Theta_t(X)(v)) &= \sup_{\substack{-T \leq u<v \leq T \\ v-u<\delta}} r(X(t+u), X(t+v)) \leq \sup_{\substack{-\infty <  u<v <\infty\\ v-u<\delta}} r(X(u), X(v)) < \epsilon
+\end{align*}
+Since $\range{X}$ is relatively compact it follows that $\lbrace \Theta_t(X)(s) \mid t \geq 0 \rbrace$ is relatively compact for every $s$ and therefore we may apply the Arzela-Ascoli Theorem \ref{ArzelaAscoliTheorem} to conclude that $\lbrace \Theta_t(X) \rbrace$ is relatively compact in $C((-\infty,\infty); S)$.  
+
+Now suppose that $\lim_{t \to \infty} d(\Theta_t(X), \hat{\Phi}(\Theta_t(X))) \neq 0$ then there exists an $\epsilon > 0$ and a sequence $t_k$ such that $d(\Theta_{t_k}(X), \hat{\Phi}(\Theta_{t_k}(X))) \geq \epsilon$.  By relative compactness by passing to a subsequence and by using the assumption that every limit point of $\Theta_t(X)$ is in $S_\Phi$  we may assume that there exists $Y \in S_\Phi$ such that $\lim_{k \to \infty} \Theta_{t_k}(X) = Y$.  Since $\hat{\Phi}$ is a continuous retraction onto $S_\Phi$ it follows that 
+\begin{align*}
+\lim_{k \to \infty} \hat{\Phi}(\Theta_{t_k}(X)) &= \hat{\Phi}( Y) = Y = \lim_{k \to \infty} \Theta_{t_k}(X) 
+\end{align*}
+which is a contradiction.
+\end{proof}
+
+\begin{defn}Suppose we have a sequence of vectors $x_n \in \reals^d$ for $n \in \integers_+$, $U_n \in \reals^d$ for $n \in \naturals$ and $\gamma_n \in \reals$ for $n \in \naturals$ such that $\sum_{n=1}^\infty \gamma_n = \infty$ and $\lim_{n \to \infty} \gamma_n = 0$ satisfying
+\begin{align*}
+x_{n+1} - x_n &= \gamma_{n+1} ( F(x_n) + U_{n+1})
+\end{align*}
+\end{defn} 

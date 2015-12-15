@@ -1,0 +1,807 @@
+\chapter{Optimization in Banach Spaces}
+As one will undoubtedly remember from one's first calculus class the
+derivative is an extraordinarily useful tool for finding maxima and
+minima of functions of a real variable.  Essentially all of that
+theory carries over to the case of general Banach space domains.  One
+of the goals in this subsection is to develop that basic theory.  
+
+In a multivariate calculus course the reader almost certainly
+encounterd problems of constrained optimization as well: learning the
+tool of the Lagrange multiplier for solving such problems. This theory
+also carries over to the Banach space setting and we develop it here.
+
+What one has learned up to this point is the theory of equality
+constrained optimization.  Though it tends not to be taught in the
+introductory
+calculus curriculum, in applications it is equally important to be able to
+solve optimization with both equality and inequality constraints.
+Having the tools we have developed it is no harder to develop such
+theory in the general Banach space setting and we do so here.
+
+We will discuss optimization problems in terms of minimization; as a
+general rule there is no loss of generality in doing so as
+maximization of a function $f$ may be performed by minimizing the
+function $-f$.  
+
+First we distinguish the different kinds of minima that we may
+characterize.  The primary distinction is the dichotomy between local
+and global minimization.  There are subtler distinctions to be made
+between different type of local minima.  The definitions make sense
+for arbitrary topological spaces.
+
+\begin{defn}Let $X$ be a topological space and let $f : X \to \reals$
+  be a function.  We say that $x^* \in X$ is a \emph{global minimizer}
+  of $f$ if $f(x^*) \leq f(x)$ for all $x \in X$.  We say that $x^*
+  \in X$ is a \emph{local minimizer} if there exists an open set $U
+  \subset X$ such that $x^* \in U$ and $f(x^*) \leq f(x)$ for all $x
+  \in U$.  We say that $x^*
+  \in X$ is a \emph{strict local minimizer} if there exists an open set $U
+  \subset X$ such that $x^* \in U$ and $f(x^*) < f(x)$ for all $x
+  \in U$ with $x^* \neq x$.  We say that $x^* \in X$ is an
+  \emph{isolated local minimizer} if there exists and open set $U
+  \subset X$ such that $x^* \in U$ and $x^*$ is the only local
+  minimizer in $U$.
+\end{defn}
+
+\begin{examp}Let 
+\begin{align*}
+f(x) &= \begin{cases}
+x^4 \cos(1/x) + 2x^4 & \text{if $x \neq 0$} \\
+0 & \text{if $x = 0$}
+\end{cases}
+\end{align*}
+then $0$ is a strict local minimizer that is not isolated.  TODO: Show this
+\end{examp}
+
+Note that minimizers are not guaranteed to exist since functions may
+be unbounded below.  More subtely may have a lower bound but may never
+take the value of its greatest lower bound.  We already know a case in
+which both of these problems are avoided: namely continuous images of
+compact sets are compact in $\reals$ and this guarantees the exists of
+a miminum (Theorem \ref{ContinuousImageOfCompact}).  As it turns out
+this fact can be generalized a bit by relaxing the property of
+continuity.
+
+\begin{defn}Let $X$ be a topological space and let $f : X \to \reals$
+  be a function, we say that $f$ is \emph{lower semicontinuous}
+  (resp. \emph{upper semicontinuous}) if for every
+  $\epsilon > 0$ there exists an open set $U$ containing $x$ such that
+  $f(y) \geq f(x) - \epsilon$ (resp. $f(y) \leq f(x) + \epsilon$) for
+  every $y \in U$. We say that $f$ is \emph{sequentially lower
+    semicontinuous} (resp. \emph{sequentially upper semicontinuous})
+  at $x$ if for every sequence $x_n$ such that $\lim_{n \to \infty}
+  x_n = x$ we have $f(x) \leq \liminf_{n \to \infty} f(x_n)$ (resp. $f(x) \geq \limsup_{n \to \infty} f(x_n)$).
+\end{defn}
+
+It is simple to see that $f$ is lower semicontinuous
+(resp. sequentially lower semicontinuous) if and only if $-f$ is upper
+semicontinuous (resp. sequentially upper semicontinuous).
+
+A function is lower (resp. upper) semicontinuous at $x$ if its values near $x$ are
+either close to $f(x)$ or larger (resp. smaller) than $f(x)$.  In
+general sequential semicontinuity is a weaker property than
+semicontinuity (since sequences do not characterize convergence in
+general topological spaces); however in metric spaces the two concepts
+are equivalent.
+
+\begin{prop}Let $X$ be a topological space and let $f$ be a lower
+  (resp. upper) semicontinuous at $x$, then $f$ is sequentially
+  lower (resp. upper) semicontinuous at $x$.  If $X$ is a metric space and
+  $f$ is sequentially lower (resp. upper) semicontinuous at $x$ then $f$ is
+  lower (resp. upper) semicontinuous at $x$.
+\end{prop}
+\begin{proof}If suffices to handle the cases of lower semicontinuity
+  since the upper semicontinuity results follow by applying the lower
+  semicontinuity case to $-f$.
+
+If $f$ is lower semicontinuous and $x_n \to x$.  Let $\epsilon > 0$ be
+given an find an open neighborhood $U$ of $x$ such that $f(y) \geq
+f(x) - \epsilon$ for all $y \in U$.  Since $x_n \to x$ we know that
+there exists $N > 0$  such that $x_n \in U$ for $n \geq N$ and thus
+$\inf_{m \geq n} f(x_m) \geq f(x) - \epsilon$ for every $n \geq N$.
+We take the limit at $n \to \infty$ to get $\liminf_{n \to \infty}
+f(x_n) \geq f(x) - \epsilon$.  Since $\epsilon > 0$ was arbitrary we
+conclude that $f$ is sequentially lower semicontinuous at $x$.
+
+Now let $X$ be a metric space and suppose that $f$ is not
+lower semicontinuous at $x$.  Then there exists an $\epsilon > 0$ such
+that for every $n \in \naturals$ there exists $x_n$ with $d(x,x_n) <
+1/n$ such that $f(x_n) < f(x) - \epsilon$.  Clearly $x_n \to x$ and
+moreover $\liminf_{n \to \infty} f(x_n) \leq f(x) - \epsilon < f(x)$
+which shows that $f$ is not sequentially lower semicontinuous at $x$.
+\end{proof}
+
+Compactness and sequential lower semicontinuity suffice to show that
+a function has a global minimizer.
+\begin{thm}Let $X$ be a topological space, let $f : X \to [-\infty,
+  \infty]$ be a sequentially lower
+  semicontinuous function and suppose that there exists $M \in \reals$
+  such that $\lbrace x \in X \mid f(x) \leq M \rbrace$ is non-empty
+  and compact then
+  $f$ has a global minimizer.  Moreover if $f$ is lower
+  semicontinuous, the set of global minimizers
+  is compact.
+\end{thm}
+\begin{proof}
+We first show the existence of a global minimizer.  Let $\alpha = \inf_{x \in X} f(x)$ and note that we know $\alpha \leq
+M < \infty$.  If $\alpha = M$ then in fact $\lbrace x \in X \mid f(x)
+\leq M \rbrace  = \lbrace x \in X \mid f(x) = M \rbrace $ and is assumed
+non-empty and we are done.  Therefore we assume that $\alpha < M$.  Let $x_n$ be chosen so that
+$\lim_{n \to \infty} f(x_n) = \alpha$ (if $\alpha > -\infty$ then
+choose $x_n$ such that $f(x_n) < \alpha + 1/n$ otherwise choose $x_n$
+so that $f(x_n) \leq -n$).  As $\alpha < M$ we know that there exists
+$N>0$ such that $f(x_n) \leq M$ for all $n \geq N$ and therefore by
+compactness there exists a convergent subsequence $x_{n_j}$.  Let $x =
+\lim_{j \to \infty} x_{n_j}$ and note that by sequential lower semicontinuity
+at $x$
+\begin{align*}
+\alpha \leq f(x) \leq \liminf_{j \to \infty} f(x_{n_j}) = \alpha
+\end{align*}
+which shows that $f(x) = \alpha$.
+
+Let $G = \lbrace x \in X \mid f(x) = \alpha \rbrace$.  Now we know
+that since $\alpha \leq M$  that $G \subset \lbrace x \in X \mid f(x)
+\leq M \rbrace$ hence it suffices to show that the set of global
+minimizers is closed (Corollary \ref{ClosedSubsetsCompact}).  Let $x$
+be in $\overline{G}$ and let $\epsilon > 0$ be given.  Since $f$ is
+lower semicontinuous we can find an open set $U$ containing $x$ such
+that $f(y) \geq f(x) - \epsilon$.  However we know that $G \cap U \neq
+\emptyset$ therefore $\alpha \geq f(x) - \epsilon$.  Since $\epsilon$
+is arbitrary we conclude $\alpha \geq f(x)$ and thus $x \in G$.  
+\end{proof}
+
+
+Given that derivatives are determined by the behavior of functions on
+arbitrarily small neighborhoods of a point it is clear that they have
+little to say about when a point is a global minimizer.  On the other
+hand derivatives are rather informative about local minimizers and we
+turn our attention to this.
+
+\section{Unconstrained Optimization}
+
+The first thing to do is to note that there are \emph{necessary}
+conditions for a point being a local minimizer that are described by
+derivatives.  The first such is the vanishing of the first derivative.
+
+\begin{thm}\label{VanishingFirstDerivativeAtLocalMinimum}Let $X$ be a
+  Banach space, let $f : X \to \reals$ be a function and let $x^*$ be
+  a local minimum.  If $f$ is $C^1$ on an open neighborhood of $x^*$
+  then $Df(x^*) = 0$.
+\end{thm}
+\begin{proof}
+The proof is by contradiction.  Suppose that $Df(x^*) \neq 0$.  Thus
+there exists $y \in X$ such that $Df(x^*)y > 0$.  Let $f$ be $C^1$ on
+an open neighborhood $U$ of $x^*$.  By continuity of $Df(x)$ on $U$ we
+may also find a $\delta > 0$ such that $Df(x) y > 0$ for all $x \in
+B(x^*, \delta) \subset U$.  By multiplying $y$ by an
+appropriate positive constant we may assume that $\norm{y} < \delta$.  Now we can
+apply Taylor's Theorem to conclude that 
+\begin{align*}
+f(x^* - y) &= f(x^*) - \int_0^1 Df(x^*-ty) y \, dt < f(x^*)
+\end{align*}
+which shows that $x^*$ is not a local minimizer.
+
+Here is an alternative proof that avoid appealing to Taylor's Theorem.
+Find an open ball $\delta > 0$ such that $f(x^*) \leq f(y)$
+for all $y$ with $\norm{y - x} < \delta$.  Pick an arbitrary $y \in X$
+then for all $0 < t < \delta/\norm{y}$ we have $f(x^* + t y) - f(x^*)
+\geq 0$ which implies 
+\begin{align*}
+Df(x) y &= \lim_{t \to 0} \frac{f(x^* + ty) - f(x^*)}{t} \geq 0
+\end{align*}
+On the other hand applying the argument to $-y$ and using linearity of
+$Df(x)$ show that $Df(x) y = -Df(x) (-y) \leq 0$ and therefore $Df(x)y
+= 0$.
+\end{proof}
+
+When $f$ has two derivatives then we can say even more.
+\begin{thm}\label{PositiveSemidefiniteSecondDerivativeAtLocalMinimum}Let $X$ be a
+  Banach space, let $f : X \to \reals$ be a function and let $x^*$ be
+  a local minimum.  If $f$ is $C^2$ on an open neighborhood of $x^*$
+  then $Df(x^*) = 0$ and $D^2f(x^*)$ is positive semidefinite
+  (i.e. $D^2f(x^*) (v,v) \geq 0$ for all $v \in X$).
+\end{thm}
+\begin{proof}
+Again we proceed by contradiction.  Suppose that $D^2f(x^*)(v,v) < 0$.
+By continuity of $D^2f$ we may find a $\delta > 0$ such that $D^2f(x)(v,v) < 0$ for
+all $x \in B(x^*,\delta) \subset U$.  If necessary multiply $v$ be a
+small positive constant to guarantee that $\norm{v} < \delta$.  By Theorem \ref{VanishingFirstDerivativeAtLocalMinimum} we know that
+$Df(x^*) = 0$ so Taylor's Theorem says
+\begin{align*}
+f(x^* + v) &= f(x^*) + \int_0^1 (1 - t) D^2f(x^* + tv) (v,v) \, dt < f(x^*)
+\end{align*}
+which is a contradiction.
+\end{proof}
+
+When $f$ has two derivatives there also exists sufficient conditions
+that a point be a local minimizer.
+\begin{thm}\label{LocalMinimumAtPositiveDefiniteSecondDerivative}Let $X$ be a
+  Banach space, let $f : X \to \reals$ be a function and suppose $f$
+  is $C^2$ on an open neighborhood $U$ of $x^*$.
+  If $Df(x^*) = 0$ and $D^2f(x^*)$ is positive definite
+  (i.e. there exists an $\alpha > 0$ such that $D^2f(x^*) (v,v) >
+  \alpha \norm{v}^2$ for all $v \in X$ with $v \neq 0$) then
+  $x^*$ is a strict local minimizer of $f$.
+\end{thm}
+\begin{proof}
+Using continuity of $D^2f$ at $x^*$ we may find a $\delta > 0$ such
+that $B(x^*,
+\delta) \subset U$ and $\norm{D^2f(x^* + y) - D^2f(x^*)}
+< \frac{\alpha}{2}$ for all $\norm{y} < \delta$.  Note in particular
+that 
+\begin{align*}
+(D^2f(x^* + y) - D^2f(x^*) )(v,w) &> -\frac{\alpha \norm{v}
+  \norm{w}}{2} \text{ for all $\norm{y} < \delta$ and $v,w \in X$}
+\end{align*}  
+By Taylor's Theorem, 
+for all $y$ with $\norm{y} < \delta$
+\begin{align*}
+f(x^* + y) - f(x) &= 
+\int_0^t (1-t) D^2f(x^* + ty)(y,y) \, dt \\
+&=\frac{1}{2} D^2f(x^*)(y,y) + \int_0^t (1-t) (D^2f(x^* + ty)
+  -D^2f(x^*)) (y,y) \, dt  \\
+&\geq \frac{\alpha \norm{y}^2}{2} - \frac{\sup_{0 \leq t \leq 1}
+  \norm{D^2f(x^* + ty) - D^2f(x^*)} \norm{y}^2}{2} \\
+&\geq  \frac{\alpha
+  \norm{y}^2}{4} > 0\\
+\end{align*}
+which shows that $x^*$ is a local minimizer.
+\end{proof}
+
+Note that in finite dimensions the condition of positive definiteness
+is equivalent to the apparently weaker condition $D^2f(x^*) (v,v) > 0$
+for all $v \neq 0$.
+
+\section{Constrained Optimization}
+
+We first consider an abstract version of constrained
+optimization.  Let $X$ be a Banach space and consider a function $f :
+X \to \reals$ then given a closed set $F \subset X$ we can consider
+the problem of finding a minimizer of $f$ restricted to $F$.  Note
+that the meaning of finding a constrained minimizer is captured by
+using our existing definitions of minimizers on the space $F$ with the
+relative topology.
+
+In order
+to apply derivatives to the problem of characterizing minimizers on
+$F$ we need to restrict them to directions that don't leave $F$;
+if we have a point $x \in F$ and $f$ is decreasing at $x$ in a direction that immediately takes one out of
+$F$ then that alone won't means that $x$ isn't a minimizer when
+restricted to $F$.  This leads us to a definition of direction tangent
+to a closed set $F$.  Note that if a direction is tangent to a set at
+a point then any positive multiple should be tangent (though if the
+set has corners then negative multiples may fail to be tangents;
+consider the behavior of $\abs{x}$ at the origin).  As a result of
+this observation we should be seeking to characterize a cone of
+tangent directions.  
+\begin{defn}Let $X$ be a Banach space, let $F$ be a closed subset and
+  let $x \in F$ then we say that $v \in X$ is a \emph{tangent vector to $F$
+  at $x$} if there is a sequence $x_n$ such that $x_n \in F$ and
+  $\lim_{n \to \infty} x_n = x$ and a sequence of positive real numbers
+  $t_n$ such that $\lim_{n \to \infty} t_n = 0$ that together satisfy
+\begin{align*}
+\lim_{n \to \infty} \frac{x_n - x}{t_n} = v
+\end{align*}
+The set $T_F(x)$ of all tangent vectors to $F$ at $x$ is called the
+\emph{tangent cone to $F$ at $x$}.
+\end{defn}
+
+We call out the fact that the tangent cone is in fact a cone.
+\begin{prop}The tangent cone $T_F(x)$ is a cone (i.e. for every
+  $\alpha \geq 0$ and $v \in T_F(x)$ we have $\alpha v \in T_F(x)$).
+\end{prop}
+\begin{proof}
+It is trivial to see that $0 \in T_F(x)$ since we can just pick the
+$x_n \equiv x$.  Let $v \in T_F(x)$, $\alpha > 0$ and pick sequences $x_n$ and $t_n$ such that $x_n \to x$, $t_n \to 0$ and
+$\frac{x_n - x}{t_n} = v$.  Then let $\tilde{t}_n = t_n/\alpha$ and note that
+$\tilde{t}_n \to 0$ and $\frac{x_n -x}{\tilde{t}_n} = \alpha v$.
+\end{proof}
+
+It is also useful to note the following equivalent form of the definition of a tangent vector.
+\begin{prop}Let $X$ be a Banach space, let $F$ be a closed subset and
+  let $x \in F$ then = $v \in X$ is a tangent vector to $F$
+  at $x$ if and only if
+\begin{align*}
+\liminf_{t \to 0^+} \frac{d(F, x+tv)}{t} &= 0
+\end{align*}
+\end{prop}
+\begin{proof}
+Suppose $\liminf_{t \to 0^+} \frac{d(F, x+tv)}{t} = 0$.  Since $\frac{d(F, x+tv)}{t}$ is non-negative it is equivalent that $\inf_{0 < t < h} \frac{d(F, x+tv)}{t} = 0$ for every $h >0$.  Thus for every $n \in \naturals$ there exists $0 < t_n < 1/n$
+and $x_n \in F$ such that 
+\begin{align*}
+\frac{d(x_n, x+t_n v)}{t_n} &= \norm{\frac{ x_n - x}{t_n}-v} < 1/n
+\end{align*}
+By construction, $\lim_{n \to \infty} t_n = 0$ and by the triangle inequality, 
+\begin{align*}
+\lim_{n \to \infty} \norm{x-x_n} &< \lim_{n \to \infty} (\norm{v}t_n + t_n/n) = 0
+\end{align*}
+thus $v$ is a tangent vector.
+
+If $v$ is a tangent vector to $F$ at $x$ then pick $x_n \in F$ and $t_n$ such that $\lim_{n \to \infty} x_n = x$ and $\lim_{n \to \infty} (x-x_n)/t_n = v$.  Let $\epsilon>0$ be 
+given and pick an $N>0$ such that $\norm{x - x_n -t_n v}/t_n < \epsilon$ for all $n \geq N$.  Then since $\lim_{n \to \infty} t_n = 0$ it follows that for any $h>0$ there exist
+$0 < t_n < h$ such that $\norm{x - x_n -t_n v}/t_n < \epsilon$ which implies 
+$\inf_{0 < t < h} \frac{d(F, x+tv)}{t} = 0$ for all $h > 0$.
+\end{proof}
+
+The first hint that we have the correct notion of tangent vector is
+the following necessary condition for a local minimizer to exist.
+
+A few facts about Landau notation.
+\begin{defn}Let $X$, $Y$ and $Z$ be Banach spaces.  Let $x_n$ be a sequence in $X$ and let
+  $y_n$ be a sequence in  $Y$ we say that $x_n = o(y_n)$
+  as $n \to \infty$ if $\lim_{n \to \infty} \frac{x_n}{\norm{y_n}} =
+  0$ (equivalently $\lim_{n \to \infty} \frac{\norm{x_n}}{\norm{y_n}} =
+  0$).  We say that $x_n = O(y_n)$ if there exists $M > 0$ and $N \geq
+  0$ such that
+  $\frac{\norm{x_n}}{\norm{y_n}}  \leq M$ for all $n \geq N$.  
+Given functions $f : X \to Y$, $g : X \to Z$ and $x_0 \in X$ we say that
+  $f(x)$ is $o(g(x))$ as $x \to x_0$ if $\lim_{x \to x_0}
+  \frac{f(x)}{\norm{g(x)}} = 0$ (equivalently $\lim_{x \to x_0}
+  \frac{\norm{f(x)}}{\norm{g(x)}} = 0$) and we say that $f(x)$ is
+  $O(g(x))$ if there exists $M > 0$ and $\delta > 0$ such that
+  $\frac{\norm{f(x)}}{\norm{g(x)}} \leq M$ for all $\norm{x - x_0} < \delta$.
+\end{defn}
+Because the definitions above really only depend on the norms of the
+sequences and functions in question, it is often useful to say that a
+sequence $x_n \in X$ is $o(\norm{y_n})$ or a function $f(x)$ is
+$o(\norm{g(x)})$.  It is also worth pointing out that Landau notation
+is confusing for uninitiated in large part because of its abuse of the
+equality sign.  
+
+\begin{prop}\label{LandauNotationIdentities}The following are true:
+\begin{itemize}
+\item[(i)] $o(y_n) + o(y_n) = o(y_n)$.
+\item[(ii)] Suppose $z_n = O(y_n)$ then if $x_n = o(z_n)$ it follows
+  that $x_n = o(y_n)$.  In shorthand we say that $o(O(y_n)) = o(y_n)$.
+\end{itemize}
+\end{prop}
+\begin{proof}
+(i) follows from linearity: if $x_n = o(y_n)$ and $z_n = o(y_n)$ then
+it follows that 
+\begin{align*}
+\lim_{n \to \infty} \frac{x_n + z_n}{\norm{y_n}} &= 
+\lim_{n \to \infty} \frac{x_n}{\norm{y_n}}
++ \lim_{n \to \infty} \frac{z_n}{\norm{y_n}}
+= 0
+\end{align*}
+To see (ii), we know that $\lim_{n \to \infty} \frac{\norm{x_n}}{\norm{z_n}} =
+0$ and there exist $M,N \geq 0$ such that $\norm{z_n} \leq M
+\norm{y_n}$ for all $n \geq N$, therefore 
+\begin{align*}
+0 &\leq \lim_{n \to \infty} \frac{\norm{x_n}}{\norm{y_n}} \leq M \lim_{n \to \infty}
+\frac{\norm{x_n}}{\norm{z_n}} = 0
+\end{align*}
+\end{proof}
+
+
+\begin{thm}\label{LocalConstrainedMinimizerFirstDerivative}Let $X$ be a Banach space, $F \subset X$ be closed and let
+  $f : U  \to \reals$ be $C^1$ on an open set $U \supset F$.  Then if
+  $x^*$ is a local minimizer of $f$ on $F$ we have $Df(x^*) v \leq 0$
+  for all $v \in T_F(x^*)$.  
+\end{thm}
+\begin{proof}
+Suppose that we have $x_n \in F$ with $x_n \to x$, $t_n>0$ with $t_n \to 0$
+and $(x_n - x)/t_n \to v$.  By Taylor's Theorem and the fact that
+$x^*$ is a local minimizer we know that we
+can find a neighborhood $x^* \subset V \subset U$ such that
+\begin{align*}
+f(y)  - f(x^*) = Df(x^*) (y - x) + o(\norm{y - x^*}) \leq 0
+\end{align*}
+and for $y \in V$.  From the fact that $x_n \to x$ we can find an $N \in \naturals$ such
+that $x_n \in V$ for all $n \geq N$.  Since $(x_n - x)/t_n \to v$ we
+know that $\norm{x_n -x^*}$ is $O(t_n)$ and therefore $o(\norm{x_n -
+  x})$ is $o(t_n)$ (Proposition \label{LandauNotationIdentities}) and since $x_n - x -t_nv$ is $o(t_n)$ we have
+\begin{align*}
+t_n Df(x^*) v + o(t_n) &= f(x_n) - f(x^*) \leq 0
+\end{align*}
+which implies that $Df(x^*) v \leq 0$ (divide by $t_n>0$ and let $n
+\to \infty$).
+\end{proof}
+
+TODO: Define the normal cone(s)...
+\begin{defn}Let $X$ be a Hilbert space, $F \subset X$ be closed and let
+  $x \in F$ then we say that $v \in X$ is a \emph{regular normal
+    vector to $F$ at $x$} if $\langle v, w \rangle \leq 0$ for all $w
+  \in T_F(x)$.  The set of all regular normal vectors to $F$ at $x$ is
+ called the \emph{regular normal cone} and is denoted
+ $\widehat{N}_F(x)$.  We say that $v \in X$ is a \emph{limiting normal vector to $F$
+    at $x$} or simply a \emph{normal vector to $F$
+    at $x$} if there are sequences $x_n$, $v_n$ with $v_n$ a regular
+  normal vector to $F$ at $x_n$ and $\lim_{n \to \infty} x_n = x$ and $\lim_{n \to \infty}
+  v_n =v$.
+\end{defn}
+
+Facts:
+
+The proximal normal cone is a convex cone but may not be closed
+The limiting normal cone is a closed cone but may not be convex.
+The limiting normal cone may be defined as the limit of proximal
+normal vectors as well as by using regular normal vectors.
+
+\begin{defn}Let $X$ be a Hilbert space, $F \subset X$ be closed and let
+  $x \in F$ we say that $F$ is \emph{Clarke regular at $x$} if $F$ is locally closed at $x$ and
+$\widehat{N}_F(x) = N_F(x)$.
+\end{defn}
+
+\begin{prop}\label{RegularNormalLittleO}$\widehat{N}_F(x)$ is a closed convex cone.  Moreover, $v$ is a regular normal to $F$ at $x$ if and only if
+  $\langle v, y-x \rangle \leq o(y -x)$ for $y \in F$ and $x \neq y$.  That is to say
+  for every sequence $x_n \in F$ with $x_n \neq x$ and $\lim_{n \to \infty} x_n = x$, we have 
+\begin{align*}
+\limsup_{n \to \infty} \frac{\langle v, x_n-x \rangle}{\norm{x_n - x}}
+&\leq 0
+\end{align*}
+\end{prop}
+\begin{proof}
+The fact that $\widehat{N}_F(x)$ is a closed convex cone follows from
+the fact that is is an intersection of closed halfspaces.
+
+Suppose that there exists an sequence $x_n \in F$ with $x_n \neq x$,
+$x_n \to x$ and 
+\begin{align*}
+\limsup_{n \to \infty} \frac{\langle v, x_n-x \rangle}{\norm{x_n - x}}
+&> 0
+\end{align*}
+By passing to a subsequence we may assume that the $\limsup$ may be
+replaced by a limit.  Let $w_n = \frac{x_n - x}{\norm{x_n - x}}$ and
+  by compactness we may pass to a further
+subsequence and assume that $w_n$ converges
+  to a unit vector $w$ and $\langle v,w \rangle = \lim_{n \to \infty} \langle v,w_n \rangle > 0$. 
+On the other hand, $w$ is seen to be a tangent vector to $F$ at $x$ because it is
+the limit $\frac{x_n - x}{\norm{x_n - x}}$ and $\norm{x_n -x} \to 0$.
+
+Now suppose that $\langle v, y-x \rangle \leq o(y -x)$ and let $w \in T_F(x)$.  Pick a defining
+sequence $x_n \to x$ with $x_n \in F$ and $t_n \downarrow 0$ such that $\lim_{n \to \infty} \frac{x_n - x}{t_n} = w$.
+\begin{align*}
+\langle v,w \rangle &= \lim_{n \to \infty} \langle v, \frac{x_n - x}{t_n} \rangle \\
+&\leq \limsup_{n \to \infty} \langle v, \frac{x_n - x}{\norm{x_n- x}} \rangle \lim_{n \to \infty} \frac{\norm{x_n - x}}{t_n} \\
+&= \norm{w} \limsup_{n \to \infty} \langle v, \frac{x_n - x}{\norm{x_n- x}} \rangle \leq 0\\
+\end{align*}
+\end{proof}
+
+\begin{thm}$v$ is a regular normal to $F$ at $x$ if and only if there exists a function $f$ differentiable at $x$ such that 
+$f$ has a local minimum on $F$ at $x$ and $\nabla f (x) = v$.  In fact, we can choose $f$ be differentiable on all of $\reals^n$ 
+with a global minimum at $x$.
+\end{thm}
+\begin{proof}
+TODO:  
+Let $v \in \widehat{N}_F(x)$ be given.  The first step to building $f$ is to define
+\begin{align*}
+\theta_0(r) = \sup \lbrace \langle v, y - x \rangle \mid y \in F \text{ and } \norm{y-x} \leq r \rbrace
+\end{align*}
+It is simple to see that $\theta_0$ is a non-decreasing function of $r$,  $\theta_0(0) = 0$ and
+$\theta_0(r) \leq \norm{v} r$ so $\lim_{r \downarrow 0} \theta_0(r) = 0$. 
+Moreover from Proposition \ref{RegularNormalLittleO} we get for any $\epsilon > 0$ there exists a $\delta > 0$ such that
+$\langle v, y-x \rangle \leq \epsilon \norm{y-x}$ for $y \in F$ and $\norm{y-x} \leq \delta$.    Thus for $0 \leq r \leq \delta$, 
+\begin{align*}
+\theta_0(r)&= \sup \lbrace \langle v, y - x \rangle \mid y \in F \text{ and } \norm{y-x} \leq r \rbrace \\
+&\leq \sup \lbrace \epsilon \norm{y-x} \mid y \in F \text{ and } \norm{y-x} \leq r \rbrace \\
+&\leq \epsilon r \\
+\end{align*}
+and thus $\theta_0(r) = o(r)$.
+Now let 
+\begin{align*}
+h_0(y) &= \langle v, y-x\rangle - \theta_0(\norm{y-x})
+\end{align*}
+and note since $\theta_0(r) = o(r)$,
+\begin{align*}
+\lim_{w \to 0} \frac{h_0(x+w) - h_0(x) - \langle v,w \rangle}{\norm{w}} =\lim_{w \to 0} \frac{-\theta_0(\norm{w})}{\norm{w}} =0\\
+\end{align*}
+which shows $h_0$ is differentiable at $x$ and moreover $\nabla h_0(x) = v$.
+\end{proof}
+
+\begin{defn}Let $X$ be a Hilbert space, $F \subset X$ be closed and let
+  $x \in F$ then we say that $v \in X$ is a \emph{proximal normal
+    vector to $F$ at $x$} if there exists an $M \geq 0$ such that
+  $\langle v, y - x \rangle \leq M \norm{y - x}^2$ for all $y \in F$.
+\end{defn}
+
+Here is a useful way to think about the definition of a proximal normal vector.  First note that the set of proximal normal vectors is a cone so it suffices to think about unit proximal normal vectors.  By translating $F$ by $-x$ we can also assume that $x=0$.  Now $v \in X$ and $y \in F$ and let $\theta$ be the angle between $v$ and $y$ then the 
+definition says that we can find a universal $M > 0$ such that
+\begin{align*}
+\langle v, y \rangle = \norm{y} \cos \theta \leq M \norm{y}^2
+\end{align*}
+which is to say
+\begin{align*}
+\cos \theta \leq M \norm{y}
+\end{align*}
+So intuitively if $y$ is infinitesimally close to $0$ in $F$ then $\pi/2 \leq \theta \leq 3\pi/2$.  
+
+Here is another interpretation of a proximal normal vector.  A vector $v$ is a non-zero proximal vector to $F$ at $x$ if and only if there exists a $z \in X \setminus F$ such that $z -x$ points in the same direction as $v$ and $x$ is the closest point in $F$ to $z$.  
+\begin{prop}\label{ProximalNormalVectorRealizedByBalls}Let $F$ be a closed set, $x \in F$ then $v$ is a proximal normal vector to $F$ at $x$ if and only if there exists $z \in X$ and $r > 0$ such that $v = r (z - x)$ and 
+$\norm{z - x} = \min_{y \in F} \norm{z - y}$.
+\end{prop}
+\begin{proof}
+$v$ is a proximal normal to $F$ at $x$ if and only if there exists $M > 0$ such that $\langle v, y - x \rangle \leq M \norm{y - x}^2$ for all $y \in F$ or equivalently $0 \leq \frac{1}{M} \langle v, x - y \rangle + \norm{y - x}^2$ for all $y \in F$.  Adding $\norm{v}^2/4M^2$ to both sides this is equivalent to 
+\begin{align*}
+(\norm{v}/2M)^2 &\leq (\norm{v}/2M)^2 + \frac{1}{M} \langle v, x - y \rangle + \norm{y - x}^2 = \norm{ x + v/2M - y}^2
+\end{align*}
+for all $y \in F$. Now define $z = x + v/2M$ and $r = 2M$.
+\end{proof}
+It is worth noting that it may not be possible to find $z$ in the direction of $v$ such that $x$ is the \emph{only} point in $F$ with $\norm{z-x} = \min_{y \in F} \norm{z-y}$ (is this true; can we get an example if so????)
+
+TODO: Show that the any limiting normal vector is a limit of proximal normals.
+
+For computational purposes (and in particular for numerical
+optimization problems) we are given a constraint set in some concrete
+form rather than the abstract formulation we've used.  In practice it
+is useful to formulate a constraint set using a combination of
+equalities and inequalities.  For the moment we specialize to the case
+of finite dimensions.  Let $X$ be a finite dimensional Banach space
+(i.e. $\reals^n$) and suppose we are given finite sets $\mathcal{E}$
+(the \emph{equality constraints})
+and $\mathcal{I}$ (the \emph{inequality constraints}) and for each $i
+\in \mathcal{E} \cup \mathcal{I}$ we have a $C^1$ 
+function $c_i : X \to \reals$.  Let $f : X \to \reals$ be a $C^1$
+function and we consider the constrained minimization problem for $f$
+with constraint set 
+\begin{align*}
+F &= \lbrace x \in X \mid c_i(x) = 0 \text{ for all $i \in
+    \mathcal{E}$ and } c_i(x) \geq 0 \text{ for all $i \in
+    \mathcal{I}$} \rbrace
+\end{align*}
+It is clear from the continuity of the $c_i(x)$ that $F$ is closed and
+therefore we have the first order necessary condition of Theorem
+\ref{LocalConstrainedMinimizerFirstDerivative} for local minimizers of
+$f$ restricted to $F$.  What we seek are
+conditions in terms of $f$ and the $c_i$ that are implied by the
+conditions in Theorem \ref{LocalConstrainedMinimizerFirstDerivative};
+for that we need to understand how $T_F(x)$ might be expressed in
+terms of $f$ and the $c_i$.  To that end, we first have the following
+definitions.
+\begin{defn}Given a Banach space $X$, disjoint sets $\mathcal{E}$ and
+  $\mathcal{I}$, functions $c_i : X \to \reals$ for each $i \in
+  \mathcal{E} \cup \mathcal{I}$ and the set
+\begin{align*}
+F &= \lbrace x \in X \mid c_i(x) = 0 \text{ for all $i \in
+    \mathcal{E}$ and } c_i(x) \geq 0 \text{ for all $i \in
+    \mathcal{I}$} \rbrace
+\end{align*}
+we say that a constraint $c_i$ is \emph{active} at $x \in F$ if either
+$i \in \mathcal{E}$ or $i \in \mathcal{I}$ and $c_i(x) = 0$.  For each
+$x \in F$ we let the \emph{active constraint set} be 
+\begin{align*}
+\mathcal{A}(x) &= \lbrace i \in \mathcal{E} \cup \mathcal{I} \mid i
+                 \text{ is active at $x$} \rbrace
+\end{align*}
+Assume that the $c_i$ are continuously differentiable, then the set of \emph{linearized feasible directions at $x$} is defined to
+be 
+\begin{equation*}
+\mathcal{F}(x) =
+\left \{ v \in X \mid
+\begin{aligned}
+Dc_i(x) v = 0 & \text{ for all $i \in \mathcal{E}$} \\
+Dc_i(x) v \geq 0 & \text{ for all $i \in \mathcal{A}(x) \cap \mathcal{I}$} \\
+\end{aligned}
+\right \}
+\end{equation*}
+\end{defn}
+Note that it is trivial to see that $\mathcal{F}(x)$ is a cone.  The
+first thing is to note that every tangent vector is a linearized
+feasible direction.
+
+\begin{prop}$T_F(x) \subset \mathcal{F}(x)$.
+\end{prop}
+\begin{proof}
+Let $v \in T_F(x)$ and pick a feasible sequence $x_n \to x$ and
+sequence of positive numbers $t_n
+\to 0$ such that $x - x_n = t_nv + o(t_n)$.  Applying Taylor's Theorem
+we can conclude that 
+\begin{align*}
+c_i(x_n) &= c_i(x) + Dc_i(x) (x_n - x) + o(\norm{x_n-x}) \\
+&= c_i(x) + t_n Dc_i(x) v + o(t_n) 
+\end{align*}
+so if $i \in \mathcal{A}(x)$ we have $c_i(x_n) = t_n Dc_i(x) v +
+o(t_n)$. Dividing by $t_n$ and taking the limit as $n \to
+\infty$ we get $Dc_i(x) v = \lim_{n \to \infty}
+\frac{c_i(x_n)}{t_n}$.  Thus it follows that  $i \in \mathcal{E}$
+implies $Df(x) v = 0$ and $i \in \mathcal{A}(x) \cap \mathcal{I}$
+implies $Df(x) v \geq 0$.
+\end{proof}
+It is not true in general that $T_F(x) = \mathcal{F}(x)$ yet the
+result that we want to demonstrate requires that this equality holds.
+A set of conditions that we place on the $c_i$ that guarantees such an
+equality is called a \emph{constraint qualification}; more generally a
+constraint qualification may a bit weaker than that and simply imply
+that $T_F(x)$ and $\mathcal{F}(x)$ aren't too different.  There are a
+variety of choices of constraint qualifications we state a
+conceptually straightforward and useful one.
+\begin{defn}A set of constraints $c_i$ satisfies the \emph{linearly
+    independent constraint qualification (LICQ)} at $x$ if the set of
+  derivatives $\lbrace Dc_i(x) \rbrace$ for $i \in \mathcal{A}(x)$ is
+  linearly independent in $X^*$.
+\end{defn}
+The LICQ is a sufficient criterion for the equality of the tangent
+cone and the linearized feasible set.
+
+\begin{examp}Consider the set $F \subset \reals^2$ defined by the
+  constraints $c_1(x,y) = 1 - x^2 - (y-1)^2 \geq 0$ and $c_2(x,y) =
+  -y \geq 0$.
+
+TODO: Show that $T_F(x)$ is a strict subset of $\mathcal{F}(x)$.
+\end{examp}
+
+\begin{prop}Let $F$ be defined by a set of constraints $c_i(x)$ which
+  satisfy the LICQ at $x$ then $T_F(x) = \mathcal{F}(x)$.
+\end{prop}
+\begin{proof}
+Let $v \in \mathcal{F}(x)$, we need to show that $v$ is a tangent
+vector producing a sequence $x_n \in F$ and $t_n > 0$ such that $v = x_n + o(t_k)$. 
+By assumption the set of derivatives $Dc_i(x)$ for $i \in
+\mathcal{A}(x)$ is linearly independent hence is a basis for the linear 
+span $V = \lbrace Dc_i(x) \rbrace_{i \in \mathcal{A}(x)}$.  Let $m$ be the cardinality of $\mathcal{A}(x)$ and $c : X \to \reals^m$ 
+be defined by $c(y) = (c_{i_1}(y), \dotsc, c_{i_m}(y))$ where $\lbrace i_1, \dotsc, i_m \rbrace = \mathcal{A}(x)$.
+Take the orthogonal complement $W$ of $V$ 
+in $X^*$ and pick a basis $w_j$ for $W$ and let $w : X \to \reals^{d-m}$ be defined by $w(y) = (w_1(y), \dotsc, w_{d-m}(y))$.  Now define $R : X \times \reals \to \reals^d$ by
+\begin{align*}
+R(y,t) &= \begin{bmatrix}
+c(y) - t Dc(x) v \\
+w(y - x - tv)
+\end{bmatrix}
+\end{align*}
+and note that $R(x,0) = 0$.  Moreover 
+\begin{align*}
+D_1R(x,0)(u, 0) &= \begin{bmatrix}
+Dc(x) u \\
+w(u)
+\end{bmatrix}
+\end{align*}
+which is invertible by construction of $w$.  Now we can apply the Implicit Function Theorem \ref{ImplicitFunctionTheorem} to 
+conclude that there exists an $\epsilon > 0$ and a differentiable function $f : (-\epsilon, \epsilon) \to X$ such that $f(0) = x$, $R(f(t), t) = 0$ 
+for all $-\epsilon < t < \epsilon$ and moreover $f(t)$ is the unique solution to the equation $R(x,t) = 0$.  In addition note that
+since we have assumed that $v \in \mathcal{F}(x)$ we have from $R(f(t), t) = 0$,
+\begin{align*}
+c_i(f(t)) &= t Dc_i(x) v = 0 \text{ for $i \in \mathcal{E}$} \\
+c_i(f(t)) &= t Dc_i(x) v >= 0 \text{ for $t > 0$ and $i \in \mathcal{A}(x)\cap \mathcal{I}$} \\
+\end{align*}
+and moreover by continuity we have $c_i(f(t)) > 0$ for $i \in \mathcal{I} \setminus \mathcal{A}(x)$ (here we may need to shrink $\epsilon$ for this to be true).  Thus we have $f(t) \in F$.  
+
+
+
+Now pick any sequence $0 < t_n < \epsilon$ with $\lim_{n \to \infty} t_n = 0$ and define $x_n = f(t_n)$; by continuity of $f$ and and the 
+fact that $f(0) = x$ we have $x_n \to x$.  If we Taylor expand $R(y,t)$ around $(x,0)$ we get
+\begin{align*}
+0 &= f(x_n, t_n) = \begin{bmatrix}
+Dc(x) (x_n - x - t_n v) \\
+w(x_n - x - t_n v)
+\end{bmatrix}
++ o(\norm{(x_n,t_n) - (x,0)})
+\end{align*}
+Since $x_n = f(t_n)$ and $f$ is differentiable it follows that $x_n - x = O(t_n)$ and therefore $o(\norm{(x_n,t_n) - (x,0)}) = o(t_n)$.  Thus by
+considering the first component of the vector we have $Dc(x)  (x_n - x - t_n v)  = o(t_n)$ and since 
+$Dc(x)$ is invertible we get that $x_n - x -t_n v = o(t_n)$ which shows that $v \in T_F(x)$.
+\end{proof}
+
+\subsection{KKT}
+
+\begin{lem}[Farkas' Lemma]\label{FarkasLemma}Let $A$ be a $d \times m$ real matrix, $B$ be a $d \times p$ real matrix and let 
+\begin{align*}
+K &= \lbrace A y + C w \mid y \in \reals^m, y \geq 0 \text{ and } w \in \reals^p \rbrace
+\end{align*}
+then for any $x \in \reals^d$ either $x \in K$ or there exists $z \in \reals^d$ such that 
+\begin{align*}
+\langle z, x \rangle < 0 & A^T z \geq 0 & B^T z = 0
+\end{align*}
+but not both.
+\end{lem}
+\begin{proof}
+The proof begins by showing that the alternatives are mutually exclusive.  Suppose that $x \in K$ and write 
+$x = A y + B w$ for appropriate $y$ and $w$.  If $z$ and in the Lemma exists as well then we can calculate
+\begin{align*}
+\langle z, x \rangle &= y^T A^T z + w^T B^T z \geq 0
+\end{align*}
+which contradicts $\langle z,x \rangle < 0$.
+
+Now we suppose that $x \notin K$ and we show how to construct $z$.  
+
+\begin{clm} $K$ is closed.
+\end{clm}
+TODO:
+
+Now given that $K$ is closed we can pick an $s_0 \in K$ such that $\norm{s_0 - x} = d(K, x) = \inf_{s \in K} \norm{s - x}> 0$.  
+Since $K$ is a cone we know that $\lambda s_0 \in K$ for all $\lambda > 0$ and by choice of $s_0$ we know that 
+$g(\lambda) = \norm{\lambda s_0 - x}^2$ has a minimum at $\lambda = 1$.  Now by Theorem \ref{VanishingFirstDerivativeAtLocalMinimum}
+we know that $0 = \frac{dg}{d\lambda} \norm{\lambda s_0 - x}^2(1) = 2 \langle s_0,  s_0 \range  - 2 \langle s_0, x \rangle$ and therefore
+we conclude that $\langle s_0, s_0 - x \rangle = 0$.  Let $s \in K$ be arbitrary and since $K$ is convex we know that $s_0 + \theta (s - s_0) \in K$ for
+all $0 \leq \theta \leq 1$ and by the defining property of $s_0$ and algebra we get
+\begin{align*}
+0 &\leq \norm{s_0 + \theta (s - s_0) -x }^2 - \norm{s_0 -x }^2  \\
+&=\langle s_0 - x + \theta (s - s_0), s_0 - x + \theta (s - s_0) \rangle - \langle s_0 -x, s_0 -x \rangle \\
+&=2 \theta \langle s_0 - x, s - s_0 \rangle + \theta^2 \norm{s - s_0}^2
+\end{align*}
+Dividing by $\theta$,  letting $\theta \to 0$ and using $\langle s_0, s_0 - x \rangle = 0$ we get 
+\begin{align*}
+\langle s_0 - x, s \rangle &= \langle s_0 - x, s - s_0 \rangle = \lim_{\theta \to 0^+}  \langle s_0 - x, s - s_0 \rangle + \frac{1}{2}\theta \norm{s - s_0}^2 \geq 0
+\end{align*}
+
+Now define $z = s_0 - x$.  As observed $z \neq 0$ and therefore
+\begin{align*}
+\langle z, x \rangle &= \langle z, s_0 - z \rangle = \langle z, s_0 \rangle - \norm{z}^2 = \langle s_0 - x, s_0 \rangle - \norm{z}^2 = - \norm{z}^2 < 0
+\end{align*}
+
+Writing an arbitrary $s \in K$ as $s = A y + B w$ with $y \geq 0$ we know that $\langle z, A y + B w \rangle$.  In particular if we let $y = 0$ and
+$w = -B^T z$ then we get 
+\begin{align*}
+-\norm{B^T z}^2 &= -\langle B^T z, B^T z \rangle= -\langle z, B B^T z \rangle \geq 0
+\end{align*}
+hence $B^T z = 0$.  Choosing $w=0$ and $y = e_j$ for $j=1, \dotsc, m$ we get
+\begin{align*}
+(A^Tz)_j &= \langle A^T z, e_j \rangle = \langle z , A e_j \rangle \geq 0
+\end{align*}
+which shows that $A^T z \geq 0$.
+\end{proof}
+
+\section{Algorithms for Unconstrained Optimization}
+
+We have developed criteria for detecting minimizers (mostly local)
+however we have not yet addressed the issue of how we might find one.
+There are two basic paradigms to consider: line search and trust
+region methods.  We first consider line search.
+
+For motivation we give an interpretation of the Frechet derivative of
+a real valued function on a Hilbert space $X$.  Since $Df(x)$ is a
+bounded linear functional on $X$, we know by Reisz
+representation that there is a unique element of $X$ representing the
+functional.
+
+\begin{defn}Let $X$ be a Hilbert space, $U \subset X$ be open and let
+  $f : U \to \reals$ be differentiable at $x \in U$.  The
+  \emph{gradient of $f$ at $x$} is the unique element $\nabla f(x)$ of
+  $X$ such that $\langle \nabla f(x), v \rangle = Df(x) v$ for all $v
+  \in X$.
+\end{defn}
+
+We now proceed to interpret the vector $-\nabla f(x)$ as the
+direction of steepest decrease of the function $f$.  Suppose
+that we are at a point $x$ for which $\nabla f(x) \neq 0$.  To see
+this, let $v \in X$ be an arbitrary unit vector in $X$ and consider the function of a single
+real variable $g_v(t) = f(x + tv)$.  The question we ask is what is the
+direction $v$ along which $f$ is decreasing the fastest at $x$.  By the Chain Rule, the definition of the
+gradient and Taylor's Theorem we can write
+\begin{align*}
+f(x + tv) = f(x) + t \langle \nabla f(x), v \rangle + o(t)
+\end{align*}
+which implies that $g_v^\prime(0) = \langle \nabla f(x), v \rangle$.  So
+what we want is to find the unit vector $v$ which minimizes the value
+of $g_v^\prime(0)$.  We can write $v = \alpha \nabla f(x)/\norm{\nabla
+  f(x)} + w$ where $\langle \nabla f(x), w \rangle = 0$.  Note that on
+the one hand $\langle \nabla f(x), v \rangle = \alpha/\norm{\nabla
+  f(x)}$ and on the other hand from $\norm{v} = 1$ we see that $-1
+\leq \alpha \leq 1$.  Therefore it is clear that the minimum of
+$g_v^\prime(0)$ occurs for $\alpha = -1$ which implies that $v = -
+\nabla f(x) /\norm {\nabla f(x)}$. It is colloquial to say that the direction of
+the gradient is the \emph{direction of steepest descent of $f$}.  Note
+that the computation above shows that $g_v^\prime(0) < 0$ precisely
+when $\langle \nabla f(x), v \rangle < 0$ which motivates the
+following defintion
+\begin{defn}Let $X$ be a Hilbert space, $U \subset X$ be open and let
+  $f : U \to \reals$ be differentiable at $x \in U$ we say that $v \in
+  X$ is a \emph{descent direction for $f$ at $x$} if $\langle \nabla
+  f(x) , v\rangle < 0$.
+\end{defn}
+
+
+TODO: Discuss gradient flow in the Hilbert space and observe how the
+solutions of the differential equation have limit points equal to the
+stationary points of $f$.
+
+Armed with the idea that when we are in possesion of derivatives we can
+find directions along which the values of a function decreases, we
+seek find an iterative algorithm for minimization.  The obvious idea
+is that if at a given point $x_k$ we can find a descent direction
+(e.g. the gradient $\nabla f(x_k)$ then we should move in that
+direction and thereby expect that the function decreases.  There are
+three problems to address about such an algorithm.  The first issue is
+that the descent direction is characterized by an infinitessimal
+condition and therefore there is no guarantee that a finite step in
+that direction will result in a decrease in the function value.  The
+second issue is that if our step sizes in the descent direction are
+too small asymptotically we may never reach the minimum.  The third
+issue is that if we choose a variable descent direction, the descent
+direction may get increasing close to being orthogonal to the gradient
+in which case function values may not decrease enough to converge
+(note this is a non-issue is we choose the steepest descent direction).  We
+seek conditions on the choice of step sizes and descent directions
+that give us convergence to a stationary point of $f$.
+
+
+

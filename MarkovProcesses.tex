@@ -2292,10 +2292,10 @@ $h(y) = M$  for every $y \in S$.
   invariant distribution exists, then is unique.
 \end{lem}
 \begin{proof}
-Let $I$ denote the $\card(S) \times \card(S)$ identity matrix.
+Let $I$ denote the $\card{S} \times \card{S}$ identity matrix.
 By Lemma \ref{MarkovChainHarmonicFunctionConstant} we know that the
 matrix $P -I$ has a one dimensional null space given by the constant
-functions.  Thus column rank of $P - I$ is $\card(S) - 1$ and the same
+functions.  Thus column rank of $P - I$ is $\card{S} - 1$ and the same
 is true for the row rank; thus there is a unique solution of $\pi (P
 -I) = 0$ that satisfies $\sum_{x \in S} \pi(x) = 1$.  Note that this
 does not guarantee the existence of a invariant distribution as that
@@ -2369,6 +2369,29 @@ x_1) \dotsb P(x_{n-1}, x_n) \\
 The Poisson process is the standard example of a continuous time
 stochastic process that has discontinuous sample paths.  It is a
 Markov process and is (almost) a martingale.  
+
+\subsection{Poisson Random Variables}
+
+\begin{defn}A Poisson distribution of rate $r$ is the probability
+  measure on $\integers_+$ given by $\probability{n} = e^{-r}
+  \frac{r^n}{n!}$. A random variable $\xi$ whose law is a Poisson
+  distribution is said to be a \emph{Poisson random variable}.
+\end{defn}
+
+\begin{prop}\label{MomentsPoissonDistribution}The Poisson distribution of rate $r$ is a probability measure with mean $r$ and variance $r$.
+\end{prop}
+\begin{proof}
+To see that the Poisson distribution is a probability measure simply note that $\probability {\integers_+} = \sum_{n=0}^\infty  e^{-r} \frac{r^n}{n!} =1$ by the power series for the exponential function.  To calculate the mean 
+\begin{align*}
+e^{-r} \sum_{n=0}^\infty  n \frac{r^n}{n!} = e^{-r} \left( \sum_{n=0}^\infty  (n+1) \frac{r^n}{n!} - e^r \right) = e^{-r} \frac{d}{dr} re^r - 1 = r
+\end{align*}
+to calculate the variance we calculate the second moment in a similar way,
+\begin{align*}
+e^{-r} \sum_{n=0}^\infty  n^2 \frac{r^n}{n!} = e^{-r} \sum_{n=0}^\infty  (n+2) (n+1) \frac{r^n}{n!} - 3 r - 2  
+= e^{-r} \frac{d^2}{dr^2} r^2 e^r - 3 r - 2  = 2 + 4 r + r^2 - 3r - 2 = r^2 + r
+\end{align*}
+from which it follows that variance is $r^2 + r - r^2 = r$.
+\end{proof}
 
 \subsection{Exponential Random Variables}
 The standard construction of the Poisson process uses sums of a sequence of
@@ -3053,10 +3076,358 @@ event that $Y_m = Y_{m+1}$?  This seems like a real issue since $X$
 cannot detect $\tau_n$ unless the value of $X$ changes there.  What we
 do know is that if $X$ sees $n$ jumps then at least $n$ of the timers
 $\gamma$ have gone off; maybe this is enough...)
-TODO:
+TODO:  Note that I believe Blumenthal and Getoor handle this issue as part of their construction which they redefine the probability space by 
+removing the set of probability zero where $Y_m = Y_{m+1}$.  This seems to indicate that either Kallenberg needs the flexibility to much with the
+probability space in a similar way.
 
 Note that even here we have $Y$ assumed to be a Markov family and we
 are constructing $X$ as a Markov family.
+
+TODO: Finish and properly understand Kallenberg's proof here.
+
+This is how Blumenthal and Getoor do this.  Not clear that they allow for the existence of absorbing states but they certainly do allow for explosion by appending
+the cemetary state.
+
+Let $T=S \times [0,\infty)$, $\mathcal{T} = \mathcal{S} \otimes
+\borel{[0,\infty)}$, $\Omega = T^\infty$ and $\mathcal{A} =
+\mathcal{T}^\infty$.  We write a generic element $\omega \in \Omega$
+as $\omega = ((x_0, t_0), (x_1, t_1), \dotsc)$.  Define $Z_n : \Omega
+\to T$ as $Z_n(\omega) = (x_n, t_n)$ to be the $n^{th}$ coordinate
+projection and let $Y_n : \Omega \to S$ and $\tau_n : \Omega \to
+[0,\infty)$ be defined by $Y_n(\omega) = x_n$ and $\tau_n(\omega) =
+t_n$ respectively.  By the definition of the product $\sigma$-algebra
+we know that each of $Z_n$, $Y_n$ and $\tau_n$ is measurable.  
+
+\begin{clm} For each $A \in \mathcal{T}$ let 
+\begin{align*}
+\tilde{\mu}((x,t), A) &=
+\int \characteristic{A}(y,s) \characteristic{[t,\infty)}(s) \, \mu(x, dy) c(x) e^{-c(x)(s-t)} ds
+\end{align*}
+then $\tilde{\mu}$ is a probability kernel and moreover $\tilde{\mu}$ is translation invariant in $t$.
+\end{clm}
+By the monotone class argument of Lemma \ref{KernelMeasurability} we can reduce to considering
+set $A = B \times C$ and since 
+\begin{align*}
+\tilde{\mu}((x,t), B \times C) &= \mu(x, B) \int_t^\infty \characteristic{C}(s) c(x) e^{-c(x)(s-t)} ds
+\end{align*}
+and $\mu$ is assumed a kernel we must only show $\int_t^\infty \characteristic{C}(s) c(x) e^{-c(x)(s-t)} ds$
+is a probability kernel.  The fact that it is a probability measure is elementary calculus and the fact that $c(x) > 0$,
+\begin{align*}
+\int_t^\infty c(x) e^{-c(x)(s-t)} ds &= e^{c(x)t} \int_t^\infty c(x) e^{-c(x)s} ds = e^{c(x)t} e^{-c(x)t} =1
+\end{align*}
+The fact that it is a kernel follows from Lemma \ref{KernelTensorProductMeasurability}.  To see that $\tilde{\mu}$ is translation invariant we consider
+$B \times C \in \mathcal{S} \times \borel{[0,\infty)}$ and calculate as above and using a change of integration variable 
+\begin{align*}
+\tilde{\mu}((x,t), B \times C) &= \mu(x, B) \int_t^\infty \characteristic{C}(s) c(x) e^{-c(x)(s-t)} ds \\
+&= \mu(x, B) \int_{t+v}^\infty \characteristic{C}(s-v) c(x) e^{-c(x)(s - v -t)} ds \\
+&= \mu(x, B) \int_{t+v}^\infty \characteristic{C+v}(s) c(x) e^{-c(x)(s - (t+v))} ds \\
+&= \tilde{\mu}((x,t+v), B \times C+(0,v))
+\end{align*}
+By Lemma \ref{UniquenessOfMeasure} probability measures are uniquely determined by values on a generating $\pi$-system it follows that 
+$\tilde{\mu}((x,t), A) = \tilde{\mu}((x,t+v), A+(0,v))$ for all $A \in \mathcal{S} \times \borel{[0,\infty)}$.
+
+Now can apply the Ionescu Tulcea Theorem ??? to see that for every probability measure $\nu$ on $T$ there
+exists a probability measure $\probabilityop_\nu$ on $\Omega$ such that $Z_n$ is a discrete time Markov process
+with initial distribution, the transition kernel $\tilde{\mu}$ and the natural filtration $\mathcal{G}_n = \sigma(Z_0, Z_1, \dotsc, Z_n)$.
+
+Observe that for all $\alpha > 0$ we have from the tower property of conditional expectation and Theorem \ref{Disintegration} the following
+\begin{align*}
+\sexpectation{e^{-\alpha (\tau_{n+1} - \tau_n)}}{\nu} &= 
+\sexpectation{\csexpectationlong{\mathcal{G}_n}{ e^{-\alpha (\tau_{n+1} - \tau_n)} }{\nu} }{\nu} \\
+&=\sexpectation{\int e^{-\alpha (s - \tau_n) } \, \characteristic{[\tau_n,\infty)}(s) \mu(Y_n, dy) c(Y_n) e^{-c(Y_n)(s - \tau_n)} ds} {\nu} \\
+&=\sexpectation{e^{(\alpha + c(Y_n)) \tau_n} c(Y_n) \int_{\tau_n}^\infty e^{-(\alpha +c(Y_n)) s} \, ds}{\nu}\\
+&=\sexpectation{e^{(\alpha + c(Y_n)) \tau_n} c(Y_n) \frac{e^{-(\alpha + c(Y_n)) \tau_n}}{\alpha +c(Y_n)} }{\nu} = \sexpectation{\frac{c(Y_n) }{\alpha +c(Y_n)} }{\nu} \\
+\end{align*}
+By the above computation and the Monotone Convergence Theorem
+\begin{align*}
+0 &= \lim_{\alpha \to \infty} \sexpectation{\frac{c(Y_n) }{\alpha +c(Y_n)} }{\nu}  = \lim_{\alpha \to \infty} \sexpectation{e^{-\alpha (\tau_{n+1} - \tau_n)}}{\nu} \\
+&\geq \lim_{\alpha \to \infty} \sexpectation{e^{-\alpha (\tau_{n+1} - \tau_n)} ; \tau_{n+1} \leq \tau_n }{\nu} \geq \sprobability{\tau_{n+1} \leq \tau_n }{\nu} 
+\end{align*}
+Thus we have $\tau_{n+1} > \tau_n$ $\nu$-a.s. for every initial measure $\nu$.  A similar but simpler computation shows
+\begin{align*}
+\sprobability{Y_{n+1} \neq Y_n} {\nu} &= 
+\sexpectation{
+\csprobability{\mathcal{G}_n}{Y_{n+1} \neq Y_n }{\nu} }{\nu}
+=\sexpectation{
+\int \characteristic{S \setminus \lbrace Y_n \rbrace}(y) \, \mu(Y_n , dy) 
+}{\nu}  \\
+&= \sexpectation{1 - \mu(Y_n, \lbrace Y_n \rbrace)}{\nu} = 1
+\end{align*}
+Lastly if we let $\probabilityop_x$ be the shorthand for $\probabilityop_{\delta_{(x,0)}}$ then
+$\sprobability{\tau_0 = 0} {x} =1$ for all $x \in S$.  Thus let 
+\begin{align*}
+\tilde{\Omega} &= \cap_{n=0}^\infty \lbrace \tau_{n+1} > \tau_n \rbrace \cap \cap_{n=0}^\infty \lbrace Y_{n+1} > Y_n \rbrace \cap \lbrace \tau_0 = 0 \rbrace \\
+&= \lbrace ((x_0, t_0), (x_1, t_1), \dotsc ) \mid t_0 =0, x_n \neq x_{n+1} \text{ and } t_n < t_{n+1} \text{ for all } n \in \integers_+ \rbrace
+\end{align*}
+and it follows that $\tilde{\Omega} \in \mathcal{A}$ and $\sprobability{\tilde{\Omega}}{x} = 1$ for all $x\in S$.
+
+TODO: Add the definitions of all of the elements of the Markov family.
+Now let 
+\begin{align*}
+\tilde{\Omega} &= \cap_{n=0}^\infty \lbrace Y_n \neq Y_{n+1} \rbrace \cap \cap_{n=0}^\infty \lbrace \tau_n < \tau_{n+1} \rbrace \cap \lbrace \tau_0 = 0 \rbrace
+\end{align*}
+From the above discussion we know that $\tilde{\Omega}$ is $\mathcal{A}$-measurable and $\sprobability{\tilde{\Omega}}{x} = 1$.  Thus we may define the restrict the
+probability measures, the $sigma$-algebra $\mathcal{A}$ and the filtration $\tilde{\mathcal{G}}_n$ to $\tilde{\Omega}$ and $Z_n$ remains a Markov process which considered with the probability space $(\tilde{\Omega}, \tilde{\mathcal{A}})$ and the filtration $\tilde{\mathcal{G}}_n$.
+
+\begin{clm}$\tilde{\mathcal{G}}_n$ is the $\sigma$-algebra generated by the coordinate projections $Z_j$ for $j=0, \dotsc, n$.
+\end{clm}
+TODO.
+
+At this point we redefine $\Omega$ as $\tilde{\Omega}$  with a measurable point $\omega_\Delta$ adjoined.  For each $x \in S$, we extend the measure $\probabilityop_x$ by defining $\sprobability{Delta}{x} = 0$.  We define $\sprobabilityop{A}{\Delta} = \delta_\Delta(A)$.  Define $Y_n(\omega_\Delta) = \Delta$ and $\tau_n(\omega_\Delta) = \infty$ for all $n \in \integers_+$.
+
+For $\omega \in \tilde{\Omega}$, let $\zeta(\omega) = \lim_{n \to \infty} \tau_n(\omega)$ which as a limit of measurable function is measurable (Lemma \ref{LimitsOfMeasurable}) ; define $\zeta(\omega_\Delta) = 0$.   For $\omega \in \tilde{\Omega}$, define
+\begin{align*}
+X_t(\omega) &= \begin{cases}
+Y_n(\omega)  & \text{for $\tau_n(\omega) \leq t < \tau_{n+1}(\omega)$} \\
+\Delta & \text{for $t \geq \zeta(\omega)$}
+\end{cases}
+\end{align*}
+and $X_\infty(\omega) = \Delta$.  Define $X_t(\omega_\Delta) = \Delta$ for all $0 \leq t \leq \infty$.
+
+$X_t$ is seen to be measurable by writing for each $A \in \mathcal{S}^\Delta$,
+\begin{align*}
+X_t^{-1} (A) &= (\lbrace \Delta \in A \rbrace \cap \lbrace t \geq \zeta \rbrace) \cup \cup_{n=0}^\infty (\lbrace Y_n \in A \rbrace \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace)
+\end{align*}
+By definition and the fact that $\tau_n < \tau_{n+1}$ everywhere on $\Omega$ we see that $X_t$ is a step function on the interval $[0, \zeta)$ (in particular it is cadlag when $S$ is given the discrete topology).
+
+Now introduce the following notation, let $\mu_\alpha(x,A) = \frac{c(x)}{\alpha + c(x)} \mu(x,A)$ and then recursively define the famility $\mu_\alpha^0(x, A) = \delta_x(A)$ and for $n \in \naturals$,
+\begin{align*}
+\mu_\alpha^n (x,A) &= \mu_\alpha \mu_\alpha^{n-1}(x,A) = \int \mu_\alpha(y, A) \, \mu_\alpha^{n-1}(x, dy)
+\end{align*}
+(note that $\mu_\alpha^1(x,A) = \int \mu_\alpha(y, A) \, \delta_x(dy) = \mu_\alpha(x,A)$ so the chosen notation is consistent).  In a similar way let 
+\begin{align*}
+\tilde{\mu}^n((x,t), A) &= \int \tilde{\mu}((y,s), A) \, \tilde{\mu}((x,t), dy, ds)
+\end{align*}
+and more generally for every positive measurable or integrable $f  : S \times [0,\infty) \to \reals$ we have
+\begin{align*}
+\int f(u,v) , \tilde{\mu}^n((x,t), du, dv) &= \iint f(u,v) \tilde{\mu}((y,s), du, dv) \, \tilde{\mu}((x,t), dy, ds)
+\end{align*}
+
+TODO: Move this to conditioning chapter or an exercise.
+\begin{clm}If $\mu$ and $\nu$ are translation invariant kernels then so is $\mu \cdot \nu$.  Moreover if $f$ is measurable  and either non-negative or integrable then $\int f(s) \, \mu(x, ds) = \int f(s-y) \, \mu(x+y, ds)$.
+\end{clm}
+We prove the second claim first.  Note that by translation invariance 
+\begin{align*}
+\int \characteristic{A}(y) \, \mu(x,dy) &= \mu(x,A) = \mu(x+u, A+u) = \int \characteristic{A+u}(y) \, \mu(x+u,dy) \\
+&= \int \characteristic{A}(y-u) \, \mu(x+u,dy)
+\end{align*}
+so the result holds for indicator functions.  Now apply the standard machinery.  The first claim follows from the second,
+\begin{align*}
+\mu \cdot \nu (x, A) &= \int \nu(y, A) \, \mu(x, dy) = \int \nu(y - u, A) \, \mu(x + u, dy) = \int \nu(y, A+y) \, \mu(x+u, dy) \\
+&= \mu \cdot \nu (x+u, A+u)
+\end{align*}
+
+
+\begin{clm}$\int_0^\infty e^{-\lambda (s-t)} \tilde{\mu}^n((x,t), A, ds) = \mu_\lambda^n(x, A)$.
+\end{clm}
+By translation invariance we know that $\int_0^\infty e^{-\lambda (s-t)} \tilde{\mu}^n((x,t), A, ds) = \int_0^\infty e^{-\lambda s} \tilde{\mu}^n((x,0), A, ds)$ so it suffices to use the
+right hand side.  For $n=0$ and $n=1$ we compute directly,
+\begin{align*}
+\int_0^\infty e^{-\lambda s} \tilde{\mu}^0((x,0), A, ds) = \int_0^\infty e^{-\lambda s} \characteristic{A}(y) \delta_{(x,0)} (dy, ds) = \characteristic{A}(x) = \mu_\alpha^0(x,A)
+\end{align*}
+and
+\begin{align*}
+\int_0^\infty e^{-\lambda s} \tilde{\mu}((x,0), A, ds) = \mu(x,A) c(x) \int_0^\infty e^{-s (\lambda + c(x)} \, ds = \mu(x,A) \frac{c(x)}{\lambda + c(x)} = \mu_\lambda(x,A)
+\end{align*}
+For general $n$ we use an induction argument,
+\begin{align*}
+\int_0^\infty e^{-\lambda s} \tilde{\mu}^{n+1}((x,0), A, ds) 
+&=\iint e^{-\lambda s} \tilde{\mu}^{n}((u,v), A, ds) \tilde{\mu}((x,0), du, dv) \\
+&=\iint e^{-\lambda v} \mu_\lambda^n(u, A) \tilde{\mu}((x,0), du, dv) \\
+&=\int \mu_\lambda^n(u, A) c(x) \left[ \int_0^\infty e^{-v(\lambda + c(x))} dv \right ] \mu(x, du)\\
+&=\int \mu_\lambda^n(u, A) \frac{c(x)}{\lambda + c(x)} \mu(x, du)\\
+&=\int \mu_\lambda^n(u, A) \mu_\lambda(x, du) = \mu_\lambda^{n+1}(x,A) \\
+\end{align*}
+
+\begin{clm}\label{PureJumpTypeConstruction:Computation1}Let $g : S \to [0,\infty)$ be measurable and $\lambda \geq 0$ then for all $m \geq n$,
+\begin{align*}
+\csexpectationlong{\mathcal{G}_n}{g(Y_m) (e^{-\lambda \tau_m} - e^{-\lambda \tau_{m+1}})}{x} 
+&=\lambda e^{-\lambda \tau_n} \int  \frac{g(y)}{\lambda + c(y)} \, \mu_\lambda^{m-n}(Y_n, dy)
+\end{align*}
+\end{clm}
+By the Markov property we know that $\cprobability{\mathcal{G}_n}{(Y_m, \tau_m) \in A} = \tilde{\mu}^{m-n}((Y_m, \tau_m), A)$ and therefore
+by Theorem \ref{Disintegration} $\cexpectationlong{\mathcal{G}_n}{f(Y_m, \tau_m, Y_n, \tau_n)} = \int f(y,s, Y_n, \tau_n) \, \tilde{\mu}^{m-n}((Y_n,\tau_n), dy, ds)$.  We compute using
+two applications of this observation, the tower and pullout properties of conditional expectation and the previous claim to see
+\begin{align*}
+&\csexpectationlong{\mathcal{G}_n}{g(Y_m) (e^{-\lambda \tau_m} - e^{-\lambda \tau_{m+1}})}{x} 
+= \csexpectationlong{\mathcal{G}_n}{g(Y_m) e^{-\lambda \tau_m} \csexpectationlong{\mathcal{G}_m} {1 - e^{-\lambda ( \tau_{m+1} - \tau_m)}}{x}}{x} \\
+&= \csexpectationlong{\mathcal{G}_n}{g(Y_m) e^{-\lambda \tau_m} \left ( 1 - \int_{\tau_m}^\infty  e^{-\lambda(s - \tau_m)} c(Y_m) e^{-c(Y_m)(s - \tau_m)} \, ds \right ) }{x} \\
+&= \csexpectationlong{\mathcal{G}_n}{g(Y_m) e^{-\lambda \tau_m} \left ( 1 -  c(Y_m)  e^{\tau_m(\lambda + c(Y_m))} \int_{\tau_m}^\infty  e^{-s(\lambda + c(Y_m))} \, ds \right ) }{x} \\
+&= \csexpectationlong{\mathcal{G}_n}{g(Y_m) e^{-\lambda \tau_m} \left ( 1 -  c(Y_m)  e^{\tau_m(\lambda + c(Y_m))} \frac{e^{-\tau_m (\lambda + c(Y_m))}}{\lambda + c(Y_m)} \right ) }{x} \\
+&= \csexpectationlong{\mathcal{G}_n}{g(Y_m) e^{-\lambda \tau_m} \frac{\lambda}{\lambda + c(Y_m)} }{x} \\
+&=\iint g(y) e^{-\lambda s} \frac{\lambda}{\lambda + c(y)} \, \tilde{\mu}^{m-n}((Y_n, \tau_n), dy, ds) \\
+&=\lambda e^{-\lambda \tau_m} \iint e^{-\lambda (s- \tau_m)} \frac{g(y)}{\lambda + c(y)} \, \tilde{\mu}^{m-n}((Y_n, \tau_n), dy, ds) \\
+&=\lambda e^{-\lambda \tau_m} \int \frac{ g(y)}{\lambda + c(y)} \, \mu_\lambda^{m-n}(Y_n, dy) \\
+\end{align*}
+
+We also need the following similar computation
+\begin{clm}\label{PureJumpTypeConstruction:Computation2}Let $g : S \to [0,\infty)$ be measurable and $\lambda \geq 0$ then for all $n \geq 0$,
+\begin{align*}
+\csexpectationlong{\mathcal{G}_n}{ e^{-\lambda \tau_{n+1}} g(Y_{n+1}) ; \tau_{n+1} > t }{x} &= e^{c(Y_n) \tau_n - (\lambda + c(Y_n))(t \maxop \tau_m)} \int g(y) \mu_\alpha(Y_n, dy)
+\end{align*}
+\end{clm}
+This is just an application of the Disintegration Theorem as above
+\begin{align*}
+&\csexpectationlong{\mathcal{G}_n}{ e^{-\lambda \tau_{n+1}} g(Y_{n+1}) ; \tau_{n+1} > t }{x} \\
+&=\iint e^{-\lambda s} g(y) \characteristic{(t,\infty)}(s) \characteristic{[\tau_n, \infty)}(s) c(Y_n) e^{-c(Y_n)(s - \tau_n)} \, ds \, \mu(Y_n, dy) \\
+&=\int g(y)  c(Y_n)  e^{c(Y_n) \tau_n} \left [ \int_{t \maxop \tau_n}^\infty  e^{-(\lambda +c(Y_n)) s} \, ds \right ] \, \mu(Y_n, dy) \\
+&=\int g(y)  e^{c(Y_n) \tau_n} \frac{c(Y_n)}{\lambda +c(Y_n)} e^{-(\lambda +c(Y_n)) t \maxop \tau_n}  \, \mu(Y_n, dy) \\
+&= e^{c(Y_n) \tau_n-(\lambda +c(Y_n)) t \maxop \tau_n}  \int g(y) \, \mu_\lambda(Y_n, dy) \\
+\end{align*}
+
+\begin{clm}\label{PureJumpTypeConstruction:ResolventIdentity} Let $f : S \to [0,\infty)$ be Borel measurable and extend to $S^\Delta$ by defining $f(\Delta) = 0$ then if we define
+\begin{align*}
+R_\lambda f (x) &= \int_0^\infty e^{-\lambda s} T_s f(x) \, ds = \int_0^\infty e^{-\lambda s} \sexpectation{f(X_s)}{x}  \, ds = \sexpectation{\int_0^\infty e^{-\lambda s} f(X_s) \, ds }{x} 
+\end{align*}
+then we have 
+\begin{align*}
+R_\lambda f(x) &= \sum_{n=0}^\infty \int \frac{f(y)}{\lambda + c(y)} \, \mu_\lambda^n(x, dy) = \frac{f(x)}{\lambda + c(x)} + \int R_\lambda f(y) \mu_\lambda(x,dy)
+\end{align*}
+\end{clm}
+Using $f(\Delta) = 0$ and the fact that $X_t=\Delta$ on $[\zeta, \infty]$ we have 
+\begin{align*}
+\int_0^\infty e^{-\lambda s} f(X_s) \, ds 
+&=\int_0^\zeta e^{-\lambda s} f(X_s) \, ds 
+= \sum_{n=0}^\infty \int_{\tau_n}^{\tau_{n+1}} e^{-\lambda s} f(Y_n) \, ds \\
+&= \sum_{n=0}^\infty f(Y_n) \frac{e^{-\lambda \tau_n} - e^{-\lambda \tau_{n+1}}}{\lambda}
+\end{align*}
+So taking expectations using two applications of this fact, Lemma \ref{TonelliIntegralSum}, the Claim \ref{PureJumpTypeConstruction:Computation1} and the definition of $\mu_\lambda^n$ we get
+\begin{align*}
+R_\lambda f(x) 
+&= \sexpectation{\sum_{n=0}^\infty f(Y_n) \frac{e^{-\lambda \tau_n} - e^{-\lambda \tau_{n+1}}}{\lambda}}{x} \\
+&= \sum_{n=0}^\infty \int \frac{f(y)}{\lambda + c(y)} \, \mu_\lambda^n(x, dy) \\
+&= \frac{f(x)}{\lambda + c(x)} + \sum_{n=1}^\infty \int \frac{f(y)}{\lambda + c(y)} \, \mu_\lambda^n(x, dy) \\
+&= \frac{f(x)}{\lambda + c(x)} + \sum_{n=1}^\infty \int \left [ \int \frac{f(y)}{\lambda + c(y)} \, \mu_\lambda^{n-1}(w, dy) \right ] \, \mu_\lambda(x,dw) \\
+&= \frac{f(x)}{\lambda + c(x)} + \int R_\lambda f (y) \, \mu_\lambda(x,dy) \\
+\end{align*}
+
+\begin{clm}Given $A \in \mathcal{F}^0_t$ then for all $n \in \integers_+$ there exists $A_n \in \mathcal{G}_n$ such that 
+\begin{align*}
+A \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace 
+&= A_n \lbrace t < \tau_{n+1} \rbrace
+\end{align*}
+\end{clm}
+Let $\mathcal{C}$ be the set of sets in $\mathcal{A}$ satisfying the criteria of the claim; we show that $\mathcal{C}$ is a $\sigma$-algebra and that each $X_s$ for $s \leq t$ is 
+$\mathcal{C}$-measurable.  First we show that $\mathcal{C}$ is a $\sigma$-algebra.  Let $A \in \mathcal{C}$ and $n \in \integers_+$.  Pick $A_n \in \mathcal{G}_n$ such that
+$A \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace = A_n \lbrace t < \tau_{n+1} \rbrace$.  Let $B_n = A_n^c \cap \lbrace \tau_n \geq t \rbrace \in \mathcal{G}_n$.    If $\omega \in A^c \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace$ then it must be that 
+\begin{align*}
+\omega &\notin B_n \cap \lbrace t < \tau_{n+1} \rbrace   
+= A^c_n \cap \lbrace \tau_n \geq t \rbrace \cap \lbrace t < \tau_{n+1} \rbrace 
+= A^c_n  \cap \lbrace t < \tau_{n+1} \rbrace
+\end{align*} 
+since otherwise we would have $\omega \in A$.  Since $\omega \in  \lbrace \tau_n \geq t \rbrace \cap \lbrace t < \tau_{n+1} \rbrace = \lbrace \tau_n \leq t < \tau_{n+1}\rbrace$ it follows that $A^c \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace \subset B_n \cap \lbrace t < \tau_{n+1} \rbrace$.  On the other hand, if $\omega \in B_n \cap \lbrace t < \tau_{n+1} \rbrace = A^c_n \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace$ then $\omega \notin A$ since otherwise we would get that $\omega \in A \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace = A_n \cap \lbrace t < \tau_{n+1} \subset A_n$ which contradicts $\omega \in B_n = \lbrace t \geq \tau_n \rbrace \setminus A_n$.  Therefore we conclude $A^c \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace = B_n \cap \lbrace t < \tau_{n+1} \rbrace$ and therefore $A^c \in \mathcal{C}$.  Now let $A_1, A_2, \dotsc \in \mathcal{C}$ and $n \in \integers_+$ and $A_{j,n} \in \mathcal{G}_n$ be chosen so that $A_j \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace = A_{j,n} \cap \lbrace t \geq \tau_n \rbrace$.  Now we have 
+\begin{align*}
+\left ( \cap_{j=1}^\infty A_j  \right ) \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace 
+&= \cap_{j=1}^\infty \left ( A_j \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace \right) 
+= \cap_{j=1}^\infty \left( A_{j,n} \cap \lbrace t < \tau_{n+1} \rbrace \right) \\
+&= \left( \cap_{j=1}^\infty A_{j,n} \right) \cap \lbrace t < \tau_{n+1} \rbrace
+\end{align*}
+and since $\cap_{j=1}^\infty A_{j,n} \in \mathcal{G}_n$ we see that $\cap_{j=1}^\infty A_j \in \mathcal{C}$.  Clearly $\emptyset \in \mathcal{C}$ and it follows that $\mathcal{C}$ is a $\sigma$-algebra.  To see that $X_s$ is $\mathcal{C}$-measurable for $s \leq t$, let $A \in \mathcal{S}$ and note that 
+\begin{align*}
+\lbrace X_s \in A \rbrace \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace 
+&= \cup_{j=0}^n \left (\lbrace X_s \in A \rbrace \cap \lbrace \tau_j \leq s < \tau_{j+1} \rbrace \right ) \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace  \\
+&= \cup_{j=0}^n \left (\lbrace Y_j \in A \rbrace \cap \lbrace \tau_j \leq s < \tau_{j+1} \rbrace \right ) \cap \lbrace \tau_n \leq t < \tau_{n+1} \rbrace  \\
+&= \left (\lbrace Y_n \in A ; \tau_n \leq s \rbrace \cup \cup_{j=0}^{n-1} \lbrace Y_j \in A ; \tau_j \leq s < \tau_{j+1} \rbrace \right ) \cap \lbrace \tau_n \leq t \rbrace 
+\cap \lbrace \leq t < \tau_{n+1} \rbrace  \\
+\end{align*}
+which shows $\lbrace X_s \in A \rbrace \in \mathcal{C}$ hence $\mathcal{F}^0_t \subset \mathcal{C}$ and the claim is proven.
+
+
+The following claim is essentially the Laplace Transform version of
+the Markov property that we seek to prove.  In terms of financial
+ideas, suppose we have a fixed interest rate $\lambda$.  The next claim says the that the expected net present value of the cash flow $f(X_s)$ starting at $t$ 
+is obtained by taking the expected net present value starting at $s=0$ assuming that we start at $X_t$ and then discounting that amount by $e^{-t\lambda}$.
+\begin{clm}\label{PureJumpTypeConstruction:ConditionalExpectationOfExponentials}Let $f : S \to [0, \infty)$, $t \geq 0$, $\lambda \geq 0$  and $x \in S$.  If we extend $f$ to $S^\Delta$ by defining $f(\Delta) = 0$ then it follows that
+\begin{align*}
+\csexpectationlong{\mathcal{F}^0_t}{\int_t^\infty e^{-\lambda u} f(X_u) \, du}{x} 
+&= e^{-\lambda t} R_\lambda f(X_t)
+\end{align*}
+\end{clm}
+Let $A \in \mathcal{F}^0_t$.  Since $f(\Delta) = 0$ and $X_t = \Delta$ for $t \geq \zeta$ it follows that 
+\begin{align*}
+\sexpectation{\int_t^\infty e^{-\lambda u} f(X_u) \, du ; A \cap \lbrace t \geq \zeta \rbrace}{x} &= 0
+\end{align*}
+and moreover
+\begin{align*}
+\sexpectation{e^{-\lambda t} R_\lambda f(X_t); A \cap \lbrace t \geq \zeta \rbrace}{x}
+&=\sexpectation{e^{-\lambda t} R_\lambda f(\Delta); A \cap \lbrace t \geq \zeta \rbrace}{x} \\
+&=\sexpectation{e^{-\lambda t} \int_0^\infty e^{-\lambda s} \sexpectation{f(X_s)}{\Delta} \, ds; A \cap \lbrace t \geq \zeta \rbrace}{x} \\
+&=\sexpectation{e^{-\lambda t} \int_0^\infty e^{-\lambda s} f(\Delta)\, ds; A \cap \lbrace t \geq \zeta \rbrace}{x} = 0 \\
+\end{align*}
+Therefore we may assume that $A \subset \lbrace t < \zeta \rbrace$ and in particular by linearity we may assume that there exists $n \in \integers_+$ such that
+$A \subset \lbrace \tau_n \leq t < \tau_{n+1}\rbrace$.  By the previous claim, we may choose an $A_n \in \mathcal{G}_n$ such that $A_n \subset \lbrace \tau_n \leq t \rbrace$ and $A = A_n \cap \lbrace t < \tau_{n+1} \rbrace$.  Therefore we can decompose the integral
+\begin{align*}
+&\sexpectation{\int_t^\infty e^{-\lambda u} f(X_u) \, du ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&= \sexpectation{\int_t^{\tau_{n+1}}  e^{-\lambda u} f(X_u) \, du ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} + \\
+&\qquad \sum_{k=n+1}^\infty \sexpectation{\int_{\tau_k}^{\tau_{k+1}}  e^{-\lambda u} f(X_u) \, du ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x}
+\end{align*}
+We compute in each of the two cases on the right hand side.  For the first term using Claim \ref{PureJumpTypeConstruction:Computation2} and recalling that $A_n \subset \lbrace \tau_n \leq t \rbrace$,
+\begin{align*}
+&\sexpectation{\int_t^{\tau_{n+1}}  e^{-\lambda u} f(X_u) \, du ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&=\sexpectation{ f(Y_n) \lambda^{-1} (e^{-\lambda t} - e^{-\lambda \tau_{n+1}}) ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&=\lambda^{-1}\sexpectation{ f(Y_n) ; A_n ; \csexpectationlong{\mathcal{G}_n}{(e^{-\lambda t} - e^{-\lambda \tau_{n+1}}) ; t < \tau_{n+1}}{x}}{x} \\
+&=\lambda^{-1}\sexpectation{ f(Y_n) ; A_n ; e^{-c(Y_n)(t - \tau_{n})} e^{-\lambda t} (\mu_0(Y_n, S) - \mu_\lambda(Y_n, S))}{x} \\
+&=\lambda^{-1}\sexpectation{ f(Y_n) ; A_n ; e^{-c(Y_n)(t - \tau_{n})} e^{-\lambda t} (1 -\frac{c(Y_n)}{\lambda + c(Y_n)})}{x} \\
+&=e^{-\lambda t} \sexpectation{ A_n ; e^{-c(Y_n)(t - \tau_{n})} \frac{f(Y_n)}{\lambda + c(Y_n)}}{x} \\
+\end{align*}
+For the summands of the second term for $k \geq n+1$ we use two applications of Claim \ref{PureJumpTypeConstruction:Computation1}
+\begin{align*}
+&\sexpectation{\int_{\tau_k}^{\tau_{k+1}}  e^{-\lambda u} f(X_u) \, du ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&=\sexpectation{ f(Y_k) \lambda^{-1} (e^{-\lambda \tau_k} - e^{-\lambda \tau_{k+1}}) ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&=\lambda^{-1} \sexpectation{ \csexpectationlong{\mathcal{G}_{n+1}}{f(Y_k) (e^{-\lambda \tau_k} - e^{-\lambda \tau_{k+1}})}{x} ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&=\sexpectation{ e^{-\lambda \tau_{n+1}} \int \frac{f(y)}{\lambda + c(y)} \,  \mu^{k-n-1}_\lambda(Y_{n+1}, dy)  ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&=\sexpectation{ A_n ; \csexpectationlong{\mathcal{G}_{n}} {e^{-\lambda \tau_{n+1}} \int \frac{f(y)}{\lambda + c(y)} \,  \mu^{k-n-1}_\lambda(Y_{n+1}, dy) ;\cap \lbrace t < \tau_{n+1} \rbrace}{x}}{x} \\
+&=\sexpectation{ A_n ; e^{-c(Y_n)(t - \tau_n)} e^{-\lambda t} \int \left [ \int \frac{f(y)}{\lambda + c(y)} \,  \mu^{k-n-1}_\lambda(u, dy) \right] \, \mu_\lambda(Y_n, du)}{x} \\
+&=e^{-\lambda t} \sexpectation{ A_n ; e^{-c(Y_n)(t - \tau_n)} \int \frac{f(y)}{\lambda + c(y)} \,  \mu^{k-n}_\lambda(Y_n, dy)}{x} \\
+\end{align*}
+Putting this all together we get using Claim \ref{PureJumpTypeConstruction:ResolventIdentity}, Claim \ref{PureJumpTypeConstruction:Computation2} and the fact that $A_n \subset \lbrace \tau_n \leq t \rbrace$ 
+\begin{align*}
+&\sexpectation{\int_t^\infty e^{-\lambda u} f(X_u) \, du ; A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x}  \\
+&= e^{-\lambda t} \sexpectation{ A_n ; e^{-c(Y_n)(t - \tau_{n})} \frac{f(Y_n)}{\lambda + c(Y_n)}}{x} +\\
+&\qquad \sum_{k=n+1}^\infty e^{-\lambda t} \sexpectation{ A_n ; e^{-c(Y_n)(t - \tau_n)} \int \frac{f(y)}{\lambda + c(y)} \,  \mu^{k-n}_\lambda(Y_n, dy)}{x} \\
+&=e^{-\lambda t}\sexpectation{ A_n ; e^{-c(Y_n)(t - \tau_n)} ; \sum_{k=0}^\infty \int \frac{f(y)}{\lambda + c(y)} \,  \mu^{k}_\lambda(Y_n, dy)}{x}\\
+&=e^{-\lambda t} \sexpectation{A_n ; R_\lambda f(Y_n) ; e^{-c(Y_n)(t - \tau_n)} }{x} \\
+&=e^{-\lambda t} \sexpectation{A_n  ; R_\lambda f(Y_n); \csprobability{\mathcal{G}_n}{t < \tau_{n+1} }{x}}{x} \\
+&=\sexpectation{e^{-\lambda t} R_\lambda f(Y_n); A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+&=\sexpectation{e^{-\lambda t} R_\lambda f(X_t); A_n \cap \lbrace t < \tau_{n+1} \rbrace}{x} \\
+\end{align*}
+and the claim follows.
+
+Now we show the Markov property for $X_t$.  
+
+\begin{clm}Suppose $f : S \to [0,\infty)$ is a bounded measurable function and $\varphi : [0,\infty) \to \reals$ be a continuous function such that $\lim_{t \to \infty} \varphi(t) = 0$ then
+\begin{align*}
+\csexpectationlong{\mathcal{F}^0_t}{\int_t^\infty \varphi(u) f(X_u) \, du}{x} 
+&= \sexpectation{\int_0^\infty \varphi(u+t) R_\lambda f(X_u) \, du}{X_t}
+\end{align*}
+\end{clm}
+Then for any $\varphi(t) = \sum_{j=1}^n a_j e^{-\lambda_j t}$ with $\lambda_j \geq 0$ and $-\infty < a_j < \infty$ use Claim \ref{PureJumpTypeConstruction:ConditionalExpectationOfExponentials}  and linearity of expecations to see that $\csexpectationlong{\mathcal{F}^0_t}{\int_t^\infty \varphi(u) f(X_u) \, du}{x} = \sexpectation{\int_0^\infty \varphi(u+t) R_\lambda f(X_u) \, du}{X_t}$.  Now let $\varphi : [0,\infty) \to \reals$ be a continuous function such that $\lim_{t \to \infty} \varphi(t) = 0$ then we may extend $\varphi$ to a continuous function $\varphi : [0,\infty] \to \reals$ by defining $\varphi(\infty) = 0$.  By the Stone Weierstrass Theorem \ref{StoneWeierstrassApproximation} 
+we may therefore approximate $\varphi$ uniformly by finite linear combinations of exponentials.  TODO: Show that the uniform approximation allows us to extend to such $\varphi$; to be honest I don't see this yet given that the domain of integration is infinite...
+
+Now for any $s \geq 0$ we may choose continuous compactly supported $\varphi_n$ such that $\varphi_n$ approximate the delta function at $t+s$ e.g.
+\begin{align*}
+\varphi_n(u) = 
+\begin{cases}
+n(u - t - s) & \text{for $t+s \leq u \leq t+s+ \frac{1}{n}$} \\
+n(t+s - u) + 2 & \text{for $t+s+ \frac{1}{n} \leq u \leq t+ s+ \frac{2}{n}$} \\
+0 & \text{otherwise}
+\end{cases}
+\end{align*}
+By the right continuity of $X_t$ for almost all $\omega \in \Omega$ there is an $N_\omega$ such that $\varphi_n(u) f(X_u) = f(X_{t+s}) \varphi_n(u)$ and $\varphi_n(u+t) f(X_u) = \varphi_n(u+t) f(X_s)$ for all $n \geq N_\omega$.  In particular $\int_t^\infty \varphi_n(u) f(X_u) \, du \toas f(X_{t+s})$  and $\int_0^\infty \varphi_n(u+t) f(X_u) \, du \toas f(X_s)$ and by bounded 
+convergence we get
+\begin{align*}
+\csexpectationlong{\mathcal{F}^0_t}{f(X_{t+s})}{x} 
+&=\lim_{n \to \infty} \csexpectationlong{\mathcal{F}^0_t}{\int_t^\infty \varphi_n(u) f(X_u) \, du}{x} \\
+&=\lim_{n \to \infty} \sexpectation{\int_0^\infty \varphi_n(u+t) f(X_u) \, du}{X_t} \\
+&=\sexpectation{f(X_s)}{X_t} \\
+\end{align*}
+
+Note that to extend the above construction to account for absorbing states we need to change the definition of our probability space.
+Instead of constructing a probability measure on the set of sequences $((x_0, t_0), (x_1, t_1), \dotsc) \in S \times [0,\infty)$ as our starting point
+we need to account for the fact that we may have only finitely many jumps.  This is done by allowing $t_n$ to be infinite with the provisions that
+when $t_n$ is infinite we must have $x_n = \Delta$ and that $t_{m}$ must be infinite for all $m \geq n$.  With this definition we should be able to relax
+the restriction that $c(x) > 0$.  We should look to see if we can prove that $\probability {\tau_n = \infty, Y_n = \Delta} = \probability{\tau_n = \infty}$ and
+$\probability {\tau_n = \infty, \tau_{n+1} = \infty} = \probability{\tau_n = \infty}$ after applying Ionescu-Tulcea.
 \end{proof}
 
 TODO: Kolmogorov Backward equation.

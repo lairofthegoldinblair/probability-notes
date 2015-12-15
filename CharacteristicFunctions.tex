@@ -256,7 +256,7 @@ the triple integral
 \int \int \int e^{-\frac{\epsilon^2 u^2}{2}} f(x) e^{iux} e^{-iuy}
 \, d\mu(y) \, dx \, du
 \end{align*}
-Note that by Tonneli's Theorem, 
+Note that by Tonelli's Theorem, 
 \begin{align*}
 \int \int \int \abs{ e^{-\frac{\epsilon^2 u^2}{2}} f(x) e^{iux} e^{-iuy}}
 \, d\mu(y) \, dx \, du &= \int \int \int e^{-\frac{\epsilon^2 u^2}{2}} \abs{ f(x)} 
@@ -458,8 +458,8 @@ $\varphi_\xi(0) = C = 1$ and we are done.
 
 To extend the previous example to arbitrary normal distributions, we
 prove the following result that has independent interest.
-\begin{lem}\label{CharacteristicFunctionOfAffineTransform}Let $\xi$ be a random vector in $\reals^N$ then for $a \in
-  \reals^M$ and $A$ an $M \times N$ matrix, we have
+\begin{lem}\label{CharacteristicFunctionOfAffineTransform}Let $\xi$ be a random vector in $\reals^d$ then for $a \in
+  \reals^r$ and $A$ an $r \times d$ matrix, we have
 \begin{align*}
 \varphi_{a + A\xi}(u) &= e^{i\langle a, u \rangle} \varphi_\xi(A^* u)
 \end{align*}
@@ -616,20 +616,20 @@ It is also useful to call out a useful corollary of the continuity
 theorem that allows one to characterize convergence in distribution of
 random vectors by considering one dimensional projections.
 \begin{cor}[Cramer Wold Device]\label{CramerWoldDevice}Let $\xi, \xi_1, \xi_2, \dotsc$ be 
-  random vectors in $\reals^N$.  Then $\langle c, \xi_n \rangle
-  \todist \langle c, \xi \rangle$ for all $c \in \reals^N$ if and only
+  random vectors in $\reals^d$.  Then $\langle c, \xi_n \rangle
+  \todist \langle c, \xi \rangle$ for all $c \in \reals^d$ if and only
   if $\xi_n \todist \xi$.
 \end{cor}
 \begin{proof}
 Simply note that for all random vectors $\xi$,
-$c \in \reals^N$ and $x \in \reals$
+$c \in \reals^d$ and $x \in \reals$
 \begin{align*}
 \varphi_{\langle c , \xi\rangle}(x) &= \expectation{e^{i x \langle
     c , \xi \rangle} }= \varphi_\xi(x c)
 \end{align*}
  
 Therefore if $\langle c, \xi_n \rangle
-  \todist \langle c, \xi \rangle$ for all $c \in \reals^N$ then by the
+  \todist \langle c, \xi \rangle$ for all $c \in \reals^d$ then by the
   Glivenko-Levy Continuity Theorem \ref{GlivenkoLevyContinuity}
 we know that 
 \begin{align*}
@@ -639,7 +639,7 @@ we know that
 \end{align*}
 and applying the Theorem again we conclude that $\xi_n \todist \xi$.  In
 a completely analogous way, if we assume that $\xi_n \todist \xi$ then
-for all $c \in \reals^N$ and $x\in \reals$, then
+for all $c \in \reals^d$ and $x\in \reals$, then
 \begin{align*}
 \lim_{n \to \infty} \varphi_{\langle c, \xi_n \rangle}(x) &= \lim_{n \to \infty}
 \varphi_{\xi_n}(x c) = \varphi_{\xi}(x c) = \varphi_{\langle c, \xi \rangle}(x)
@@ -676,11 +676,11 @@ compact in the vague topology on the locally finite measures on $\reals^n$.
 \section{Gaussian Random Vectors and the Multidimensional Central
   Limit Theorem}
 There is a version of the Central Limit Theorem for random vectors in
-$\reals^N$ in which Gaussian distributions also occur.  The nature of
+$\reals^d$ in which Gaussian distributions also occur.  The nature of
 Gaussians in this context is a bit more subtle than in the one
 dimensional case.  We lead with a definition
-\begin{defn}A random vector $\xi$ in $\reals^N$ is said to be a \emph{Gaussian random
-  vector} is for every $a \in \reals^N$, the random variable $\langle
+\begin{defn}A random vector $\xi$ in $\reals^d$ is said to be a \emph{Gaussian random
+  vector} is for every $a \in \reals^d$, the random variable $\langle
   a,\xi \rangle$ is a univariate normal or is almost surely 0 (which
   we take as the degenerate univariate normal $N(0,0)$).
 \end{defn}
@@ -690,9 +690,9 @@ sometimes used as the definition of a Gaussian random vector; the only
 real benefit to the definition we've given is that it is more
 elementary.
 \begin{thm}\label{GaussianVectorCharacteristicFunction}A random vector
-  $\xi$ in $\reals^N$ is Gaussian if and only if there is a $\mu \in
-  \reals^N$ and a symmetric positive semi-definite matrix $Q \in
-  \reals^{N\times N}$ such that 
+  $\xi$ in $\reals^d$ is Gaussian if and only if there is a $\mu \in
+  \reals^d$ and a symmetric positive semi-definite matrix $Q \in
+  \reals^{d\times d}$ such that 
 \begin{align*}
 \varphi_\xi(u) &= e^{i\langle u, \mu\rangle - \frac{1}{2}\langle u, Qu
 \rangle}
@@ -703,7 +703,7 @@ $N(\mu, Q)$.
 \end{thm}
 \begin{proof}
 First we assume that we have a characteristic function of the above
-form.  Let $a \in \reals^N$ and consider the random variable $\langle
+form.  Let $a \in \reals^d$ and consider the random variable $\langle
 a, \xi \rangle$.  Notice that $\langle a, \xi \rangle = a^* \xi$ is a
 special case of an affine transformation so we
 can apply Lemma
@@ -718,8 +718,8 @@ we see that $\langle a, \xi \rangle$ is $N(\langle
   this shows that $\xi$ is Gaussian.
 
 Now we assume that $\xi$ is Gaussian.  Let $\mu = (\mu_1, \dots,
-\mu_N) = \expectation{\xi}$ and let $Q = \covariance{\xi}$.  Pick $a
-\in \reals^N$ and note that 
+\mu_d) = \expectation{\xi}$ and let $Q = \covariance{\xi}$.  Pick $a
+\in \reals^d$ and note that 
 \begin{align*}
 \expectation{\langle a,\xi \rangle} &= \langle a, \mu \rangle \\
 \variance{\langle a,\xi \rangle} &= \expectation{(\langle a,\xi
@@ -749,12 +749,12 @@ function must be equal (Theorem
 construction that $\mu = \expectation{\xi}$ and $Q = \covariance{\xi}$.
 \end{proof}
 
-\begin{examp}Let $\xi_1, \dots, \xi_N$ be independent random variables
+\begin{examp}Let $\xi_1, \dots, \xi_d$ be independent random variables
   with $\xi_i$ being normal $N(\mu_i, \sigma_i^2)$.  Then $\xi =
-  (\xi_1, \dots, \xi_N)$ is a Gaussian random vector.  In fact, if we
-  let $\mu = (\mu_1, \dots, \mu_N)$ and 
+  (\xi_1, \dots, \xi_d)$ is a Gaussian random vector.  In fact, if we
+  let $\mu = (\mu_1, \dots, \mu_d)$ and 
 \begin{align*}
-Q = \diag(\sigma_1^2, \dots, \sigma_N^2)
+Q = \diag(\sigma_1^2, \dots, \sigma_d^2)
 \end{align*}
 then $\xi = N(\mu, Q)$.
 \end{examp}
@@ -817,7 +817,7 @@ functions allows us to see that almost sure limits of Gaussian random vectors ar
 Gaussian random vectors.  We will need this result when we construct
 Brownian motion later on.
 \begin{lem}\label{LimitOfGaussianRandomVectors}Let $\xi_1, \xi_2, \dots$ be a sequence of random
-  vectors in $\reals^N$ with $\xi_n$ an $N(\mu_n, C_n)$ Gaussian
+  vectors in $\reals^d$ with $\xi_n$ an $N(\mu_n, C_n)$ Gaussian
   random vector.  Suppose that $\xi$ is a random vector such
   that $\xi_n$ converges to $\xi$ almost surely.  If $\lim_{n \to
     \infty} \expectation{\xi_n} = \mu$ and $\lim_{n \to \infty}
@@ -898,11 +898,11 @@ are done.
 \section{Laplace Transforms}
 It turns out to be useful to specialize characteristic functions for
 the case in which we have a measure that is supported on the positive
-orthant $\reals^N_+$.  
+orthant $\reals^d_+$.  
 
-\begin{defn}Let $\mu$ be a probability measure on $\reals^N_+$. Its
+\begin{defn}Let $\mu$ be a probability measure on $\reals^d_+$. Its
   \emph{Laplace Transform} is denoted $\tilde{\mu}$ and is the function on
-  $\reals^N_+$ defined by 
+  $\reals^d_+$ defined by 
 \begin{align*}
 \tilde{\mu}(u) &= \int e^{-\langle u,x \rangle} d \mu(x)
 \end{align*}
@@ -911,14 +911,14 @@ orthant $\reals^N_+$.
 Next we observe that the behavior of the Laplace transform near zero
 corresponds to the behavior of the measure near infinity.
 \begin{lem}\label{LaplaceTailEstimate}Let $\mu$ be a probability
-  measure on $\reals^N_+$ and let $\mathds{1}=(1, \dotsc, 1) \in
-  \reals^N_+$.  Then for each $r > 0$ we have
+  measure on $\reals^d_+$ and let $\mathds{1}=(1, \dotsc, 1) \in
+  \reals^d_+$.  Then for each $r > 0$ we have
 \begin{align*}
 \mu\lbrace \abs{x} \geq r\rbrace &\leq 2(1 - \tilde{\mu}(\mathds{1}/r))
 \end{align*}
 \end{lem}
 \begin{proof}
-In order to see how simple the estimate is, first assume that $N=1$.
+In order to see how simple the estimate is, first assume that $d=1$.
 Observe that because $e^{-ux}$ is a decreasing function of $x$ for $u
 > 0$ we have $e^{-ux}  \leq e^{-1} < 1/2$ for all $x
 \geq 1/u$ and $e^{-ux} \leq 1$ for all $x \geq 0$.  Therefore for a fixed $r > 0$,
@@ -929,15 +929,15 @@ d\mu(x)  \\
 &\leq \mu[0,1/r) + \frac{1}{2} \mu[1/r, \infty) = 1 - \frac{1}{2} \mu[1/r, \infty) 
 \end{align*}
 
-To extend to the case of general $N$, we need a little bit more
+To extend to the case of general $d$, we need a little bit more
 information.  Note that minimum value of
-$\langle \mathds{1}, x\rangle = \sum_{j=1}^N x_j$ on $\reals^N_+ \cap \lbrace \abs{x} \geq u \rbrace$ is
+$\langle \mathds{1}, x\rangle = \sum_{j=1}^d x_j$ on $\reals^d_+ \cap \lbrace \abs{x} \geq u \rbrace$ is
 $u$ (it occurs at the points $(0, \dotsc, 0,u,0, \dotsc,0)$).  TODO:
 Show this...
 Therefore we know that for all fixed $r \in \reals_+$ we have $e^{-\langle r
-\mathds{1}, x \rangle} \leq e^{-1} < 1/2$ for all $x \in \reals^N_+$
+\mathds{1}, x \rangle} \leq e^{-1} < 1/2$ for all $x \in \reals^d_+$
 with $\abs{x} \geq 1/r$.  Now we can playback the same argument as the
-case $N=1$:
+case $d=1$:
 \begin{align*}
 \tilde{\mu}(r \cdot \mathds{1}) &= \int e^{-r\langle \mathds{1}, x \rangle}
 \, d\mu(x) \\
@@ -952,10 +952,10 @@ d\mu(x)  \\
 
 \begin{lem}\label{LaplaceEquicontinuityAndTightness}Let $\lbrace
   \mu_\alpha \rbrace$
-  be a family of probability measures on $\reals^N_+$, then the family
+  be a family of probability measures on $\reals^d_+$, then the family
   $\lbrace \mu_\alpha \rbrace$ is tight if and only if the family
   $\lbrace \tilde{\mu}_\alpha \rbrace$ is equicontinuous at $0$.  If
-  this is true then $\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on all of $\reals^N_+$.
+  this is true then $\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on all of $\reals^d_+$.
 \end{lem}
 \begin{proof}
 First we assume that the family $\lbrace \mu_\alpha \rbrace$ is
@@ -993,12 +993,12 @@ $0 < \epsilon < 2$,
 &\leq \epsilon/2 + 
 \probability{\abs{\xi_\alpha } \geq \frac{\epsilon}{2\abs{u-v}}} \\ 
 \end{align*}
-Thus by tightness for all $u,v \in \reals^N_+$ with $\abs{u-v}$
+Thus by tightness for all $u,v \in \reals^d_+$ with $\abs{u-v}$
 sufficiently small we have $\abs{\tilde{\mu}_\alpha(u) -
   \tilde{\mu}_\alpha(v)} < \epsilon$ uniformly in $\alpha$.  Thus we see that
 the family
 $\lbrace \tilde{\mu}_\alpha \rbrace$ is uniformly equicontinuous on
-all of $\reals^N_+$ and in particular at $0$.
+all of $\reals^d_+$ and in particular at $0$.
 \end{proof}
 
 The following result is analogous to the Glivenko-Levy Continuity
@@ -1008,7 +1008,7 @@ converges to a probability measure is critical and we will return to the
 question of how to remove the assumption (using the notion of tightness) later on.
 \begin{thm}[Glivenko-Levy Continuity
   Theorem]\label{GlivenkoLevyContinuityLaplace}If $\mu, \mu_1, \mu_2, \dots$
-  are probability measures on $(\reals^N_+, \mathcal{B}(\reals^N_+))$,
+  are probability measures on $(\reals^d_+, \mathcal{B}(\reals^d_+))$,
   then $\mu_n$ converge weakly to $\mu$ if and only if $\tilde{\mu}_n(u)$
   converge to $\tilde{\mu}(u)$ pointwise.  Moreover if this is true
   then the convergence is uniform on bounded sets.
@@ -1020,23 +1020,23 @@ is bounded and continuous we know that $\tilde{\mu}_n(u) \to
 \ref{WeakConvergenceImpliesTight} we know that the family $\mu_n$
 is tight and therefore by Lemma
 \ref{LaplaceEquicontinuityAndTightness} it is uniformly equicontinuous
-on $\reals^N_+$.  this convergence is uniform on
+on $\reals^d_+$.  this convergence is uniform on
 every bounded set.
 
 Now we assume that $\tilde{\mu}_n(u)$converges to $\tilde{\mu}(u)$ for
-every $u \in \reals^N_+$.  We now want to approximate general bounded
+every $u \in \reals^d_+$.  We now want to approximate general bounded
 continuous functions by functions $e^{-\langle u,x \rangle}$ in order
-derive weak convergence.  To do this, we will consider $[0,\infty]^n$
+derive weak convergence.  To do this, we will consider $[0,\infty]^d$
 which is a compact Hausdorff space and therefore amenable to
 application of the Stone Weierstrass Theorem
 \ref{StoneWeierstrassApproximation}.  To use an approximation of
-functions on $[0,\infty]^n$ derive an effective approximation on
-$\reals^N_+$ is going to require that we are able to control behavior
+functions on $[0,\infty]^d$ derive an effective approximation on
+$\reals^d_+$ is going to require that we are able to control behavior
 of the measures $\mu_n$ at infinity and therefore we first show that
 $\mu_n$ is a tight family.  Suppose $\epsilon > 0$ is given and use
 the continuity of $\tilde{\mu}(u)$ and the fact that
-$\tilde{\mu}(0)=1$ to find $r_0 > 0$ such that $1 - \mu(\mathds{1}/r_0) <
-\epsilon/2$.  By pointwise convergence $\mu_n(\mathds{1}/r_0) \to \mu(\mathds{1}/r_0)$ we
+$\tilde{\mu}(0)=1$ to find $r_0 > 0$ such that $1 - \tilde{\mu}(\mathds{1}/r_0) <
+\epsilon/2$.  By pointwise convergence $\tilde{\mu}_n(\mathds{1}/r_0) \to \tilde{\mu}(\mathds{1}/r_0)$ we
 can find an $N > 0$ such that $1 - \tilde{\mu_n}(\mathds{1}/r_0) < \epsilon$ for all $n
 \geq N$ and therefore by Lemma \ref{LaplaceTailEstimate}, $\mu_n(\abs{x} \geq r)  \leq 1 - \mu_n(\mathds{1}/r_0) <
 \epsilon$.  For each $n = 1, \dotsc, N-1$ by continuity of measure  we
@@ -1046,25 +1046,25 @@ r_{N-1}$ we get $\mu_n\lbrace \abs{x} \geq r \rbrace <
 \epsilon$ for all $n$ and we have shown $\mu_n$ is tight.
 
 Suppose that $\epsilon > 0$ is given and
-pick $r > 0$ such that $\mu_n(\reals^N_+ \setminus B(0, r)) <
-\epsilon$ and $\mu(\reals^N_+ \setminus B(0, r)) < \epsilon$.
+pick $r > 0$ such that $\mu_n(\reals^d_+ \setminus B(0, r)) <
+\epsilon$ and $\mu(\reals^d_+ \setminus B(0, r)) < \epsilon$.
 
 Having shown that $\mu_n$ is tight we return to the task of creating
 an approximation.  Since $e^{-\langle u,x \rangle}$
 has limits (either $0$ or $1$) as $x \to \infty$ we can extend each
 such function to
-a continuous function on $[0,\infty]^n$.  Note also that the family $e^{-\langle k, x
-  \rangle}$ for $k \in \integers^n_+$ contains the constant functions
+a continuous function on $[0,\infty]^d$.  Note also that the family $e^{-\langle k, x
+  \rangle}$ for $k \in \integers^d_+$ contains the constant functions
 and separates points therefore we can apply the Stone Weierstrass
 Theorem to conclude that any
-continuous function on $[0,\infty]^n$ can be uniformly approximated by
+continuous function on $[0,\infty]^d$ can be uniformly approximated by
 a linear combination of $e^{-\langle k, x  \rangle}$. 
 
-Given a bounded continuous function $f : \reals^N_+ \to \reals$ such
+Given a bounded continuous function $f : \reals^d_+ \to \reals$ such
 that $\abs{f(x)} \leq M$ we
-apply a continuous cutoff $1 - d(x,B(0,r)) \vee 0$ to create a function $\hat{f} : \reals^N_+
-\to \reals$ such that $\hat{f}(x) \leq M$ for all $x \in \reals^N_+$, $f(x) = \hat{f}(x)$ for $x \in B(0,r)$ and
-$\hat{f}(x) = 0$ for $\abs{x} > 2r$.  Note that for every $n$ we have
+apply a continuous cutoff $1 - d(x,B(0,r)) \vee 0$ to create a function $\hat{f} : \reals^d_+
+\to \reals$ such that $\hat{f}(x) \leq M$ for all $x \in \reals^d_+$, $f(x) = \hat{f}(x)$ for $x \in B(0,r)$ and
+$\hat{f}(x) = 0$ for $\abs{x} > r+1$.  Note that for every $n$ we have
 \begin{align*}
 \int \abs{f - \hat{f}} \, d\mu_n &= 
 \int_{\abs{x} < r} \abs{f -  \hat{f}} \, d\mu_n + 
@@ -1073,10 +1073,10 @@ $\hat{f}(x) = 0$ for $\abs{x} > 2r$.  Note that for every $n$ we have
 and similarly for $\mu$.
 
 The function $\hat{f}$ can be
-extended by zero to define a continuous function on $[0,\infty]^n$ and
+extended by zero to define a continuous function on $[0,\infty]^d$ and
 therefore we can find some finite linear combination $g = \sum_k c_k
 e^{-\langle k, x \rangle}$ such that $\abs{\hat{f}(x) - g(x)}<
-\epsilon$ for all $x \in [0, \infty]^n$ so \emph{a fortiori} for all $x \in \reals^N_+$.  Therefore
+\epsilon$ for all $x \in [0, \infty]^d$ so \emph{a fortiori} for all $x \in \reals^d_+$.  Therefore
 \begin{align*}
 &\abs{\int f \, d\mu_n - \int f \, d \mu} \\
 &\leq \int \abs{f - \hat{f}}
@@ -1093,14 +1093,14 @@ over $k$ is finite) and then let $\epsilon \to 0$.
 
 The Cramer-Wold device for Laplace transforms is a simple corollary.
 \begin{cor}[Cramer Wold Device]\label{CramerWoldDeviceLaplace}Let $\xi, \xi_1, \xi_2, \dotsc$ be 
-  random vectors in $\reals^N_+$.  If $\langle c, \xi_n \rangle
-  \todist \langle c, \xi \rangle$ for all $c \in \reals^N_+$ then it
+  random vectors in $\reals^d_+$.  If $\langle c, \xi_n \rangle
+  \todist \langle c, \xi \rangle$ for all $c \in \reals^d_+$ then it
   follows that $\xi_n \todist \xi$.
 \end{cor}
 \begin{proof}
 Since  $\langle c, \xi_n \rangle  \todist \langle c, \xi \rangle$ we
 know that that $\expectation {e^{-\langle c, \xi_n \rangle } } \to
-\expectation{e^{-\langle c, \xi \rangle}}$ for all $c \in \reals^N_+$
+\expectation{e^{-\langle c, \xi \rangle}}$ for all $c \in \reals^d_+$
 by definition of weak convergence
 and therefore by Theorem \ref{GlivenkoLevyContinuityLaplace} we
 conclude $\xi_n \todist \xi$.

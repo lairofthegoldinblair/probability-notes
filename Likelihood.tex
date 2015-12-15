@@ -20,7 +20,7 @@ TODO:
 As a quick motivation for where maximum likelihood estimation comes
 from, consider the following measure of distance between two
 probability distributions that was motivated by information theory.
-\begin{defn}Suppose $\mu$ and $\nu$ such that $\mu << \nu$.  The the \emph{Kullback-Liebler divergence} or \emph{relative
+\begin{defn}Suppose $\mu$ and $\nu$ such that $\mu \ll \nu$.  The the \emph{Kullback-Liebler divergence} or \emph{relative
     entropy} of $\mu$ and $\nu$ is defined as
 \begin{align*}
 \kldiv{\mu}{\nu} &= \sexpectation{\log \frac{d\mu}{d\nu}}{\mu}
@@ -32,7 +32,7 @@ convention $\kldiv{\mu}{\nu} = \infty$.
 \begin{examp}
 Suppose $\mu$ and $\nu$ are probability measures that are both
 absolutely continuous with respect to a third measure $\lambda$ and
-furthermore $\mu << \nu$.  Then we may write $\mu = f \cdot \lambda$
+furthermore $\mu \ll \nu$.  Then we may write $\mu = f \cdot \lambda$
 and $\nu = g \cdot \lambda$ where we assume that $\lambda$- almost
 surely $g=0$ implies $f=0$ (otherwise the event $A=\lbrace g=0; f>0 \rbrace$
 satisfies $\nu(A)=0$ but $\mu(A)\neq 0$).  In this case we can make sense of the
@@ -45,6 +45,19 @@ In this case we get the formula
 that the user may have encountered before.
 \end{examp}
 
+\begin{examp}\label{RelativeEntropyFiniteSampleSpace}
+Suppose $\mu$ and $\nu$ are probability measures on a finite state
+space $\Omega = \lbrace a_1, \dotsc, a_n \rbrace$.  Let $\mu_j =
+\mu(a_j)$ and $\nu_j = \nu(a_j)$ for $j=1, \dotsc, n$.  Both $\mu$ and
+$\nu$ are absoutely continuous with respect to the counting measure on
+$\Omega$.  Furthermore $\mu \ll \nu$ if and only if $\nu_j = 0$
+implies $\mu_j=0$.  From the previous example  
+\begin{align*}
+\kldiv{\mu}{\nu} &= \sum_{j=1}^n \mu_j \log(\frac{\mu_j}{\nu_j}) 
+\end{align*}
+where again we have the convention that $\log(\frac{0}{0}) = 0$.
+\end{examp}
+
 \begin{examp}One interpretation of relative entropy is that is the
   number of bits of information that one gains updating ones that
   belief that a probability distribution is $\nu$ to a belief that a
@@ -55,7 +68,7 @@ that the user may have encountered before.
   this case you believe that the distribution is $\nu(H) = \nu(T) =
   1/2$.  If someone tells you that the coin is a trick coin that only
   lands with heads up then you change belief to $\mu(H) = 1$ and
-  $\mu(T)=0$.  It is easy to see that $\mu <<  \nu$ and using the formula for relative entropy in terms of
+  $\mu(T)=0$.  It is easy to see that $\mu \ll  \nu$ and using the formula for relative entropy in terms of
   densities in the previous example we compute
 \begin{align*}
 \kldiv{\mu}{\nu} &= \log(\frac{1}{1/2}) \cdot 1 + \log
@@ -88,7 +101,7 @@ particularly in the machine learning literature.
   of measure zero with respect to $\nu$.
 \end{lem}
 \begin{proof}
-It suffices to handle the case in which $\nu << \mu$.  In this case we
+It suffices to handle the case in which $\nu \ll \mu$.  In this case we
 can simply use the strict convexity of $x \log x$ and apply Jensen's
 inequality and the definition of the Radon-Nikodym derivative to see
 \begin{align*}

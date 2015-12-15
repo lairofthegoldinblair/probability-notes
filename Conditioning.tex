@@ -1471,8 +1471,15 @@ the form $j^{-1}B$ for some Borel $B \subset A$ (Lemma
 \end{align*}
 \end{proof}
 
-TODO:  Tie this back to the independent case
-Lemma \ref{DisintegrationIndependentLaws}.
+The following theorem is an absolutely essential tool for computing
+conditional expectations.  Suppose we are given a random variable that is a real valued function applied
+to  a pair of random elements $f(\xi, \eta)$.   In the case that $\xi$ and $\eta$ are indendent we applied the Expectation
+Rule and Fubini's Theorem in Lemma \ref{DisintegrationIndependentLaws} to calculate the expected value of $f(\xi, \eta)$ as an
+iterated integral.  Naively we might expect that in the general case we can calculate the expectation
+of $f$ conditioned on $\eta$ by fixing the value of $\eta$ and then taking an ``appropriate'' expectation'.  The 
+appropriate notion of expectation is given by integration against the distribution of $\xi$ conditional on $\eta$.
+
+TODO: Show how this works in the discrete case
 
 \begin{thm}\label{Disintegration}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable
   spaces and let $\xi$ be a random element in $S$ and $\eta$ be a

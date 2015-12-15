@@ -381,6 +381,23 @@ The reason this definition is of interest is the following.
 \end{align*}
 \end{examp}
 
+We also record the following example of a class of bounded dissipative operators.
+\begin{examp}\label{BoundedTranslationDissipative}Let $A : X \to X$ be a bounded linear operator then for any $c \geq \norm{A}$ the operator $A - c$ is dissipative.  This follows from the triangle inequality
+\begin{align*}
+\norm{(\lambda - (A - c))v} &= \norm{(\lambda + c) v} - \norm{A v} \geq \norm{(\lambda + c) v} - \norm{A} \norm{v}  \geq \lambda \norm{v}
+\end{align*}
+\end{examp}
+
+It is also useful to note that the set of dissipative operators is a cone.
+\begin{examp}\label{DissipativeOperatorsCone}
+If $A$ is dissipative and $c > 0$ then $c A$ is dissipative since 
+\begin{align*}
+\norm{(\lambda - c A) v} &= \norm{(\lambda/c - A) c v} \geq \lambda/c \norm{cv} = \lambda \norm{v}
+\end{align*}
+\end{examp}
+
+Now we turn to less trivial matters.  It turns out that the property of being dissipative is a key part of the characterization of generators of strongly continuous semigroups.  As a step in the direction of proving such a result we first study the resolvent set properties of dissipative operators.
+
 \begin{prop}\label{DissipativeAndClosed}Let $A$ be dissipative and $\lambda > 0$ then $A$ is closed if and only if $\range{\lambda - A}$ is closed.  Thus if $A$ is dissipative and $\range{\lambda - A}$ is closed for a single value of $\lambda > 0$ it is closed for all $\lambda > 0$.
 \end{prop}
 \begin{proof}
@@ -1285,20 +1302,20 @@ Now let $m \to \infty$ and (i) follows.
 \end{proof}
 
 TODO: Compare Kallenberg and EK accounts of the following theorem and understand the differences and similarities.  The main difference is that the Theorem in Kallenberg is really
-a combination of two theorems in EK.  The first theorem is Theorem \ref{KurtzSovaSemigroupConvergence} and simply addresses equivalent conditions for convergence of sccs.  The second theorem is what we have as Theorem \ref{KurtzMackevicius} below and shows that Feller semigroup convergence implies weak convergence of Markov processes (using the standard FDD and tightness approach).  EK and Kallenberg use the same argument to show FDD convergence whereas Kallenberg uses the Aldous criterion directly but EK use a more sophisticated argument for tightness using the martingale property (which may ultimately boil down to the Aldous criterion).  Also EK are careful to prove the Theorem in such a way that the existence of $X$ is not assumed but rather it is derived whereas Kallenberg has already proved that a cadlag $X$ may be created from $T_t$.
+a combination of two theorems in EK.  The first theorem is Theorem \ref{KurtzSovaSemigroupConvergence} and simply addresses equivalent conditions for convergence of sccs.  The second theorem is what we have as Theorem \ref{KurtzMackevicius} below and shows that Feller semigroup convergence implies weak convergence of Markov processes (using the standard FDD and tightness approach).  EK and Kallenberg use the same argument to show FDD convergence whereas Kallenberg uses the Aldous criterion directly but EK use a more sophisticated argument for tightness using the martingale property (which may ultimately boil down to the Aldous criterion).  Also EK are careful to prove the Theorem in such a way that the existence of cadlag $X$ is not assumed but rather it is derived whereas Kallenberg has already proved that a cadlag $X$ may be created from $T_t$ and thus may appeal to the strong Markov property in showing the Aldous criterion is satisfied.
 
 \begin{thm}\label{KurtzMackevicius}Let $(S,r)$ be a locally compact and separable metric space and let $X^n$ for $n \in \naturals$ be
 cadlag Feller processes in $S$ with semigroup $T_{n,t}$ on $C_0(S)$ respectively.  Suppose that $T_t$ is a Feller semigroup on $C_0(S)$ and
 \begin{align*}
 \lim_{n \to \infty} T_{n,t} f = T_t f \text{ for all $f \in C_0(S)$ and $t \geq 0$}
 \end{align*}
-If the distributions of $X^n(0)$ converges to a limit $\nu \in \mathcal{P}(S)$ then there exists a cadlag Feller process $X$ which semigroup
+If the distributions of $X^n(0)$ converges to a limit $\nu \in \mathcal{P}(S)$ then there exists a cadlag Feller process $X$ with semigroup
 $T_t$ and initial distribution $\nu$ and $X^n \todist X$.
 \end{thm} 
 \begin{proof}
 For $n \in \naturals$ let $A_n$ be the generator of $T_{n,t}$.
 
-First we assume that $S$ is compact.  
+First we assume that $S$ is compact and that the $T_{n,t}$ and $T_t$ are conservative.  TODO: Remove this assumption.
 
 \begin{clm} For all $m \in \integers_+$, $0=t_0 < t_1 < \dotsb < t_m$ and $f_i \in C(S)$ for $i=0, \dotsc, m$ we have
 \begin{align*}
@@ -1323,19 +1340,179 @@ where in the third line we have the fact that $T_{n,t} f$ converges to $T_t f$  
 \end{align*}
 and in the fourth line applied the induction hypothesis to the continuous functions $f_0, \dotsc, f_{m-2}, f_{m-1} T_{t_m-t_{m-1}} f_m$.
 
-Because $S$ is separable we know that the finite dimensional distributions of $X^n$ converge to those of $X$.  (TODO: prove this; basically we use induction and the standard approximation of indicators by continuous functions to show that $\lim_{n \to \infty} \probability{(X^n_{t_0}, \dotsc, X^n_{t_m}) \in A_1 \times \dotsb \times A_m}$ and then use separability of $S$ to conclude that we have a generating $\pi$-system and therefore monotone classes apply).
+Because $S$ is separable we know that the finite dimensional distributions of $X^n$ converge to those of $X$.  (TODO: prove this; basically we use induction and the standard approximation of indicators by continuous functions to show that $\lim_{n \to \infty} \probability{(X^n_{t_0}, \dotsc, X^n_{t_m}) \in A_1 \times \dotsb \times A_m}$ and then use separability of $S$ to conclude that we have a generating $\pi$-system and monotone classes apply).
 
-Now we need to show tightness of the family $X^n$.  We appeal to the Aldous criterion so we must show that for every bounded sequence of optional times $\tau_n$ and deterministic sequence $d_n$ such that $\lim_{n \to \infty} d_n = 0$ we have $r(X^n_{\tau_n}, X^n_{\tau_n + d_n}) \toprob 0$.
-TODO: Finish
+Now we need to show tightness of the family $X^n$.  We appeal to the
+Aldous criterion so we must show that for every bounded sequence of
+optional times $\tau_n$ and deterministic sequence $\delta_n$ such
+that $\lim_{n \to \infty} \delta_n = 0$ we have $r(X^n_{\tau_n},
+X^n_{\tau_n + \delta_n}) \toprob 0$.  It suffices to show that every subsequence $N^\prime \subset \naturals$ has a futher
+subsequence $N^{\prime \prime} \subset N^{\prime}$ such that $r(X^n_{\tau_n},X^n_{\tau_n + \delta_n}) \toprob 0$ along $N^{\prime \prime}$ (for then
+we can use Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence} to find yet another subsequence $N^{\prime \prime \prime} \subset N^{\prime \prime}$ such
+that $r(X^n_{\tau_n},X^n_{\tau_n + \delta_n}) \toas 0$ along $N^{\prime \prime \prime}$ and using Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence} in the
+opposite direction we conclude that $r(X^n_{\tau_n},X^n_{\tau_n + \delta_n}) \toprob 0$; alternatively just note that convergence in probability is convergence with respect to the
+Ky Fan metric).
 
-TODO: Modify the argument to look like EK and in this way get a different proof of the Kinney regularization.
+Let $\nu_n = \mathcal{L}(X^n_{\tau_n})$ for $n \in \naturals$.  Then
+by compactness of $S$ the family $\nu_n$ is automatically tight and therefore relatively compact by Prohorov's Theorem \ref{Prohorov}.  Given any 
+subsequence $N^\prime$ then there is a further subsequence $N^{\prime \prime}$ and a probability measure $\nu$ such that $\nu_n \todist \nu$.  In what follows we
+implicit working along the subsequence $N^{\prime \prime}$ and mention it no further.
+
+Let $f$ and $g$ be continuous functions on $S$ then since $\delta_n$ converges it is bounded and by Theorem \ref{KurtzSovaSemigroupConvergence} and strong continuity of $T$ we have
+\begin{align*}
+\lim_{n \to \infty} \norm{T_{n, \delta_n} g - g} &\leq \lim_{n \to \infty} \left[ \norm{T_{n, \delta_n} g - T_{\delta_n} g} + \norm{T_{\delta_n} g - g} \right ] \\ 
+&\leq \lim_{n \to \infty} \sup_{0 \leq h \leq \sup_n \delta_n} \norm{T_{n,h} g - T_{h} g} + \lim_{n \to \infty}\norm{T_{\delta_n} g - g} = 0
+\end{align*}
+and by the Strong Markov Property Theorem \ref{StrongMarkovFellerProcess} and Proposition \ref{TransitionSemigroupAsExpectation}
+\begin{align*}
+\expectation{f(X^n_{\tau_n}) g(X^n_{\tau_n+\delta_n})} &= \expectation{\cexpectationlong{\mathcal{F}_{\tau_n}}{f(X^n_{\tau_n}) g(X^n_{\tau_n+\delta_n})}} \\
+&= \expectation{\sexpectation{f(X^n_{0}) g(X^n_{\delta_n})}{X^n_{\tau_n}}} \\
+&= \expectation{\sexpectation{f(X^n_{0}) \cexpectationlong{X^n_0}{g(X^n_{\delta_n})}}{X^n_{\tau_n}}} \\
+&= \expectation{\sexpectation{f(X^n_{0}) T_{n,\delta_n}g(X^n_{0})}{X^n_{\tau_n}}} \\
+&= \expectation{\cexpectationlong{\mathcal{F}_{\tau_n}}{f(X^n_{\tau_n}) T_{n,\delta_n}g(X^n_{\tau_n})}} \\
+&= \expectation{f(X^n_{\tau_n}) T_{n,\delta_n}g(X^n_{\tau_n})} \\
+\end{align*}
+Putting these two facts together with the expectation rule Lemma \ref{ExpectationRule} and the prior claim we see that
+\begin{align*}
+\lim_{n \to \infty} \expectation{f(X^n_{\tau_n}) g(X^n_{\tau_n+\delta_n})} &= \lim_{n \to \infty} \expectation{f(X^n_{\tau_n}) T_{n,\delta_n}g(X^n_{\tau_n})}\\
+&= \lim_{n \to \infty} \expectation{f(X^n_{\tau_n}) T_{n,\delta_n}g(X^n_{\tau_n}) - f(X^n_{\tau_n}) g(X^n_{\tau_n})} + \lim_{n \to \infty} \expectation{f(X^n_{\tau_n}) g(X^n_{\tau_n}) } \\
+&= \lim_{n \to \infty} \int f(s) g(s) \, \nu_n(ds) \\
+&= \int f(s) g(s) \, \nu(ds) \\
+\end{align*}
+Thus by the same argument we used in concluding that fdd's converged we have $\mathcal{L}(X^n_{\tau_n}, X^n_{\tau_n+\delta_n}) \toweak \nu$ where we are regarding $\nu$ as the measure on $S \times S$ concentrated on the diagonal.
+By the Continuous Mapping Theorem \ref{ContinuousMappingTheorem} and the fact that $\nu$ is concentrated on the diagonal,
+\begin{align*}
+r(X^n_{\tau_n}, X^n_{\tau_n+\delta_n}) \todist 0
+\end{align*}
+and we conclude that $r(X^n_{\tau_n}, X^n_{\tau_n+\delta_n}) \toprob 0$ by Lemma \ref{ConvergeInDistributionToConstant} . Now apply Theorem \ref{SkorohodInfiniteAldousCriterion}.
 \end{proof}
 
 \subsection{Approximating Feller Processes by Markov Chains}
 
+Now we turn to the consideration of approximating Feller processes by Markov chains.  Underlying the result is a theorem about the approximation of strongly continuous contraction semigroups by powers of contraction operators.   Before stating the theorem we call out an estimate that will be required in the proof.
+
+\begin{lem}\label{KurtzDiscreteTimeSemigroupConvergenceEstimate}Let $B$ be a contraction operator on a Banach space $X$ then for all $v \in X$ and $n \in \integers_+$ we have
+\begin{align*}
+\norm{B^n v - e^{n(B - \IdentityMatrix)} v} &\leq \sqrt{n} \norm{Bv - v}
+\end{align*}
+\end{lem}
+\begin{proof}
+First let $n \geq m$ and note that
+\begin{align*}
+\norm{B^n v - B^m v} &= \norm{\sum_{k=0}^{n-m-1} B^{m+k} (B v - v)} \leq \sum_{k=0}^{n-m-1} \norm {B^{m+k}} \norm{B v - v} \leq (n-m) \norm{Bv-v}
+\end{align*}
+Expanding in power series and using this estimate and Cauchy Schwartz we get
+\begin{align*}
+\norm{B^n v - e^{n(B - \IdentityMatrix)} v} &= e^{-n} \norm{e^n B^n v - e^{nB} v} 
+= e^{-n} \norm{\sum_{k=0}^\infty \frac{n^k}{k!} (B^n v - B^k v)} \\
+&= e^{-n} \sum_{k=0}^\infty \frac{n^k}{k!} \abs{n-k} \norm{B v - v} \\
+&\leq e^{-n} \norm{B v - v} \left( \frac{n^k}{k!} (n-k)^2\right)^{1/2} \left( \frac{n^k}{k!} \right)^{1/2} \\
+&=\norm{B v - v} \left( e^{-n} \frac{n^k}{k!} (n-k)^2\right)^{1/2} = \sqrt{n} \norm{Bv-v}\\
+\end{align*}
+where in the last line we have used the formula for the variance of a Poisson random variable of rate $n$ (Proposition \ref{MomentsPoissonDistribution})
+\end{proof}
+
+\begin{thm}\label{KurtzDiscreteTimeSemigroupConvergence}Let $X$ and $X_1, X_2, \dotsc$ be Banach spaces, let $T_{n}$ be a contraction operator on $X_n$, $\epsilon_n \geq 0 $ such that $\lim_{n\to \infty} \epsilon_n = 0$ and let $T_t$ be a strongly continuous contraction semigroup on $X$ with generator $A$.  Let $\pi_n : X \to X_n$ be bounded linear operators and assume that $\sup_{n} \norm{\pi_n} < \infty$.  Let $D$ be a
+core for $A$ and define $A_n = \epsilon_n^{-1}(T_n-\IdentityMatrix)$ then the following are equivalent
+\begin{itemize}
+\item[(i)]For every $v \in X$ and every $t \geq 0$,  $\lim_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T^{\floor{t/\epsilon_n}}_{n} \pi_n v - \pi_n T_s v} = 0$.
+\item[(ii)]For every $v \in X$ and every $t \geq 0$,  $\lim_{n \to \infty} \norm{T^{\floor{t/\epsilon_n}}_{n} \pi_n v - \pi_n T_t v} = 0$.
+\item[(iii)] For every $v \in D$ there exists $v_n \in \domain{A_n}$ such that $\lim_{n \to \infty} \norm{v_n - \pi_n v} = 0$ and $\lim_{n \to \infty} \norm{A_n v_n - \pi_n A v} = 0$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+Before we proceed first note that $e^{t A_n}$ is in fact a contraction operator for all $t \geq 0$,
+\begin{align*}
+\norm{e^{t A_n}} &= \norm{e^{t \epsilon_n^{-1}(T_n - \IdentityMatrix)}} = e^{-t \epsilon_n^{-1}} \norm{e^{t \epsilon_n^{-1} T_n}} \leq e^{-t \epsilon_n^{-1}} e^{t \epsilon_n^{-1} \norm{T_n}} \leq 1
+\end{align*}
+Clearly (i) implies (ii).  To see that (ii) implies (iii) let $\lambda > 0$ be given, $v \in \domain{A}$ and set $w = (\lambda - A) v$ (so that $v = \int_0^\infty e^{-\lambda t} T_t w \, dt$).  For $n \in \naturals$ define
+\begin{align*}
+v_n &= \epsilon_n \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^k \pi_n w \in X_n
+\end{align*}
+TODO: We need to show that $\norm{v_n}$ is bounded (or maybe we use Tonneli to push the limit inside the sum and don't worry about it); there may be something to this.
+From (ii) and Dominated Convergence we have
+\begin{align*}
+\lim_{n \to \infty} \norm{v_n - \pi_n v} &= \lim_{n \to \infty} \norm{v_n - \int_0^\infty e^{-\lambda t} \pi_n T_t w \, dt} \\
+&\leq  \lim_{n \to \infty} \norm{v_n - \int_0^\infty e^{-\lambda t} T^{\floor{t/\epsilon_n}}_{n} \pi_n v \, dt} \\
+&= \lim_{n \to \infty} \norm{v_n - \sum_{k=0}^\infty \int_{k\epsilon_n}^{(k+1)\epsilon_n} e^{-\lambda t} T^{k}_{n} \pi_n v \, dt} \\
+&= \lim_{n \to \infty} \norm{v_n - () \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T^{k}_{n} \pi_n v }\\
+&= \lim_{n \to \infty} (1 - \frac{1-e^{-\lambda \epsilon_n}}{\lambda})\norm{v_n}  = 0\\
+\end{align*}
+We also get
+\begin{align*}
+(\lambda - A_n) v_n &= (\lambda - \epsilon_n^{-1}(T_n - \IdentityMatrix)) \epsilon_n \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^k \pi_n w \\
+&=\lambda \epsilon_n \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^k \pi_n w 
+- \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^{k+1} \pi_n w +  
+\sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^{k} \pi_n w \\
+&= \lambda \epsilon_n \pi_n w 
++ e^{-\lambda \epsilon_n} \lambda \epsilon_n \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^{k+1} \pi_n w 
+- \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^{k+1} \pi_n w +  \\
+&\pi_n w  +
+e^{-\lambda \epsilon_n}  \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^{k+1} \pi_n w \\
+&= \lambda \epsilon_n \pi_n w 
++ \pi_n w  + 
+(e^{-\lambda \epsilon_n} \lambda \epsilon_n -1 + e^{-\lambda \epsilon_n} ) \sum_{k=0}^\infty e^{-\lambda k \epsilon_n} T_n^{k+1} \pi_n w \\
+\end{align*}
+Now take a difference, a limit and apply Tonelli's Theorem 
+\begin{align*}
+\lim_{n \to \infty} \norm{(\lambda - A_n) v_n - \pi_n w} &\leq 
+\lim_{n \to \infty} \norm{\epsilon_n \lambda \pi_n w} + \lim_{n \to \infty} \sum_{k=0}^\infty \abs{e^{-\lambda \epsilon_n} \lambda \epsilon_n -1 + e^{-\lambda \epsilon_n} }
+e^{-\lambda k \epsilon_n} \norm{T_n^{k+1} \pi_n w} \\
+&\leq \lambda \sup_n \norm{\pi_n} \norm{w} \lim_{n \to \infty} \epsilon_n + \sup_n \norm{\pi_n} \norm{w} \sum_{k=0}^\infty \lim_{n \to \infty} \abs{e^{-\lambda \epsilon_n} \lambda \epsilon_n -1 + e^{-\lambda \epsilon_n} }
+e^{-\lambda k \epsilon_n}  \\
+&= 0
+\end{align*}
+Therefore 
+\begin{align*}
+\lim_{n \to \infty} \norm{A_n v_n - \pi_n A v} &\leq \lim_{n \to \infty} \left( \norm{(\lambda - A_n) v_n - \pi_n (\lambda - A) v} + \lambda \norm{v_n - \pi_n v} \right) = 0
+\end{align*}
+
+To see that (iii) implies (i), let $v \in X$ and pick $v_n \in X_n$ such that $\lim_{n \to \infty} \norm{v_n - \pi_n v} = 0$ and $\lim_{n \to \infty} \norm{A_n v_n - \pi_n A v} = 0$.  For
+$n \in \naturals$ adding and subtracting terms and using the triangle equality we get
+\begin{align*}
+\norm{T^{\floor{t/\epsilon_n}}_n \pi_n v - \pi_n T_t v} 
+&\leq \norm{T^{\floor{t/\epsilon_n}}_n \pi_n v - T^{\floor{t/\epsilon_n}}_n v_n}  + 
+\norm{T^{\floor{t/\epsilon_n}}_n v_n - e^{\epsilon_n \floor{t/\epsilon_n} A_n} v_n} + \\
+&\norm{e^{\epsilon_n \floor{t/\epsilon_n} A_n} v_n - e^{\epsilon_n \floor{t/\epsilon_n} A_n} \pi_n v} + 
+\norm{e^{\epsilon_n \floor{t/\epsilon_n} A_n} \pi_n v - e^{t A_n} \pi_n v} + \\
+&\norm{e^{t A_n} \pi_n v - \pi_n T_t v}
+\end{align*}
+We consider each of the terms on the right hand side in sequence.  For the first term simply note that since $T_n$ is a contraction operator
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T^{\floor{s/\epsilon_n}}_n \pi_n v - T^{\floor{t/\epsilon_n}}_n v_n} &\leq \lim_{n \to \infty} \norm{\pi_n v - v} = 0
+\end{align*}
+For the second term we use Lemma \ref{KurtzDiscreteTimeSemigroupConvergenceEstimate} to see 
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T^{\floor{s/\epsilon_n}}_n v_n - e^{\epsilon_n \floor{s/\epsilon_n} A_n} v_n} 
+&=\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{T^{\floor{s/\epsilon_n}}_n v_n - e^{\floor{s/\epsilon_n} (T_n- \IdentityMatrix)} v_n}  \\
+&\leq \limsup_{n \to \infty} \sup_{0 \leq s \leq t} \sqrt{\floor{s/\epsilon_n}} \norm{(T_n- \IdentityMatrix) v_n} \\
+&= \limsup_{n \to \infty} \sqrt{\floor{t/\epsilon_n}} \epsilon_n \norm{A_n v_n} \\
+&\leq \limsup_{n \to \infty} \sqrt{\floor{t/\epsilon_n}} \epsilon_n (\sup_n \norm{\pi_n} \norm{A v}  + \norm{A_n v_n - \pi_n A v}) \\
+&= 0
+\end{align*}
+For the third term using the fact that $e^{tA_n}$ is a contraction operator 
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t}\norm{e^{\epsilon_n \floor{s/\epsilon_n} A_n} v_n - e^{\epsilon_n \floor{s/\epsilon_n} A_n} \pi_n v}
+&\leq \limsup_{n \to \infty} \norm{v_n -\pi_n v} =0
+\end{align*}
+For the fourth term we use the Fundamental Theorem of Calculus, the fact that $e^{tA_n}$ is a contraction operator and the fact that $\norm{\pi_n A v - A_n \pi_n v} \to 0$ to see
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{e^{\epsilon_n \floor{s/\epsilon_n} A_n} \pi_n v - e^{s A_n} \pi_n v} 
+&=\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{\int^s_{\epsilon_n \floor{s/\epsilon_n}} \frac{d}{du} e^{uA_n} \pi_n v \, du} \\
+&=\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{\int^s_{\epsilon_n \floor{s/\epsilon_n}} e^{uA_n} A_n \pi_n v \, du} \\
+&\leq \limsup_{n \to \infty} \epsilon_n \norm{e^{uA_n}} \norm{ A_n \pi_n v }\\
+&\leq \limsup_{n \to \infty} \epsilon_n (\sup_n \norm{\pi_n} \norm{Av} +  \norm{\pi_n A v - A_n \pi_n v }) = 0\\
+\end{align*}
+Lastly for the fifth term we see that 
+\begin{align*}
+\limsup_{n \to \infty} \sup_{0 \leq s \leq t} \norm{e^{s A_n} \pi_n v - \pi_n T_s v} = 0
+\end{align*}
+from Theorem \ref{KurtzSovaSemigroupConvergence} applied to the semigroups $e^{t A_n}$ and $T_t$.
+\end{proof}
+
 TODO: Trotter product formula and Chernoff product formula.  The Trotter product formula is inspired by the Lie product formula for matrix groups.
 
-Possible exercise: According to Bratelli (who attributes to Hille) the Trotter product formula implies the Weierstrass approximation theorem.  Let $X$ be Banach space of bounded uniformly continuous functions and let $T_tf(x) = f(x+t)$ be the translation semigroup with generator $A=\frac{d}{dx}$.  Then let $A_n = (T_{1/n} -1)/(1/n)$ and the Trotter product formula then shows 
+Possible exercise: According to Bratelli (who attributes to Hille) the Trotter product formula implies the Weierstrass approximation theorem (I think Goldstein has this as well).  Let $X$ be Banach space of bounded uniformly continuous functions and let $T_tf(x) = f(x+t)$ be the translation semigroup with generator $A=\frac{d}{dx}$.  Then let $A_n = (T_{1/n} -1)/(1/n)$ and the Trotter product formula then shows 
 \begin{align*}
 f(t) &= \lim_{n \to \infty} \sum_{m=1}^\infty t^m (A^m_n f)(0)/m!
 \end{align*} 

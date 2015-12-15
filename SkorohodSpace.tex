@@ -1402,7 +1402,7 @@ g_n(t) &= \begin{cases}
 \end{align*}
 and for every $f \in D([0,\infty)$.
 
-\section{Aldous Criterion}
+\section{The Aldous Criterion}
 
 TODO: How to tie this in with what Ethier and Kurtz claim to be the Aldous criterion.  I am pretty sure that the EK development provides a necessary and sufficient condition for tightness that makes it more or less clear that the Aldous criterion is a sufficient condition.
 Here is how Aldous describes the criterion: ``if you try to predict a jump you are right with probability close to 0''.
@@ -1424,7 +1424,7 @@ By the multivariate H\"{o}lder Inequality (the one you get from the AMGM inequal
 \end{proof}
 
 TODO: Update the following statement and proof to use arbitrary familiies of processes (and replace the $\limsup_{n \to \infty}$ with $\sup_{\alpha \in A}$)
-\begin{thm}Let $X^n$ be a sequence of processes in $D([0,T];S)$ with $(S,r)$ a metric space and suppose for every $\epsilon > 0$ and $t \in [0,T] \cap \rationals$ there exists a compact set $K_{\epsilon,t}$ such that $\probability{X^n_t \in K_{\epsilon,t}} > 1 - \epsilon$, then for every $\lambda > 0$ $X^n$ satisfies $\lim_{\delta \to 0} \sup_n \probability{w(X^n, \delta) \geq \lambda} =0$ if and only if for any bounded sequence of $\mathcal{F}^{X^n}$-optional times $\tau_n$ and any sequence $\delta_n > 0$ with $\lim_{n \to \infty} \delta_n =0$ we have
+\begin{thm}\label{SkorohodInfiniteAldousCriterion}Let $X^n$ be a sequence of processes in $D([0,T];S)$ with $(S,r)$ a metric space and suppose for every $\epsilon > 0$ and $t \in [0,T] \cap \rationals$ there exists a compact set $K_{\epsilon,t}$ such that $\probability{X^n_t \in K_{\epsilon,t}} > 1 - \epsilon$, then for every $\lambda > 0$ $X^n$ satisfies $\lim_{\delta \to 0} \sup_n \probability{w(X^n, \delta) \geq \lambda} =0$ if and only if for any bounded sequence of $\mathcal{F}^{X^n}$-optional times $\tau_n$ and any sequence $\delta_n > 0$ with $\lim_{n \to \infty} \delta_n =0$ we have
 \begin{align*}
 r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \toprob 0
 \end{align*}
@@ -1493,7 +1493,23 @@ and the claim follows from the prior claim by taking the supremum over $(\sigma,
   1} &= 0 \text{ for every $t > 0$}
 \end{align*}
 \end{clm}
-TODO: Prove the claim
+If this is not true then there exists $t > 0$, $\epsilon>0$,  $\delta_k \to 0$, $n_{k,m}$ with $\lim_{m \to \infty} n_{k,m} = \infty$ for each $k \in \naturals$ and $(\sigma_{k,m}, \tau_{k,m}) \in \mathfrak{S}^+_{\delta_k,n_{k,m},t}$ such that
+\begin{align*}
+\expectation{r(X^{n_{k,m}}_{\sigma_{k,m}}, X^{n_{k,m}}_{\tau_{k,m}}) \wedge  1}  > \epsilon \text{ for all $k, m \in \naturals$}
+\end{align*}
+We know that we have $(\sigma_{k,m}+h, \tau_{k,m}+h) \in  \mathfrak{S}_{\delta_k,n_{k,m},t+h}$ for all $h > 0$.  By right continuity and Dominated Convergence Theorem we know that 
+\begin{align*}
+\lim_{h \to 0^+} \expectation{r(X^{n_{k,m}}_{\sigma_{k,m}+h}, X^{n_{k,m}}_{\tau_{k,m}+h}) \wedge  1} &= \expectation{r(X^{n_{k,m}}_{\sigma_{k,m}}, X^{n_{k,m}}_{\tau_{k,m}}). \wedge  1} > \epsilon
+\end{align*}
+thus in particular we know that 
+\begin{align*}
+\expectation{r(X^{n_{k,m}}_{\sigma_{k,m}+h}, X^{n_{k,m}}_{\tau_{k,m}+h}) \wedge  1} > \epsilon
+\end{align*}
+for all $k,m \in \naturals$  and sufficiently small $h>0$ (where sufficiently small depends on $k$ and $m$).  This shows 
+\begin{align*}
+ \sup_{(\sigma, \tau) \in  \mathfrak{S}_{\delta_k,n_{k,m},t+1}}\expectation{r(X^{n_{k,m}}_{\sigma}, X^{n_{k,m}}_{\tau}) \wedge  1} > \epsilon \text{ for all $k,m \in \naturals$}
+\end{align*}
+and therefore $\lim_{\delta \to 0} \limsup_{n \to \infty} \sup_{(\sigma, \tau) \in  \mathfrak{S}_{\delta,n,t+1}} \expectation{r(X^n_\sigma, X^n_\tau) \wedge 1} \geq \epsilon$ which contradicts the prior claim.
 
 Now for every $n \in \naturals$ and $\epsilon > 0$ we define a sequence of weakly $\mathcal{F}^{X^n}$-optional times via recursion
 \begin{align*}
@@ -1514,7 +1530,7 @@ Now we apply a few union bounds using the above claim
 &\expectation{w^\prime(X^n, \delta, T) \wedge 1} \\
 &\expectation{w^\prime(X^n, \delta, T) \wedge 1; T \leq \sigma^n_m} + \expectation{w^\prime(X^n, \delta, T) \wedge 1; \sigma^n_m < T} \\
 &= \expectation{w^\prime(X^n, \delta, T) \wedge 1; \cup_{k=1}^n \lbrace 0=\sigma^n_0 < \sigma^n_1 < \dotsb < \sigma^n_{k-1} < T \leq \sigma^n_k; \sigma^n_1 - \sigma^n_0 > \delta; \dotsb;\sigma^n_k - \sigma^n_{k-1} > \delta \rbrace} \\
-&+\expectation{w^\prime(X^n, \delta, T) \wedge 1; \cup_{k=0}^{m-1} \lbrace\sigma^n_{k+1} \leq \sigma^n_k+\delta; \sigma^n_k <T \rbrace} 
+&+\expectation{w^\prime(X^n, \delta, T) \wedge 1; \cup_{k=0}^{m-1} \lbrace\sigma^n_{k+1} \leq \sigma^n_k+\delta; \sigma^n_k <T \rbrace} \\
 &+ \expectation{w^\prime(X^n, \delta, T) \wedge 1; \sigma^n_m < T} \\
 &\leq 2 \epsilon + \sum_{k=0}^{m-1} \probability{\sigma^n_{k+1} \leq \sigma^n_k+\delta; \sigma^n_k <T} + \probability{\sigma^n_m < T} \\
 \end{align*}
@@ -1543,12 +1559,10 @@ Putting the estimates together and using Lemma \label{AldousCriterionExponential
 Now let $m \to \infty$, $c \to 0$ and $\epsilon \to 0$.
 \end{proof}
 
-Equivalent formulation of the criterion: $r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \toprob 0$ is equivalent to $\lim_{n \to \infty} \expectation{r(X^n_{\tau_n}, X^n_{\tau_n + \delta_n}) \wedge 1} = 0$.  So suppose we have $X^\alpha$,  TODO:  Finish up the equivalent condition.
-
 In practice it turns out that it is difficult to apply the criterion $\lim_{\delta \to 0} \sup_{\alpha} \mu_\alpha( w^\prime(f, \delta, T) \geq \lambda) = 0$ to show tightness of a family of
-measures $\mu_\alpha$ on Skorohod space.  In some sense this is not surprising as, being an infimum over a set of partitions, the modulus of continuity is a rather complicated object.  What we need to develop are tools for estimating $w^\prime(f, \delta, T)$ that are strong enough to imply the tightness condition.  One technique for finding upper bounds of $w^\prime(f, \delta, T)$ is clear; one simply needs to find a particular partition $0=t_0 < \dotsb < t_{n-1} < T \leq t_n$ for which we can calculate (or upper bound) each term
-$\sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t))$.  
+measures $\mu_\alpha$ on Skorohod space.  In some sense this is not surprising as, being an infimum over a set of partitions, the modulus of continuity is a rather complicated object.  What we need to develop are tools for estimating $w^\prime(f, \delta, T)$ that are strong enough to imply the tightness condition.  One technique for finding upper bounds of $w^\prime(f, \delta, T)$ is clear; one simply needs to find a particular partition $0=t_0 < \dotsb < t_{n-1} < T \leq t_n$ for which we can calculate (or upper bound) each term $\sup_{t_{i-1} \leq s < t < t_i} r(f(s), f(t))$.  
 
+Though it makes sense that one should be able come up with a construction of partitions that allows to provide upper bounds for $w^\prime(f, \delta, T)$ and therefore get sufficient conditions for compactness one can do better.  There is a related construction of a family of optional times that provides a necessary and sufficient condition for compactness.  In order to come up with necessary conditions we need to be able to use $w^{\prime}(f, \delta, T)$ to bound $f$.
 TODO: Motivate the appearance of terms of the form $(r(x+u,x) \wedge 1)(r(x, x-v) \wedge 1)$ in the following.  Suppose we have a cadlag function $f$ and we are given the 
 value of $w^{\prime}(f, \delta, T)$.  We ask a simple question: what kinds of expressions involving $f$ can be bounded by $w^{\prime}(f, \delta, T)$?  The case of a continuous 
 function and the corresponding modulus of continuity provides bounds on terms $r(f(t+u), f(t))$ for any $0 \leq t \leq T-\delta$ and $-\delta < u < \delta$.  In the cadlag case we allow
