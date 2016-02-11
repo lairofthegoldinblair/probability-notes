@@ -175,23 +175,35 @@ an open neighborhood $U$ of $x^*$.  By continuity of $Df(x)$ on $U$ we
 may also find a $\delta > 0$ such that $Df(x) y > 0$ for all $x \in
 B(x^*, \delta) \subset U$.  By multiplying $y$ by an
 appropriate positive constant we may assume that $\norm{y} < \delta$.  Now we can
-apply Taylor's Theorem to conclude that 
+apply the Mean Value Theorem \label{MeanValueTheoremBanachSpaces} to conclude that 
 \begin{align*}
 f(x^* - y) &= f(x^*) - \int_0^1 Df(x^*-ty) y \, dt < f(x^*)
 \end{align*}
 which shows that $x^*$ is not a local minimizer.
 
-Here is an alternative proof that avoid appealing to Taylor's Theorem.
+Here is an alternative proof that avoid appealing to the Mean Value Theorem.
 Find an open ball $\delta > 0$ such that $f(x^*) \leq f(y)$
 for all $y$ with $\norm{y - x} < \delta$.  Pick an arbitrary $y \in X$
 then for all $0 < t < \delta/\norm{y}$ we have $f(x^* + t y) - f(x^*)
 \geq 0$ which implies 
 \begin{align*}
-Df(x) y &= \lim_{t \to 0} \frac{f(x^* + ty) - f(x^*)}{t} \geq 0
+\lim_{t \to 0^+} \frac{f(x^* + ty) - f(x^*)}{t} \geq 0
 \end{align*}
-On the other hand applying the argument to $-y$ and using linearity of
-$Df(x)$ show that $Df(x) y = -Df(x) (-y) \leq 0$ and therefore $Df(x)y
-= 0$.
+Arguing similarly for $- \delta/\norm{y}<t<0$ we get
+\begin{align*}
+\lim_{t \to 0^-} \frac{f(x^* + ty) - f(x^*)}{t} \geq 0
+\end{align*}
+On the other hand we have assumed that the  G\^{a}teaux derivative exists and thus
+\begin{align*}
+\lim_{t \to 0} \frac{f(x^* + ty) - f(x^*)}{t} &= \lim_{t \to 0^-} \frac{f(x^* + ty) - f(x^*)}{t} \leq 0 \\
+&\leq \lim_{t \to 0^+} \frac{f(x^* + ty) - f(x^*)}{t} = \lim_{t \to 0} \frac{f(x^* + ty) - f(x^*)}{t}
+\end{align*}
+which shows that $df(x^*, y) = \lim_{t \to 0} \frac{f(x^* + ty) - f(x^*)}{t} = 0$. 
+
+If we assume that $f$ is Frechet differentiable at $x^*$ then by Proposition \ref{FrechetDifferentiableImpliesGateauxDifferentiable} we know that
+the Frechet derivative is equal to the directional derivative and thus $Df(x^*)=0$.
+
+TODO: This latter proof seems to suggest that the vanishing doesn't require $C^1$ or even Frechet differentiability at $x^*$ just G\^{a}teaux differentiability at $x^*$.  Am I missing something?  I don't think so; I should probably rephrase the result in terms of  G\^{a}teaux derivatives.
 \end{proof}
 
 When $f$ has two derivatives then we can say even more.
@@ -376,25 +388,25 @@ To see (ii), we know that $\lim_{n \to \infty} \frac{\norm{x_n}}{\norm{z_n}} =
 
 \begin{thm}\label{LocalConstrainedMinimizerFirstDerivative}Let $X$ be a Banach space, $F \subset X$ be closed and let
   $f : U  \to \reals$ be $C^1$ on an open set $U \supset F$.  Then if
-  $x^*$ is a local minimizer of $f$ on $F$ we have $Df(x^*) v \leq 0$
+  $x^*$ is a local minimizer of $f$ on $F$ we have $Df(x^*) v \geq 0$
   for all $v \in T_F(x^*)$.  
 \end{thm}
 \begin{proof}
 Suppose that we have $x_n \in F$ with $x_n \to x$, $t_n>0$ with $t_n \to 0$
 and $(x_n - x)/t_n \to v$.  By Taylor's Theorem and the fact that
 $x^*$ is a local minimizer we know that we
-can find a neighborhood $x^* \subset V \subset U$ such that
+can find a neighborhood $x^* \in V \subset U$ such that
 \begin{align*}
-f(y)  - f(x^*) = Df(x^*) (y - x) + o(\norm{y - x^*}) \leq 0
+f(y)  - f(x^*) = Df(x^*) (y - x) + o(\norm{y - x^*}) \geq 0
 \end{align*}
 and for $y \in V$.  From the fact that $x_n \to x$ we can find an $N \in \naturals$ such
 that $x_n \in V$ for all $n \geq N$.  Since $(x_n - x)/t_n \to v$ we
 know that $\norm{x_n -x^*}$ is $O(t_n)$ and therefore $o(\norm{x_n -
-  x})$ is $o(t_n)$ (Proposition \label{LandauNotationIdentities}) and since $x_n - x -t_nv$ is $o(t_n)$ we have
+  x})=o(t_n)$ (Proposition \ref{LandauNotationIdentities}) and since $x_n - x -t_nv=o(t_n)$ we have
 \begin{align*}
 t_n Df(x^*) v + o(t_n) &= f(x_n) - f(x^*) \leq 0
 \end{align*}
-which implies that $Df(x^*) v \leq 0$ (divide by $t_n>0$ and let $n
+which implies that $Df(x^*) v \geq 0$ (divide by $t_n>0$ and let $n
 \to \infty$).
 \end{proof}
 
@@ -521,13 +533,15 @@ It is worth noting that it may not be possible to find $z$ in the direction of $
 
 TODO: Show that the any limiting normal vector is a limit of proximal normals.
 
-For computational purposes (and in particular for numerical
+\subsection{KKT}
+
+ For computational purposes (and in particular for numerical
 optimization problems) we are given a constraint set in some concrete
 form rather than the abstract formulation we've used.  In practice it
 is useful to formulate a constraint set using a combination of
 equalities and inequalities.  For the moment we specialize to the case
 of finite dimensions.  Let $X$ be a finite dimensional Banach space
-(i.e. $\reals^n$) and suppose we are given finite sets $\mathcal{E}$
+(i.e. $\reals^d$) and suppose we are given finite sets $\mathcal{E}$
 (the \emph{equality constraints})
 and $\mathcal{I}$ (the \emph{inequality constraints}) and for each $i
 \in \mathcal{E} \cup \mathcal{I}$ we have a $C^1$ 
@@ -575,6 +589,7 @@ Dc_i(x) v \geq 0 & \text{ for all $i \in \mathcal{A}(x) \cap \mathcal{I}$} \\
 \right \}
 \end{equation*}
 \end{defn}
+
 Note that it is trivial to see that $\mathcal{F}(x)$ is a cone.  The
 first thing is to note that every tangent vector is a linearized
 feasible direction.
@@ -597,7 +612,8 @@ o(t_n)$. Dividing by $t_n$ and taking the limit as $n \to
 implies $Df(x) v = 0$ and $i \in \mathcal{A}(x) \cap \mathcal{I}$
 implies $Df(x) v \geq 0$.
 \end{proof}
-It is not true in general that $T_F(x) = \mathcal{F}(x)$ yet the
+
+In general it is not true that $T_F(x) = \mathcal{F}(x)$ yet the
 result that we want to demonstrate requires that this equality holds.
 A set of conditions that we place on the $c_i$ that guarantees such an
 equality is called a \emph{constraint qualification}; more generally a
@@ -620,7 +636,7 @@ cone and the linearized feasible set.
 TODO: Show that $T_F(x)$ is a strict subset of $\mathcal{F}(x)$.
 \end{examp}
 
-\begin{prop}Let $F$ be defined by a set of constraints $c_i(x)$ which
+\begin{prop}\label{LICQTangentRegularity}Let $F$ be defined by a set of constraints $c_i(x)$ which
   satisfy the LICQ at $x$ then $T_F(x) = \mathcal{F}(x)$.
 \end{prop}
 \begin{proof}
@@ -655,8 +671,6 @@ c_i(f(t)) &= t Dc_i(x) v >= 0 \text{ for $t > 0$ and $i \in \mathcal{A}(x)\cap \
 \end{align*}
 and moreover by continuity we have $c_i(f(t)) > 0$ for $i \in \mathcal{I} \setminus \mathcal{A}(x)$ (here we may need to shrink $\epsilon$ for this to be true).  Thus we have $f(t) \in F$.  
 
-
-
 Now pick any sequence $0 < t_n < \epsilon$ with $\lim_{n \to \infty} t_n = 0$ and define $x_n = f(t_n)$; by continuity of $f$ and and the 
 fact that $f(0) = x$ we have $x_n \to x$.  If we Taylor expand $R(y,t)$ around $(x,0)$ we get
 \begin{align*}
@@ -671,11 +685,9 @@ considering the first component of the vector we have $Dc(x)  (x_n - x - t_n v) 
 $Dc(x)$ is invertible we get that $x_n - x -t_n v = o(t_n)$ which shows that $v \in T_F(x)$.
 \end{proof}
 
-\subsection{KKT}
-
 \begin{lem}[Farkas' Lemma]\label{FarkasLemma}Let $A$ be a $d \times m$ real matrix, $B$ be a $d \times p$ real matrix and let 
 \begin{align*}
-K &= \lbrace A y + C w \mid y \in \reals^m, y \geq 0 \text{ and } w \in \reals^p \rbrace
+K &= \lbrace A y + B w \mid y \in \reals^m, y \geq 0 \text{ and } w \in \reals^p \rbrace
 \end{align*}
 then for any $x \in \reals^d$ either $x \in K$ or there exists $z \in \reals^d$ such that 
 \begin{align*}
@@ -695,7 +707,21 @@ Now we suppose that $x \notin K$ and we show how to construct $z$.
 
 \begin{clm} $K$ is closed.
 \end{clm}
-TODO:
+First note that 
+\begin{align*}
+K &= \lbrace A y + B w_+ - B w_-\mid y \in \reals^m, y \geq 0 \text{ and } w_\pm \in \reals^p \text{ and } w_\pm \geq 0 \rbrace
+\end{align*}
+so we can reduce ourselves to the case in which $B = 0$.  For any subset $I \subset \lbrace 1, \dotsc, m \rbrace$ we let $A_I$ be the matrix
+with columns of index $I$.  For any $x \in K$ we can find a representation $x = A_I y_I$ in which $I$ has the smallest cardinality among such
+representations.  Note that $y_I > 0$ and the columns of $A_I$ must be linearly independent (if not select $w_I$ such that $A_I w_I = 0$ and 
+then pick a constant $c$ to be the coefficient of $y_I$ with the smallest magnitude; it follows that $x = A_I (y_I + c w_I)$ and $y_I + c w_I$ has coefficients equal to zero).
+Now select a convergent sequence $x_k$ in with $x_k \in K$ and pick minimal representations $x_k = A_{I_k} y^k_{I_k}$.  By passing to a subsequence 
+we may assume that $I_k=I$ is constant.  Since $A_I$ has full column rank  $A^T_I A_I$ is invertible and $y^k_I$ is uniquely determined to be
+$y^k_I = (A_I^T A_I)^{-1} A^T_I x_k$.  Let $x = \lim_{k \to \infty} x_k$ and let 
+\begin{align*}
+y_I &= (A_I^T A_I)^{-1} A^T_I x = \lim_{k \to \infty} (A_I^T A_I)^{-1} A^T_I x_k =  \lim_{k \to \infty} y^k_I 
+\end{align*}
+It follows from $y^k_I > 0$ that $y_I \geq 0$ and by continuity of $A_I$, $A_I y_I = \lim_{k \to \infty} A_I y^k_I =  \lim_{k \to \infty} x_k = x$.  Thus $x \in K$.
 
 Now given that $K$ is closed we can pick an $s_0 \in K$ such that $\norm{s_0 - x} = d(K, x) = \inf_{s \in K} \norm{s - x}> 0$.  
 Since $K$ is a cone we know that $\lambda s_0 \in K$ for all $\lambda > 0$ and by choice of $s_0$ we know that 
@@ -729,6 +755,86 @@ hence $B^T z = 0$.  Choosing $w=0$ and $y = e_j$ for $j=1, \dotsc, m$ we get
 \end{align*}
 which shows that $A^T z \geq 0$.
 \end{proof}
+
+Geometrically, Farkas' Lemma says that given the cone $K$ and a point $x$ either the point $x \in K$ or there exists a 
+hyperplane (defined by as the set $\lbrace w \mid \langle z,w \rangle = 0 \rbrace$) that separates $x$ and $K$.
+The reason why such a separating hyperplane condition is relevant to our discussion is made clear in the proof of the following
+extremely important result. 
+
+\begin{thm}[Karush-Kuhn-Tucker  Conditions]\label{KKTFiniteDimensions}If $x^*$ is a local minimizer of $f$ constrained to $F$ then if we define
+the Lagrangian 
+\begin{align*}
+\mathcal{L}(x, \lambda) = f(x) - \lambda \sum_{i \in \mathcal{E} \cup \mathcal{I}} \lambda_i c_i(x)
+\end{align*}
+there exists $\lambda^*$ such that
+\begin{itemize}
+\item[(i)]$\nabla_x \mathcal{L}(x^*, \lambda^*) = 0$
+\item[(ii)]$\lambda_i^* \geq 0$ for all $i \in \mathcal{I}$
+\item[(iii)]$\lambda_i^* c_i(x^*) = 0$ for all $i \in \mathcal{E} \cup \mathcal{I}$
+\end{itemize}
+\end{thm}
+\begin{proof}
+By Theorem \ref{LocalConstrainedMinimizerFirstDerivative} we know that
+$\langle \nabla_x f(x^*), v \rangle \geq 0$  for all $v \in T_F(x^*)$.  By the LICQ we know from
+Proposition \ref{LICQTangentRegularity} that $T_F(x^*)=\mathcal{F}(x^*)$ and thus it follows that
+$\langle \nabla_x f(x^*), v \rangle \geq 0$ for all $v \in \mathcal{F}(x^*)$.  
+
+On the other hand, let $A$ be the matrix with columns $\nabla c_i(x^*)$ for $i \in \mathcal{A}(x^*) \cap \mathcal{I}$
+and $B$ be the matrix with columns $\nabla c_i(x^*)$ for $i \in \mathcal{E}$.
+By Farkas' Lemma \ref{FarkasLemma} applied to the cone $\lbrace A y + B w \mid y \geq 0 \rbrace$ either
+there exist $\lambda^*_i$ for $i \in \mathcal{A}(x^*)$ such that $\nabla_xf(x^*) = \sum_{i \in \mathcal{A}(x^*)} \lambda^*_i \nabla c_i(x^*)$
+and $\lambda^*_i \geq 0$ for $i \in \mathcal{A}(x^*) \cap \mathcal{I}$ or there exists $z$ such that 
+$\langle z, \nabla_xf(x^*) \rangle < 0$, $A^T z \geq 0$ and $B^T z = 0$.  Note however that the latter two
+conditions on $z$ are precisely the conditions that determine $z \in T_F(x^*)$.  Thus we can conclude that 
+$\nabla_x f(x^*) = \sum_{i \in \mathcal{A}(x^*)} \lambda^*_i \nabla c_i(x^*)$ for $\lambda^*_i$ as above.  For $i \in \mathcal{I} \setminus \mathcal{A}(x^*)$
+we define $\lambda^*_i = 0$.
+
+Having defined $\lambda^*$ we proceed to show that it satisfies the properties required by the theorem.  To see (i) we simply
+take the gradient $\nabla_x \mathcal{L} = \nabla_x f - \lambda \sum_{i \in \mathcal{E} \cup \mathcal{I}} \lambda_i \nabla_x c_i$ and use the definition
+of $\lambda^*$.  Property (ii) follows immediately since we had $\lambda^*_i \geq 0$ for $i \in \mathcal{A}(x^*) \cap \mathcal{I}$ by
+Farkas' Lemma and $\lambda^*_i = 0$ for $i \in \mathcal{I} \setminus \mathcal{A}(x^*)$ by definition.  To see (iii) we have
+$\lambda^*_i c_i(x^*) = 0$ for $i \in \mathcal{I} \setminus \mathcal{A}(x^*)$ since $\lambda^*_i = 0$ and 
+$\lambda^*_i c_i(x^*) = 0$ for $i \in \mathcal{A}(x^*)$ since for such indices $c_i(x^*) = 0$ by definition of $\mathcal{A}(x^*)$.  
+\end{proof}
+
+\begin{lem}\label{FarkasLemmaTaoVersion}For $i=1, \dotsc, n$ let $P_i : \reals^d \to \reals$ be an affine-linear function 
+(i.e. $P(x) = a_0 + \sum_{i=1}^d a_j x_j$ for $a_0, \dotsc, a_d \in \reals$).  Then either there exists $x^* \in \reals^d$ such that
+$P_i(x^*) \geq 0$ for all $i=1, \dotsc, n$ or there exist non-negative real numbers $q_1 \geq 0, \dotsc, q_n \geq 0$ such that $\sum_{i=1}^n q_i P_i = -1$.
+\end{lem}
+\begin{proof}
+First, note that the result holds for a given set $P_1, \dotsc, P_n$ if and only if it holds for the set $q_1 P_1, \dotsc, q_n P_n$ with $q_1 > 0, \dotsc, q_n > 0$.  
+
+The proof is by induction on $d$.  For the case $d=1$ by multiplying each $P_i$ by an appropriate positive constant we may assume that each
+$P_i$ is either of the form $x - a_i$, $b_i - x$ or $c_i$ with $a_i,b_i,c_i \in \reals$.  If any of the $c_i < 0$ then define $q_i = -c_i^{-1}$ and the rest of the $q$ to be zero 
+and we are done.  Thus we may assume that all $c_i \geq 0$.  In this case the $c_i$ provide no obstruction to finding an $x^*$ but neither to they present an obstruction
+to finding $q_i$ such that $\sum_{i=1}^d q_i P_i =-1$ (just set the appropriate $q_i = 0$).  Thus we are reduced to the case in which each $P_i$ is either of the
+form $x - a_i$ or $b_i - x$.  Suppose there is some $b_i < a_j$, then let $q_i=q_j=(a_j-b_i)^{-1}$ and set the rest of the $q$ to zero.   It follows that
+\begin{align*}
+\sum_{i=1}^n q_i P_i(x) &= (a_j-b_i)^{-1} (P_i(x) + P_j(x)) =  (a_j-b_i)^{-1} (b_i - x + x - a_j)  = -1
+\end{align*}
+On the other hand, any $x^*$ that lies between the maximum of the $a_i$ and the minimum of the $b_i$ is a solution
+to $P_i(x^*) \geq 0$ for all $i=1, \dotsc, n$.
+
+For the induction step for $d \geq 2$, writing $x=(y,t) \in \reals^d$ and arguing as in the case $d=1$ we can assume that
+each $P_i(y,t)$ is of the form $t - a_i(y)$, $b_i(y) -t$ or $c_i(y)$.  Assuming $y^*$ is fixed, by the analysis in the case $d=1$ we know
+that a $t^*$ such that $P_i(y^*, t^*) \geq 0$ exists for each $i=1, \dotsc, n$ if and only if $c_i(y^*) \geq 0$ and the maximum of the 
+$a_i(y^*)$ is less than or equal to the minimum of the $b_i(y^*)$.  So if these conditions hold for any $y^* \in \reals^{d-1}$ we construct
+$x^* = (y^*,t^*)$ and we are done.  Suppose on the other hand that for every $y \in \reals^{d-1}$ either $c_i(y) < 0$ or some $b_j(y) - a_k(y) < 0$, the applying
+the induction hypothesis to the family $c_i$, $b_j - a_k$ we conclude that there exist non-negative constants $r_i$ and $r_{j,k}$ such that
+\begin{align*}
+-1 &= \sum_i r_i c_i(y) + \sum_{j,k} r_{j,k} (b_j(y) - a_k(y)) = \sum_i r_i P_i(x) + \sum_{j,k} r_{j,k} (P_j(x) + P_k(x)) = \sum_i r_i P_i(x) + \sum_{j} \sum_{k} r_{j,k} P_j(x) + \sum_{k} \sum_{j} r_{j,k} P_k(x)
+\end{align*}
+and if we define $q_i = r_i$, $q_j = \sum_{k} q_{j,k}$ and $q_k = \sum_{j} q_{j,k}$ we are done.
+\end{proof}
+
+TODO: At this point Tao shows how to prove a separation lemma for convex polytopes by casting the problem of finding a separating hyperplane as solving a set of affine linear inequalities.  
+I don't yet understand this problem formulation; seems like it might be clearer using the vertex description of the polytope but need the unbounded case so I think I need to see the translation
+in the hyperplane description.
+
+Absent constraint qualifications the KKT conditions are not implied at a local minimum as the following example shows
+\begin{examp}Consider the problem of minimizing $-x$ subject to $(x-1)^3 + y \geq 0$, $x \geq 0$ and $y \geq 0$.
+TODO:
+\end{examp}
 
 \section{Algorithms for Unconstrained Optimization}
 

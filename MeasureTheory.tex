@@ -1880,12 +1880,13 @@ $\mathcal{A}_0$.  We proceed in four steps
   $\sigma$-algebra and measure.
 \end{itemize}
 
-\begin{lem}\label{PremeasureToOuterMeasure}Given a pre-measure $\mu_0$ on a Boolean algebra $(\Omega,
-  \mathcal{A}_0)$ then the set function $\mu^* : 2^\Omega \to
+The construction of an outer measure from a set function requires almost no assumptions.
+\begin{lem}\label{PremeasureToOuterMeasure}Let $\mathcal{C}$ be collection of subsets of $\Omega$ such that $\emptyset \in \mathcal{C}$ and
+let $\mu_0 : \mathcal{C} \to \overline{\reals}_+$ satisfy $\mu_0(\emptyset) = 0$  then the set function $\mu^* : 2^\Omega \to
   \overline{\reals}_+$ defined by
 \begin{align*}
 \mu^*(A) &= \inf \lbrace \sum_{n=1}^\infty \mu_0(A_n) \mid A \subset
-\cup_{n=1}^\infty A_n \text { and } A_n \in \mathcal{A}_0 \text{ for
+\cup_{n=1}^\infty A_n \text { and } A_n \in \mathcal{C} \text{ for
   all $n$} \rbrace
 \end{align*}
 is an outer measure.
@@ -1895,7 +1896,7 @@ Because $\mu_0(\emptyset)$ and $\emptyset \subset \emptyset$ we see
 that $\mu^*(\emptyset) = 0$.
 
 Suppose we are given $A \subset B$.  Then if we have a cover $B
-\subset \cup_{n=1}^\infty B_n$ where $B_n \in \mathcal{A}_0$, then
+\subset \cup_{n=1}^\infty B_n$ where $B_n \in \mathcal{C}$, then
 this is also a cover of $A$.  Therefore $\mu^*(A)$ is an infimum over
 a larger collection of covers than that used in calculating $\mu^*(B)$
 hence $\mu^*(A) \leq \mu^*(B)$ (we could actually pick an $\epsilon$
@@ -1916,12 +1917,15 @@ $\epsilon$ was arbitrary, we have $\mu^*(\cup_{n=1}^\infty A_n) \leq \sum_{n=1}^
 \mu^*(A_n)$ so subadditivity is proven.
 \end{proof}
 
-\begin{lem}\label{PremeasureBooleanAlgebraOuterMeasurable}Given a pre-measure $\mu_0$ on a Boolean algebra $(\Omega,
-  \mathcal{A}_0)$ and the outer measure $\mu^*$ constructed in Lemma
-  \ref{PremeasureToOuterMeasure}, if $A \in \mathcal{A}_0$ then $A$ is
+\begin{lem}\label{PremeasureBooleanAlgebraOuterMeasurable}Let $\mu_0$  be a set function on a Boolean algebra $(\Omega,
+  \mathcal{A}_0)$ such that $\mu_0$ is finitely additive on disjoint sets.  If $\mu^*$ is the outer measure  constructed in Lemma
+  \ref{PremeasureToOuterMeasure} and $A \in \mathcal{A}_0$ then $A$ is
   $\mu^*$-measurable.
 \end{lem}
 \begin{proof}
+Since $\emptyset \cap \emptyset = \emptyset$ thus by finite additivity $\mu_0(\emptyset) = 2 \mu_0(\emptyset)$ and
+therefore $\mu_0(\emptyset) = 0$.   Therefore we can indeed construct an outer measure from $\mu_0$.
+
 Let $A \in \mathcal{A}_0$ and $B \subset \Omega$ and we have to show
 $\mu^*(B) \geq \mu^*(A \cap B) + \mu^*(A^c \cap B)$. 
 Pick $B_1, B_2, \dotsc$ such that $B_n \in \mathcal{A}_0$ for all $n$
@@ -2520,6 +2524,235 @@ B^n = B^n$ to see that in fact $c = 1$.
   that case, the result is easy.
 TODO write down the easy stuff too!
 \end{proof}
+
+\subsection{Further Properties of Outer Measures}
+
+The results in this section will not be used until much later in the text.  There will be little harm in the reader skipping these results and coming back to them when they are referenced.
+
+One of the fundamental properties of countably additive measures is continuity (Lemma \ref{ContinuityOfMeasure}).  It turns out that
+by adding a hypothesis we get a continuity property for outer measures as well.
+
+\begin{defn}An outer measure $\mu^*$ is said to be \emph{regular} if for each set $A$ there exists a $\mu^*$-measurable set $B$ such that
+$A \subset B$ and $\mu^*(A) = \mu^*(B)$.  Any such $B$ is called a \emph{measurable cover} of $A$ (TODO: Compare with Van der Vaart and Wellner).
+\end{defn}
+
+Examples of regular outer measures aren't too hard to come up with.
+Indeed, any outer measure that is constructed from a premeasure is regular.
+\begin{prop}\label{InducedOuterMeasuresAreRegular}If an outer measure $\mu^*$ on a set $\Omega$ is induced from a finitely additive non-negative set function $\mu_0$ on a Boolean algebra $\mathcal{A} \subset 2^\Omega$ then $\mu^*$ is regular.  If in addition $\mu_0$ is countably additive and there exists $\Omega_1, \Omega_2, \dotsc \in \mathcal{A}$ with $\Omega = \cup_{n=1}^\infty \Omega_n$ and $\mu_0(\Omega_n) < \infty$ for all $n \in \naturals$ then a set $A$ is $\mu^*$-measurable if and only if there exists $B \in \mathcal{A}_{\delta \sigma}$ and a $\mu^*$-null set $N$ such that $B \cap N = \emptyset$ and $A = B \cup N$.
+\end{prop}
+\begin{proof}
+First assume only that $\mu_0$ is finitely additive on disjoint sets.
+We establish a sequence of claims from which the result follows.
+\begin{clm}$\mathcal{A}_\sigma$ is closed under finite intersections
+\end{clm}
+Let $A_1, A_2, \dotsc \in \mathcal{A}$ and $B_1, B_2, \dotsc \in \mathcal{A}$, let $A = \cup_{n=1}^\infty A_n$ and $B=\cup_{m=1}^\infty B_m$ and compute
+\begin{align*}
+A \cap B  &=\cup_{n=1}^\infty  \left ( A_n  \cap \left ( \cup_{m=1}^\infty B_m  \right ) \right )\\
+&=\cup_{n=1}^\infty \cup_{m=1}^\infty A_n  \cap B_m 
+\end{align*}
+Since $\mathcal{A}$ is a Boolean algebra it follows that $A_n \cap B_m \in \mathcal{A}$ for every $m,n$ and therefore $A \cap B \in \mathcal{A}_\sigma$.  The claim follows by a simple induction.
+
+\begin{clm}For any set $A \subset \Omega$ we have $\mu^*(A) = \inf \lbrace \mu^*(B) \mid B \in \mathcal{A}_\sigma, A \subset B \rbrace$
+\end{clm}
+If $\mu^*(A) = \infty$ then for any $A \subset B$ we have $\mu^*(B)$ so the result follows.  Suppose that $\mu^*(A) < \infty$ and let $\epsilon > 0$ be given.  By definition of $\mu^*$ there exist $B_1, B_2, \dotsc \in \mathcal{A}$ such that $\mu^*(A) \leq \sum_{n=1}^\infty \mu_0(B_n) < \mu^*(A) + \epsilon$.  Let $B = \cup_{n=1}^\infty B_n$ and note that by subadditivity and monotonicity of $\mu^*$ and the fact that $\mu^* \leq \mu_0$ on $\mathcal{A}$ we have  
+\begin{align*}
+\mu^*(A) &\leq \mu^*(B) \leq \sum_{n=1}^\infty \mu^*(B_n) = \sum_{n=1}^\infty \mu_0(B_n) < \mu^*(A) + \epsilon
+\end{align*}  
+Since $\epsilon$ was arbitrary the claim follows.
+
+\begin{clm}For any set $A \subset \Omega$ there is a $B \in \mathcal{A}_{\sigma \delta}$ such that $A \subset B$ and $\mu^*(A) = \mu^*(B)$.
+\end{clm}
+From the previous claim we may pick $C_1, C_2, \dotsc \in \mathcal{A}_\sigma$ such that $A \subset C_n$ for all $n \in \naturals$ and $\lim_{n \to \infty} \mu^*(C_n) = \mu^*(A)$.  Define $B_n = \cap_{j=1}^n C_j$.  Since $\mathcal{A}_\sigma$ is closed under finite intersections $B_n \in \mathcal{A}_\sigma$ for every $n \in \naturals$.  Also $A \subset B_n \subset C_n$ and therefore 
+$\lim_{n \to \infty} \mu^*(B_n) = \mu^*(A)$.  Let $B = \cap_{n =1}^\infty B_n \in \mathcal{A}_{\sigma \delta}$.   Since the $B_n$ are decreasing we have $A \subset B \subset B_n$ for every $n \in \naturals$ and thus by monotonicity and subadditivity of $\mu^*$ we get
+\begin{align*}
+\mu^*(A) &\leq \mu^*(B) \leq \lim_{n \to \infty}\mu^*(B_n) = \mu^*(A)
+\end{align*}
+and $\mu^*(A)=\mu^*(B)$ follows.
+
+By Lemma \ref{PremeasureBooleanAlgebraOuterMeasurable} we know that every $A \in \mathcal{A}$ is $\mu^*$-measurable and therefore every $A \in \mathcal{A}_{\sigma \delta}$ is $\mu^*$-measurable.  The regularity of $\mu^*$ follows from the previous claim.
+
+Now assume that $\mu_0$ is countably additive and let $\Omega_1, \Omega_2, \dotsc \in \mathcal{A}$ be chosen so that $\Omega = \cup_{n=1}^\infty \Omega_n$ and $\mu_0(\Omega_n) < \infty$.  By Lemma \ref{PremeasureOuterMeasureEqual} we have $\mu_0 = \mu^*$ on $\mathcal{A}$.  In particular $\mu^*(\Omega_n) = \mu_0(\Omega_n)< \infty$ for all $n \in \naturals$.
+Note that by passing to $\Omega_n \setminus (\Omega_1 \cup \dotsb \cup \Omega_{n-1})$ we may assume that the $\Omega_n$ are disjoint.  Let $A$ be a $\mu^*$-measurable set.  For each $n \in \naturals$ we apply the last claim to the measurable set $A^c \cap \Omega_n$ and get a $B^\prime_n \in \mathcal{A}_{\sigma \delta}$ such that $A^c \cap \Omega_n \cup B^\prime_n$ and 
+$\mu^*(B^\prime_n) = \mu^*(A^c \cap \Omega_n)$.  Let $B_n = B^\prime_n \cap \Omega_n$ and note that $B_n \in \mathcal{A}_{\sigma \delta}$, $A^c \cap \Omega_n \subset B_n \subset \Omega_n$
+and $\mu^*(B_n) = \mu^*(A^c \cap \Omega_n)$.  Let $N_n = B_n \setminus (A^c \cap \Omega_n)$ so that $\mu^*(N_n) = 0$.  Then
+\begin{align*}
+\Omega_n \cap A &= \Omega_n \setminus A^c = \Omega_n \setminus \left(\Omega_n \cap A^c \right) \\
+&=\Omega_n \setminus \left( B_n \setminus N_n \right) = \Omega_n \cap \left( B_n \cap N_n^c \right)^c = \left(\Omega_n \cap B_n^c  \right) \cup \left( \Omega_n \cap N_n \right) \\
+&= \Omega_n \setminus B_n \cup N_n
+\end{align*}
+Since $B_n \in \mathcal{A}_{\sigma \delta}$ it follows that $\Omega_n \setminus B_n \in \mathcal{A}_{\delta \sigma}$.  Now write
+\begin{align*}
+A &= \cup_{n=1}^\infty \Omega_n \cap A  = \cup_{n=1}^\infty \Omega_n \setminus B_n \cup N_n
+\end{align*}
+and use the fact that a countable union of sets in $\mathcal{A}_{\delta \sigma}$ is in $\mathcal{A}_{\delta \sigma}$ and a countable union of null sets is null.
+\end{proof}
+
+\begin{prop}\label{InducedOuterMeasureFromRegularOuterMeasure}Let $\mu^*$ be an outer measure on a set $\Omega$ and let $\mu^+$ be the outer measure induced by $\mu^*$ and the 
+$\sigma$-algebra of $\mu^*$-measurable sets.  Then $\mu^* = \mu^+$ if and only if $\mu^*$ is regular.
+\end{prop}
+\begin{proof}
+First note that for an arbitrary outer measure $\mu^*$ we have $\mu^*(A) \leq \mu^+(A)$, for if $A_1, A_2, \dotsc$ is a countable cover of $A$ then by countable subadditivity of $\mu^*$ we have
+$\mu^*(A) \leq \sum_{i=1}^\infty \mu^*(A_j)$.  Now take the infimum of the right hand side over all countable subcovers with $\mu^*$-measurable $A_j$.
+
+Suppose $\mu^*$ is regular. If $A$ is a set and $B$ is its measurable cover we have $\mu^+(A) \leq \mu^*(B) = \mu^*(A)$ as well and it follows that $\mu^*=\mu^+$.
+
+On the other hand suppose that $\mu^* = \mu^+$ and let $A$ be a subset of $\Omega$.  If $\mu^*(A) = \infty$ then $\Omega$ is measurable cover so we may assume that $\mu*(A) < \infty$.  
+For each $n \in \naturals$ we may pick $\mu^*$-measurable $C_1, C_2, $ such that $A \subset \cup_{j=1}^\infty C_j$ and $\sum_{j=1}^\infty \mu^*(C_j) < \mu^*(A) + 1/n$.  Since the $\mu^*$-measurable sets are a $\sigma$-algebra the set $B_n = \cup_{j=1}^\infty C_j$ is $\mu^*$-measurable and by subadditivity of $\mu^*$
+\begin{align*}
+\mu^*(B_n) &\leq \sum_{j=1}^\infty \mu^*(C_j) < \mu^*(A) + 1/n
+\end{align*}
+Now let $B = \cap_{n=1}^\infty B_n$ which is $\mu^*$-measurable and by continuity of measure $\mu^*(B) \leq \lim_{n \to \infty} \mu^*(A) + 1/n = \mu^*(A)$.  On the other hand $A \subset B$ and
+therefore by monotonicity we get $\mu^*(A) = \mu^*(B)$.
+\end{proof}
+
+TODO: Don't know if this result will be useful; maybe make an exercise (I got it from Biskup's notes)
+\begin{prop}Let $\mu^*$ be a finite regular outer measure on $\Omega$ then $A$ is $\mu^*$-measurable if  and only if 
+\begin{align*}
+\mu^*(\Omega) &= \mu^*(A) + \mu^*(A^c)
+\end{align*}
+\end{prop}
+\begin{proof}
+If $A$ is $\mu^*$-measurable then the result follows from the definition of $\mu^*$-measurability applied to the set $\Omega$ so only the other direction requires proof.  
+
+Let $E$ be a subset of $\Omega$ and let $B$ be a measurable cover of $E$.
+By measurability of $B$ we have
+\begin{align*}
+\mu^*(A) &= \mu^*(A \cap B) + \mu^*(A \cap B^c) \\
+\mu^*(A^c) &= \mu^*(A^c \cap B) + \mu^*(A^c \cap B^c) \\
+\mu^*(\Omega) &= \mu^*(B) + \mu^*(B^c)\\
+\end{align*}
+From these three facts we compute using subadditivity and monotonicity of $\mu^*$ to get
+\begin{align*}
+\mu^*(E) &= \mu^*(B) = \mu^*(\Omega) - \mu^*(B^c) =\mu^*(A) + \mu^*(A^c) - \mu^*(B^c) \\
+&=\mu^*(A \cap B) + \mu^*(A \cap B^c)  + \mu^*(A^c \cap B) + \mu^*(A^c \cap B^c) - \mu^*(B^c) \\
+&\geq \mu^*(A \cap B) + \mu^*(A^c \cap  B)  \\
+&\geq \mu^*(A \cap B) + \mu^*(A^c \setminus E)
+\end{align*}
+Since the opposite inequality follows by subadditivity, measurability of $A$ follows.
+\end{proof}
+
+TODO: Show that an outer measure induced by a premeasure is regular (or more generally an outer measure constructed as in Proposition \ref{PremeasureToOuterMeasure}?)
+
+\begin{prop}\label{ContinuityOfRegularOuterMeasure}Let $\mu^*$ be a regular outer measure on a set $\Omega$ and let $A, A_1,A_2, \dotsc$ be subsets of $\Omega$ then
+if $A_i \uparrow A$ then $\mu^* A_i \uparrow \mu^* A$.
+\end{prop}
+\begin{proof}
+Pick $\mu^*$-measurable sets $C_k$ such that $A_k \subset C_k$ and $\mu^* A_k = \mu^* C_k$ and define $B_k = \cap_{j=k}^\infty C_j$.  Clearly, $B_k$ is $\mu^*$-measurable and $A_k \subset B_k$.  Also since $A_k \subset B_k$ we have $\mu^* A_k = \mu^* C_k \leq \mu^* B_k$ and since $B_k \subset C_k$ we have $\mu^* B_k \leq \mu^* C_k$; it follows that $\mu^* A_k = \mu^* B_k$ as well.Since $B_1 \subset B_2 \subset \dotsb$ and $\cup_{k=1}^\infty A_k \subset \cup_{k=1}^\infty B_k$ we can use continuity of measure Lemma \ref{ContinuityOfMeasure} and monotonicity of $\mu^*$ to see
+\begin{align*}
+\lim_{k \to \infty} \mu^* A_k &= \lim_{k \to \infty} \mu^* B_k = \mu^* \cup_{k=1}^\infty B_k \geq \mu^* \cup_{k=1}^\infty A_k
+\end{align*}
+On the other hand since $A_k \subset \cup_{j=1}^\infty A_j$ we have
+\begin{align*}
+\lim_{k \to \infty} \mu^* A_k \leq \mu^* \cup_{k=1}^\infty A_k
+\end{align*}
+\end{proof}
+
+The following technical Lemma is useful (we'll use it when
+discussing Hausdorff outer measures).  If the reader is in a hurry,
+no harm will come from skipping over this result and returning to it
+when the need arises.  Note that if the user is only interested in
+probability theory this result may never come up.
+
+\begin{defn}Let $(S,d)$ be a metric space with an outer measure $\mu^*$ then we say that
+$\mu^*$ is a \emph{metric outer measure} if and only if $\mu^*(A \cup B) = \mu^*(A) +
+  \mu^*(B)$ for all $A,B$ such that $d(A, B) > 0$.
+\end{defn}
+
+TODO: Compare with Biskup's notes
+\begin{lem}[Caratheodory Criterion]\label{CaratheodoryCriterion}Let $(S,d)$ be a metric space with an outer measure $\mu^*$.
+  Then $\mu^*$ is a Borel outer measure (i.e. all Borel sets are
+  $\mu^*$-measurable) if and only if $\mu^*$ is metric.
+\end{lem}
+\begin{proof}
+We begin with the only if direction.  Let $A$ be a closed set in $S$
+and let $B \subset S$.  To show $A$ is $\mu^*$-measurable it suffices
+to show $\mu^*(B) \geq \mu^*(A \cap B) + \mu^*(A^c \cap B)$.  Since
+the inequality is trivially satisfied when $\mu^*(B) = \infty$ we
+assume that $\mu^*(B) < \infty$.  For
+every $n \in \naturals$, let $A_n =
+\lbrace x \in S \mid d(x, A) \leq \frac{1}{n} \rbrace$.  By definition
+of $A_n$, we have $d(A,
+A_n^c) > \frac{1}{n} > 0$ and therefore $d(A \cap B, A_n^c \cap B)
+> \frac{1}{n} > 0$.  Now by our assumption, we can conclude $\mu^*((A
+\cap B) \cup (A_n^c \cap B)) = \mu^*(A \cap B) +
+\mu^*(A_n^c \cap B)$.
+
+We claim that $\lim_{n \to \infty} \mu^*(A_n^c \cap B) = \mu^*(A^c
+\cap B)$.  Note that if we prove the claim the Lemma is proven because then we have
+\begin{align*}
+\mu^*(B) &\geq \mu^*((A
+\cap B) \cup (A_n^c \cap B)) & & \text{by monotonicity}\\
+&= \mu^*(A \cap B) +
+\mu^*(A_n^c \cap B)
+\end{align*}
+and taking limits we have 
+\begin{align*}
+\mu^*(B) \geq \lim_{n\to \infty} \mu^*(A \cap B) +
+\mu^*(A_n^c \cap B) &= \mu^*(A \cap B) +
+\mu^*(A^c \cap B)
+\end{align*}
+To prove the claim we observe that monotonicity of outer measure
+implies that $\lim_{n \to \infty} \mu^*(A_n^c \cap B) \leq \mu^*(A^c
+\cap B)$ so we just need to
+work on the opposite inequality.  To see it first define the rings
+around $A$
+\begin{align*}
+R_n &= \lbrace x \mid \frac{1}{n+1} < d(x, A) \leq \frac{1}{n} \rbrace
+\end{align*}
+and note that because $A$ is closed, for each $n$,
+\begin{align*}
+A^c &= \lbrace x \in S \mid d(x, A) > 0 \rbrace \\
+&=\lbrace x \in S \mid d(x, A) > n \rbrace \cup \bigcup_{m=n}^\infty \lbrace
+x \in S \mid \frac{1}{m+1} < d(x, A) \leq \frac{1}{m} \rbrace \\
+&=A_n^c \cup \bigcup_{m=n}^\infty R_m
+\end{align*}
+It follows that
+$A^c \cap B = A_n^c \cap B \cup \cup_{m=n}^\infty
+R_m \cap B$ and therefore by subadditivity of outer measure 
+\begin{align*}
+\mu^*(A^c \cap B) \leq \mu^*(A_n^c \cap B) + \sum_{m=n}^\infty
+\mu^*(R_m \cap B)
+\end{align*}
+The claim will follow if we can show $\lim_{n \to \infty} \sum_{m=n}^\infty
+\mu^*(R_m \cap B)=0$ which in turn will follow if we can show that $\sum_{m=1}^\infty
+\mu^*(R_m \cap B)$ converges.  By construction, $d(R_{2m}, R_{2n})
+> 0$ and therefore $d(R_{2m} \cap B, R_{2n} \cap B)
+> 0$ for any $m \neq n$.  So if we consider only the even terms of the
+series we can use our hypothesis to show that for any $n$
+\begin{align*}
+\sum_{m=1}^n \mu^*(R_{2m} \cap B) &= \mu^*(\cup_{m=1}^n
+R_{2m} \cap B) \leq \mu^*(B) < \infty
+\end{align*}
+and by taking limits $\sum_{m=1}^\infty \mu^*(R_{2m} \cap B) \leq \mu^*(B)$
+The same argument applies to the odd indexed terms and we get
+\begin{align*}
+\sum_{m=1}^\infty \mu^*(R_{m} \cap B) &\leq 2\mu^*(B) < \infty
+\end{align*}
+The claim and the Lemma follow.
+\end{proof}
+
+
+\begin{examp}\label{NonMetricOuterMeasure}Let $\mathcal{C}$ be the set of closed squares in $\reals^2$ and let
+$\mu_0$ be the length of a side of each square.  Now construct the outer measure $\mu^*$ as in 
+Proposition \ref{PremeasureToOuterMeasure}.  Let $0 < \epsilon < 1/4$ be chosen and 
+consider the closed intervals $I_1 = [0, 1/2 - \epsilon]$ and $I_2 = [1/2+\epsilon, 1]$.  Define
+\begin{align*}
+A &= I_1 \times I_1 \cup I_1 \times I_2 \cup I_2 \times I_1 \cup I_2 \times I_2
+\end{align*}
+Consider covering $A$ by countable numbers of squares.  We claim that if $A$ is not covered 
+by a single square then it is covered by at least 3 squares and the sum of the sides of those squares
+exceeds 1.  From this the minimal covering of $A$ by squares is the single square $[0,1] \times [0,1]$ and
+$\mu^*(A) = 1$.  (TODO: Show this more carefully).
+
+On the other hand we claim $\mu^*(I_i \times I_j) = 1/2 - \epsilon$ for $i,j \in \lbrace 1, 2 \rbrace$
+and from this we see that 
+\begin{align*}
+\mu^*(A) &= 1 < 4(1/2 - \epsilon) = \sum_{i,j} \mu^*(I_i \times I_j)
+\end{align*}
+and it follows that $\mu^*$ is not metric.
+\end{examp}
+
+
 \section{Radon-Nikodym Theorem and Differentiation}
 We have seen the construction of measures by integration of a
 density.  A productive line of inquiry is to ask if one can
@@ -2804,25 +3037,47 @@ sees
 \begin{thm}[Fundamental Theorem Of Calculus]\label{FundamentalTheoremOfCalculus}Let any nondecreasing, right continuous function $F(x) = \int_0^x
   f \, d\lambda + F_s(x)$ is differentiable a.e. with derivative $F^\prime = f$.
 \end{thm}
-\begin{proof}
-TODO
-\end{proof}
-
-\begin{cor}[Integration By Parts]\label{IntegrationByParts}Suppose $f$
-  and $g$ are absolutely continuous functions.  Then 
-\begin{align*}
-\int_a^b f^\prime g d\lambda
-  = f(b)g(b) - f(a)g(a) - \int_a^b f g^\prime d \lambda
-\end{align*}
-\end{cor}
+Before we give the proof of the Fundamental Theorem we need a couple of lemmas.
 \begin{lem}\label{IntervalSelection}Let $\mathcal{I}$ be an arbitrary
   collection of open intervals of $\reals$.  Let $G = \bigcup_{I \in
     \mathcal{I}} I$ and suppose that $\lambda G < \infty$.  Then there
   exists disjoint $I_1, \dots, I_n$ such that $\sum_{i=1}^n \abs{I_i}
   \geq \frac{\lambda G}{4}$.
 \end{lem}
-\begin{proof}TODO
+\begin{proof}
+We begin by finding a compact set to focus attention on.
+\begin{clm}There is a compact set $K$ such that $K \subset G$ and $\lambda(K) \geq \frac{3}{4} \lambda (G)$.
+\end{clm}
+We first note that $G$ is a countable union of compact sets (in fact a
+countable union of closed bounded intervals).  For an open interval
+this is easy to see by construction and since $G$ is open it is a countable union of disjoint
+open intervals (Lemma \ref{OpenSetsOfReals} the claim follows.  Thus we may write $G = \cup_{n=1}^\infty [a_n,b_n]$ and
+if we define $K_j = \cup_{n=1}^j [a_n,b_n]$ each $K_j$ is compact and by continuity of measure 
+$\lim_{j \to \infty} \lambda(K_j) = \lambda(G)$.  For $j$ sufficiently large we have $\lambda(K_j) \geq \frac{3}{4} \lambda (G)$.
+
+Since $K$ is compact there is a finite set of intervals $J_1, \dotsc, J_k$ with $J_i \in \mathcal{I}$ such that $K \subset J_1 \cup \dotsb \cup J_k$.
+Define $I_1$ to be the the largest interval among the $J_i$ and inductively define $I_j$ so that
+\begin{align*}
+\lambda(I_j) &= \max \lbrace \lambda(J_i) \mid J_i \cap I_l = \emptyset \text{ for $l=1, \dotsc, j-1$} \rbrace
+\end{align*}
+where we stop the iteration if there is no $J_i$ that is disjoint for each of the $I_l$ for $l=1, \dotsc, j-1$.
+
+Now observe that for every $J_i$ there is an $I_k$ such that $J_i \cap I_k \neq \emptyset$ and $\lambda(I_k) \geq \lambda(J_i)$.  
+To see this note that by construction there must be a smallest index $k$ such that $J_i \cap I_k \neq \emptyset$.  If $k=1$ then again by construction
+it follows that $\lambda(I_1)=\lambda(I_k) \geq \lambda(J_i)$; if $k>1$ then $J_i \cap I_l = \emptyset$ for $l=1, \dotsc, k-1$ and 
+by construction we know $\lambda(I_k) \geq \lambda(J_i)$.  Define $\hat{I}_k$ to be the open interval with the same center as $I_k$ but length
+three times as large; it follows from 
+$J_i \cap I_k \neq \emptyset$ and $\lambda(I_k) \geq \lambda(J_i)$ that $J_i \subset \hat{I}_k$ and therefore we get 
+\begin{align*}
+K &\subset J_1 \cup \dotsb \cup J_k \subset \hat{I}_1 \cup \dotsb \cup \hat{I}_n
+\end{align*}
+By subadditivity we get
+\begin{align*}
+\frac{3}{4} \lambda{G} &\leq \lambda{K} \leq \sum_{j=1}^n \lambda(\hat{I}_j) = 3 \sum_{j=1}^n \lambda(I_j) 
+\end{align*}
 \end{proof}
+Now we prove the fundamental theorem of calculus in the special case of measures that are mutually singular to
+Lebesgue measure.
 \begin{lem}\label{DifferentiationOnNullSets}Let $\mu$ be a locally finite measure on $(\reals, \mathcal{B}(\reals))$
   and let $F(x) = \mu (0,x]$.  Let $A \in \mathcal{B}$ be a set with
   $\mu A = 0$, then $F^\prime = 0$ almost everywhere $\lambda$ on $A$.
@@ -2876,6 +3131,39 @@ $A$ where $F^\prime \neq
 0$ is a countable union of $A_\epsilon$ (e.g. take $\bigcup_n
 A_{\frac{1}{n}}$)  we see that $F^\prime(x) = 0$
 almost everywhere on $A$.
+\end{proof}
+
+\begin{proof}
+From Lemma \ref{DifferentiationOnNullSets} if follows that $\frac{d}{dx} F_s = 0$ a.s. so it suffices to assume that
+$F(x) = \int_0^x f \, d\lambda$ for a non-negative locally integrable $f$.   The trick is to reduce this case to  Lemma \ref{DifferentiationOnNullSets} as well.  
+Let $q \in \rationals$ be
+chosen arbitrarily, let $F_q(x) = \int_0^x (f-q)_+ \, d\lambda$ and consider the locally finite
+measure $\mu_q(0,x] = F_q(x)$.  Since $(f-q)_+ = 0$ on $\lbrace f \leq q \rbrace$ we know
+\begin{align*}
+\mu_q \lbrace f \leq q \rbrace &= \int \characteristic{f \leq q} f \, d\lambda = 0
+\end{align*}
+Apply Lemma \ref{DifferentiationOnNullSets} to conclude that $F^\prime_q(x) = 0$ a.e. on $\lbrace f \leq q \rbrace$.
+On the other hand, $f \leq q + (f-q)_+$ and therefore
+\begin{align*}
+\limsup_{h \to 0} \frac{F(x+h) - F(x)}{h} &= \limsup_{h \to 0} h^{-1} \int_x^{x+h} f \, d\lambda \\
+&\leq q + \limsup_{h \to 0} h^{-1} \int_x^{x+h} (f-q)_+ \, d\lambda = q \text{ a.e. on $\lbrace f \leq q \rbrace$}
+\end{align*}
+
+Via a union bound we conclude
+\begin{align*}
+\lambda \lbrace f < \limsup_{h \to 0} \frac{F(x+h) - F(x)}{h} \rbrace &= \lambda \bigcup_{q \in \rationals} \lbrace  f \leq q < \limsup_{h \to 0} \frac{F(x+h) - F(x)}{h} \rbrace \\
+&\leq \sum_{q \in \rationals} \lambda \lbrace  f \leq q < \limsup_{h \to 0} \frac{F(x+h) - F(x)}{h} \rbrace = 0
+\end{align*}
+which shows $\limsup_{h \to 0} \frac{F(x+h) - F(x)}{h} \leq f$ a.e.
+
+Arguing analogously we see that $\frac{d}{dx} \int_0^x (q - f)_+ \, d\lambda=0$ a.e. on $\lbrace f \geq q \rbrace$ and from $f \geq q - (q - f)_+$ we get
+\begin{align*}
+\liminf_{h \to 0} \frac{F(x+h) - F(x)}{h} &= q \text{ a.e. on $\lbrace f \geq q \rbrace$}
+\end{align*}
+Again a union bound yields $\liminf_{h \to 0} \frac{F(x+h) - F(x)}{h} \geq f$ a.e.  and it follows that
+\begin{align*}
+\liminf_{h \to 0} \frac{F(x+h) - F(x)}{h} &= \limsup_{h \to 0} \frac{F(x+h) - F(x)}{h} = \lim_{h \to 0} \frac{F(x+h) - F(x)}{h} = f \text{ a.e.}
+\end{align*}
 \end{proof}
 
 \subsection{Functions of Bounded Variation}
@@ -2983,7 +3271,7 @@ and the result follows by taking the limit as $\epsilon$ goes to $0$.
 \end{proof}
 
 \begin{thm}\label{BoundedVariationAsDifferenceOfMonotone}A function on $[a,b]$ is of bounded variation if an only if
-  it is the difference of to non-decreasing functions.
+  it is the difference of two non-decreasing functions.
 \end{thm}
 \begin{proof}
 First we show that a function of bounded variation is a difference of
@@ -3246,6 +3534,15 @@ the \emph{Lusin N property} that says every the image of every Lebesgue
 null set is a null set.  It turns out that absolute continuity is
 equivalent to continuity, bounded variation and the Lusin property.
 
+TODO: Where to put this?
+\begin{cor}[Integration By Parts]\label{IntegrationByParts}Suppose $f$
+  and $g$ are absolutely continuous functions.  Then 
+\begin{align*}
+\int_a^b f^\prime g d\lambda
+  = f(b)g(b) - f(a)g(a) - \int_a^b f g^\prime d \lambda
+\end{align*}
+\end{cor}
+
 \section{Approximation By Smooth Functions}
 In this section we discuss a technique for approximating arbitrary
 measurable and integrable functions by smooth functions.  
@@ -3253,7 +3550,7 @@ measurable and integrable functions by smooth functions.
 To start, we establish the existence of an infinitely differentiable
 function which is supported on the interval $[-1,1]$.
 
-\begin{lem}The function 
+\begin{lem}\label{ExistenceOfBumpFunction}The function 
 \begin{align*}
 f(x) = \begin{cases}
 e^\frac{-1}{1-x^2} & \abs{x} < 1\\

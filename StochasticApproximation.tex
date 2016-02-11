@@ -19,8 +19,7 @@ where $Y_n$ is a random vector and $\Pi_F$ represents projection onto $F$.  It i
 
 In order to discuss the hypotheses that one might need to make on the stochastic process $Y_n$, it is convenient to assume a structural form for $Y_n$.  Let $\mathcal{F}_n = \sigma(\theta_0, Y_j ; j<n)$ be a filtration $\mathcal{F}$.  For our first results we shall assume that there exists functions $g_n$, an $\mathcal{F}$-martingale difference sequence $\delta M_n$ and a stochastic process $\beta_n$ such that $Y_n = g_n(\theta_n) + \delta M_n + \beta_n$.  The reader should think of these terms in the following way.  The term $g_n(\theta_n)$ represents the mean/true value of the process (e.g. the value of the gradient in the steepest descent case), the term $\delta M_n$ represents a noise term and $\beta_n$ represents a bias term in the observation.  The reason why the bias term $\beta_n$ is called out as being different from $g_n(\theta_n)$ is that we shall be assuming that it becomes asymptotically small.
 
-One of the key techniques in proving theorems in stochastic approximation is the ODE method.  The basic idea is that one can view the process $\theta_n$ as a discretization of an ordinary differential equation 
-that is described by the conditional means of $Y_n$.  
+One of the key techniques in proving theorems in stochastic approximation is the ODE method.  The idea is that one can view the process $\theta_n$ as a discretization of an ordinary differential equation that is described by the conditional means of $Y_n$.  
 
 In many of the proofs we will considering the continuous time limits of discrete time processes.  To do this we be making interpolations of the discrete time processes and want to have recourse to compactness results that will give conditions under which limits exist.  A natural tool for this would be to use the Arzela-Ascoli Theorem for continuous functions or the Skorohod topology versions of that for cadlag functions.  As it turns out neither of these is the exact fit for what we do since we'll be considering cadlag processes that converge to continuous functions and we want uniform convergence on compact sets.  So what we want is a slight extension of Arzela-Ascoli Theorem.
 
@@ -307,7 +306,7 @@ By Lemma \ref{UniformConvergenceOnCompacts} we know that $\lim_{t \to \infty} d(
 $\lim_{t \to \infty} \sup_{0 \leq s \leq T} r(X(t+s), \Phi_s(X_t)) $ for every $T>0$.  
 \end{proof}
 
-\begin{thm}Let $(S,r)$ be a metric space, $X \in C((-\infty, \infty); S)$ such that $\range{X}$ has compact closure in $S$ and $\Phi : [0,\infty) \times S \to S$ be a semiflow.  The $X$ is an asymptotic pseudotrajectory of $\Phi$ is and only if $X$ is uniformly continuous and every limit point of $\Theta_t(X)$ is in $S_\Phi$.  In either case $\lbrace \Theta_t(X) \rbrace$ is relatively compact in $C((-\infty, \infty); S)$.  
+\begin{thm}\label{AsymptoticPseudotrajectoryTranslationLimitPointCharacterization}Let $(S,r)$ be a metric space, $X \in C((-\infty, \infty); S)$ such that $\range{X}$ has compact closure in $S$ and $\Phi : [0,\infty) \times S \to S$ be a semiflow.  The $X$ is an asymptotic pseudotrajectory of $\Phi$ is and only if $X$ is uniformly continuous and every limit point of $\Theta_t(X)$ is in $S_\Phi$.  In either case $\lbrace \Theta_t(X) \rbrace$ is relatively compact in $C((-\infty, \infty); S)$.  
 \end{thm}
 \begin{proof}
 To see (i) implies (ii) first assume that $X$ is an asymptotic pseudotrajectory; for every $T>0$ we have $\lim_{t \to \infty} \sup_{0 \leq s \leq T} r(X_{t+s}, \Phi_s(X_t)) =0$.  Let $K$ be the closure of $\range{X}$ so that $K$ is compact in $S$.  
@@ -353,8 +352,286 @@ Now suppose that $\lim_{t \to \infty} d(\Theta_t(X), \hat{\Phi}(\Theta_t(X))) \n
 which is a contradiction.
 \end{proof}
 
-\begin{defn}Suppose we have a sequence of vectors $x_n \in \reals^d$ for $n \in \integers_+$, $U_n \in \reals^d$ for $n \in \naturals$ and $\gamma_n \in \reals$ for $n \in \naturals$ such that $\sum_{n=1}^\infty \gamma_n = \infty$ and $\lim_{n \to \infty} \gamma_n = 0$ satisfying
+\begin{defn}Suppose we have a continuous function $F : \reals^d \to \reals^d$, a sequence of vectors $x_n \in \reals^d$ for $n \in \integers_+$, $U_n \in \reals^d$ for $n \in \naturals$ and $\gamma_n \in \reals_+$ for $n \in \naturals$ such that $\sum_{n=1}^\infty \gamma_n = \infty$ and $\lim_{n \to \infty} \gamma_n = 0$ satisfying
 \begin{align*}
 x_{n+1} - x_n &= \gamma_{n+1} ( F(x_n) + U_{n+1})
 \end{align*}
+we define a sequence 
+\begin{align*}
+\tau_0 = 0 \text{ and } \tau_n = \sum_{j=1}^n \gamma_j \text{ for $n \geq 1$}
+\end{align*}
+interpolations of $x_n$ $X, \overline{X} : \reals_+ \to \reals^d$
+\begin{align*}
+X(\tau_n + s) &= x_n + s\frac{x_{n+1} - x_n}{\tau_{n+1} - \tau_n} = x_n + s \gamma_{n+1}^{-1} (x_{n+1} - x_n) \text{, and } \overline{X}(\tau_n + s) = x_n \text{ for $n \in \naturals$ and $0 \leq s < \gamma_{n+1}$}
+\end{align*}
+the ``inverse'' of the sequence $\tau_n$, $m : \reals_+ \to \integers_+$
+\begin{align*}
+m(t) &= \sup \lbrace k \geq 0 \mid t \geq \tau_k \rbrace
+\end{align*}
+and continuous time interpolations $\overline{U} : \reals_+ \to \reals^d$ and $\overline{\gamma}: \reals_+ \to \reals_+$ defined by
+\begin{align*}
+\overline{U}(\tau_n + s) = U_{n+1} \text{, and } \overline{\gamma}(\tau_n +s) = \gamma_{n+1}  \text{ for $n \in \naturals$ and $0 \leq s < \gamma_{n+1}$}
+\end{align*}
 \end{defn} 
+
+We note the following simple facts
+\begin{prop}\label{StochasticApproximationInterpolations}For all $t \in \reals_+$, $\overline{X}(t) = X(\tau_{m(t)}) = x_{m(t)}$, $\overline{U}(t) = U_{m(t) + 1}$, $\overline{\gamma}(t) = \gamma_{m(t)+1}$, $\tau_{m(t)} \leq t < \tau_{m(t)+1}$
+and 
+\begin{align*}
+X(t) &= X(0) + \int_0^t (F(\overline{X}(s)) + \overline{U}(s)) \, ds
+\end{align*}
+\end{prop}
+\begin{proof}
+By the assumption $\sum_{n=1}^\infty \gamma_n$ we know that $\lim_{n \to \infty} \tau_n = \infty$.  By non-negativity of $\gamma_n$ we know that the sequence $\tau_n$ is non-decreasing.  Therefore by definition we know that $m(t)$ is the unique non-negative integer such that $\tau_{m(t)} \leq t < \tau_{m(t)+1}$.  Note that it may be that for some $n < m(t)$ we also have $\tau_n = \tau_{m(t)}$ but then $\tau_n=\tau_{n+1}$ and it is not the case that $\tau_n \leq t < \tau_{n+1}$.  For such $n$ is also true that $\gamma_{n+1} = 0$ and thus the values at $n$ are not used in any of the interpolations.  In particular writing $t = \tau_{m(t)} +s$ with $0 \leq s < \gamma_{m(t)+1}$ by the definitions of $X$ and $\overline{X}$ we see that
+\begin{align*}
+\overline{X}(t) &= \overline{X}(\tau_{m(t)} + s) = x_{m(t)} = X(\tau_{m(t)})
+\end{align*}
+$\overline{U}(t) \overline{U}(\tau_{m(t)} + s) = U_{m(t)+1}$ and $\overline{\gamma}(t) \overline{\gamma}(\tau_{m(t)} + s) = \gamma_{m(t)+1}$.
+
+To see the last equality we express the integral using the fact that the integrand is piecewise constant and that from the discussion above we may write $t = \tau_{m(t)} + s$ with $0 \leq s < \gamma_{m(t)+1}$ and use the recursion defining $x_n$
+\begin{align*}
+\int_0^t (F(\overline{X}(s)) + \overline{U}(s)) \, ds &= \sum_{n=0}^{m(t)-1} \gamma_{n+1} (F(x_n) + U_{n+1}) + s (F(x_{m(t)}) + U_{m(t)+1}) \\
+&=\sum_{n=0}^{m(t)-1} (x_{n+1} - x_n)  + s (F(x_{m(t)}) + U_{m(t)+1}) \\
+&= x_{m(t)} - x_0 + s \frac{x_{m(t) + 1} - x_{m(t)}}{\gamma_{m(t)+1}} \\
+&= X(t) - X(0)
+\end{align*}
+\end{proof}
+
+Thinking of the recursion $x_{n+1} = x_n + \gamma_{n+1} (F(x_n) + U_{n+1})$ as a perturbed version of the Euler method for solving an ordinary differential equation we pose the question of how well the interpolations $X(t)$ approximate solutions to the differential equation $\frac{dX}{dt} = F(X(t))$.  In particular we seek asymptotic decay conditions of the sequence of perturbations $\gamma_{n+1} U_{n+1}$ that allow us to prove that $X(t)$ is an asymptotic pseudotrajectory.  The following condition on the noise sequence is due to Kushner and Clark (TODO: Reference).
+\begin{defn}We say that $\gamma_{n+1}$ and $U_{n+1}$ satisfy the \emph{Kushner-Clark criterion} if for every $T > 0$ we have
+\begin{align*}
+\lim_{n \to \infty} \sup \lbrace \norm{\sum_{i=n}^{k-1} \gamma_{i+1} U_{i + 1}} \mid k=n+1, \dotsc, m(\tau_n+T) \rbrace &= 0
+\end{align*}
+\end{defn}
+
+\begin{prop}\label{KushnerClarkCriterionIntegralForm}Let $\gamma_{n+1}$ and $U_{n+1}$ be given and define $\tau_0=0$, $\tau_n = \sum_{i=1}^n \gamma_i$ for $n \in \naturals$ and
+\begin{align*}
+\Delta(t, T) = \sup_{0 \leq h \leq T} \norm {\int_t^{t+h} \overline{U}(s) \, ds}
+\end{align*} 
+then 
+\begin{itemize}
+\item[(i)] for every $\delta>0$ we have $\Delta(t,T) \leq 2 \Delta(t-\delta, T+\delta)$
+\item[(ii)] for every $n \in \integers_+$ we have 
+\begin{align*}
+\sup \left \lbrace \norm{\sum_{i=n}^{k-1} \gamma_{i+1} U_{i + 1}} \mid k=n+1, \dotsc, m(\tau_n+T) \right \rbrace 
+&= \Delta(\tau_n, m(\tau_n+T) - \tau_n) 
+\leq \Delta(\tau_n, T)
+\end{align*}
+\end{itemize}
+If $\lim_{n \to \infty} \gamma_n =0$ and $\sum_{n=1}^\infty \gamma_n = \infty$ then the Kushner-Clark condition is equivalent to $\lim_{t \to \infty} \Delta(t,T) = 0$ for all $T > 0$.
+\end{prop}
+\begin{proof}
+To see (i) let $t \geq 0$, $T, \delta>0$ and $0 \leq h \leq T$ be given then
+\begin{align*}
+\norm{\int_t^{t+h}  \overline{U}(s) \, ds} &=  \norm{\int_{t-\delta}^{t+h}\overline{U}(s) \, ds - \int_{t-\delta}^t \overline{U}(s) \, ds} \\
+&\leq \norm{\int_{t-\delta}^{(t-\delta)+h+\delta}\overline{U}(s) \, ds} + \norm{\int_{t-\delta}^t \overline{U}(s) \, ds} \\
+&\leq 2 \sup_{0 \leq h \leq T+\delta} \norm{\int_{t-\delta}^{(t-\delta)+h}\overline{U}(s) \, ds} = 2 \Delta(t-\delta, T+\delta)
+\end{align*}
+To see (ii) we write
+\begin{align*}
+\sum_{i=n}^{k-1} \gamma_{i+1} U_{i + 1} &= \sum_{i=n}^{k-1} (\tau_{i+1} - \tau_i) \overline{U}(\tau_i) = \int_{\tau_n}^{\tau_k} \overline{U}(s) \, ds
+\end{align*}
+We note that $\int_{\tau_n}^{t} \overline{U}(s) \, ds$ is linear for $\tau_k \leq t < \tau_{k+1}$ so by the convexity of norms we see that 
+\begin{align*}
+\sup_{\tau_k \leq t < \tau_{k+1}} \norm{\int_{\tau_n}^{t} \overline{U}(s) \, ds } = \norm{\int_{\tau_n}^{\tau_k} \overline{U}(s) \, ds} \maxop \norm{\int_{\tau_n}^{\tau_{k+1}} \overline{U}(s) \, ds}
+\end{align*}
+Combining this fact with the fact that $m(\tau_n+T) \leq \tau_n+T$ we get
+\begin{align*}
+&\sup \left \lbrace \norm{\sum_{i=n}^{k-1} \gamma_{i+1} U_{i + 1}} \mid k=n+1, \dotsc, m(\tau_n+T) \right \rbrace  \\
+&= \sup \left \lbrace \norm{\int_{\tau_n}^{\tau_k} \overline{U}(s) \, ds} \mid k=n+1, \dotsc, m(\tau_n+T) \right \rbrace \\
+&= \sup \left \lbrace \norm{\int_{\tau_n}^{\tau_k} \overline{U}(s) \, ds} \mid k=n, \dotsc, m(\tau_n+T) \right \rbrace \\
+&= \sup \left \lbrace \norm{\int_{\tau_n}^{t} \overline{U}(s) \, ds} \mid \tau_{n} \leq t \leq \tau_{m(\tau_n+T)} \right \rbrace \\
+&= \Delta(\tau_n, m(\tau_n+T) - \tau_n) \\
+&\leq \Delta(\tau_n, T)
+\end{align*}
+
+If $\tau_n \to \infty$ then the condition $\lim_{t \to \infty} \Delta(t,T) = 0$ for all $T > 0$ clearly implies $\lim_{n \to \infty} \Delta(\tau_n,T) = 0$ for all $T > 0$; by (ii) this implies the Kushner-Clark 
+criterion.  On the other hand assume the Kushner-Clark criterion, let  $T>0$ and $\epsilon>0$ be given and pick $N_T>0$ such that  $\Delta(\tau_n, m(\tau_n+T+2) - \tau_n) < \epsilon/2$ for all $n \geq N_T$.  Because $\gamma_n \to 0$ we may pick $N_1$ large enough that $\gamma_{n+1} < 1$ for all $n \geq N_1$ from which it follows that for such $n$
+\begin{align*}
+T + 1 &< \tau_n + T + 2 - \gamma_{m(\tau_n+T+2)+1} - \tau_n \leq \tau_{m(\tau_n + T + 2)+1} - \gamma_{m(\tau_n+T+2)+1} - \tau_n = \tau_{m(\tau_n + T + 2)} - \tau_n
+\end{align*}
+For $n \geq N_1 \maxop N_T$ we have $\Delta(\tau_n, T+1) \leq \Delta(\tau_n, m(\tau_n+T+2) - \tau_n) < \epsilon/2$.  
+Then for all $t \geq N_1 \maxop \tau{N_T}$ there is a unique $n \geq N_1 \maxop N_T$ such that $\tau_n \leq t < \tau_{n+1}$ which implies $t - \tau_{n} < 1$ so
+\begin{align*}
+\Delta(t,T) &= \Delta(t - \tau_n + \tau_n, T) \leq 2\Delta(\tau_n, T+ (t-\tau_n)) \leq 2 \Delta(\tau_n, T+1) < \epsilon
+\end{align*}
+which shows $\lim_{t \to \infty} \Delta(t,T) = 0$.
+\end{proof}
+
+\begin{prop}\label{KushnerClarkImpliesPseudotrajectory}Let $F : \reals^d \to \reals^d$ be a continuous vector field such that the differential equation $\dot{x} = F(x)$ has unique integral curves.  Assume that $\gamma_{n+1}$ and $U_{n+1}$ satisfy the Kushner-Clark criterion and either
+\begin{itemize}
+\item[(i)] $\sup_{n} \norm{x_n} < \infty$ 
+\item[(ii)] $F$ is Lipschitz and bounded on a (convex?) neighborhod of $\lbrace x_n \rbrace$.
+\end{itemize}
+then $X$ is an asymptotic pseudotrajectory of the flow induced by $F$.  Furthermore if (ii) is true then
+\begin{align*}
+\sup_{0 \leq h \leq T} \norm{X(t+h) - \Phi_h(X(t))} &\leq C \left( \Delta(t-1, T+1) + \sup_{t \leq s \leq t+T} \norm{\overline{\gamma}(s)} \right)
+\end{align*}
+where the constant $C$ only depends on $T$ and $F$.
+\end{prop}
+\begin{proof}
+\begin{clm}\label{KushnerClarkImpliesPseudotrajectory:UniformContinuity} $X$ is uniformly continuous.
+\end{clm}
+If (i) holds then by continuity of $F$ we know that $\sup_n \norm{F(x_n)} < \infty$.  If (ii) holds then  $\sup_n \norm{F(x_n)} < \infty$  because $F$ is assumed bounded on a neighborhood of $\lbrace x_n \rbrace$.  In either case there exists a constant $K$ such that $\sup_t \norm{F(X(t))} \leq K$.  From Proposition \ref{StochasticApproximationInterpolations} and Proposition \ref{KushnerClarkCriterionIntegralForm} we get
+\begin{align*}
+&\limsup_{t \to \infty} \sup_{0 \leq h \leq T} \norm{X(t+h) - X(t)} = \limsup_{t \to \infty}\sup_{0 \leq h \leq T} \norm{\int_t^{t+h} (F(\overline{X})(u) + \overline{U}(u)) \, du} \\
+&\leq \limsup_{t \to \infty}\sup_{0 \leq h \leq T} \norm{\int_t^{t+h} F(\overline{X})(u) \, du} + \limsup_{t \to \infty} \sup_{0 \leq h \leq T}\norm{\int_t^{t+h} \overline{U}(u)) \, du} \leq KT
+\end{align*}
+
+From this it follows that $X$ is uniformly continuous (given $\epsilon > 0$ let $\delta_1 = \epsilon/2K  \minop 1$ and pick $s>0$ such that $\sup_{t \geq s} \sup_{0 \leq h \leq \delta_1} \norm{X(t+h) - X(t)} < K\delta_1 + \epsilon/2 = \epsilon$ for all $t\geq s$.  Since $[0,s+1]$ is compact we know that $X$ is uniformly continuous on $[0,s+1]$ (Theorem \ref{UniformContinuityOnCompactSets}) and  therefore there exists $\delta_2>0$ such that $\sup{0 \leq t \leq s} \sup_{0 \leq h \leq \delta_2} \norm{X(t+h) - X(t)} < \epsilon$.  Let $\delta= \delta_1 \minop \delta_2$ and it follows that $\sup_{0 \leq t < \infty} \sup_{0 \leq h \leq \delta} \norm{X(t+h) - X(t)} < \epsilon$).
+
+Now lets break $\Theta_t (X)$ up into some terms that we'll examine individually.
+\begin{align}\label{KushnerClarkImpliesPseudotrajectory:TranslationTerms}
+\Theta_t(X)(s) &= X(t+s) = X(0) + \int_0^{t+s} F(\overline{X}(u)) \, du + \int_0^{t+s} \overline{U}(u) \, du \\
+&=X(0) + \int_0^{t} (F(\overline{X}(u)) + \overline{U}(u) ) \, du + \int_t^{t+s} F(\overline{X}(u)) \, du + \int_t^{t+s} \overline{U}(u) \, du \text{ ????} \\
+&=X(t) + \int_0^s F(X(t+u)) \, du + \int_t^{t+s} (F(\overline{X})(u) - F(X(u))) \, du + \int_t^{t+s} \overline{U}(u) \, du \\
+&=\Theta_t(X)(0) + \int_0^s F(\Theta_t(X)(u)) \, du + \int_t^{t+s} (F(\overline{X})(u) - F(X(u))) \, du + \int_t^{t+s} \overline{U}(u) \, du \\
+&=L_F(\Theta_t(X))(s) + A_t(s) + B_t(s)
+\end{align}
+where have defined
+\begin{align*}
+L_F(X)(s) &= X(0) + \int_0^s F(X(u)) \, du \text{ for $X \in C([0,\infty); \reals^d)$} \\ 
+A_t(s) &= \int_t^{t+s} (F(\overline{X}(u)) - F(X(u))) \, du \\
+B_t(s) &=  \int_t^{t+s} \overline{U}(u) \, du 
+\end{align*}
+
+Note that $L_F(X) = X$ if and only if $X$ is an integral curve of the differential equation $\dot{x} = F(x)$ (TODO: Presumably this is the fixed point operator used in Picard iteration).
+
+The last term is the easiest to handle;  by Lemma \ref{UniformConvergenceOnCompacts} the Kushner-Clark assumption is equivalent to the statement that $\lim_{t \to \infty} B_t = 0$ in $C([0,\infty); \reals^d)$ (i.e. uniformly on compact sets).
+
+We now turn to estimates on the second term which addresses errors that arise as a result of mixing the linear and constant interpolations of the $x_n$.
+\begin{clm} $\lim_{t \to \infty} A_t = 0$ in $C([0,\infty); \reals^d)$
+\end{clm}
+Fix $t,T > 0$  and consider the interval $t \leq u \leq t+T$.  From Proposition \ref{StochasticApproximationInterpolations}  we get
+\begin{align*}
+\norm{X(u) - \overline{X}(u)} &= \norm{X(u) - X(\tau_{m(u)})} = \norm{\int_{\tau_{m(u)}}^u (F(\overline{X}(s)) + \overline{U}(s)) \, ds} \\
+&\leq K (u - \tau_{m(u)}) + \norm{\int_{\tau_{m(u)}}^u \overline{U}(s) \, ds} \leq K \overline{\gamma}(u) + \norm{\int_{\tau_{m(u)}}^u \overline{U}(s) \, ds} 
+\end{align*}
+
+Since $\lim_{n \to \infty} \gamma_n = 0$ and $t \leq u$ we know that for $t$ sufficiently large we have 
+\begin{align*}
+\tau_{m(u)+1} - \tau_{m(u)} &= \gamma_{m(u)+1} = \overline{\gamma}(u) < 1
+\end{align*}
+and therefore $t \leq u < \tau_{m(u)+1} < 1 + \tau_{m(u)}$; in particular $t-1 < \tau_{m(u)} \leq u$.  Therefore we may write
+\begin{align*}
+\norm{\int_{\tau_{m(u)}}^u \overline{U}(s) \, ds} &= \norm{\int_{t-1}^u \overline{U}(s) \, ds - \int_{t-1}^{\tau_{m(u)}} \overline{U}(s) \, ds} \\
+&\leq \norm{\int_{t-1}^u \overline{U}(s) \, ds} + \norm{\int_{t-1}^{\tau_{m(u)}} \overline{U}(s) \, ds} \leq 2\Delta(t-1, T+1)
+\end{align*}
+and so we get
+\begin{align}\label{KushnerClarkImpliesPseudotrajectory:InterpolationError}
+\sup_{t \leq u \leq t+T} \norm{X(u) - \overline{X}(u)} &\leq 2\Delta(t-1, T+1) + K \sup_{t \leq u \leq t+T}\overline{\gamma}(u) 
+\end{align}
+Under either assumption (i) or (ii), $F$ is uniformly continuous on a neighborhood of the $\lbrace x_n \rbrace$.  Fix $T > 0$ then for any
+$\epsilon > 0$ there exists a $\delta$ such that $\norm{X(u) - \overline{X}(u)} < \delta$ implies 
+$\norm{F(X(u)) - F(\overline{X}(u))} < \epsilon/T$.  By \eqref{KushnerClarkImpliesPseudotrajectory:InterpolationError}, the Kushner-Clark condition 
+and the fact that $\gamma_n \to 0$ we know that $\sup_{t \leq u \leq t+T} \norm{X(u) - \overline{X}(u)} < \delta$ for sufficiently large $t$.  Hence
+\begin{align*}
+\sup_{0 \leq s \leq T} \norm{A_t(s)} &= \sup_{0 \leq s \leq T} \norm{\int_t^{t+s} (F(\overline{X}(u)) - F(X(u))) \, du} \leq T (\epsilon/T) = \epsilon
+\end{align*}
+hence $\lim_{t \to \infty} \sup_{0 \leq s \leq T} \norm{A_t(s)} =0$.  Since $T>0$ we arbitrary we see that $A_t \to 0$ in $C([0,\infty), \reals^d)$.
+
+We note that the operator $L_F : C([0,\infty), \reals^d) \to C([0,\infty), \reals^d)$ is continuous (TODO: This should be put somewhere that we discuss
+Picard iteration).  This follows from the fact that $F$ is continuous and therefore $X \to F \circ X$ is continuous, evaluation $X \to X(0)$ is continuous and
+$X \to \int_0 X(s) \, ds$ is continuous.
+
+Now suppose that $X^*$ is a limit point of $\lbrace \Theta_t(X) \rbrace$.  Thus there exists a sequence $t_n$ with $t_n \to \infty$ and $\lim_{n \to \infty} \Theta_{t_n}(X) = X^*$
+in $C([0,\infty), \reals^d$.  It follows from the prior claims and the continuity of $L_F$ that
+\begin{align*}
+X^* &= \lim_{n \to \infty} \Theta_{t_n}(X) = \lim_{n \to \infty} L_F(\Theta_{t_n}(X)) + A_{t_n} + B_{t_n} = \lim_{n \to \infty} L_F(\Theta_{t_n}(X)) \\
+&= L_F(\lim_{n \to \infty}\Theta_{t_n}(X)) = L_F(X^*)
+\end{align*}
+and therefore $X^*$ is a solution of $\dot{x} = F(x)$.  Since we have assumed that $F$ has unique integral curves it follows that in fact $X^* = \Phi^{X^*(0)} \in S_\Phi$.
+From Claim \ref{KushnerClarkImpliesPseudotrajectory:UniformContinuity} and  Theorem \ref{AsymptoticPseudotrajectoryTranslationLimitPointCharacterization} it follows that $X$ is an asymptotic pseudotrajectory.  (TODO: Don't we need relative compactness of $X([0,\infty))$ which only holds under (i)?)
+
+Now suppose that (ii) holds and that $\norm{F(x) - F(y)} \leq L \norm{x - y}$ on a neighborhood of the $\lbrace x_n \rbrace$.  In this case from \eqref{KushnerClarkImpliesPseudotrajectory:InterpolationError} we get for $t$ sufficiently large and $T>0$
+\begin{align*}
+\norm{A_t(s)} &= \norm{\int_t^{t+s} (F(\overline{X}(u)) - F(X(u))) \, du} \leq T L (2\Delta(t-1, T+1) + K\sup_{t \leq u \leq t+T}\overline{\gamma}(u) ) \text{ for $0 \leq s \leq T$} \\
+\end{align*}
+and we also have
+\begin{align*}
+\norm{B_t(s)} &= \norm{\int_t^{t+s} \overline{U}(u) \, du} \leq \Delta(t,T) \leq 2 \Delta(t-1, T+1)
+\end{align*}
+By \eqref{KushnerClarkImpliesPseudotrajectory:TranslationTerms} and the fact that as an integral curve we have $\Phi_s(X(t)) = \Phi^{X(t)}(s)= L_F(\Phi^{X(t)})$ and Gronwall's Inequality (Proposition \ref{GronwallsInequality}) for sufficiently large $t$, all $T>0$ and $0 \leq s \leq T$
+\begin{align*}
+\norm{X(t+s) - \Phi_s(X(t))} &= \norm{\Theta_t(X)(s) - L_F(\Theta_t(X))(x) +  L_F(\Theta_t(X))(s) + L_F(\Phi^{X(t)})(s)} \\
+&=\norm{A_t(s) + B_t(s) +  \int_0^s (F(\Theta_t(X)(u)) - F(\Phi_u(X(t)))) \, du} \\
+&\leq \norm{A_t(s)} + \norm{B_t(s)} + L \int_0^s \norm{X(t+u) - \Phi_u(X(t))} \, du \\
+&\leq 2(TL + 1) \Delta(t-1, T+1) + TLK \sup_{t \leq u \leq t+T}\overline{\gamma}(u) + L \int_0^s \norm{X(t+u) - \Phi_u(X(t))} \, du \\
+&\leq (2(TL + 1) \Delta(t-1, T+1) + TLK \sup_{t \leq u \leq t+T}\overline{\gamma}(u)) (1 + \int_0^s e^{L(s-u)} \, du) \\
+&\leq (2(TL + 1) \Delta(t-1, T+1) + TLK \sup_{t \leq u \leq t+T}\overline{\gamma}(u)) (1 + L^{-1} e^{TL}) \\
+\end{align*}
+Now take the supremeum over all $0 \leq s \leq T$.
+\end{proof}
+
+We now return to the realm of probability and we assume that the sequences $x_n$ and $U_n$ are now random processes.  The first question is whether we can find probabilistic hypotheses 
+that guarantee the Kushner-Clark conditions hold almost surely.  
+
+We need a small consequence of H\"{o}lder's inequality.
+\begin{lem}\label{BMPHolderInequality}Let $a_i \geq 0$, $b_i \in \reals$, $p > 1$ and $0 < \delta < 1$ then 
+\begin{align*}
+\left(\sum_{i=n}^m \abs{ a_i b_i} \right)^p &\leq \left( \sum_{i=n}^m a_i^{\delta p/(p-1)} \right)^{p-1} \sum_{i=n}^m a_i^{1-\delta)p} \abs{b_i}^p
+\end{align*}
+\end{lem}
+\begin{proof}
+Noting that $p$ and $\frac{p}{p-1}$ are conjugate exponents we simply apply H\"{o}lder's inequality
+\begin{align*}
+\sum_{i=n}^m \abs{a_i b_i} &= \sum_{i=n}^m (a_i^\delta) (a_i^{1-\delta} \abs{b_i}) \\
+&\leq \left(\sum_{i=n}^m a_i^{\delta p/p-1} \right )^{p-1/p} \left( \sum_{i=n}^m a_i^{1-\delta)p} \abs{b_i}^p \right){1/p}
+\end{align*}
+and take the $p^{th}$ power.  TODO: Why do we need $0 < \delta < 1$?
+\end{proof}
+
+TODO: Do we need a vector valued version of Burkholder or is the current proof provided valid in $\reals^d$???
+
+\begin{prop}\label{AlmostSureKushnerClarkBoundedMoments}Let $(\Omega, \mathcal{A}, P)$ be a probability space with a filtration $\mathcal{F}_n$.  Suppose that $x_n$ and $U_n$ are adapted processes, $U_n$ is a martingale difference sequence (i.e. $\cexpectationlong{\mathcal{F}_n}{U_{n+1}}=0$ for all $n \in \integers_+$), $\gamma_n$ is a deterministic sequence such that $\lim_{n \to \infty} \gamma_n = 0$ and $\sum_{n=1}^\infty \gamma_n = \infty$ and 
+\begin{align*}
+x_{n+1} &= x_n + \gamma_{n+1} (F(x_n) + U_{n+1})
+\end{align*}
+If for some $q \geq 2$ we have $\sup_n \expectation{\norm{U_{n+1}}^q} < \infty$ and $\sum_{n=1}^\infty \gamma_n^{1+q/2} < \infty$ then the Kushner-Clark condition holds almost surely.
+\end{prop}
+\begin{proof}
+\begin{clm}For all $T > 0$ and $t \geq 0$ there exists a constant $C_q$ such that
+\begin{align*}
+\expectation{\Delta(t, T)^q} &\leq C_q  T^{q/2 -1} \sup_m \norm{U_m}^q \int_{t}^{t+T} \overline{\gamma}^{q/2}(s) \, ds
+\end{align*}
+\end{clm}
+The proof of the claim requires an inequality.  Let $\psi_1, \psi_2, \dotsc$ be a sequence of non-negative numbers and define $\sigma_0=0$ and $\sigma_n = \sum_{i=1}^n \psi_i$ for $n \geq 1$.   Since $\psi_{n+1} U_{n+1}$ is an $\mathcal{F}$ martingale difference sequence we know that $\sum_{i=1}^n \psi_{n+1} U_{n+1}$ is an $\mathcal{F}$-martingale and therefore by 
+the right hand side of Burkholder's Inequality (Theorem \ref{BurkholderInequalities}) we conclude that for every $t \geq 0$ and $n \in \integers_+$
+\begin{align*}
+\expectation{\sup_{n < k \leq m(\sigma_n + T)} \norm{\sum_{i=n}^{k-1} \psi_{i+1} U_{i+1}}^q} &\leq C_q \expectation{\left(\sum_{i=n}^{m(\sigma_n + T)-1} \psi^2_{i+1}\norm{ U_{i+1}}^2\right)^{q/2}}
+\end{align*}
+If we suppose $q > 2$ then we can apply Lemma \ref{BMPHolderInequality} with $p=q/2$, $\delta=(q-2)/2q$, $a_i=\psi^2_{i+1}$ and $b_i = \norm{U_{i+1}}^2$ hence ($p/(p-1) = (q/2)/((q/2)-1) = q/(q-2)$ and $1-\delta = (q+2)/2q$)  to conclude
+\begin{align*}
+&\expectation{\sup_{n < k \leq m(\sigma_n + T)} \norm{\sum_{i=n}^{k-1} \psi_{i+1} U_{i+1}}^q} \\
+&\leq C_q \expectation{\left(\sum_{i=n}^{m(\sigma_n + T)-1} \psi^{2\left( \frac{q-2}{2q} \right) \left ( \frac{q}{q-2} \right)}_{i+1}\right)^{q/2-1} \sum_{i=n}^{m(\sigma_n + T)-1} \psi_{i+1}^{2\left( \frac{q+2}{2q} \right) \left( \frac{q}{2} \right)} \norm{U_{i+1}}^{2 \left(\frac{q}{2} \right)}} \\
+&= C_q \expectation{\left(\sum_{i=n}^{m(\sigma_n + T)-1} \psi_{i+1}\right)^{q/2-1} \sum_{i=n}^{m(\sigma_n + T)-1} \psi_{i+1}^{1+q/2} \norm{U_{i+1}}^{q}} \\
+&= C_q \expectation{\left(\sigma_{m(\sigma_n+T)} - \sigma_n \right)^{q/2-1} \sum_{i=n}^{m(\sigma_n + T)-1} \psi_{i+1}^{1+q/2} \norm{U_{i+1}}^{q}} \\
+&\leq C_q (\sigma_n + T - \sigma_n)^{q/2 -1} \expectation{\sum_{i=n}^{m(\sigma_n + T)-1} \psi_{i+1}^{1+q/2} \norm{U_{i+1}}^{q}} \\
+&\leq C_q  T^{q/2 -1} \sup_m \norm{U_m}^q \sum_{i=n}^{m(\sigma_n + T)-1} \psi_{i+1}^{1+q/2} \\
+\end{align*}
+Now if we fix $t \geq 0$ and we consider $\Delta(t,T) = \sup_{t \leq u \leq t+T} \norm{\int_t^{u} \overline{U}(s) \, ds}$.  As in the proof of Proposition \ref{KushnerClarkCriterionIntegralForm} the piecewise linearity of the integral as a function of $u$ and the convexity of the norm implies that the supremum is attained at some $u \in \lbrace t, m(t)+1, \dotsc, m(t+T), t+T \rbrace$.
+Define the sequence $\psi_{m(t)} = t$, $\psi_{m(t)+1} = \tau_{m(t)+1} - t = \gamma_{m(t)+1} - (t - \tau_{m(t)})$, $\psi_i = \gamma_i$ for $i=m(t)+1, \dotsc, m(t+T)$ and $\psi_{m(t+T)+1} = t+T - m(t+T)$.  Applying the above inequality (noting $\sigma_n = t$) we get (TODO: there is some ambiguity to clear up about $m$ defined by the $\gamma_i$ and $m$ defined by the $\psi$; the salient point is these two functions are equal on the interval $[t,t+T]$).
+\begin{align*}
+\expectation{\Delta(t,T)} &= \expectation{\norm{\sup_{m(t) < k \leq m(t+T)} \psi_{i+1} U_{i+1}}^q} \\
+&\leq C_q  T^{q/2 -1} \sup_m \norm{U_m}^q \sum_{i=m(t)}^{m(t + T)-1} \psi_{i+1}^{1+q/2}  \\
+&\leq C_q  T^{q/2 -1} \sup_m \norm{U_m}^q \sum_{i=m(t)}^{m(t + T)-1} \psi_{i+1} \gamma_{i+1}^{q/2}  \\
+&=C_q  T^{q/2 -1} \sup_m \norm{U_m}^q \int_t^{t+T} \overline{\gamma}^{q/2}(s) \, ds
+\end{align*}
+
+TODO: Handle the case $q=2$ which is more direct.
+
+For $q \geq 2$ and every $\epsilon > 0$
+\begin{align*}
+\sum_{k=0}^\infty \probability{\Delta(kT,T) > \epsilon} &\leq \epsilon^{-q} \sum_{k=0}^\infty \expectation{\Delta(kT, T)^q} \\
+&\leq \epsilon^{-q} C_q T^{q/2 -1} \sup_m \norm{U_m}^q \sum_{k=0}^\infty \int_{kT}^{(k+1)T} \overline{\gamma}^{q/2}(s) \, ds \\
+&= \epsilon^{-q} C_q T^{q/2 -1} \sup_m \norm{U_m}^q \int_0^\infty \overline{\gamma}^{q/2}(s) \, ds \\
+&= \epsilon^{-q} \sum_{n=1}^\infty \gamma_{n+1}^{1 + q/2} < \infty
+\end{align*}
+and therefore by the Borel Cantelli Theorem \ref{BorelCantelli} we get $\probability{\Delta(kT,T) > \epsilon i.o.} =0$ and by Lemma \ref{ConvergenceAlmostSureByInfinitelyOften}
+$\lim_{k \to \infty} \Delta(kT,T) = 0$ almost surely.
+
+For an arbitrary $0 \leq t < \infty$ there exists a unique $k \in \integers_+$ such that $kT \leq t < (k+1)T$ and for such a $k$ we have for $0 \leq h \leq T$  
+$\int_t^{(t+h) \minop (k+1)T} = \int_{kT}^{(t+h) \minop (k+1)T} - \int_{kT}^t$ and therefore $\norm{\int_t^{(t+h) \minop (k+1)T}} \leq \norm{\int_{kT}^{(t+h) \minop (k+1)T}} + \norm{\int_{kT}^t} \leq 2 \sup_{0 \leq h \leq T} \int_{kT}^{kT+h}$ also
+$\norm{\int_{(t+h) \minop (k+1)T}^{t+h}} \leq sup_{0 \leq h \leq T}\norm{\int_{(k+1)T}^{(k+1)T+h}}$ and so $\Delta(t,T) \leq 2 \Delta(kT, T) + \Delta((k+1)T,T)$.  This shows that 
+$\lim_{t \to \infty} \Delta(t,T) = 0$ almost surely.  Now we apply Proposition \ref{KushnerClarkCriterionIntegralForm}.
+\end{proof}

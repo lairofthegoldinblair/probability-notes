@@ -91,7 +91,7 @@ the topology.
   only if every the topology has a countable base.
 \end{itemize}
 \end{defn}
-\begin{lem}A metric space is separable if and only if it is second countable.
+\begin{lem}\label{SeparabilitySecondCountabilityMetricSpaces}A metric space is separable if and only if it is second countable.
 \end{lem}
 \begin{proof}
 TODO:
@@ -103,82 +103,6 @@ outline of proof is to pick a countable dense subset $\lbrace x_n
 TODO:  Fun fact, there is a non-first countable topological space
 which is compact but not sequentially compact!  In first countable
 spaces sequential compactness is equivalent to 
-
-TODO: The goal of the next set of results is to show that separable
-complete metric spaces (actually Polish spaces which are those with
-a separable topology which can be metrized by a complete metric) are Borel.
-
-
-The following appears in Royden as Theorem 8.11 (with proof delgated
-to exercises)
-\begin{lem}Let $X$ be a Hausdorff topological space, $Y$ be a
-  complete metric space and $Z \subset X$ be a dense subset.  If $f :
-  Z \to X$ is a homeomorphism then $Z$ is a countable intersection of
-  open sets.
-\end{lem}
-\begin{proof}
-For each $n$ let 
-\begin{align*}
-O_n &= \lbrace x \in X \mid \text{there exists $U$
-  open with $x \in U$ and $\diam(f(U \cap Z)) < \frac{1}{n}$} \rbrace
-\end{align*}
-Note that $O_n$ is open because for any $x \in O_n$ by definition we
-have the open set $U$ that provides the evidence that $x \in O_n$;
-$U$ also provides the evidence that proves that every $y \in U$
-belongs to $O_n$.  Also
-note that $Z \subset O_n$ since for any $n$, by continuity of $f$ at $x \in Z$ and Lemma
-\ref{OpenAlternative}  we
-can find an open $U \subset X$ such that $x \in U \cap Z$ and $f(U \cap Z) \subset B(f(x),
-\frac{1}{2n})$ (sets of the form $U \cap Z$ being precisely the open
-sets in $Z$).
-
-Now define $E = \cap_n O_n$.  As noted we know $Z \subset E$ so we
-will be done if we can show $E
-\subset Z$ as well.  Let $x \in E$; we will construct $z \in Z$
-such that $x = z$.  For each $n$ pick $U_n$ such $x \in U_n$ and $\diam(f(U_n \cap Z)) <
-\frac{1}{n}$ and let $x_n$ be an arbitrary point in $\cap_{j=1}^n
-U_j \cap Z$ (the intersection is non-empty because $Z$ is dense in
-$X$).  
-For every $n$ and $m \geq n$ we have by construction that $x_n
-\in U_n$ and $x_m \in U_n$ hence $d(f(x_n), f(x_m)) < \frac{1}{n}$.
-Therefore $f(x_n)$ is Cauchy in
-$Y$ and by completeness of $Y$ we know that $f(x_n)$ converges to a
-value $y \in Y$ with $d(y, f(x_n)) \leq \frac{1}{n}$.  
-Because $f$ is a homeomorphism we know that 
-there is a unique $z \in Z$ such that $f(z) = y$; we claim that $x =
-z$.  Suppose that $x
-\neq z$, then by the Hausdorff property on $X$ we can pick open sets $U$ and
-$V$ such that $U \cap V = \emptyset$, $x \in U$ and $z \in V$.  Since
-$f$ is a homeomorphism, we know $f(Z \cap V)$ is open and contains
-$f(z)$ hence for sufficiently large $n$, $f^{-1}(B(f(z), \frac{1}{n}))
-\subset Z \cap V \subset V$.  On
-the other hand, by the definition of $x$ we have $U_{2n}$ open such that
-$x \in U_{2n}$ and $\diam(f(Z \cap U_{2n})) < \frac{1}{2n}$.  By openness of
-$U \cap U_{2n}$ and density of $Z$ we know there is a $w \in U \cap
-U_{2n} \cap Z$.  Putting these observations together we have
-\begin{align*}
-d(f(w), f(z)) &\leq  d(f(w), f(x_{2n})) + d(f(x_{2n}), f(z)) 
-< \frac{1}{2n} + \frac{1}{2n} = \frac{1}{n}
-\end{align*}
-which implies $w \in V$ providing a contradiction of $U \cap V =
-\emptyset$ hence we conclude $x = z$.
-\end{proof}
-
-\begin{thm}[Tychonoff's Theorem]\label{Tychonoff}Let $I$ be index set
-  and let $(X_i,
-  \mathcal{T}_i)$ be a topological space for each $i \in I$, the
-  cartesian product $\prod_{i \in I} X_i$ with the product topology is
-  compact.
-\end{thm}
-\begin{proof}
-TODO:
-\end{proof}
-
-\begin{thm}\label{PolishImpliesBorel}A Polish space is Borel.
-\end{thm}
-\begin{proof}
-TODO
-\end{proof}
 
 Separation axioms tells us that we have enough open sets in a topology
 to distinguish features of the the underlying set (e.g. distinguishing
@@ -301,6 +225,85 @@ that $g(x) = d(x, F)$ is continuous (in fact Lipschitz) and by Lemma
 Lipschitz and therefore $f(x) \in C_b(S; \reals)$.  Because $F$ is
 closed we also know that $F = f^{-1}(\lbrace 0 \rbrace)$ and we are done.
 \end{proof}
+
+\section{Borel Spaces}
+
+TODO: The goal of the next set of results is to show that separable
+complete metric spaces (actually Polish spaces which are those with
+a separable topology which can be metrized by a complete metric) are Borel.
+
+ The following appears in Royden as Theorem 8.11 (with proof delgated
+to exercises)
+\begin{lem}Let $X$ be a Hausdorff topological space, $Y$ be a
+  complete metric space and $Z \subset X$ be a dense subset.  If $f :
+  Z \to X$ is a homeomorphism then $Z$ is a countable intersection of
+  open sets.
+\end{lem}
+\begin{proof}
+For each $n$ let 
+\begin{align*}
+O_n &= \lbrace x \in X \mid \text{there exists $U$
+  open with $x \in U$ and $\diam(f(U \cap Z)) < \frac{1}{n}$} \rbrace
+\end{align*}
+Note that $O_n$ is open because for any $x \in O_n$ by definition we
+have the open set $U$ that provides the evidence that $x \in O_n$;
+$U$ also provides the evidence that proves that every $y \in U$
+belongs to $O_n$.  Also
+note that $Z \subset O_n$ since for any $n$, by continuity of $f$ at $x \in Z$ and Lemma
+\ref{OpenAlternative}  we
+can find an open $U \subset X$ such that $x \in U \cap Z$ and $f(U \cap Z) \subset B(f(x),
+\frac{1}{2n})$ (sets of the form $U \cap Z$ being precisely the open
+sets in $Z$).
+
+Now define $E = \cap_n O_n$.  As noted we know $Z \subset E$ so we
+will be done if we can show $E
+\subset Z$ as well.  Let $x \in E$; we will construct $z \in Z$
+such that $x = z$.  For each $n$ pick $U_n$ such $x \in U_n$ and $\diam(f(U_n \cap Z)) <
+\frac{1}{n}$ and let $x_n$ be an arbitrary point in $\cap_{j=1}^n
+U_j \cap Z$ (the intersection is non-empty because $Z$ is dense in
+$X$).  
+For every $n$ and $m \geq n$ we have by construction that $x_n
+\in U_n$ and $x_m \in U_n$ hence $d(f(x_n), f(x_m)) < \frac{1}{n}$.
+Therefore $f(x_n)$ is Cauchy in
+$Y$ and by completeness of $Y$ we know that $f(x_n)$ converges to a
+value $y \in Y$ with $d(y, f(x_n)) \leq \frac{1}{n}$.  
+Because $f$ is a homeomorphism we know that 
+there is a unique $z \in Z$ such that $f(z) = y$; we claim that $x =
+z$.  Suppose that $x
+\neq z$, then by the Hausdorff property on $X$ we can pick open sets $U$ and
+$V$ such that $U \cap V = \emptyset$, $x \in U$ and $z \in V$.  Since
+$f$ is a homeomorphism, we know $f(Z \cap V)$ is open and contains
+$f(z)$ hence for sufficiently large $n$, $f^{-1}(B(f(z), \frac{1}{n}))
+\subset Z \cap V \subset V$.  On
+the other hand, by the definition of $x$ we have $U_{2n}$ open such that
+$x \in U_{2n}$ and $\diam(f(Z \cap U_{2n})) < \frac{1}{2n}$.  By openness of
+$U \cap U_{2n}$ and density of $Z$ we know there is a $w \in U \cap
+U_{2n} \cap Z$.  Putting these observations together we have
+\begin{align*}
+d(f(w), f(z)) &\leq  d(f(w), f(x_{2n})) + d(f(x_{2n}), f(z)) 
+< \frac{1}{2n} + \frac{1}{2n} = \frac{1}{n}
+\end{align*}
+which implies $w \in V$ providing a contradiction of $U \cap V =
+\emptyset$ hence we conclude $x = z$.
+\end{proof}
+
+\begin{thm}[Tychonoff's Theorem]\label{Tychonoff}Let $I$ be index set
+  and let $(X_i,
+  \mathcal{T}_i)$ be a topological space for each $i \in I$, the
+  cartesian product $\prod_{i \in I} X_i$ with the product topology is
+  compact.
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{thm}\label{PolishImpliesBorel}A Polish space is Borel.
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
+\section{Prohorov's Theorem}
 
 The theory of probability measures on separable metric spaces is simpler in many ways than its general counterpart 
 for non-separable metric spaces. The simplicity derives from the fact that a separable metric space is not too far being compact
@@ -886,10 +889,12 @@ $n \geq N$ let $k\geq 0$ be such that $k\delta \leq t < (k+1)\delta$
 and we are done.
 \end{proof}
 
+\section{Donsker's Theorem}
+
 Provided with a characterization of compact sets in
-$C^\infty([0,\infty); \reals)$ we can now state the probabilistic
+$C([0,\infty); \reals)$ we can now state the probabilistic
 analogue that characterizes tightness.
-\begin{lem}\label{TightnessOfContinuousFunctions}A sequence of Borel probability measures $\mu_n$ on $C^\infty([0,\infty);
+\begin{lem}\label{TightnessOfContinuousFunctions}A sequence of Borel probability measures $\mu_n$ on $C([0,\infty);
   \reals)$ is tight if and only if 
 \begin{itemize}
 \item[(i)]$\lim_{\lambda \to \infty} \sup_{n \geq 1} \sprobability{\abs{f(0)}
@@ -900,7 +905,7 @@ analogue that characterizes tightness.
 \end{lem}
 \begin{proof}
 Let $\mu_n$ be a tight sequence.  Let $\epsilon > 0$ be given and pick
-$K \subset C^\infty([0,\infty); \reals)$ compact with $\mu_n(K) >
+$K \subset C([0,\infty); \reals)$ compact with $\mu_n(K) >
 1-\epsilon$ for all $n$.  Then by Theorem \ref{ArzelaAscoliTheorem} we know that $\sup_{f \in K}
 \abs{f(0)} < \infty$ and therefore $\sprobability{\abs{f(0)}\geq
 \lambda}{\mu_n} \leq \mu_n(K^c) < \epsilon$ for any $\lambda > \sup_{f
@@ -1656,6 +1661,38 @@ linear functionals on a space of functions.  There is a analogue to
 that result that applies in the case of measure on topological
 spaces and allows one to bring the machinery of functional analysis to
 bear on problems of measure theory.  
+
+\begin{defn}Let $X$ be a locally compact Hausdorff topological space then a Borel measure $\mu$ is said to be a
+\emph{Radon measure} if $\mu(K) < \infty$ for every compact set $K$ and $\mu$ is inner regular i.e. if for every Borel set $A$ we
+have 
+\begin{align*}
+\mu(A) &= \sup \lbrace \mu(K) \mid K \subset A \text{ and $K$ compact} \rbrace
+\end{align*}
+\end{defn}
+
+N.B. Other definitions of Radon measure are in use.  For example Folland uses the following definition:
+\begin{itemize} 
+\item[(i)] (locally finite) $\mu(K)< \infty$ for all compact $K$
+\item[(ii)] (outer regularity) $\mu(A) = \inf \lbrace \mu(U) \mid A \subset U \text{ and $U$ open} \rbrace$ for every Borel set $A$
+\item[(iii)] (inner regularity on open sets) $\mu(U) = \inf \lbrace \mu(K) \mid K \subset U \text{ and $K$ compact} \rbrace$ for every open set $U$
+\end{itemize}
+The combination of outer regularity and inner regularity on open sets is sometimes referred to as \emph{quasi-regularity}.
+For the case of $\sigma$-compact locally compact Hausdorff spaces the definitions coincide but dropping $\sigma$-compactness the definitions are no longer equivalent.  The definition present here is chosen so that the Riesz Representation Theorem below holds.  A Riesz Representation Theorem holds with the alternative definition as well. Note that we will not be concerned with Radon measures on non-locally compact spaces.
+
+To illustrate 
+\begin{examp}Let $\reals_d$ be the real line with the discrete topology and let $X = \reals \times \reals_d$.  TODO: Show that $X$ is locally compact.  Show that the compact subsets of $X$ are all of the form $\cup_{j=1}^n K_j \times \lbrace y_j \rbrace$ with $K_j$ compact.  Show that if $A \subset X$ is Borel then $A \cap (\reals \lbrace y \rbrace) = A_y \times \lbrace y \rbrace$ with $A_y$ a Borel subset of $\reals$ with the usual topology.  Define 
+\begin{align*}
+\mu(A) &= \sum_{y \in \reals} \lambda(A_y)
+\end{align*}
+Show that $\mu$ is locally finite and inner regular.  Define 
+\begin{align*}
+\nu(A) &= \begin{cases}
+\sum_{y \in \reals} \lambda(A_y) & \text{if at most countably many $A_y \neq \emptyset$} \\
+\infty & \text{otherwise}
+\end{cases}
+\end{align*}
+Show that $\nu$ is locally finite and quasi-regular.  Show that $\mu$ and $\nu$ both induce the same continuous linear functional on the compactly supported functions.
+\end{examp}
 
 The Riesz representation theorem is actually a class of different
 theorems with different hypotheses made about the measures involved
@@ -2564,6 +2601,11 @@ the total variation norm.
 TODO:
 \end{proof}
 
+\section{Regularity Properties of Borel Measures}
+
+In this section we turn to the approximation properties of Borel measures on topological spaces.  In particular we
+concern ourselves with the ability to approximate arbitrary measurable sets by compact, closed and open sets.
+
 \begin{defn}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
 Hausdorff topological space $S$.  
 \begin{itemize}
@@ -2588,7 +2630,7 @@ Hausdorff topological space $S$.
 \end{itemize}
 \end{defn}
 
-\begin{prop}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
+\begin{prop}\label{LocallyFiniteMeasuresLCH}Let $\mu$ be a measure on the Borel $\sigma$-algebra of a
   locally compact Hausdorff space $S$.  Then $\mu$ is locally finite
   if and only if $\mu(K) < \infty$ for all compact sets $K \subset S$.
 \end{prop}
@@ -2603,7 +2645,7 @@ such that $\mu(U_x) < \infty$ and then extract a finite subcover $U_{x_1},
 + \mu(U_{x_n}) < \infty$.
 \end{proof}
 
-\begin{defn}Let $\mu$ be a Borel measure on a Hausdorff topological space. A set measurable set $A$ is called \emph{regular} if 
+\begin{defn}Let $\mu$ be a Borel measure on a Hausdorff topological space. A measurable set $A$ is called \emph{regular} if 
 \begin{itemize}
 \item[(i)]$\mu(A) = \inf_{U \supset A} \mu(A)$ where $U$ are open
 \item[(ii)]$\mu(A) = \sup_{F \subset A} \mu(A)$ where $F$ are closed 
@@ -2842,15 +2884,6 @@ phrases things in terms of Baire measures.  Dudley does not really
 discuss Radon measures.  Arveson discusses the relationship between
 the use of Baire and Radon measures.
 
-\section{Covering Theorems in $\reals^n$}
-
-Since our purposes have been to understand probability theory we have
-hitherto avoided making assumptions that we are dealing with
-$\reals^n$.  While this decision has benefits, it has drawbacks as
-well.  Among those drawbacks are that we lose sight of some history and also some very
-beautiful and deep understanding of the measure theory of the reals.
-TODO: Vitali and Besicovich.
-
 \section{Hausdorff Measure}
 
 \subsection{Introduction}
@@ -2880,85 +2913,6 @@ Lebesgue measure and any Hausdorff measure with $s > n$ is trivial
 what follows.
 
 \subsection{Construction of Hausdorff Measure}
-
-The following technical Lemma is useful (we'll use it when
-discussing Hausdorff outer measures).  If the reader is in a hurry,
-no harm will come from skipping over this result and returning to it
-when the need arises.  Note that if the user is only interested in
-probability theory this result may never come up.
-\begin{lem}[Caratheodory Criterion]\label{CaratheodoryCriterion}Let $(S,d)$ be a metric space with an outer measure $\mu^*$.
-  Then $\mu^*$ is a Borel outer measure (i.e. all Borel sets are
-  $\mu^*$-measurable) if and only if $\mu^*(A \cup B) = \mu^*(A) +
-  \mu^*(B)$ for all $A,B$ such that $d(A, B) > 0$.
-\end{lem}
-\begin{proof}
-We begin with the only if direction.  Let $A$ be a closed set in $S$
-and let $B \subset S$.  To show $A$ is $\mu^*$-measurable it suffices
-to show $\mu^*(B) \geq \mu^*(A \cap B) + \mu^*(A^c \cap B)$.  Since
-the inequality is trivially satisfied when $\mu^*(B) = \infty$ we
-assume that $\mu^*(B) < \infty$.  For
-every $n \in \naturals$, let $A_n =
-\lbrace x \in S \mid d(x, A) \leq \frac{1}{n} \rbrace$.  By definition
-of $A_n$, we have $d(A,
-A_n^c) > \frac{1}{n} > 0$ and therefore $d(A \cap B, A_n^c \cap B)
-> \frac{1}{n} > 0$.  Now by our assumption, we can conclude $\mu^*((A
-\cap B) \cup (A_n^c \cap B)) = \mu^*(A \cap B) +
-\mu^*(A_n^c \cap B)$.
-
-We claim that $\lim_{n \to \infty} \mu^*(A_n^c \cap B) = \mu^*(A^c
-\cap B)$.  Note that if we prove the claim the Lemma is proven because then we have
-\begin{align*}
-\mu^*(B) &\geq \mu^*((A
-\cap B) \cup (A_n^c \cap B)) & & \text{by monotonicity}\\
-&= \mu^*(A \cap B) +
-\mu^*(A_n^c \cap B)
-\end{align*}
-and taking limits we have 
-\begin{align*}
-\mu^*(B) \geq \lim_{n\to \infty} \mu^*(A \cap B) +
-\mu^*(A_n^c \cap B) &= \mu^*(A \cap B) +
-\mu^*(A^c \cap B)
-\end{align*}
-To prove the claim we observe that monotonicity of outer measure
-implies that $\lim_{n \to \infty} \mu^*(A_n^c \cap B) \leq \mu^*(A^c
-\cap B)$ so we just need to
-work on the opposite inequality.  To see it first define the rings
-around $A$
-\begin{align*}
-R_n &= \lbrace x \mid \frac{1}{n+1} < d(x, A) \leq \frac{1}{n} \rbrace
-\end{align*}
-and note that because $A$ is closed, for each $n$,
-\begin{align*}
-A^c &= \lbrace x \in S \mid d(x, A) > 0 \rbrace \\
-&=\lbrace x \in S \mid d(x, A) > n \rbrace \cup \bigcup_{m=n}^\infty \lbrace
-x \in S \mid \frac{1}{m+1} < d(x, A) \leq \frac{1}{m} \rbrace \\
-&=A_n^c \cup \bigcup_{m=n}^\infty R_m
-\end{align*}
-It follows that
-$A^c \cap B = A_n^c \cap B \cup \cup_{m=n}^\infty
-R_m \cap B$ and therefore by subadditivity of outer measure 
-\begin{align*}
-\mu^*(A^c \cap B) \leq \mu^*(A_n^c \cap B) + \sum_{m=n}^\infty
-\mu^*(R_m \cap B)
-\end{align*}
-The claim will follow if we can show $\lim_{n \to \infty} \sum_{m=n}^\infty
-\mu^*(R_m \cap B)=0$ which in turn will follow if we can show that $\sum_{m=1}^\infty
-\mu^*(R_m \cap B)$ converges.  By construction, $d(R_{2m}, R_{2n})
-> 0$ and therefore $d(R_{2m} \cap B, R_{2n} \cap B)
-> 0$ for any $m \neq n$.  So if we consider only the even terms of the
-series we can use our hypothesis to show that for any $n$
-\begin{align*}
-\sum_{m=1}^n \mu^*(R_{2m} \cap B) &= \mu^*(\cup_{m=1}^n
-R_{2m} \cap B) \leq \mu^*(B) < \infty
-\end{align*}
-and by taking limits $\sum_{m=1}^\infty \mu^*(R_{2m} \cap B) \leq \mu^*(B)$
-The same argument applies to the odd indexed terms and we get
-\begin{align*}
-\sum_{m=1}^\infty \mu^*(R_{m} \cap B) &\leq 2\mu^*(B) < \infty
-\end{align*}
-The claim and the Lemma follow.
-\end{proof}
-
 
 TODO:  Here I am taking the path of Evans and Gariepy and normalizing
 Hausdorff measure so that $\mathcal{H}^n = \lambda_n$.  I am not sure
@@ -2997,6 +2951,763 @@ For $A$ and $s$ as above define
 \mathcal{H}^s(A) &= \lim_{\delta \to 0} \mathcal{H}_\delta^s(A) = \sup_{\delta>0} \mathcal{H}_\delta^s(A)
 \end{align*}
 \end{defn}
+
+\begin{thm}\label{BorelRegularityOfHausdorffMeasure}$\mathcal{H}^s$ is a Borel regular outer measure.
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
+In some case Hausdorff measure is equivalent to a well-known object; here is a simple case of this phenomenon.
+\begin{prop}\label{HausdoffMeasureEqualsCounting}$\mathcal{H}^0$ is counting measure.
+\end{prop}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{prop}\label{HausdorffMeasureUnderIsometry}Let $(S,d)$ and $(T,d^\prime)$ be metric spaces and let $f : S \to T$ be an isometric embedding then for any $0 \leq s < \infty$ and $\delta>0$ and $A \subset S$
+\begin{align*}
+\mathcal{H}_\delta^s(f(A)) &= \mathcal{H}_\delta^s(A)
+\end{align*}
+In particular $\mathcal{H}^s(f(A)) = \mathcal{H}^s(A)$
+\end{prop}
+\begin{proof}
+Let $\delta>0$ and $\epsilon>0$ be arbitrary.  First we show $\mathcal{H}^s_\delta (f(A)) \leq \mathcal{H}^s_\delta(A)$.  This is trivial if $\mathcal{H}^s_\delta(A) =\infty$ so we assume that $\mathcal{H}^s_\delta(A) <\infty$ and pick $U_1, U_2, \dotsc$ with $\diam(U_n) < \delta$, $A \subset \cup_{n=1}^\infty U_n$ and $\sum_{n=1}^\infty \left( \diam(C_n) \right)^s \leq \mathcal{H}^s_\delta(A)+\epsilon$.  It is elementary that $f(A) \subset \cup_{n=1}^\infty f(U_n)$ and since $f$ is an isometry $\diam(U_n) = \diam(f(U_n)) \leq \delta$ hence
+\begin{align*}
+\mathcal{H}^s_\delta (f(A)) &\leq \sum_{n=1}^\infty \left( \diam(f(U_n)) \right)^s = \sum_{n=1}^\infty \left( \diam(U_n) \right)^s \leq \mathcal{H}^s_\delta(A)+\epsilon
+\end{align*}
+Now let $\epsilon \to 0$ to conclude $\mathcal{H}^s_\delta (f(A)) \leq \mathcal{H}^s_\delta(A)$.
+
+To see that $\mathcal{H}^s_\delta(A) \leq \mathcal{H}^s_\delta (f(A))$ arguing as above it suffices to assume $\mathcal{H}^s_\delta (f(A)) < \infty$ and to pick $U_1, U_2, \dotsc$ with $\diam(U_n) < \delta$, $f(A) \subset \cup_{n=1}^\infty U_n$ and $\sum_{n=1}^\infty \left( \diam(C_n) \right)^s \leq \mathcal{H}^s_\delta(f(A))+\epsilon$.  It is elementary that $A \subset \cup_{n=1}^\infty f^{-1}(U_n)$ (if $a \in A$ then $f(a) \in U_n$ for some $n$ hence $a \in f^{-1}(U_n)$)
+and since $f$ is an isometry $\diam(f^{-1}(U_n)) \leq \diam(U_n) \leq \delta$ and therefore
+\begin{align*}
+\mathcal{H}^s_\delta (A) &\leq \sum_{n=1}^\infty \left( \diam(f^{-1}(U_n)) \right)^s \leq \sum_{n=1}^\infty \left( \diam(U_n) \right)^s \leq \mathcal{H}^s_\delta(f(A))+\epsilon
+\end{align*}
+Now let $\epsilon \to 0$ to conclude $\mathcal{H}^s_\delta (A) \leq \mathcal{H}^s_\delta(f(A))$ and therefore $\mathcal{H}^s_\delta (A) = \mathcal{H}^s_\delta(f(A))$.
+ 
+To see that $\mathcal{H}^s(f(A)) = \mathcal{H}^s(A)$ simply take the limit as $\delta \to 0$.
+\end{proof}
+
+\begin{prop}\label{HausdorffMeasureUnderLipschitzMaps}Let $(S,d)$ and $(T,d^\prime)$ be metric spaces and let $f : S \to T$ be a Lipschitz function then for any $0 \leq s < \infty$ and $A \subset S$
+\begin{align*}
+\mathcal{H}^s(f(A)) &\leq \left ( \Lip(f) \right)^s \mathcal{H}^s(A)
+\end{align*}
+\end{prop}
+\begin{proof}
+If $\mathcal{H}^s(A)=\infty$ then the result is trivial so assume that $\mathcal{H}^s(A)<\infty$
+Let $\delta>0$ be given and pick $\epsilon>0$, sets $C_1, C_2, \dotsc$ such that $\diam(C_n) \leq \delta$, $A \subset \cup_{n=1}^\infty C_n$ and $\sum_{n=1}^\infty \left(\diam(C_n)\right)^s < \mathcal{H}^s_\delta(A)+\epsilon$.  It is elementary that $f(A) \subset \cup_{n=1}^\infty f(C_n)$ and by the Lipschitz property of $f$ we
+know
+\begin{align*}
+\diam(f(C_n)) &\leq \Lip(f) \diam(C_n) \leq \Lip(f) \delta
+\end{align*}
+Thus 
+\begin{align*}
+\mathcal{H}_{\Lip(f) \delta}^s (f(A)) &\leq \sum_{n=1}^\infty \left(\diam(f(C_n))\right)^s \leq \left(\Lip(f) \right)^s \sum_{n=1}^\infty\left(\diam(C_n)\right)^s \\
+&\leq \left(\Lip(f) \right)^s \left(\mathcal{H}^s_\delta(A)+\epsilon\right )
+\end{align*}
+Now let $\epsilon \to 0$ and then $\delta \to 0$.
+\end{proof}
+
+\begin{thm}\label{HausdorffEqualsLebesgue}For any $d \in \naturals$ we have $\mathcal{H}^d =
+  \lambda^d$ (or $ 2^{-d} \alpha(s) \mathcal{H}^d =\lambda^d$ depending on normalization) on $\reals^d$.
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
+\section{Covering Theorems in $\reals^d$}
+
+Since our purposes have been to understand probability theory we have
+hitherto avoided making assumptions that we are dealing with
+$\reals^d$.  While this decision has benefits, it has drawbacks as
+well.  Among those drawbacks are that we lose sight of some history and also some very
+beautiful and deep understanding of the measure theory of the reals.
+TODO: Vitali and Besicovich.
+
+\begin{thm}[Besicovich's Covering Theorem]\label{BesicovichCoveringTheorem}
+Let $\mathcal{I}$ be an arbitrary index set and for each $\alpha \in \mathcal{I}$ let $\overline{B}(x_\alpha, r_\alpha)$ be a closed
+ball in $\reals^d$ such that $r_\alpha > 0$.  If $\sup_{\alpha} r_\alpha < \infty$ then there exists a
+constant $N_d$ depending only on $d$ and countable collections $\mathcal{J}_1, \dotsc, \mathcal{J}_{N_d}$ such
+that for each $j=1, \dotsc, N_d$ the balls $\overline{B}(x_\alpha, r_\alpha)$ with $\alpha \in \mathcal{J}_j$ are disjoint and
+\begin{align*}
+\lbrace x_\alpha \mid \alpha \in \mathcal{I} \rbrace &\subset \cup_{j=1}^{N_d} \cup_{\alpha \in \mathcal{J}_j} \overline{B}(x_\alpha, r_\alpha)
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO:
+See Evans and Gariepy for the proof until I get around copying it down here (I have little to add to their proof).
+\end{proof}
+
+\begin{cor}\label{BesicovichFilling}Let $\mu$ be a Borel outer measure on $\reals^d$, $\mathcal{I}$ be an arbitrary index set and
+for each $\alpha \in \mathcal{I}$ $\overline{B}(x_\alpha, r_\alpha)$ is a closed ball with $r_\alpha > 0$.  Define $A = \lbrace x_\alpha \mid \alpha \in \mathcal{I} \rbrace$
+and assume that $\mu(A) < \infty$ and for every $x \in A$ we have $\inf \lbrace r_\alpha \mid x_\alpha = x \rbrace = 0$.  Then for each open set $U \subset \reals^d$ 
+there exists a countable set $\mathcal{J} \subset \mathcal{I}$ such that 
+\begin{itemize}
+\item[(i)]$\overline{B}(x_\alpha, r_\alpha) \cap \overline{B}(x_\beta, r_\beta) = \emptyset$ for each $\alpha, \beta \in \mathcal{J}$ with $\alpha \neq \beta$
+\item[(ii)]$\cup_{\alpha \in \mathcal{J}} \overline{B} (x_\alpha, r_\alpha) \subset A$
+\item[(iii)]$\mu \left( (A \cap U) \setminus \cup_{\alpha \in \mathcal{J}} \overline{B} (x_\alpha, r_\alpha) \right) = 0$
+\end{itemize}
+\end{cor}
+\begin{proof}
+Let $N_d$ be the constant in Theorem \ref{BesicovichCoveringTheorem}.  Pick $\theta$ such that $1 - N_d^{-1} < \theta < 1$.  
+\begin{clm}There exist a finite collection $\overline{B}(x_{\alpha_1}, r_{\alpha_1}), \dotsc, \overline{B}(x_{\alpha_{M_1}}, r_{\alpha_{M_1}})$ with $\alpha_j \in \mathcal{I}$,
+$\overline{B}(x_{\alpha_j}, r_{\alpha_j}) \subset U$ for $j=1, \dotsc, M$ such that the $\overline{B}(x_{\alpha_j}, r_{\alpha_j})$ are disjoint and 
+\begin{align*}
+\mu \left( (A \cap U) \setminus \cup_{j=1}^{M_1} \overline{B}(x_{\alpha_j}, r_{\alpha_j}) \right) &\leq \theta \mu(A \cap U)
+\end{align*}
+\end{clm}
+Let $\mathcal{K} = \lbrace \alpha \in \mathcal{I} \mid r_\alpha \leq 1 \text{ and } \overline{B}(x_\alpha, r_\alpha) \subset U \rbrace$.  
+By the assumptions on $r_\alpha$ and the openness of $U$ we know that $A \cap U = \lbrace x_\alpha \mid \alpha \in \mathcal{K} \rbrace$.  Apply Theorem \ref{BesicovichCoveringTheorem}
+to the collection $\mathcal{K}$ to construct countable sets $\mathcal{J}_1, \dotsc, \mathcal{J}_{N_d}$ with 
+\begin{align*}
+A \cap U &\subset \cup_{k=1}^{N_d} \cup_{\alpha \in \mathcal{J}_k} \overline{B}(x_\alpha, r_\alpha) = \cup_{k=1}^{N_d} A \cap U \cap \cup_{\alpha \in \mathcal{J}_k} \overline{B}(x_\alpha, r_\alpha) 
+\end{align*}
+By countable subadditivity
+\begin{align*}
+\mu(A \cap U) &\leq \sum_{k=1}^{N_d}\mu \left( A \cap U \cap \cup_{\alpha \in \mathcal{J}_k} \overline{B}(x_\alpha, r_\alpha)  \right) 
+\leq N_d \max_{1 \leq k \leq N_d} \mu \left( A \cap U \cap \cup_{\alpha \in \mathcal{J}_k} \overline{B}(x_\alpha, r_\alpha)  \right)
+\end{align*}
+from which it follows that there exists $k \in \naturals$ with $1 \leq k \leq N_d$ and
+\begin{align*}
+\mu \left( A \cap U \cap \cup_{\alpha \in \mathcal{J}_k} \overline{B}(x_\alpha, r_\alpha)  \right) &\geq N_d^{-1} \mu(A \cap U)
+\end{align*}
+By continuity of regular outer measures (Proposition \ref{ContinuityOfRegularOuterMeasure}) and the fact that $1 - \theta < N_d^{-1}$ we know that there is a finite subset $\alpha_1, \dotsc, \alpha_M \in \mathcal{J}_k$ such that
+\begin{align*}
+\mu \left( A \cap U \cap \cup_{j=1}^M \overline{B}(x_{\alpha_j}, r_{\alpha_j})  \right) &\geq (1 - \theta) \mu(A \cap U)
+\end{align*}
+and by the measurability of $\cup_{j=1}^M \overline{B}(x_{\alpha_j}, r_{\alpha_j})$ we conclude
+\begin{align*}
+\mu \left( A \cap U \setminus \cup_{j=1}^M \overline{B}(x_{\alpha_j}, r_{\alpha_j})  \right)
+&=\mu(A \cap U) - \mu \left( A \cap U \cap \cup_{j=1}^M \overline{B}(x_{\alpha_j}, r_{\alpha_j})  \right) \\
+&\leq \theta \mu(A \cap U)
+\end{align*}
+The disjointness of the $\overline{B}(x_{\alpha_j}, r_{\alpha_j})$ follows from the disjointness of the larger family of balls $\overline{B}(x_{\alpha}, r_{\alpha})$ with $\alpha \in \mathcal{J}_k$.
+
+Let $U_1 = U$ and we apply the claim inductively to define $M_n$, $\alpha^n_1, \dotsc, \alpha^n_{M_n}$ such that $\overline{B}(x_{\alpha^n_j}, r_{\alpha^n_j}) \subset U_n$ for all $j=1, \dotsc, M_n$,
+\begin{align*}
+U_{n+1} &= U_n \setminus \cup_{j=1}^{M_n} \overline{B}(x_{\alpha^n_j}, r_{\alpha^n_j}) = U \setminus \cup_{k=1}^n \cup_{j=1}^{M_k} \overline{B}(x_{\alpha^k_j}, r_{\alpha^k_j}) 
+\end{align*}
+and 
+\begin{align*}
+\mu(A \cap U_{n+1}) &= \mu \left( (A \cap U_n) \setminus \cup_{j=1}^{M_n} \overline{B}(x_{\alpha^n_j}, r_{\alpha^n_j}) \right) \leq \theta \mu(A \cap U_n)
+\end{align*}
+For fixed $n$ and $1 \leq i < j \leq M_n$ we have $\overline{B}(x_{\alpha^n_i}, r_{\alpha^n_i}) \cap \overline{B}(x_{\alpha^n_j}, r_{\alpha^n_j}) = \emptyset$ by the claim and for $n,m \in \naturals$ with $m < n$,
+$1 \leq i \leq M_m$ and $1 \leq j \leq M_n$ we have $\overline{B}(x_{\alpha^m_i}, r_{\alpha^m_i}) \cap \overline{B}(x_{\alpha^n_j}, r_{\alpha^n_j}) = \emptyset$ since 
+\begin{align*}
+\overline{B}(x_{\alpha^n_j}, r_{\alpha^n_j}) &\subset U_n = U \setminus \cup_{k=1}^{n-1} \cup_{j=1}^{M_k} \overline{B}(x_{\alpha^k_j}, r_{\alpha^k_j})
+\end{align*}
+
+Let $\mathcal{J} = \lbrace \alpha^n_j \mid n \in \naturals, j=1, \dotsc, M_n \rbrace$ and note that by continuity of regular outer measures (TODO: Where do we prove this the descending case???)
+\begin{align*}
+\mu \left( (A \cap U) \setminus \cup_{\alpha \in \mathcal{J}} \overline{B}(x_\alpha, r_\alpha) \right)
+&=\mu \left( (A \cap U) \setminus \cup_{k=1}^\infty \cup_{j=1}^{M_k} \overline{B}(x_{\alpha^k_j}, r_{\alpha^k_j})\right) \\
+&= \lim_{n \to \infty} \mu \left( (A \cap U) \setminus \cup_{k=1}^n \cup_{j=1}^{M_k} \overline{B}(x_{\alpha^k_j}, r_{\alpha^k_j})\right) \\
+&= \lim_{n \to \infty} \mu \left( (A \cap U_n) \setminus \cup_{j=1}^{M_n} \overline{B}(x_{\alpha^n_j}, r_{\alpha^n_j})\right) \\
+&\leq \lim_{n \to \infty} \theta \mu(A \cap U_n) \\
+&\leq \lim_{n \to \infty} \theta^{n-1} \mu(A \cap U)  = 0\\
+\end{align*}
+\end{proof}
+
+\subsection{Derivatives of Radon Outer Measures on $\reals^d$}
+
+In this section we apply the Besicovich covering theorem as a key ingredient in some formulas for computing Radon-Nikodym derivatives of Radon measures on $\reals^d$.
+
+\begin{defn}Let $\mu$ and $\nu$ be Radon outer measures on $\reals^d$
+  then for each $x \in \reals^d$ we define 
+\begin{align*}
+\overline{D}_\mu \nu(x) &= \begin{cases}
+\limsup_{r \to 0} \frac {\nu(B(x, r))}{\mu(B(x,r))} & \text{if  $\mu(B(x,r)) > 0$ for all $r>0$} \\
++\infty & \text{if  $\mu(B(x,r)) = 0$ for some $r>0$} \\
+\end{cases} \\
+\underline{D}_\mu \nu(x) &= \begin{cases}
+\liminf_{r \to 0} \frac {\nu(B(x, r))}{\mu(B(x,r))} & \text{if  $\mu(B(x,r)) > 0$ for all $r>0$} \\
++\infty & \text{if  $\mu(B(x,r)) = 0$ for some $r>0$} \\
+\end{cases} \\
+\end{align*}
+If $\underline{D}_\mu \nu(x) = \overline{D}_\mu \nu(x) < \infty$ then we say that $\nu$ is \emph{differentiable} with respect to $\mu$ at $x$
+and in this case we write $D_\mu \nu(x) = \underline{D}_\mu \nu(x) = \overline{D}_\mu \nu(x)$.
+\end{defn}
+
+Our first goal is to show that derivatives of Radon measures exist almost everywhere, then we can show that the derivative in the above sense 
+is the Radon-Nikodym derivative.
+
+\begin{lem}\label{RadonDerivativeBounds}Let $0 < \lambda < \infty$ be given then for an arbitrary subset $A \subset \reals^d$
+\begin{itemize}
+\item[(i)] if $A \subset \lbrace x \mid \underline{D}_\mu \nu(x) \leq \lambda \rbrace$ then $\nu(A) \leq \lambda \mu(A)$. 
+\item[(ii)] if $A \subset \lbrace x \mid \overline{D}_\mu \nu(x) \geq \lambda \rbrace$ then $\nu(A) \geq \lambda \mu(A)$. 
+\end{itemize}
+\end{lem}
+\begin{proof}
+First assume that $\mu(\reals^d) < \infty$ and $\nu(\reals^d) < \infty$.  Suppose that $A \subset \lbrace x \mid \underline{D}_\mu \nu(x) \leq \lambda \rbrace$.
+Let $\epsilon > 0$ and pick an open set $U$ such that $A \subset U$.  Now we define
+\begin{align*}
+\mathcal{A} &= \lbrace \overline{B}(a, r) \mid x \in A, \overline{B}(a,r) \subset U, \nu(\overline{B}(a, r)) \leq (\alpha  + \epsilon) \mu(\overline{B}(a, r)) \rbrace
+\end{align*}
+Observe that for each $a \in A$ there exists a sequence $r_n>0$ such that $r_n \downarrow 0$ and $\lim_{n \to \infty} \frac{\nu(\overline{B}(a, r_n))}{\mu(\overline{B}(a,r_n))} \leq \alpha$.  Thus for sufficiently large $n$ we have $\nu(\overline{B}(a, r_n)) \leq (\alpha + \epsilon) \mu(\overline{B}(a,r_n))$ and it follows that $\inf \lbrace r>0 \mid \overline{B}(a,r) \in \mathcal{A} = 0$.  Therefore we can apply Corollary \ref{BesicovichFilling} to
+get a countable collection of disjoint balls $\overline{B}(a_1, r_1), \overline{B}(a_2, r_2), \dotsc$ in $\mathcal{A}$ such that 
+\begin{align*}
+\nu \left(A \setminus \cup_{n=1}^\infty \overline{B}(a_n, r_n) \right) &= 0
+\end{align*}
+From this it follows from measurability of the balls, subadditivity and the definition of $\mathcal{A}$
+\begin{align*}
+\nu(A) 
+&= \nu(A \cap \cup_{n=1}^\infty \overline{B}(a_n, r_n) ) 
+\leq \sum_{n=1}^\infty \nu(\overline{B}(a_n, r_n) ) 
+\leq (\alpha + \epsilon) \sum_{n=1}^\infty \mu(\overline{B}(a_n, r_n) ) \\
+&\leq  (\alpha + \epsilon) \mu(U)
+\end{align*}
+Now take the infimum over all open sets $U$ such that $A \subset U$ and use the outer regularity of $\mu$ to conclude that $\nu(A) \leq (\alpha + \epsilon) \mu(A)$.  Since $\epsilon>0$ we 
+arbitrary we let $\epsilon \to 0$ to get $\nu(A) \leq \alpha \mu(A)$.
+
+TODO: Prove (ii) using the same argument and put as an exercise.
+
+TODO: Remove the finiteness assumption
+\end{proof}
+
+\begin{thm}\label{ExistenceMeasurabilityRadonDerivatives}Let $\mu$ and $\nu$ be Radon outer measures on $\reals^d$ then $D_\mu \nu$ exists $\mu$-almost everywhere and $D_\mu \nu$ is $\mu$-measurable.
+\end{thm}
+\begin{proof}
+First assume that $\mu(\reals^d)<\infty$ and $\nu(\reals^d)<\infty$.
+Let $A = \lbrace \underline{D}_\mu \nu = \infty$ and note that for every $\lambda$ we have  $A \subset \lbrace \underline{D}_\mu \nu \geq \lambda$ and therefore by Lemma \ref{RadonDerivativeBounds} we have $\mu(A) \leq \lambda^{-1} \nu(A)$.  Since $\nu(A) < \infty$ by assumption we may let $\lambda \to \infty$ to conclude that $\mu(A) = 0$.
+
+Now for every $0 \leq p < q < \infty$ with $p,q \in \rationals$ consider $A_{p,q} = \lbrace \underline{D}_\mu \nu \leq p < q \leq \overline{D}_\mu \nu < \infty$.  By two applications
+of Lemma \ref{RadonDerivativeBounds} we see that 
+\begin{align*}
+ q \mu(A_{p,q}) &< \nu(A_{p,q}) < p \mu(A_{p,q})
+\end{align*}
+and therefore since $p < q$ we conclude that $\mu(A_{p,q}) = 0$.  Since $\lbrace D_\mu \nu \text{ not exists} \rbrace = A \cup \cup_{q,p \in \rationals_+} A_{p,q}$ we conclude that $D_\mu \nu$ exists $\mu$-almost everywhere.
+
+\begin{clm}Let $\mu$ be an arbitrary Radon measure on $\reals^d$.  For every $r>0$ and $x \in \reals^d$ we have $\limsup_{y \to x} \mu(\overline{B}(y, r)) \leq \mu(\overline{B}(x, r))$ (i.e. $\mu(\overline{B}(x,r))$ is an upper semicontinuous function of $x$).
+\end{clm}
+Pick a sequence $y_n$ such that $\lim_{n \to \infty} y_n = x$.  Suppose that $\characteristic{\overline{B}(x,r)}(y) = 0$ i.e. we are given $y$ such that $\norm{y-x}>r$.  We can pick $N$ such that $\norm{y_n-x} < \norm{y-x}-r$ for all $n \geq N$; it follows that $\norm{y-y_n} \geq \norm{y-x} - \norm{y_n-x} > r$ for all $n \geq N$ which is to say that $\characteristic{\overline{B}(y_n,r)}(y) = 0$ which shows $\lim_{n \to \infty} \characteristic{\overline{B}(y_n,r)}(y) = 0 = \characteristic{\overline{B}(x,r)}(y)$.  If on the other hand $\characteristic{\overline{B}(x,r)}(y)=1$ it follows trivially that $\limsup_{n \to \infty} \characteristic{\overline{B}(y_n,r)}(y) \leq \characteristic{\overline{B}(x,r)}(y)$.  We conclude that
+\begin{align*}
+\limsup_{n \to \infty} \characteristic{\overline{B}(y_n,r)} &\leq \characteristic{\overline{B}(x,r)}
+\end{align*}
+which is to say 
+\begin{align*}
+1 - \liminf_{n \to \infty} \characteristic{\overline{B}(y_n,r)} &\geq 1 - \characteristic{\overline{B}(x,r)}
+\end{align*}
+Now we apply Fatou's Lemma to conclude
+\begin{align*}
+\mu(\overline{B}(x,2r)) - \mu(\overline{B}(x,r)) 
+&= \int_{\overline{B}(x, 2r)} (1- \characteristic{\overline{B}(x,r)}) \, d\mu 
+\leq \int_{\overline{B}(x, 2r)} (1 - \liminf_{n \to \infty} \characteristic{\overline{B}(y_n,r)}) \, d\mu \\
+&\leq \liminf_{n \to \infty} \int_{\overline{B}(x, 2r)} (1 - \characteristic{\overline{B}(y_n,r)}) \, d\mu \\
+&\leq \liminf_{n \to \infty} ( \mu(\overline{B}(x, 2r)) - \mu(\overline{B}(y_n,r))) \\
+&= \mu(\overline{B}(x, 2r)) - \limsup_{n \to \infty} \mu(\overline{B}(y_n,r)) 
+\end{align*}
+Since $\mu$ is a Radon measure we know that $\mu(\overline{B}(x, 2r))<\infty$ so we can cancel terms and the claim follows.
+
+For each $r > 0$ define
+\begin{align*}
+f_r(x) &= \begin{cases}
+\frac{\nu(\overline{B}(x,r))}{\mu(\overline{B}(x,r))} & \text{ if $\mu(\overline{B}(x,r))>0$} \\
+\infty & \text{ if $\mu(\overline{B}(x,r))=0$} 
+\end{cases}
+\end{align*}
+and observe from the previous claim and the Borel measurability of upper semicontinous functions (TODO: Where do we show this????) we know that $f_r$ is Borel measurable (hence $\mu$-measurable).  Since $D_\mu \nu = \lim_{n \to \infty} f_{1/n}$ $\mu$-almost everywhere it follows that $D_\mu \nu$ is $\mu$-measurable (TODO:  Something subtle about concluding $\mu$-measurability but not Borel measurability; understand it).
+
+TODO: Remove the finiteness assumption
+\end{proof}
+
+Now we are ready to show that the derivative defined above is indeed the Radon-Nikodym derivative.
+\begin{thm}\label{RadonNikodymDerivativeOfRadonOuterMeasuresReals}Let $\mu$ and $\nu$ be Radon outer measure on $\reals^d$ then for all $\mu$-measurable sets $A$ we have
+\begin{align*}
+\nu(A) &= \int_A D_\mu \nu \, d\mu
+\end{align*}
+\end{thm}
+\begin{proof}
+Let $A$ be a $\mu$-measurable set.  Since Radon outer measures are Borel regular we can find a Borel set $B$ such that $A \subset B$ and $\mu(B) = \mu(A)$.
+\end{proof}
+\subsection{Differentiation of Lipschitz Functions}
+
+\begin{thm}[Rademacher's Theorem]\label{RademachersTheorem}Let $f : \reals^d \to \reals^m$ be a locally Lipschitz map then $f$ is 
+Frechet differentiable $\lambda^d$-a.e.  Moreover the Frechet derivative $Df$ is Borel measurable.
+\end{thm}
+\begin{proof}
+Since each coordinate function $f_i : \reals^d \to \reals$ is locally Lipschitz the case of general $m$ follows from the case of $m=1$ by Proposition \ref{FrechetDerivativeProductSpaces}.
+
+The outline of the proof is to show that successively that $f$ has directional derivatives almost surely, is G\^{a}teaux differentiable almost surely and then that it is Frechet differentiable almost surely.  
+
+G\^{a}teaux differentiability in the case of $d=1$ is essentially a corollary of the Fundamental Theorem of Calculus.
+\begin{clm}Let $f : \reals \to \reals$ be a locally Lipschitz map then $f$ is differentiable $\lambda$-a.e.
+\end{clm}
+Since $f$ is locally Lipschitz it is absolutely continuous and therefore of bounded variation (Lemma \ref{AbsoluteContinuityImpliesContinuousBoundedVariation}); we know that $g(t)$ is differentiable $\lambda$-almost everywhere (by Theorem  \ref{BoundedVariationAsDifferenceOfMonotone} write $g(t)$ as a difference of monotone functions then apply the Fundamental Theorem of Calculus \ref{FundamentalTheoremOfCalculus}).  
+
+
+\begin{clm}Let $v$ be a unit vector in $\reals^d$ then the directional derivative $df(x,v)$ exists for $\lambda^d$-almost all $x$.
+\end{clm}
+Let $A$ be a rotation of $\reals^d$ such that $v = A e_1$ is the first standard basis vector and define $f_A(x) = f (A x)$.  Note that 
+\begin{align*}
+\abs{f_A(x) - f_A(y)} &= \abs{f(Ax) - f(Ay)} \leq \Lip(f) \abs{Ax - Ay} = \Lip(f) \abs{x - y} 
+\end{align*}
+and therefore $f_A$ is Lipschitz.  Also
+\begin{align*}
+df(x,v) &= \lim_{t \to 0} \frac{f(x+tv) - f(x)}{t} = \lim_{t \to 0} \frac{f(A (A^{-1} x+te_1)) - f(A (A^{-1} x))}{t} = df_A(A^{-1} x, e_1)
+\end{align*}
+Since $\lambda^d$ is rotation invariant (Corollary \ref{LesbegueRotationInvariance}) it follows that it suffices to consider the case of $v=e_1$. 
+
+By the continuity of $f$ we have
+\begin{align*}
+\limsup_{t \to 0} \frac{f(x+te_1) - f(x)}{t} &= \lim_{n \to \infty} \sup_{0 < t < 1/n} \frac{f(x+te_1) - f(x)}{t} = \lim_{n \to \infty} \sup_{\substack{0 < t < 1/n \\ t \in \rationals}} \frac{f(x+te_1) - f(x)}{t} 
+\end{align*} 
+hence by Lemma \ref{LimitsOfMeasurable} we know that $\limsup_{t \to 0} \frac{f(x+te_1) - f(x)}{t}$ is Borel measurable and the same argument shows $\liminf_{t \to 0} \frac{f(x+te_1) - f(x)}{t}$
+is Borel measurable as well.  It follows that $A = \lbrace \liminf_{t \to 0} \frac{f(x+te_1) - f(x)}{t} < \limsup_{t \to 0} \frac{f(x+te_1) - f(x)}{t} \rbrace$ is a Borel measurable set (and shows that when the limit exists it is Borel measurable). For a fixed $x \in \reals^d$ we consider the function $g(t) = f(x+te_1)$ which is Lipschitz and therefore differentiable $\lambda$-a.e. by the first claim.   Writing $\reals^d = \reals \times \reals^{d-1}$ and letting $\pi : \reals^d \to \reals^{d-1}$ be the projection on to the last $d-1$ coordinates we see that for every $y \in \reals^{d-1}$, $\lambda(A \cap \lbrace \pi_2(x)=y \rbrace) = 0$.  Now by Tonelli's Theorem \ref{Fubini} we see that
+\begin{align*}
+\lambda^d(A) &= \int \lambda(A \cap \lbrace \pi_2(x)=y \rbrace) \, \lambda^{d-1}(dy) = 0
+\end{align*}
+
+By the previous claim the partial derivatives $\frac{\partial f}{\partial x_1}, \dotsc, \frac{\partial f}{\partial x_d}$ exist $\lambda^d$-almost everywhere and therefore the gradient 
+\begin{align*}
+\nabla f(x) &= \left( \frac{\partial f}{\partial x_1}, \dotsc, \frac{\partial f}{\partial x_d}\right)
+\end{align*}
+exists $\lambda^d$-almost everwhere.
+\begin{clm} $f$ is almost everywhere G\^{a}teaux differentiable and for $v \in \reals^d$ we have $df(x,v) = \langle v, \nabla f(x) \rangle$.
+\end{clm}
+Let $g(x)$ be a compactly supported $C^\infty$ function, by change of variables and the translation invariance of Lebesgue measure we get
+\begin{align*}
+\int \left( \frac{f(x+tv) - f(x)}{t} \right) g(x) \, dx &= t^{-1} \int f(x+tv) g(x) \, dx - t^{-1} \int f(x) g(x) \, dx \\
+&= t^{-1} \int f(x) g(x-tv) \, dx - t^{-1} \int f(x) g(x) \, dx \\
+&= - \int f(x) \left( \frac{g(x) - g(x -tv)}{t} \right) \, dx\\
+\end{align*}
+Let $K$ be a compact set containing the support of $g$ so that $\norm{g}_\infty = \sup_{x \in K} \abs{g(x)} < \infty$ and note that by continuity of $f$ we have $\sup_{x \in K} \abs{f(x)} < \infty$
+\begin{align*}
+\abs{\left(\frac{f(x+tv) - f(x)}{t} \right) g(x)} &\leq t^{-1} \Lip(f) \abs{x+tv - x} \norm{g}_\infty = \Lip(f) \abs{v} \norm{g}_\infty 
+\end{align*}
+and by the Mean Value Theorem (more specifically the corollary Proposition \ref{LagrangeFormRemainderBanachSpaces})
+\begin{align*}
+\abs{f(x) \left( \frac{g(x) - g(x-tv)}{t} \right)} &\leq t^{-1} \norm{dg(x,v)}_\infty \abs{x+tv - x} \sup_{x \in K} \abs{f(x)} \\
+&= \norm{dg(x,v)}_\infty \sup_{x \in K} \abs{f(x)}< \infty
+\end{align*}
+and therefore we may use Dominated Convergence, Proposition \ref{PartialDerivativesBanachSpaces} and the previous claim to see
+\begin{align*}
+\int df(x,v) g(x) \, dx &= \lim_{t \to 0} \int \left( \frac{f(x+tv) - f(x)}{t} \right) g(x) \, dx \\
+&= - \lim_{t \to 0} \int  f(x) \left( \frac{g(x) - g(x -tv)}{t} \right) \, dx \\
+&= - \int f(x)  dg(x,v) \, dx \\ 
+&= - \sum_{i=1}^d v_i \int  f(x) \frac{\partial g}{\partial x_i} \, dx \\ 
+&= - \sum_{i=1}^d v_i \int  f(x) \frac{\partial g}{\partial x_i} \, dx \\ 
+&= - \sum_{i=1}^d v_i \lim_{t \to 0} \int  f(x) \left(\frac{g(x) - g(x-te_i)}{t} \right) \, dx \\ 
+&= \sum_{i=1}^d v_i \lim_{t \to 0} \int \left( \frac{f(x+te_i) - f(x)}{t} \right) g(x) \, dx \\ 
+&= \sum_{i=1}^d v_i \int \frac{\partial f}{\partial x} g(x) \, dx \\ 
+&= \int \langle v, \nabla f(x) \rangle g(x) \, dx \\ 
+\end{align*}
+Now if we choose non-negative compactly supported $C^\infty$ functions $g_n$ such that $g_n \uparrow 1$ (e.g. Lemma \ref{ExistenceOfBumpFunction}) by Monotone Convergence we get
+\begin{align*}
+\int \abs{df(x,v) - \langle v, \nabla f(x) \rangle} \, dx &= \lim_{n \to \infty} \int \abs{df(x,v) - \langle v, \nabla f(x) \rangle} g_n(x) \, dx = 0
+\end{align*}
+and it follows that $df(x,v) = \langle v, \nabla f(x) \rangle$ $\lambda^n$-a.e. by Lemma \ref{ZeroIntegralImpliesZeroFunction}.
+
+Pick a countable dense subset of the unit sphere $v_1, v_2, \dotsc$ and let 
+\begin{align*}
+A_n &= \lbrace x \in \reals^d \mid df(x,v_n), \nabla f(x) \text{ exist  and } df(x,v_n) = \nabla f(x) \rbrace
+\end{align*}
+From the previous claims, we know that $\lambda^d(A^c_n) = 0$ and therefore if we define $A = \cap_{n=1}^\infty A_n$ we have $\lambda^d(A^c) = 0$.  
+\begin{clm} $f$ is Frechet differentiable on $A$ and $Df(x) v = \langle v, \nabla f(x) \rangle$ for all $x \in A$ and $v \in \reals^d$.
+\end{clm}
+Let $x \in A$  and $\epsilon>0$ be given.  Since the unit sphere in $\reals^d$ is compact it is totally bounded (Theorem \ref{CompactnessInMetricSpaces}) hence there
+exists an $N>0$ such that for every $v \in \reals^d$ with $\norm{v}=1$ there exists a $v_i$ with $i=1, \dotsc, N$ and $\norm{v-v_i} < \epsilon/2(1+\sqrt{d})\Lip(f)$ (of course the
+terms in the denominator are just there so we a nice clean $\epsilon$ at the end; their source will be made clear).  By the previous claim and the finiteness of $N$ there exists a
+$\delta>0$ such that 
+\begin{align*}
+\abs{\frac{f(x+tv_i) - f(x)}{t} - \langle v_i, \nabla f(x) \rangle} &\leq \epsilon/2
+\end{align*}
+for all $i=1, \dotsc, N$ and $0 < \abs{t} < \delta$.  Now for an arbitrary $h \in \reals^d$ with $0 < \norm{h}<\delta$ we pick $v_i$ with $i=1, \dotsc, N$ and $\norm{v_i - h/\norm{h}} < \epsilon/2(1+\sqrt{d})\Lip(f)$
+and compute 
+\begin{align*}
+&\frac{\abs{f(x + h) - f(x) - \langle h, \nabla f(x) \rangle}}{\norm{h}}  \\
+&= \frac{\abs{f(x + h) - f(x + \norm{h} v_i) + f(x+\norm{h} v_i) - f(x) - \langle\norm{h} v_i, \nabla f(x) \rangle - \langle h-\norm{h} v_i, \nabla f(x) \rangle}}{\norm{h}} \\
+&\leq \abs{\frac{ f(x+\norm{h} v_i) - f(x)}{\norm{h}} - \langle v_i, \nabla f(x) \rangle } + \frac{\abs{f(x + h) - f(x + \norm{h} v_i)}}{\norm{h}} + \frac{\abs{\langle h-\norm{h} v_i, \nabla f(x) \rangle}}{\norm{h}}\\
+&\leq \epsilon/2 + \Lip(f) \norm{h/\norm{h} -  v_i} + \norm{\nabla f(x)} \norm {h/\norm{h}- v_i} \\
+&\leq \epsilon/2 + (\Lip(f) + \norm{\nabla f(x)}) \epsilon/2(1+\sqrt{d})\Lip(f) \leq \epsilon
+\end{align*}
+where in the last line we have used the fact that $\norm{\nabla f(x)} \leq \sqrt{d} \Lip(f)$ which follows from 
+\begin{align*}
+\abs{\frac{\partial f}{\partial x_i}} &= \lim_{t \to 0} \frac{\abs{f(x+te_i)-f(x)}}{t} \leq \Lip(f)
+\end{align*}
+\end{proof}
+
+\subsection{The Area Formula}
+
+\begin{defn}Let $L : \reals^d \to \reals^m$ be a linear map then the \emph{Jacobian} of $L$ is defined to be
+\begin{align*}
+\exdet{A} &= \begin{cases}
+\det(L^T L) & \text{if $d \leq m$} \\
+\det(L L^T) & \text{if $d > m$} \\
+\end{cases}
+\end{align*}
+\end{defn}
+
+It is very useful to be able to compute the Jacobian of a matrix using the singular value decomposition
+\begin{lem}\label{JacobianViaSVD}Let $L : \reals^d \to \reals^m$ be a linear map and let $L=U \Sigma V^T$ be a
+singular value decomposition of $L$ then 
+\begin{align*}
+\exdet{L} = \prod_{j=1}^{d \minop m} \Sigma_{jj} = \det(\Sigma[1:d \minop m, 1:d \minop m])
+\end{align*}
+\end{lem}
+\begin{proof}
+TODO
+\end{proof}
+
+The reason why we bring up Jacobians of matrices is the following result which is a generalization of Corollary \ref{LesbegueLinearChangeOfVariables}
+which shows how Lebesgue measure transforms under linear maps.
+\begin{lem}Let $d \leq m$ and $L : \reals^d \to \reals^m$ be a linear map then for all $A \subset \reals^d$
+\begin{align*}
+\mathcal{H}^d(L(A)) &= \frac{2^d \exdet{L} }{\alpha(d)} \lambda^d(A)
+\end{align*}
+\end{lem}
+\begin{proof}
+TODO: the proof in Evans and Gariepy seems a bit more complicated than it has to be (argues with balls and then uses Radon derivatives to generalize); presumably this is because they aren't assuming the change of measure formula for Lebesgue measure under linear change of coordinates????  Can't we argue like this:
+Let $L = U \Sigma V^T$ be a singular value decomposition and write 
+\begin{align*}
+\Sigma = \begin{bmatrix}
+\IdentityMatrix_d \\
+0_{m-d}
+\end{bmatrix}
+\hat{\Sigma}
+\end{align*}
+where $\hat{\Sigma}$ is $d \times d$ diagonal matrix with $\det(\hat{\Sigma}) = \exdet{L}$.  Since 
+\begin{align*}
+\hat{U} &=  U \begin{bmatrix}
+\IdentityMatrix_d \\
+0_{m-d}
+\end{bmatrix}
+\end{align*}
+is an isometric embedding of $\reals^d$ into $\reals^m$ we have $\mathcal{H}^d(\hat{U}(A)) =\mathcal{H}^d(A)  = \frac{2^d}{\alpha(d)} \lambda^d(A)$
+by Proposition \ref{HausdorffMeasureUnderIsometry} and Theorem \ref{HausdorffEqualsLebesgue}.
+
+Now by Corollary \ref{LesbegueLinearChangeOfVariables}
+\begin{align*}
+\mathcal{H}^d(L(A)) &= \mathcal{H}^d(\hat{U} \hat{\Sigma} V^T(A)) = \frac{2^d}{\alpha(d)} \lambda^d(\hat{\Sigma} V^T(A)) \\
+&= \frac{2^d}{\alpha(d)} \det(\hat{\Sigma}) \det(V^T) \lambda^d(A) = \frac{2^d \exdet{L} }{\alpha(d)} \lambda^d(A)
+\end{align*}
+\end{proof}
+
+The following quantity is fundamental to the change of variables formula.
+\begin{defn}Let $f : \reals^d \to \reals^m$ be function then we call the map $y \mapsto \mathcal{H}^0( A \cap f^{-1} (y))$ the \emph{multiplicity function}.
+\end{defn}
+
+We need to establish some basic properties of multiplicity functions before we proceed.
+
+The first lemma is completely elementary.
+\begin{lem}\label{SupportOfMultiplicityFunction}The support of the multiplicity function is $f(A)$ and $\characteristic{f(A)} \leq \mathcal{H}^0( A \cap f^{-1} (y))$.
+\end{lem}
+\begin{proof}
+Suppose $y \in f(A)$, then there exists $x \in A$ such that $f(x) = y$ hence $A \cap f^{-1}(y) \neq \emptyset$.  Since $\mathcal{H}^0$ is the counting measure (Proposition \ref{HausdoffMeasureEqualsCounting}) we see that $\mathcal{H}^0(A \cap f^{-1}(y)) \geq 1$ which shows $\characteristic{f(A)}(y) \leq \mathcal{H}^0(A \cap f^{-1}(y)) \geq 1$ for all $y$ (and shows that $f(A)$ is contained in the support of $\mathcal{H}^0(A \cap f^{-1}(y))$).
+Now we suppose that $\mathcal{H}^0(A \cap f^{-1}(y)) \neq 0$; since $\mathcal{H}^0$ is counting measure this implies $A \cap f^{-1}(y) \neq 0$ hence there is an $x \in A$ such that $f(x) = y$.
+\end{proof}
+
+We also need some measurability properties and estimates for Lipschitz $f$.
+\begin{lem}\label{MeasurabilityOfMultiplicityFunction}Let $A \subset \reals^d$ be $\lambda^d$-measurable and let $f : \reals^d \to \reals^m$ with $d \leq m$ be Lipschitz then
+\begin{itemize}
+\item[(i)] $f(A)$ is $\mathcal{H}^d$-measurable
+\item[(ii)] the multiplicity function $\mathcal{H}^0( A \cap f^{-1} (y))$ is a $\mathcal{H}^d$-measurable on $\reals^m$.
+\item[(iii)] $\int \mathcal{H}^0( A \cap f^{-1} (y)) \, \mathcal{H}^d(dy) \leq \left( \Lip(f) \right)^d \lambda^d(A)$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+We first prove (i).  First we assume that $A$ is bounded.  By the inner regularity of Lebesgue measure we find compact sets $K_n \subset A$ such that $\lambda^d(K_n) \geq \lambda^d(A) - 1/n$.
+Since $\lambda^d(A)<\infty$ and finite additivity it follows that $\lambda^d(A \setminus K_n) \leq 1/n$.  Since $f$ is continuous we know that $f(K_n)$ is compact (Theorem \ref{ContinuousImageOfCompact}) and therefore since $\mathcal{H}^d$ is Borel regular (Theorem \ref{BorelRegularityOfHausdorffMeasure}) we know that $f(K_i)$ is $\mathcal{H}^d$-measurable and therefore $\cup_{n=1}^\infty f(K_n)$ is $\mathcal{H}^d$-measurable.  On the other hand by subadditivity of $\mathcal{H}^d$, Proposition \ref{HausdorffMeasureUnderLipschitzMaps} and Theorem \ref{HausdorffEqualsLebesgue} we 
+get
+\begin{align*}
+\mathcal{H}^d\left(f(A) \setminus \cup_{n=1}^\infty f(K_n) \right) &\leq \mathcal{H}^d\left(f\left(A \setminus \cup_{n=1}^\infty K_n\right ) \right) \\
+&\leq \left( \Lip(f) \right)^d \mathcal{H}^d \left(A \setminus \cup_{n=1}^\infty K_n\right ) = \left( \Lip(f) \right)^d \lambda^d \left(A \setminus \cup_{n=1}^\infty K_n\right ) =0
+\end{align*}
+which shows us that $f(A) \setminus \cup_{n=1}^\infty f(K_n)$ is $\mathcal{H}^d$-measurable.  To remove the assumption that $A$ is bounded simply write $f(A) = \cup_{n=1} f(A \cap B(0,n))$ and apply (i) to each $A \cap B(0,n)$.
+
+To see (ii), for each $n \in \naturals$ we write $\reals^d$ as the disjoint union of cubes with sides of length $1/n$:
+\begin{align*}
+\mathcal{C}_n &= \lbrace (k_1/n, (k_1+1)/n] \times \dotsb \times (k_d/n, (k_d+1)/n] \mid k_1, \dotsc, k_d \in \integers \rbrace
+\end{align*}
+By (i) for each cube $C \in \mathcal{C}_n$ we have $f(A \cap C)$ is $\mathcal{H}^d$-measurable so it follows that the function
+\begin{align*}
+g_n(y)  &= \sum_{C \in \mathcal{C}_n} \characteristic{f(A \cap C)}(y)
+\end{align*}
+is $\mathcal{H}^d$-measurable.  
+\begin{clm} $\lim_{n \to \infty} g_n(y) = \mathcal{H}^0( A \cap f^{-1} (y))$
+\end{clm}
+To see this, first observe that $g_n(y)$ is equal to the number of cubes $C \in \mathcal{C}_n$ such that $f^{-1}(y) \cap A \cap C \neq \emptyset$.  If $\mathcal{H}^0( A \cap f^{-1} (y))=0$ then $A \cap f^{-1} (y)$ is empty and we see that $g_n(y)=0$ for all $n$.  If $\mathcal{H}^0( A \cap f^{-1} (y)) < \infty$ let $x_1, \dotsc, x_{\mathcal{H}^0( A \cap f^{-1} (y)) }$ be an enumeration of $A \cap f^{-1}(A)$ and if $\mathcal{H}^0( A \cap f^{-1} (y)) < \infty$ let $x_1, x_2, \dotsc$ be an enumeration of an arbitrarily chosen countable subset of $A \cap f^{-1} (y)$.  Let $M \in \naturals$ be given then define
+\begin{align*}
+D_M &= \inf \lbrace \abs{x_i-x_j}  \mid  1 \leq i < j \leq M \minop \mathcal{H}^0( A \cap f^{-1} (y)) \rbrace
+\end{align*} 
+and observe that $0 < D_M \leq \infty$ (as usual $\inf \emptyset = \infty$).  Now we can pick $N$ large enough so that $\diam(C) < D_M$ for every $n \geq N$ and $C \in \mathcal{C}_n$ (concretely since $\diam(C) = \sqrt{d}/n$ for $C \in \mathcal{C}_n$ we may pick $N = \ceil{\sqrt{d}/ D_M}$ if $D_M<\infty$ or $N=1$ if $D_M=\infty$).  It follows that for every $n \geq N$ we have $g_n(y) = M$.  This shows that $g_n(y) \uparrow \mathcal{H}^0( A \cap f^{-1} (y))$.  
+
+$\mathcal{H}^d$-measurability of $\mathcal{H}^0( A \cap f^{-1} (y))$ follows from Lemma \ref{LimitsOfMeasurable}.
+
+To see (iii) we use Monotone Convergence, Proposition \ref{HausdorffMeasureUnderLipschitzMaps}, Theorem \ref{HausdorffEqualsLebesgue} and countable additivity of Lebesgue measure to compute
+\begin{align*}
+\int \mathcal{H}^0( A \cap f^{-1} (y)) \, \mathcal{H}^d(dy) &= \lim_{n \to \infty} \int g_n(y) \, \mathcal{H}^d(dy) \\
+&=\lim_{n \to \infty} \sum_{C \in \mathcal{C}_n} \mathcal{H}^d(f(A \cap C)) \\
+&\leq \lim_{n \to \infty} \left( \Lip(f) \right)^d \sum_{C \in \mathcal{C}_n} \mathcal{H}^d(A \cap C) \\
+&= \limsup_{n \to \infty} \left( \Lip(f) \right)^d \sum_{C \in \mathcal{C}_n} \lambda^d(A \cap C) \\
+&= \left( \Lip(f) \right)^d \lambda^d(A) \\
+\end{align*}
+\end{proof}
+
+Next we need an kind of inverse function theorem for Lipschitz maps (TODO: Check the variational analysis literature to see if there are related results; in variational analysis, things are expressed in terms of generalized derivatives which in the Lipschitz case can be defined as limits of the a.e. defined Frechet derivative.  Clarke has a paper on this and I'll bet Rockafellar and Wets has something).
+
+\begin{lem}\label{AreaFormulaLipschitz:FunctionBounds}Let $d \leq m$, $f : \reals^d \to \reals^m$ be a locally Lipschitz map, $t>1$ and
+\begin{align*}
+A &= \lbrace x \in \reals^d \mid Df(x) \text{ exists and } Jf(x) > 0\rbrace
+\end{align*}
+There exists a countable set of Borel sets $A_1, A_2, \dotsc$ and symmetric invertible linear map $T_n : \reals^d \to \reals^d$ such that 
+\begin{itemize}
+\item[(i)] $A = \cup_{n=1}^\infty A_n$
+\item[(ii)] $f \mid_{A_n}$ is injective for each $n \in \naturals$
+\item[(iii)] For each $n \in naturals$
+\begin{align}\label{eq:AreaFormulaLipschitz:LipschitzConstants}
+\Lip((f \mid_{A_n}) \circ T_n^{-1}) \leq t, \qquad \Lip(T_n \circ (f
+  \mid_{A_n})^{-1}) \leq t
+\end{align}
+\item[(iv)] For each $n \in \naturals$
+\begin{align}\label{eq:AreaFormulaLipschitz:JacobianBounds}
+t^{-d} \abs{\det(T_n)} \leq Jf\mid_{A_n} \leq t^{d} \abs{\det(T_n)} 
+\end{align}
+\end{itemize}
+\end{lem}
+\begin{proof}
+Pick $\epsilon >0$ small enough so that 
+\begin{align*}
+\frac{1}{t} + \epsilon < 1 < t - \epsilon
+\end{align*}
+First recall that every subset of a separable metric space is separable in the relative topology; it is obviously true that every subset of a second countable topological space is second countable in the relative topology (every base of a topology is a base of the relative topology as well) and in metric spaces separability and second countability are equivalent (Lemma \ref{SeparabilitySecondCountabilityMetricSpaces}).  Therefore we may 
+select $B$, a countable dense subset of $A$, and $\mathbf{S}$, a countable dense subset of the set of symmetric invertible linear maps of $\reals^d$.  For each $i \in \naturals$, $x \in B$ and $T \in \mathbf{S}$ we let $A(x,T,i)$ be the set of $y \in A \cap B(x, 1/i)$ such that
+\begin{align*}
+\left( \frac{1}{t} + \epsilon \right) \norm{Tv} &\leq \norm{Df(y) v} \leq (t-\epsilon)\norm{Tv} \text{ for all $v \in \reals^d$} \\
+\intertext{and}
+\norm{f(z) - f(y) - Df(x) \cdot (z-y)} &\leq \epsilon \norm{T(z-y)} \text{ for all $z \in B(y, 2/i)$}
+\end{align*}
+
+By continuity of $f$, the linear maps $T$, $Df(y)$ and $Df(a)$ we may equivalently define
+\begin{align*}
+A(x,T,i) &= \cap_{v \in \rationals^d} \lbrace y \mid \left( \frac{1}{t} + \epsilon \right) \norm{Tv} &\leq \norm{Df(y) v} \leq (t-\epsilon)\norm{Tv} \rbrace \bigcap \\
+&\cap_{z \in B(0, 2/i) \cap \rationals^d} \lbrace \norm{f(z+y) - f(y) - Df(x) \cdot z} &\leq \epsilon \norm{Tz} \rbrace 
+\end{align*}
+Continuity of $f$ and Borel measurability of $Df$ (Theorem \ref{RademachersTheorem}) then show that $A(x,T,i)$ is a Borel subset of $\reals^d$.
+
+We now show (iv) holds on the sets $A(x,T,i)$.
+\begin{clm}For every $y \in A(x,T,i)$ we have
+\begin{align*}
+\left( \frac{1}{t} + \epsilon \right)^d \abs{\det T} &\leq Jf(y) \leq (t-\epsilon)^d \abs{\det(T)}
+\end{align*}
+\end{clm}
+Take the polar decomposition $Df(y) = U \circ S$ with $U : \reals^d \to \reals^m$ orthogonal and $S : \reals^d \to \reals^d$ symmetric.  Therefore $Jf(y) = \exdet{Df(y)} = \abs{\det(S)}$ and we
+have
+\begin{align*}
+\left( \frac{1}{t} + \epsilon \right) \norm{Tv} &\leq \norm{Df(y) v} = \norm{(U \circ S) v } =  \norm{S v} \leq (t-\epsilon)\norm{Tv} \text{ for all $v \in \reals^d$}
+\end{align*}
+and therefore
+\begin{align*}
+\left( \frac{1}{t} + \epsilon \right) \norm{v} &\leq \norm{(S \circ T^{-1}) v} \leq (t-\epsilon)\norm{v} \text{ for all $v \in \reals^d$}
+\end{align*}
+From the right hand inequality here we conclude $(S \circ T^{-1}) B(0,1) \subset B(0, t-\epsilon)$ and therefore by Corollary \ref{DeterminantOfProducts} and  Corollary \ref{LesbegueLinearChangeOfVariables}
+\begin{align*}
+\abs{\det(S)} \abs{\det(T)}^{-1} \lambda^d(B(0,1)) &= \abs{\det(S \circ T^{-1})} \lambda^d(B(0,1)) \\
+&= \lambda^d((S \circ T^{-1}) B(0,1)) \leq \lambda^d(B(0, t-\epsilon)) = (t-\epsilon)^d \lambda^d(B(0,1)) 
+\end{align*}
+Thus 
+\begin{align*}
+\abs{\det(S)}  &\leq (t-\epsilon)^d \abs{\det(T)}
+\end{align*}
+From the left hand inequality we conclude $B(0, \frac{1}{t} + \epsilon) \subset (S \circ T^{-1}) B(0,1)$ and by the same reasoning
+\begin{align*}
+\left( \frac{1}{t} + \epsilon \right)^d \lambda^d(B(0,1)) &= \lambda^d(B(0, \frac{1}{t} + \epsilon) ) \leq \lambda^d((S \circ T^{-1}) B(0,1)) \\
+&= \abs{\det(S \circ T^{-1})} \lambda^d(B(0,1)) = \abs{\det(S)} \abs{\det(T)}^{-1} \lambda^d(B(0,1))
+\end{align*}
+which shows $\left( \frac{1}{t} + \epsilon \right)^d \abs{\det T} \leq \abs{\det(S)}$.  
+
+Now we show (i)
+\begin{clm} $\cup_{i=1}^\infty \cup_{T \in \mathbf{S}} \cup_{x \in B} A(x,T,i) = A$.
+\end{clm}
+Note that for any linear map $T$ we have 
+\begin{align*}
+\Lip(T) = \sup_{x \neq y} \frac{\norm{Ty - Tx}}{\norm{y-x} } = \sup_{x \neq y}\frac{\norm{T(y - x)}}{\norm{y-x}} = \sup_{v \neq 0}\frac{\norm{Tv}}{\norm{v}} = \norm{T}
+\end{align*}
+Therefore if $S, S_1, S_2, \dotsc$ are invertible linear maps such that $S_n \to S$ in the operator norm then from 
+\begin{align*}
+\abs{\norm{ S_n \circ S^{-1}} - 1} &\leq \abs{\norm{ S_n \circ S^{-1} - \IdentityMatrix} + \norm{\IdentityMatrix} - 1} = \norm{S_n \circ S^{-1} - \IdentityMatrix}  \leq \norm{S^{-1}} \norm{S_n - S}
+\end{align*}
+it follows that
+$\Lip(S_n \circ S^{-1} ) \to 1$.  Similarly since $S_n \to S$ implies $\norm{S_n} \to \norm{S} \neq 0$ we get
+\begin{align*}
+\abs{\norm{ S \circ S_n^{-1}} - 1} &\leq \norm{S_n^{-1}} \norm{S - S_n}
+\end{align*}
+from which it follows that $\Lip(S \circ S_n^{-1} ) \to 1$.  Let $x \in A$ and write the polar decomposition $Df(x) = U \circ S$.  By the above argument and the density of $\mathbf{S}$ we may
+find a $T \in \mathbf{S}$ such that 
+\begin{align*}
+\Lip(T \circ S^{-1}) &\leq \left( \frac{1}{t} + \epsilon \right)^{-1}, \qquad \Lip(S \circ T^{-1}) \leq t-\epsilon
+\end{align*}
+which gives us
+\begin{align*}
+\left( \frac{1}{t} + \epsilon \right) \norm{Tv} &\leq \left( \frac{1}{t} + \epsilon \right) \Lip(T \circ S^{-1}) \norm{S v} \leq \norm{Sv} = \norm{Df(x) v}
+\end{align*}
+and
+\begin{align*}
+\norm{Df(x) v} &= \norm{Sv} \leq \Lip(S \circ T^{-1}) \norm{T v} \leq (t -\epsilon) \norm{Tv}
+\end{align*}
+By definition of the Frechet derivative pick $i \in \naturals$ large enough so that
+\begin{align*}
+\abs{f(y) - f(x) - Df(x) \cdot (y-x)} &\leq \frac{\epsilon}{\Lip(T^{-1})} \norm{y-x} \leq \epsilon\norm{T(y-x)} \text{ for all $y \in B(x,2/i)$}
+\end{align*}
+Lastly by density of $B$ in $A$ we may pick $z \in B$ such $\norm{z - y} < 1/i$.  Now note that we have all three conditions that show $x \in A(z,T,i)$.
+
+To prove (ii) and (iii) we need the following estimates
+\begin{clm} For all $y,z \in A(x,T,i)$
+\begin{align*} 
+\frac{1}{t} \norm{T(z-y)}  &\leq \norm{f(z) - f(y)}  \leq  t\norm{T(z-y)} 
+\end{align*}
+\end{clm}
+From the definition of $A(x,T,i)$ if we suppose $y \in A(x,T,i)$ and $z \in B(y,2/i)$ then
+\begin{align*}
+\norm{f(z) - f(y)} &\leq \norm{f(z) - f(y) - Df(y) \cdot (z-y)} + \norm{Df(y) \cdot (z-y)} \\
+&\leq \epsilon \norm{T(z-y)} + (t - \epsilon) \norm{T(z-y)} \\
+&= t\norm{T(z-y)}
+\end{align*}
+and
+\begin{align*}
+\left( \frac{1}{t} + \epsilon \right) \norm{T(z-y)} &\leq \norm{Df(y) \cdot (z-y)} \\
+&\leq \norm{f(z) - f(y) - Df(y) \cdot (z-y)} + \norm{f(z) - f(y)} \\
+&\leq \epsilon \norm{T(z-y)} + \norm{f(z) - f(y)} 
+\end{align*}
+which we summarize as
+\begin{align*}
+\frac{1}{t} \norm{T(z-y)}  &\leq \norm{f(z) - f(y)}  \leq  t\norm{T(z-y)}
+\end{align*}
+However by construction $A(x,T,i) \subset B(x,1/i) \subset B(y,2/i)$ for all $y \in A(x,T,i)$ and therefore 
+\begin{align*}
+\frac{1}{t} \norm{T(z-y)}  &\leq \norm{f(z) - f(y)}  \leq  t\norm{T(z-y)} \text{ for all $y,z \in A(x,T,i)$}
+\end{align*}
+
+To see (ii) simply note that injectivity $f \mid_{A(x,T,i)}$ follows
+immediately from the left hand inequality of the previous claim.  As for (iii) if $T^{-1} y, T^{-1} z \in A(x,T,i)$ then by 
+the right hand inequality of the previous claim
+\begin{align*}
+\frac{\norm{f(T^{-1} z) - f(T^{-1} y)}}{\norm{z - y}} \leq  t\frac{\norm{T(T^{-1} z-T^{-1} y)}}{\norm{z - y}} = t
+\end{align*}
+so $\Lip(f \mid_{A(x,T,i)} \circ T^{-1}) \leq t$.   If $y,z \in f(A(x,T,i))$ then by the left hand inequality of the previous claim
+\begin{align*}
+\frac{\norm{T (f^{-1}(z) - T(f^{-1} y)}}{\norm{z - y}} \leq  t\frac{\norm{f(f^{-1} z)-f(f^{-1} y)}}{\norm{z - y}} = t
+\end{align*}
+so $\Lip(T \circ (f\mid_{A(x,T,i)})^{-1}) \leq t$
+\end{proof}
+
+\begin{thm}[Area Formula]\label{AreaFormulaLipschitz}Let $d \leq m$ and $f : \reals^d \to \reals^m$ be Lipschitz.  For each $\lambda^d$-measurable set $A \subset \reals^d$
+\begin{align*}
+\int_A Jf(x) \, \lambda^d(dx) &= \int_{\reals^m} \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy)
+\end{align*}
+\end{thm}
+\begin{proof}
+Let
+\begin{align*}
+B &= \lbrace x \in \reals^d \mid Df(x) \text{ exists} \rbrace
+\end{align*}
+By Rademacher's Theorem \ref{RademachersTheorem} we know that $\lambda^d(B^c) = 0$ and therefore
+$\int_{A} Jf(x) \, \lambda^d(dx) = \int_{A \cap B} Jf(x) \lambda^d(dx)$.  Moreover we know since $\mathcal{H}^0$ is counting measure (Proposition \ref{HausdoffMeasureEqualsCounting})
+and by Lemma \ref{MeasurabilityOfMultiplicityFunction}
+\begin{align*}
+\int_{\reals^m} \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy) 
+&= \int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy) + \int_{\reals^m} \mathcal{H}^0(A \cap B^c \cap f^{-1}(y)) \, \mathcal{H}^d(dy) \\
+&\leq \int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy) +\left( \Lip(f) \right)^d \lambda^d(A \cap B^c) \\
+&=\int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy) 
+\end{align*} 
+Therefore it suffices to assume that $Df$ (hence $Jf$) exists everywhere on $A$.
+
+We first assume that $A \subset \lbrace Jf > 0 \rbrace$.  Let $t > 1$ be arbitrary and choose Borel sets
+$A_1, A_2, \dotsc$ and symmetric invertible linear maps $T_1, T_2, \dotsc$ as in Lemma \ref{AreaFormulaLipschitz:FunctionBounds}.
+Let $\mathcal{C}_n$ be as in the proof of Lemma \ref{MeasurabilityOfMultiplicityFunction} so that the sets
+$A \cap A_i \cap C$ for $i \in \naturals$ and $C \in \mathcal{C}_n$ are disjoint and for any $n \in \naturals$
+\begin{align*}
+A &= \cup_{i=1}^\infty \cup_{C \in \mathcal{C}_n} A \cap A_i \cap C
+\end{align*}
+
+Since $\diam(A_i \cap C) \leq \diam(C) \to 0$ as $n \to \infty$ by the same argument as in Lemma \ref{MeasurabilityOfMultiplicityFunction} we conclude
+\begin{align}\label{eq:AreaFormula:SumOverCubes}
+\lim_{n \to \infty} \sum_{i=1}^\infty \sum_{C \in \mathcal{C}_n} \mathcal{H}^d(A \cap A_i \cap C) = \int \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy)
+\end{align}
+TODO: Maybe factor that argument out into a separate lemma.
+
+By choice of $A_i$ and \eqref{eq:AreaFormulaLipschitz:LipschitzConstants} of Lemma \ref{AreaFormulaLipschitz:FunctionBounds}, Proposition \ref{HausdorffMeasureUnderLipschitzMaps} 
+and Theorem \ref{HausdorffEqualsLebesgue} we have
+\begin{align*}
+\mathcal{H}^d(f(A \cap A_i \cap C)) &= \mathcal{H}^d((f\mid_{A_i} \circ T_i^{-1} \circ T_i)(A \cap A_i \cap C)) \leq t^d \mathcal{H}^d(T_i(A \cap A_i \cap C)) =  t^d \lambda^d(T_i(A \cap A_i \cap C))
+\end{align*}
+and
+\begin{align*}
+\lambda^d(T_i(A \cap A_i \cap C) &= \mathcal{H}^d((T_i \circ (f\mid_{A_i})^{-1} \circ f\mid_{A_i})(A \cap A_i \cap C) \leq t^d \mathcal{H}^d(f(A \cap A_i \cap C)
+\end{align*}
+Therefore we get using \eqref{eq:AreaFormulaLipschitz:JacobianBounds} of Lemma \ref{AreaFormulaLipschitz:FunctionBounds}
+\begin{align*}
+t^{-2d} \mathcal{H}^d(f(A \cap A_i \cap C)) &\leq t^{-d} \lambda^d(T_i(A \cap A_i \cap C)) \\
+&= t^{-d} \abs{\det(T_i)} \lambda^d(A \cap A_i \cap C) \\
+&\leq \int_{A \cap A_i \cap C} Jf(x) \, \lambda^d(dx) \\
+&\leq t^{d} \abs{\det(T_i)} \lambda^d(A \cap A_i \cap C) \\
+&= t^{d} \lambda^d(T_i(A \cap A_i \cap C)) \\
+&\leq t^{2d} \mathcal{H}^d(f(A \cap A_i \cap C)
+\end{align*}
+Summing over $i \in \naturals$ and $C \in \mathcal{C}_n$ we get
+\begin{align*}
+\sum_{i=1}^\infty t^{-2d} \sum_{C \in \mathcal{C}_n} \mathcal{H}^d(f(A \cap A_i \cap C)) 
+\leq \sum_{i=1}^\infty \sum_{C \in \mathcal{C}_n} t^{-2d} \int_{A \cap A_i \cap C} Jf(x) \, \lambda^d(dx) 
+= \int_A  Jf(x) \, \lambda^d(dx) 
+\leq t^{2d} \sum_{i=1}^\infty t^{-2d} \sum_{C \in \mathcal{C}_n}\mathcal{H}^d(f(A \cap A_i \cap C) 
+\end{align*}
+Now let $n \to \infty$ and use \eqref{eq:AreaFormula:SumOverCubes} then let $t \downarrow 1$.
+
+Now we assume that $A \subset \lbrace Jf = 0 \rbrace$.  Somewhat surprisingly we can reduce this case to case in which $A \subset \lbrace Jf = 0 \rbrace$.
+In order to do that we let $0 < \epsilon < 1$ be arbitrary and define $g : \reals^d \to \reals^m \times \reals^d$ by $g(x) = (f(x), \epsilon x)$.  If we let $\pi : \reals^m \times \reals^d \to \reals^d$ be the projection on the second coordinate then if follows that $f = \pi \circ g$.  Furthermore since 
+\begin{align*}
+\norm{g(y) - g(x)} &= \sqrt{\norm{f(y) - f(x)}^2 + \epsilon^2\norm{y-x}^2} \leq \sqrt{(\Lip(f))^2\norm{y - x}^2 + \epsilon^2\norm{y-x}^2} = \sqrt{(\Lip(f))^2+ \epsilon^2} \norm{y-x}
+\end{align*}
+which shows that $g$ is Lipschitz.  It also follows from Proposition \ref{PartialDerivativesBanachSpaces} that $g$ is Frechet differentiable whenever $f$ and moreover
+\begin{align*}
+Dg(x) &= \begin{bmatrix}
+Df(x) \\
+\epsilon \IdentityMatrix_d
+\end{bmatrix}
+\end{align*}
+From the Cauchy-Binet Theorem \ref{CauchyBinetTheorem} we see that
+\begin{align*}
+(Jg(x))^2 &= \sum_{\psi \in Psi} \det((Dg(x))_\psi)^2
+\end{align*}
+where $\Psi$ is the set of all strictly increasing functions $\lbrace 1, \dotsc, d\rbrace$ to $\lbrace 1, \dotsc, m+d \rbrace$.  
+To get a lower bound for $Jg(x)$ note the function $\psi(i) = i+m$ is in $\Psi$ and for this $\psi$ we have $(Dg(x))_\psi = \epsilon \IdentityMatrix$ and it follows that
+$Jg(x) \geq \epsilon^{d}>0$.  For an upper bound on $Jg(x)$ first note that by a second application of Cauchy-Binet we have
+\begin{align*}
+(Jg(x))^2 &= \sum_{\psi \in Psi} \det((Dg(x))_\psi)^2 = \sum_{\substack{\psi \in Psi \\ \psi(d) \leq m}} \det((Dg(x))_\psi)^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 \\
+= \sum_{\substack{\psi \in Psi \\ \psi(d) \leq m}} \det((Df(x))_\psi)^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 \\
+= (Jf(x))^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 
+\end{align*}
+
+\begin{clm}There is a constant $C$ independent of $x \in A$ such that $Jg(x) \leq \epsilon C$.
+\end{clm}
+By the above calculation using the Cauchy-Binet Theorem and the finiteness of $\Psi$ it suffices to show that $\abs{\det((Dg(x))_\psi}  \leq \epsilon C$ for every $\psi \in \Psi$ with $\psi(d)>m$
+and some $C$ independent of $x \in A$.   We need a few simple facts about determinants and operator norms of matrices. Note for a general $d \times d$ matrix $M$ we have $\abs{\det(M)} \leq \norm{M}^d$; for example this follows from taking a Singular Value Decomposition (Theorem \ref{SingularValueDecomposition}) $M = U \Sigma V^T$, recalling that $\Sigma_{11} = \norm{M}$ and noting that 
+\begin{align*}
+\abs{\det(M)} &= \det(\Sigma) = \prod_{i=1}^d \Sigma_{ii} \leq \Sigma_{11}^d = \norm{M}^d
+\end{align*}
+Also $M$ is a $d \times m$ matrix and $N$ is a $c \times m$ matrix then $\norm{\begin{bmatrix} M \\ N \end{bmatrix}} \leq \norm{M} + \norm{N}$.
+For any $\psi$ with $\psi(d) > m$ let $k \geq 1$ be largest integer such that $\psi(d-k+1) > m$ then we can write $(Dg(x))_\psi = \epsilon^k \pi \circ \norm{\begin{bmatrix} Df(x) \\ \IdentityMatrix\end{bmatrix}}$ for an $m \times d$ projection matrix $\pi$.  Using the linear algebra facts mentioned, the fact that $0 < \epsilon \leq 1$, $\norm{\pi} =1$ and $\norm{Df(x)} \leq \Lip(f)$ we get the bound
+\begin{align*}
+\abs{\det((Dg(x))_\psi)} &\leq \norm{(Dg(x))_\psi} = \epsilon^{k} \norm{\pi \begin{bmatrix} Df(x) \\ \IdentityMatrix\end{bmatrix}} \\
+&\leq \epsilon \norm{\pi} ( \leq \norm{Df(x)} + \norm{\IdentityMatrix} ) \leq \epsilon(\Lip(f) + 1)
+\end{align*}
+
+Since $\pi : \reals^m \times \reals^d \to \reals^d$ is a projection operator it is Lipschitz and $\Lip(\pi) = \norm{\pi} = 1$.  Thus from Proposition \ref{HausdorffMeasureUnderLipschitzMaps},
+Lemma \ref{SupportOfMultiplicityFunction}
+and the part of this theorem already proven
+\begin{align*}
+\mathcal{H}^d(f(A)) &= \mathcal{H}^d(\pi(g(A))) \leq \mathcal{H}^d(g(A)) \\
+&\leq \int \mathcal{H}^0(A \cap g^{-1}(y,z)) \, \mathcal{H}^d(dy,dz) \\
+&=\int_A Jg(x) \, \lambda^d(dx) \\
+&\leq \epsilon C \lambda^d(A)
+\end{align*}
+Since $\epsilon>0$ was arbitrary we let $\epsilon \to 0$ and conclude $\mathcal{H}^d(f(A))=0$.  Since the support of $\mathcal{H}^0(A \cap f^{-1}(y))$ equals $f(A)$ (Lemma \ref{SupportOfMultiplicityFunction}) we also get
+\begin{align*}
+\int \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy) &= 0 = \int_A Jf(x) \, \lambda^d(dx)
+\end{align*}
+
+The proof is finished by taking a general $A$, writing $A = (A \cap \lbrace Jf>0 \rbrace) \cup (A \cap \lbrace Jf = 0 \rbrace)$ and using the fact that both $\int_A Jf(x) \, \lambda^d(dx)$ and
+$\int \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy)$ are finitely additive over disjoint sets.
+\end{proof}
 
 \section{Integration in Banach Spaces}
 
@@ -3409,7 +4120,27 @@ exists.  We say that $f$ is
   derivatives at all $v \in X$.
 \end{defn}
 
-We first observe that Frechet differentiability implies G\^{a}teaux differentiability.
+Note that some authors reserve the term G\^{a}teaux differentiable for
+functions for which the directional derivatives are a linear form.
+Note that under any circumstances we have homogeneity.  We will later show an example of
+a nonlinear G\^{a}teaux derivative.
+
+TODO: Example of nonlinear G\^{a}teaux derivative
+
+\begin{prop}\label{GateauxDerivativeHomogeneous}Let $X$ and $Y$ be
+  Banach spaces, let $U \subset X$ be open and let $f : U \to Y$ be
+  a map such that $f$ is G\^{a}teaux differentiable at $x \in U$, then
+  for all $c \in \reals$ and $v \in X$, $df(x,cv) = cdf(x,v)$.
+\end{prop}
+\begin{proof}
+This follows by a simple change of variable in the limit
+\begin{align*}
+df(x,cv) &= \lim_{t \to  0} \frac{f(x + t c v) - f(x)}{t} = \lim_{t \to  0} \frac{f(x + t v) - f(x)}{t/c} = c \lim_{t \to  0} \frac{f(x + t v) - f(x)}{t} = c df(x,v)
+\end{align*} 
+\end{proof}
+
+
+Now we observe that Frechet differentiability implies G\^{a}teaux differentiability.
 \begin{prop}\label{FrechetDifferentiableImpliesGateauxDifferentiable}Let $X$ and $Y$ be Banach spaces, let $U \subset X$ be
   open and let $f : U \to Y$ be
   a Fr\'{e}chet differentiable at $x \in U$.  Then $f$ is G\^{a}teaux
@@ -3682,6 +4413,20 @@ f(x+y) &= g(1) = g(0) + g^\prime(0) + \dotsm + \frac{g^{(p-1)} (0)}{(p-1)!} +
 
 TODO: Analytic functional calculus and beyond.
 
+Frechet derivatives of functions that map into product spaces are easily computed.
+\begin{prop}\label{FrechetDerivativeProductSpaces}Let $f : U \to Y \times Z$ be a function then $f$ is Frechet differentiable at $x \in U$ if and only if the coordinate functions $f_1 : U \to Y$ and
+$f_2 : U \to Z$ are Frechet differentiable at $x \in U$ and in this case $Df(x)v = (Df_1(x)v, Df_2(x)v)$.
+\end{prop}
+\begin{proof}
+Let $\pi_1$ and $\pi_2$ be the projections from $Y \times Z$ to $Y$ and $Z$ respectively.  Suppose that $f$ is Frechet differentiable at $x$ then by the Chain Rule and the linearity of projections $\pi_i$ we know that $f_i = \pi_i \circ f$ is Frechet differentiabe and $D f_i = \pi_i \circ Df$.
+
+Suppose that $D f_1(x)$ and $D f_2(x)$ both exist.  Then for any $\epsilon>0$ there exists $\delta>0$ such that $\norm{f_i(x+h) - f_i(x) - Df_i(x) h} < \epsilon \norm{h}/\sqrt{2}$ for any $\norm{h} < \delta$ and $i=1,2$.   The derivative of $f$ follows from 
+\begin{align*}
+\norm{f(x+h) - f(x) - (Df_1(x) h, Df_2(x) h)} &\leq \left(\norm{f_1(x+h) - f_1(x) - Df_1(x) h}^2 +  \norm{f_2(x+h) - f_2(x) - Df_2(x) h}^2 \right)^{1/2} \\
+&\leq \epsilon \norm{h}^{-1}
+\end{align*}
+\end{proof}
+
 There is an generalization of the notion of partial derivatives to the Frechet differentiation on Banach spaces.
 Recall that given Banach spaces $X_1, X_2, \dotsc, X_n$ the cartesian product $X_1 \times \dotsb \times X_n$ with norm
 $\norm{(v_1, \dotsc, v_n)} = \norm{v_1} \vee \dotsb \vee \norm{v_n}$ is a Banach space.  
@@ -3695,7 +4440,7 @@ We say that $L_i$ is the $i^{th}$ partial derivative and is denoted $D_i f (v)$.
 \end{defn}
 
 In general the existence of partial derivatives does not guarantee the existence of total Frechet deriviative however in the presence of continuity it does.
-\begin{prop}\label{PartialDerivativesBanachSpaces}Let $Y,X_1, X_2, \dotsc, X_n$ be Banach spaces and let $U_i \subset X_i$ be open for $i=1, \dotsc, n$ and $f : U_1 \times \dotsb U_n \to Y$ be a map then $f$ is continuously differentiable on $U_1 \times \dotsb \times U_n$ if and only if $D_i f : U_1 \times \dotsb \times \to L(X_i,Y)$ exists and is continuous for each $i=1, \dotsc,n$.
+\begin{prop}\label{PartialDerivativesBanachSpaces}Let $Y,X_1, X_2, \dotsc, X_n$ be Banach spaces and let $U_i \subset X_i$ be open for $i=1, \dotsc, n$ and $f : U_1 \times \dotsb \times U_n \to Y$ be a map then $f$ is continuously differentiable on $U_1 \times \dotsb \times U_n$ if and only if $D_i f : U_1 \times \dotsb \times U_n \to L(X_i,Y)$ exists and is continuous for each $i=1, \dotsc,n$.
 In this case,
 \begin{align*}
 D f (v) h = \sum_{i=1}^n D_i f( v) h_i
@@ -3712,18 +4457,22 @@ f(v + h) - f(v) &= \sum_{i=1}^{n} (f(v + h^{i-1}) - f(v+h^{i})) = \sum_{i=0}^{n-
 \end{align*}
 It suffices to show that each term $\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt$ is $o(h)$.  To see this recall $\norm{h_i} \leq \norm{h_1} \vee \dotsb \norm{v_n} = \norm{v}$ and thus we have the simple bound
 \begin{align*}
-\frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h} &\leq \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h_i} \\
+&\frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h} \\
+&\leq \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h_i} \\
 &\leq \frac{\int_0^1 \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i }\, dt}{h_i} \\
-&\leq \frac{\norm{h_i} \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }}{h_i} =  \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }\\
+&\leq \frac{\norm{h_i} \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }}{h_i} \\
+&=  \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }\\
 \end{align*}
 Since $D_i f$ is continuous at $v$, for every $\epsilon > 0$ we may find a $\delta > 0$ such that $\norm{D_i f(v + u) - D_i f(v)} < \epsilon$ for every $\norm{u} < \delta$.  Thus if $\norm{h} < \delta$ then $\norm{h^i + t(h^{i-1}-h^i)} = \abs{t} \norm{h_i} \leq \norm{h} < \delta$ and therefore $\sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }\leq \epsilon$.  Thus 
 \begin{align*}
-\lim_{h \to 0} \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h} \leq \lim_{h \to 0} \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }= 0
+&\lim_{h \to 0} \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h} \\
+&\leq \lim_{h \to 0} \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }= 0
 \end{align*}
 
 To see the other direction suppose that $Df$ exists and is continuous on $U_1 \times \dotsb \times U_n$.  Let $\epsilon > 0$ be given.  Since $Df(v)$ exists we may find $\delta > 0$ so that $\norm{h} < \delta$ we have $\norm{f(v+h) - f(v) - Df(v) h} < \norm{h} \epsilon$.   Let $v=(v_1, \dotsc, v_n) \in U_1 \times \dotsb \times U_n$ and $h \in X_i$ and write $h_i$ be vector in $U_1 \times \dotsb \times U_n$ with $h$ the $i^{th}$ coordinate and $0$ in the others.   Note that $\norm{h} = \norm{h_i}$.  Thus for all $\norm{h} < \delta$
 \begin{align*}
-norm{f(v_1, \dotsc, v_{i-1}, v_i+h, v_{i+1}, \dotsc, v_n) - f(v_1, \dotsc, v_n) - Df(v) h_i} &= \norm{f(v + h_i) - f(v) - Df(v) h_i} \leq \norm{h_i} \epsilon = \norm{h} \epsilon
+&\norm{f(v_1, \dotsc, v_{i-1}, v_i+h, v_{i+1}, \dotsc, v_n) - f(v_1, \dotsc, v_n) - Df(v) h_i} \\
+&= \norm{f(v + h_i) - f(v) - Df(v) h_i} \leq \norm{h_i} \epsilon = \norm{h} \epsilon
 \end{align*}
 which shows that $D_i f(v)$ exists and $D_i f(v) h = D_i f(v) h_i$.  Continuity of $D_i f$ follows from the continuity of $Df$ and the continuity 
 \end{proof}
@@ -4151,13 +4900,13 @@ Thus $v^*_i$ is a basis hence $\dim V  = \dim V^* = n$.
 
 The basis $v^*_i$ constructed from the basis $v_i$ in the above proof is referred to as the \emph{dual basis}.  
 
-\begin{defn}Let $A$ be an $m \times n$ real matrix, then a triple comprising an $m \times m$ orthogonal matrix $U$, an $n \times n$ orthogonal matrix $V$ and a $m \times n$ diagonal matrix $\Sigma$ with $\Sigma_{11} \geq \dotsb \Sigma_{pp}$ where $p = m \wedge n$ such that $A = U \Sigma V^T$ is called a \emph{singular value decomposition}.
+\begin{defn}Let $A$ be an $m \times n$ real matrix, then a triple comprising an $m \times m$ orthogonal matrix $U$, an $n \times n$ orthogonal matrix $V$ and a $m \times n$ diagonal matrix $\Sigma$ with $\Sigma_{11} \geq \dotsb \geq \Sigma_{pp}$ where $p = m \wedge n$ such that $A = U \Sigma V^T$ is called a \emph{singular value decomposition}.
 \end{defn}
 
 \begin{thm}\label{SingularValueDecomposition}Singular value decompositions exist.
 \end{thm}
 \begin{proof}
-The result is trivially true if $A = 0$ (let $\Sigma=0$, $U$ and $V$ be identity matrices), so assume that $A \neq 0$.  Let $\sigma_1$ be the $L^2$ operator norm of $A$.   By compactness of the unit sphere we can find a unit vector $x_1 \in \reals^n$ such that $0 \neq \sigma_1 = \norm{Ax}$.  Define $y_1 = \sigma^{-1}_1 Ax$ so that $y$ is a unit vector in $\reals^m$.  We can now find an orthonormal basis $\lbrace x_2, \dotsc, x_n \rbrace$ of $x_1^{\perp}$ and $\lbrace y_2, \dotsc, y_m \rbrace$ of $y_1^{\perp}$.  Define the orthogonal matrices $U_1 = [y_1, \dotsc, y_m]$ and $V = [x_1, \dotsc, x_n]$.  We may write
+The result is trivially true if $A = 0$ (let $\Sigma=0$, $U$ and $V$ be identity matrices), so assume that $A \neq 0$.  Let $\sigma_1$ be the $L^2$ operator norm of $A$.   By compactness of the unit sphere we can find a unit vector $x_1 \in \reals^n$ such that $0 \neq \sigma_1 = \norm{Ax_1}$.  Define $y_1 = \sigma^{-1}_1 Ax_1$ so that $y_1$ is a unit vector in $\reals^m$.  We can now find an orthonormal basis $\lbrace x_2, \dotsc, x_n \rbrace$ of $x_1^{\perp}$ and an orthonormal basis $\lbrace y_2, \dotsc, y_m \rbrace$ of $y_1^{\perp}$.  Define the orthogonal matrices $U_1 = [y_1, \dotsc, y_m]$ and $V_1 = [x_1, \dotsc, x_n]$.  From the fact that $Ax_1 = \sigma_1 y_1$ we can write 
 \begin{align*}
 U_1^T A V_1 &=
 \begin{bmatrix}
@@ -4168,14 +4917,16 @@ U_1^T A V_1 &=
 where $w \in \reals^{n-1}$ and $B$ is an $(m-1) \times (n-1)$ matrix.
 Observe that
 \begin{align*}
-U_1^T A V_1 \begin{bmatrix} \sigma_1 \\ w\end{bmatrix}
-&= \begin{bmatrix} \sigma_1^2 + w^T w \\ 
-B \begin{bmatrix} \sigma_1 \\ w\end{bmatrix}
- \end{bmatrix}
+\norm{U_1^T A V_1} &= \sup_{v \neq 0} \frac{\norm{U_1^T A V_1 v}}{\norm{v}} \geq \frac{\norm{U_1^T A V_1 \begin{bmatrix} \sigma_1 \\ w\end{bmatrix}}}{\norm{\begin{bmatrix} \sigma_1 \\ w\end{bmatrix}}} 
+=\frac{\norm{\begin{bmatrix} \sigma_1^2 + w^T w \\ 
+B w
+ \end{bmatrix}}}{\sqrt{\sigma_1^2 + w^T w}} \\
+&= \frac{\sqrt{(\sigma_1^2 + w^T w )^2 + w^TB^TBw}}{\sqrt{\sigma_1^2 + w^T w}} \geq \sqrt{\sigma_1^2 + w^T w}
 \end{align*}
-so that $\norm{U_1^T A V_1}^2 \geq (\sigma_1^2 + w^T w )$.  On the other hand, by orthogonality of $U_1$ and $V_1$ we know that
-$\norm{U_1^T A V_1} = \norm{A} = \sigma_1$ and therefore we see that $w = 0$.    Now we can use the induction hypothesis to conclude that there exist $U_2$ and $V_2$ such that
-$U_2^T B V_2 = \Sigma_2$ is diagonal and note that if we define 
+On the other hand, by orthogonality of $U_1$ and $V_1$ we know that
+$\norm{U_1^T A V_1} = \norm{A} = \sigma_1$ and therefore we see that $w^Tw = 0$ hence $w = 0$.    
+Now use the induction hypothesis to conclude that there exist $U_2$ and $V_2$ such that
+$U_2^T B V_2 = \Sigma_2$ is diagonal with nonincreasing entries on the diagonal and note that if we define 
 \begin{align*}
 U &= 
 U_1 \begin{bmatrix}
@@ -4212,13 +4963,27 @@ U^T A V
 \begin{bmatrix}
 1 & 0 \\
 0 & V_2
-\end{bmatrix} \\
-&= 
+\end{bmatrix} 
+= 
 \begin{bmatrix}
 \sigma_1 & 0 \\
 0 & \Sigma_2
 \end{bmatrix} 
 \end{align*}
+Lastly note that embedding $\reals^{n-1}$ into $\reals^n$ as the vectors of the form $\begin{bmatrix}0 \\ v\end{bmatrix}$ we get
+\begin{align*}
+\sigma_1 &= \norm{A} = \norm{U_1^T A V_1} 
+= \sup_{\substack {w \in \reals^n \\ w \neq 0}} \frac{\norm{\begin{bmatrix}
+\sigma_1 & 0 \\
+0 & B
+\end{bmatrix}w}} {\norm{w}} \\
+&\geq \sup_{\substack {v \in \reals^{n-1} \\ v \neq 0}} \frac{\norm{Bv}} {\norm{v}} 
+= \norm{B} = (\Sigma_2)_{11}\\
+\end{align*}
+and therefore the diagonal entries of $\Sigma=\begin{bmatrix}
+\sigma_1 & 0 \\
+0 & \Sigma_2
+\end{bmatrix}$ are nonincreasing and we are done.
 \end{proof}
 
 The fact that we may perform matrix factorizations in linear algebra in a Borel measurable way is easy to verify with the following elegant method relying on the ``principle of measurable choice''.
@@ -4267,7 +5032,109 @@ Let
 \begin{align*}
 F &= \lbrace (A, U,\Sigma, V) \mid \text{$U, V$ are orthogonal, $\Sigma$ is diagonal and $A = U \Sigma V^T$} \rbrace
 \end{align*}
-and note that $F$ is closed (because the spaces of orthognal and diagonal matrices are closed and matrix multiplication is continuous).  $F$ is also $\sigma$-compact because the ambient space is (just write $F = \cup_n F \cap \overline{B}(0,n)$).  Since singular value decompositions exist (Theorem \ref{SingularValueDecomposition}) we know that $\pi_1(F) = \reals^{m \times n}$ and therefore the result follows immediately from Theorem \ref{PrincipleOfMeasurableChoice}.
+and note that $F$ is closed (because the spaces of orthogonal and diagonal matrices are closed and matrix multiplication is continuous).  $F$ is also $\sigma$-compact because the ambient space is (just write $F = \cup_n F \cap \overline{B}(0,n)$).  Since singular value decompositions exist (Theorem \ref{SingularValueDecomposition}) we know that $\pi_1(F) = \reals^{m \times n}$ and therefore the result follows immediately from Theorem \ref{PrincipleOfMeasurableChoice}.
 \end{proof}
 
 B\'{e}la Sz Nagy also seems to prove measurability of eigenvalues and eigenvectors using the minimax criterion in ``Harmonic Analysis of Operators on Hilbert Space''.  From this one can bootstrap up to the measurability of the Schur decomposition and then get to the measurability of the SVD by considering Schur decompositions of $A^TA$ and $AA^T$.  There are also some more powerful section theorems that may have some relevance.
+
+\begin{defn}Let $A$ be a $d \times d$ matrix and let $\Sigma_d$ be the set of permutations of $\lbrace 1, \dotsc, d \rbrace$ then the \emph{determinant} of $A$ is the number $\det(A) = \sum_{\sigma \in \Sigma_d} \sgn(\sigma) A_{1\sigma(1)} \dotsb A_{d \sigma(d)}$.
+\end{defn}
+The formula we have used in the definition of the determinant is called Leibnitz's formula.
+
+\begin{prop}\label{DeterminantUnderPermutationTranspose}Let $A$ be a $d \times d$ matrix, 
+\begin{itemize}
+\item[(i)] $\det(A) = \det(A^T)$
+\item[(ii)] let $\tau \in \Sigma_d$ and define $(A^\tau)_{ij} = A_{i \tau(j)}$ then $\det(A^\tau) = \sgn(\tau) \det(A)$. 
+\item[(iii)] let $\tau \in \Sigma_d$ and define $(A_\tau)_{ij} = A_{\tau(i) j}$ then $\det(A_\tau) = \sgn(\tau) \det(A)$. 
+\item[(iv)] If any two columns of $A$ are identical or any two rows of $A$ are identical then $\det(A) = 0$
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see (i)
+\begin{align*}
+\det(A^T) &= \sum_{\sigma \in \Sigma_d} \sgn(\sigma) A^T_{1\sigma(1)} \dotsb A^T_{d \sigma(d)} = \sum_{\sigma \in \Sigma_d} \sgn(\sigma) A_{\sigma(1) 1} \dotsb A_{\sigma(d) d} \\
+&= \sum_{\sigma \in \Sigma_d} \sgn(\sigma) A_{\sigma(1) \sigma^{-1}(\sigma(1))} \dotsb A_{\sigma(d) \sigma^{-1}(\sigma(d))} 
+= \sum_{\sigma \in \Sigma_d} \sgn(\sigma^{-1}) A_{1 \sigma^{-1}(1)} \dotsb A_{d \sigma^{-1}(d)}  \\
+&= \det(A)
+\end{align*}
+ 
+To see (ii) we note that by properties of permutations we have
+\begin{align*}
+\det(A^\tau) &= \sum_{\sigma \in \Sigma_d} \sgn(\sigma) A^\tau_{1\sigma(1)} \dotsb A^\tau_{d \sigma(d)} 
+= \sum_{\sigma \in \Sigma_d} \sgn(\sigma) A_{1 \tau(\sigma(1))} \dotsb A_{d \tau(\sigma(d))} \\
+&= \sum_{\sigma \in \Sigma_d} \sgn(\tau^{-1} \circ \tau \circ \sigma) A_{1 \tau(\sigma(1))} \dotsb A_{d \tau(\sigma(d))}  \\
+&= \sum_{\sigma \in \Sigma_d} \sgn(\tau^{-1} ) \sgn( \tau \circ \sigma) A_{1 \tau(\sigma(1))} \dotsb A_{d \tau(\sigma(d))} \\
+&= \sgn(\tau )\sum_{\sigma \in \Sigma_d} \sgn( \sigma) A_{1 \sigma(1)} \dotsb A_{d \sigma(d)} = \sgn(\tau) \det(A)
+\end{align*}
+
+To see (iii) we simply note that $A_\tau = ((A^T)^\tau)^T$ and using (i) and (ii).
+
+To see (iv) suppose $1 \leq j < k \leq d$ and that columns $j$ and $k$ of $A$ are equal; if we let $(j k)$ be the permutation that exchanges $j$ and $k$ then we restate the hypothesis as $A^{(j k)} = A$.  Now apply (ii) and use the fact that $\sgn( j k) = -1$.  The case of equal rows follow by transposition (or equivalently by using (iii) with the appropriate transposition).
+\end{proof}
+
+\begin{thm}[Cauchy-Binet Theorem]\label{CauchyBinetTheorem} Let $A$ be a $d \times m$ matrix and let $B$ be an $m \times d$ matrix.  Let $\Psi$ be the set of all increasing injective functions from $\lbrace 1, \dotsc, d \rbrace$ to $\lbrace 1, \dotsc, m \rbrace$ and for every $\psi \in \Psi$ let 
+\begin{align*}
+A_\psi &= A( : , [\psi(1) \dotsb \psi(d)])
+\end{align*}
+and let 
+\begin{align*}
+B_\psi &= B( [\psi(1) \dotsb \psi(d)], :)
+\end{align*}
+then 
+\begin{align*}
+\det(AB) &= \sum_{\psi \in \Psi} \det(A_\psi) \det(B_\psi)
+\end{align*}
+\end{thm}
+\begin{proof}
+By the formula for matrix multiplication note that the $i^{th}$ row of $AB$ is a linear combination of the $m$ rows of $B$; specifically $(AB)(i, :) = \sum_{k=1}^m A_{ik} B(k, :)$.  Iteratively using this fact together with the linearity of the determinant we get
+\begin{align*}
+\det(AB) &=  \det
+\begin{bmatrix}
+(AB)(1,  :)\\
+\dotsb \\
+ (AB)(d, :)
+\end{bmatrix}
+= \sum_{k_1 = 1}^m 
+A_{1 k_1} \det \begin{bmatrix}
+B(k_1,  :) \\
+(AB)(2, :)\\
+\dotsb \\
+(AB)(d,  :)
+\end{bmatrix} \\
+&= \sum_{k_1 = 1}^m \dotsb \sum_{k_d=1}^m
+A_{1 k_1}  \dotsb A_{d k_d} \det \begin{bmatrix}
+B(k_1, :)\\
+\dotsb \\
+B(k_d, :)
+\end{bmatrix} \\
+&=\sum_{(k_1, \dotsc, k_d) \in \lbrace 1, \dotsc, m \rbrace^d}
+A_{1 k_1}  \dotsb A_{d k_d} \det B([k_1 \dotsb k_d], :)\\
+&=\sum_{\substack{(k_1, \dotsc, k_d) \in \lbrace 1, \dotsc, m \rbrace^d \\ k_i \text{ distinct} }}
+A_{1 k_1}  \dotsb A_{d k_d} \det B([k_1 \dotsb k_d], :)\\
+\end{align*}
+where in the last line we have used the fact that for any set of indices $(k_1, \dotsc, k_d)$ for which there exists $1 \leq i < j \leq d$ and $k_i=k_j$ we have $\det B([k_1 \dotsb k_d], :) = 0$ (assertion (iv) of Proposition \ref{DeterminantUnderPermutationTranspose}).  
+
+Given any $d$-tuple $(k_1, \dotsc, k_d)$ with $k_i$ distinct there is a unique permutation $\sigma$ of $\lbrace 1 , \dotsc, d \rbrace$ such that $1 \leq k_{\sigma(1)} < \dotsb < k_{\sigma(d)} \leq m$. These increasing sequences $1 \leq k_{\sigma(1)} < \dotsb < k_{\sigma(d)} \leq m$ are precisely the ranges of functions $\psi \in \Psi$.   Thus if we let $\Sigma_d$ be set of permutations of $\lbrace 1, \dotsc, d \rbrace$ then every $d$-tuple $(k_1, \dotsc, k_d)$ with $k_i$ distinct can be written uniquely as $(\psi(\sigma(1)), \dotsc, \psi(\sigma(d)))$ where $\psi \in \Psi$ and $\sigma \in \Sigma_d$.  Now we compute using Proposition \ref{DeterminantUnderPermutationTranspose}
+\begin{align*}
+\det(AB) 
+&= \sum_{\psi \in \Psi} \sum_{\sigma \in \Sigma_d} A_{1 \psi(\sigma(1))}  \dotsb A_{d \psi(\sigma(d))} \det B([\psi(\sigma(1)) \dotsb \psi(\sigma(d)) ], :) \\
+&= \sum_{\psi \in \Psi} \sum_{\sigma \in \Sigma_d} (A_\psi)_{1 \sigma(1)}  \dotsb (A_\psi)_{d \sigma(d)} \det (B_\psi) ([\sigma(1) \dotsb \sigma(d) ], :) \\
+&= \sum_{\psi \in \Psi} \sum_{\sigma \in \Sigma_d} (A_\psi)_{1 \sigma(1)}  \dotsb (A_\psi)_{d \sigma(d)} \sgn(\sigma) \det (B_\psi) \\
+&= \sum_{\psi \in \Psi} \det(A_\psi) \det(B_\psi)
+\end{align*}
+\end{proof}
+
+\begin{cor}\label{DeterminantOfProducts}Let $A$ and $B$ be $d \times d$ matrices then $\det(AB) = \det(A) \det(B)$.
+\end{cor}
+\begin{proof}
+Apply the Cauchy-Binet formula in the case $d=m$ (here $\Psi$ comprises on the identity map).
+\end{proof}
+
+\begin{cor}Let $A$ be an orthogonal matrix then $\abs{\det(A)} = 1$.
+\end{cor}
+\begin{proof}
+By the previous Corollary and  Proposition \ref{DeterminantUnderPermutationTranspose}
+\begin{align*}
+1 &= \det(\IdentityMatrix) = \det(A^T A) = \det(A^T) \det(A) = \det(A)^2
+\end{align*}
+\end{proof}

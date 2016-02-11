@@ -103,7 +103,7 @@ may be nothing worth explaining about it.  However the following
 result ties in the definition of almost sure convergence with the
 idea of events happening infinitely often that we encountered when
 discussing indpedendence.  The connection proves to be quite powerful
-and we'll soon see that it make the Borel-Cantelli Lemma a useful tool
+and we'll soon see that it make the Borel-Cantelli Theorem \ref{BorelCantelli} a useful tool
 for proving almost sure convergence.
 \begin{lem}\label{ConvergenceAlmostSureByInfinitelyOften}Let $\xi, \xi_1, \xi_2, \dots$ be random elements in the
   metric space $(S,d)$, then $\xi_n \toas \xi$ if
@@ -317,8 +317,7 @@ n_2, \dots$ such that $\probability{d(\xi_{n_k}, \xi) > \frac{1}{k}} <
 \frac{1}{2^k}$.  Then the sets $A_k=\{\omega \mid d(\xi_{n_k}(\omega),
 \xi(\omega)) > \frac{1}{k} \}$ satisfy $\sum_{k=1}^\infty \mu A_k <
 \infty$ and we can apply Borel-Cantelli to conclude that $\mu (A_k
-i.o.) = 0$.  Thus $\omega \notin A_k
-i.o. $ we pick $N_1 > 0$ such that $\omega \notin A_k$ for $k > N_1$
+i.o.) = 0$.  Thus $\omega \notin A_k i.o.$ we pick $N_1 > 0$ such that $\omega \notin A_k$ for $k > N_1$
 and given $\epsilon >0$, we pick $N_2 >
 \frac{1}{\epsilon}$.  Then for $k > \max(N_1,N_2)$ we see that $d(\xi_{n_k}(\omega),
 \xi(\omega)) \leq \frac{1}{k} < \epsilon$ and we have shown that $\xi_{n_k} \toas \xi$.
@@ -875,7 +874,7 @@ Note
 \text{by i.i.d. }\\
 &= \expectation{\abs{\xi}} < \infty & & \text{by Lemma \ref{TailsAndExpectations}}
 \end{align*}
-Now we apply Borel Cantelli to conclude that $\probability{\eta_n \neq
+Now we apply the Borel Cantelli Theorem \ref{BorelCantelli} to conclude that $\probability{\eta_n \neq
   \xi_n \text{ i.o.}} = 0$.  Stated conversely,
 $\probability{\text{there exists $N>0$ such that $\xi_n \leq n$ for
     all $n > N$}} = 1$.
@@ -959,7 +958,7 @@ for each $\omega$ for which $\lim_{n \to \infty}
 $\abs{\xi_n(\omega)} < \epsilon n$ for all $n > N$; just choose
 $\epsilon < 1$).  But we also know that $\xi_n$ are independent and
 therefore by Lemma \ref{IndependenceComposition} the $A_n$ are
-independent so Borel Cantelli implies $\sum_{n=1}^\infty
+independent so the Borel Cantelli Theorem \ref{BorelCantelli} implies $\sum_{n=1}^\infty
 \probability{A_n} < \infty$.  But now we can apply a tail bound
 \begin{align*}
 \expectation{\abs{\xi}} &= \int_0^\infty \probability{\abs{\xi} \geq
@@ -977,7 +976,7 @@ independent so Borel Cantelli implies $\sum_{n=1}^\infty
 
 TODO:  Understand that proof better and write it down completely.
 
-So to apply Borel Cantelli we need so find a sequence $N_j$ such that 
+So to apply the Borel Cantelli Theorem \ref{BorelCantelli} we need so find a sequence $N_j$ such that 
 \begin{align*}
 \sum_{j=1}^\infty n_j \probability{\xi > N_j} &< \infty \\
 \sum_{j=1}^\infty \frac{1}{n_j} \expectation{\xi_{\leq N_j}} &< \infty 
@@ -1325,7 +1324,9 @@ Note that the value $\sup_x \abs{\hat{F}_n(x) - F(x)}$ is called the
 Glivenko-Cantelli Theorem tells us that this is a consistent estimator
 of goodness of fit, however the test itself requires information on
 the rate of convergence.  The most common result in this area is
-\emph{Donsker's Theorem}.  Mention the DKW Inequality too; weak forms
+\emph{Donsker's Theorem} which we'll prove later on in a couple of different ways
+(Theorem \ref{DonskersTheorem} and Theorem
+\ref{Donsker2}).  Mention the DKW Inequality too; weak forms
 of this can be established using the Pollard proof of Glivenko
 Cantelli which the one that generalizes to Vapnik-Chervonenkis
 families.  We can develop that proof after we do some exponential inequalities.

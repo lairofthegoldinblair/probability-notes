@@ -2200,7 +2200,7 @@ this is true and the introduction of martingales was partly motivated
 by a desire to have a well defined dependence structure that could
 facilitate such investigations.  Indeed one of the first appearances
 of the martingale condition (which predated the use of the term
-martingale) was in Levy's proof of a central limit theorem.  Our next task is to extend the
+martingale) was in Levy's proof of a martingale central limit theorem.  Our next task is to extend the
 Lindeberg Central Limit Theorem to the case of \emph{martingale
   differences}.  The proof we give uses characteristic functions but
 we note that with stronger hypotheses we can extend the proof
@@ -2240,6 +2240,11 @@ adapted and integrable and moreover
 which shows that $M_n$ is an $\mathcal{F}$-martingale.
 \end{proof}
 
+Martingale difference sequences posses orthogonality properties that make them behave to 
+sequence of independent random variables.  Martingale convergence theorems can be viewed as
+laws of large numbers from this point of view.  By comparison here we call out a simple fact that amounts 
+to the statement about how martingale difference sequences are uncorrelated.
+
 \begin{prop}\label{SquareIntegrableMartingaleDifferenceWhiteNoise}Let $X_n$ be a martingale difference sequence with
   $\expectation{X_n^2} < \infty$ then it follows that
   $\expectation{X_n X_m} = 0$ for $m \neq n$.
@@ -2255,6 +2260,8 @@ difference property
                         \cexpectationlong{\mathcal{F}_m}{X_n} } = 0
 \end{align}
 \end{proof}
+
+A much deeper 
 
 \begin{thm}[Martingale Central Limit Theorem]Let $\mathcal{F}_n$ be a
   filtration and let $X_n$ be a martingale
@@ -2484,6 +2491,221 @@ Now we have everything to finish the proof of theorem.  We get
 from which we conclude that $\lim_{n \to \infty} \expectation{e^{iu\sum_{k=1}^n X_{n,k}}} = e^{-u^2 \sigma^2/2}$ which by
 the Glivenko-Levy Continuity Theorem \ref{GlivenkoLevyContinuity} shows $\sum_{k=1}^n X_{n,k} \todist N(0, \sigma^2)$.
 \end{proof}
+
+Now we turn to the inequalities of Burkholder that show an intimitate
+relationship between a martingale and the sum of the squares of the associated 
+martingale differences (the so-called quadratic variation).  These ideas will come up again in the context of stochastic integration
+in the Burkholder-Davis-Gundy inequalities Theorem \ref{BDGInequalities}.
+
+\begin{defn}Let $X_n$ be a  process  then the process
+\begin{align*}
+[X]_n &= \sum_{i=1}^n (X_i - X_{i-1})^2
+\end{align*}
+is called the \emph{quadratic variation} of $X$.
+\end{defn}
+
+It is trivial that if $X$ is $\mathcal{F}$-adapted then so if $[X]$.
+
+\begin{thm}\label{BurkholderInequalities}Let $1 < p < \infty$ then
+there exist constants $C_1$ and $C_2$ so that for any $\mathcal{F}$-martingale 
+$M_n$ we have
+\begin{align*}
+C_1 \expectation{[M]_n^{p/2}} &\leq \expectation{\abs{M_n}^{p}} \leq C_2 \expectation{[M]_n^{p/2}}
+\end{align*}
+\end{thm}
+
+The proof depends on a few lemmas.
+
+\begin{lem}\label{BurkholderInequalityLemma1}Let $X_n$ have $X_0=0$ and be either an $\mathcal{F}$-martingale or a nonnegative $\mathcal{F}$-submartingale.  For $\lambda > 0$ and
+$n \in \naturals$ define the $\mathcal{F}$-optional time $\tau = \min \lbrace m \mid X_m > \lambda  \rbrace \minop (n+1)$ then
+\begin{align*}
+\expectation{\sum_{i=1}^{\tau-1} (X_i - X_{i-1})^2} + \expectation{X_{\tau-1}^2} &\leq 2 \lambda \expectation{\abs{X_n}}
+\end{align*}
+\end{lem}
+\begin{proof}
+For arbitrary $m \in \naturals$ 
+\begin{align*}
+X_{m-1}^2 + \sum_{i=1}^{m-1} (X_i - X_{i-1})^2 &= X_{m-1}^2 + \left( \sum_{i=1}^{m-1} (X_i - X_{i-1})  \right)^2 - 2 \sum_{1 \leq i < j \leq m-1} (X_i - X_{i-1})  (X_j - X_{j-1})  \\
+&= 2 X_{m-1}^2 - 2 \sum_{1 \leq i < j \leq m-1} (X_i - X_{i-1})  (X_j - X_{j-1})  \\
+&= 2 X_{m-1}^2 - 2 \sum_{j=2}^{m-1} \left ( \sum_{i=1}^{j-1} (X_i - X_{i-1}) \right) (X_j - X_{j-1})  \\
+&= 2 X_{m-1}^2 - 2 \sum_{j=2}^{m-1} X_{j-1} (X_j - X_{j-1})  \\
+&= 2 X_{m-1} X_m -2X_{m-1} (X_m - X_{m-1}) - 2 \sum_{j=2}^{m-1} X_{j-1} (X_j - X_{j-1})  \\
+&= 2 X_{m-1} X_m  - 2 \sum_{j=2}^{m} X_{j-1} (X_j - X_{j-1})  \\
+\end{align*}
+Therefore if $\sigma$ is an arbitrary bounded $\mathcal{F}$-optional time with $\sigma \leq M$,
+\begin{align*}
+X_{\sigma-1}^2 + \sum_{i=1}^{\sigma-1} (X_i - X_{i-1})^2 &\leq 2 X_{\sigma-1} X_\sigma  - 2 \sum_{j=2}^{\sigma} X_{j-1} (X_j - X_{j-1})  
+\end{align*}
+Now note that 
+\begin{align*}
+\expectation{\sum_{j=2}^{\sigma} X_{j-1} (X_j - X_{j-1}) } &= \sum_{j=2}^{n+1 }\expectation{ X_{j-1} (X_j - X_{j-1}) ; j \leq \sigma } \\
+&=\sum_{j=2}^{M}\expectation{ X_{j-1} \cexpectationlong{\mathcal{F}_{j-1}}{X_j - X_{j-1}} ; j-1 > \sigma } \geq 0
+\end{align*}
+where in fact the inequality is equality in the martingale case.
+
+Now the result of the Lemma only depends on the values of $X_0, \dotsc, X_n$ so by redefining $X$ to be $X^n$ we may assume that $X_m = X_n$ for all $m \geq n$.  Returning to $\tau$ note that under either hypothesis on $X_n$ we know that $\abs{X_n}$ is a submartingale and therefore
+\begin{align*}
+\expectation{X_{\tau-1}^2} + \expectation{\sum_{i=1}^{\tau-1} (X_i - X_{i-1})^2} &\leq 2 \expectation{X_{\tau-1} X_\tau} \\
+&\leq 2 \expectation{\abs{X_{\tau-1} X_\tau}}  \leq  2 \lambda \expectation{\abs{X_\tau}}\leq 2 \lambda \expectation{\cexpectationlong{\mathcal{F}_\tau}{\abs{X_n}}} = 
+2 \lambda \expectation{\abs{X_n}}
+\end{align*}
+\end{proof}
+
+The second lemma gives the left hand Burkholder inequality for the
+case of nonnegative submartingales.
+\begin{lem}\label{BurkholderInequalityLemma2}Let $X_n$ be a nonnegative $\mathcal{F}$-submartingale with $X_0=0$, let $n \in \naturals$, $\theta>0$ be given and define 
+\begin{align*}
+Y &= \theta \left( \sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} \maxop    \max_{1 \leq i \leq n} X_i
+\end{align*}
+Then for each $\lambda > 0$ we have
+\begin{align*}
+\lambda \probability{Y > \lambda \sqrt{1+2\theta^2}} &\leq 3 \expectation{X_n ; Y > \lambda}
+\end{align*}
+and for every $1 < p < \infty$
+\begin{align*}
+\norm{\left(\sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} }_p &\leq 9 p^{1/2} q \norm{X_n}_p
+\end{align*}
+where $\frac{1}{p} + \frac{1}{q}=1$.
+\end{lem}
+\begin{proof}
+We begin with a simple union bound followed by an application of Doob's Maximal Inequality (Lemma \ref{DoobMaximalInequalityDiscrete})
+\begin{align*}
+\probability{Y > \lambda \sqrt{1+2\theta^2}} 
+&\leq \probability{Y > \lambda \sqrt{1+2\theta^2}; \max_{1 \leq i \leq  n} X_i < \lambda} + 
+\probability{Y > \lambda \sqrt{1+2\theta^2} ; \max_{1 \leq i \leq  n} X_i \geq \lambda} \\
+&\leq \probability{\theta \left( \sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} > \lambda \sqrt{1+2\theta^2}; \max_{1 \leq i \leq  n} X_i < \lambda} + 
+\probability{\max_{1 \leq i \leq  n} X_i \geq \lambda} \\
+&\leq \probability{\theta \left( \sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} > \lambda \sqrt{1+2\theta^2}; \max_{1 \leq i \leq  n} X_i < \lambda} + 
+\lambda^{-1} \expectation{X_n; \max_{1 \leq j \leq n} X_j \geq \lambda} \\
+&\leq \probability{\theta \left( \sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} > \lambda \sqrt{1+2\theta^2}; \max_{1 \leq i \leq  n} X_i < \lambda} + 
+\lambda^{-1} \expectation{X_n; Y \geq \lambda} \\
+\end{align*}
+For $1 \leq m \leq n$ let
+\begin{align*}
+Z_m &= X_m \characteristic{\theta \left( \sum_{i=1}^m (X_i-X_{i-1})^2 \right)^{1/2} > \lambda}
+\end{align*}
+and define $Z_0 = 0$ and $Z_m = Z_n$ for $m > n$.  It is clear from the fact that $X_n$ is a submartingale that $Z_n$ is $\mathcal{F}$-adapted and each $Z_n$ is integrable.  We compute
+\begin{align*}
+\cexpectationlong{\mathcal{F}_{m-1}}{Z_m} 
+&=\cexpectationlong{\mathcal{F}_{m-1}}{ X_m \characteristic{\theta \left( \sum_{i=1}^m (X_i-X_{i-1})^2 \right)^{1/2} > \lambda}} \\
+&\geq \cexpectationlong{\mathcal{F}_{m-1}}{ X_m \characteristic{\theta \left( \sum_{i=1}^{m-1} (X_i-X_{i-1})^2 \right)^{1/2} > \lambda}} \\
+&= \cexpectationlong{\mathcal{F}_{m-1}}{ X_m } \characteristic{\theta \left( \sum_{i=1}^{m-1} (X_i-X_{i-1})^2 \right)^{1/2} > \lambda}\\
+&= X_{m-1}\characteristic{\theta \left( \sum_{i=1}^{m-1} (X_i-X_{i-1})^2 \right)^{1/2} > \lambda} = Z_{m-1}\\
+\end{align*}
+and it follows that $Z$ is a nonnegative $\mathcal{F}$-submartingale.
+
+\begin{clm} Let 
+\begin{align*}
+A &= \left \lbrace \theta \left( \sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} > \lambda \sqrt{1+2\theta^2}; \max_{1 \leq i \leq  n} X_i < \lambda \right \rbrace \\
+B &= \left \lbrace \left( \sum_{i=1}^n (Z_i - Z_{i-1})^2 \right)^{1/2} > \lambda ; \max_{1 \leq i \leq n} Z_i < \lambda \right \rbrace
+\end{align*}
+then $A \subset B$.
+\end{clm}
+Since by definition $Z_i \leq X_i$ for $1 \leq i \leq n$ we clearly have $A \subset \lbrace \max_{1 \leq i \leq n} Z_i < \lambda \rbrace$
+Define the optional time 
+\begin{align*}
+\tau &= n \minop \left \lbrace m \mid \theta \left( \sum_{i=1}^m (X_i-X_{i-1})^2 \right)^{1/2} > \lambda \right \rbrace
+\end{align*}
+Observe that by the nonnegativity of $X_n$ and the fact that $\max_{1 \leq i \leq  n} X_i < \lambda$ on $A$ we have
+\begin{align*}
+\abs{X_\tau - X_{\tau-1}} &\leq X_\tau \maxop X_{\tau-1} < \lambda \text{ on $A$}
+\end{align*}  
+Also observe that by definition of $Z$ and $\tau$ we also have $Z_m = X_m$ when $\tau+1 \leq m \leq n$ (of course when $\tau=n$ the statement is vacuous).
+From these two observations and definition of $A$ we have
+\begin{align*}
+(1+2\theta^2) \lambda^2 &< \theta^2 \sum_{i=1}^n (X_i-X_{i-1})^2 \\
+&\leq \theta^2 \sum_{i=1}^{\tau-1} (X_i-X_{i-1})^2 + \theta^2 (X_\tau - X_{\tau-1})^2 + \theta^2 \sum_{i=\tau+ 1}^n (X_i-X_{i-1})^2 \\
+&<  \lambda^2 + \theta^2 \lambda^2 + \theta^2 \sum_{i=1}^n (Z_i-Z_{i-1})^2
+\end{align*}
+on $A$.  Subtracting $(1+\theta^2)\lambda^2$ and dividing by $\theta^2$ we see that $\sum_{i=1}^n (Z_i-Z_{i-1})^2 > \lambda^2$ on $A$ and the claim is proven.
+
+Let $\tau = (n+1) \minop \min \lbrace i \lbrace \abs{Z_i} > \lambda \rbrace$ as in Lemma \ref{BurkholderInequalityLemma1} and note that $\tau = n+1$ on $\max_{1 \leq i \leq n} Z_i < \lambda$.
+By the previous claim and Lemma \ref{BurkholderInequalityLemma1} we get the bound
+\begin{align*}
+\probability{\theta \left( \sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} > \lambda \sqrt{1+2\theta^2}; \max_{1 \leq i \leq  n} X_i < \lambda} 
+&\leq \probability{ \left( \sum_{i=1}^n (Z_i - Z_{i-1})^2 \right)^{1/2} > \lambda ; \max_{1 \leq i \leq n} Z_i < \lambda} \\
+&\leq \lambda^{-2} \expectation{\sum_{i=1}^n (Z_i - Z_{i-1})^2; \left( \sum_{i=1}^n (Z_i - Z_{i-1})^2 \right)^{1/2} > \lambda ; \max_{1 \leq i \leq n} Z_i < \lambda} \\
+&\leq \lambda^{-2} \expectation{\sum_{i=1}^n (Z_i - Z_{i-1})^2; \max_{1 \leq i \leq n} Z_i < \lambda} \\
+&\leq \lambda^{-2} \expectation{\sum_{i=1}^{\tau-1} (Z_i - Z_{i-1})^2; \max_{1 \leq i \leq n} Z_i < \lambda} \\
+&\leq \lambda^{-2} \left( \expectation{\sum_{i=1}^{\tau-1} (Z_i - Z_{i-1})^2} + \expectation{Z_{\tau-1}^2} \right ) \\
+&\leq 2 \lambda^{-1} \expectation{Z_n} \\
+&= 2 \lambda^{-1} \expectation{X_n ; \theta \left( \sum_{i=1}^n (X_i-X_{i-1})^2 \right)^{1/2} > \lambda} \\
+&\leq 2 \lambda^{-1} \expectation{X_n; Y > \lambda}
+\end{align*}
+Therefore we have (TODO: We need to convert a $\geq$ to a $>$)
+\begin{align*}
+\probability{Y > \lambda \sqrt{1+2\theta^2}} 
+&\leq 2 \lambda^{-1} \expectation{X_n; Y > \lambda} + \lambda^{-1} \expectation{X_n; Y \geq \lambda} 
+\leq 3 \lambda^{-1} \expectation{X_n; Y > \lambda} \\
+\end{align*}
+
+Now we turn this maximal inequality into the $L^p$ inequality using Lemma \ref{TailsAndExpectations}, Tonelli's Theorem and the H\"{o}lder Inequality together with the fact that $q(p-1) = p$:
+\begin{align*}
+\expectation{Y^p} 
+&= p \int_0^\infty \lambda^{p-1} \probability{Y > \lambda }  \, d\lambda \\
+&= p (1+2\theta^2)^{p/2} \int_0^\infty \lambda^{p-1} \probability{Y > \lambda \sqrt{1+2\theta^2}}  \, d\lambda \\
+&\leq 3 p (1+2\theta^2)^{p/2}\int_0^\infty \lambda^{p-2}  \expectation{X_n; Y > \lambda} \, d\lambda \\
+&\leq 3 p (1+2\theta^2)^{p/2} \expectation{ X_n \int_0^Y \lambda^{p-2} \, d\lambda} \\
+&\leq 3 p (p-1)^{-1} (1+2\theta^2)^{p/2}\expectation{ X_n Y^{p-1} } \\
+&\leq 3 q (1+2\theta^2)^{p/2}\expectation{ X^p_n}^{1/p}  \expectation{Y^p}^{1/q}\\
+\end{align*}
+so $\norm{Y}_p \leq 3q (1+2\theta^2)^{p/2}\norm{X_n}_p$.  By definition of $Y$ we have
+\begin{align*}
+\theta \norm{\left ( \sum_{i=1}^n X_i^2 \right)^{1/2}}_p &\leq \norm{Y}_p \leq 3q (1+2\theta^2)^{p/2} \norm{X_n}_p
+\end{align*}
+Now choose $\theta = p^{-1/2}$ and note that 
+$(1+2\theta^2)^{p/2} = (1 + 2/p)^{p/2} \leq e < 3$ and the lemma follows.
+\end{proof}
+
+Now we give the proof of the Burkholder inequality
+\begin{proof}
+Since $M$ is a martingale we let $X_n = (M_n)_+$ and $Y_n=(M_n)_-$ and note that
+by Proposition \ref{ConvexFunctionOfMartingale} each of $X$ and $Y$ is a nonnegative
+$\mathcal{F}$-submartingale.  By the triangle inequality in $\reals^n$ be have
+\begin{align*}
+[M]_n^{1/2} &= \left( \sum_{i=1}^n (M_i - M_{i-1})^2 \right)^{1/2} = \left( \sum_{i=1}^n ((X_i - X_{i-1}) - (Y_i-Y_{i-1}))^2 \right)^{1/2} \\
+&\leq \left( \sum_{i=1}^n (X_i - X_{i-1})^2 \right)^{1/2} + \left( \sum_{i=1}^n (Y_i-Y_{i-1})^2 \right)^{1/2} = [X]_n^{1/2} + [Y]_n^{1/2}
+\end{align*}
+and by the triangle inequality in $L^p$ (Lemma \ref{MinkowskiInequality}) and Lemma \ref{BurkholderInequalityLemma2} we get
+\begin{align*}
+\norm{[M]_n^{1/2}}_p 
+&\leq \norm{[X]_n^{1/2}}_p + \norm{[Y]_n^{1/2}}_p 
+\leq 9 p^{1/2} q (\norm{X_n}_p + \norm{Y_n}_p) 
+\leq 18 p^{1/2} q \norm{M_n}_p
+\end{align*}
+which gives the left hand inequality.  
+
+The right hand inequality is derived from the left hand inequality by defining the random variable
+\begin{align*}
+N_n &= \sgn{M_n} \abs{M_n}^{p-1}/\norm{M_n}^{p-1}_p
+\end{align*}
+and considering the closed martingale $N_{m} = \cexpectationlong{\mathcal{F}_m}{N_n}$.  We shall need the simple fact that
+\begin{align*}
+\norm{N_n}_q &= \left( \expectation{ \abs{M_n}^{q(p-1)}/\norm{M_n}^{q(p-1)}_p} \right)^{1/q}
+= \left( \expectation{ \abs{M_n}^{p}}/\norm{M_n}^{p}_p \right)^{1/q} = 1
+\end{align*}
+We calculate using Proposition \ref{MartingaleDifferenceSequence}, Cauchy-Schwartz for sequences, the H\"{o}lder inequality and
+the left hand Burkholder inequality and above calculation of the $q$-norm of $N_n$
+\begin{align*}
+\norm{M_n}_p 
+&= \expectation{\abs{M_n}^p}/\norm{M_n}^{p-1}_p 
+= \expectation{M_n \sgn{M_n} \abs{M_n}^{p-1}} /\norm{M_n}^{p-1}_p
+=\expectation{M_n N_n } \\
+&= \expectation{\sum_{i=1}^n (M_i-M_{i-1}) \sum_{j=1}^n (N_j - N_{j-1})} \\
+&=\expectation{\sum_{i=1}^n (M_i-M_{i-1}) (N_i - N_{i-1})} + 
+\expectation{\sum_{i=1}^n \sum_{j=1}^{i-1} \cexpectationlong{\mathcal{F}_{j}}{M_i-M_{i-1}} (N_j - N_{j-1})} + \\
+&\qquad \expectation{\sum_{j=1}^n \sum_{i=1}^{j-1} (M_i-M_{i-1}) \cexpectationlong{\mathcal{F}_i}{N_j - N_{j-1}}} \\
+&=\expectation{\sum_{i=1}^n (M_i-M_{i-1}) (N_i - N_{i-1})} \\
+&\leq \expectation{\left( \sum_{i=1}^n (M_i-M_{i-1})^2 \right )^{1/2} \left (\sum_{i=1}^n (N_i - N_{i-1})^2 \right )^{1/2}} \\
+&\leq \norm{[M]^{1/2}_n}_p \norm{[N]^{1/2}_n}_q 
+\leq 18 p q^{1/2} \norm{[M]^{1/2}_n}_p \norm{N_n}_q 
+= 18 p q^{1/2} \norm{[M]^{1/2}_n}_p 
+\end{align*}
+\end{proof}
+
+TODO: Discuss i.i.d. implies martingale difference sequence implies white noise (uncorrelated). Philosophically when thinking about mean zero discrete time processes: i.i.d. signifies complete unpredictability, martingale difference sequence signifies unpredictability in the mean (but possible predictability of higher moments: GARCH gives examples of this), uncorrelated means linearly unpredictable (but possibly non-linearly predictable).
+
+TODO: Given example of a non-i.i.d. martingale difference sequence (there are martingale that is not a random walk is an example, but it might be nice to come up with examples that show predictable higher moments) and uncorrelated non-martingale difference sequences (e.g. $y_n = e_n + {e_{n-1} e_{n-2}}$).
 
 \section {Applications of Discrete Time Martingales}
 
@@ -2913,7 +3135,7 @@ almost surely and is adapted to a given filtration $\mathcal{F}$,
 there is an indistinguishable process that has the sample path
 property everywhere but the latter process may no longer be adapted to
 $\mathcal{F}$.  Scenarios do come up in which the filtration must be
-repsected and therefore we call out the case of a process posessing
+respected and therefore we call out the case of a process posessing
 cadlag sample paths almost surely as a separate case from the one in
 which it possess cadlag sample paths surely.
 

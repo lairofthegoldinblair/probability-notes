@@ -1,6 +1,7 @@
 \documentclass{amsbook}
 
 \usepackage{dsfont}
+\usepackage{stmaryrd}
 \usepackage{tikz}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -18,6 +19,7 @@
 \DeclareMathOperator*{\essinf}{ess\,inf}
 \DeclareMathOperator*{\bplim}{bp-lim}
 \DeclareMathOperator*{\convexhullop}{conv}
+\DeclareMathOperator*{\Lip}{Lip}
 
 \newtheorem{thm}{Theorem}[chapter]
 \newtheorem{cor}[thm]{Corollary}
@@ -66,7 +68,7 @@
 \newcommand{\abs}[1]{\left \vert #1 \right \vert}
 \newcommand{\ceil}[1]{\lceil #1 \rceil}
 \newcommand{\floor}[1]{\lfloor #1 \rfloor}
-\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\norm}[1]{\left \lVert #1 \right \rVert}
 \newcommand{\toprob}{\overset{P}\to}
 \newcommand{\toas}{\overset{a.s.}\to}
 \newcommand{\todist}{\overset{d}\to}
@@ -91,9 +93,9 @@
 \newcommand{\typeclass}[1]{\mathfrak{T}(#1)}
 \newcommand{\shannon}[1]{H(#1)}
 \newcommand{\card}[1]{\cardfun(#1)}
+\newcommand{\exdet}[1]{\llbracket #1 \rrbracket}
 
 \begin{document}
-
 
 \frontmatter
 \title{Probability Theory}
