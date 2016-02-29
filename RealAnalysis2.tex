@@ -2932,17 +2932,18 @@ TODO
 \begin{align*}
 \diam(A) &= \sup \lbrace d(x,y) \mid x,y \in A \rbrace
 \end{align*}
+and we use the convention that $\diam(\lbrace x \rbrace) = 0$.
 \end{defn}
 
 \begin{defn}Let $(S,d)$ be a metric space, $0 \leq s < \infty$ and $0
-  < \delta$.  Then for $A \subset S$,
+  < \delta$.  Then for $A \subset S$, 
 \begin{align*}
 \mathcal{H}^s_\delta(A) &= \inf \lbrace \sum_{n=1}^\infty \alpha(s)
 \left ( \frac{\diam(C_n)}{2}\right )^s \mid A \subset
 \cup_{n=1}^\infty C_n \text{ where } \diam(C_n) \leq \delta \text{ for
   all } n\rbrace
 \end{align*}
-where 
+where we use the convention that $0^0=1$ and
 \begin{align*}
 \alpha(s) &= \frac{\pi^{n/2}}{\Gamma(\frac{n}{2} + 1)}
 \end{align*}
@@ -2952,6 +2953,23 @@ For $A$ and $s$ as above define
 \end{align*}
 \end{defn}
 
+The definition of Hausdorff measures considers covering by arbitrary sets but it is not hard to see that 
+the same values occur if we limit covering to open or closed sets.
+\begin{prop}\label{HausdorffMeasureByOpenClosedCoverings}Let $(S,d)$ be a metric space, $0 \leq s < \infty$ and $0
+  < \delta$ then 
+\begin{align*}
+\mathcal{H}^s_\delta(A) &= \inf \lbrace \sum_{n=1}^\infty \alpha(s)
+\left ( \frac{\diam(C_n)}{2}\right )^s \mid A \subset
+\cup_{n=1}^\infty C_n \text{ where $C_n$ is open and } \diam(C_n) \leq \delta \text{ for
+  all } n\rbrace \\
+\intertext{and}
+\mathcal{H}^s_\delta(A) &= \inf \lbrace \sum_{n=1}^\infty \alpha(s)
+\left ( \frac{\diam(C_n)}{2}\right )^s \mid A \subset
+\cup_{n=1}^\infty C_n \text{ where $C_n$ is closed and } \diam(C_n) \leq \delta \text{ for
+  all } n\rbrace
+\end{align*}
+\end{prop}
+
 \begin{thm}\label{BorelRegularityOfHausdorffMeasure}$\mathcal{H}^s$ is a Borel regular outer measure.
 \end{thm}
 \begin{proof}
@@ -2959,10 +2977,11 @@ TODO
 \end{proof}
 
 In some case Hausdorff measure is equivalent to a well-known object; here is a simple case of this phenomenon.
-\begin{prop}\label{HausdoffMeasureEqualsCounting}$\mathcal{H}^0$ is counting measure.
+\begin{prop}\label{HausdoffMeasureEqualsCounting}Let $(S,d)$ be  a metric space then $\mathcal{H}^0$ is counting measure.
 \end{prop}
 \begin{proof}
-TODO:
+Let $x \in S$ and $\delta>0$, then the set $\lbrace x \rbrace$ covers itself and therefore $\mathcal{H}^0(\lbrace x \rbrace) \leq (\diam(\lbrace x \rbrace))^0 = 1$.  Since every term
+$(\diam(C))^0 \geq 1$ it follows from the definition that $\mathcal{H}^0_\delta \geq 1$.  Thus $\mathcal{H}^0_\delta(\lbrace x \rbrace) = 1$ and the result follows by letting $\delta \to 0$.
 \end{proof}
 
 \begin{prop}\label{HausdorffMeasureUnderIsometry}Let $(S,d)$ and $(T,d^\prime)$ be metric spaces and let $f : S \to T$ be an isometric embedding then for any $0 \leq s < \infty$ and $\delta>0$ and $A \subset S$
@@ -3008,8 +3027,17 @@ Thus
 Now let $\epsilon \to 0$ and then $\delta \to 0$.
 \end{proof}
 
+\begin{thm}\label{IsodiametricInequality}For any $d \in \naturals$ we have 
+\begin{align*}
+\lambda^d(A) &\leq \alpha(d) \left( \frac{\diam(A)}{2} \right)^d
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
 \begin{thm}\label{HausdorffEqualsLebesgue}For any $d \in \naturals$ we have $\mathcal{H}^d =
-  \lambda^d$ (or $ 2^{-d} \alpha(s) \mathcal{H}^d =\lambda^d$ depending on normalization) on $\reals^d$.
+  \lambda^d$ (or $ 2^{-d} \alpha(d) \mathcal{H}^d =\lambda^d$ depending on normalization) on $\reals^d$.
 \end{thm}
 \begin{proof}
 TODO
@@ -3218,6 +3246,8 @@ Now we are ready to show that the derivative defined above is indeed the Radon-N
 \end{thm}
 \begin{proof}
 Let $A$ be a $\mu$-measurable set.  Since Radon outer measures are Borel regular we can find a Borel set $B$ such that $A \subset B$ and $\mu(B) = \mu(A)$.
+
+TODO: Finish
 \end{proof}
 \subsection{Differentiation of Lipschitz Functions}
 
@@ -3477,12 +3507,12 @@ select $B$, a countable dense subset of $A$, and $\mathbf{S}$, a countable dense
 \norm{f(z) - f(y) - Df(x) \cdot (z-y)} &\leq \epsilon \norm{T(z-y)} \text{ for all $z \in B(y, 2/i)$}
 \end{align*}
 
-By continuity of $f$, the linear maps $T$, $Df(y)$ and $Df(a)$ we may equivalently define
+By continuity of $f$, the linear maps $T$, $Df(y)$ and $Df(a)$ we may equivalently define as the countable intersection
 \begin{align*}
-A(x,T,i) &= \cap_{v \in \rationals^d} \lbrace y \mid \left( \frac{1}{t} + \epsilon \right) \norm{Tv} &\leq \norm{Df(y) v} \leq (t-\epsilon)\norm{Tv} \rbrace \bigcap \\
-&\cap_{z \in B(0, 2/i) \cap \rationals^d} \lbrace \norm{f(z+y) - f(y) - Df(x) \cdot z} &\leq \epsilon \norm{Tz} \rbrace 
+A(x,T,i) &= \cap_{v \in \rationals^d} \lbrace y \mid \left( \frac{1}{t} + \epsilon \right) \norm{Tv} \leq \norm{Df(y) v} \leq (t-\epsilon)\norm{Tv} \rbrace \bigcap \\
+&\cap_{z \in B(0, 2/i) \cap \rationals^d} \lbrace y \mid \norm{f(z+y) - f(y) - Df(y) \cdot z} \leq \epsilon \norm{Tz} \rbrace 
 \end{align*}
-Continuity of $f$ and Borel measurability of $Df$ (Theorem \ref{RademachersTheorem}) then show that $A(x,T,i)$ is a Borel subset of $\reals^d$.
+Continuity of $f$ and Borel measurability of $Df$ (Theorem \ref{RademachersTheorem}) then shows that $A(x,T,i)$ is a Borel subset of $\reals^d$.
 
 We now show (iv) holds on the sets $A(x,T,i)$.
 \begin{clm}For every $y \in A(x,T,i)$ we have
@@ -3604,12 +3634,13 @@ By Rademacher's Theorem \ref{RademachersTheorem} we know that $\lambda^d(B^c) = 
 $\int_{A} Jf(x) \, \lambda^d(dx) = \int_{A \cap B} Jf(x) \lambda^d(dx)$.  Moreover we know since $\mathcal{H}^0$ is counting measure (Proposition \ref{HausdoffMeasureEqualsCounting})
 and by Lemma \ref{MeasurabilityOfMultiplicityFunction}
 \begin{align*}
-\int_{\reals^m} \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy) 
+&\int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy) \\
+&\leq \int_{\reals^m} \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy) \\
 &= \int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy) + \int_{\reals^m} \mathcal{H}^0(A \cap B^c \cap f^{-1}(y)) \, \mathcal{H}^d(dy) \\
 &\leq \int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy) +\left( \Lip(f) \right)^d \lambda^d(A \cap B^c) \\
 &=\int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy) 
 \end{align*} 
-Therefore it suffices to assume that $Df$ (hence $Jf$) exists everywhere on $A$.
+Therefore $\int_{\reals^m} \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy) = \int_{\reals^m} \mathcal{H}^0(A \cap B \cap f^{-1}(y)) \, \mathcal{H}^d(dy)$ and it suffices to assume that $Df$ (hence $Jf$) exists everywhere on $A$.
 
 We first assume that $A \subset \lbrace Jf > 0 \rbrace$.  Let $t > 1$ be arbitrary and choose Borel sets
 $A_1, A_2, \dotsc$ and symmetric invertible linear maps $T_1, T_2, \dotsc$ as in Lemma \ref{AreaFormulaLipschitz:FunctionBounds}.
@@ -3628,13 +3659,14 @@ TODO: Maybe factor that argument out into a separate lemma.
 By choice of $A_i$ and \eqref{eq:AreaFormulaLipschitz:LipschitzConstants} of Lemma \ref{AreaFormulaLipschitz:FunctionBounds}, Proposition \ref{HausdorffMeasureUnderLipschitzMaps} 
 and Theorem \ref{HausdorffEqualsLebesgue} we have
 \begin{align*}
-\mathcal{H}^d(f(A \cap A_i \cap C)) &= \mathcal{H}^d((f\mid_{A_i} \circ T_i^{-1} \circ T_i)(A \cap A_i \cap C)) \leq t^d \mathcal{H}^d(T_i(A \cap A_i \cap C)) =  t^d \lambda^d(T_i(A \cap A_i \cap C))
+\mathcal{H}^d(f(A \cap A_i \cap C)) &= \mathcal{H}^d((f\mid_{A_i} \circ T_i^{-1} \circ T_i)(A \cap A_i \cap C)) \leq t^d \mathcal{H}^d(T_i(A \cap A_i \cap C)) \\
+&=  t^d \lambda^d(T_i(A \cap A_i \cap C))
 \end{align*}
-and
+and similarly 
 \begin{align*}
 \lambda^d(T_i(A \cap A_i \cap C) &= \mathcal{H}^d((T_i \circ (f\mid_{A_i})^{-1} \circ f\mid_{A_i})(A \cap A_i \cap C) \leq t^d \mathcal{H}^d(f(A \cap A_i \cap C)
 \end{align*}
-Therefore we get using \eqref{eq:AreaFormulaLipschitz:JacobianBounds} of Lemma \ref{AreaFormulaLipschitz:FunctionBounds}
+Using these two facts together with \eqref{eq:AreaFormulaLipschitz:JacobianBounds} of Lemma \ref{AreaFormulaLipschitz:FunctionBounds} we get
 \begin{align*}
 t^{-2d} \mathcal{H}^d(f(A \cap A_i \cap C)) &\leq t^{-d} \lambda^d(T_i(A \cap A_i \cap C)) \\
 &= t^{-d} \abs{\det(T_i)} \lambda^d(A \cap A_i \cap C) \\
@@ -3643,21 +3675,22 @@ t^{-2d} \mathcal{H}^d(f(A \cap A_i \cap C)) &\leq t^{-d} \lambda^d(T_i(A \cap A_
 &= t^{d} \lambda^d(T_i(A \cap A_i \cap C)) \\
 &\leq t^{2d} \mathcal{H}^d(f(A \cap A_i \cap C)
 \end{align*}
-Summing over $i \in \naturals$ and $C \in \mathcal{C}_n$ we get
+Summing over $i \in \naturals$ and $C \in \mathcal{C}_n$ yields
 \begin{align*}
-\sum_{i=1}^\infty t^{-2d} \sum_{C \in \mathcal{C}_n} \mathcal{H}^d(f(A \cap A_i \cap C)) 
-\leq \sum_{i=1}^\infty \sum_{C \in \mathcal{C}_n} t^{-2d} \int_{A \cap A_i \cap C} Jf(x) \, \lambda^d(dx) 
-= \int_A  Jf(x) \, \lambda^d(dx) 
-\leq t^{2d} \sum_{i=1}^\infty t^{-2d} \sum_{C \in \mathcal{C}_n}\mathcal{H}^d(f(A \cap A_i \cap C) 
+t^{-2d} \sum_{i=1}^\infty \sum_{C \in \mathcal{C}_n} \mathcal{H}^d(f(A \cap A_i \cap C)) 
+&\leq \sum_{i=1}^\infty \sum_{C \in \mathcal{C}_n} \int_{A \cap A_i \cap C} Jf(x) \, \lambda^d(dx) \\
+&= \int_A  Jf(x) \, \lambda^d(dx) \\
+&\leq t^{2d} \sum_{i=1}^\infty \sum_{C \in \mathcal{C}_n}\mathcal{H}^d(f(A \cap A_i \cap C) 
 \end{align*}
 Now let $n \to \infty$ and use \eqref{eq:AreaFormula:SumOverCubes} then let $t \downarrow 1$.
 
 Now we assume that $A \subset \lbrace Jf = 0 \rbrace$.  Somewhat surprisingly we can reduce this case to case in which $A \subset \lbrace Jf = 0 \rbrace$.
 In order to do that we let $0 < \epsilon < 1$ be arbitrary and define $g : \reals^d \to \reals^m \times \reals^d$ by $g(x) = (f(x), \epsilon x)$.  If we let $\pi : \reals^m \times \reals^d \to \reals^d$ be the projection on the second coordinate then if follows that $f = \pi \circ g$.  Furthermore since 
 \begin{align*}
-\norm{g(y) - g(x)} &= \sqrt{\norm{f(y) - f(x)}^2 + \epsilon^2\norm{y-x}^2} \leq \sqrt{(\Lip(f))^2\norm{y - x}^2 + \epsilon^2\norm{y-x}^2} = \sqrt{(\Lip(f))^2+ \epsilon^2} \norm{y-x}
+\norm{g(y) - g(x)} &= \sqrt{\norm{f(y) - f(x)}^2 + \epsilon^2\norm{y-x}^2} \leq \sqrt{(\Lip(f))^2\norm{y - x}^2 + \epsilon^2\norm{y-x}^2} \\
+&= \sqrt{(\Lip(f))^2+ \epsilon^2} \norm{y-x}
 \end{align*}
-which shows that $g$ is Lipschitz.  It also follows from Proposition \ref{PartialDerivativesBanachSpaces} that $g$ is Frechet differentiable whenever $f$ and moreover
+we see that $g$ is Lipschitz.  It also follows from Proposition \ref{PartialDerivativesBanachSpaces} that $g$ is Frechet differentiable whenever $f$ is Frechet differentiable and moreover
 \begin{align*}
 Dg(x) &= \begin{bmatrix}
 Df(x) \\
@@ -3673,8 +3706,8 @@ To get a lower bound for $Jg(x)$ note the function $\psi(i) = i+m$ is in $\Psi$ 
 $Jg(x) \geq \epsilon^{d}>0$.  For an upper bound on $Jg(x)$ first note that by a second application of Cauchy-Binet we have
 \begin{align*}
 (Jg(x))^2 &= \sum_{\psi \in Psi} \det((Dg(x))_\psi)^2 = \sum_{\substack{\psi \in Psi \\ \psi(d) \leq m}} \det((Dg(x))_\psi)^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 \\
-= \sum_{\substack{\psi \in Psi \\ \psi(d) \leq m}} \det((Df(x))_\psi)^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 \\
-= (Jf(x))^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 
+&= \sum_{\substack{\psi \in Psi \\ \psi(d) \leq m}} \det((Df(x))_\psi)^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 \\
+&= (Jf(x))^2 + \sum_{\substack{\psi \in Psi \\ \psi(d) > m}} \det((Dg(x))_\psi)^2 
 \end{align*}
 
 \begin{clm}There is a constant $C$ independent of $x \in A$ such that $Jg(x) \leq \epsilon C$.
@@ -3685,10 +3718,10 @@ and some $C$ independent of $x \in A$.   We need a few simple facts about determ
 \abs{\det(M)} &= \det(\Sigma) = \prod_{i=1}^d \Sigma_{ii} \leq \Sigma_{11}^d = \norm{M}^d
 \end{align*}
 Also $M$ is a $d \times m$ matrix and $N$ is a $c \times m$ matrix then $\norm{\begin{bmatrix} M \\ N \end{bmatrix}} \leq \norm{M} + \norm{N}$.
-For any $\psi$ with $\psi(d) > m$ let $k \geq 1$ be largest integer such that $\psi(d-k+1) > m$ then we can write $(Dg(x))_\psi = \epsilon^k \pi \circ \norm{\begin{bmatrix} Df(x) \\ \IdentityMatrix\end{bmatrix}}$ for an $m \times d$ projection matrix $\pi$.  Using the linear algebra facts mentioned, the fact that $0 < \epsilon \leq 1$, $\norm{\pi} =1$ and $\norm{Df(x)} \leq \Lip(f)$ we get the bound
+For any $\psi$ with $\psi(d) > m$ let $k \geq 1$ be largest integer such that $\psi(d-k+1) > m$ then we can write $(Dg(x))_\psi = \epsilon^k \pi \circ \norm{\begin{bmatrix} Df(x) \\ \IdentityMatrix\end{bmatrix}}$ for an $m \times d$ projection matrix $P$.  Using the linear algebra facts mentioned, the fact that $0 < \epsilon \leq 1$, $\norm{\pi} =1$ and $\norm{Df(x)} \leq \Lip(f)$ we get the bound
 \begin{align*}
-\abs{\det((Dg(x))_\psi)} &\leq \norm{(Dg(x))_\psi} = \epsilon^{k} \norm{\pi \begin{bmatrix} Df(x) \\ \IdentityMatrix\end{bmatrix}} \\
-&\leq \epsilon \norm{\pi} ( \leq \norm{Df(x)} + \norm{\IdentityMatrix} ) \leq \epsilon(\Lip(f) + 1)
+\abs{\det((Dg(x))_\psi)} &\leq \norm{(Dg(x))_\psi} = \epsilon^{k} \norm{P \begin{bmatrix} Df(x) \\ \IdentityMatrix\end{bmatrix}} \\
+&\leq \epsilon \norm{P} ( \norm{Df(x)} + \norm{\IdentityMatrix} ) \leq \epsilon(\Lip(f) + 1)
 \end{align*}
 
 Since $\pi : \reals^m \times \reals^d \to \reals^d$ is a projection operator it is Lipschitz and $\Lip(\pi) = \norm{\pi} = 1$.  Thus from Proposition \ref{HausdorffMeasureUnderLipschitzMaps},
@@ -3709,6 +3742,457 @@ The proof is finished by taking a general $A$, writing $A = (A \cap \lbrace Jf>0
 $\int \mathcal{H}^0(A \cap f^{-1}(y)) \, \mathcal{H}^d(dy)$ are finitely additive over disjoint sets.
 \end{proof}
 
+\subsection{The Coarea Formula}
+
+The following generalizes the Fundamental Theorem of Calculus \ref{FundamentalTheoremOfCalculus} to Radon measures on $\reals^d$.
+\begin{thm}\label{FundamentalTheoremOfCalculusRadonOuterMeasuresReals}Let $\mu$ be a Radon measure on $\reals^d$ and $f$ be locally $\mu$ integrable then 
+\begin{align*}
+\lim_{r \to 0} \frac{1}{\mu(B(x,r))} \int_{B(x,r)} f(y) \, \mu(dy) &= f(x)
+\end{align*}
+for $\mu$-almost every $x \in \reals^d$.
+\end{thm}
+\begin{proof}
+For every Borel set $B \subset \reals^d$ let $\nu_{\pm}(B) = \int_B f_{\pm}(y) \mu(dy)$.  Then create the outer measures 
+\begin{align*}
+\nu_{\pm}(A) &= \inf \lbrace \nu_{\pm}(B) \mid B \subset \reals^d \text{ Borel} \rbrace
+\end{align*}
+These are Radon outer measures (Borel regularity is immediate from the construction and local finiteness follows from the local integrability of $f$).  It is also clear that each of $\nu_{\pm}$ is absolutely continuous with respect to $\mu$ and therefore we have by the Radon-Nikodym Theorem \ref{RadonNikodymDerivativeOfRadonOuterMeasuresReals}
+\begin{align*}
+\nu_{\pm}(A) &= \int_A D_\mu \nu_{\pm} \, d\mu = \int_A f_{\pm} \, d\mu \text{ for all measurable $A \subset \reals^d$}
+\end{align*}
+From this it follows that $D_\mu \nu_{\pm} = f_{\pm}$.  Therefore by the definition of $D_\mu \nu_{\pm}$ we get for $\lambda^d$ almost every $x \in \reals^d$
+\begin{align*}
+\lim_{r \to 0} \frac{1}{\mu(B(x,r))} \int_{B(x,r)} f(y) \, \mu(dy) &= \lim_{r \to 0} \frac{1}{\mu(B(x,r))} \left(\nu_+(B(x,r)) - \nu_-(B(x,r)) \right) \\
+&=\lim_{r \to 0}  (D_\mu \nu_+(B(x,r)) - D_\mu \nu_-(B(x,r))) \\
+&=f_+(x) - f_-(x) = f(x) 
+\end{align*}
+\end{proof}
+
+\begin{cor}\label{MeasureTheoreticInteriorAlmostEverywhere} Let $A \subset \reals^d$ be measurable then 
+\begin{align*}
+\lim_{r \to 0} \frac{\lambda^d(A \cap B(x,r))}{\lambda^d(B(x,r))} &= 1 \text{ for $\lambda^d$ almost every $x \in A$}
+\intertext{and}
+\lim_{r \to 0} \frac{\lambda^d(A \cap B(x,r))}{\lambda^d(B(x,r))} &= 0 \text{ for $\lambda^d$ almost every $x \in \reals^d \setminus A$}
+\end{align*}
+\end{cor}
+\begin{proof}
+Simply apply Theorem \ref{FundamentalTheoremOfCalculusRadonOuterMeasuresReals} to the measurable function $\characteristic{A}$ and the Radon measure $\lambda^d$.
+\end{proof}
+
+\begin{lem}\label{DifferentiationOfInversesLipschitz}
+\begin{itemize}
+\item[(i)] Let $f : \reals^d \to \reals^m$ be locally Lipschitz and $Z = \lbrace x \in \reals^d \mid f(x) = 0 \rbrace$ then $Df(x) = 0$ $\lambda^d$-a.e. on $Z$.
+\item[(ii)] Let $f,g : \reals^d \to \reals^d$ are locally Lipschitz and $Y = \lbrace x \in \reals^d \mid g(f(x)) = 0 \rbrace$ then $Dg(f(x)) Df(x) = \IdentityMatrix$ $\lambda^d$-a.e. on $Y$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+TODO: Can we derive the first part from Lemma \ref{DifferentiationOnNullSets}?  The only trick seems to be use of separability to get a countable intersection of null sets.  Below we give the Evans-Gariepy proof.
+
+To see (i), by Rademacher's Theorem and Corollary \ref{MeasureTheoreticInteriorAlmostEverywhere} we know that $\lambda^d$-almost everywhere on $Z$, $Df(x)$ exists and 
+\begin{align*}
+\lim_{r \to 0} \frac{\lambda^d(A \cap B(x,r))}{B(x,r)} &= 1
+\end{align*}
+(i.e. $x$ is in the measure theoretic interior of $Z$).  Suppose that $x$ is in the measure theoretic interior of $Z$ and $Df(x) \neq 0$ exists; we will derive a contradiction.  By definition of $Df(x)$   there exists $\delta>0$ such that for all $w \in \reals^d$ with $0 < \norm{w} < \delta$ we have
+\begin{align*}
+\abs{f(x + w) - \langle w, Df(x) \rangle} &\leq \norm{w} \norm{Df(x)}{4} 
+\end{align*}
+Let $S$ be the unit vectors $v$ such that the angle between $v$ and $Df(x)$ is between $-60^\circ$ and $60^\circ$ (i.e. $\langle v, Df(x) \rangle \geq \norm{Df(x)}/2$).  It follows that
+for any $0 < r < \delta$,
+\begin{align*}
+\abs{f(x+rv)} &\geq r \abs{\langle v, Df(x) \rangle} - \abs{f(x + rv) - r \langle v, Df(x) \rangle} &\geq r \norm{Df(x)}{2} - r \norm{Df(x)}{4} = r \norm{Df(x)}{4} > 0
+\end{align*}
+and therefore $r S \cap Z = \emptyset$ for all $0 < r < \delta$.  This yields the bound
+\begin{align*}
+\lim_{r \to 0} \frac{\lambda^d(Z \cap B(x,r))}{\lambda^d(B(x,r))} &\leq \lim_{r \to 0} \frac{\lambda^d(B(x,r) \setminus rS)}{\lambda^d(B(x,r))} < 1
+\end{align*}
+which contradicts the fact that $x$ is in the measure theoretic interior of $Z$.
+
+To see (ii) we reduce to the case of (i) by considering $g \circ f - \IdentityMatrix$ but we have to be careful to track a few $\lambda^d$ null sets.  We consider the points in $Y$ where $Dg(f(x)) Df(x)$ is defined; let
+\begin{align*}
+X &= Y \cap \domain{Df} \cap f^{-1}(\domain{Dg})
+\end{align*}
+\begin{clm}$Y \setminus X \subset (\reals^d \setminus \domain{Df}) \cup g(\reals^d \setminus \domain{Dg})$
+\end{clm}
+If $x \in Y \setminus X$ then either $x \notin \domain{Df}$ or $x \notin f^{-1}(\domain{Dg})$.  Since the first case is equivalent to $x \in \reals^d \setminus \domain{Df}$ it suffices to assume 
+$x \in Y \setminus f^{-1}(\domain{Dg})$.   In this case $f(x) \notin \domain{Dg}$ hence $g(f(x)) \in g(\reals^d \setminus \domain{Dg})$; since $x \in Y$ we know that $x = g(f(x))$ and the claim follows.
+
+From the claim and Rademacher's Theorem applied to $f$ and $g$ we know that $\lambda^d(Y \setminus X) = 0$.  Now if we assume $x \in X$ then, by definition of $X$, $Dg(f(x))$ and $Df(x)$ exist and
+therefore by the Chain Rule (Proposition \ref{ChainRuleBanachSpaces}) we know that $D(g \circ f)(x)$ exists and $D(g \circ f)(x) = Dg(f(x)) Df(x)$.  Now we simply note that $Y$ is contained in the zero set of $g \circ f - \IdentityMatrix$ and apply (i).
+\end{proof}
+
+\begin{lem}\label{ExtensionOfLipschitzMaps}Let $A \subset \reals^d$ and $f : A \to \reals^m$ be a Lipschitz map then there exists a Lipschitz map $\overline{f} : \reals^d \to \reals^m$ such that
+\begin{itemize}
+\item[(i)] $\overline{f} \mid_A = f$
+\item[(ii)] $\Lip(\overline{f}) \leq \sqrt{m} \Lip(f)$
+\end{itemize}
+\end{lem}
+\begin{proof}
+First assume that $m=1$.  Define 
+\begin{align*}
+\overline{f}(x) &= \inf_{a \in A} (f(a) + \Lip(f) \norm{x - a})
+\end{align*}
+\begin{clm} If $x \in A$ then $\overline{f}(x) = f(x)$
+\end{clm}
+Note that for all $a \in A$
+\begin{align*}
+f(x) - f(a) &\leq \abs{f(x) - f(a)} \leq \Lip(f) \norm{x-a}
+\end{align*}
+hence $f(x) \leq f(a) + \Lip(f) \norm{x-a}$ and taking the infimum over all $a \in A$ we conclude $f(x) \leq \overline{f}(x)$.  On the other hand since $x \in A$ it is immediate from the definition
+of $\overline{f}$ that $\overline{f} \leq f(x)$.
+
+\begin{clm} $\Lip(\overline{f}) = \Lip(f)$
+\end{clm}
+Given $x,y \in \reals^d$ we get
+\begin{align*}
+\overline{f}(x) &= \inf_{a \in A} (f(a) + \Lip(f) \norm{x-a}) \leq \inf_{a \in A} (f(a) + \Lip(f)\norm{y-a} + \Lip(f) \norm{x-y}) \\
+&= \overline{f}(y) + \Lip(f) \norm{x-y}
+\end{align*}
+By symmetry we also have $\overline{f}(y) \leq \overline{f}(x) + \Lip(f) \norm{x-y}$ and it follows that $\abs{f(x) -f(y)} \leq \Lip(f) \norm{x-y}$ hence $\Lip(\overline{f}) \leq \Lip(f)$.  The fact that $\Lip(f) \leq \Lip(\overline{f})$ follows from the fact that $\overline{f} \mid_A = f$.
+
+Now to handle the case of general $m$ let $f = (f_1, \dotsc, f_m)$ and construct $\overline{f} = (\overline{f}_1, \dotsc, \overline{f}_m)$ and note that
+\begin{align*}
+\norm{\overline{f}(x) - \overline{f}(y)}^2 &= \sum_{j=1}^m \abs{\overline{f}_j(x) - \overline{f}_j(y)}^2 \leq m (\Lip(f))^2 \norm{x-y}
+\end{align*}
+\end{proof}
+
+The first lemma proves the coarea formula for linear maps.
+
+\begin{lem}\label{CoareaFormulaLinearMaps}Let $d \geq m$, $L : \reals^d \to \reals^m$ be linear and $A \subset \reals^d$ be $\lambda^d$-measurable then
+\begin{itemize}
+\item[(i)] The map $y \to \mathcal{H}^{d-m}(A \cap L^{-1}(y))$ is $\lambda^m$-measurable
+\item[(ii)] $\int \mathcal{H}^{d-m}(A \cap L^{-1}(y)) \, \lambda^m(dy) = \frac{2^{d-m}} {\alpha(d-m)}\exdet{L} \lambda^d(A)$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+First suppose that $\dim(L) < m$.  In this case $\lambda^m(L(\reals^d)) = 0$ and  $A \cap L^{-1}(y) = \emptyset$ for all $y \in \reals^m \setminus L(\reals^d)$.  From this it follows that
+$\mathcal{H}^{d-m}(A \cap L^{-1}(y)) = 0$ $\lambda^m$-almost everywhere which implies $\mathcal{H}^{d-m}(A \cap L^{-1}(y))$ is $\lambda^m$-measurable and $\int \mathcal{H}^{d-m}(A \cap L^{-1}(y)) \, \lambda^m(dy) = 0$.  On the other hand $\exdet{L}^2 = \det(L \circ L^T) = 0$ and (ii) follows.  
+
+We begin by handling the case of the orthogonal projection $P(x_1, \dotsc, x_d) = (x_1, \dotsc, x_m)$; i.e. if we write $\reals^d = \reals^m \times \reals^{d-m}$ then $P$ is just the first coordinate projection.  In this case $A \cap P^{-1}(y)$ is just $\lbrace y \rbrace \times A_y$ where $A_y$ is 
+the section $\lbrace x \in \reals^{d-m} \mid (x,y) \in A \rbrace$.  Furthermore for any $y \in \reals^m$ the map $x \mapsto (y,x)$ from $\reals^{d-m} \to \reals^d$ is an isometric embedding hence
+by Proposition \ref{HausdorffMeasureUnderIsometry} (TODO: the $\sigma$-algebra of $\lambda^d$-measurable sets is actually bigger than the product $\sigma$-algebra yet we have only proven Fubini for the product $\sigma$-algebra; we must address the completion!  Note that sections of $\lambda^d$-measurable sets are only almost surely measurable; as an example let $A$ be a non-measurable set in $\reals$ and then consider $\lbrace 0 \rbrace \times A \subset \reals^2$ it is a Lebesgue null set hence $\lambda^2$-measurable but has a non-measurable section)  and Theorem \ref{HausdorffEqualsLebesgue} we know that 
+\begin{align*}
+\mathcal{H}^{d-m}(A \cap P^{-1}(y)) &= \mathcal{H}^{d-m}(\lbrace y \rbrace \times A_y) = \mathcal{H}^{d-m}(A_y) = \frac{2^{d-m}}{\alpha(d-m)} \lambda^{d-m}(A_y) 
+\end{align*}
+The $\lambda^m$-measurability of $\mathcal{H}^{d-m}(A \cap P^{-1}(y))$ follows from Lemma \ref{MeasurableSections} and Tonelli's Theorem shows us that
+\begin{align*}
+\int \mathcal{H}^{d-m}(A \cap P^{-1}(y)) \, \lambda^m(dy) &= 2^{d-m} \alpha(d-m) \int \lambda^{d-m}(A_y) \, \lambda^m(dy) =  \frac{2^{d-m}} {\alpha(d-m)} \lambda^d(A)
+\end{align*}
+Since $\exdet{P} = 1$ in this case the result is proven.
+
+Now we will handle the case of a general linear map $L$ in which $\dim(L)  = m$.  Take the singular value decomposition and use the fact that $d \geq m$ to write $L = U \Sigma P V^T$ where
+$U$ and $V$ are orthogonal, $P$ is the projection matrix above and $\Sigma$ is the $m \times m$ diagonal matrix of singular values (in particular $\det(\Sigma) = \exdet{L}$ by Lemma \ref{JacobianViaSVD}).  
+Now using Corollary \ref{LesbegueLinearChangeOfVariables}, the case of the current lemma for the matrix $P$ and Proposition \ref{HausdorffMeasureUnderIsometry}
+\begin{align*}
+\frac{2^{d-m}} {\alpha(d-m)} \lambda^d(A) &= \frac{2^{d-m}} {\alpha(d-m)} \lambda^d( V^T (A)) \\
+&= \int \mathcal{H}^{d-m}(V^T(A) \cap P^{-1}(y)) \, \lambda^m(dy) \\
+&= \int \mathcal{H}^{d-m}(V^T(A \cap (V \circ P^{-1})(y))) \, \lambda^m(dy) \\
+&= \int \mathcal{H}^{d-m}(A \cap (V \circ P^{-1})(y)) \, \lambda^m(dy) 
+\end{align*}
+Now we use this equality and the Area Formula with the transformation $U \circ \Sigma : \reals^m \to \reals^m$ and the function $\mathcal{H}^{d-m} (A \cap (V \circ P^{-1})(y))$ to calculate (TODO: get all the constants right)
+\begin{align*}
+\int \mathcal{H}^{d-m} (A \cap L^{-1}(z)) \, \lambda^m(z) &= \int \mathcal{H}^{d-m} (A \cap (V \circ P^{-1} \circ \Sigma^{-1} \circ U^T)(z)) \, \lambda^m(z) \\
+&=2^{-m} \alpha(m) \int \sum_{y \in (\Sigma^{-1} \circ U^T)(z)} \mathcal{H}^{d-m} (A \cap (V \circ P^{-1})(y)) \, \mathcal{H}^m(z) \\
+&= \abs{\det(U \circ \Sigma)} \int \mathcal{H}^{d-m} (A \cap (V \circ P^{-1})(y)) \, \lambda^m(y) \\
+&= \frac{2^{d-m}} {\alpha(d-m)} \exdet{L} \lambda^d(A) 
+\end{align*}
+(Here we use the invertibility of $U \circ \Sigma$ to see that $(\Sigma^{-1} \circ U^T)(z)$ is a singleton set).
+
+TODO: The measurability of $\mathcal{H}^{d-m}(A \cap L^{-1}(y))$ for general full-rank $L$ is also supposed to follow from measurability of sections by essentially the same argument as that for $P$.
+\end{proof}
+
+Now we address the measurability of the mapping $y \mapsto \mathcal{H}^{d-m} (A \cap f^{-1}(y))$ for Lipschitz $f$.
+\begin{lem}\label{CoareaFormulaMeasurability}Let $d \geq m$, $f : \reals^d \to \reals^m$ be Lipschitz
+  and $A \subset \reals^d$ be $\lambda^d$-measurable.  Then
+\begin{itemize}
+\item[(i)] The set $A \cap f^{-1}(y)$ is $\mathcal{H}^{d-m}$-measurable for $\lambda^m$ almost everywhere.
+\item[(ii)] The function $y \mapsto \mathcal{H}^{d-m} (A \cap f^{-1}(y))$
+\item[(iii)] $\int \mathcal{H}^{d-m} (A \cap f^{-1}(y)) \, \lambda^m(dy) \leq 2^{d-m} \alpha(m) (\Lip(f))^m \lambda^d(A)$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+We first prove a variant of (iii) in which the integral is replaced by an outer integral (use of the latter means we can avoid showing measurability).  Now by a basic property of
+Lebesgue outer measure (TODO: Where do we show this; perhaps this will come up in the proof of Theorem \ref{HausdorffEqualsLebesgue}????  In fact follows from Theorem \ref{HausdorffEqualsLebesgue} once we show that Hausdorff measure can be calculated using coverings by closed balls)  we know that for every $n \in \naturals$ there exist closed balls $B^n_1, B^n_2, \dotsc$ such that
+$A \subset \cup_{j=1}^\infty B^n_j$, $\diam(B^n_j) \leq 1/n$ and $\lambda^d(A) \leq \sum_{j=1}^n \lambda^d(B^n_j) \leq \lambda^d(A) + 1/n$.  This covering of $A$ shows
+that for each $y \in \reals^m$ we have
+\begin{align*}
+\mathcal{H}^{d-m}_{1/n}(A \cap f^{-1}(y)) &\leq \sum_{\substack{1 \leq j < \infty \\ B^n_j \cap f^{-1}(y) \neq \emptyset}} (\diam(B^n_j))^{d-m} = \sum_{j=1}^\infty (\diam(B^n_j))^{d-m} \characteristic{f(B^n_j)}(y)
+\end{align*}
+Since the ball $B^n_j$ is compact and $f$ is continuous it follows that $f(B^n_j)$ is compact hence $\lambda^m$-measurable.  Taking the limit of both sides we get
+\begin{align*}
+\mathcal{H}^{d-m}(A \cap f^{-1}(y)) &= \lim_{n \to \infty} \mathcal{H}^{d-m}_{1/n}(A \cap f^{-1}(y)) &\leq \liminf_{n \to \infty} \sum_{j=1}^\infty (\diam(B^n_j))^{d-m} \characteristic{f(B^n_j)}(y)
+\end{align*} 
+thus we have a measurable majorant of
+the mapping $y \mapsto \mathcal{H}^{d-m}(A \cap f^{-1}(y))$.  Applying the above majorant, Fatou's Lemma, Monotone Convergence (specifically Corollary \ref{TonelliIntegralSum}), the Isodiametric Inequality (Theorem \ref{IsodiametricInequality}) and the fact that $\lambda^d(B^n_j) = (\diam(B^n_j)/2)^d$ we get
+\begin{align*}
+\int^* \mathcal{H}^{d-m}(A \cap f^{-1}(y))  \, \lambda^m(dy) 
+&\leq \int \liminf_{n \to \infty} \sum_{j=1}^\infty (\diam(B^n_j))^{d-m} \characteristic{f(B^n_j)}(y) \, \lambda^m(dy) \\
+&\leq \liminf_{n \to \infty} \int \sum_{j=1}^\infty (\diam(B^n_j))^{d-m} \characteristic{f(B^n_j)}(y) \, \lambda^m(dy) \\
+&= \liminf_{n \to \infty} \sum_{j=1}^\infty (\diam(B^n_j))^{d-m} \lambda^m(f(B^n_j)) \\
+&\leq \liminf_{n \to \infty} \sum_{j=1}^\infty (\diam(B^n_j))^{d-m} \alpha(m) \left( \frac{\diam(f(B^n_j))}{2} \right)^m \\
+&\leq \liminf_{n \to \infty} \sum_{j=1}^\infty (\diam(B^n_j))^{d} 2^{-m} (\Lip(f))^m \alpha(m) \\
+&= 2^{d-m} (\Lip(f))^m \alpha(m)\liminf_{n \to \infty} \sum_{j=1}^\infty \lambda^d(B^n_j) \\
+&= 2^{d-m} (\Lip(f))^m \alpha(m) \lambda^d(A) \\
+\end{align*}
+
+We first prove (ii).  We break this down into several different cases depending on the characteristics of $A$.
+\begin{cas} $A$ is compact
+\end{cas}
+Fix $t \geq 0$.  For every $n \in \naturals$ let $U_n$ be the set of $y \in \reals^m$ such that there exists $k \in \naturals$ and open sets 
+$V_1, \dotsc, V_k$ satisfying
+\begin{itemize}
+\item[(i)] $A \cap f^{-1}(y) \subset \cup_{j=1}^k V_j$
+\item[(ii)] $\diam(V_j) \leq 1/n$ for $j=1, \dotsc, k$
+\item[(iii)] $\sum_{j=1}^k (\diam(V_j))^{d-m} \leq t + 1/n$
+\end{itemize}
+\begin{clm}$U_n$ is open 
+\end{clm}
+In fact given $y \in U_n$ and open sets $V_1, \dotsc, V_k$ there is an open neighborhood $W$ of $y$
+such that $A \cap f^{-1}(z) \subset \cup_{j=1}^k V_j$ for all $z \in W$.  If this were not true then set could find a sequence $y_i \to y$ such
+that $A \cap f^{-1}(y_i) \setminus \cup_{j=1}^k V_j \neq \emptyset$.  By using the compactness of $A$ to pass to a subsequence if necessary
+we may pick $x_i \in A \cap f^{-1}(y_i) \setminus \cup_{j=1}^k V_j$ such that $x_i \to x$ with $x \in A \setminus \cup_{j=1}^k V_j$.  By continuity of $f$
+we know that 
+\begin{align*}
+f(x) &= \lim_{i \to \infty} f(x_i) = \lim_{i \to \infty} y_i = y
+\end{align*}
+hence $x \in A \cap f^{-1}(y) \subset \cup_{j=1}^k V_j$ which is a contradiction.
+
+\begin{clm}The map $y \mapsto \mathcal{H}^{d-m}(A \cap f^{-1}(y))$ is Borel measurable in fact
+\begin{align*}
+\lbrace y \in \reals^m \mid \mathcal{H}^{d-m}(A \cap f^{-1}(y)) \leq t \rbrace &= \cap_{n=1}^\infty U_n
+\end{align*}
+\end{clm}
+We first show the inclusion $\lbrace y \in \reals^m \mid \mathcal{H}^{d-m}(A \cap f^{-1}(y)) \leq t \rbrace = \cap_{n=1}^\infty U_n$.
+Since $\mathcal{H}^{d-m}(A \cap f^{-1}(y)) \leq t$ and $\mathcal{H}^{d-m}(A \cap f^{-1}(y)) = \sup_{\delta>0} \mathcal{H}_\delta^{d-m}(A \cap f^{-1}(y))$ we know that
+$\mathcal{H}_\delta^{d-m}(A \cap f^{-1}(y)) \leq t$ for all $\delta > 0$.  By Proposition \ref{HausdorffMeasureByOpenClosedCoverings} for any $n \in \naturals$ we pick $0 < \delta < 1/n$ and some open sets $V_1, V_2, \dotsc$ such that
+\begin{itemize}
+\item[(i)] $A \cap f^{-1}(y) \subset \cup_{j=1}^\infty V_j$
+\item[(ii)] $\diam(V_j) \leq \delta < 1/n$ for $j \in \naturals$
+\item[(iii)] $\sum_{j=1}^\infty (\diam(V_j))^{d-m} < t + 1/n$
+\end{itemize}
+Since $f$ is continuous we know that $f^{-1}(y)$ is closed hence $A \cap f^{-1}(y)$ is a closed subset of a compact set hence compact (Corollary \ref{ClosedSubsetsCompact}).  Thus we may find
+a finite subcover $V_1, \dotsc, V_k$ of $A \cap f^{-1}(y)$ which shows $y \in U_n$.  
+
+Now suppose that $y \in \cap_{n=1}^\infty U_n$.  By the definitions of $U_n$ and $\mathcal{H}^{d-m}$ we know that $y \in U_n$ implies $\mathcal{H}_{1/n}^{d-m}(A \cap f^{-1}(y)) \leq t + 1/n$; therefore we know that $\mathcal{H}_{1/n}^{d-m}(A \cap f^{-1}(y)) \leq t + 1/n$ for all $n \in \naturals$.  Now take the limit as $n \to \infty$ to conclude that $\mathcal{H}^{d-m}(A \cap f^{-1}(y)) \leq t$.
+
+\begin{cas} $A$ is open.
+\end{cas}
+
+For each $n \in \naturals$ define 
+\begin{align*}
+K_n &= \left((A^c)){1/n}\right)^c \cap \overline{B}(0,n) = \lbrace x \mid d(x,A^c) \geq 1/n \rbrace \cap \overline{B}(0,n)
+\end{align*}
+which is a closed bounded set and therefore compact.  By the definition of $K_n$ and the openness of $A$ we have $K_1 \subset K_2 \subset \dotsb \subset A$ and $\cup_{n=1}^\infty K_n = A$.  By Borel regularity of $\mathcal{H}^{d-m}$ 
+and continuity of regular outer measures  (Proposition \ref{ContinuityOfRegularOuterMeasure}) we have
+\begin{align*}
+\mathcal{H}^{d-m} (A \cap f^{-1}(y)) &= \lim_{n \to \infty} \mathcal{H}^{d-m} (K_n \cap f^{-1}(y))
+\end{align*}
+which shows that $y \mapsto \mathcal{H}^{d-m} (A \cap f^{-1}(y))$ is open.
+
+\begin{cas} $\lambda^d(A) < \infty$.
+\end{cas}
+By the outer regularity of $\lambda^d$ (or the Lebesgue measurability of $A$) we can find open sets $V_1 \supset V_2 \supset \dotsb \supset A$ such that
+$\lim_{n \to \infty} \lambda^d(V_n \setminus A) = 0$ and $\lambda^d(V_1) < \infty$.  By the subadditivity of $\mathcal{H}^{d-m}$ we get
+\begin{align*}
+\mathcal{H}^{d-m}(V_n \cap f^{-1}(y)) 
+&\leq 
+\mathcal{H}^{d-m}(A \cap f^{-1}(y)) +
+\mathcal{H}^{d-m}((V_n \setminus A) \cap f^{-1}(y)) \\
+\end{align*}
+Now put this bound together with the already proven version of (iii) with outer integrals
+\begin{align*}
+0 &\leq \limsup_{n \to \infty} \int^* \abs{\mathcal{H}^{d-m}(V_n \cap f^{-1}(y))  - \mathcal{H}^{d-m}(A \cap f^{-1}(y))} \, \lambda^m(dy) \\
+&\leq \limsup_{n \to \infty} \int^* \mathcal{H}^{d-m}((V_n \setminus A) \cap f^{-1}(y)) \, \lambda^m(dy) \\
+&\leq 2^{d-m} \alpha(m) (\Lip(f))^m \limsup_{n \to \infty} \lambda^m(V_n \setminus A) = 0\\
+\end{align*}
+which shows (TODO: be careful to go through the details of this argument since we have an outer integral) $\lim_{n \to \infty} \mathcal{H}^{d-m}(V_n \cap f^{-1}(y)) = \mathcal{H}^{d-m}(A \cap f^{-1}(y))$
+$\lambda^m$-almost everywhere.  Thus by the Borel measurablility of $\mathcal{H}^{d-m}(V_n \cap f^{-1}(y))$ for $V_n$ open we conclude that $\mathcal{H}^{d-m}(A \cap f^{-1}(y))$ is $\lambda^m$-measurable.  Furthermore this shows 
+\begin{align*}
+\mathcal{H}^{d-m}((\cap_{n=1}^\infty V_n \setminus A) \cap f^{-1}(y)) &= \lim_{n \to \infty} \mathcal{H}^{d-m}((V_n \setminus A) \cap f^{-1}(y)) = 0
+\end{align*} 
+so $(\cap_{n=1}^\infty V_n \setminus A) \cap f^{-1}(y)$ is $\mathcal{H}^{d-m}$-measurable.
+Since we can write 
+\begin{align*}
+A \cap f^{-1}(y) &= \cap_{n=1}^\infty V_n \setminus (\cap_{n=1}^\infty V_n  \setminus A) \cap f^{-1}(y) = 
+\cap_{n=1}^\infty V_n \cap f^{-1}(y) \setminus (\cap_{n=1}^\infty V_n  \setminus A) \cap f^{-1}(y)
+\end{align*}
+and $\cap_{n=1}^\infty V_n \cap f^{-1}(y)$ is Borel measurable (hence $\mathcal{H}^{d-m}$-measurable) we see that $A \cap f^{-1}(y)$ is also $\mathcal{H}^{d-m}$ measurable for $\lambda^m$-almost every $y$.
+
+\begin{cas} $\lambda^d(A) = \infty$.
+\end{cas}
+We write $A = \cup_{n=1}^\infty (A \cap B(0,n))$ and use the previous case to see that $A \cap f^{-1}(y)$ is $\mathcal{H}^{d-m}$ measurable.  From continuity of regular outer measures (Proposition \ref{ContinuityOfRegularOuterMeasure}) we have
+\begin{align*}
+\mathcal{H}^{d-m}(A \cap f^{-1}(y)) &= \lim_{n \to \infty} \mathcal{H}^{d-m}(A \cap B(0,n) \cap f^{-1}(y)) 
+\end{align*}
+which in turns shows the $\mathcal{H}^{d-m}$ measurability of $y \mapsto \mathcal{H}^{d-m}(A \cap f^{-1}(y))$.
+
+To complete the proof note that (i) and (ii) together with the version of (iii) proven for outer integrals shows (iii) (TODO: where do we show that the outer integral of a measurable function equals the integral).
+\end{proof}
+
+\begin{lem}\label{CoareaFormulaLipschitz:FunctionBounds}Let $f : \reals^d \to \reals^d$ be a Lipschitz map, $t>1$ and
+\begin{align*}
+A &= \lbrace x \in \reals^d \mid Df(x) \text{ exists and } Jf(x) > 0\rbrace
+\end{align*}
+There exists a countable set of Borel sets $A_1, A_2, \dotsc$ and symmetric invertible linear map $T_n : \reals^d \to \reals^d$ such that 
+\begin{itemize}
+\item[(i)] $\lambda^d(A \setminus \cup_{n=1}^\infty A_n)$
+\item[(ii)] $f \mid_{A_n}$ is injective for each $n \in \naturals$
+\item[(iii)] For each $n \in naturals$
+\begin{align}\label{eq:CoareaFormulaLipschitz:LipschitzConstants}
+\Lip( T_n^{-1} \circ (f \mid_{A_n})) \leq t, \qquad \Lip((f
+  \mid_{A_n})^{-1} \circ T_n) \leq t
+\end{align}
+\item[(iv)] For each $n \in \naturals$
+\begin{align}\label{eq:CoareaFormulaLipschitz:JacobianBounds}
+t^{-d} \abs{\det(T_n)} \leq Jf\mid_{A_n} \leq t^{d} \abs{\det(T_n)} 
+\end{align}
+\end{itemize}
+\end{lem}
+\begin{proof}
+We apply Lemma \ref{AreaFormulaLipschitz:FunctionBounds} to $f$, $t$ and $A$ to construct Borel sets $B_1, B_2, \dotsc$ and
+symmetric invertible maps $S_1, S_2, \dotsc$ such that $A = \cup_{n=1}^\infty B_n$, $f \mid_{B_n}$ is injective for each $n \in \naturals$
+and for all $n \in \naturals$
+\begin{align*}
+\Lip((f \mid_{B_n}) \circ  S_n^{-1} ) \leq t, \qquad \Lip(S_n \circ (f  \mid_{B_n})^{-1} ) \leq t \\
+t^{-d} \abs{\det(S_n)} \leq Jf\mid_{A_n} \leq t^{d} \abs{\det(S_n)}
+\end{align*}
+Note that we have for all $n \in \naturals$ and $x,y \in f(B_n)$
+\begin{align*}
+\norm{ (f  \mid_{B_n})^{-1}(x) -  (f  \mid_{B_n})^{-1}(y)} &= \norm{ S_n^{-1} \circ S_n \circ (f  \mid_{B_n})^{-1}(x) - S_n^{-1} \circ S_n \circ (f  \mid_{B_n})^{-1}(y)} \\
+&\leq \norm{S_n^{-1}} \Lip(S_n \circ (f  \mid_{B_n})^{-1} ) \norm{x-y}
+\end{align*}
+hence $(f  \mid_{B_n})^{-1}$ is a Lipschitz map.  By Lemma \ref{ExtensionOfLipschitzMaps} we may let $g_n : \reals^d \to \reals^d$ be a Lipschitz extension of $(f  \mid_{B_n})^{-1}$ (so 
+in particular $g_n (f(x)) = x$ for all $x \in B_n$.
+
+\begin{clm}\label{clm:CoareaFormulaLipschitz:FunctionBounds:JacobianOfExtendedLocalInverse} $Jg_n > 0$ $\lambda^d$-almost everywhere on $f(B_n)$.
+\end{clm}
+We know that $g_n \circ f = \IdentityMatrix$ on $B_n$ hence by Lemma \ref{DifferentiationOfInversesLipschitz} we know that $D g_n (f(x)) Df(x) = \IdentityMatrix$ $\lambda^d$ almost
+everywhere on $B_n$.  Therefore by multiplicativity of determinants (Corollary \ref{DeterminantOfProducts}) we know $J g_n (f(x)) Jf(x) = 1$ $\lambda^d$ almost
+everywhere on $B_n$ and in particular $J g_n (f(x)) > 0$ $\lambda^d$ almost everywhere on $B_n$.  Since $f$ is Lipschitz the claim follows by Proposition \ref{HausdorffMeasureUnderLipschitzMaps} (TODO: Is there an obvious Lebesgue measure version of this or do we need to appeal to Theorem \ref{HausdorffEqualsLebesgue} as well?).
+
+For each $n \in \naturals$ we apply Lemma \ref{AreaFormulaLipschitz:FunctionBounds} to $g_n$ and $t$ to construct Borel sets
+$C^n_1, C^n_2, \dotsc$ and symmetric invertible maps $R^n_1, R^n_2, \dotsc$ such that 
+\begin{align*}
+\lbrace x \in \reals^d \mid Dg_n(x) \text{ exists and } Jg_n(x) > 0\rbrace &= \cup_{j=1}^\infty C^n_j
+\end{align*}
+$g_n \mid_{C^n_j}$ is injective and 
+\begin{align*}
+\Lip((g_n \mid_{C^n_j}) \circ  (R^n_j)^{-1} ) \leq t, \qquad \Lip(R^n_j \circ (g_n  \mid_{R^n_j})^{-1} ) \leq t \\
+t^{-d} \abs{\det(R^n_j)} \leq Jg_n\mid_{C^n_j} \leq t^{d} \abs{\det(R^n_j)}
+\end{align*}
+for $j \in \naturals$.  By the previous claim 
+\begin{align*}
+\lambda^d\left(g(B_n) \setminus \cup_{j=1}^\infty C^n_j \right) &= 0
+\end{align*}
+
+Now we are ready to define our final sets and injective maps.  For $j,n \in \naturals$ let
+$A^n_j = B_n \cap f^{-1}(C^n_j)$ and $T^n_j = (R^n_j)^{-1}$.
+
+\begin{clm}\label{clm:CoareaFormulaLipschitz:FunctionBounds:SimpleFormulas} For all $n,j \in \naturals$ 
+\begin{itemize}
+\item[(i)] $x \in A^n_j$ we have $f(x) = (g_n \mid_{C^n_j})^{-1}(x)$ 
+\item[(ii)] for all $y \in f(A^n_j)$ we have $g_n(y) = (f \mid_{A^n_j})^{-1}(y)$
+\end{itemize}
+\end{clm}
+To see (i) first note that the statement makes sense.  In particular we need to make sure the domain of $(g_n \mid_{C^n_j})^{-1}$ of the domain contains $A^n_j$.
+If $x \in A^n_j$ then
+$x \in B_n$ and $f(x) \in C^n_j \cap f(B_n)$.  Since by construction $g_n \mid_{f(B_n)} = (f \mid_{B_n})^{-1}$ we know that
+$g_n(f(x)) = (f \mid_{B_n})^{-1}(f(x)) = x$ which shows us that $x \in g_n(C^n_j) = \domain{(g_n \mid_{C^n_j})^{-1}}$.  By injectivity of $g_n$ on $C^n_j$ the fact that $g_n(f(x)) =x$ also shows us that
+$f(x) = (g_n \mid_{C^n_j})^{-1}(x)$ on $A^n_j$.
+
+The claim (ii) follows from (i) by simply writing $y=f(x)$ for $x \in A^n_j$ to see that 
+\begin{align*}
+g_n(y) &= g_n(f(x)) = x = (f \mid_{A^n_j})^{-1}(y)
+\end{align*}
+
+
+\begin{clm} $\lambda^d\left( A \setminus \cup_{n=1}^\infty \cup_{j=1}^\infty A^n_j \right) = 0$.
+\end{clm}
+For each $n \in \naturals$
+\begin{align*}
+g_n \left(f(B_n) \setminus \cup_{j=1}^\infty C^n_j \right) 
+&= (f \mid_{B_n})^{-1} \left(f(B_n) \setminus \cup_{j=1}^\infty C^n_j \right) \\
+&=B_n \setminus \cup_{j=1}^\infty f^{-1}(C^n_j) \\
+&=B_n \setminus \cup_{j=1}^\infty A^n_j \\
+\end{align*}
+Therefore
+\begin{align*}
+\lambda^d\left(B_n \setminus \cup_{j=1}^\infty A^n_j  \right) 
+&\leq \Lip(g_n) \lambda^d \left( f(B_n) \setminus \cup_{j=1}^\infty C^n_j \right) = 0
+\end{align*}
+and
+\begin{align*}
+\lambda^d\left( A \setminus \cup_{n=1}^\infty \cup_{j=1}^\infty A^n_j \right)
+&= \lambda^d \left( \cup_{n=1}^\infty B_n \setminus \cup_{n=1}^\infty \cup_{j=1}^\infty A^n_j \right) \\
+&\leq \sum_{n=1}^\infty \lambda^d \left(B_n \setminus \cup_{k=1}^\infty \cup_{j=1}^\infty A^k_j \right) \\
+&\leq \sum_{n=1}^\infty \lambda^d \left(B_n \setminus \cup_{j=1}^\infty A^n_j \right) = 0
+\end{align*}
+
+\begin{clm} For every $n,j \in \naturals$ $f \mid_{A^n_j}$ is injective
+\end{clm}
+This follows immediately from the fact that $f \mid_{B_n}$ is injective and $A^n_j \subset B_n$.
+
+\begin{clm} For every $n,j \in \naturals$ we have
+\begin{align*}
+\Lip( (T^n_j)^{-1} \circ (f \mid_{A^n_j})) \leq t, \qquad \Lip((f  \mid_{A^n_j})^{-1} \circ T^n_j) \leq t \\
+t^{-d} \abs{\det(T^n_j)} \leq Jf\mid_{A^n_j} \leq t^{d} \abs{\det(T^n_j)} 
+\end{align*}
+\end{clm}
+Using Claim \ref{clm:CoareaFormulaLipschitz:FunctionBounds:SimpleFormulas} we know that $(g_n \mid_{C^n_j})^{-1}$ is an
+extension of $f \mid_{A^n_j}$ hence
+\begin{align*}
+\Lip((T^n_j)^{-1} \circ (f \mid_{A^n_j})) &= \Lip(R^n_j \circ (f \mid_{A^n_j})) \leq \Lip(R^n_j \circ (g_n \mid_{C^n_j})^{-1}) \leq t
+\end{align*}
+and similarly since $g_n \mid_{C^n_j}$ is an extension of $(f \mid_{A^n_j})^{-1}$ 
+\begin{align*}
+\Lip((f \mid_{A^n_j})^{-1} \circ T^n_j) &= \Lip((f \mid_{A^n_j})^{-1} \circ (R^n_j)^{-1}) \leq \Lip((g_n \mid_{C^n_j} \circ (R^n_j)^{-1}) \leq t
+\end{align*}
+
+From the proof of claim \ref{clm:CoareaFormulaLipschitz:FunctionBounds:JacobianOfExtendedLocalInverse}  we know that
+$J g_n(f(x)) J f(x) = 1$ $\lambda^d$-almost everywhere on $A^n_j$ therefore
+\begin{align*}
+t^{-n} \abs{\det(S^n_j)} &=t^{-n} \abs{\det(R^n_j)}^{-1} \leq (J g_n \mid_{C^n_j})^{-1} = J f \mid_{A^n_j}
+\end{align*}
+and
+\begin{align*}
+J f \mid_{A^n_j} &= (J g_n \mid_{C^n_j})^{-1} \leq t^n \abs{\det(R^n_j)}^{-1} = t^{n} \abs{\det(S^n_j)}
+\end{align*}
+\end{proof}
+
+\begin{thm}[Coarea Formula]\label{CoareaFormulaLipschitz}Let $d \geq m$, $f : \reals^d \to \reals^m$ be a Lipschitz function and $A \subset \reals^d$ be a
+$\lambda^d$-measurable set then
+\begin{align*}
+\int_A Jf(x) \, \lambda^d(dx) &= \int \mathcal{H}^{d-m}(A \cap f^{-1}(y)) \, \lambda^m(dy)
+\end{align*}
+\end{thm}
+\begin{proof}
+\begin{clm}If suffices to prove the theorem for $A$ on which $Df(x)$ and $Jf(x)$ exist everwhere and for which $\lambda^d(A) < \infty$.
+\end{clm}
+By Rademacher's Theorem we know that $\lambda^d(\reals^d \setminus \lbrace Df(x) \text{ exists } \rbrace) =0$.  From this and the additivity of $\lambda^d$ we know that
+\begin{align*}
+\int_A Jf(x) \, \lambda^d(dx) &= \int_{A \cap \lbrace Df(x) \text{ exists } \rbrace}  Jf(x) \, \lambda^d(dx) + \int_{A \setminus \lbrace Df(x) \text{ exists } \rbrace}  Jf(x) \, \lambda^d(dx) 
+= \int_{A \cap \lbrace Df(x) \text{ exists } \rbrace}  Jf(x) \, \lambda^d(dx) 
+\end{align*}
+and by the subadditivity of $\mathcal{H}^{d-m}$ and Lemma \ref{CoareaFormulaMeasurability}
+\begin{align*}
+\int \mathcal{H}^{d-m}(A \cap \lbrace Df(x) \text{ exists } \rbrace \cap  f^{-1}(y)) \, \lambda^m(dy) &\leq \int \mathcal{H}^{d-m}(A \cap f^{-1}(y)) \, \lambda^m(dy) \\
+&\leq \int \mathcal{H}^{d-m}(A \cap \lbrace Df(x) \text{ exists } \rbrace \cap f^{-1}(y)) \, \lambda^m(dy) 
++ \int \mathcal{H}^{d-m}(A \setminus \lbrace Df(x) \text{ exists } \rbrace \cap f^{-1}(y)) \, \lambda^m(dy) \\
+&\leq \int \mathcal{H}^{d-m}(A \cap \lbrace Df(x) \text{ exists } \rbrace \cap f^{-1}(y)) \, \lambda^m(dy)  + 
+2^{d-m} \alpha(m) (\Lip(f))^m \lambda^d(A \setminus \lbrace Df(x) \text{ exists } \rbrace \cap f^{-1}(y)) \\
+&=\int \mathcal{H}^{d-m}(A \cap \lbrace Df(x) \text{ exists } \rbrace \cap f^{-1}(y)) \, \lambda^m(dy)
+\end{align*}
+hence $\int \mathcal{H}^{d-m}(A \cap f^{-1}(y)) \, \lambda^m(dy)  = \int \mathcal{H}^{d-m}(A \cap \lbrace Df(x) \text{ exists } \rbrace \cap f^{-1}(y)) \, \lambda^m(dy)$.
+From these two facts it follows that we may replace $A$ by $A \cap \lbrace Df(x) \text{ exists } \rbrace$ and assume that $Df(x)$ and $Jf(x)$ exists everywhere on $A$.
+
+To see the reduction to the case in which $\lambda^d(A) < \infty$ assume the result holds for such sets and define $A_n = A \cap B(0,n)$.  Applying Proposition \ref{ContinuityOfRegularOuterMeasure} and 
+Montone Convergence we see
+\begin{align*}
+\int_A Jf(x) \, \lambda^d(dx) &= \lim_{n \to \infty}\int_{A_n} Jf(x) \, \lambda^d(dx) = \lim_{n \to \infty} \int \mathcal{H}^{d-m}(A_n \cap f^{-1}(y)) \, \lambda^m(dy) = \int \mathcal{H}^{d-m}(A \cap f^{-1}(y)) \, \lambda^m(dy)
+\end{align*}
+
+
+TODO:
+\end{proof}
 \section{Integration in Banach Spaces}
 
 Our prior development of measure and integration theory made use of the
