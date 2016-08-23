@@ -1,0 +1,227 @@
+\chapter{Empirical Processes}
+
+\section{Weak Convergence in Non Separable Spaces}
+
+\subsection{Outer Expectations and Measurable Cover}
+
+\begin{defn}Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $f : \Omega \to [-\infty, \infty]$ (not assumed to be measurable).  Then consider the two conditions
+\begin{itemize}
+\item [(i)] for every measurable $g : \Omega \to [-\infty, \infty]$ with $g \geq f$ everywhere the integral $\int g \, dP$ is defined (i.e. $\int g_+ \, dP < \infty$ or $\int g_- \, dP < \infty$) 
+\item [(ii)] or there exists a measurable $g : \Omega \to [-\infty, \infty]$  with $g \geq f$ everywhere (? or a.s.) such that $\int g \, dP = -\infty$ 
+\end{itemize}
+When (i) holds we define the \emph{outer expectation}
+\begin{align*}
+\oexpectation{f} &= \int^* f \, dP = \inf \left \lbrace \int g  \, dP \mid \text{ $g$ measurable, } g \geq f \right \rbrace
+\end{align*}
+and when (ii) holds we define $\int^* f \, dP = -\infty$.
+If neither (i) nor (ii) hold then we say that the outer expectation $\int^* f \, dP$ is not defined.  Given a subset $A \subset \Omega$ we define the outer probability to be
+\begin{align*}
+\oprobability{A} &= \inf \lbrace \probability{B} \mid B \supset A, B \in \mathcal{A} \rbrace
+\end{align*}
+\end{defn}
+
+We show how to calculate outer expectations.
+\begin{defn}Let $\mathcal{J}$ be a subset of $\mathcal{L}^0(\Omega, \mathcal{A}, P, [-\infty, \infty])$ the we say that $f \in \mathcal{L}^0$ is an \emph{essential infimum of $\mathcal{J}$} if 
+for every $j \in \mathcal{J}$ we have $f \leq j$ a.s. and moreover for any $g \in \mathcal{L}^0$ such that $g \leq j$ a.s. for every $j \in \mathcal{J}$ we also have $g \leq f$ a.s.
+\end{defn}
+
+\begin{prop}\label{AlmostSureUniquenessEssentialInfimum}If $f$ and $g$ are both essential infima of $\mathcal{J}$ then $f = g$ a.s.
+\end{prop}
+\begin{proof}
+By the definition of an essential infimum we have both $f \leq g$ a.s. and $g \leq f$ a.s.
+\end{proof}
+
+\begin{thm}\label{ExistenceMeasurableCover}For any $\mathcal{J} \subset \mathcal{L}^0(\Omega, \mathcal{A}, P, [-\infty, \infty])$ and essential infimum of $\mathcal{J}$ exists.  Given $f : \Omega \to (-\infty, \infty)$ let
+$\mathcal{J}_f = \lbrace j \in \mathcal{L}^0 \mid j \geq f \text{ everywhere} \rbrace$ then there is an essential infimum $f^*$ of $\mathcal{J}_f$ such that $f^* \geq f$ everywhere.  $\int f^* \, dP$ is 
+defined if and only if $\int^* f \, dP$ is defined and when they are defined we have
+\begin{align*}
+\int f^* \, dP &= \int^* f \, dP
+\end{align*}
+If $f = \characteristic{A}$ for some $A \subset \Omega$ (not necessarily measurable) then $f^*$ may be chosen to be $\characteristic{A^*}$ for a measurable set $A^* \supset A$.  Moreover \begin{align*}
+\oprobability{A} &= \int^* \characteristic{A} dP = \probability{A^*}
+\end{align*}
+\end{thm}
+\begin{proof}
+Let 
+\begin{align*}
+\mathcal{J}_1 &= \lbrace j_1 \minop \dotsb \minop j_n \mid n \in \naturals \text{ and } j_1, \dotsc, j_n \in \mathcal{J} \rbrace
+\end{align*}
+Clearly if $j,k \in \mathcal{J}_1$ the also $j \minop k \in \mathcal{J}_1$.  
+\begin{clm} $g$ is an essential infimum of $\mathcal{J}$ if and only if $g$ is an essential infimum of $\mathcal{J}_1$.
+\end{clm}
+Assume $g$ is an essential infimum of $\mathcal{J}$.  The for any $j_1 \minop \dotsb \minop j_n  \in \mathcal{J}_1$ we know that $g \leq j_i$ a.s. for $i=1, \dotsc, n$ so by taking the interesection of the events $\lbrace g \leq j_1 \rbrace \cap \dotsb \cap \lbrace g \leq j_n \rbrace$ we know that $g \leq j_1 \minop \dotsb \minop j_n$ a.s.  Given $h$ such that $h \leq j_1 \minop \dotsb \minop j_n$ a.s. for every subset $\lbrace j_1, \dotsc, j_n \rbrace \subset \mathcal{J}$ in particular we see that $h \leq j$ a.s. for every $j \in \mathcal{J}$ and therefore $h \leq g$ a.s.  In the other direction assume that $g$ is an essential infimum of $\mathcal{J}_1$.  As above it follows immediately that $g \leq j$ a.s. for every $j \in \mathcal{J}$.  If $h \leq j$ a.s. for every $j \in \mathcal{J}$ then taking an interesection of almost sure events we see that $h \leq j_1 \minop \dotsb \minop j_n$ a.s. for every $\lbrace j_1, \dotsc, j_n \rbrace \subset \mathcal{J}$ and it follows that $h \leq g$ a.s.
+
+By the previous claim we may replace $\mathcal{J}$ with $\mathcal{J}_1$ and therefore assume from here that $j,k \in \mathcal{J}$ implies $j \minop k \in \mathcal{J}$.
+
+Note that $\tan : (-\pi/2, \pi/2) \to (-\infty, \infty)$ is a homeomorphism and since $\lim_{x \to \pm \pi/2} \tan x = \pm \infty$ we may extend $\tan$ to a homeomorphism between $[-\pi/2, \pi/2]$ and $[-\infty, \infty]$.  Therefore for every $j \in \mathcal{J}$ we can consider $\tan^{-1} j : \Omega \to [-\pi/2, \pi/2]$.  We now pick a sequence $j_1, j_2, \dotsc$ such that
+\begin{align*}
+\lim_{n \to \infty} \int \tan^{-1} j_n \, dP = \inf_{j \in \mathcal{J}} \int \tan^{-1} j \, dP
+\end{align*}
+By assumption on $\mathcal{J}$ we know that $j_1 \minop \dotsb \minop j_n \in \mathcal{J}$ and by construction the sequence $j_1 \minop \dotsb \minop j_n$ is decreasing and it follows that 
+$\lim_{n \to \infty} j_1 \minop \dotsb \minop j_n = g$ where $g = \inf_n j_1 \minop \dotsb \minop j_n \in \mathcal{L}^0$ by Lemma \ref{LimitsOfMeasurable}.   
+
+\begin{clm} $\int \tan^{-1} g \, dP =\inf_{j \in \mathcal{J}} \int \tan^{-1} j \, dP$
+\end{clm}
+By the definition of infimum we know that
+$\int \tan^{-1}  j_1 \minop \dotsb \minop j_n \, dP \geq \inf_{j \in \mathcal{J}} \int \tan^{-1} j \, dP$ and by monotone convergence we know that 
+\begin{align*}
+\int \tan^{-1} g \, dP &= \lim_{n \to \infty} \int \tan^{-1}  j_1 \minop \dotsb \minop j_n \, dP \geq \inf_{j \in \mathcal{J}} \int \tan^{-1} j \, dP
+\end{align*}
+On the other hand 
+\begin{align*}
+\int \tan^{-1} g \, dP &= \lim_{n \to \infty} \int \tan^{-1}  j_1 \minop \dotsb \minop j_n \, dP \leq \lim_{n \to \infty} \int \tan^{-1}  j_n \, dP 
+= \inf_{j \in \mathcal{J}} \int \tan^{-1} j \, dP
+\end{align*}
+and the claim follows.
+
+\begin{clm} $g$ is an essential infimum for $\mathcal{J}$.
+\end{clm}
+Given any $k \in \mathcal{J}$ because $k \minop g \leq g$ everywhere we know that $\int \tan^{-1} k \minop g \, dP \leq \int  \tan^{-1} g \, dP = \inf_{j \in \mathcal{J}} \int \tan^{-1} j \, dP$ hence in fact
+ $\int (\tan^{-1} g - \tan^{-1} k \minop g) \, dP = 0$ which since $\tan^{-1} g \geq \tan^{-1} k \minop g$ implies $\tan^{-1} g = \tan^{-1} k \minop g$ a.s. (equivalently $g \leq k$ a.s.).  Lastly if $h \leq j$ a.s. for every $j \in \mathcal{J}$ then $h \leq j_1 \minop \dotsb \minop j_n$ a.s. for all $n \in \naturals$ and
+\begin{align*}
+h &\leq \lim_{n \to \infty} j_1 \minop \dotsb \minop j_n = g \text{ a.s. }
+\end{align*}
+
+In the special case of $\mathcal{J}_f$ it is easy to see that $\mathcal{J}_f$ is closed under the minimum and therefore we can construct an essential infimum as $g=\lim_{n \to \infty} j_1 \minop \dotsb \minop j_n$ for a sequence $j_n \geq f$ everywhere.  It follows that $g \geq f$ everywhere.
+
+Now we turn to considering the expectations.  First suppose that $\int f^* \, dP$ is defined (i.e. at most one of $\int f^*_\pm \, dP = \infty$).  Suppose there exists a measurable $g \geq f$ such
+that $\int g_\pm \, dP = \infty$.  By definition of the essential infimum we know that $f^* \leq g$ a.s. which implies that $\int f^*_- \, dP \geq \int g_- \, dP = \infty$ so we may conclude $\int f^*_+ \, dP < \infty$ and $\int f^* \, dP = -\infty$.  This shows us that $\int^* f \, dP$ is defined (and equal to $-\infty$).    On the other hand suppose that $\int^* f \, dP$ is defined. Suppose that $\int f_\pm^* \, dP = \infty$ then since $f^*$ is measurable and $f^* \geq f$  everywhere there must exist a measurable $g$ with $g \geq f$, $\int g \, dP = -\infty$.  By definition of essential infimum we see that $f^* \leq g$ a.s. hence $\int f^*_+ \, dP \leq \int g_+ \, dP < \infty$ which is contradiction.  When $\int^* f \, dP$ and $\int f^* \, dP$ exist, on the one hand $f^* \geq f$ implies
+\begin{align*}
+\int f^* \, dP &\leq \int^* f \, dP
+\end{align*}
+and on the other hand for all $j \geq f$ everywhere we have $f^* \leq j$ a.s. hence
+\begin{align*}
+\int f* \, dP &\leq \inf_{j \geq f} \int j \, dP = \int^* f \, dP
+\end{align*}
+
+If we consider $\characteristic{A}$ then it is clear from the definition that $\int^* \characteristic{A} \, dP \leq \oprobability{A}$.  On the other hand, we claim that we can find measurable sets $\dotsb \supset A_n \supset A_{n+1} \supset \dotsb$ such that $\left( \characteristic{A} \right)^* = \lim_{n \to \infty} \characteristic{A_n}$.  First note that if $f^*$ is a measurable cover of $\characteristic{A}$ then $\characteristic{f^* \geq 1}$ is also a measurable cover of $\characteristic{A}$.  This follows since $f^* \geq f \geq 0$ therefore $f^* \geq \characteristic{f^* \geq 1} \geq \characteristic{A}$ everywhere.  By the construction above we know that there are measurable $j_1, j_2, \dotsc$ with $j_n \geq \characteristic{A}$ and $j_1 \minop \dotsb \minop j_n  \downarrow f^*$.  Define $A_n = \lbrace j_1 \minop \dotsb \minop j_n \geq 1 \rbrace$.  Since $f^* =  \characteristic{f^* \geq 1}$ a.s. we know that $\lim_{n\to \infty} j_1 \minop \dotsb \minop j_n \in \lbrace 0, 1 \rbrace$ a.s.  Since
+$j_1 \minop \dotsb \minop j_n$ is a decreasing sequence we know that $ j_1 \minop \dotsb \minop j_n \downarrow 0$ if and only if $j_1 \minop \dotsb \minop j_n < 1$ eventually if and only if $\characteristic{A_n} = 0$ eventually if and only if $\lim_{n \to \infty} \characteristic{A_n} = 0$.  Similarly $ j_1 \minop \dotsb \minop j_n \downarrow 1$ if and only if $j_1 \minop \dotsb \minop j_n \geq 1$ for all $n \in \naturals$ if and only if $\characteristic{A_n} = 1$ for all $n \in \naturals$ if and only if $\lim_{n \to \infty} \characteristic{A_n} = 1$.  It follows that $f^* = \lim_{n \to \infty} \characteristic{A_n}$ a.s. hence
+\begin{align*}
+\oprobability{A} &\leq \lim_{n \to \infty} \probability{A_n} = \int f^* \, dP = \int^* f \, dP
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{BasicPropertiesOfMeasurableCover} Let $(\Omega, \mathcal{A}, P)$  be a probability space and let $f,g : \Omega \to (-\infty, \infty]$ then $(f+g)^* \leq f^* + g^*$ a.s. and
+$(f - g)^* \geq f^* - g^*$ a.s. whenever both sides are defined a.s.  If $A$ is measurable, $g$ is measurable and $f \leq g$ a.s. on $A$ we have $f^* \leq g$ a.s. on $A$.  If $A$ is measurable, $g$ is measurable and $f = g$ a.s. on $A$ we have $f^* = g$ a.s. on $A$
+\end{prop}
+\begin{proof}
+By Theorem \ref{ExistenceMeasurableCover} we know that $f^* \geq f > -\infty$ and $g^* \geq g > -\infty$ everywhere thus $f^* + g^*$ is well defined everywhere (possibly $+\infty$).  The function
+$f^* + g^*$ is measurable and $f+g \leq f^* + g^*$ therefore it follows that $(f+g)^* \leq f^* + g^*$.
+
+By assumption $f^* - g^*$ is defined a.s. therefore $f^*$ is finite a.s. on $\lbrace g^* = \infty \rbrace$.  It follows that $f^* - g^* = -\infty$ a.s. on $\lbrace g^* = \infty \rbrace$ and therefore it is trivial that $(f-g)^* \geq f^* - g^*$ a.s. on $\lbrace g^* = \infty \rbrace$.  On $\lbrace -\infty < g^* < \infty \rbrace$ we know that $g \leq g^* < \infty$ hence we may write $f = (f - g) + g$ and by the first part of this result we get $f^* \leq (f -g)^*+ g^*$ a.s. which implies $f^* - g^* \leq (f - g)^*$.
+
+Now assume that $A$ is measurable, $g$ is measurable and $f \leq g$ a.s. on $A$.  Consider $h = g \cdot \characteristic{A} + f^* \cdot \characteristic{A^c}$.  Since $f^* \leq f$ everywhere we have
+$\lbrace h \geq f \rbrace \subset \lbrace g  \geq f \rbrace$ hence is a null set.  Therefore $f^* \leq h$ a.s and therefore $f^* \leq g$ a.s. on $A$.
+
+If $A$ is measurable, $g$ is measurable and $f = g$ a.s. on $A$ then by the previous fact we have $f^* \leq g$ a.s on $A$.  On the other hand, $g = f \leq f^*$ a.s so it follows that $f^* = g$ a.s on $A$.
+\end{proof}
+
+\begin{lem}Let $(\Omega, \mathcal{A}, P)$  be a probability space  and $V$ be a vector space with seminorm $\norm{\cdot}$ then given $f,g : \Omega \to V$ we have
+\begin{align*}
+\norm{f+g}^* \leq (\norm{f}+\norm{g})^* \leq \norm{f}^* + \norm{g}^* \text{ a.s.}
+\end{align*}
+and
+\begin{align*}
+\norm{c f}^* &= \abs{c} \norm{f}^* \text{ a.s. for every $-\infty < c < \infty$}
+\end{align*}
+\end{lem}
+\begin{proof}
+By the triangle inequality we know $\norm{f+g} \leq \norm{f}+\norm{g}$ hence $\norm{f+g}^* \leq (\norm{f}+\norm{g})^*$ a.s.  By Proposition \ref{BasicPropertiesOfMeasurableCover} we have $ (\norm{f}+\norm{g})^* \leq \norm{f}^* + \norm{g}^*$ a.s.
+
+By measurability of constant functions it is clear that $\norm{0}^* = 0$ hence we may assume that $c \neq 0$.  Suppose that $g$ is measurable and $\norm{cf} \leq g$.  This equivalent to $\norm{f} \leq g/\abs{c}$ and it follows that $\abs{c} \norm{f}^* \leq g$ a.s.  Suppose $h$ is measurable and for every measurable $g$ with $g \geq \norm{cf}$ everywhere we have $g \geq h$ a.s.   If $g$ is measurable such that $g \geq \norm{f}$ everywhere then $\abs{c} g \geq \norm{c f}$ everywhere hence we conclude $g \geq h/\abs{c}$ a.s. Therefore by the maximality of the measurable cover $f^*$ we have $\norm{f}^* \geq h/\abs{c}$ a.s. equivalently $\abs{c}\norm{f}^* \geq h$ a.s.
+\end{proof}
+
+Under an assumption of independence the measurable cover of a sum is the sum of measurable covers.
+\begin{prop}\label{MeasurableCoverSumOfIndependent}For $i=1, \dotsc, n$ let $(\Omega_i, \mathcal{A}_i, P_i)$  be probability spaces and $f_i : \Omega_i \to (-\infty, \infty]$ be functions.  If we define $g : \Omega_1 \times \dotsb \times \Omega_n \to (-\infty, \infty]$ by
+\begin{align*}
+g(\omega_1, \dotsc, \omega_n) &= f_1(\omega_1) + \dotsb + f_n(\omega_n)
+\end{align*}
+then we have $g^*(\omega_1, \dotsc, \omega_n) = f^*_1(\omega_1) + \dotsb + f^*_n(\omega_n)$.
+\end{prop}
+\begin{proof}
+By an induction argument it is clear that we may assume $n=2$.  Let $P = P_1 \otimes P_2$.   Since for $i=1,2$ we have $f_i(\omega_i) \leq f_i^*(\omega_i)$ everywhere and $f_i^*$ measurable we have $g(\omega_1, \omega_2) \leq f_1^*(\omega_1) + f_2*(\omega_2)$ everywhere and therefore $g^*(\omega_1, \omega_2) \leq f_1^*(\omega_1) + f_2*(\omega_2)$ $P$-a.s.  If $\probability{g^* < f_1^* + f_2^*}>0$ then since
+\begin{align*}
+\lbrace g^* < f_1^* + f_2^* \rbrace &= \cup_{\substack{t,q,r \in \rationals \\ q+r > t }} \lbrace g^* < t < f_1^* + f_2^*,  q < f_1^*, r < f_2^* \rbrace
+\end{align*}
+by subadditivity there exists $t,q,r \in \rationals$ with $q+r > t$ and 
+\begin{align*}
+\probability{g^* < t < f_1^* + f_2^*,  q < f_1^*, r < f_2^*} > 0
+\end{align*}  
+Define $A = \lbrace g^* < t < f_1^* + f_2^*,  q < f_1^*, r < f_2^* \rbrace$ and for each $\omega_1 \in \Omega_1$ define the section $A_{\omega_1} = \lbrace \omega_2 \mid g^*(\omega_1, \omega_2) < t < f_1^*(\omega_1) + f_2^*(\omega_2),  q < f_1^*(\omega_1), r < f_2^*(\omega_2) \rbrace$.  By Lemma \ref{MeasurableSections} each $A_{\omega_1}$ is measurable and by Tonelli's Theorem \ref{Fubini} we have
+\begin{align*}
+0 &< \probability{A} = \iint \sprobability{A_{\omega_1}}{2} \, P_1(d\omega_1)
+\end{align*}
+hence $\sprobability{\sprobability{A_{\omega_1}}{2} > 0}{1} > 0$.  
+
+\begin{clm}There exists $\omega_1 \in \Omega_1$ such that $\sprobability{A_{\omega_1}}{2} > 0$ and $f_1(\omega_1) > q$.
+\end{clm}
+We establish the claim by contradiction.  If $f_1 \leq q$ everywhere on $\lbrace \sprobability{A_{\omega_1}}{2} > 0 \rbrace$ then by Proposition \ref{BasicPropertiesOfMeasurableCover} we have $f_1^* \leq q$ $P_1$-a.s. on $\lbrace \sprobability{A_{\omega_1}}{2} > 0 \rbrace$.  In particular because $\sprobability{\sprobability{A_{\omega_1}}{2} > 0}{1} > 0$ it follows that there exists $\omega_1$ with $f^*_1(\omega_1) \leq q$ and $\sprobability{A_{\omega_1}}{2} > 0$.  On the other hand if $\sprobability{A_{\omega_1}}{2} > 0$ then $A_{\omega_1} \neq \emptyset$ and it follows that $f_1^*(\omega_1) > q$ which is the desired contradiction.
+
+By the previous claim pick $\omega_1$ with $\sprobability{A_{\omega_1}}{2} > 0$ and $f_1(\omega_1) > q$.  For any $\omega_2 \in A_{\omega_1}$, by choice of $\omega_1$ and definition of $A$ we have
+\begin{align*}
+q + f_2(\omega_2) \leq f_1(\omega_1) + f_2(\omega_2) \leq g^*(\omega_1, \omega_2)
+\end{align*}
+hence $f_2 \leq g^*(\omega_1, \cdot) - q$ on $A_{\omega_1}$.  By measurability of $A_{\omega_1}$, $g^*(\omega_1, \cdot) - q$ we may apply Proposition \ref{BasicPropertiesOfMeasurableCover}  to conclude that $f^*_2 \leq g^*(\omega_1, \cdot) - q$ $P_2$-a.s. on $A_{\omega_1}$.  Thus $A_{\omega_1} \cap \lbrace f^*_2 \leq g^*(\omega_1, \cdot) - q \rbrace \neq \emptyset$ and we may pick $\omega_2$ such that $(\omega_1, \omega_2) \in A$ and 
+\begin{align*}
+q + f_2^*(\omega_2) &\leq g^*(\omega_1, \omega_2) < t < q+r
+\end{align*}
+which implies $f_2^*(\omega_2) < r$ yielding a contradiction.
+\end{proof}
+
+Under an assumption of independence and nonnegativity the measurable cover of a product is the product of measurable covers.  In addition, if a function on a product does not depend one of the factors of the product, the measurable cover may be chosen so that it also does not depend on that factor of the product.
+\begin{prop}\label{MeasurableCoverProductOfIndependent}For $i=1, \dotsc, n$ let $(\Omega_i, \mathcal{A}_i, P_i)$  be probability spaces and $f_i : \Omega_i \to [-\infty, \infty]$ be functions.  If either $f_i \geq 0$ for $i=1, \dotsc, n$ or $n=2$ and $f_1 \equiv 1$ and we define $g : \Omega_1 \times \dotsb \times \Omega_n \to (-\infty, \infty]$ by
+\begin{align*}
+g(\omega_1, \dotsc, \omega_n) &= f_1(\omega_1) \dotsb f_n(\omega_n)
+\end{align*}
+then we have $g^*(\omega_1, \dotsc, \omega_n) = f^*_1(\omega_1) \dotsb f^*_n(\omega_n)$.
+\end{prop}
+\begin{proof}
+In the case that $f_i \geq 0$ for $i=1, \dotsc, n$  an induction argument shows that it suffices to consider the case $n=2$.  Let $P = P_1 \otimes P_2$.  If $0 \leq f_i \leq f_i^*$ for $i=1, 2$ then $g(\omega_1, \omega_2) \leq f_1^*(\omega_1) f_2^*(\omega_2)$.  In the case that $f_1 \equiv 1$ it trivially follows that 
+\begin{align*}
+g(\omega_1, \omega_2) &= f_2(\omega_2)  \leq  f_2^*(\omega_2) = f_1^*(\omega_1) f_2^*(\omega_2)
+\end{align*}  
+In both cases we see that $g^*(\omega_1,\omega_2) \leq f_1^*(\omega_1) f_2^*(\omega_2)$ $P$-a.s.  
+We argue by contradiction, so assume that $\probability{g^*(\omega_1,\omega_2) < f_1^*(\omega_1) f_2^*(\omega_2)}>0$.
+
+First consider the case in which $f_1 \equiv 1$ so that $f_1^* \equiv 1$ as well.  Writing
+\begin{align*}
+\lbrace g^*(\omega_1,\omega_2) < f_1^*(\omega_1) f_2^*(\omega_2)\rbrace =\cup_{t \in \rationals} \lbrace g^*(\omega_1,\omega_2) < t < f_1^*(\omega_1) f_2^*(\omega_2)\rbrace
+\end{align*}
+and using subadditivity there exists $t \in \rationals$ so that if we we have
+$\probability{g^*(\omega_1,\omega_2) < t < f_1^*(\omega_1) f_2^*(\omega_2)} > 0$.  
+ By Tonelli's Theorem \ref{Fubini} we
+have
+\begin{align*}
+0 < \probability {g^*(\omega_1,\omega_2) < t < f_1^*(\omega_1) f_2^*(\omega_2)} = \int \sprobability{g^*(\omega_1,\omega_2) < t < f_2^*(\omega_2)}{2} \, P_1(d\omega_1)
+\end{align*}
+so there exists $\omega_1$ such that $\sprobability{g^*(\omega_1,\omega_2) < t < f_2^*(\omega_2)}{2}>0$.  
+Since $f_2 = g \leq g^*$ everywhere, by Proposition \ref{BasicPropertiesOfMeasurableCover}  we conclude $f_2^* \leq t$ a.s. on $\lbrace g^*(\omega_1,\omega_2) < t < f_2^*(\omega_2) \rbrace$ which is a contradiction.
+
+Now consider the case in which $f_1,f_2 \geq 0$.  Via a similar argument as in Proposition \ref{MeasurableCoverProductOfIndependent} there exists $t, q, r \in \rationals$ with $t>0$,$q>0$, $r>0$, $qr>t$ so that if we define 
+\begin{align*}
+A &= \lbrace g^*(\omega_1,\omega_2) < t < f_1^*(\omega_1) f_2^*(\omega_2); f_1^*(\omega_1) > q ; f_2^*(\omega_2) > r \rbrace
+\end{align*}
+then $\probability{A}>0$.  Also as in that Proposition consider the sections $A_{\omega_1}$. 
+
+\begin{clm} There exists $\omega_1$ such that $\sprobability{A_{\omega_1}}{2}>0$ and $f_1(\omega_1) > q$.
+\end{clm}
+We argue by contradiction.   By Tonelli's Theorem \ref{Fubini} we have
+\begin{align*}
+0 < \probability{A} = \int \sprobability{A_{\omega_1}}{2} \, P_1(d\omega_1)
+\end{align*}
+and conclude $\sprobability{\sprobability{A_{\omega_1}}{2}>0}{1}>0$.
+ If $f_1 \leq q$ everywhere on $\lbrace \sprobability{A_{\omega_1}}{2}>0 \rbrace$ then by Proposition \ref{MeasurableCoverProductOfIndependent} we have $f_1^* \leq q$ $P_1$-a.s. on $\lbrace \sprobability{A_{\omega_1}}{2}>0 \rbrace$, i.e. $\sprobability{\sprobability{A_{\omega_1}}{2}>0; f_1^* \leq q}{1}=\sprobability{\sprobability{A_{\omega_1}}{2}}{1}>0$.
+In particular, there exists $\omega_1$ with $f_1^*(\omega_1) \leq q$ and $A_{\omega_1} \neq \emptyset$.  The latter statement implies that $f_1^*(\omega_1) > q$ which is a contradiction.
+
+By the claim we select $\omega_1$ with $\sprobability{A_{\omega_1}}{2}>0$ and $f_1(\omega_1) > q$.  Pick $\omega_2 \in A_{\omega_1}$ and then note
+\begin{align*}
+f_2(\omega_2) &= \frac{g(\omega_1, \omega_2)}{f_1(\omega_1)} < \frac{g(\omega_1, \omega_2)}{q} \leq \frac{g^*(\omega_1, \omega_2)}{q} 
+\end{align*}
+hence by Proposition \ref{BasicPropertiesOfMeasurableCover} we have $f_2^* \leq \frac{g^*(\omega_1, \cdot)}{q}$ $P_2$-a.s. on $A_{\omega_1}$.  Thus $\sprobability{f_2^* \leq \frac{g^*(\omega_1, \cdot)}{q}; A_{\omega_1}} {2} = \sprobability{A_{\omega_1}} {2} >0$ and in particular there exists $\omega_2 \in \lbrace f_2^* \leq \frac{g^*(\omega_1, \cdot)}{q} \rbrace \cap A_{\omega_1}$.  For such an
+$\omega_2$ we have 
+\begin{align*}
+q f_2^*(\omega_2) \leq g^*(\omega_1, \omega_2) < t < qr
+\end{align*}
+hence $f_2^*(\omega_2)<r$ which is a contradicts the fact that $(\omega_1,\omega_2) \in A$ implies $f_2^*(\omega_2)>r$.
+\end{proof}
+

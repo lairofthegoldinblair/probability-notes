@@ -89,12 +89,15 @@ it perfectly explicit; we will see it time and again.  If one looks at the contr
 sure convergence, it means that there is probability zero that a
 sequence of random elements does not converge.  The property of not
 converging is that there exists an $\epsilon >0$ such that for all $N
-> 0$, $d(\xi, \xi_n) \geq \epsilon$ for all $n > N$. Converting the
-logic in set operations, let $A_{N, \epsilon}$ be the event that 
-$d(\xi, \xi_n) \geq \epsilon$ for all $n > N$.  Convergence fails
-precisely on the event $\cup_{\epsilon > 0} \cap_{N=1}^\infty A_{N,
-  \epsilon}$, so almost sure convergence means that $\probability{\cup_{\epsilon > 0} \cap_{N=1}^\infty A_{N,
-  \epsilon}} = 0$.  TODO: Note that one can restrict $\epsilon$ to a
+> 0$, $d(\xi, \xi_n) \geq \epsilon$ for some $n \geq N$. Converting the
+logic in set operations, we see that convergence fails
+precisely on the event $\cup_{\epsilon > 0} \cap_{N=1}^\infty
+\cup_{n=N}^\infty \lbrace d(\xi, \xi_n) \geq \epsilon \rbrace$, so
+almost sure convergence means that 
+\begin{align*}
+\probability{\cup_{\epsilon > 0} \cap_{N=1}^\infty \cup_{n=N}^\infty \lbrace d(\xi, \xi_n) \geq \epsilon \rbrace} = 0
+\end{align*}  
+TODO: Note that one can restrict $\epsilon$ to a
 countable subset of $\reals$ (e.g. $\rationals$ or $\frac{1}{n}$).  Note that the same reasoning applies when handling
 almost sure Cauchy sequences as well.
 
@@ -134,6 +137,26 @@ In the opposite direction, let $A_\epsilon = \lbrace d(\xi_n, \xi) \geq
   measure zero.
 
 TODO: Fix inconsistency in use of $\geq$ and $>$.
+
+Perhaps a cleaner proof uses the equivalence $\xi_n \toas \xi$ if and only if 
+\begin{align*}
+\probability{\cup_{\epsilon > 0} \cap_{N=1}^\infty \cup_{n=N}^\infty \lbrace d(\xi, \xi_n) \geq \epsilon \rbrace} = 0
+\end{align*}  
+Thus if $\xi_n \toas \xi$ then by the definition of an event occuring infinitely often  and a union bound, for every
+$\epsilon > 0$, 
+\begin{align*}
+\probability{d(\xi_n, \xi) \geq  \epsilon \text{ i.o.}} &= 
+\probability{\cap_{N=1}^\infty \cup_{n=N}^\infty \lbrace d(\xi, \xi_n) \geq \epsilon \rbrace} 
+\leq \probability{\cup_{\epsilon > 0} \cap_{N=1}^\infty \cup_{n=N}^\infty \lbrace d(\xi, \xi_n) \geq \epsilon \rbrace} = 0
+\end{align*}
+
+In the other direction, if we know that $\probability{d(\xi_n, \xi) \geq  \epsilon \text{ i.o.}}=0$ for every $\epsilon>0$ note that 
+the events $\lbrace d(\xi_n, \xi) \geq  \epsilon \text{ i.o.} \rbrace$ are nested and therefore we can apply continuity of measure 
+Lemma \ref{ContinuityOfMeasure} to see that
+\begin{align*}
+\probability{\cup_{\epsilon > 0} \cap_{N=1}^\infty \cup_{n=N}^\infty \lbrace d(\xi, \xi_n) \geq \epsilon \rbrace} 
+&= \lim_{m \to \infty} \probability{\cap_{N=1}^\infty \cup_{n=N}^\infty \lbrace d(\xi, \xi_n) \geq \frac{1}{m} \rbrace} = 0
+\end{align*}
 
 To see the second equivalence, just unfold the definition of events
 happening infinitely often and use continuity of measure
@@ -603,7 +626,7 @@ applied to sums).
   $\expectation{\xi_n^2} < \infty$ for all $n>0$.  The for every
   $\epsilon > 0$, we have
 \begin{align*}
-\probability{\sup_n \abs{\sum_{k=1}^n \xi_k - \expectation{\xi_k}}
+\probability{\sup_n \abs{\sum_{k=1}^n \left ( \xi_k - \expectation{\xi_k} \right )}
   \geq \epsilon} < \frac{1}{\epsilon^2} \sum_{k=1}^\infty \variance{\xi_k}
 \end{align*}
 \end{lem}
@@ -682,57 +705,32 @@ sums of square integrable random variables with finite variance.
 We may clearly assume that $\expectation{\xi_n} = 0$ for all $n > 0$.
 Define $S_n = \sum_{k=1}^n \xi_k$.
 
-Before giving a proper proof, it might be worth looking a simple
-heuristic argument to give some intuition why this result should be
-true.  For every $N > 0$, 
-\begin{align*}
-\probability{\abs{\sum_{n=1}^\infty \xi_n} > N} &\leq
-\frac{\variance{\sum_{n=1}^\infty \xi_n}}{N^2} & & \text{by
-  Chebeshev's Inequality} \\
-&=\frac{\sum_{n=1}^\infty \expectation{\xi_n^2}}{N^2} & &\text{by
-  independence and zero mean}
-\end{align*}
-and therefore we know that 
-\begin{align*}
-\sum_{N=1}^\infty
-\probability{\abs{\sum_{n=1}^\infty \xi_n} > N} \leq \sum_{n=1}^\infty
-\expectation{\xi_n^2} \sum_{N=1}^\infty \frac{1}{N^2} < \infty
-\end{align*}
-so Borel Cantelli implies $\probability{\abs{\sum_{n=1}^\infty \xi_n}
-  > N \text{ i.o.}} = 0$ which implies almost
-sure convergence. The problem with this argument is that we have
-manipulated the series as if we knew it converged which is what we are
-trying to prove (is this really the problem, or is the problem that we
-are dealing with conditional convergence so showing the almost sure
-boundedness of the sum doesn't imply convergence; in that case this
-argument is completely irrelevant).  Kolmogorov's Maximal Inequality gives us a way to
-make a more rigorous argument.
-
-Pick $\epsilon > 0$ and for every $N > 0$ define $A_{N,\epsilon}= \lbrace
-\sup_{n > N} \abs{S_n - S_N} \geq \epsilon \rbrace$.  Applying Lemma \ref
-{KolmogorovMaximalInequality} to the sequence $\xi_n$ for $n=N+1, N+2,
+For every $\epsilon > 0$ and $N > 0$ define $A_{N,\epsilon}= \lbrace
+\sup_{n > N} \abs{S_n - S_N} \geq \epsilon \rbrace$.  Applying Kolmogorov's Maximal Inequality Lemma
+\ref{KolmogorovMaximalInequality} to the sequence $\xi_n$ for $n=N+1, N+2,
 \dots$, we know that
 \begin{align*}
-\probability{A_{N,\epsilon}} = \probability{\sup_{n > N} \abs{S_n - S_N} \geq
-  \epsilon} \leq \frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2}
+\probability{A_{N,\epsilon}} 
+&= \probability{\sup_{n > N} \abs{S_n - S_N} \geq  \epsilon} 
+=\probability{\sup_{n > N} \abs{\sum_{j=N+1}^n \xi_j} \geq  \epsilon} 
+\leq \frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2}
 \end{align*}
-and by the convergence of $\sum_{n=1}^\infty \expectation{\xi_n^2}$ we
-know that 
+By a union bound and the convergence of $\sum_{n=1}^\infty \expectation{\xi_n^2}$ we see
 \begin{align*}
-\lim_{N \to \infty} \probability{A_{N,\epsilon}} \leq \lim_{N\to \infty}
-\frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2} = 0
+\probability{\cap_{N=1}^\infty  A_{N,\epsilon}} 
+&\leq \lim_{N \to \infty} \probability{A_{N,\epsilon}} 
+\leq \lim_{N\to \infty} \frac{1}{\epsilon^2}\sum_{n=N+1}^\infty \expectation{\xi_n^2} 
+= 0
 \end{align*}
-which by subadditivity of measure tells us that $\probability{\cap_{N=1}^\infty
-  A_{N,\epsilon}} = 0$.  Now, for every $n>0$ define $B_n
+For every $n>0$ define $B_n
 =\cap_{N=1}^\infty A_{N,\frac{1}{n}}$, define $B = \cup_n B_n$  and note that by
 countable additivity of measure, $\probability{B} = 0$.  
 
-We show that $S_n$ converges for all $\omega \notin B$.  Pick $\omega \notin
-B$ .  Assume we are
-given $\epsilon > 0$ and pick $n>0$ such that $\frac{1}{n} < \epsilon$.  We know $\omega \notin B_n$ and
+We show that $S_n$ converges for all $\omega \notin B$.  Let $\omega \notin
+B$ and $\epsilon > 0$ be given and pick $n>0$ such that $\frac{1}{n} < \epsilon$.  We know $\omega \notin B_n$ and
 therefore for some $N>0$, $\omega \notin A_{N,\frac{1}{n}}$ which implies that  $\abs{S_k -
   S_N} < \frac{1}{n} < \epsilon$ for all $k > N$.  This shows that
-$S_n(\omega)$ is a Cauchy sequence for every $\omega \notin B$ and by
+$S_n(\omega)$ is a Cauchy sequence and by
 completeness of $\reals$ this shows that $S_n$ is almost surely convergent.
 
 Here is a more concise variant of the same basic argument.  Pick $\epsilon > 0$ and applying Lemma \ref

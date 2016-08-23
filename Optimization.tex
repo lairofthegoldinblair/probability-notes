@@ -113,7 +113,7 @@ which shows that $f$ is not sequentially lower semicontinuous at $x$.
 
 Compactness and sequential lower semicontinuity suffice to show that
 a function has a global minimizer.
-\begin{thm}Let $X$ be a topological space, let $f : X \to [-\infty,
+\begin{thm}\label{ExistenceGlobalMinimizerLowerSemicontinuous}Let $X$ be a topological space, let $f : X \to [-\infty,
   \infty]$ be a sequentially lower
   semicontinuous function and suppose that there exists $M \in \reals$
   such that $\lbrace x \in X \mid f(x) \leq M \rbrace$ is non-empty
@@ -834,6 +834,18 @@ in the hyperplane description.
 Absent constraint qualifications the KKT conditions are not implied at a local minimum as the following example shows
 \begin{examp}Consider the problem of minimizing $-x$ subject to $(x-1)^3 + y \geq 0$, $x \geq 0$ and $y \geq 0$.
 TODO:
+\end{examp}
+
+
+TODO:  How does the above theory about KKT need to be modified to
+handle the following example (namely the fact that the Shannon entropy isn't defined on an open
+set of the constraint set).  Maybe there is a $C^1$ extension of Shannon to $\reals^d$?  This example motivates one to consider exponential families of probability distributions.
+\begin{examp}\label{MaximumEntropyPrinciple}Consider a finite set $S=\lbrace 1, \dotsc, m \rbrace$ and a finite family
+of functions $\phi_j : S \to \reals$ for $j=1, \dotsc, n$.  Suppose we are given real number $\hat{\mu}_1, \dotsc, \hat{\mu}_n$ and 
+consider the optimization problem of finding the probability distribution $\pi = \lbrace p_1, \dotsc, p_m \rbrace$ on $S$ which satisfies
+$\sexpectation{\phi_j}{\pi} = \hat{\mu}_j$ and minimizes the Shannon entropy $H(\pi) = -\sum_{j=1}^m p_j \log p_j$ (where as usual we assume $0 \cdot \log 0 = 0$.
+The main point here is that there is a constant $c$ such that $p_j = c e^{\sum_{i=1}^n phi_i(j) \lambda_i^*}$ where $\lambda^*_j$ are Lagrange multipliers for the
+constraints $\sexpectation{\phi_j}{\pi} = \hat{\mu}_j$  in the optimization problem (presumably the $\hat{\mu}_j$ figure into the normalization constant $c$!).
 \end{examp}
 
 \section{Algorithms for Unconstrained Optimization}

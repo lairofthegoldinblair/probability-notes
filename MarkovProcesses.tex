@@ -124,16 +124,19 @@ for finite dimensional distributions of the process.
 \begin{proof}
 We begin by proving the first equality via induction.  The case $n=0$
 is true by definition.  The induction step is 
-really just a specific case of distintegration (Theorem 
-\ref{Disintegration}) applied to the Markov transition kernels.  Let $A
-\in \otimes_{i=0}^n \mathcal{S}$ then 
+really just a specific case of distintegration applied to the Markov transition kernels.  Let $A
+\in \otimes_{i=0}^n \mathcal{S}$ then apply Theorem 
+\ref{Disintegration} with $S=S$, $T=S^n$, $\mathcal{F}=\mathcal{F}_{t_{n-1}}$,
+$\nu=\mu_{t_{n-1}, t_n}(X_{t_{n-1}}, \cdot)$, $\xi = X_{t_n}$, $\eta=(X_{t_0},
+\dotsc,X_{t_{n-1}})$ and $f = \characteristic{A}$ and use the
+induction hypothesis to see
 \begin{align*}
 &\probability{(X_{t_0}, \cdots, X_{t_n}) \in A} \\
 &=\expectation{\characteristic{A}(X_{t_0}, \cdots, X_{t_n})} \\
 &=\expectation{\int \characteristic{A}(X_{t_0}, \cdots, X_{t_{n-1}},s)
   \, \mu_{t_{n-1}, t_n} (X_{n-1}, ds)} \\
 &=\int \left [ \int \characteristic{A}(u_0, \cdots,u_{n-1}, s)   \,
-  \mu_{t_{n-1}, t_n} (X_{n-1}, ds) \right ] \nu_{t_0} \otimes \cdots \otimes
+  \mu_{t_{n-1}, t_n} (u_{n-1}, ds) \right ] \nu_{t_0} \otimes \cdots \otimes
   \mu_{t_{n-2}, t_{n-1}}(du_0, \dotsc, du_{n-1})\\
 &=\nu_{t_0} \otimes \cdots \otimes  \mu_{t_{n-1}, t_{n}}(A)
 \end{align*}
@@ -308,7 +311,7 @@ $\nu$ and transition kernels $\mu_{s,t}$.
 \begin{proof}
 This is an application of the Daniell-Kolmogorov Theorem.  We first
 define the finite dimensional distributions and show that they form a
-projective family.  For every $n \in \naturals$ and $0 \leq t_1 \leq
+projective family.  For every $n \in \naturals$ and $0 =t_0 \leq t_1 \leq
 \dotsb \leq t_n$ we define
 \begin{align*}
 \nu_{t_1, \dotsc, t_n}(A) 
@@ -325,19 +328,17 @@ and calculate
 \begin{align*}
 &\nu_{t_1, \dotsc, t_n}(A_k) = ( \nu \mu_{0,t_1} \otimes \mu_{t_1, t_2}
 \otimes \dotsb \otimes \mu_{t_{n-1}, t_n})(A_k) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A_k}(s_1,
-    \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb
-\right] \, \mu_{t_1, t_2}(s_1, ds_2) \right ] \, \nu \mu_{0,
-t_1}(ds_1) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
-    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_1, t_2}(s_1, ds_2) \right ] \, \nu \mu_{0, t_1}(ds_1)
+&=\idotsint \characteristic{A_k}(s_1, \dotsc, s_n) \, 
+\mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \dotsb \mu_{t_1, t_2}(s_1, ds_2) \mu_{0,t_1}(s_0, ds_1) \nu(ds_0)\\
+&=\idotsint\characteristic{A}(s_1,  \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
+\mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \dotsb \mu_{t_1,  t_2}(s_1, ds_2) \mu_{0, t_1}(s_0, ds_1) \nu(ds_0)
 \end{align*}
 
-The point here is that the integral
-\begin{align*}
-\int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
-    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_k, t_{k+1}}(s_{k+1}, ds_{k+2}) 
-\end{align*}
+The crux of the matter is that the integral
+\begin{align}\label{ExistenceMarkovProcess:InnerIntegral}
+\idotsint \characteristic{A}(s_1, \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \, 
+\mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \mu_{t_{k+1}, t_{k+2}}(s_{k+1}, ds_{k+2}) 
+\end{align}
 is a function of $s_1, \dotsc, s_{k-1}, s_{k+1}$ only (i.e. it has no dependence on $s_k$).  From the Chapman-Kolmogorov relation
 $\mu_{t_{k-1}, t_k} \mu_{t_{k}, t_{k+1}}  = \mu_{t_{k-1}, t_{k+1}}$ we
 know that for any function of $f : S \to \reals$ we have 
@@ -348,16 +349,12 @@ f(s_{k+1}) \, \mu_{t_{k}, t_{k+1}} (s_k, ds_{k+1}) \right ] \, \mu_{t_{k-1}, t_k
 (s_{k-1}, ds_{k}) &= \int
 f(s_{k+1}) \, \mu_{t_{k-1}, t_{k+1}} (s_{k-1}, ds_{k+1}) 
 \end{align*}
-which when applied to the integral above with $s_1, \dotsc, s_{k-2}$ fixed yields
+which when applied to \eqref{ExistenceMarkovProcess:InnerIntegral} with $s_1, \dotsc, s_{k-1}$ fixed yields
 \begin{align*}
-&\int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
-    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
-    \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \, \mu_{t_{k-1},
-t_{k}}(s_{k-1}, ds_{k}) \\
-&=\int \left[ \dotsb \left [ \int \characteristic{A}(s_1,
-    \dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
-    \mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \right] \dotsb \right] \,
-\mu_{t_{k-1}, t_{k+1}}(s_{k-1}, ds_{k+1})
+&\idotsint \characteristic{A}(s_1,\dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
+\mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \dotsb \mu_{t_{k-1},t_{k}}(s_{k-1}, ds_{k}) \\
+&=\idotsint \characteristic{A}(s_1,\dotsc, s_{k-1}, s_{k+1}, \dotsc, s_n) \,
+\mu_{t_{n-1},t_n}(s_{n-1}, ds_n) \dotsb \mu_{t_{k-1}, t_{k+1}}(s_{k-1}, ds_{k+1})
 \end{align*}
 Now we can use this to conclude that 
 \begin{align*}
@@ -368,7 +365,7 @@ Now we can use this to conclude that
 \\
 &=\nu_{t_1, \dotsc, t_{k-1}, t_{k+1}, \dotsc, t_n}(A)
  \end{align*}
-and we have show that the $\nu_{t_1, \dotsc, t_n}$ are a projective
+and we have shown that the $\nu_{t_1, \dotsc, t_n}$ are a projective
 family.
 Now we can apply the Daniell-Kolmogorov Theorem
 \ref{DaniellKolmogorovExtension} to conclude that there is an $S$
@@ -391,14 +388,10 @@ expectation rule (Lemma \ref{ExpectationRule})
 \begin{align*}
 &\probability{ X_t \in B ; (X_{s_1}, \dotsc, X_{s_n}) \in A}  = \probability{(X_{s_1}, \dotsc, X_{s_n}, X_t) \in A \times B} =
 \nu_{s_1, \dotsc, s_n, t}(A \times B) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A}(u_1,
-    \dotsc, u_n) \characteristic{B}(u_{n+1})\, \mu_{s,t}(u_{n}, du_{n+1}) \right] \dotsb
-\right] \, \mu_{s_1, s_2}(u_1, du_2) \right ] \, \nu \mu_{0,
-s_1}(du_1) \\
-&=\int \left [ \int \left[ \dotsb \left [ \int \characteristic{A}(u_1,
-    \dotsc, u_n) \mu_{s,t}(u_{n}, B)\, \mu_{s_{n-1},s_n}(u_{n-1}, du_{n}) \right] \dotsb
-\right] \, \mu_{s_1, s_2}(u_1, du_2) \right ] \, \nu \mu_{0,
-s_1}(du_1) \\
+&=\idotsint \characteristic{A}(u_1, \dotsc, u_n) \characteristic{B}(u_{n+1})\, 
+\mu_{s,t}(u_{n}, du_{n+1})  \dotsb \mu_{s_1, s_2}(u_1, du_2)  \nu \mu_{0,s_1}(du_1) \\
+&=\idotsint \characteristic{A}(u_1,\dotsc, u_n) \mu_{s,t}(u_{n}, B)\, 
+\mu_{s_{n-1},s_n}(u_{n-1}, du_{n}) \dotsb \mu_{s_1, s_2}(u_1, du_2) \nu \mu_{0,s_1}(du_1) \\
 &=\expectation{ \mu_{s,t}(X_s, B) ; (X_{s_1}, \dotsc, X_{s_n}) \in A }
 \end{align*}
 Sets of the form $(X_{s_1}, \dotsc, X_{s_n}) \in A$ for $s_1 \leq
@@ -3126,7 +3119,7 @@ $B \times C \in \mathcal{S} \times \borel{[0,\infty)}$ and calculate as above an
 By Lemma \ref{UniquenessOfMeasure} probability measures are uniquely determined by values on a generating $\pi$-system it follows that 
 $\tilde{\mu}((x,t), A) = \tilde{\mu}((x,t+v), A+(0,v))$ for all $A \in \mathcal{S} \times \borel{[0,\infty)}$.
 
-Now can apply the Ionescu Tulcea Theorem ??? to see that for every probability measure $\nu$ on $T$ there
+Now can apply the Ionescu Tulcea Theorem \ref{IonescuTulceaExtension} to see that for every probability measure $\nu$ on $T$ there
 exists a probability measure $\probabilityop_\nu$ on $\Omega$ such that $Z_n$ is a discrete time Markov process
 with initial distribution, the transition kernel $\tilde{\mu}$ and the natural filtration $\mathcal{G}_n = \sigma(Z_0, Z_1, \dotsc, Z_n)$.
 
@@ -3427,7 +3420,8 @@ Instead of constructing a probability measure on the set of sequences $((x_0, t_
 we need to account for the fact that we may have only finitely many jumps.  This is done by allowing $t_n$ to be infinite with the provisions that
 when $t_n$ is infinite we must have $x_n = \Delta$ and that $t_{m}$ must be infinite for all $m \geq n$.  With this definition we should be able to relax
 the restriction that $c(x) > 0$.  We should look to see if we can prove that $\probability {\tau_n = \infty, Y_n = \Delta} = \probability{\tau_n = \infty}$ and
-$\probability {\tau_n = \infty, \tau_{n+1} = \infty} = \probability{\tau_n = \infty}$ after applying Ionescu-Tulcea.
+$\probability {\tau_n = \infty, \tau_{n+1} = \infty} =
+\probability{\tau_n = \infty}$ after applying Ionescu-Tulcea Theorem \ref{IonescuTulceaExtension}
 \end{proof}
 
 TODO: Kolmogorov Backward equation.

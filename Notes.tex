@@ -20,6 +20,9 @@
 \DeclareMathOperator*{\bplim}{bp-lim}
 \DeclareMathOperator*{\convexhullop}{conv}
 \DeclareMathOperator*{\Lip}{Lip}
+\DeclareMathOperator*{\loc}{loc}
+\DeclareMathOperator*{\Osc1}{Osc_{1}}
+\DeclareMathOperator*{\osc}{osc}
 
 \newtheorem{thm}{Theorem}[chapter]
 \newtheorem{cor}[thm]{Corollary}
@@ -47,15 +50,18 @@
 \newcommand{\cexpectation}[2]{\textbf{E}^{#1} #2} 
 \newcommand{\cexpectationlong}[2]{\textbf{E}\left[ #2 \mid #1 \right]} 
 \newcommand{\csexpectationlong}[3]{\textbf{E}_{#3}\left[ #2 \mid #1 \right]} 
+\newcommand{\oexpectation}[1]{\textbf{E}^*\left[#1\right]} 
+\newcommand{\oexpectationop}{\textbf{E}^*}
+\newcommand{\soexpectation}[2]{\textbf{E}^*_{#2}\left [#1 \right]} 
 \newcommand{\variance}[1]{\textbf{Var} \left (#1 \right )} 
 \newcommand{\covariance}[1]{\textbf{Cov} \left (#1 \right )} 
 \newcommand{\scovariance}[2]{\textbf{Cov} \left (#1, #2 \right )} 
 \newcommand{\probabilityop}{\textbf{P}} 
-\newcommand{\probability}[1]{\textbf{P}\{#1\}} 
-\newcommand{\sprobability}[2]{\textbf{P}_{#2}\{#1\}}
+\newcommand{\probability}[1]{\textbf{P}\left \{#1 \right \}} 
+\newcommand{\sprobability}[2]{\textbf{P}_{#2} \left \{#1 \right \}}
 \newcommand{\sprobabilityop}[1]{\textbf{P}_{#1}}
-\newcommand{\cprobability}[2]{\textbf{P}\{#2 \mid #1\}} 
-\newcommand{\csprobability}[3]{\textbf{P}_{#3}\{#2 \mid #1\}} 
+\newcommand{\cprobability}[2]{\textbf{P} \left \{#2 \mid #1 \right \}} 
+\newcommand{\csprobability}[3]{\textbf{P}_{#3} \left \{#2 \mid #1 \right \}} 
 \newcommand{\oprobability}[1]{\textbf{P}^*\{#1\}} 
 \newcommand{\characteristic}[1]{\textbf{1}_{#1}} 
 \newcommand{\pushforward}[2]{#2 \circ #1^{-1}} 
@@ -65,10 +71,10 @@
 \newcommand{\naturals}{\mathbb{N}} 
 \newcommand{\integers}{\mathbb{Z}} 
 \newcommand{\distribution}[1]{\textbf{P}^{#1}}
-\newcommand{\borel}[1]{\mathcal{B}(#1)} 
+\newcommand{\borel}[1]{\mathcal{B}(#1)}
 \newcommand{\abs}[1]{\left \vert #1 \right \vert}
 \newcommand{\ceil}[1]{\lceil #1 \rceil}
-\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
 \newcommand{\norm}[1]{\left \lVert #1 \right \rVert}
 \newcommand{\toprob}{\overset{P}\to}
 \newcommand{\toas}{\overset{a.s.}\to}
@@ -78,6 +84,7 @@
 \newcommand{\eqfdd}{\overset{f.d.d.}=}
 \newcommand{\eqdist}{\overset{d}=}
 \newcommand{\kldiv}[2]{D\left( #1 \mid\mid #2 \right)}
+\newcommand{\fdiv}[3]{D_{#3}\left( #1 \mid\mid #2 \right)}
 \newcommand{\sample}[1]{\boldsymbol{#1}}
 \newcommand{\range}[1]{\Re(#1)}
 \newcommand{\domain}[1]{\mathcal{D}(#1)}
@@ -95,6 +102,9 @@
 \newcommand{\shannon}[1]{H(#1)}
 \newcommand{\card}[1]{\cardfun(#1)}
 \newcommand{\exdet}[1]{\llbracket #1 \rrbracket}
+\newcommand{\net}[2]{\langle #1_{#2} \rangle}
+\newcommand{\tvnorm}[1]{\norm{ #1}_{tv}}
+\newcommand{\dual}[1]{{#1}^*}
 
 \begin{document}
 
@@ -146,7 +156,13 @@
 
 \include{StochasticApproximation}
 
+\include{GaussianProcesses}
+
+\include{EmpiricalProcesses}
+
 \include{GeneralTheoryOfProcesses}
+
+\include{MeanFieldModels}
 
 \section{Exercises}
 \begin{xca}Let $f : \reals \to \reals$ be a right continuous function,
@@ -598,6 +614,47 @@ likely) provide a
 counterexample on general (non-finite) measure spaces (e.g. Lebesgue measure on $\reals$).
 \end{proof}
 
+\begin{xca}\label{ConditionalIndependenceProductMeasures}Suppose we
+  are given a $\sigma$-algebra $\mathcal{F}$ and a finite collection of
+  random elements $\xi_1, \dots, \xi_n$ in measurable spaces
+  $S_1, \dots, S_n$ with regular conditional distributions given
+  $\mathcal{F}$ given by $\mu_1, \dots, \mu_n$.  The
+  $\xi_i$ are conditionally independent given $\mathcal{F}$ if and only if  $\mu_1 \otimes
+  \cdots \otimes \mu_n$ is a regular
+  conditional distribution of $(\xi_1,  \dots, \xi_n)$ given $\mathcal{F}$.
+\end{xca}
+\begin{proof}
+First note that by Lemma \ref{MeasurableMappingsOfMeasures} $(\mu_1, \dotsc, \mu_n) \mapsto \mu_1 \otimes \cdots \otimes \mu_n$ 
+is a measurable mapping from $\mathcal{P}(S_1) \times \cdots \times \mathcal{P}(S_n) \to \mathcal{P}(S_1 \times \cdots \times S_n)$ 
+and therefore by Lemma \ref{CompositionOfMeasurable} $\mu_1 \otimes \cdots \otimes \mu_n$ is a probability kernel.
+
+If we assume that joint regular conditional distribution of $\xi_i$ given $\mathcal{F}$ is $\mu_1 \otimes
+  \cdots \otimes \mu_n$ then clearly the $\xi_i$ are independent
+  given $\mathcal{F}$ since almost surely
+\begin{align*}
+\cprobability{\mathcal{F}}{\xi_1^{-1}(B_1) \cap \cdots \cap \xi_n^{-1}(B_n)} &=
+\cprobability{\mathcal{F}}{(\xi_1, \dots, \xi_n)^{-1}(B_1 \times \cdots \times B_n)}  \\
+&= (\mu_1 \otimes \cdots \otimes \mu_n)(B_1 \times \cdots \times B_n) \\
+&= \mu_1(B_1) \cdots \mu_n(B_n) \\
+&=\cprobability{\mathcal{F}}{\xi_1^{-1}(B_1)} \cdots \cprobability{\mathcal{F}}{\xi_n^{-1}(B_n)} \\
+\end{align*}
+
+On the other hand, if we assume that the $\xi_i$ are conditionally independent given $\mathcal{F}$ then
+by essentially the same calculation as above we have almost surely
+\begin{align*}
+ (\mu_1 \otimes \cdots \otimes \mu_n)(B_1 \times \cdots \times B_n) 
+&=\mu_1(B_1) \cdots \mu_n(B_n) \\
+&=\cprobability{\mathcal{F}}{\xi_1^{-1}(B_1)} \cdots \cprobability{\mathcal{F}}{\xi_n^{-1}(B_n)} \\
+&=\cprobability{\mathcal{F}}{\xi_1^{-1}(B_1) \cap \cdots \cap \xi_n^{-1}(B_n)} \\
+&=\cprobability{\mathcal{F}}{(\xi_1, \dots, \xi_n)^{-1}(B_1 \times \cdots \times B_n)}  \\
+\end{align*}
+Thus $\cprobability{\mathcal{F}}{(\xi_1, \dots, \xi_n) \in \cdot} =
+\mu_1 \otimes \cdots \otimes \mu_n$ on cylinder sets almost surely  which together
+with the finiteness of probability measures shows that
+they are equal almost surely by the uniqueness of product measure proved
+in Theorem \ref{Fubini}.  
+\end{proof}
+
 \begin{xca}Let $\xi_1, \xi_2, \dots$ be positive independent random
   variables, then $\sum_{n=1}^\infty \xi_n$ converges almost surely if
   and only if $\sum_{n=1}^\infty \expectation{\xi_n \wedge 1} <
@@ -611,7 +668,7 @@ Apply Tonelli's Theorem (Corollary \ref{TonelliIntegralSum}) to
 conclude $\expectation{\sum_{n=1}^\infty \xi_n \wedge 1} < \infty $
 which implies that $\sum_{n=1}^\infty \xi_n \wedge 1 < \infty$ almost
 surely.  For any $\omega \in \Omega$ such that $\sum_{n=1}^\infty
-\xi_n(\omega) \wedge 1 < \infty$ this implies $lim_{n \to \infty}
+\xi_n(\omega) \wedge 1 < \infty$ this implies $\lim_{n \to \infty}
 \xi_n(\omega) \wedge 1 = 0$ so there exists an $N_\omega > 0$ such
 that $\xi_n(\omega) \wedge 1 = \xi_n(\omega)$  for all $n>N_\omega$ 
 and therefore $\sum_{n=1}^\infty\xi_n(\omega) < \infty$ as
@@ -636,7 +693,7 @@ can assume $0 \leq \xi_n \leq 1$.
 which shows that $\sum_{n=1}^\infty \expectation{\xi_n} < \infty$.
 \end{proof}
 
-\begin{xca}\label{MeasurabilityKernelExtraParameter}Let $\mu : S \times \mathcal{T} to [0,1]$ be a probability kernel and let $f : U \times T \to \reals$ be measurable then $\int f(u, t) \, \mu(s, dt)$ is $\mathcal{U} \times \mathcal{S}$ measurable.
+\begin{xca}\label{MeasurabilityKernelExtraParameter}Let $\mu : S \times \mathcal{T} \to [0,1]$ be a probability kernel and let $f : U \times T \to \reals$ be measurable then $\int f(u, t) \, \mu(s, dt)$ is $\mathcal{U} \times \mathcal{S}$ measurable.
 \end{xca}
 \begin{proof}
 Assume first that $f$ is the characteristic function of a set $A \times B \in \mathcal{U} \otimes \mathcal{T}$.  Then 
@@ -725,7 +782,7 @@ disjointness of the $A_n$ that
 \end{align*}
 \end{proof}
 
-\begin{xca}Suppose $\xi$ is a random element in $S$ such that
+\begin{xca}\label{PushforwardRegularVersion}Suppose $\xi$ is a random element in $S$ such that
   $\cprobability{\mathcal{F}}{\xi \in \cdot}$ has a regular version
   $\nu$.  Let $f : S \to T$ be measurable.  Show that
   $\cprobability{\mathcal{F}}{f(\xi) \in \cdot}$ has a regular version

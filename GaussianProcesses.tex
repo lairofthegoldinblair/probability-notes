@@ -1,0 +1,327 @@
+\chapter{Gaussian Processes}
+
+Recall the definition of Gaussian processes Definition \ref{defn:GaussianProcess} and the fact that the distribution of a Gaussian process $X$ is uniquely 
+determined by the first and second moments $\expectation{X_t}$ and $\expectation{X_s X_t}$ (Lemma \ref{GaussianProcessMoments}).  In fact it is easy to use 
+the Daniell-Kolmogorov extension theorem to see that Gaussian processes always exist. 
+
+\begin{prop}\label{ExistenceGaussianProcess}Let $T$ be a set, $\mu : T \to \reals$ and $C : T \times T \to \reals$ be functions such that $C$ is symmetric and for every finite subset $I \subset T$ the restriction $C_I : I \times I \to \reals$ is positive semi-definite, then there exists a Gaussian process $X$ such that $\expectation{X_t} = \mu(t)$ and $\expectation{X_s X_t} = C(s,t)$.
+\end{prop}
+\begin{proof}
+For each finite subset $I = \lbrace t_1, \cdots, t_d \rbrace \subset T$ we let $\mu_I = (\mu(t_1), \cdots, \mu(t_d))$ and $Q_I$ be $d \times d$ matrix $Q_I(i,j) = C(t_i,t_j)$.  By assumption $Q_I$ is positive semidefinite and therefore there is an $N(\mu_I, Q_I)$ random vector on $\reals^I$.  By construction and Example \ref{LinearTransformationGaussian} applied to the projection $\pi : \reals^I \to \reals^J$ it follows that this defines a projective family of probability measures.  Now since $\reals$ is Borel space we may apply Theorem \ref{DaniellKolmogorovExtension}.
+\end{proof}
+
+\begin{defn}Let $\mu$ be a Borel probability measure on a Banach space $V$ then we say that $P$ is \emph{Gaussian} if $\pushforward{\lambda}{\mu}$ is a Gaussian measure on $\reals$ for every continuous linear functional $\lambda : V \to \reals$.
+\end{defn}
+
+\begin{defn}Let $H$ be a separable Hilbert space then an \emph{isonormal process} is a real valued process $X$ on $H$ such that $\expectation{X_v} = 0$ for all $v \in H$ and $\scovariance{X_v}{X_w} = \langle v, w \rangle$ for all $v,w \in H$.
+\end{defn}
+
+
+\begin{prop}\label{ExistenceIsonormalProcess}Let $H$ be a separable Hilbert space then an isonormal process on $H$ exists.
+\end{prop}
+\begin{proof}
+Let $\xi_1, \xi_2, \dotsc$ be a sequence of independent $N(0,1)$ random variables and let $v_1, v_2, \dotsc$ be an orthonormal basis of $H$.  For a general element $v \in H$ we define 
+$X_v = \sum_{n=1}^\infty \langle v, v_n \rangle \xi_n$.  Note that 
+\begin{align*}
+\sum_{n=1}^\infty \variance{\langle v, v_n \rangle \xi_n} 
+&= \sum_{n=1}^\infty  \langle v, v_n \rangle^2 = \norm{v}^2 < \infty
+\end{align*}
+and therefore by the Kolmogorov One-Series criterion Lemma \ref{VarianceCriterionSeries} and the independence of $\xi_n$ we see that $\sum_{n=1}^\infty \langle v, v_n \rangle \xi_n$ converges a.s.  In addition we have 
+\begin{align*}
+\lim_{n \to \infty} \expectation{\left( \sum_{j=n}^\infty \langle v, v_j \rangle \xi_j \right)^2} 
+&=\lim_{n \to \infty} \sum_{j=n}^\infty \langle v, v_j \rangle^2 = 0
+\end{align*}
+and therefore the series $\sum_{n=1}^\infty \langle v, v_n \rangle \xi_n$ converges in $L^2$ as well.
+
+To validate that $X$ defined in this way is isonormal we first calculate using Cauchy-Schwartz
+\begin{align*}
+\abs{\expectation{X_v} }
+&\leq \lim_{n \to \infty} \left[\abs{\expectation{\sum_{j=1}^n \langle v, v_j \rangle \xi_j}} + \abs{\expectation{\sum_{j=n+1}^\infty \langle v, v_j \rangle \xi_j}} \right] \\
+&\leq \lim_{n \to \infty} \expectation{\abs{\sum_{j=n+1}^\infty \langle v, v_j \rangle \xi_j}} \\
+&\leq \lim_{n \to \infty} \expectation{\left( \sum_{j=n+1}^\infty \langle v, v_j \rangle \xi_j \right )^2}^{1/2} = 0 \\
+\end{align*}
+
+TODO: Finish
+Also  by Parseval's Identity (TODO: Where is this)
+
+\begin{align*}
+\expectation{X_v X_w} 
+&= \sum_{j=1}^\infty \langle v, v_j \rangle \langle w, v_j \rangle = \langle v, w \rangle
+\end{align*}
+
+This also follows from Theorem \ref{ExistenceGaussianProcess} (without the assumption of separability in fact) once we observe that for every $v_1, \dotsc, v_d$ the matrix $\langle v_i, v_j \rangle$ is positive semidefinite; this in turn follows by noting that for every $a \in \reals^d$ be have 
+\begin{align*}
+\sum_{i,j = 1}^d a_i a_j \langle v_i, v_j \rangle &= \langle \sum_{i=1}^d a_i v_i, \sum_{i=1}^d  v_i \rangle \geq 0
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{LinearityIsonormalProcess} Let $X$ be an isonormal process on a Hilbert space $H$, $v, w \in H$ and $a \in \reals$ then $X_{av + w} = a X_v + X_w$ a.s. 
+\end{prop}
+\begin{proof}
+We calculate using simple algebra, the isonormal property to compute second moments and the bilinearity of the inner product,
+\begin{align*}
+&\expectation{(X_{av + w} - a X_v - X_w)^2} \\ 
+&= \lbrace av + w, av + w \rbrace + a^2 \langle v,v \rangle + \langle w, w \rangle - 2 \langle av + w, av \rangle - 2 \langle av + w, w \rangle - 2 \langle av, w \rangle \\
+&= 0
+\end{align*}
+\end{proof}
+
+Every Gaussian process law can be constructed using an auxilliary isonormal process.
+\begin{prop}\label{IsonormalRepresentationOfGaussian} Let $X$ be a centered Gaussian process on a probability space $(\Omega, \mathcal{A}, P)$, $L$ be an isonormal process on $L^2(\Omega, \mathcal{A}, P)$ and $Y_t = L_{X_t}$ then $X \eqdist Y$.
+\end{prop}
+\begin{proof}
+It is worth making sure one understands the construction; $X_t$ is a Gaussian random variable on the probability space $(\Omega, \mathcal{A}, P)$ and therefore $X_t \in L^2(\Omega, \mathcal{A}, P)$ and thus $L_{X_t}$ is a centered Gaussian random variable on some other probability space for which we haven't introduced notation.  In any case it is clear from the definition that $Y_t$ is a centered Gaussian process on that other probability space.  As for covariances
+\begin{align*}
+\expectation{Y_s Y_t} &= \expectation{L_{X_s}, L_{X_t}} = \langle X_s, X_t \rangle = \sexpectation{X_s X_t}{P}
+\end{align*}
+Now apply Lemma \ref{GaussianProcessMoments} to see that $X \eqdist Y$.
+\end{proof}
+
+A different but equivalent way of looking Proposition \ref{IsonormalRepresentationOfGaussian} is to consider the function 
+\begin{align*}
+d_X(s,t) &= \left( \expectation{(X_s - X_t)^2} \right)^{1/2} = \norm{X_s - X_t}_2
+\end{align*}
+It follows easily from properties of the $L^2$ norm (perhaps more pedantically the $L^2$ seminorm) that $d_X$ is a pseudometric on $T$.  Moreover by construction, the mapping $t \mapsto X_t$ from $(T,d_X)$ to $L^2(\Omega, \mathcal{A}, P)$ is isometric.  A subtle point is that viewing $X_t$ as an element in $L^2(\Omega, \mathcal{A}, P)$ is viewing $X_t$ as an equivalence class of random variables rather than a random variable; what really want is to use the seminormed space $\mathcal{L}^2(\Omega, \mathcal{A}, P)$.
+
+TODO: Show that we can construct Brownian motion quickly using an
+isonormal process and Kolomogorov-Centsov.
+
+\section{Fernique's Theorem}
+
+\begin{thm}Let $\mu$ be a Gaussian law on a separable Banach space $V$, for each $\lambda \in \dual{V}$ define $\sigma^2(\lambda) = \int \lambda^2(v) \, \mu(dv)$ then $\tau^2 = \sup \lbrace \sigma^2(\lambda) \mid \norm{\lambda} \leq 1 \rbrace < \infty$ and 
+\begin{align*}
+\int \exp\left( \alpha \norm{v}^2 \right) \, \mu(dv) &< \infty \text{ for each $\alpha < 1/(2\tau^2)$}
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{defn}A vector space $V$ with a $\sigma$-algebra $\mathcal{V}$ such that addition is $\mathcal{V} \otimes \mathcal{V}/\mathcal{V}$-measurable and scalar multiplication is 
+$\mathcal{B}(\reals) \otimes \mathcal{V} / \mathcal{V}$-measurable is said to be a \emph{measurable vector space}.
+\end{defn}
+
+\begin{defn}A probability measure $\mu$ on a measurable vector space $(V, \mathcal{V})$ is said to be a \emph{centered Gaussian law} if given any two independent random elements $\xi$ and $\eta$ in $V$ with distribution $\mu$ and any $0 < \theta < 2\pi$ the random elements $\xi \cos \theta + \eta \sin \theta$ and $- \xi \sin \theta + \eta \cos \theta$ are independent and have distribution $\mu$.
+\end{defn}
+
+TODO: Does this definition generalize the previous definition of a Gaussian measure on a Banach space?
+
+\begin{lem}A centered Gaussian law $\mu$ on $(\reals, \mathcal{B}(\reals))$ is $N(0,\sigma^2)$ for some $\sigma^2 \geq 0$.
+\end{lem}
+\begin{proof}
+\begin{clm} The measure $\mu \otimes \mu$ is invariant under rotations.  
+\end{clm}
+Let $\xi$ and $\eta$ be independent with law $\mu$; then the law of $(\xi, \eta)$ is $\mu \otimes \mu$ (Lemma \ref{IndependenceProductMeasures}).  Let $R_\theta$ be rotation by the angle $\theta$
+then for any $A \in \mathcal{B}(\reals \times \reals)$,
+\begin{align*}
+\mu \otimes \mu (R_\theta A) &= \probability{(\xi, \eta) \in R_\theta A} = \probability{R_{2 \pi - \theta} (\xi, \eta) \in A} = \probability{ (\xi, \eta) \in A} = \mu \otimes \mu(A)
+\end{align*}
+
+Now for any $A \in \mathcal{B}(\reals)$ apply rotation through the angle $\pi$ to see that 
+\begin{align*}
+\mu(A) &= (\mu \otimes \mu)(\reals \times A) = (\mu \otimes \mu)(\reals \times -A) = \mu(-A)
+\end{align*}
+and it follows that $\mu$ is symmetric and therefore we know the characteristic function $\hat{\mu}(t)$ is real valued.  Furthermore given an 
+arbitrary $(t,u) \in \reals^2$ there exists $\theta$ such that $R_\theta \begin{bmatrix}  t \\ u \end{bmatrix} = \begin{bmatrix} \sqrt{t^2 + u^2} \\ 0 \end{bmatrix}$ and therefore
+applying Theorem \ref{IndependenceProductCharacteristicFunctions}, Lemma \ref{CharacteristicFunctionOfAffineTransform} and Theorem \ref{CharacteristicFunctionBoundedAndContinuous}
+\begin{align*}
+\hat{\mu}(t) \hat{\mu}(u) &= \widehat{\mu \otimes \mu} (t,u) = \widehat{\pushforward{R_{2\pi - \theta}}{\mu \otimes \mu}} (t,u) \\
+&=\widehat{\mu \otimes \mu} \left (R_\theta \begin{bmatrix} t \\ u \end{bmatrix} \right ) = \widehat{\mu \otimes \mu} (\sqrt{t^2 + u^2}, 0) = \mu(\sqrt{t^2 + u^2})
+\end{align*}
+
+\begin{clm}$\hat{\mu}(t) > 0$ for all $t$
+\end{clm}
+Since $\hat{\mu}(t) = \hat{\mu}(-t)$ it suffices to assume $t \geq 0$ and in this case we may write 
+\begin{align*}
+\hat{\mu}(t) = \hat{\mu}(\sqrt{(t/\sqrt{2})^2 + (t/\sqrt{2})^2}) = \left(\hat{\mu}(t/\sqrt{2})\right)^2 \geq 0
+\end{align*}
+
+If $\hat{\mu}(t) = 0$ for some $t \geq 0$ then let $t_0 = \inf \lbrace t > 0 \mid \hat{\mu}(t) = 0 \rbrace$.  By continuity of $\hat{\mu}$ it follows that
+$\hat{\mu}(t_0) = 0$.  For all $u \geq t_0$ we have 
+\begin{align*}
+\hat{\mu}(u) &= \hat{\mu}(\sqrt{t_0^2 + (\sqrt{u^2 - t_0^2})^2}) = \hat{\mu}(t_0) \hat{\mu}(\sqrt{u^2 - t_0^2}) = 0 
+\end{align*}
+If $t_0 > 0$ then for $0 \leq u < t_0$ we know that 
+\begin{align*}
+\hat{\mu}(u) \hat{\mu}(\sqrt{t_0^2 - u^2}) &= \hat{\mu}(\sqrt{u^2 + (\sqrt{t_0^2 - u^2})^2}) = \hat{\mu}(t_0) = 0
+\end{align*}
+which shows that either $\hat{\mu}(u)=0$ or $\hat{\mu}(\sqrt{t_0^2 - u^2})=0$ which contradicts the minimality of $t_0$.  Therefore we know that $t_0=0$ which in turn
+contradicts the fact that $\hat{\mu}(0) = 1$ and therefore we know that $\hat{\mu} (t) > 0$ for all $t$.
+
+By the previous claim we may define $h(t) =  \log \hat{\mu}(\sqrt{t})$ for $t \geq 0$ and note that $h$ is continuous, $h(0) = 0$ and for $t,u \geq 0$,
+\begin{align*}
+h(t+u) &= \log \hat{\mu}(\sqrt{\sqrt{t}^2 + \sqrt{u}^2}) = \log \hat{\mu}(\sqrt{t}) + \log \hat{\mu}(\sqrt{u}) = h(t) + h(u)
+\end{align*}
+By a simple induction, for every $t \geq 0$ and $n \in \naturals$ we have $h(nt) = nh(t)$.  For every rational $p/q \geq 0$ and $t \geq 0$ we have
+\begin{align*}
+h(\frac{p}{q} t) &= p h(\frac{t}{q}) = \frac{p}{q} q h(\frac{t}{q})  = \frac{p}{q} h(t)
+\end{align*}
+Lastly for every $c \geq 0$ and $t \geq 0$ choose positive rationals $q_n$ such that $c = \lim_{n\to \infty} q_n$ and we have by continuity of $h$ at $c t$, 
+\begin{align*}
+h(ct) = \lim_{n \to \infty} h(q_n t) = h(t) \lim_{n \to \infty} q_n = c h(t)
+\end{align*}
+In particular, for every $t \geq 0$ we have $h(t) = h(1) t$.  From this it shows us that for $t \geq 0$ we have $\hat{\mu}(t) = e^{ct^2}$ and because $\hat{\mu}(t)=\hat{\mu}(-t)$ it follows that
+$\hat{\mu}(t) = e^{ct^2}$ for all $t$.  Since $0 < \hat{\mu}(t) \leq 1$ it follows that $c < 0$ and we may write $\hat{\mu}(t) = e^{-\sigma^2 t^2}$. By Theorem \ref{GlivenkoLevyContinuity} and Example \ref{FourierTransformGaussian} we see that $\mu$ is $N(0, \sigma^2)$.  
+\end{proof}
+
+\begin{thm}\label{CenteredGaussian01}Let $(V, \mathcal{V})$ be a measurable vector space, $\mu$ a centered Gaussian law  and let $W \subset V$ be a subspace then either $\mu(W)=0$ or $\mu(W) =1 $.
+\end{thm}
+\begin{proof}
+Let $\xi$ and $\eta$ be independent random elements in $V$ with distribution $\mu$.  For each $0 \leq \theta \leq \pi/2$ let 
+\begin{align*}
+A_\theta &= \lbrace \xi \cos \theta + \eta \sin \theta \in W \text{ and } -\xi \sin \theta + \eta \cos \theta \notin W \rbrace
+\end{align*}
+Now let $0 \leq \phi < \theta \leq \pi/2$ and note that $\cos \theta \sin \phi - \sin \theta \cos \phi = \sin (\phi - \theta) \neq 0$ therefore the matrix
+\begin{align*}
+B_{\theta, \phi} &= \begin{bmatrix}
+\cos \theta & \sin \theta \\
+\cos \phi & \sin \phi
+\end{bmatrix}
+\end{align*}
+is invertible.  If $\omega \in A_\theta \cap A_\phi$ with $\theta \neq \phi$ then there exist random elements $v, w \in W$ such that
+\begin{align*}
+\begin{bmatrix}
+\xi (\omega) \\
+\eta(\omega)
+\end{bmatrix}
+&= B_{\theta, \phi}^{-1} 
+\begin{bmatrix}
+v (\omega) \\
+w (\omega)
+\end{bmatrix}
+\in W
+\end{align*}
+But this contradicts the conditions $-\xi(\omega) \sin \theta + \eta(\omega) \cos \theta \notin W$ and $-\xi(\omega) \sin \phi + \eta(\omega) \cos \phi \notin W$ thus it follows
+that $A_\theta \cap A_\phi = \emptyset$ for $\theta \neq \phi$.  Since $\mu$ is centered Gaussian it follows that $\probability{A_\theta}$ is independent of $0 \leq \theta \leq \pi/2$.  Since there are an infinite number of equiprobable disjoint sets $A_\theta$ it follows that $\probability{A_\theta} = 0$ for all $0 \leq \theta \leq \pi/2$.
+Choosing $\theta = 0$ we can also compute using the independence of $\xi$ and $\eta$,
+\begin{align*}
+0 &= \probability {A_0} = \probability{\xi \in W; \eta \notin W} = \probability{\xi \in W} \probability{\eta \notin W} = \mu(W) \mu(V \setminus W)
+\end{align*}
+thus $\mu(W) = 0$ or  $\mu(W) = 1$.
+\end{proof}
+
+\begin{defn}Let $(V, \mathcal{V})$ be a measurable vector space and let $\norm{\cdot} : V \to [0,\infty]$ be measurable.  We say $\norm{\cdot}$ is a \emph{pseudo-seminorm} if $W = \lbrace v \mid \norm{v} < \infty \rbrace$ is a vector subspace of $V$ and if $\norm{\cdot}$ is a seminorm when restricted to $W$.  
+\end{defn}
+
+\begin{lem}\label{lem:FerniqueLemma}Let $(V, \mathcal{V})$ be a measurable vector space, $\mu$ a centered Gaussian law and  pseudo-seminorm $\norm{\cdot}$ such that $\mu(\norm{\cdot} < \infty) >0$.  The for some 
+$\epsilon > 0$ we have
+\begin{align*}
+\int \exp\left( \alpha \norm{x}^2 \right) \, \mu(dx) &< \infty \text{ for all $0 < \alpha < \epsilon$}
+\end{align*}
+\end{lem}
+\begin{proof}
+By Lemma \ref{CenteredGaussian01} we conclude $\mu(\norm{\cdot} < \infty) =1$.  
+Let $W = \lbrace \norm{\cdot} < \infty \rbrace \subset V$.  By the triangle inequality for $v,w \in W$ we have $\norm{v+w} = \norm{v-w + 2w} \leq \norm{v-w} + 2 \norm{w}$ and symmetrically with the roles of $v$ and $w$ reversed so 
+\begin{align}\label{lem:FerniqueLemma:NormInequality}
+\norm{v+w} - \norm{v-w} \leq 2(\norm{v} \minop \norm{w})
+\end{align}
+Let $\xi$ and $\eta$ be independent random elements in $V$ with distribution $\mu$.  
+\begin{clm}For all $s,t$ we have 
+\begin{align*}
+\mu(\norm{\cdot} \leq s)\mu(\norm{\cdot} > t)
+&\leq\mu \left( \norm{\cdot} > (t-s)/\sqrt{2}\right)^2
+\end{align*}
+\end{clm}
+Apply the definition of centered Gaussian law with $\theta = 7\pi/4$, \eqref{lem:FerniqueLemma:NormInequality}, $\mu(W)=1$ and independence of $\xi$ and $\eta$ to conclude 
+\begin{align*}
+&(\mu \otimes \mu)(\lbrace \norm{\cdot} \leq s \times \lbrace \norm{\cdot} > t) 
+=\probability{\norm{\xi} \leq s; \norm{\eta} > t} \\
+&=\probability{\norm{(\xi-\eta)/\sqrt{2}} \leq s; \norm{(\xi+\eta)/\sqrt{2}} > t} \\
+&=\probability{\norm{(\xi-\eta)/\sqrt{2}} \leq s; \norm{(\xi+\eta)/\sqrt{2}} > t; \xi \in W; \eta \in W} \\
+&=\probability{\norm{(\xi-\eta)/\sqrt{2}} \leq s; \norm{(\xi+\eta)/\sqrt{2}} > t; \sqrt{2} \norm{\xi} > t-s; \sqrt{2} \norm{\eta} > t-s; \xi \in W; \eta \in W} \\
+&\leq \probability{\sqrt{2} \norm{\xi} > t-s; \sqrt{2} \norm{\eta} > t-s} \\
+&=\probability{\sqrt{2} \norm{\xi} > t-s} \probability{ \sqrt{2} \norm{\eta} > t-s} \\
+&=\mu \left( \norm{\cdot} > (t-s)/\sqrt{2}\right)^2
+\end{align*}
+
+Since $\lim_{s \to \infty} \mu(\norm{\cdot} \leq s) = \mu(\norm{\cdot} < \infty ) = 1$ we may pick an $0 < s < \infty$ such that $\mu(\norm{\cdot} \leq s) > 1/2$.  Define
+\begin{align*}
+q &=\mu(\norm{\cdot} \leq s)
+\end{align*}
+For $n \in \integers_+$ define
+\begin{align*}
+t_n &= \left(2^{1/2} +1 \right) \left( 2^{(n+1)/2} - 1 \right) s
+\end{align*}
+noting that $t_0 = s$ and $t_{n+1} = s + 2^{1/2} t_n$.  Define 
+\begin{align*}
+x_n &= \mu(\norm{\cdot} > t_n)/q
+\end{align*}
+and observe that by the previous claim we have for all $n \in \integers_+$,
+\begin{align*}
+\mu(\norm{\cdot} > t_{n+1}) &\leq \mu \left( \norm{\cdot} > (t_{n+1}-s)/\sqrt{2}\right)^2/\mu(\norm{\cdot} \leq s)
+=\mu(\norm{\cdot} > t_{n}/q
+\end{align*}
+thus $x_{n+1} \leq x_n^2 \leq x_0^{2^{n+1}} = \left((1-q)/q\right)^{2^{n+1}}$; equivalently
+\begin{align}\label{lem:FerniqueLemma:NormTailBound}
+\mu(\norm{\cdot} > t_{n+1}) &\leq q \left((1-q)/q\right)^{2^{n+1}}
+\end{align}
+
+
+Now use \eqref{lem:FerniqueLemma:NormTailBound} to bound the integral
+\begin{align*}
+&\int \exp \left( \alpha \norm{x} \right) \, \mu(dx) 
+=\int_{\norm{x} \leq s} \exp \left( \alpha \norm{x} \right) \, \mu(dx) + \sum_{n=0}^\infty \int_{t_n < \norm{x} \leq t_{n+1}} \exp \left( \alpha \norm{x} \right) \, \mu(dx) \\
+&\leq q e^{\alpha s} + \sum_{n=0}^\infty \mu(t_n < \norm{\cdot} \leq t_{n+1}) e^{\alpha t_{n+1}} \\
+&\leq q e^{\alpha s} + \sum_{n=0}^\infty \mu(\norm{\cdot} > t_n) e^{\alpha t_{n+1}} \\
+&\leq q e^{\alpha s} + \sum_{n=0}^\infty q  \left((1-q)/q\right)^{2^{n}} \exp\left(\alpha \left(2^{1/2} +1 \right)^2 \left( 2^{(n+2)/2} - 1 \right)^2 s^2 \right) \\
+&= q e^{\alpha s} + q  \sum_{n=0}^\infty \exp\left(2^n \left( \log \left((1-q)/q\right) + \alpha \left(2^{1/2} +1 \right)^2 \left(2 - 2^{-n/2} \right)^2 s^2 \right) \right) \\
+&\leq q e^{\alpha s} + q  \sum_{n=0}^\infty \exp\left(2^n \left( \log \left((1-q)/q\right) + 4 \alpha \left(2^{1/2} +1 \right)^2 s^2 \right) \right) \\
+\end{align*}
+The series converges when 
+\begin{align*}
+\log \left((1-q)/q\right) + 4 \alpha \left(2^{1/2} +1 \right)^2 s^2 < 0
+\end{align*}
+which is to say for all $0 < \alpha < \frac{\log((q-1)/q)}{4 \left(2^{1/2} +1 \right)^2 s^2}$.
+\end{proof}
+
+The Fernique inequality will be a corollary of the following
+\begin{thm}Let $(V, \mathcal{V})$ be a measurable vector space with a centered Gaussian law $\mu$, $y_n$ a sequence of linear forms $lambda_n : V \to \reals$ and $\norm{v} = \sup_{n} \abs{\lambda_n(v)}$.  Then $\norm{\cdot}$ is a pseudo-seminorm and if $\mu(\norm{\cdot} < \infty) > 0$ then $\tau := \sqrt{\sup_n \int \lambda_n^2(v) \, \mu(dv)} < \infty$ and 
+\begin{align*}
+\int \exp(\alpha \norm{v}) \, \mu(dv) < \infty \text{ if and only if $\alpha < 1/(2\tau^2)$}
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
+
+Here is a very clean proof of the uniqueness of a solution to the Cauchy functional equation with non-negativity constraints;
+\begin{prop}The only solutions to the functional equation $f(x+y) = f(x) + f(y)$ for functions $f : [0,\infty) \to [0, \infty)$ are of the form  $f(x) = cx$.
+\end{prop}
+\begin{proof}
+Note that for $0 \leq x \leq y$ we have 
+\begin{align*}
+f(y) &= f(x + y - x) = f(x) + f(y-x) \geq f(x)
+\end{align*}
+hence $f$ is monotonic.  
+
+Now by a simple induction we know that for every $x \geq 0$ we have $f(nx) = nf(x)$ for all $n \in\naturals$.  Now for arbitrary $x \geq 0$ and $n \in \naturals$ combine these facts to see
+$f(\floor{nx}) \leq f(nx) \leq f(\ceil{nx})$ and therefore $\floor{nx} f(1) \leq n f(x) \leq \ceil{nx} f(1)$.  Now divide by $n$ and take the limit as $n \to \infty$ to see
+\begin{align*}
+f(1) x &= \lim_{n \to \infty} f(1)\frac{\floor{nx}}{n} \leq f(x) \leq f(1) \lim_{n \to \infty} \frac{\ceil{nx}}{n} = f(1) x
+\end{align*}
+hence $f(x) = f(1) x$.
+\end{proof}
+
+Here is the proof of the uniqueness of solutions to  the functional equation $f(x+y) = f(x) f(y)$ under a continuity assumption (it reduces to the proof of uniqueness of the Cauchy functional equation):
+\begin{proof}
+First observe that $f(x) > 0$ for all $x \in \reals$.  Suppose $f(x) = 0$ for some $x$; then for arbitrary $y$ we have $f(y) = f(x) f(y - x) = 0$.  Now from 
+$f(x) = f(x/2)^2$ we conclude that $f(x) > 0$ for all $x$.  From $f(x) = f(x+0) = f(x) f(0)$ we see that $f(0) = 1$.
+By the positivity of $f$ we can now define $g(x) = \log (f(x))$ which satisfies the Cauchy functional equation $g(x+y) = g(x) + g(y)$.  
+By a simple induction we know that $g(nx) = ng(x)$ for all $n \in \integers_+$.  From $0 = g(0) = g(x - x) = g(x) + g(-x)$ we see that $g(-x) = -g(x)$ and it follows that $g(nx) = n g(x)$ for all $n \in \integers$.  For an arbitrary rational number $p/q$ we get 
+\begin{align*}
+g(\frac{p}{q} x) = p g(\frac{x}{q}) = \frac{p}{q} q g(\frac{x}{q}) = \frac{p}{q} g(x)
+\end{align*}
+Lastly suppose that $g(x)$ is continuous (right or left continuity suffices) at $x_0$ then for arbitrary $c \in \reals$ we can take a sequence of non-zero rationals $q_n$ such that $q_n \to c$ and it follows that $g(cx_0) = \lim_{n \to \infty} q_n g(\frac{c}{q_n} x_0) = c g(x_0)$.    If $x_0 \neq 0$ then $g(cx) = g(\frac{cx}{x_0} x_0) = \frac{cx}{x_0} g(x_0) = cg(x)$ for all $x, c$.  If $x_0 = 0$ then $g(c x) = \lim_{n \to \infty} q_n g(x) + g((c-q_n) x) = c g(x)$ for all $x,c \in \reals$.  It follows that $g(x) = g(1) x$ for all $x$.
+\end{proof}
+
+TODO: It actually suffices to assume that $f$ is measurable; how to see that?
+This relies on the following fact that we'll prove later.
+\begin{clm}If $A \subset \reals$ has positive Lebesgue measure then $A - A = \lbrace x - y \mid x,y \in A \rbrace$ is a open neighborhood of $0$.
+\end{clm}
+
+By the above proof it suffices to show that a measurable $f$ satisfying $f(x+y) = f(x) + f(y)$ is continuous at $0$. Let $U$ be an open neighborhood of $0$.  Choose an open set $V \subset U$ such that $V - V \subset U$.  Let $q_1, q_2, \dotsc$ be an enumeration of $\rationals$ and by openness of $V$ we have $\reals = \cup_{n=1}^\infty q_n + V$ and therefore by Lemma \ref{SetOperationsUnderPullback} 
+\begin{align*}
+\cup_{n=1}^\infty f^{-1}(q_n + V) &= f^{-1} \left(\cup_{n=1}^\infty q_n + V \right ) = f^{-1}(\reals) = \reals
+\end{align*}
+Each $q_n + V$ is measurable and since  $\reals =\cup_{n=1}^\infty f^{-1}(q_n + V)$ there exists and $n$ such that $W =  f^{-1}(q_n + V)$ has positive measure.  From the claim it follows that $W - W$ is a open neighborhood of $0$.  Since $f$ is additive it follows that $W-W \subset V - V \subset f^{-1}(U)$ (write $x,y \in W$ as $x=q_n+v$ and $y=q_n+w$ then $x-y=v-w \in V - V$).  
+

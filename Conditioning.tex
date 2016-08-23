@@ -1181,8 +1181,10 @@ involving kernels.  It is a type of ``twisted'' product construction.
 d\nu(s,t,du) \, d\mu(s, dt)
 \end{align*}
 We also have the special restriction $\mu \nu : S \times 
-  \mathcal{U} \to [0,1]$ defined by $\mu \nu(s, B) = \mu \otimes
-  \nu(s, T \times B)$.
+  \mathcal{U} \to [0,1]$ defined by 
+\begin{align*}
+\mu \nu(s, B) &= \mu \otimes  \nu(s, T \times B) = \iint \nu(s,t,B) \, d\mu(s, dt)
+\end{align*}
 \end{defn}
 
 The fact that this construction defines a probability kernel is the
@@ -1260,6 +1262,16 @@ d\nu(s,t,du)$ is $\mathcal{S} \otimes \mathcal{T}$-measurable.  Now
 apply (i) again to conclude that $\mu \otimes \nu (A) (s)$ is $\mathcal{S}$-measurable.
 \end{proof}
 
+TODO: There should be a ``twisted'' Fubini Theorem for kernels that says
+\begin{align*}
+\iint f(y,z) \, (\mu \otimes \nu)(x, dy, dz) &= \iint f(y,z) \,\nu(x,y,dz) \mu(x, dy)
+\end{align*}
+which should certainly be true of probability and finite kernels.  Given that Fubini is not true for 
+non $\sigma$-finite measures then presumably the result above will not hold for that case either (in fact
+I haven't yet been through the exercise of figuring out exactly where we use the finiteness of measures in
+the kernel results presented).  To be honest, I am sure I have used this twisted Fubini result without mention
+elsewhere.
+
 \begin{examp}\label{ProbabilityKernelProductFiniteSampleSpace}
 This continues Example \ref{ProbabilityKernelFiniteSampleSpace}.  For finite probability spaces $S$, $T$ and $U$ a probability kernel
 $\mu : S  \to \mathcal{P}(T)$ is a stochastic matrix $\mu_{s,t}$ and a
@@ -1291,6 +1303,13 @@ $u \in U$ and we get
 &= \sum_{t \in T} \mu_{s,t} \nu_{s,t,u} 
 \end{align*}
 so the product $\mu \nu$ is simply the matrix product.
+\end{examp}
+
+\begin{examp}
+Let $(S, \mathcal{S})$ be a measurable space and let $f : S \to
+[0,\infty)$ be a bounded measurable function.  Let $\mu : S \times \mathcal{S} \to [0,\infty)$ be defined by 
+$\mu(x, A) = f(x) \delta_x(A)$, then $\mu$ is a kernel (not a probability kernel however).  Measurability of $\mu(x,A)$ for 
+fixed $A$ follows immediately from the measurability of $f(x)$ and the measurability of $A$ (apply Proposition \ref{prop:SimpleFunctions} noting $\delta_x(A) = \characteristic{A}(x)$).
 \end{examp}
 
 It shall also be useful to show that we can construct a parameterized
@@ -1841,3 +1860,64 @@ this?) we can conclude
 \end{proof}
 
 
+\section{Applications}
+
+\subsection{A Bootstrap Central Limit Theorem}
+
+TODO: Give some description of the Bootstrapping procedure of Efron.
+
+Let $\xi_1, \dotsc, \xi_n$ be an independent random sample from the distribution of the random vector $\xi$.  
+\begin{thm}
+Let $\xi, \xi_1, \xi_2, \dotsc$ be i.i.d. random vectors in $\reals^d$
+with $\expectation{\xi^2} < \infty$, for
+every $n \in \naturals$ let $\xi^B_{n1}, \dotsc, \xi^B_{nn}$ be
+conditionally i.i.d. relative to $\xi_1, \dotsc, \xi_n$ with 
+\begin{align*}
+\cprobability{\xi_1, \dotsc, \xi_n}{\xi^B_{nj} \in \cdot} &= \frac{1}{n} \sum_{j=1}^n \delta_{\xi_j} \text{ for all $1 \leq j \leq n$}
+\end{align*}
+Let $\overline{\xi}_n = \frac{1}{n} \sum_{j=1}^n \xi_j$ and $C = \covariance{\xi}$ then almost surely
+\begin{align*}
+\cprobability{\xi_1, \dotsc, \xi_n}{\frac{1}{\sqrt{n}} \sum_{j=1}^n \left( \xi^B_{nj} - \overline{\xi}_n \right) } \todist N(0, C)
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO: Reduce to the case $d=1$ and $\expectation{\xi} = 0$.  Dispense with the case of $\expectation{\xi^2} = 0$ (i.e. $\xi = 0$ a.s.).
+
+Having reduced to the case in which $\expectation{\xi}=0$, $\expectation{\xi^2}=\sigma^2$ with $0 < \sigma < \infty$ we define the sample standard deviation
+\begin{align*}
+s^\prime_n &= \frac{1}{\sqrt{n}} \left( \sum_{j=1}^n \left( \xi_j - \overline{\xi}_n \right)^2 \right)^{1/2} = \left( \frac{1}{n} \sum_{j=1}^n \xi^2_j - \overline{\xi}^2_n \right)^{1/2}
+\end{align*}
+Applying the Strong Law of Large Numbers Theorem \ref{SLLN} to the $\xi_n$  and $\xi^2_n$ we know that almost surely
+\begin{align*}
+\lim_{n \to \infty} (s^\prime_n)^2 &=\lim_{n \to \infty} \frac{1}{n} \sum_{j=1}^n (\xi_j - \overline{\xi}_n)^2 \\
+&=\lim_{n \to \infty} \frac{1}{n} \sum_{j=1}^n \xi^2_j - \left(\lim_{n \to \infty} \overline{\xi}_n\right)^2 = \sigma^2
+\end{align*}
+
+Also we have by Theorem \ref{Disintegration}
+\begin{align*}
+\cexpectationlong{\xi_1, \dotsc, \xi_n} { (\xi^B_{nj} - \overline{\xi}_n)} &= \frac{1}{n} \int x \sum_{j=1}^n \delta_{\xi_j}(dx) - \overline{\xi}_n \\
+= \left(  \overline{\xi}_n - \overline{\xi}_n \right) = 0
+\end{align*}
+and by another application of Theorem \ref{Disintegration} and the pullout property of conditional expectations/
+\begin{align*}
+\cexpectationlong{\xi_1, \dotsc, \xi_n} { (\xi^B_{nj} - \overline{\xi}_n)^2} 
+&=\cexpectationlong{\xi_1, \dotsc, \xi_n} { (\xi^B_{nj})^2} - 2 \cexpectationlong{\xi_1, \dotsc, \xi_n} {\xi^B_{nj} \overline{\xi}_n} + \cexpectationlong{\xi_1, \dotsc, \xi_n} {\overline{\xi}_n^2}  \\
+&= \frac{1}{n} \int x^2 \sum_{j=1}^n \delta_{\xi_j}(dx) - 2 \overline{\xi}_n \cexpectationlong{\xi_1, \dotsc, \xi_n} {\xi^B_{nj} } +\overline{\xi}_n^2 \\
+&= \frac{1}{n} \sum_{j=1}^n \xi_j^2 - \overline{\xi}_n^2 = (s^\prime_n)^2
+\end{align*}
+
+From the above computations if we define 
+\begin{align*}
+\eta_{nj} &= \frac{1}{s_n^\prime \sqrt{n}} (\xi^B_{nj} - \overline{\xi}_n)
+\end{align*}
+it follows that $\eta_{n1}, \dotsc, \eta_{nn}$ are conditionally i.i.d. given $\xi_1, \dotsc, \xi_n$ and satisfy $\cexpectationlong{\xi_1, \dotsc, \xi_n} {\eta_{nj}}=0$, 
+$\sum_{j=1}^n \cexpectationlong{\xi_1, \dotsc, \xi_n} {\eta^2_{nj}}=\sum_{j=1}^n 1/n = 1$ almost surely.  Thus the regular conditional distributions $\cprobability{\xi_1, \dotsc, \xi_n}{\eta_{nj} \in \cdot}$ for $1 \leq j \leq n$ are almost surely a triangular array.  To conclude that $\cprobability{\xi_1, \dotsc, \xi_n}{\eta_{nj} \in \cdot} \todist N(0,1)$ almost surely it suffices by the Lindeberg Central Limit Theorem \ref{LindebergTheoremTriangular} to show that for every $\epsilon > 0$ we have $\lim_{n \to 0} \sum_{j=1}^n \cexpectationlong{\xi_1, \dotsc, \xi_n}{\eta^2_{nj} ; \abs{\eta_{nj}} > \epsilon} = 0$ almost surely.
+
+As noted above $\overline{\xi}_n \toas 0$ and $s^\prime_n \toas \sigma$.  Thus if we are given $\epsilon > 0$ then almost surely there exists a random $N \in \naturals$ such that $\abs{s^\prime_n - \sigma} < \sigma/4$ and
+$\overline{\xi}_n < \frac{1}{4} \sigma \epsilon \leq \frac{1}{4} \sqrt{n} \sigma \epsilon$ for all $n \geq N$.  Therefore for such $n \geq N$, if we assume $\abs{\eta_{nj}} > \epsilon$,  (equivalently $\abs{\xi^B_{nj} - \overline{\xi}_n} < \sqrt{n} s^\prime_n \epsilon$) it follows that
+\begin{align*}
+\abs{\xi^B_{nj}} &\geq \abs{\xi^B_{nj} - \overline{\xi}_n} - \abs{\overline{\xi}_n} > \sqrt{n} s^\prime_n \epsilon - \frac{1}{4} \sqrt{n} \sigma \epsilon \\
+&\geq \sqrt{n} \sigma \epsilon - \sqrt{n} (\sigma-s^\prime_n) \epsilon - \frac{1}{4} \sqrt{n} \sigma \epsilon > \sqrt{n} \sigma \epsilon /2
+\end{align*}
+TODO: Finish
+\end{proof}

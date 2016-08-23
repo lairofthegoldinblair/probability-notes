@@ -1,0 +1,634 @@
+\chapter{Mean Field Models}
+
+This chapter is my notes on reading Del Moral's work on Feynman-Kac path models and more general Mean Field models.  One of the basic ideas is to think about the models in terms of measure valued dynamical systems.  
+
+As motivation we keep things super simple and assume that we have a discrete time Markov process with Markov transition kernels $\mu_{n, n+1}$.  Then by Lemma \ref{MarkovDistributions} we know
+that $\mathcal{L}(X_0, \dotsc, X_n) = \nu_0 \otimes \mu_{0,1} \otimes \dotsb \otimes \mu_{n-1, n}$ so it follows that for every $n \in \naturals$
+\begin{align*}
+\mathcal{L}(X_0, \dotsc, X_n, X_{n+1}) &= \mathcal{L}(X_0, \dotsc, X_n) \otimes \mu_{n, n+1}
+\end{align*}
+We now think the sequence of laws $\mathcal{L}(X_0, \dotsc, X_n)$ as being the solution to a discrete time measure valued initial value problem 
+\begin{align*}
+\rho_{n+1} &= \rho_n \otimes \mu_{n,n+1}, \text{ and $\rho_0=\nu_0$}
+\end{align*}
+
+We will proceed to define a family of stochastic process that can also be interpreted as solutions to measure valued evolution equations; though these evolution equations are non-linear.
+
+\section{Total Variation of Measures}
+
+TODO: Put this in the measure theory chapter???  Note that we have introduced the total variation norm in Theorem \ref{BanachSpaceBoundedSignedMeasures}  that shows the total variation defines a norm making the space of bounded signed measures into a Banach space.  Perhaps we move some of this to that section.
+
+\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space the we let $\Osc1(\Omega)$ be the set of all measurable functions $f : \Omega \to \reals$ such that $\sup_{x,  y  \in \Omega} \abs{f(x) - f(y)} \leq 1$.
+\end{defn}
+
+
+\begin{defn}Let $\nu$ be a bounded signed measure with Hahn-Jordan decomposition $\nu = \nu_+ - \nu_-$ then we define the \emph{total variation measure} of $\nu$ to be the positive measure $\abs{\nu} = \nu_+ + \nu_-$ and the \emph{total variation} to be the non-negative number $\tvnorm{\nu} = \frac{1}{2}\abs{\nu}(\Omega)$.
+\end{defn}
+
+\begin{prop}\label{TotalVariationNormAlternativeFormulasCenteredMeasures}If $\nu$ is a bounded signed measure with $\nu(\Omega) = 0$ and Hahn decomposition $\Omega = A_+ \cup A_+^c$ then 
+\begin{align*}
+\tvnorm{\nu} &= \nu(A_+) = \sup_{A \in \mathcal{A}} \abs{\nu(A)} = \sup_{f \in \Osc1(\Omega)} \abs{\int f \, d\nu}
+\end{align*}
+\end{prop}
+\begin{proof}
+If we let $\nu = \nu_+ - \nu_-$ be the Hahn-Jordan decompostion of $\nu$ then 
+\begin{align*}
+0 &= \nu(\Omega) = \nu(A_+) + \nu(A_+^c) = \nu_+(\Omega) - \nu_-(\Omega) 
+\end{align*}
+from which it follows that $\norm{\nu} = \frac{1}{2}(\nu_+(\Omega) + \nu_-(\Omega)) = \nu_+(\Omega) = \nu_-(\Omega)$.  The result follows from the fact that $\nu_+(\Omega) = \nu(A_+) = \sup_{A \in \mathcal{A}} \nu(A)$ and $\nu_-(\Omega) = -\nu(A_-) = \sup_{A \in \mathcal{A}} -\nu(A)$.
+
+To see the last equality we first assume that $f \in \Osc1(\Omega)$ and calculate
+\begin{align*}
+\abs{\int f \, d\nu} &= \abs{\int f(x) \, d\nu_+(x) - \int f(y) \, d\nu_-(y)} \\
+&= \abs{\frac{1}{\nu_-(\Omega)} \iint f(x) \, d\nu_+(x) d\nu_-(y) - \frac{1}{\nu_-(\Omega)}\iint f(y) \, d \nu_+(x) d\nu_+(y)} \\
+&\leq \frac{1}{\tvnorm{\nu}} \iint \abs{ f(x) - f(y) } \, d\nu_+(x) d\nu_-(y)  \leq \tvnorm{\nu} \\
+\end{align*}
+To see the opposite inequality simply observe that $\characteristic{A_+} \in \Osc1(\Omega)$ so it follows that $\tvnorm{\nu}  = \nu(A_+) \leq \sup_{f \in \Osc1(\Omega)} \abs{\int f \, d\nu}$.
+\end{proof}
+
+\begin{prop}If $\mu$  and $\nu$ be probability measures then 
+\begin{align*}
+\tvnorm{\mu - \nu} &= 1 - \sup_{\rho \leq \mu, \nu} \rho(\Omega) = 1 - \inf_n \inf_{\substack{A_1 \cup \dotsb \cup A_n = \Omega \\ \text{$A_j$} disjoint}} \sum_{j=1}^n (\mu(A_j) \minop \nu(A_j))
+\end{align*}
+\end{prop}
+\begin{proof}
+We begin with the first equality.  Apply Theorem \ref{HahnDecomposition} and let $A_+, A_-$ be the Hahn decomposition associated with $\mu - \nu$ and define
+\begin{align*}
+\rho(A) &= \mu(A \cap A_-) + \nu(A \cap A_+)
+\end{align*}
+We know that the Hahn-Jordan decomposition that $\eta_\pm(A) = \pm (\mu - \nu)(A \cap A_\pm)$ are positive measures to it follows that $\mu(A \cap A_+) \geq \nu(A \cap A_+)$ and 
+$\nu(A \cap A_-) \geq \mu(A \cap A_-)$ for every $A \in \mathcal{A}$.  Therefore
+\begin{align*}
+\rho(A) &= \mu(A \cap A_-) + \nu(A \cap A_+) \leq \mu(A \cap A_-) + \mu(A \cap A_+)  = \mu(A)
+\end{align*}
+and similarly $\rho(A) \leq \nu(A)$.  Now apply Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures} to calculate
+\begin{align*}
+\rho(\Omega) &= \mu(A_-) + \nu(A_+) = 1 - \mu(A_+) + \nu(A_+) = 1 - \tvnorm{\mu - \nu}
+\end{align*}
+and conclude $\sup_{\rho \leq \mu, \nu} \rho(\Omega) \geq 1 - \tvnorm{\mu - \nu}$.  To see the opposite inequality, suppose that $\rho \leq \mu$ and $\rho \leq \nu$ then
+apply Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures} again to calculate
+\begin{align*}
+\rho(\Omega) &= \rho(A_+) + \rho(A_-) \leq \nu(A_+) + \mu(A_-) = \nu(A_+) + 1 - \mu(A_+) = 1 - \tvnorm{\mu - \nu}
+\end{align*}
+Take the supremum over all such $\rho$ to get $\sup_{\rho \leq \mu, \nu} \rho(\Omega) \leq 1 - \tvnorm{\mu - \nu}$. 
+
+Now we show the second equality.  From the proof of the first equality we see that it suffices to show
+\begin{align*}
+\mu(A_-) + \nu(A_+) = \inf_n \inf_{\substack{A_1 \cup \dotsb \cup A_n = \Omega \\ \text{$A_j$} disjoint}} \sum_{j=1}^n (\mu(A_j) \minop \nu(A_j))
+\end{align*}
+Again using the fact that $\eta_\pm(A) = \pm (\mu - \nu)(A \cap A_\pm)$ are positive measures we see that $\mu(A_+) \minop \nu(A_+) = \nu(A_+)$
+and $\mu(A_-) \minop \nu(A_-) = \mu(A_-)$.  Therefore 
+\begin{align*}
+\mu(A_+) \minop \nu(A_+)  + \mu(A_-) \minop \nu(A_-) &= \nu(A_+) + \mu(A_-) 
+\end{align*}
+and it follows that $\inf_n \inf_{A_1 \cup \dotsb \cup A_n = \Omega} \sum_{j=1}^n (\mu(A_j) \minop \nu(A_j)) \leq \nu(A_+) + \mu(A_-) $.  To see the opposite inequality
+recall from the proof of the first inequality that $\mu(A \cap A_-) + \nu(A \cap A_+)  \leq \mu(A) \minop \nu(A)$ for every $A \in \mathcal{A}$. 
+Let $\Omega = A_1 \cup \dotsb \cup A_n$ with the $A_j$ disjoint and estimate
+\begin{align*}
+\nu(A_+) + \mu(A_-) &= \sum_{j=1}^n \nu(A_+ \cap A_j) + \sum_{j=1}^n \mu(A_- \cap A_j)  \\
+&\leq \sum_{j=1}^n \mu(A_j) \minop \nu(A_j) 
+\end{align*}
+and if follows that $\nu(A_+) + \mu(A_-) \leq \inf_n \inf_{A_1 \cup \dotsb \cup A_n = \Omega} \sum_{j=1}^n (\mu(A_j) \minop \nu(A_j))$.
+\end{proof}
+
+Given the close relationship between the Hahn-Jordan decompostion and the Radon-Nikodym derivative we should expect that the latter can also be used
+to compute total variations.  Here is a version of such a fact that we will need.
+\begin{prop}\label{TotalVariationAndRadonNikodym} Suppose $\mu$ and $\nu$ are bounded measures and $\rho$ is a measure such that $\mu \ll \rho$ and $\nu \ll \rho$ then we have
+\begin{align*}
+\tvnorm{\mu - \nu} &= \frac{1}{2} \int \abs{\frac{d\mu}{d \rho} - \frac{d\nu}{d \rho}} \, d\rho
+\end{align*}
+\end{prop}
+\begin{proof}
+We know that there exists $\Omega = A_+ \cup A_-$ be the Hahn Decomposition with respect to $\mu - \nu$ so that $\sup_A \mu(A) - \nu(A) = \mu(A_+) - \nu(A_+)$, $\inf_A \mu(A) - \nu(A) = \mu(A_-) - \nu(A_-)$ and  $\tvnorm{\mu- \nu} = \frac{1}{2} \left( \mu(A_+) - \nu(A_+) - \mu(A_-) + \nu(A_-) \right)$.  We have
+\begin{align*}
+\mu(A_+) - \nu(A_+) 
+&= 
+(\mu - \nu)\left(A_+ \cap \left \lbrace \frac{d\mu}{d \rho} > \frac{d\nu}{d \rho} \right \rbrace \right ) + 
+ (\mu - \nu)\left(A_+ \cap \left \lbrace \frac{d\mu}{d \rho} \leq \frac{d\nu}{d \rho} \right \rbrace \right ) \\
+&= 
+(\mu - \nu)\left(A_+ \cap \left \lbrace \frac{d\nu}{d \rho} > \frac{d\nu}{d \rho} \right \rbrace \right ) + 
+ \int_{A_+ \cap \left \lbrace \frac{d\mu}{d \rho} \leq \frac{d\nu}{d \rho} \right \rbrace} \left( \frac{d\mu}{d \rho} - \frac{d\nu}{d \rho} \right)(x) \, \rho(dx)\\
+&\leq (\mu - \nu)\left(A_+ \cap \left \lbrace \frac{d\mu}{d \rho} > \frac{d\nu}{d \rho} \right \rbrace \right )
+\end{align*}
+from which we conclude that 
+\begin{align*}
+(\mu - \nu)(A_+) &= (\mu - \nu)\left(A_+ \cap \left \lbrace \frac{d\mu}{d \rho} > \frac{d\nu}{d \rho} \right \rbrace \right ) \\
+\intertext{and}
+0 &= (\mu - \nu)\left(A_+ \cap \left \lbrace \frac{d\mu}{d \rho} \leq \frac{d\nu}{d \rho} \right \rbrace \right )
+\end{align*}
+A similar argument shows 
+\begin{align*}
+(\mu - \nu)(A_-) &= (\mu - \nu)\left(A_- \cap \left \lbrace \frac{d\mu}{d \rho} \leq \frac{d\nu}{d \rho} \right \rbrace \right ) \\
+\intertext{and}
+0 &= (\mu - \nu)\left(A_- \cap \left \lbrace \frac{d\mu}{d \rho} > \frac{d\nu}{d \rho} \right \rbrace \right )
+\end{align*}
+
+Therefore
+\begin{align*}
+\tvnorm{\mu - \nu} &= (\mu - \nu)(A_+) - (\mu - \nu)(A_-) \\
+&= (\mu - \nu)\left( \frac{d\mu}{d \rho} > \frac{d\nu}{d \rho} \right ) - (\mu - \nu)\left( \frac{d\mu}{d \rho} \leq \frac{d\nu}{d \rho} \right ) \\
+&= \int \abs{ \frac{d\mu}{d \rho} > \frac{d\nu}{d \rho} } \, d\rho
+\end{align*}
+\end{proof}
+
+\section{Lipschitz Properties of Probability Kernels}
+
+TODO: Understand the relationship between the data processing inequality in information theory and the Lipschitz bounds we are proving here.  Essentially these appear to be more general and more precise version of the data processing inequality.  Some of this is rumored to appear in Meyn and Tweedie and is used in proving stability and limit theorems for Markov chains.
+
+TODO: In what follows we seem to require convex functions with
+$+\infty$ as a value (proper convex functions in the manner of
+Rockafellar).  What are the basic facts and definitions about convex
+functions in this situation?  Specifically I am wondering about the
+use of the Fundamental Theorem of Calculus below.  Perhaps we just
+need an extra step in which we approximate a proper convex function
+from below by finitely valued convex functions).  I think the
+definition of a convex function makes sense if we use the convention
+$\infty - \infty = \infty$ (as well as the obvious conventions $\infty + \infty = \infty$ and $-\infty - \infty = -\infty$).  A proper convex function is a convex function with range $(-\infty, \infty]$ such that $f(x) \neq \infty$ for some $x \in \domain{f}$
+
+\begin{prop}The maximum of two convex functions is convex.  The composition of $f$ is convex and $g$ is convex and non-decreasing then $g \circ f$ is convex (here we assume that $g$ has been extended by $\infty$ so domains don't enter into play).
+\end{prop}
+\begin{proof}
+Without loss of generality we may assume that $(f \maxop g)(tx + (1-t) y) = f(tx + (1-t) y)$ then
+\begin{align*}
+(f \maxop g)(tx + (1-t) y) &= f(tx + (1-t) y) \leq t f(x) + (1-t) f(y) \leq  t (f \maxop g)(x) + (1-t) (f \maxop g)(y) 
+\end{align*}
+
+To see composition,
+\begin{align*}
+g(f(tx + (1-t) y)) &\leq g(tf(x) + (1-t) f(y)) \leq t g(f(x)) + (1-t) g(f(y)) 
+\end{align*}
+\end{proof}
+
+We deal with a slight generalization of the concept of an $f$-divergence due to Csisiz\'{a}r and independently by Ali-Silvey (the concept of $f$-divergence is due to Csisiz\'{a}r and Ali-Silvey, the generalization is due to Del Moral, Ledoux and Miclo to my knowledge).
+\begin{prop}\label{DefinitionOfFDivergence}Let $f : [0,\infty) \times
+  [0, \infty) \to (-\infty, \infty]$ be a convex function that satisfies
+  $f(ax, ay) = af(x,y)$ for every $a,x,y \geq 0$ and $f(1,1) = 0$.
+  Let $P$ and $Q$ be probability measures and suppose that $\mu$ and $\nu$ are $\sigma$-finite measures such that $P \ll \mu$ and $Q \ll \mu$ and $P \ll \nu$ and $Q \ll \nu$ then
+\begin{align*}
+\int f \left ( \frac{d P}{d \mu}, \frac{d Q}{d \mu} \right ) \, d \mu &= \int f \left ( \frac{d P}{d \nu}, \frac{d Q}{d \nu} \right ) \, d \nu
+\end{align*}
+\end{prop}
+\begin{proof}
+Let $\rho = \mu + \nu$ so that $\mu \ll \rho$ and $\nu \ll \rho$ then $\frac{d \mu}{d \rho}$ and $\frac{d \nu}{d \rho}$ are defined so by the Radon-Nikodym theorem and homogeneity of $f$ we get
+\begin{align*}
+\int f \left ( \frac{d P}{d \mu}, \frac{d Q}{d \mu} \right ) \, d \mu  &= \int f \left ( \frac{d P}{d \mu}, \frac{d Q}{d \mu} \right ) \frac{d \mu}{d \rho} \, d \rho \\
+&=\int f \left ( \frac{d \mu}{d \rho} \frac{d P}{d \mu}, \frac{d \mu}{d \rho} \frac{d Q}{d \mu} \right ) \, d \rho \\
+&=\int f \left ( \frac{d P}{d \rho}, \frac{d Q}{d \rho} \right ) \, d \rho \\
+\end{align*}
+The same calculation applies with $\mu$ replaced by $\nu$ and therefore the result follows.
+\end{proof}
+
+\begin{defn}Let $\mu$ and $\nu$ be probability measures and let $f : [0,\infty) \times
+  [0, \infty) \to (-\infty, \infty]$ be a convex function that satisfies
+  $f(ax, ay) = af(x,y)$ for every $a,x,y \geq 0$ and $f(1,1) = 0$ then we say that $f$ is a \emph{divergence function}.  The \emph{$f$-divergence} or \emph{$f$-relative entropy}  of $\mu$ and $\nu$ is defined by taking
+an arbitrary $\sigma$-finite measure $\pi$ such that $\mu \ll \pi$ and $\nu \ll \pi$  (e.g. choose $\pi = \mu + \nu$) and defining
+\begin{align*}
+\fdiv{\mu}{\nu}{f} &= \int f \left ( \frac{d \mu}{d \pi}, \frac{d \nu}{d \pi} \right ) \, d \pi
+\end{align*}
+\end{defn}
+By Proposition \ref{DefinitionOfFDivergence} we see that the $f$-divergence is well defined.
+
+This definition of $f$-divergence is slightly different that the one usually provided in the literature.  The following result illustrates the connection.
+
+\begin{prop}\label{OneDimensionalFDivergence}Let $f$ be a divergence function such that $f(1,0) = \infty$ then for any $\mu$ and $\nu$ we have 
+\begin{align*}
+\fdiv{\mu}{\nu}{f} &= \int f \left( \frac{d\mu}{d\nu}, 1 \right ) \, d\nu
+\end{align*}
+if $\mu \ll \nu$ and $\fdiv{\mu}{\nu}{f} =\infty$ otherwise.  
+\end{prop}
+\begin{proof}
+Apply the Radon-Nikodym Theorem \ref{RadonNikodym} to construct measures $\mu_a$ and $\mu_s$ such that $\mu_a \ll \nu$ and $\mu_s \perp \nu$.  Pick $A$ such that
+$\nu(A^c) = 0$ and $\mu_s(A) = 0$.  Now define $\pi = \nu + \mu_s$ and observe that $\mu \ll \pi$ and $\nu \ll \pi$.  The latter assertion is immediate.  For the former assertion we see that if $\pi(B) = 0$ then $\nu(B)=0$ and $\mu_s(B)=0$ and since $\mu_a \ll \nu$ we have $\mu_a(B)=0$ as well; hence $\mu(B) = \mu_a(B) + \mu_s(B)=0$.  For any $B \subset A$ we have 
+\begin{align*}
+\int_B \frac{d \mu}{d \pi} \, d\pi &=\mu(B) = \mu_a(B) = \int_B \frac{d \mu_a}{d \nu} \, d\nu = \int_B \frac{d \mu_a}{d \nu} \frac{d \nu}{d \pi} \, d\pi
+\end{align*}
+and therefore $\frac{d \mu}{d \pi} = \frac{d \mu_a}{d \nu} \frac{d \nu}{d \pi} $ $\pi$-a.s. on $A$.  For any $B \subset A^c$ we have
+\begin{align*}
+\int_B \frac{d \mu}{d \pi} \, d\pi &=\mu(B) = \mu_s(B) = \pi(B) = \int_B \, d\pi
+\end{align*}
+and therefore $\frac{d \mu}{d \pi} = 1$ $\pi$-a.s. on $A^c$.  By similar arguments we see that $\frac{d \nu}{d \pi} = 1$ $\pi$-a.s. on $A$ and $\frac{d \mu}{d \pi} = 0$ $\pi$-a.s. on $A^c$.
+Now we use $\pi$ to calculate 
+\begin{align*}
+\fdiv{\mu}{\nu}{f} &= \int f \left ( \frac{d \mu}{d \pi}, \frac{d \nu}{d \pi} \right ) \, d \pi \\
+&= \int_A f \left ( \frac{d \mu}{d \pi}, \frac{d \nu}{d \pi} \right ) \, d \pi + \int_{A^c} f \left ( \frac{d \mu}{d \pi}, \frac{d \nu}{d \pi} \right ) \, d \pi \\
+&= \int_A f \left ( \frac{d \mu_a}{d \pi}, 1 \right ) \, d \pi + \int_{A^c} f \left( 1, 0 \right ) \, d \pi \\
+\end{align*}
+Now if we assume that $\mu \ll \nu$ then it follows that $\mu_s =0$, $\pi=\nu$ and $A=\Omega$ and it follows that $\fdiv{\mu}{\nu}{f} = \int f \left ( \frac{d \mu}{d \nu}, 1 \right ) \, d \nu$.  On the other hand if $\mu$ is not absolutely continuous with respect to $\nu$ then $\pi(A^c) \geq \mu_s(A^c) = \mu_s(\Omega) > 0$ and therefore since $f \left( 1, 0 \right )=\infty$ we also have $\fdiv{\mu}{\nu}{f} = \infty$.
+\end{proof}
+
+The following construction of convex functions is sometime called the perspective transformation (e.g. Boyd and Vanderberg)
+\begin{prop}\label{PerspectiveTransformationOfConvexFunction}Let $f : X \to (-\infty, \infty]$ be a convex function the function $g : X \times (0,\infty) \to (-\infty, \infty]$ defined by 
+\begin{align*}
+g(x,t) = t f \left ( \frac{x}{t} \right )
+\end{align*}
+is convex.
+\end{prop}
+\begin{proof}
+Let $0 \leq \alpha \leq 1$, $(x,t), (y,s) \in  X \times (0,\infty)$ then define $\beta = \frac{\alpha t}{\alpha t + (1 - \alpha) s}$ and observe
+\begin{align*}
+\beta \left(\frac{x}{t} \right)+ (1 - \beta) \left( \frac{y}{s} \right)
+&= \frac{\alpha t}{\alpha t + (1 - \alpha) s} \left(\frac{x}{t}\right) +  \frac{(1-\alpha) s}{\alpha t + (1 - \alpha) s} \left( \frac{y}{s} \right) \\
+&=\frac{\alpha x + (1-\alpha)  y}{\alpha t + (1 - \alpha) s} \\
+\end{align*}
+and therefore by the convexity of $f$ and the nonnegativity of $t$ and $s$ we get
+\begin{align*}
+g(\alpha(x,t) + (1-\alpha)(y,s)) 
+&= (\alpha t + (1 - \alpha) s ) f\left(\frac{\alpha x + (1-\alpha)  y}{\alpha t + (1 - \alpha) s} \right ) \\
+&\leq  (\alpha t + (1 - \alpha) s) \left( \beta f\left( \frac{x}{t} \right) + (1 - \beta) f\left( \frac{y}{s} \right) \right )\\
+&= \alpha t f \left( \frac{x}{t} \right) + (1-\alpha) s  f\left( \frac{y}{s} \right) \\
+&=\alpha  g(x,t) + (1-\alpha) g(y,s)
+\end{align*}
+\end{proof}
+
+Every divergence function may be constructed from a one dimensional convex function in the following way.
+\begin{prop}\label{ConvexHomogeneousFunctionFromConvexFunction}Let $g : [0, \infty) \to (-\infty, \infty]$ be a proper convex function, then $\lim_{x \to \infty} \frac{g(x)}{x}$ exists (possibly infinite) and for every $\lim_{x \to \infty} \frac{g(x)}{x}  \leq c \leq \infty$ 
+\begin{align*}
+f(x,y) &= \begin{cases}
+y g \left( \frac{x}{y} \right ) & \text{if $y >0$} \\
+c x & \text{if $y=0$}
+\end{cases}
+\end{align*}
+is convex and homogeneous.
+\end{prop}
+\begin{proof}
+To see that $\lim_{x \to \infty} \frac{g(x)}{x}$ exists we know that the effective domain $\lbrace g < \infty \rbrace$ is convex, hence connected and therefore an interval.  If this interval is finite then clearly $\frac{g(x)}{x} = \infty$ for all sufficiently large $x$ and $\lim_{x \to \infty} \frac{g(x)}{x}=\infty$.  On the other hand, if the effective domain of $g$ is an infinite interval then we pick $x_0 > 0$ such that $g(x) \neq \infty$ for $x \geq x_0$ and note that by the Three Chord Lemma \ref{ThreeChordLemma}, $\frac{g(x) - g(x_0)}{x - x_0}$ is nondecreasing on $(x_0, \infty)$ and therefore $\lim_{x \to \infty} \frac{g(x) - g(x_0)}{x - x_0}$ exists.  Now write
+\begin{align*}
+\lim_{x \to \infty} \frac{g(x)}{x} &= \lim_{x \to \infty} \frac{g(x) -g(x_0)}{x-x_0}\frac{x}{x-x_0} + \lim_{x \to \infty} \frac{g(x_0)}{x} = \lim_{x \to \infty} \frac{g(x) -g(x_0)}{x-x_0}
+\end{align*}
+
+By Proposition \ref{PerspectiveTransformationOfConvexFunction} we know that $f(x,y)$ is convex on $[0,\infty) \times (0, \infty)$.  By definition it is also clear that $f(x,y)$ is convex when restricted to $[0, \infty) \times \lbrace 0 \rbrace$.  To finish with remaining case, let $0 < t < 1$ and $y > 0$ then using the fact that $g$ is continuous (TODO: actually we need to be careful about the effective domain of $g$ here)
+\begin{align*}
+f( t (x,y) + (1-t) (z,0)) &= t y g \left( \frac{tx + (1-t) z}{ty} \right) = \lim_{w \to 0^+} (t y + (1-t)w) g \left( \frac{tx + (1-t) z}{ty + (1-t) w} \right) \\
+&\leq t f(x,y) + (1-t) \lim_{w \to 0^+} w g\left( \frac{z}{w} \right) \\
+&= t f(x,y) + (1-t) z \lim_{w \to 0^+} \frac{g\left( \frac{z}{w} \right)}{\frac{z}{w} } \\
+&\leq t f(x,y) + (1-t) z c = t f(x,y) + (1-t) f(z,0) \\
+\end{align*}
+\end{proof}
+
+The most commonly used $f$-divergences are constructed from functions $g : [0,\infty) \to (-\infty, \infty]$ as in Propositon \ref{ConvexHomogeneousFunctionFromConvexFunction}; in particular Kullback-Liebler divergence introduced earlier is an $f$-divergence.
+
+\begin{defn}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable spaces and let $\mu : S
+\times \mathcal{T} \to [0,1]$ be a probability kernel then the \emph{Dobrushin contraction coefficient} (also called the \emph{Dobrushin ergodic coefficient}) is the quantity
+\begin{align*}
+\beta(\mu) = \sup_{x,y \in S} \tvnorm{\mu(x, \cdot) - \mu(y, \cdot)}
+\end{align*}
+\end{defn}
+
+\begin{prop}\label{TotalVariationContractionBound}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable spaces, let $\mu : S
+\times \mathcal{T} \to [0,1]$ be a probability kernel and let $\nu$ be a bounded signed measure on $S$ then 
+\begin{align*}
+\tvnorm{\nu \mu} &\leq \beta(\mu) \tvnorm{\nu} + (1 - \beta(\mu)) \abs{\nu(S)}/2
+\end{align*}
+Moreover $\beta(\mu)$ is the operator norm of $\mu$ when viewed as a linear operator on $\mathcal{M}_0(S)$ and we have the equalities
+\begin{align*}
+\beta(\mu) &= \sup_{\nu \in \mathcal{M}_0(S) } \frac{\tvnorm{\nu \mu}}{\tvnorm{\nu}} \\
+&= \sup_{g \in \Osc1(T)} \left \lbrace \osc \left( \int g(y) \, \mu(x, dy) \right) \right \rbrace \\
+&=1 - \inf_{x, y \in S}  \inf_n \inf_{A_1 \cup \dotsb \cup A_n = T} \sum_{j=1}^n (\mu(x, A_j) \minop \mu(y, A_j))
+\end{align*}
+\end{prop}
+\begin{proof}
+We first show that $\beta(\mu)$ is the operator norm of $\mu$ as a linear operator on $\mathcal{M}_0(S)$. Suppose $\nu \in \mathcal{M}_0(S)$ and let $\nu = \nu_+ - \nu_-$ be the Hahn-Jordan decomposition of $\nu$ and let $S = A_+ \cup A_-$ be the Hahn Decompostion of $S$ 
+with respect to $\nu$ (Theorem \ref{HahnDecomposition}).  It follows that $0 = \nu_+(A_-) = \nu_-(A_+)$ and by Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures}
+\begin{align*}
+\tvnorm{\nu} &= \nu_+(A_+) = \nu_-(A_-)
+\end{align*}
+Now since for any $g \geq 0$ we have $\int_{A_-} g(y) \, \nu(dy) = -\int_{A_-} g(y) \, \nu_-(dy) \leq 0$
+\begin{align*}
+\nu \mu (A) &= \int \mu(y, A) \, \nu(dy) = \int_{A_+} \mu(y, A) \, \nu(dy) + \int_{A_-} \mu(y, A) \, \nu(dy) \\
+&\leq \int_{A_+} \mu(x, A) \, \nu(dx) + \inf_{y \in S} \mu(y, A) \nu(A_-) \\
+&=\int_{A_+} \mu(x, A) \, \nu(dx) + \sup_{y \in S} \mu(y, A) \nu(A_+) \\
+&=\int_{A_+} \sup_{y \in S} (\mu(x, A) - \mu(y,A)) \, \nu(dx) \\
+&\leq \sup_{B \in \mathcal{S}} \sup_{x,y \in S} \abs{\mu(x, B) - \mu(y,B)} \nu(A_+) \\
+&= \beta(\mu) \tvnorm{\nu} \\
+\end{align*}
+Now take the supremum over all $A \in \mathcal{S}$ to conclude that $\tvnorm{ \nu \mu} \leq \beta(\mu) \tvnorm{\nu}$ (equivalently $\beta(\mu) \geq \sup_{\nu} \frac{\tvnorm{\nu \mu}}{\nu}$).  
+To see $\beta(\mu) \leq \sup_{\nu} \frac{\tvnorm{\nu \mu}}{\nu}$, let $x, y \in S$ with $x \neq y$ and observe that $\delta_x - \delta_y \in \mathcal{M}_0(S)$ and $\tvnorm{\delta_x - \delta_y} = 1$.
+Since $(\delta_x - \delta_y) \mu (A) = \mu(x, A) - \mu(y, A)$ we conclude by Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures} that 
+\begin{align*}
+\beta(\mu) &= \sup_{A \in \mathcal{S}} \sup_{x, y \in S} \abs{(\delta_x - \delta_y) \mu (A)} = \sup_{x, y \in S} \tvnorm{(\delta_x - \delta_y) \mu} \leq \sup_{\nu} \frac{\tvnorm{\nu \mu}}{\nu}
+\end{align*}
+
+\begin{clm}Let $\nu$ be a positive finite measure then $\tvnorm{\nu \mu} = \tvnorm{\nu}$.
+\end{clm}
+Since both $\nu$ and $\nu \mu$ are positive measures it suffices to show that $\nu \mu (S) = \nu(S)$.  This is a simple caclulation using the fact that $\mu$ is a probability kernel
+\begin{align*}
+\nu \mu (S) &= \int \mu(y, S) \, \nu(dy) = \int \, \nu(dy) = \nu(S)
+\end{align*}
+
+Now assume that $\nu$ is a bounded signed measure satisfying $\nu(S) \geq 0$ and again let $\nu_\pm$ and $A_\pm$ be the corresponding Hahn-Jordan and Hahn decompositions.
+Consider the positive measure $\overline{\nu} = \frac{\nu(S)}{\nu_+(S)} \nu_+$ and the bounded centered signed measure $\tilde{\nu} = \nu - \overline{\nu} \in \mathcal{M}_0(S)$.
+Since $\overline{\nu}$ is a positive measure we have $\tvnorm{\overline{\nu}} = \frac{1}{2}\overline{\nu} (S) = \frac{1}{2}\nu(S)$.  On the other hand
+\begin{align*}
+\tilde{\nu} &= \nu - \overline{\nu} = \nu_+ - \nu_- - \frac{\nu(S)}{\nu_+(S)} \nu_+ = \frac{\nu_-(S)}{\nu_+(S)} \nu_+ - \nu_-
+\end{align*}
+and since $\nu_+ \perp \nu_-$ it follows that $\tilde{\nu}_+ = \frac{\nu_-(S)}{\nu_+(S)} \nu_+$ and $\tilde{nu}_- = \nu_-$; in particular by Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures} $\tvnorm{\tilde{\nu}} = \nu_-(S)$.  Therefore it follows that
+\begin{align*}
+\tvnorm{\nu} &= \frac{1}{2} ( \nu_+(S) + \nu_-(S)) = \frac{1}{2} ( \nu(S) + 2 \nu_-(S)) = \tvnorm{\overline{\nu}} + \tvnorm{\tilde{\nu}} 
+\end{align*}
+Using this fact together with the triangle inequality, the previous claim and the result for $\tilde{\nu} \in \mathcal{M}_0(S)$,
+\begin{align*}
+\tvnorm{\nu \mu} &\leq \tvnorm{\tilde{\nu} \mu} + \tvnorm{\overline{\nu} \mu} \\
+&\leq \tvnorm{\tilde{\nu}} + \beta(\mu) \tvnorm{\overline{\nu}} \\
+&= \tvnorm{\tilde{\nu}} + \beta(\mu) (\tvnorm{\nu} - \tvnorm{\tilde{\nu}}) \\
+&= \beta(\mu) \tvnorm{\nu} + (1 - \beta(\mu)) \nu(S)/2 \\
+\end{align*}
+For $\nu$ a bounded signed measure with $\nu(S) \leq 0$ we apply the result just proven to $-\nu$  noting
+\begin{align*}
+\tvnorm{\nu \mu} &=\tvnorm{-\nu \mu} \leq \beta(\mu) \tvnorm{-\nu} + (1 - \beta(\mu)) (-\nu(S))/2  = \beta(\mu) \tvnorm{\nu} + (1 - \beta(\mu)) \abs{\nu(S)}/2
+\end{align*}
+
+Now since $\mu(x, \cdot) - \mu(y, \cdot)$ is centered we may apply Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures} to calculate
+\begin{align*}
+\beta(\mu) &= \sup_{x,y \in S} \tvnorm{\mu(x, \cdot) - \mu(y, \cdot)} \\
+&= \sup_{x,y \in S}\sup_{g \in \Osc1(T)} \abs{\int g(z) \, \mu(x, dz)  - \int g(z) \, \mu(y, dz)} \\
+&= \sup_{g \in \Osc1(T)} \sup_{x,y \in S} \abs{\int g(z) \, \mu(x, dz)  - \int g(z) \, \mu(y, dz)} \\
+&= \sup_{g \in \Osc1(T)} \osc{\int g(z) \, \mu(x, dz)} \\
+\end{align*}
+and the last equality follows by a similar application of Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures}.
+\end{proof}
+
+\begin{thm}Let $(S, \mathcal{S})$ and $(T, \mathcal{T})$ be measurable spaces, let $\mu : S
+\times \mathcal{T} \to [0,1]$ be a probability kernel let $f$ be a divergence function then for any probability measures $P$ and $Q$ on $S$ we have
+\begin{align*}
+\fdiv{P \mu}{Q \mu}{f} &\leq \beta(\mu) \fdiv{P}{Q}{f}
+\end{align*}
+\end{thm}
+
+Before we give the proof we need a couple of lemmas that enable us to infer bounds of integrals of convex functions based on knowledge of integrals of affine functions.
+
+\begin{lem}\label{BoundConvexViaAffine}Let $\mu$ and $\nu$ be Borel measures on $\reals$ with $\int x \mu(dx) < \infty$ and $\int x \nu(dx) < \infty$
+\begin{itemize}
+\item[(i)] $\mu(\reals) = \nu(\reals)$ 
+\item[(ii)] $\int x \, \mu(x) = \int x \, \nu(dx)$
+\item[(iii)] For any $y \in \reals$ we have $\int \abs{x - y} \, \mu(dx) \leq \int \abs{x - y} \, \nu(dx)$ 
+\end{itemize}
+Then $\int f(x) \, \mu(dx) \leq \int f(x) \, \nu(dx)$ for any convex function $f : \reals \to \reals$.  
+\end{lem}
+\begin{proof}
+TODO: Is there anything that we need to say about handling the case in which $\int f(x) \, \mu(dx) = \infty$?
+
+TODO: Don't we actually need to know this for proper convex functions $f : \reals \to (-\infty,\infty]$.  The approximation result isn't true in such generality as the example $f(0) = 0$ and $f(x) = \infty$ with $x \neq 0$ shows (heck $D^+f(0)$ isn't even defined).
+
+First we note that for any convex $f$ the function $g(t) = f(t) - f(0) - D^+f(0) t$ is convex and satisfies $g(0) = D^+g(0) = 0$ and $g(t) \geq 0$.  Suppose that we have proven the result for such $g$ then
+\begin{align*}
+\int f(x) \, \mu(dx) &= \int g(x) \, \mu(dx) + f(0) \int \, \mu(dx) + D^+f(0) \int x \, \mu(dx) \\
+&\leq \int g(x) \, \nu(dx) + f(0) \int \, \nu(dx) + D^+f(0) \int x \, \nu(dx) = \int f(x) \, \nu(dx)
+\end{align*}
+Therefore we may assume that $f(0) = D^+f(0) = 0$ and $f(t) \geq 0$.  
+
+\begin{clm}Suppose $f$ is a function of the form 
+\begin{align*}
+f(t) &= \sum_{n=1}^{\infty} a_n (t - x_n)_+ + \sum_{n=-\infty}^{0} a_n (t - x_n)_-
+\end{align*}
+with $-\infty < x_n < \infty$ and $0 \leq a_n < \infty$ for $n \in \integers$ then $\int f(x) \, \mu(dx) \leq \int f(x) \, \nu(dx)$.
+\end{clm}
+For any $n \in \integers$ note that
+\begin{align*}
+\int a_n (t - x_n)_\pm \, \mu(dt) &= \frac{1}{2} \int a_n \abs{t - x_n}  \, \mu(dt) \pm \frac{1}{2} \int a_n (t - x_n)  \, \mu(dt) \\
+&= \frac{1}{2} \int a_n \abs{t - x_n}  \, \mu(dt) \pm \frac{1}{2} \int a_n (t - x_n)  \, \nu(dt) \\
+&\leq  \frac{1}{2} \int a_n \abs{t - x_n}  \, \nu(dt) \pm \frac{1}{2} \int a_n (t - x_n)  \, \nu(dt) = \int a_n (t - x_n)_\pm \, \nu(dt) 
+\end{align*}
+Now apply Montone Convergence (specifically in the form Corollary \ref{TonelliIntegralSum}) to see
+\begin{align*}
+\int f(t) \, \mu(dt) &= \sum_{n=1}^{\infty} \int a_n (t - x_n)_+ \, \mu(dt) + \sum_{n=-\infty}^{0} \int a_n (t - x_n)_- \, \mu(dt) \\
+&\leq \sum_{n=1}^{\infty} \int a_n (t - x_n)_+ \, \nu(dt) + \sum_{n=-\infty}^{0} \int a_n (t - x_n)_- \, \nu(dt)  = \int f(t) \, \nu(dt) \\
+\end{align*}
+
+\begin{clm}Let $f$ be a convex function then there exist $f_n(t)$ of the form 
+\begin{align*}
+f_n(t) = \sum_{j=1}^{\infty} a_{j,n} (t - x_{j,n})_+ + \sum_{j=-\infty}^{0} a_{j,n} (t - x_{j,n})_-
+\end{align*}
+such that $f_n \uparrow f$.
+\end{clm}
+By Lemma \ref{AbsoluteContinuityOfConvexFunctions} we know that $f$ is
+absolutely continuous and moreover
+\begin{align*}
+f(t) &= \int_0^t D^+f(s) \, ds
+\end{align*}
+By Lemma \ref{ConvexHasDini} we know that $D^+f(t)$ is non-decreasing and has at most a countable number of discontinuities hence is continuous $\lambda$-almost everywhere (where $\lambda$ is Lebesgue measure).  If we define 
+\begin{align*}
+\psi_n(t) = D^+f(\frac{1}{2^n} \floor{2^n t})
+\end{align*}
+then $\psi_n(t)$ is non-decreasing and $\psi_n(t) \uparrow D^+f(t)$ for $\lambda$-almost every $t \in \reals$.  Now define $f_n(t) = \int_0^t \psi_n(s) \, ds$ and note that for every $t \in \reals$ the function $\psi_n$ is bounded below by $D^+f(t \minop 0)$ on the domain of integration and therefore by by Monotone Convergence we have 
+\begin{align*}
+\lim_{n \to \infty} f_n(t) &= \int_0^t \lim_{n \to \infty} \psi_n(s) \, ds = \int_0^t D^+f(s) \, ds  = f(t)
+\end{align*}
+Note that $f_n(t) \geq 0$ since $\psi_n(t) \leq 0$ on $(-\infty, 0]$ and $\psi_n(t) \geq 0$ on $[0, \infty)$.  Moreover since $\psi_n(t)$ is increasing the same is true of $f_n(t)$ hence $0 \leq f_n(t) \uparrow f(t)$.  Now observe that each $f_n$ is of the appropriate form with $x_j = \frac{1}{2^n}\floor{\frac{j}{2^n}}$ and 
+\begin{align*}
+a_j =  D^+f(\frac{1}{2^n}\floor{\frac{j}{2^n}}) -  D^+f(\frac{1}{2^n}\floor{\frac{j-1}{2^n}})
+\end{align*}  
+(TODO: Is this exactly correct????;  I'm pretty sure but I need to work it out)
+
+Combining the the two previous claims and Monotone Convergence we see that
+\begin{align*}
+\int f(t) \, \mu(dt) &= \lim_{n \to \infty} \int \int f_n(t) \, \mu(dt) \leq \lim_{n \to \infty} \int f_n(t) \, \nu(dt) = \int f(t) \, \nu(dt)
+\end{align*}
+and the result is proven.
+\end{proof}
+
+Now we need to extend the previous lemma to the two dimensional case.  
+
+\begin{lem}\label{BoundConvexHomogeneousViaAffine}Let $\mu$ and $\nu$ be finite Borel measures on $[0, \infty) \times [0,\infty)$ with 
+\begin{itemize}
+\item[(i)]$\mu([0, \infty) \times [0,\infty)) = \nu([0, \infty) \times [0,\infty)) < \infty$ 
+\item[(ii)] $-\infty < \int x \, \mu(dx,dy) = \int x \, \nu(dx,dy) < \infty$ 
+\item[(iii)] $-\infty < \int y \, \mu(dx,dy) = \int y \, \nu(dx,dy) < \infty$
+\item[(iv)] For any $a,b \in \reals$ we have $\int \abs{ax - by} \, \mu(dx, dy) \leq \int \abs{ax - by} \, \nu(dx,dy)$
+\end{itemize}  
+Then $\int f(x,y) \, \mu(dx,dy) \leq \int f(x,y) \, \nu(dx,dy)$ for any convex and homogeneous function $f : [0,\infty) \times [0,\infty) \to (-\infty, \infty]$.  
+\end{lem}
+\begin{proof}
+From Proposition \ref{ConvexHomogeneousFunctionFromConvexFunction} we know that there exists a proper convex function $g : [0,\infty) \to (-\infty, \infty]$ and $c \geq \lim_{x \to \infty} \frac{g(x)}{x}$ such that 
+\begin{align*}
+f(x,y) = \begin{cases}
+y g \left( \frac{x}{y} \right ) & \text{if $y>0$} \\
+c x & \text{if $y=0$}
+\end{cases}
+\end{align*}
+First assume that $g(x) = a(x - x_0)_+$ for some $-\infty < x_0 < \infty$ and $0 \leq a < \infty$.  In that case
+\begin{align*}
+\int f(x,y) \, \mu(dx,dy) &= \int_{y > 0} y a (\frac{x}{y} - x_0)_+ \, \mu(dx,dy) + \int_{y = 0} c x \, \mu(dx,dy) \\
+&= \int  (a x - a x_0  y )_+ \, \mu(dx,dy) + \int_{y = 0} (c-c_0) x \, \mu(dx,dy) \\
+&= \frac{1}{2} \int  \abs{a x - a x_0  y} \, \mu(dx,dy) + \frac{1}{2} \int  (a x - a x_0  y ) \, \mu(dx,dy) + \int_{y = 0} (c-c_0) x \, \mu(dx,dy) \\
+&\leq \frac{1}{2} \int  \abs{a x - a x_0  y} \, \nu(dx,dy) + \frac{1}{2} \int  (a x - a x_0  y ) \, \nu(dx,dy) + \int_{y = 0} (c-c_0) x \, \nu(dx,dy) \\
+&=\int f(x,y) \, \nu(dx,dy) 
+\end{align*}
+ TODO: Finish  we need to show that $\int_{y = 0} (c-c_0) x \, \mu(dx,dy) = \int_{y = 0} (c-c_0) x \, \nu(dx,dy)$ as well as show that the previous derived approximation yields the result for general convex homogeneous $f$.
+\end{proof}
+
+With the previous lemma in hand we are ready to prove the theorem.
+\begin{proof}
+Let $P$ and $Q$ are probability measures on $S$ and let $\pi = \frac{1}{2}(P + Q)$; therefore we have $\pi(S)=1$,  $P \ll \pi$ and $Q \ll \pi$.
+\begin{clm} $P \mu \ll \pi \mu$ and $Q \mu \ll \pi \mu$
+\end{clm}
+It suffices to show this for $P$.  Suppose $\pi \mu (A) = \int \mu(x, A) \, \pi(dx) = 0$.  It follows that $\pi(\mu(x, A)  \neq 0) = 0$ and therefore since $P \ll \pi$ we have $\probability{\mu(x, A)  \neq 0}= 0$.  It follows that $P \mu(A) = \int \mu(x, A) \, P(dx) = 0$.
+
+Define Borel measures on $[0, \infty) \times [0,\infty)$ by  
+\begin{align*}
+\nu(A) &= \int \characteristic{A} \left( \frac{d P \mu}{d \pi \mu}, \frac{d Q \mu}{d \pi \mu} \right) \, d \pi \mu
+\end{align*}
+and
+\begin{align*}
+\rho(A) &= \beta(\mu ) \int \characteristic{A} \left( \frac{d P}{d \pi}, \frac{d Q}{d \pi} \right) \, d \pi + (1 - \beta(\mu))  \characteristic{A}(1,1)
+\end{align*}
+Since any divergence function is convex and homogeneous and satisfies $f(1,1) = 0$ the theorem follows if we can apply Lemma \ref{BoundConvexHomogeneousViaAffine} to the measures $\nu$ and $\rho$.  It is clear that since $\mu$ is a probability kernel and $\pi$ is a probability measure,
+\begin{align*}
+\nu([0, \infty) \times [0,\infty)) &= \int \, d \pi \mu = \int \mu(x,T) \, \pi(dx)  =  \pi(S) = 1\\
+&=\beta(\mu) \int \, d \pi + (1 - \beta(\mu)) = \rho([0, \infty) \times [0,\infty))
+\end{align*}  
+and
+\begin{align*}
+\int x \, \nu(dx, dy) &= \int \frac{d P \mu}{d \pi \mu} \, d \pi \mu = P \mu (T) = 1 \\
+&= \beta(\mu) \int \frac{d P}{d \pi} \, d \pi + (1 - \beta(\mu)) = \int x \, \rho(dx, dy)
+\end{align*}
+and similarly we get $\int y \, \nu(dx, dy) = \int y \, \rho(dx, dy)$.  For any $a, b \in \reals$ we 
+By two applications of Proposition \ref{TotalVariationAndRadonNikodym} and application of Lemma \ref{TotalVariationContractionBound}
+\begin{align*}
+\int \abs{a x - b y} \, \nu(dx,dy) 
+&=\int \abs{a \frac{d P \mu}{d \pi \mu} - b \frac{d Q \mu}{d\pi \mu}} \, d \pi \mu \\
+&= 2 \tvnorm{a P \mu - b Q \mu} \\
+&\leq 2 \beta(\mu) \tvnorm{a P  - b Q } + (1 - \beta(\mu)) \abs{(aP - bQ)(S)} \\
+&= \beta(\mu) \int \abs{a \frac{dP}{d\pi}  - b \frac{dQ}{d\pi} } \, d\pi + (1 - \beta(\mu)) \abs{a - b} \\
+&= \int \abs{a x - b y} \, \rho(dx, dy)
+\end{align*}
+which shows that hypotheses of Lemma \ref{BoundConvexHomogeneousViaAffine} are satisfied.
+\end{proof}
+
+\section{Feynman-Kac Semigroups in Discrete Time}
+TODO:
+
+Let $\mu_n : S_{n-1} \times \mathcal{S}_n \to [0,1]$ be Markov transition kernels and let $(\Omega, \mathcal{A}, \mathcal{F}_n, X_n)$ be Markov process with kernels $\mu_n$.  For any given initial distribution $\nu$ on $S_0$ we look at the sequence of path measures on $S_0 \times \dotsb \times S_n$
+\begin{align*}
+\mathds{P}_{\nu, n}(A) = \sprobability{(X_0, \dotsc, X_n) \in A}{\nu} = \nu \otimes \mu_1 \otimes \dotsb \otimes \mu_n(A)
+\end{align*} for $n \in \naturals$ (e.g. see Lemma \ref{MarkovDistributions}).  Now for each $n \in \integers_+$ we suppose that we have a bounded $\mathcal{S}_n$-measurable function $V_n : S_n \to [0, \infty)$ which satisfies the condition
+\begin{align*}
+\sexpectation{\prod_{j=0}^n V_j(X_j)}{\nu} &> 0 \text{ for all $n \in \integers_+$}
+\end{align*} 
+We define the sequences of normalizing constants
+\begin{align*}
+\mathcal{Z}_{\nu, n} &= \sexpectation{\prod_{j=0}^{n-1} V_j(X_j)}{\nu} \\
+\hat{\mathcal{Z}}_{\nu, n} &= \mathcal{Z}_{\nu, n+1} = \sexpectation{\prod_{j=0}^{n} V_j(X_j)}{\nu} \\
+\end{align*}
+and probability measures
+\begin{align*}
+\mathds{Q}_{\nu, n}(A) = \frac{1}{\mathcal{Z}_{\nu, n}} \sexpectation{\prod_{j=0}^{n-1} V_j(X_j) ; A}{\nu} \text{ for all $A \in \mathcal{S}_0 \otimes \dotsb \otimes \mathcal{S}_n$}\\
+\hat{\mathds{Q}}_{\nu, n}(A) = \frac{1}{\hat{\mathcal{Z}}_{\nu, n}} \sexpectation{\prod_{j=0}^{n} V_j(X_j) ; A}{\nu} \text{ for all $A \in \mathcal{S}_0 \otimes \dotsb \otimes \mathcal{S}_n$}\\
+\end{align*}
+
+We are also interested in the sequence of marginal distributions on $S_n$ called the \emph{unnormalized prediction and updated Feynman-Kac} measures
+\begin{align*}
+\gamma_{\nu, n}(A) &= \sexpectation{\prod_{j=0}^{n-1} V_j(X_j) ; S_0 \times \dotsb \times S_{n-1} \times A}{\nu} \text{ for all $A \in \mathcal{S}_n$}\\
+\hat{\gamma}_{\nu, n}(A) &= \sexpectation{\prod_{j=0}^{n} V_j(X_j) ; S_0 \times \dotsb \times S_{n-1} \times A}{\nu} \text{ for all $A \in \mathcal{S}_n$}\\
+\end{align*}
+the corresponding sequence of \emph{normalized prediction and updated Feynman-Kac} probability measures on $S_n$
+\begin{align*}
+\eta_{\nu, n}(A) &= \frac{\gamma_{\nu, n}(A)}{\gamma_{\nu, n}(S_n)} \text{ for all $A \in \mathcal{S}_n$}\\
+\hat{\eta}_{\nu, n}(A) &= \frac{\hat{\gamma}_{\nu, n}(A)}{\hat{\gamma}_{\nu, n}(S_n)} \text{ for all $A \in \mathcal{S}_n$}
+\end{align*}
+with the convention that $\gamma_{\nu, 0} = \eta_{\nu, 0} = \nu$.
+It is elementary that
+\begin{align*}
+\gamma_{\nu, n+1}(S_{n+1}) &= \mathcal{Z}_{\nu, n+1} = \sexpectation{\prod_{j=0}^n V_j(X_j)}{\nu} = \hat{\gamma}_{\nu, n}(S_n) = \hat{\mathcal{Z}}_{\nu, n}
+\end{align*}
+and therefore 
+\begin{align*}
+\eta_{\nu, n}(A) &= \frac{\gamma_{\nu, n}(A)}{\mathcal{Z}_{\nu, n}} = \mathds{G}_{\nu, n}(S_0 \times \dotsb \times S_{n-1} \times A) \\
+\intertext{and}
+\hat{\eta}_{\nu, n}(A) &= \frac{\hat{\gamma}_{\nu, n}(A)}{\hat{\mathcal{Z}}_{\nu, n}} = \hat{\mathds{G}}_{\nu, n}(S_0 \times \dotsb \times S_{n-1} \times A) \\
+\end{align*}
+If we let $\pi_n : S_0 \times \dotsb \times S_n \to S_n$ be projection on the last coordinate then we also have the formulas $\gamma_{\nu, n} = \pushforward{\pi_n}{(\prod_{j=0}^{n-1} V_j(X_j) \cdot \mathds{P}_{\nu, n})}$, $\hat{\gamma}_{\nu, n} = \pushforward{\pi_n}{(\prod_{j=0}^{n} V_j(X_j) \cdot \mathds{P}_{\nu, n})}$, $\eta_{\nu, n} = \pushforward{\pi_n}{\mathds{G}_{\nu, n})}$ and $\hat{\eta}_{\nu, n} = \pushforward{\pi_n}{\hat{\mathds{G}}_{\nu, n}}$.
+
+\begin{defn}Let $V : (S, \mathcal{S}) \to [0,\infty)$ be a bounded measurable function then define the set
+\begin{align*}
+\mathcal{P}_V(S) &= \lbrace \mu \in \mathcal{P}(S) \mid \int V(x) \, \mu(dx) > 0 \rbrace
+\end{align*}
+we define the \emph{Boltzmann-Gibbs} transformation to be the function $\Psi_V : \mathcal{P}_V(S) \to \mathcal{P}_V(S)$ given by
+\begin{align*}
+\Psi_V(\mu)(A) &= \frac{(V \cdot \mu)(A)}{(V \cdot \mu)(S)} = \frac{\int_A V(x) \, \mu(dx)}{\int_S V(x) \, \mu(dx)}
+\end{align*}
+\end{defn}
+By Lemma \ref{ChainRuleDensity} and Jensen's Inequality we have 
+\begin{align*}
+\int V(x) \, \Psi_V(\mu)(dx) = \frac{\int V^2(x) \, \mu(dx) }{\int V(x) \, \mu(dx)} \geq \frac{\left(\int V(x) \, \mu(dx) \right)^2}{\int V(x) \, \mu(dx)} = \int V(x) \, \mu(dx) > 0
+\end{align*}
+so indeed the range of $\Psi_V$ is contained in $\mathcal{P}_V(S)$.
+
+Simple computations
+\begin{align*}
+\hat{G}_{\nu,n}(A) &= \mathcal{Z}_{\nu, n}^{-1} \int_A \prod_{j=0}^n V_j(x_j) \, \mathds{P}_{\nu, n}(dx_0, \dotsc, dx_n) = \int_A V_n(x_n) G_{\nu,n}(dx_0, \dotsc, dx_n)
+\end{align*}
+from which it follows that
+\begin{align*}
+\hat{\gamma}_{\nu, n} (A) &= \int_{S_0 \times \dotsb \times S_{n-1} \times A} \prod_{j=0}^n V_j(x_j) \, \mathds{P}_{\nu, n}(dx_0, \dotsc, dx_n) = \int_A V_n(x_n) \, \gamma_{\nu,n}(dx_n)
+\end{align*}
+and 
+\begin{align*}
+\hat{\eta}_{\nu, n}(A) &= \frac{\hat{\gamma}_{\nu,n}(A)}{\hat{\gamma}_{\nu,n}(S_n)} 
+= \frac{\int_A V_n(x_n) \, \gamma_{\nu,n}(dx_n)}{\int V_n(x_n) \, \gamma_{\nu,n}(dx_n)} 
+= \frac{\int_A V_n(x_n) \, \gamma_{\nu,n}(dx_n) / \gamma_{\nu,n}(S_n)}{\int V_n(x_n) \, \gamma_{\nu,n}(dx_n) / \gamma_{\nu,n}(S_n)} \\
+&= \frac{\int_A V_n(x_n) \, \eta_{\nu,n}(dx_n)}{\int V_n(x_n) \, \eta_{\nu,n}(dx_n)} \\
+&= \Psi_{V_n}(\eta_{\nu,n}) (A) \\
+\end{align*}
+which shows us how we can go from the normalized prediction measures to the normalized updated measures.
+
+Now we claim that in the opposite direction we have
+\begin{align*}
+\eta_{\nu, n} &= \hat{\eta}_{\nu, n-1} \mu_n
+\end{align*}
+
+Proving this follows from a similar sequence of computations
+\begin{align*}
+\gamma_{\nu,n}(A) &= \int_{S_0 \times \dotsb \times S_{n-1} \times A} \prod_{j=0}^{n-1} V_j(x_j) \, \mathds{P}_{\nu, n}(dx_0, \dotsc, dx_n) \\
+&= \int_{S_0 \times \dotsb \times S_{n-1} \times A} \prod_{j=0}^{n-1} V_j(x_j) \, \mu_n(x_{n-1}, dx_n) \dotsb \mu_1(x_0,dx_1) \nu(dx_0) \\
+&= \int_{S_0 \times \dotsb \times S_{n-1} } \prod_{j=0}^{n-1} V_j(x_j) \, \mu_n(x_{n-1}, A) \dotsb \mu_1(x_0,dx_1) \nu(dx_0) \\
+&= \int \mu_n(x_{n-1}, A) \hat{\gamma}_{\nu,n-1}(dx_{n-1}) \\
+&= \hat{\gamma}_{\nu,n-1} \mu_n (A) \\
+\end{align*}
+and thus from the above and the fact that $\mu_n$ is a probability kernel we see that $\gamma_{\nu, n}(S_n) = \hat{\gamma}_{\nu,n-1}(S_{n-1})$ and finally
+\begin{align*}
+\eta_{\nu, n}(A) &= \frac{\gamma_{\nu,n}(A)}{\gamma_{\nu,n}(S_n)} = \frac{\hat{\gamma}_{\nu,n-1} \mu_n (A)}{\hat{\gamma}_{\nu,n-1} (S_{n-1})} = \hat{\eta}_{\nu,n-1} \mu_n (A)
+\end{align*}
+
+There is another way to look at the above formulae.  Define the kernel
+\begin{align*}
+S_{n, \eta} (x, A) &= V_n(x) \characteristic{A}(x) + (1 - V_n(x)) \Psi_{V_n}(\eta)(A) \\
+\end{align*}
+then
+\begin{align*}
+\eta_n S_{n, \eta_n} (A) &= \int_A V_n(x) \, \eta_n(dx) + \int  (1 - V_n(x)) \Psi_{V_n}(\eta)(A) \, \eta_n(dx) \\
+&= \Psi_{V_n}(\eta_n)(A) \int V_n(x) \, \eta_n(dx) + \Psi_{V_n}(\eta)(A) - \Psi_{V_n}(\eta)(A) \int V_n(x) \, \eta_n(dx) \\
+&=\Psi_{V_n}(\eta)(A)  = \hat{\eta_n}(A)
+\end{align*}
+and moreover if we define $K_{n+1, \eta} = S_{n, \eta} \mu_{n+1}$ then we have
+\begin{align*}
+\eta_{n+1} &= \eta_n K_{n+1, \eta_n}
+\end{align*}
+so we can think of the sequence $\eta_n$ as being the solution of nonlinear recursive equations.  As it turns out the kernels $K_{n+1, \eta} = S_{n, \eta} \mu_{n+1}$ are not the only such kernels that may
+constructed having the property that $\eta_{n+1} = \eta_n K_{n+1, \eta_n}$ (in particular note that $K_{n+1, \eta} = \Psi_{V_n}(\eta)$ also works); it also turns out that many of the approximation methods we explore apply for any such kernels. This motivates the following
+defintion
+\begin{defn}Suppose we have measurable mappings $\Phi_{n+1} : \mathcal{P}(S_n) \to \mathcal{P}(S_{n+1})$ and probability measures $\eta_n \in \mathcal{P}(S_n)$ satisfying the recursive equations $\eta_{n+1} = \Phi_{n+1}(\eta_n)$.  A collection of probability kernels $K_{n+1, \eta} : S_n \times \mathcal{S}_{n} \to [0,1]$ such that $\eta_{n+1} = K_{n+1, \eta_n}$ is called a \emph{McKean interpretation} of the flow $\eta_n$.
+\end{defn}
+
+TODO: Del Moral goes on at length about various ways of interpreting these equations (many of the interpretations make use of auxiliary assumptions even if the equations hold true without them).  A crucial 
+
+We now claim that $\mathcal{Z}_{\nu,n} = \prod_{j=0}^{n-1} \int V_j(x) \, \eta_{\nu, j}(dx)$ (hence $\gamma_{\nu,n}(S_n) = \prod_{j=0}^{n-1} \int V_j(x) \, \eta_{\nu, j}(dx)$ and $\hat{\gamma}_{\nu,n}(S_n) = \prod_{j=0}^{n} \int V_j(x) \, \eta_{\nu, j}(dx)$).
+This is proven by induction; the induction step is a straightforward computation using the definitions and Lemma \ref{ChangeOfVariables}
+\begin{align*}
+\mathcal{Z}_{\nu,n} &= \int \prod_{j=0}^{n-1} V_j(x_j) \, \mu_n(x_{n-1}, dx_n) \dotsb \mu_1(x_0, dx_1) \nu(dx_0) \\
+&= \int \prod_{j=0}^{n-1} V_j(x_j) \, \mu_n(x_{n-1}, S_n) \mu_{n-1}(x_{n-2}, S_{n-1})\dotsb \mu_1(x_0, dx_1) \nu(dx_0) \\
+&= \int V_{n-1}(x_{n-1}) \prod_{j=0}^{n-2} V_j(x_j) \, \mu_{n-1}(x_{n-2}, S_{n-1})\dotsb \mu_1(x_0, dx_1) \nu(dx_0) \\
+&= \mathcal{Z}_{\nu, n-1} \int V_{n-1}(x_{n-1}) \, \mathds{G}_{\nu, n-1}(dx_0, \dotsc, dx_{n-1})\\
+&= \mathcal{Z}_{\nu, n-1} \int V_{n-1}(x_{n-1}) \, \eta_{\nu, n-1}(dx_{n-1})\\
+\end{align*}
+
+
+Now for $n \in \naturals$, define the bounded kernel $Q_n : S_{n-1} \times \mathcal{S}_{n} \to [0,\infty)$ by
+\begin{align*}
+Q_{n}(x,A) &= V_{n-1}(x) \mu_{n}(x,A)
+\end{align*} 
+and observe that 
+\begin{align*}
+\gamma_{\nu, n+1}(A) &= \int_{S_0 \times \dotsb \times S_{n} \times A} \prod_{j=0}^{n} V_j(x_j) \, \mu_{n+1} (x_{n}, dx_{n+1}) \dotsb \mu_1(x_0,dx_1) \nu(dx_0) \\
+&= \int_{S_0 \times \dotsb \times S_{n} } \left [V_n(x_n) \mu_{n+1} (x_{n},A) \right ] \prod_{j=0}^{n-1} V_j(x_j) \, \mu_{n} (x_{n-1}, dx_{n})  \dotsb \mu_1(x_0,dx_1) \nu(dx_0) \\
+&= \int Q_{n+1} (x_{n},A) \, \gamma_{\nu, n}(dx_{n}) = \gamma_{\nu, n} Q_{n+1} (A)
+\end{align*}

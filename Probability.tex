@@ -238,7 +238,7 @@ all $t \in (0,1)$,
 \end{align*}
 \end{defn}
 
-TODO: Convex functions are continuous
+TODO: Convex functions are continuous; in fact they are locally Lipschitz (hence differentiable a.e. by Rademacher).
 
 Convex functions are almost surely differentiable.
 \begin{lem}\label{ThreeChordLemma}Let $\varphi : [a,b] \to \reals$ be convex.  Then for every
@@ -282,6 +282,7 @@ If $\varphi$ is strictly convex then we have
 \begin{align*}
 D^+\varphi(x) &< \frac{\varphi(y) -  \varphi(x)}{y - x} < D^-\varphi(y)
 \end{align*}
+Thus each of $D^\pm \varphi$ is monotone and has at most a countable number of discontinuities.
 \end{lem}
 \begin{proof}
 Lemma \ref{ThreeChordLemma} shows that for $a < x < b$ and $h > 0$,
@@ -308,6 +309,14 @@ D^+\varphi(x) &\leq \frac{\varphi(w) -
   \varphi(x)}{w-x} < \frac{\varphi(y) -
   \varphi(x)}{y-x}
 \end{align*}  The case of $D^-\varphi(y)$ follows analogously.
+
+The fact that $D^\pm \varphi$ has at most a countable number of
+discontinuities follows from the fact that the functions are nondecreasing.
+On every finite interval $[c,d] \subset (a,b)$ and $n \in \naturals$ know that right
+hand and left hand limits exist hence all discontinuities are jump discontinuities.  For 
+every $n \in \naturals$ the number of discontinuities of size bigger than $1/n$ is finite
+(bounded by $(c-d)*n$).  Now take the union over all $n$ and a countable set of intervals $[c,d]$ covering
+$(a,b)$.
 \end{proof}
 \begin{cor}\label{ConvexHasSubderivative}Let $\varphi : [a,b] \to
   \reals$ be convex then for $x \in (a,b)$ there exists constants $A,B
@@ -316,7 +325,7 @@ D^+\varphi(x) &\leq \frac{\varphi(w) -
   may assume that $Ay + B < \varphi(y)$ for $y \neq x$.
 \end{cor}
 \begin{proof}
-By Lemma \ref{ConvexHasDini} we can pick $D^-(x) \leq A \leq D^+(x)$.
+By Lemma \ref{ConvexHasDini} we can pick $D^-\varphi (x) \leq A \leq D^+\varphi (x)$.
 Also by that result we know that for all $h > 0$, in fact we
 have
 \begin{align*}
@@ -369,3 +378,45 @@ we have
 from which we conclude $\characteristic{\xi \neq \expectation{\xi}} = 0$ a.s.
 \end{proof}
 
+We will use the following fact later on in the text.  There is no harm
+is skipping over it now.
+\begin{lem}\label{AbsoluteContinuityOfConvexFunctions}Let $\varphi : [a,b] \to \reals$ be convex with $f(a) = f(a+)$ and $f(b) = f(b-)$, then $\varphi$ is absolutely continuous and $\varphi^\prime$ is increasing.  In particular $D^- \varphi$ and $D^+ \varphi$ are integrable on $[a,b]$ and
+for every $x \in [a,b]$, 
+\begin{align*}
+\varphi(x) &= \varphi(a) + \int_a^x D^+\varphi(s) \, ds = \varphi(a) + \int_a^x D^-\varphi(s) \, ds 
+\end{align*}
+Conversely if $\varphi$ is absolutely continuous and $\varphi$ is increasing almost everywhere then $\varphi$ is convex.
+\end{lem}
+\begin{proof}
+Suppose that $\varphi$ is convex.  Since the result is trivial for $x=a$ we may assume that $a < x \leq b$.  Pick $\alpha$ and $\beta$ with $a < \alpha < \beta < x$.  Both $D^+\varphi$ and $D^- \varphi$ are bounded on $[\alpha, \beta]$ (e.g. a lower bound of $\frac{\varphi(\alpha) - \varphi(a)}{\alpha - a}$ and an upper bound of $\frac{\varphi(b) - \varphi(\beta)}{b - \beta}$).  Let 
+$n \in \naturals$ be given and consider the partition $x_i = \alpha + i \frac{\beta - \alpha}{n}$ for $i=0, \dotsc, n$.  For any $i=2, \dotsc, n-1$ we have
+\begin{align*}
+\int_{x_{i-2}}^{x_{i-1}} D^+\varphi(s) \, ds  &\leq D^+\varphi (x_{i-1}) \frac{\beta - \alpha}{n} \leq \varphi(x_i) - \varphi(x_{i-1}) \leq D^-\varphi (x_i) \leq \int_{x_{i}}^{x_{i+1}} D^-\varphi(s) \, ds
+\end{align*}
+Summing up for $i=2, \dotsc, n-1$ we get
+\begin{align*}
+\int_\alpha^{x_{n-2}} D^+\varphi(s) \, ds &\leq \varphi(x_{n-1}) - \varphi(x_{1}) \leq \int_{x_2}^{\beta} D^-\varphi(s) \, ds
+\end{align*}
+Now let $n \to \infty$ using Dominated Convergence on the integrals and continuity of $\varphi$ (TODO: Where do we show this?)  to conclude that 
+\begin{align*}
+\int_\alpha^{\beta} D^+\varphi(s) \, ds &\leq \varphi(\beta) - \varphi(\alpha) \leq \int_{\alpha}^{\beta} D^-\varphi(s) \, ds
+\end{align*}
+On the other hand from Lemma \ref{ConvexHasDini} we know that $D^- \varphi(s) \leq D^+ \varphi(s)$ for $a <  s < \beta$ and therefore we conclude
+\begin{align*}
+\int_\alpha^{\beta} D^+\varphi(s) \, ds &= \int_{\alpha}^{\beta} D^-\varphi(s) \, ds = \varphi(\beta) - \varphi(\alpha) 
+\end{align*}
+
+We know that $D^\pm \varphi(s)$ are bounded above by $D^+ \varphi (\beta)$ (hence also bounded above by $D^+ \varphi (b)$ right; does this help with anything?) therefore we may apply Monotone Convergence
+to $\characteristic{[\alpha,\beta]}(s) (D^+ \varphi (\beta) - D^\pm \varphi(s))$ and use the assumption $f(a) = f(a+)$ to conclude
+\begin{align*}
+\int_a^\beta D^\pm \varphi(s) \, ds = -(\beta - a) D^+ \varphi (\beta) -\lim_{\alpha \to a^+} \int_\alpha^\beta(D^+ \varphi (\beta) - D^\pm \varphi(s)) \, ds \\
+&=-(\beta - a) D^+ \varphi (\beta) - \lim_{\alpha \to a^+} ((\beta-\alpha) D^+ \varphi (\beta) - (\varphi(\beta) - \varphi(\alpha))) = \varphi(\beta) - \varphi(a) \\
+\end{align*}
+In particular, 
+\begin{align*}
+\int_a^\beta (-D^\pm \varphi(s) \maxop 0) \, ds &= -\int_a^\beta D^\pm \varphi(s) \, ds + (\beta -a) D^+ \varphi (\beta) = \varphi(a) - \varphi(\beta) + (\beta -a) D^+ \varphi (\beta) < \infty
+\end{align*}
+which shows that the negative part of $D^\pm \varphi$ is integrable on every interval $[a, \beta]$ with $\beta < b$.
+
+TODO: Finish and understand the subtly of how integrability is shown...
+\end{proof}

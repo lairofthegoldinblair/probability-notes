@@ -453,6 +453,21 @@ clear from the definition of $\mu$ that for every finite subset of $I
 and therefore $\mathcal{L}(\xi_I) = \mu_I$.
 \end{proof}
 
+The topological restriction on spaces in the Daniell-Kolmogorov Theorem is not
+the only assumption that can be made to get a valid extension theorem.  Instead of assuming the existence of a projective
+family of measures if one assumes that the family of measures is defined by conditioning then an extension exists with
+no topological assumptions.  Using languague that appears in a later chapter, this result asserts the existence of discrete time
+Markov processes without topological restrictions on state spaces.  The reader may very well want to skip this result until it is
+referenced later on.
+
+\begin{thm}[Ionescu-Tulcea Extension Theorem]\label{IonescuTulceaExtension}Let $(S_1, \mathcal{S}_1), (S_2, \mathcal{S}_2), \dotsc$ be a sequence of 
+measurable spaces.  Suppose for every $n \in \naturals$ we have a probability kernel $\mu_n : S_1 \times \dotsb \times S_{n-1} \to \mathcal{P}(S_n)$ then 
+there exists random elements $\xi_n \in S_n$ for $n \in \naturals$ such that $\mathcal{L}(\xi_1, \dotsc, \xi_n) = \mu_1 \otimes \dotsb \otimes \mu_n$.
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
 There are a great many things to be said about stochastic processes in
 general, however we will wait a bit to travel that road and instead begin to
 look at a special subclass of stochastic processes.
@@ -2491,6 +2506,8 @@ Now we have everything to finish the proof of theorem.  We get
 from which we conclude that $\lim_{n \to \infty} \expectation{e^{iu\sum_{k=1}^n X_{n,k}}} = e^{-u^2 \sigma^2/2}$ which by
 the Glivenko-Levy Continuity Theorem \ref{GlivenkoLevyContinuity} shows $\sum_{k=1}^n X_{n,k} \todist N(0, \sigma^2)$.
 \end{proof}
+
+\subsection{Burkholder's Inequalities}
 
 Now we turn to the inequalities of Burkholder that show an intimitate
 relationship between a martingale and the sum of the squares of the associated 

@@ -12,7 +12,7 @@ most basic notions of metric spaces.
 \item[(iii)]For all $x,y,z \in S$, $d(x,z) \leq d(x,y) + d(y,z)$.
 \end{itemize}
 \end{defn}
-\begin{lem} Given a metric space $(S,d)$, we have $d(x,y) \geq 0$ for all
+\begin{lem}\label{MetricSpaceIsPseudometric}Given a metric space $(S,d)$, we have $d(x,y) \geq 0$ for all
   $x,y \in S$.
 \end{lem}
 \begin{proof}
@@ -687,6 +687,15 @@ which is the desired contradiction.
 \end{thm}
 \begin{proof}
 By the Heine-Borel Theorem and Theorem \ref{ContinuousImageOfCompact}, we know that $f(S)$ is a closed bounded set.
+\end{proof}
+
+\begin{thm}\label{ExistenceGlobalMinimizerContinuous}Let $f : S \to \reals$ be a continuous function, if $S$ is
+  compact then there exists $x^* \in S$ such that $f(x^*) \leq f(x)$ for  all $x \in S$.
+\end{thm}
+\begin{proof}
+By the previous theorem $f$ is bounded and therefore $-\infty < \inf_{x \in S} f(x) < \infty$.  Pick a sequence $x_n \in S$ such
+that $\lim_{n \to \infty} f(x_n) = \inf_{x \in S} f(x)$.  By sequential compactness of $S$ there is subsequence $n_k$ along which $x_{n_k}$ 
+converges to some point $x^* \in S$.  Note that by continuity of $f$ we have $f(x^*) = \lim_{k \to \infty} f(x_{n_k}) = \inf_{x \in S} f(x)$.
 \end{proof}
 
 A related notion is that of uniform convergence of functions.

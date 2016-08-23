@@ -75,7 +75,7 @@ g_n(\epsilon) &= \frac{1}{\Sigma_n^2} \sum_{i=1}^n \expectation{\xi_i^2
   \characteristic{|\xi_i| \geq \epsilon \Sigma_n}}
 \end{align*}
 and let $d \gamma = \frac{1}{\sqrt{2\pi}} e^{\frac{-x^2}{2}} dx$ be the
-  distribution of an $N(0,1)$ random variable.  Now for all $\epsilon > 0$, $\varphi \in C^3(\reals;\reals)$ with
+  distribution of an $N(0,1)$ random variable.  For all $\epsilon > 0$, $\varphi \in C^3(\reals;\reals)$ with
 bounded 2nd and 3rd derivative,
 \begin{align*}
 \left \lvert \expectation{\varphi(\hat{S_n})} - \int_\reals \varphi
@@ -312,7 +312,7 @@ variable $\hat{\eta}_m$ has finite moments of all orders:
 \abs{\expectation{\abs{\hat{\eta}_m}^3}} \\
 &= \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n \frac{\sigma_m^3}{\Sigma_n^3}
 \abs{\expectation{\abs{\eta_m}^3}} \\
-&= \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n \frac{\sigma_m^2}{\Sigma_n^2}
+&\leq \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{m=1}^n \frac{\sigma_m^2}{\Sigma_n^2}
 \abs{\expectation{\abs{\eta_m}^3}} \\
 &= \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{6}
 \frac{2\sqrt{2}}{\sqrt{\pi}} < \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{2}
@@ -473,3 +473,240 @@ We are not going to prove the following but we should talk about it:
 \end{thm}
 Note the upper bound of the constant $C$ has been reduced to about
 $0.5600$.  
+
+The proof of the Lindeberg Theorem \ref{LindebergTheorem} above extends to a more general
+situation which (somewhat surprisingly) is required for applications.  We state the the Theorem here and encourage the 
+motivated reader to prove it herself by closely following the proof of Theorem \ref{LindebergTheorem}.    On the other hand
+the reader that is anxious to move onto new topics will lose nothing by skipping this topic and returning to it when it is
+required later on.
+\begin{defn}A \emph{triangular array} of random variables is for each $n \in \naturals$
+\begin{itemize}
+\item [(i)] a probability space $(\Omega_n, \mathcal{A}_n, P_n)$ 
+\item [(ii)] an natural number $m_n \in \naturals$ and random variables $\xi_{n1}, \dotsc, \xi_{n m_n}$ defined on  $(\Omega_n, \mathcal{A}_n, P_n)$ 
+\end{itemize}
+such that
+\begin{itemize}
+\item[(i)] for each $n \in \naturals$ the $\xi_{n1}, \dotsc, \xi_{n m_n}$ are independent
+\item[(ii)] $\expectation{\xi_{ni}} = 0$ for each $n \in \naturals$ and $1 \leq i \leq m_n$
+\item[(iii)] $\sum_{i=1}^{m_n} \expectation{\xi_{ni}^2} > 0$ for each $n \in \naturals$
+\end{itemize}
+\end{defn}
+
+The Lindeberg Central Limit Theorem for triangular arrays follows
+\begin{thm}[Triangular Arrays]\label{LindebergTheoremTriangular}  Let $\xi_{ni}$ be a triangular array and define
+\begin{align*}
+S_n& = \sum_{i=1}^{m_n} \xi_{ni},&
+\sigma_{ni}& = \sqrt{\expectation{\xi_{ni}^2}},& 
+\Sigma_n& = \sqrt{\sum_{i=1}^{m_n} \sigma_{ni}^2}, \\
+\hat{S}_n& = \frac{S_n}{\Sigma_n},&
+r_n& = \max_{1 \leq i \leq m_n} \frac{\sigma_{ni}}{\Sigma_n},&
+g_n(\epsilon)& = \frac{1}{\Sigma_n^2} \sum_{i=1}^{m_n} \expectation{\xi_{ni}^2 \characteristic{|\xi_{ni}| \geq \epsilon \Sigma_n}}
+\end{align*}
+and let $d \gamma = \frac{1}{\sqrt{2\pi}} e^{\frac{-x^2}{2}} dx$ be the
+  distribution of an $N(0,1)$ random variable.  For all $\epsilon > 0$, $\varphi \in C^3(\reals;\reals)$ with
+bounded 2nd and 3rd derivative,
+\begin{align*}
+\left \lvert \expectation{\varphi(\hat{S_n})} - \int_\reals \varphi
+  d\gamma \right \rvert \leq
+\left ( \frac{\epsilon}{6} + \frac{r_n}{2}\right ) \norm{\varphi^{\prime\prime\prime}}_\infty + g_n(\epsilon) \norm{\varphi^{ \prime
+\prime}}_\infty
+\end{align*}
+and 
+\begin{align*}
+r_n^2 \leq \epsilon^2 + g_n(\epsilon)
+\end{align*}
+In particular, if $\lim_{n \to \infty} g_n(\epsilon) = 0$ for every
+$\epsilon > 0$, then 
+\begin{align*}
+\lim_{n \to \infty} \left \lvert \expectation{\varphi(\hat{S_n})} - \int_\reals \varphi
+  d\gamma \right \rvert = 0
+\end{align*}
+\end{thm}
+\begin{proof}
+Fix an $n >0$ and define for $1 \leq i \leq m_n$, $\hat{\xi}_{ni} = \frac{\xi_{ni}}{\Sigma_n}$ and
+$\hat{S}_n = \hat{\xi}_{n1} + \cdots + \hat{\xi}_{nm_n}$.  Note that
+$\expectation{\hat{S}_n^2} = 1$.  Let $\eta_1, \eta_2, \cdots, \eta_{m_n}$ be independent $N(0,1)$ random variables
+that are also independent of the $\xi_{ni}$.  Note that we may have to
+extend $\Omega_n$ in order to arrange this (e.g. extend by $[0,1]$ and
+use Theorem \ref{ExistenceCountableIndependentRandomVariables}).  We
+rescale each $\eta_i$ so that it has the same variance as
+$\hat{\xi_{ni}}$; define $\hat{\eta}_i =
+\frac{\sigma_{ni} \eta_i}{\Sigma_n}$ and $\hat{T}_n = \hat{\eta}_1 +
+\cdots + \hat{\eta}_{m_n}$.  Notice that
+$\expectation{\hat{\eta}_i^2} =
+\expectation{\hat{\xi}_{ni}^2} = \frac{\sigma_{ni}^2}{\Sigma_n^2}$ and $\hat{T}_n$ is also a $N(0,1)$
+random variable.  Therefore, by the Expectation Rule (Lemma
+\ref{ExpectationRule}) $\int \varphi \, d\gamma =
+\expectation{\varphi(\hat{T}_n)}$ and we can write 
+\begin{align*}
+\left \lvert \expectation{\varphi(\hat{S_n})} - \int_\reals \varphi
+  d\gamma \right \rvert = \left \lvert \expectation{\varphi(\hat{S_n})} - \expectation{\varphi(\hat{T_n})} \right \rvert
+\end{align*}
+By having arranged for $\hat{\xi}_{ni}$ and $\hat{\eta}_i$ to have same
+first and second moments so one should be thinking that we have
+constructed a ``second order approximation''. 
+
+The real trick of the proof is to interpolate between
+$\varphi(\hat{S_n})$ and $\varphi(\hat{T_n})$ by exchanging
+$\hat{\xi}_i$ and $\hat{\eta}_i$ one summand at a time.  By varying
+only one summand we will then be able use Taylor's Theorem to
+estimate the differences between the terms.  Concretely we write,
+\begin{align*}
+\varphi(\hat{S_n}) - \varphi(\hat{T_n}) &= \varphi(\hat{\xi}_{n1} + \cdots + \hat{\xi}_{nm_n}) -
+\varphi(\hat{\eta}_1 + \cdots + \hat{\eta}_{m_n}) \\
+&= \varphi(\hat{\xi}_{n1} + \cdots + \hat{\xi}_{nm_n}) - \varphi(\hat{\eta}_1 +
+\hat{\xi}_{n2} + 
+\cdots + \hat{\xi}_{nm_n}) \\
+&+ \varphi(\hat{\eta}_1 +
+\hat{\xi}_{n2} +
+\cdots + \hat{\xi}_{nm_n}) - 
+\varphi(\hat{\eta}_1 + \hat{\eta}_2 + \hat{\xi}_{n3} + \cdots + \hat{\xi}_{nm_n}) \\
+&+ \cdots\\
+&+ \varphi(\hat{\eta}_1 +
+\cdots  +
+\hat{\eta}_{m_n-1} + \hat{\xi}_{nm_n}) - 
+\varphi(\hat{\eta}_1 + \cdots + \hat{\eta}_{nm_n}) \\
+\end{align*}
+Since we have to manipulate these terms a bit, it helps to clean up
+the notation by defining:
+\begin{align*}
+U_i &= \begin{cases}
+\hat{\xi}_{n2} + \cdots + \hat{\xi}_{nm_n} & \text{if $i=1$} \\
+\hat{\eta}_1 + \cdots + \hat{\eta}_{i-1}+\hat{\xi}_{n,i+1} + \cdots +
+\hat{\xi}_{nm_n} & \text{if $1 < i <m_n$} \\
+\hat{\eta}_1 + \cdots + \hat{\eta}_{m_n-1} & \text{if $i=m_n$} \\
+\end{cases}
+\end{align*}
+and then we can write the above interpolation as 
+\begin{align*}
+\varphi(\hat{S_n}) - \varphi(\hat{T_n}) &= \sum_{i=1}^{m_n} \varphi(U_i + \hat{\xi}_{ni}) -\varphi(U_i + \hat{\eta}_{i})
+\end{align*}
+Now we can take absolute values, use the triangle inequality and use
+linearity of expectation to see
+\begin{align*}
+\abs{\expectation{\varphi(\hat{S_n}) - \varphi(\hat{T_n})}} &\leq
+\sum_{i=1}^{m_n} \abs{\expectation{\varphi(U_i + \hat{\xi}_{ni})}
+  -\expectation{\varphi(U_i + \hat{\eta}_i)}}\\
+&=\sum_{i=1}^{m_n} \abs{\expectation{\varphi(U_i + \hat{\xi}_{ni})
+  -\varphi(U_i + \hat{\eta}_i)}}
+\end{align*}
+
+Now we focus on each term $\varphi(U_i + \hat{\xi}_{ni}) -\varphi(U_i +
+\hat{\eta}_i)$ by applying Taylor's Formula (Theorem
+\ref{TaylorsTheorem}) to see 
+\begin{align*}
+\varphi(U_i + x) = \varphi(U_i) + x \varphi^\prime(U_i) +
+\frac{x^2}{2} \varphi^{\prime\prime}(U_i) + R_i(x)
+\end{align*}
+where
+\begin{align*}
+R_i(x) &=  \int_{U_i}^{U_i+x}
+\frac{(U_i + x - t)^2}{2} \varphi^{\prime \prime \prime}(t) \, dt
+\end{align*}
+
+For example,applying this expansion with $x = \hat{\xi}_{ni}$, using
+linearity of expectation, independence of
+$\hat{\xi}_{ni}$ and $U_i$ and Lemma \ref{IndependenceExpectations} we get
+\begin{align*}
+\expectation{\varphi(U_i + \hat{\xi}_{ni}) } &= \expectation{
+  \varphi(U_i)+ \hat{\xi}_{ni} \varphi^\prime(U_i) +
+\frac{\hat{\xi}_{ni}^2}{2} \varphi^{\prime\prime}(U_i) +
+R_i(\hat{\xi}_{ni})} \\
+&=\expectation{
+  \varphi(U_i)} + \frac{\sigma_{ni}^2}{2\Sigma_n^2}\expectation{\varphi^{\prime\prime}(U_i)} + \expectation{R_i(\hat{\xi}_{ni})}
+\end{align*}
+and in exactly the same way because we have arrange for $\hat{\xi}_{ni}$
+and $\hat{\eta}_i$ to share the first two moments, we get
+\begin{align*}
+\expectation{\varphi(U_i + \hat{\eta}_{ni}) } &=\expectation{
+  \varphi(U_i)} + \frac{\sigma_{ni}^2}{2\Sigma_n^2}\expectation{\varphi^{\prime\prime}(U_i)} + \expectation{R_i(\hat{\eta}_i)}
+\end{align*}
+Thus, $\expectation{\varphi(U_i + \hat{\xi}_{ni})
+  -\varphi(U_i + \hat{\eta}_i)} = \expectation{R_i(\hat{\xi}_{ni})} -
+\expectation{R_i(\hat{\eta}_i)}$ and 
+\begin{align*}
+\abs{\expectation{\varphi(\hat{S_n}) - \varphi(\hat{T_n})}} &\leq 
+\sum_{i=1}^{m_n} \abs{\expectation{R_i(\hat{\xi}_{ni}) }} +  \sum_{i=1}^{m_n} \abs{\expectation{R_i(\hat{\eta}_i) }}
+\end{align*}
+
+We complete the proof by bounding each expectation above.  On the one hand, there is the Lagrange Form for the
+remainder term (Lemma \ref{LagrangeFormRemainder}) that shows that $R_i(x) =
+\varphi^{\prime\prime\prime}(c) \frac{x^3}{6}$ for some $c \in [U_i,U_i+x]$ hence $\abs{R_i(x)} \leq
+\norm{\varphi^{\prime\prime\prime}}_\infty \frac{\abs{x}^3}{6}$. On
+the other hand, sticking with the integral form of the remainder term, since $t \in [U_i, U_i + x]$ we can bound the term $(U_i + x - t)^2 \leq \abs{x}^2$ in
+the integral and integrate to conclude 
+\begin{align*}
+\abs{R_i(x)} &=  \int_{U_i}^{U_i+x}
+\frac{(U_i + x - t)^2}{2} \varphi^{\prime \prime \prime}(t) \, dt \leq
+\frac{\abs{x}^2}{2} \int_{U_i}^{U_i+x}
+\varphi^{\prime \prime \prime}(t) \, dt \\
+&=\frac{\abs{x}^2}{2} \left(\varphi^{\prime \prime}(U_i+x) - \varphi^{\prime \prime}(x)\right) \leq \norm{\varphi^{\prime\prime}}_\infty \abs{x}^2
+\end{align*}
+
+With this setup, pick $\epsilon >0$ and first consider the remainder term $R_i(\hat{\xi}_{ni}) $
+and a note that we have to be a little careful.  We would like to use
+the stronger $3^{rd}$ moment bound however we have not
+assumed that $\hat{\xi}_{ni}$ has a finite $3^{rd}$ moment.  So what we
+do is truncate $\hat{\xi}_{ni}$ and take a $2^{nd}$ moment bound over the
+tail (valid because of the finite variance assumption) and use a
+$3^{rd}$ moment bound on the truncated $\hat{\xi}_{ni}$.  The details follow:
+\begin{align*}
+\abs{\expectation{R_i(\hat{\xi}_{ni}) }} &\leq
+\abs{\expectation{R_i(\hat{\xi}_{ni}) ; \abs{\hat{\xi}_{ni}} \leq \epsilon}}
++ \abs{\expectation{R_i(\hat{\xi}_{ni}) ; \abs{\hat{\xi}_{ni}} > \epsilon}}
+\end{align*}
+We take the sum of first terms and apply the Taylor's formula bound to see 
+\begin{align*}
+\sum_{i=1}^{m_n} \abs{\expectation{R_i(\hat{\xi}_{ni}) ; \abs{\hat{\xi}_{ni}} \leq \epsilon}}
+&\leq
+\frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{i=1}^{m_n}
+\abs{\expectation{\abs{\hat{\xi}_{ni}}^3    ; \abs{\hat{\xi}_{ni}} \leq \epsilon}} \\
+&\leq
+\epsilon \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{i=1}^{m_n}
+\abs{\expectation{\abs{\hat{\xi}_{ni}}^2}} \\
+&=
+\epsilon \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{i=1}^{m_n}
+\frac{\sigma_{ni}^2}{\Sigma_n^2} = \epsilon \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \\
+\end{align*}
+Next take the sum of the second terms to see
+\begin{align*}
+\sum_{i=1}^{m_n} \abs{\expectation{R_i(\hat{\xi}_{ni}) ; \abs{\hat{\xi}_{ni}} >    \epsilon}}
+&\leq
+\norm{\varphi^{\prime\prime}}_\infty\sum_{i=1}^{m_n} 
+\abs{\expectation{\abs{\hat{\xi}_{ni}}^2    ; \abs{\hat{\xi}_{ni}} > \epsilon}} \\
+&=
+\norm{\varphi^{\prime\prime}}_\infty \frac{1}{\Sigma_n^2}\sum_{i=1}^{m_n}
+\abs{\expectation{\abs{\xi_{ni}}^2 ; \abs{\xi_{ni}} > \epsilon \Sigma_n}} \\
+&= \norm{\varphi^{\prime\prime}}_\infty g_\epsilon(n)
+\end{align*}
+Lastly, to bound the remainder term on $\hat{\eta}_i$ we can directly
+appeal to the $3^{rd}$ moment bound because as a normal random
+variable $\hat{\eta}_i$ has finite moments of all orders:
+\begin{align*}
+\sum_{i=1}^{m_n} \abs{\expectation{R_i(\hat{\eta}_i) }}
+&\leq
+\frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{i=1}^{m_n}
+\abs{\expectation{\abs{\hat{\eta}_m}^3}} \\
+&= \frac{\norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{i=1}^{m_n} \frac{\sigma_{ni}^3}{\Sigma_n^3}
+\abs{\expectation{\abs{\eta_i}^3}} \\
+&\leq \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{6} \sum_{i=1}^{m_n} \frac{\sigma_{ni}^2}{\Sigma_n^2}
+\abs{\expectation{\abs{\eta_i}^3}} \\
+&= \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{6}
+\frac{2\sqrt{2}}{\sqrt{\pi}} < \frac{r_n \norm{\varphi^{\prime\prime\prime}}_\infty}{2}
+\end{align*}
+
+TODO: We used a calculation of the $3^{rd}$ absolute moment of the
+standard normal distribution ($\frac{2\sqrt{2}}{\sqrt{\pi}}$).  We need to record that calculation somewhere.
+
+The last thing to show is the bound on $r_n^2$.  For each $n >0$ and
+$1 \leq i \leq n$,
+\begin{align*}
+\frac{\sigma_{ni}^2}{\Sigma_n^2} &= \frac{1}{\Sigma_n^2} \left(
+  \expectation{\xi_{ni}^2 ; \abs{\xi_{ni}} < \epsilon \Sigma_n} +
+  \expectation{\xi_{ni}^2 ; \abs{\xi_{ni}} \geq \epsilon \Sigma_n} \right) \\
+&\leq \frac{1}{\Sigma_n^2} \left(\epsilon^2 \Sigma_n^2 + \Sigma_n^2
+  g_n(\epsilon) \right) = \epsilon^2 + g_n(\epsilon)
+\end{align*}
+hence $r_n^2 = \max_{1\leq i \leq m_n} \frac{\sigma_{ni}^2}{\Sigma_n^2}
+\leq \epsilon^2 + g_n(\epsilon)$.
+\end{proof}

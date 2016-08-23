@@ -646,7 +646,7 @@ stochastic process.
 
 \begin{thm}[Kolmogorov-Centsov]Let $X_t$ be a stochastic process on
   $[0,T]^d$ with values in a complete metric space $(S,d)$ and suppose
-  that there exist constant $C, \alpha, \beta$ such that 
+  that there exist constants $C, \alpha, \beta$ such that 
 \begin{align*}
 \expectation{d(X_s, X_t)^\alpha} &\leq \abs{s-t}^{d + \beta} \text{
   for all $s,t \in \reals^d$}
@@ -940,7 +940,7 @@ t_n$ and $0 \leq s_1 \leq \cdots \leq s_m \leq s$
 TODO: Finish
 \end{proof}
 
-\begin{defn}A process $X_t$ on a time scale $T$ is called a
+\begin{defn}\label{defn:GaussianProcess}A process $X_t$ on a time scale $T$ is called a
   \emph{Gaussian process} if $c_1 X_{t_1} + \dotsb + c_n X_{t_n}$ is a
   Gaussian random variable for all $n \in \naturals$, $(t_1, \dotsc, t_n) \in T^n$ and
   all $(c_1, \dotsc, c_n) \in \reals^n$.  The process is said to be a

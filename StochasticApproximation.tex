@@ -237,6 +237,44 @@ In prose, a asymptotic jump in $Z^{n_k}$ cannot be into the interior because tha
 \end{itemize}
 So the relevant geometry here just precludes some kind of limit of $Z_n$ pointing out of the normal cone (this seems like it will be true with regularity assumptions for then we know that any limit of proximal normals is a limiting normal but with appropriate regularity assumptions we know that proximal normals are the same thing as limiting normals).
 
+Here is how the argument unfolds in Kushner-Clark
+\begin{itemize}
+\item First show that $\epsilon_n \norm{\delta M_n} \toas 0$ (Kushner-Clark show this from the asymptotic rate of change condition the Kushner-Clark criterion discussed below)
+\item Pick a deterministic sequence $c_n \to 0$ and almost surely $\epsilon_n \norm{\delta M_n}\leq c_n/2$ for all but finitely many $n \in \naturals$ (follows from previous point); consider separately the cases of $\epsilon_n \norm{\delta M_n} \leq c_n/2$ for all $n \in \naturals$.
+\item Handle the case in which a non-zero (but finite) number of $\epsilon_n \norm{\delta M_n} > c_n$
+\item In the case that $\epsilon_n \norm{Z_n} \leq c_n/2$ for all $n \in \naturals$ observe there exists $K$ such that
+\begin{itemize}
+\item $Z_n \in N_F(\theta_{n+1})$
+\item $\epsilon_n \norm{Z_n} \leq \epsilon_n(K + c_n)$ (do they really mean $\epsilon_n \norm{Z_n} \leq K(\epsilon_n + c_n)$ as below?)
+\item $Z_n=0$ if $d(\partial F, \theta_n) > K(\epsilon_n + c_n)$.
+\end{itemize}
+\end{itemize}
+I believe that the second two points above both follow from noting that that since $\theta_n \in F$, (and Kushner-Clark also assume that $g_n$ are uniformly bounded on $F$)
+\begin{align*}
+\epsilon_n \norm{Z_n} &= \norm{\Pi_F(\theta_n + \epsilon_n Y_n) - \theta_n - \epsilon_n Y_n} \\
+&\leq \norm{\theta_n - \theta_n - \epsilon_n Y_n} \\
+&= \norm{\epsilon_n g_n(\theta_n) + \epsilon_n \beta_n + \epsilon_n \delta M_n } \\
+&\leq \epsilon_n \sup_{x \in F} \abs{g(x)} + \epsilon_n \sup_n\norm{\beta_n} + \epsilon_n c_n/2 \\
+&\leq ((\sup_{x \in F} \abs{g(x)} + \sup_n\norm{\beta_n}) \maxop c_n/2) \epsilon_n
+\end{align*}
+and and if $Z_n \neq 0$ then it follows that $\theta_n + \epsilon_n Y_n \in F^c$ and  therefore as above
+\begin{align*}
+d(\partial F, \theta_n) &=d(\partial F^c, \theta_n) = d(\overline{F^c}, \theta_n) \leq \norm{\theta_n + \epsilon_n Y_n -\theta_n} \\
+&\leq  ((\sup_{x \in F} \abs{g(x)} + \sup_n\norm{\beta_n}) \maxop c_n/2) \epsilon_n
+\end{align*}
+Note that Kushner and Clark assume that $F$ is the closure of its interior thus $\partial F = \partial F^c$; this follows since $F$ closed implies $F^c$ is open
+hence $\partial F^c = \overline{F^c} \setminus F^c \subset F$ and if $x \in \partial F^c$ then for every open set $x \in U$ we must have $U \cap \int(F) \neq \emptyset$ for otherwise 
+$x \notin \overline{\int(F)} = F$ which is a contradiction.  TODO: Under what circumstances is it true that $d(F,x) = d(\partial F, x)$ for $x \notin F$?  It is true in $\reals^d$.
+
+Based on these properties Kushner and Clark claim that $Z^0(t)$ is uniformly continuous on $[0,\infty)$.  They say that if not then by the uniform continuity of $\theta^0(t) - Z^0(t)$ we can 
+find an $\epsilon > 0$ and sequences $s_k \to \infty$, $\delta_k \to 0$ with $\delta_k > 0$ such that 
+\begin{itemize}
+\item[a)] $\lim_{k \to \infty} d(X^0(s_k), \partial F) = 0$
+\item[b)] $\abs{X^0(s_k+\delta_k) - X^0(s_k)} \geq \epsilon$ for all $k \in \naturals$
+\item[c)] $d(X^0(s_k+\delta_k), \partial F) \geq \epsilon/2$ for all $k \in \naturals$
+\end{itemize}
+Then they claim that this is a contradiction.  Here is where I stand on this ...
+
 TODO: Finish
 \end{proof}
 

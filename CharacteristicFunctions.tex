@@ -136,7 +136,7 @@ $\int \frac{1}{N} \norm{x}_2 \wedge
 proving uniform continuity.
 \end{proof}
 \begin{defn}Let $\xi$ be an $\reals^n$-valued random variable. Its
-  characteristic function is denoted $\varphi_\xi$ and is the complex
+  \emph{characteristic function} is denoted $\varphi_\xi$ and is the complex
   valued function on
   $\reals^n$ defined by 
 \begin{align*}
@@ -688,7 +688,10 @@ The first theorem that we prove gives an alternative characterization
 of the property in terms of characteristic functions.  This result is
 sometimes used as the definition of a Gaussian random vector; the only
 real benefit to the definition we've given is that it is more
-elementary.
+elementary.  Recall that a matrix $Q \in \reals^{d \times d}$ is said
+to be \emph{positive definite} if $v^T Q v > 0$ for all $0 \neq v \in
+\reals^d$ and is said to be \emph{positive semi-definite} if $v^T Q v
+\geq 0$ for all $0 \neq v \in \reals^d$.  
 \begin{thm}\label{GaussianVectorCharacteristicFunction}A random vector
   $\xi$ in $\reals^d$ is Gaussian if and only if there is a $\mu \in
   \reals^d$ and a symmetric positive semi-definite matrix $Q \in

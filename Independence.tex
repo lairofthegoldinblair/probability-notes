@@ -46,20 +46,22 @@
 \begin{lem}\label{IndependenceProductMeasures}Suppose we are given a finite collection of
   random elements $\xi_1, \dots, \xi_n$ in measurable spaces
   $S_1, \dots, S_n$ with distributions $\mu_1, \dots, \mu_n$.  The
-  $\xi_i$ are independent if and only if the distribution of $(\mu_1,
-  \dots, \mu_n)$ on $S_1 \times \cdots \times S_n$ is $\mu_1 \otimes
+  $\xi_i$ are independent if and only if the distribution of $(\xi_1,
+  \dots, \xi_n)$ on $S_1 \times \cdots \times S_n$ is $\mu_1 \otimes
   \cdots \otimes \mu_n$.
 \end{lem}
-\begin{proof}If we assume that joint distribution of $\xi_i$ is $\mu_1 \otimes
-  \cdots \otimes \mu_n$ the clearly $\xi_i$ are independent since 
+\begin{proof}If we assume that joint distribution of the $\xi_i$ is $\mu_1 \otimes
+  \cdots \otimes \mu_n$ then clearly the $\xi_i$ are independent since 
 \begin{align*}
 \probability{\xi_1^{-1}(B_1) \cap \cdots \cap \xi_n^{-1}(B_n)} &=
 \probability{(\xi_1, \dots, \xi_n)^{-1}(B_1 \times \cdots \times B_n)}
   \\
+&= (\mu_1 \otimes \cdots \otimes \mu_n)(B_1 \times \cdots \times B_n) \\
+&= \mu_1(B_1) \cdots \mu_n(B_n) \\
 &=\probability{\xi_1^{-1}(B_1)} \cdots \probability{\xi_n^{-1}(B_n)}
 \end{align*}
 
-On the other hand, if we assume that the $\xi_i$ are independent the
+On the other hand, if we assume that the $\xi_i$ are independent then
 above calculation shows that $(\pushforward{(\xi_1, \dots, \xi_n)}{P}) =
 \mu_1 \otimes \cdots \otimes \mu_n$ on cylinder sets which together
 with the finiteness of probability measures shows that
@@ -108,7 +110,7 @@ may replay the same argument for $f$ without the absolute value using Fubini's T
 \ref{Fubini} in place of Tonelli's Theorem.
 \end{proof}
 
-The fact that the joint distribution of indpendent random variables
+The fact that the joint distribution of independent random variables
 only depends on the distribution of the underlying random variables
 has the important consequence that the distribution of \emph{sums} of
 independent random variables also only depends on the distribution of
