@@ -232,6 +232,19 @@ depends only on the $t_j$.  Now the result follows from functoriality
 of the pushforward of a measure.
 \end{proof}
 
+TODO: Not sure what the right time to introduce these concepts is.
+\begin{defn}Let $X$ and $Y$ be stochastic processes on a probability space $(\Omega, \mathcal{A}, P)$ indexed by $T$.
+  We say that $X$ is a \emph{version} (or \emph{modification}) of $Y$  if 
+for every $t \in T$, $\probability{X_t = Y_t} = 1$.  We say that $X$ and $Y$ are \emph{indistinguishable} if and only there exists
+an event $A$ with $\probability{A} = 1$ and for all $\omega \in A$ and $t \in T$ we have $X_t = Y_t$.
+\end{defn}
+
+It is clear that indistinguishable processes are versions of one another.  It is not hard to come up with an example of processes that are
+versions of one another but not indistinguishable.
+\begin{examp}Let $U$ be uniformly distributed over the interval $[0,1]$, for every $t \in [0,1]$ define $X_t(\omega) = \characteristic{t}(U)$ and define $Y_t \equiv 0$.  Note that $\probability{X_t = Y_t} = \probability{X_t = 0} = \probability{U \neq t} =1$ so $X$ and $Y$ are versions of one another.    On the other hand 
+$U \neq 0$ implies that $U = X_U \neq 0 = Y_U$ and since $\probability{U \neq 0}=1$ almost surely the sample paths of $X$ and $Y$ are not equal; in particular $X$ and $Y$ are not indistinguishable.
+\end{examp}
+
 The previous result shows that the finite dimensional distributions
 uniquely characterize the distribution of a stochastic process.  We
 now turn an associated existence problem.  Namely given a family of

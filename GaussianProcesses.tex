@@ -1,7 +1,7 @@
 \chapter{Gaussian Processes}
 
 Recall the definition of Gaussian processes Definition \ref{defn:GaussianProcess} and the fact that the distribution of a Gaussian process $X$ is uniquely 
-determined by the first and second moments $\expectation{X_t}$ and $\expectation{X_s X_t}$ (Lemma \ref{GaussianProcessMoments}).  In fact it is easy to use 
+determined by the first and second moments $\expectation{X_t}$ and $\expectation{X_s X_t}$ (Lemma \ref{GaussianProcessMoments}).  It is easy to use 
 the Daniell-Kolmogorov extension theorem to see that Gaussian processes always exist. 
 
 \begin{prop}\label{ExistenceGaussianProcess}Let $T$ be a set, $\mu : T \to \reals$ and $C : T \times T \to \reals$ be functions such that $C$ is symmetric and for every finite subset $I \subset T$ the restriction $C_I : I \times I \to \reals$ is positive semi-definite, then there exists a Gaussian process $X$ such that $\expectation{X_t} = \mu(t)$ and $\expectation{X_s X_t} = C(s,t)$.
@@ -13,13 +13,19 @@ For each finite subset $I = \lbrace t_1, \cdots, t_d \rbrace \subset T$ we let $
 \begin{defn}Let $\mu$ be a Borel probability measure on a Banach space $V$ then we say that $P$ is \emph{Gaussian} if $\pushforward{\lambda}{\mu}$ is a Gaussian measure on $\reals$ for every continuous linear functional $\lambda : V \to \reals$.
 \end{defn}
 
-\begin{defn}Let $H$ be a separable Hilbert space then an \emph{isonormal process} is a real valued process $X$ on $H$ such that $\expectation{X_v} = 0$ for all $v \in H$ and $\scovariance{X_v}{X_w} = \langle v, w \rangle$ for all $v,w \in H$.
+\begin{defn}Let $H$ be a Hilbert space then an \emph{isonormal process} is a real valued process $X$ indexed by $H$ such that $\expectation{X_v} = 0$ for all $v \in H$ and $\scovariance{X_v}{X_w} = \langle v, w \rangle$ for all $v,w \in H$.
 \end{defn}
 
 
-\begin{prop}\label{ExistenceIsonormalProcess}Let $H$ be a separable Hilbert space then an isonormal process on $H$ exists.
+\begin{prop}\label{ExistenceIsonormalProcess}Let $H$ be a Hilbert space then an isonormal process on $H$ exists.
 \end{prop}
 \begin{proof}
+This follows from Theorem \ref{ExistenceGaussianProcess} once we observe that for every $v_1, \dotsc, v_d$ the matrix $\langle v_i, v_j \rangle$ is positive semidefinite; this in turn follows by noting that for every $a \in \reals^d$ be have 
+\begin{align*}
+\sum_{i,j = 1}^d a_i a_j \langle v_i, v_j \rangle &= \langle \sum_{i=1}^d a_i v_i, \sum_{i=1}^d  v_i \rangle \geq 0
+\end{align*}
+
+Here is an alternative construction that works for separable $H$ (this is from Kallenberg).
 Let $\xi_1, \xi_2, \dotsc$ be a sequence of independent $N(0,1)$ random variables and let $v_1, v_2, \dotsc$ be an orthonormal basis of $H$.  For a general element $v \in H$ we define 
 $X_v = \sum_{n=1}^\infty \langle v, v_n \rangle \xi_n$.  Note that 
 \begin{align*}
@@ -48,12 +54,8 @@ Also  by Parseval's Identity (TODO: Where is this)
 \expectation{X_v X_w} 
 &= \sum_{j=1}^\infty \langle v, v_j \rangle \langle w, v_j \rangle = \langle v, w \rangle
 \end{align*}
-
-This also follows from Theorem \ref{ExistenceGaussianProcess} (without the assumption of separability in fact) once we observe that for every $v_1, \dotsc, v_d$ the matrix $\langle v_i, v_j \rangle$ is positive semidefinite; this in turn follows by noting that for every $a \in \reals^d$ be have 
-\begin{align*}
-\sum_{i,j = 1}^d a_i a_j \langle v_i, v_j \rangle &= \langle \sum_{i=1}^d a_i v_i, \sum_{i=1}^d  v_i \rangle \geq 0
-\end{align*}
 \end{proof}
+
 
 \begin{prop}\label{LinearityIsonormalProcess} Let $X$ be an isonormal process on a Hilbert space $H$, $v, w \in H$ and $a \in \reals$ then $X_{av + w} = a X_v + X_w$ a.s. 
 \end{prop}
@@ -70,9 +72,9 @@ Every Gaussian process law can be constructed using an auxilliary isonormal proc
 \begin{prop}\label{IsonormalRepresentationOfGaussian} Let $X$ be a centered Gaussian process on a probability space $(\Omega, \mathcal{A}, P)$, $L$ be an isonormal process on $L^2(\Omega, \mathcal{A}, P)$ and $Y_t = L_{X_t}$ then $X \eqdist Y$.
 \end{prop}
 \begin{proof}
-It is worth making sure one understands the construction; $X_t$ is a Gaussian random variable on the probability space $(\Omega, \mathcal{A}, P)$ and therefore $X_t \in L^2(\Omega, \mathcal{A}, P)$ and thus $L_{X_t}$ is a centered Gaussian random variable on some other probability space for which we haven't introduced notation.  In any case it is clear from the definition that $Y_t$ is a centered Gaussian process on that other probability space.  As for covariances
+It is worth making sure one understands the construction; $X_t$ is a centered Gaussian random variable on the probability space $(\Omega, \mathcal{A}, P)$ and therefore $X_t \in L^2(\Omega, \mathcal{A}, P)$.  The isonormal process $L$ is defined on $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$ and is indexed by $L^2(\Omega, \mathcal{A}, P)$ and thus $L_{X_t}$ is a centered Gaussian random variable on the probability space $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$.  In any case it is clear that for any $t_1,\dotsc,t_d \in T$ we have $\mathcal{L}(Y_{t_1}, \dotsc, Y_{t_d}) = \mathcal{L}(L_{X_{t_1}}, \dotsc, L_{X_{t_d}})$ is a Gaussian law by definition of the isonormal process.  The fact that $Y$ is centered follows immediately from the corresponding property of $L$.  As for covariances by the covariance structure of $L$ and the definition of the inner product in $L^2$,
 \begin{align*}
-\expectation{Y_s Y_t} &= \expectation{L_{X_s}, L_{X_t}} = \langle X_s, X_t \rangle = \sexpectation{X_s X_t}{P}
+\sexpectation{Y_s Y_t}{P^\prime} &= \sexpectation{L_{X_s}, L_{X_t}}{P^\prime} = \langle X_s, X_t \rangle = \int X_s X_t \, dP = \sexpectation{X_s X_t}{P}
 \end{align*}
 Now apply Lemma \ref{GaussianProcessMoments} to see that $X \eqdist Y$.
 \end{proof}
@@ -81,10 +83,36 @@ A different but equivalent way of looking Proposition \ref{IsonormalRepresentati
 \begin{align*}
 d_X(s,t) &= \left( \expectation{(X_s - X_t)^2} \right)^{1/2} = \norm{X_s - X_t}_2
 \end{align*}
-It follows easily from properties of the $L^2$ norm (perhaps more pedantically the $L^2$ seminorm) that $d_X$ is a pseudometric on $T$.  Moreover by construction, the mapping $t \mapsto X_t$ from $(T,d_X)$ to $L^2(\Omega, \mathcal{A}, P)$ is isometric.  A subtle point is that viewing $X_t$ as an element in $L^2(\Omega, \mathcal{A}, P)$ is viewing $X_t$ as an equivalence class of random variables rather than a random variable; what really want is to use the seminormed space $\mathcal{L}^2(\Omega, \mathcal{A}, P)$.
+It follows easily from properties of the $L^2$ norm (actually the $L^2$ seminorm on $\mathcal{L}^2$) that $d_X$ is a pseudometric on $T$.  Moreover by construction, the mapping $t \mapsto X_t$ from $(T,d_X)$ to $L^2(\Omega, \mathcal{A}, P)$ is isometric.  A subtle point is that viewing $X_t$ as an element in $L^2(\Omega, \mathcal{A}, P)$ is viewing $X_t$ as an equivalence class of random variables rather than a random variable; what really want is to use the seminormed space $\mathcal{L}^2(\Omega, \mathcal{A}, P)$.
 
 TODO: Show that we can construct Brownian motion quickly using an
 isonormal process and Kolomogorov-Centsov.
+
+One of the uses of Proposition \ref{IsonormalRepresentationOfGaussian} is to use boundedness and sample path continuity properties of $L$ to infer the corresponding properties of a $X$.  The following fact is critical in such an approach.
+
+\begin{prop}\label{VersionsForIsonormal}Let $L$ be an isonormal process restricted to a separable subset $C$ of a Hilbert space $H$.  Then 
+\begin{itemize}
+\item[(i)] If there exists an isonormal process $M$ with $M \eqdist L$ and $M$ restricted to $C$ has bounded sample paths then there exists a version $N$ of $L$ such that $N$ restricted to $C$ has bounded sample paths.
+\item[(ii)] If there exists an isonormal process $M$ with $M \eqdist L$ and $M$ restricted to $C$ has uniformly continuous sample paths then there exists a version $N$ of $L$ such that $N$ restricted to $C$ has uniformly continuous sample paths.
+\item[(iii)] If there exists an isonormal process $M,M^\prime$ with $M \eqdist L$, $M^\prime \eqdist L$, $M$ restricted to $C$ has bounded sample paths and $M^\prime$ restricted to $C$ has uniformly continuous sample paths then there exists a version $N$ of $L$ such that $N$ restricted to $C$ has bounded uniformly continuous sample paths.
+\end{itemize}
+\end{prop}
+\begin{proof}
+Let $A$ be a countable dense subset of $C$.  For each $v \in C$ and $n \in \naturals$ pick $v_n \in A$ such that $\norm{v - v_n} < 1/n$.  Let $N_v = \limsup_{n \to \infty} L_{v_n}$ if the right hand side is less than infinity and let it be $0$ otherwise.
+
+\begin{clm}For each $v \in C$, $L_{v_n} \toas L_v$.  In particular, $N$ is a version of $L$.
+\end{clm}
+Then for each $\epsilon > 0$, by linearity of isonormal processes (Proposition \ref{LinearityIsonormalProcess}), a Markov bound and the covariance structure of an isonormal process
+\begin{align*}
+\probability{\abs{L_{v_n} - L_v} > \epsilon} &= \probability{\abs{L_{v_n - v}} > \epsilon} \leq \frac{\expectation{L^2_{v_n - v}}}{\epsilon^2} \\
+&=\frac{\norm{v_n - v}^2}{\epsilon^2} \leq \frac{1}{n^2 \epsilon^2}
+\end{align*}
+and therefore $\sum_{n = 1}^\infty \probability{\abs{L_{v_n} - L_v} > \epsilon }< \infty$ and the Borel-Cantelli Theorem \ref{BorelCantelli} implies $\probability{\abs{L_{v_n} - L_v} > \epsilon \text{i.o.}} = 0$.  By Lemma \ref{ConvergenceAlmostSureByInfinitelyOften} we have $L_{v_n} \toas L_v$.  By definition of $N_v$, it follows that $N$ is a version of $L$.
+
+Suppose that $M \eqdist L$ and $M$ has bounded sample paths on $C$.  It follows that $M$ has bounded sample paths on $A$ and since $A$ is countable the set of sample paths in $\reals^H$ that are bounded on $A$ is measurable.  It follows that almost surely $L$ has bounded sample paths on $A$ and by definition of $N$ we see that almost surely $N$ has bounded sample paths on all of $C$.  By changing $N$ on a set of probability zero we may assume that $N$ has bounded sample paths everywhere.
+
+Suppose that $M \eqdist L$ and $M$ has uniformly continuous sample paths on $C$.  We argue similarly by observing that the set of sample paths that are uniformly continuous on $A$ is a measurable set in $\reals^H$.  Therefore we conclude that almost surely $L$ has uniformly continuous sample paths on $A$.  $L$ is the unique uniformly continuous extension of $L$ from $A$ to all of $C$.
+\end{proof}
 
 \section{Fernique's Theorem}
 
@@ -325,3 +353,130 @@ By the above proof it suffices to show that a measurable $f$ satisfying $f(x+y) 
 \end{align*}
 Each $q_n + V$ is measurable and since  $\reals =\cup_{n=1}^\infty f^{-1}(q_n + V)$ there exists and $n$ such that $W =  f^{-1}(q_n + V)$ has positive measure.  From the claim it follows that $W - W$ is a open neighborhood of $0$.  Since $f$ is additive it follows that $W-W \subset V - V \subset f^{-1}(U)$ (write $x,y \in W$ as $x=q_n+v$ and $y=q_n+w$ then $x-y=v-w \in V - V$).  
 
+\section{Slepian and Sudakov}
+
+\begin{lem}\label{ChevetLemma}Let $\eta$ be an $N(0,1)$ random variable, $(\xi_1, \dotsc, \xi_n)$ be a centered Gaussian random vector, $M>0$ and $0 < \epsilon \leq 1$ such that $\variance{\xi_i} \leq M^2$ for $i=1, \dotsc, n$ and $\expectation{(\xi_i - \xi_j)^2} > \epsilon^2$ for $1 \leq i < j \leq n$ then 
+\begin{align*}
+\probability{\eta > 1} \probability{\xi_1 \leq 1; \dotsb ; \xi_n \leq 1}
+&\leq \frac{1}{2^{n+1}} + \frac{1}{\sqrt{2\pi}} \int_0^\infty \probability{\eta \leq \frac{\sqrt{2}(M^2+1)t}{\epsilon}}^n e^{-t^2/2} \, dt
+\end{align*}
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{defn}Let $X$ be a centered Gaussian random process indexed by a set $T$ then for every $\epsilon>0$ define
+\begin{align*}
+d(\epsilon, T) &= 
+\sup_{n \in \naturals} \lbrace \text{there exist $(t_1, \dotsc, t_n) \in T$ such that $\min_{1 \leq i < j \leq n}\expectation{(X_{t_i} -X_{t_j})^2} > \epsilon^2$} \rbrace
+\end{align*}
+\end{defn}
+
+\begin{thm}[Sudakov-Chevet]\label{SudakovChevet}Let $X$ be a centered Gaussian process indexed by a set $T$ such that 
+\begin{align*}
+\limsup_{\epsilon \to 0} \epsilon^2 D(\epsilon, T) = +\infty
+\end{align*}
+then $\sup_{t \in T} \abs{X_t} = +\infty$ almost surely.
+\end{thm}
+\begin{proof}
+First suppose that $\sup_{t \in T} \variance{X_t} = +\infty$.  Note that for every $M > 0$ we have the simple bound 
+\begin{align*}
+\probability{\abs{X_t} \leq M} &= \frac{1}{\sqrt{2\pi \variance{X_t}}} \int_{-M}^M e^{-t^2/2 \variance{X_t}} \, dt \leq \frac{2M}{\sqrt{2\pi \variance{X_t}}}
+\end{align*} 
+Pick $t_1, t_2, \dotsc \in T$ such that $\variance{X_{t_n}} > n^4$ then it follows that $\sum_{j=1}^\infty \probability{\abs{X_{t_j}} \leq M} < \infty$ and so by the Borel-Cantelli Theorem \ref{BorelCantelli} $\probability{\sup_j \abs{X_{t_j}} \leq M} = 0$.  By continuity of measure we get $\probability{\sup_j \abs{X_{t_j}} = +\infty} = 1$.
+
+We may now assume that  there exists $M > 0$ such that $\sup_{t \in T} \variance{X_t} < \infty$.  Choose a sequence $\epsilon_k$ such that $\lim_{k \to \infty} \epsilon_k = 0$ and $\epsilon_k^2 D(\epsilon_k, T) \geq k$.  Let $n_k = D(\epsilon_k, T)$ and pick $t_1, \dotsc, t_{n_k}$ such that $\expectation{(X_{t_i} -X_{t_j})^2} > \epsilon_k^2$ for all $1 \leq i < j \leq n_k$.  For every $B \geq 1$ it follows that $\variance{X_{t_j}/B} \leq M^2/B^2 \leq M^2$ for all $j=1, \dotsc, n_k$ and $\expectation{(X_{t_i}/B -X_{t_j}/B)^2} > \epsilon_k^2/B^2$ for all $1 \leq i < j \leq n_k$, thus we may apply Lemma \ref{ChevetLemma} and the exponential inequality Lemma \ref{BasicExponentialInequalities} to get (recall $\eta$ represents a standard normal random variable)
+\begin{align*}
+&\probability{\eta > 1} \probability{X_{t_1} \leq B; \dotsb ; X_{t_{n_k}} \leq B} \\
+&\leq \frac{1}{2^{n_k+1}} + \frac{1}{\sqrt{2\pi}} \int_0^\infty \probability{\eta \leq \frac{\sqrt{2}(M^2+1)Bt}{\epsilon_k}}^{n_k} e^{-t^2/2} \, dt
+&= \frac{1}{2^{n_k+1}} + \frac{1}{\sqrt{2\pi}} \int_0^\infty \left(1 - \probability{\eta > \frac{\sqrt{2}(M^2+1)Bt}{\epsilon_k}} \right)^{n_k} e^{-t^2/2} \, dt
+&\leq \frac{1}{2^{n_k+1}} + \frac{1}{\sqrt{2\pi}} \int_0^\infty e^{-n_k \probability{\eta > \frac{\sqrt{2}(M^2+1)Bt}{\epsilon_k}}}  e^{-t^2/2} \, dt
+\end{align*}
+
+Since $e^{-n_k \probability{\eta > \frac{\sqrt{2}(M^2+1)Bt}{\epsilon_k}}} \leq 1$ and $1$ is integrable with respect to the measure $e^{-t^2/2} \, dt$, by Dominated Convergence it suffices to prove the following.
+\begin{clm}$\lim_{k \to \infty} n_k \probability{\eta > \frac{\sqrt{2}(M^2+1)Bt}{\epsilon_k}} = +\infty$.
+\end{clm}
+From Lemma \ref{GaussianTailsElementary} we know that 
+\begin{align*}
+\probability{\eta > \frac{\sqrt{2}(M^2+1)Bt}{\epsilon_k}}
+&\geq \frac{\epsilon_k \sqrt{2}(M^2+1)Bt}{\sqrt{2\pi} (\epsilon_k^2 + 2(M^2+1)^2B^2t^2)} e^{-\frac{(M^2+1)^2B^2t^2}{\epsilon^2_k}}
+\end{align*}
+and therefore
+\begin{align*}
+&n_k \probability{\eta > \frac{\sqrt{2}(M^2+1)Bt}{\epsilon_k}} \\
+&\geq D(\epsilon_k, T) \frac{\epsilon_k \sqrt{2}(M^2+1)Bt}{\sqrt{2\pi} (\epsilon_k^2 + 2(M^2+1)^2B^2t^2)} e^{-\frac{(M^2+1)^2B^2t^2}{\epsilon^2_k}} \\
+&= \frac{\sqrt{2}(M^2+1)Bt}{\sqrt{2\pi}} e^{\left( \epsilon_k^2 \log D(\epsilon_k, T) +  \epsilon_k^2 \log \epsilon_k -  \epsilon_k^2 \log (\epsilon_k^2 + 2(M^2+1)^2B^2t^2) -(M^2+1)^2B^2t^2\right)/\epsilon^2_k} \\
+\end{align*}
+and the claim follows by noting that $\lim_{k \to \infty} \epsilon_k^2 \log D(\epsilon_k, T) = +\infty$, $\lim_{k \to \infty} \epsilon_k^2 \log \epsilon_k =0$, 
+$\lim_{k \to \infty} \epsilon_k^2 \log (\epsilon_k^2 + 2(M^2+1)^2B^2t^2) =0$ and $\lim_{k \to \infty} e_k^{-2} = +\infty$.
+\end{proof}
+\section{Sample Continuity}
+
+Note that Dudley uses the term version differently than most other authors (at least those that I have read).  Most authors treat version and modification as synonyms (i.e. for all $t \in T$ we have $\probability{X_t = Y_t}=1$).  Dudley says that $X$ and $Y$ are versions if $X \eqdist Y$.
+
+In this section we explore conditions under which a Gaussian process has a realization with continuous sample paths.  The first important fact is that the question can be reduced to the study of centered Gaussian processes.
+\begin{thm}\label{GaussianVersionContinuityCentering}Let $X$ be a Gaussian process indexed by a metric space $(T,d)$ then there exists $Y$ with continuous sample paths such that $X \eqdist Y$ if and only if 
+\begin{itemize}
+\item[(i)] the function $t \mapsto \expectation{X_t}$ is continuous
+\item[(ii)] there is a process $Z_t$ with continuous sample paths such that $Z \eqdist X - \expectation{X}$ 
+\end{itemize}
+If $X$ is version continuous then the map $X : T \to L^2(P)$ (given by $X (t)(\omega) = X_t(\omega)$) is continuous.
+\end{thm}
+\begin{proof}
+If (i) and (ii) hold then it is clear that $Y_t = Z_t + \expectation{X_t}$ has continuous sample paths.  Furthermore if $t_1, \dotsc, t_d \in T$ and $A \in \mathcal{B}(\reals^d)$ then 
+\begin{align*}
+\probability{(Y_{t_1}, \dotsc, Y_{t_d}) \in A} &= \probability{(Z_{t_1}, \dotsc, Z_{t_d}) \in A - (\expectation{X_{t_1}}, \dotsc, \expectation{X_{t_d}})}  \\
+&= \probability{(X_{t_1} - \expectation{X_{t_1}}, \dotsc, X_{t_d} - \expectation{X_{t_d}}) \in A - (\expectation{X_{t_1}}, \dotsc, \expectation{X_{t_1}})}  \\
+&=\probability{(X_{t_1}, \dotsc, X_{t_d}) \in A} 
+\end{align*}
+and therefore $X \eqdist Y$ by Lemma \ref{ProcessLawsAndFDDs}.
+
+On the other hand, suppose there exists $Y$ with continuous sample paths and $X \eqdist Y$.  For any $t \in T$ and $t_n \to t$ we have $Y_{t_n} \to Y_t$ everywhere.  Since the random vector $(Y_{t_n}, Y_t)$ is Gaussian it follows that $Y_{t_n} - Y_t$ is Gaussian.  By Lemma \ref{LimitOfGaussianRandomVectors} it follows that $\expectation{X_{t_n} - X_t}  = \expectation{Y_{t_n} - Y_t}  \to 0$.  Now subtract $\expectation{Y_t}$ from $Y_t$.
+TODO: Finish.  The argument using Lemma \ref{LimitOfGaussianRandomVectors} seems like overkill; isn't the fact that $Y_{t_n} - Y_t \toas 0$ for a sequence of Gaussian r.v.s implies $\expectation{Y_{t_n} - Y_t} \to 0$ easier?  Let $\xi_n$ be a sequence of Gaussian r.v.'s with $\xi_n \todist 0$.  Then we have $e^{iu\mu_n - \frac{1}{2}u^2 \sigma_n^2} \to 1$.  Taking $u=\sqrt{2}$, the modulus and logarithm we get $sigma_n^2 \to 0$ (so $\sigma \to 0$).  Hence $e^{iu\mu_n} \to 1$ then take $u=-i$ and the logarithm to get $\mu_n \to 0$ (do we need the boundedness of $\mu_n$ and $\sigma_n$ as below?)
+
+Here is the outline of an argument that doesn't rely on characteristic functions (it's not trivial either!).  Let $\xi_n \todist \xi$ with $\xi_n$ Gaussian $N(\mu_n, \sigma_n^2)$.  Since $\xi_n$ then they are a tight sequence (Lemma \ref{WeakConvergenceImpliesTight}).  Next use the tightness and Gaussian properties to show that $\mu_n$ and $\sigma_n^2$ are bounded (e.g. pick $0 < \epsilon < 1/2$ and then $M>0$ such that $\probability{\abs{\xi_n} \geq M} < \epsilon$ for all $n \in \naturals$, it follows that $\abs{\mu_n} < M$ for otherwise $\probability{\abs{\xi_n} \geq M} \geq 1/2$;  similarly once we bound the means $\mu_n$ to the range $[-M,M]$ we know that for fixed $\sigma$ the value of $\probability{N(\mu, \sigma^2) \geq M}$ is minimized for $\mu=-M$ and is equal to $\probability{N(0, \sigma^2) \geq 2M}$ the latter probability goes to $1/2$ as $\sigma \to \infty$ so we see that $\sigma_n$ must be bounded above as well; even better note that $\probability{\abs{N(\mu, \sigma^2) } \leq M} \leq \frac{2M}{\sigma \sqrt{2\pi}}$ so 
+$\probability{\abs{N(\mu, \sigma^2) } > M} \geq 1 - \frac{2M}{\sigma \sqrt{2\pi}}$ which also implies $\sigma_n$ is bounded).
+
+Assume that $\liminf_{n \to \infty} \mu_n \neq \limsup_{n \to \infty} \mu_n$ and get a contradiction to the distributional convergence.  Do the same with $\sigma_n^2$.  These are easy using characteristic functions as above (so $e^{-\lim_{n \to \infty} \sigma_n^2} = \abs{\varphi_\xi(\sqrt{2})}$ and $e^{\lim_{n \to \infty} \mu_n} = \varphi_\xi(-i)  \abs{\varphi_\xi(1)}$).
+\end{proof}
+
+\begin{thm}\label{PullbackContinuousVersions}Suppose $(S,d)$ is a separable metric space, $(T,e)$ is a compact metric space, $(K,\rho)$ is a metric space and $Y$ is a stochastic process indexed by 
+$K$ with values in $S$.  If $h : T \to K$ is continuous and surjective then there exists $Z$ with continuous sample paths and $Y \eqdist Z$ if and only if there exists $W$ with continuous sample paths and $Y \circ h \eqdist W$.
+\end{thm}
+\begin{proof}
+Suppose that $Z$ exists then $Z \circ h$ has continuous sample paths and for every $t_1, \dotsc, t_n \in T$ we have 
+\begin{align*}
+\probability{((Z \circ h)_{t_1}, \dotsc, (Z \circ h)_{t_n}) \in A}  
+&= \probability{(Z_{h(t_1)}, \dotsc, Z_{h(t_n)}) \in A} 
+= \probability{(Y_{h(t_1)}, \dotsc, Y_{h(t_n)}) \in A} \\
+&= \probability{((Y \circ h)_{t_1}, \dotsc, (Y \circ h)_{t_n}) \in A} 
+\end{align*}
+so $(Y \circ h) \eqdist (Z \circ h)$ by Lemma \ref{ProcessLawsAndFDDs}.  
+
+Now suppose that $W$ exists.  As $(T,e)$ is a compact metric space, it is separable (by Theorem \ref{CompactnessInMetricSpaces}, $T$ is totally bounded so for each $n \in \naturals$ there exists a finite set $F_n$ with $\cup_{x \in F_n} B(x, 1/n) = T$; observe that $\cup_n F_n$ is dense in $T$).   So let $A$ be a countable dense subset of $T$, let $B = h(A)$ and observe that $B$ is a countable dense subset of $K$ (for $y \in K$, by surjectivity of $h$ pick $x \in T$ with $h(x) = y$ and $a_n \in A$ such that $a_n \to x$, by continuity of $h$ we have $h(a_n) \to y$).
+
+Note that $\zeta(s,t) = \rho(h(s), h(t))$ is a pseudometric on $T$ (this doesn't require continuity of $h$).  Let $UC$ be the event that a function $f : A \to \reals$ is uniformly continuous on $A$ with respect to the topology induced by $\zeta$.  More precisely (TODO: note that Dudley has an extra condition that appears to say $e(s,t) < 1 + \diam_e(T)$ which sounds vacuous).  
+\begin{align*}
+UC &= \bigcap_{n=1}^\infty \bigcup_{m=1}^\infty \bigcap_{\substack{s,t \in A \\ \zeta(s,t) < 1/m }} \left \lbrace f \in \reals^A   \mid d(f(s),f(t)) < 1/n \right \rbrace
+\end{align*}
+Since $S$ is separable we know continuity of $d$ implies measurability of $d$ hence each set $\left \lbrace f \in \reals^A \mid  d(f(s), f(t)) < 1/n \right \rbrace$ is measurable, thus by countability of $A$ we know that $UC$ is measurable.
+
+\begin{clm} If $\probability{W \in UC} = 1$ then $Z$ exists.
+\end{clm}
+Since $UC$ is measurable and $W \eqdist Y \circ h$, we know that $\probability{Y \circ h \in UC} = 1$, so almost surely $Y \circ h$ has uniformly continuous sample paths on $A$ for the pseudometric $\zeta$.  It follows that almost surely $Y$ has uniformly continuous sample paths on $B$.  Since $B$ is dense in $K$ and $\reals$ are complete by Proposition \ref{ExtensionOfUniformlyContinuousMapCompleteRange} we may define $Z$ to be the unique continuous extension of $Y$ from $B$ to $K$ (i.e. for $x \in K$ let $Z_x = \lim_{n \to \infty} Y_{b_n}$ for any $b_n \to x$ with $b_n \in B$).  TODO: Show that $Z$ has the correct law.
+
+It remains to show that $\probability{UC} = 1$.
+TODO:
+\end{proof}
+
+\begin{defn}Let $H$ be a Hilbert space and let $C \subset H$.  We say that $C$ is a \emph{GC-set} if and only if $C$ is totally bounded in $H$ and the isonormal process $L$ restricted to $C$ has a version with uniformly continuous sample paths.
+\end{defn}
+
+\begin{cor}Let $X$ be a centered Gaussian process on the probability space $(\Omega, \mathcal{A}, P)$ indexed by a compact metric space $(T,d)$ then $X$ has a continuous version if and only if $t \mapsto X_t$ is continuous from $T$ to $L^2(P)$ and its range is a GC-set.
+\end{cor}
+\begin{proof}
+Define $h : T \to L^2(P)$ to be the function $h(t) = X_t$, let $K = h(T) \subset L^2(P)$.  If we assume that $h$ is continuous and $K$ is a GC-set then we may apply Theorem \ref{PullbackContinuousVersions} to conclude that $L_{X_t}$ has a continuous version.
+
+
+If we assume that $X$ has a continuous version then by Theorem \ref{GaussianVersionContinuityCentering} we know that $h$ is continuous.  It follows that $h(T)$ is compact hence totally bounded (Lemma \ref{CompactnessInMetricSpaces}).  By Theorem \ref{PullbackContinuousVersions} we conclude that $L$ restricted to $K$ has a continuous version.  Since $K$ is compact that continuous version is a uniformly continuous version so $K$ is  GC-set.
+\end{proof}

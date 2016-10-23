@@ -1,34 +1,111 @@
 \chapter{Empirical Processes}
 
+Let $(S, \mathcal{S}, \mu)$ be a probability space.  Suppose that $\xi, \xi_1, \xi_2, \dotsc$ are i.i.d. random elements in $S$ with $\mathcal{L}(\xi_i) = \mu$.  Let $f \in \mathcal{L}(S, \mathcal{S}, \mu)$ be a square integrable real valued function on $S$ and consider the random variables $f(\xi), f(\xi_1), f(\xi_2), \dotsc$.  By the Expectation Rule (Lemma \ref{ExpectationRule}) we know that 
+\begin{align*}
+\probability{f(\xi_n) \in A} &= \int \characteristic{f \in A} \, d\mathcal{L}(\xi_n) = \mu \lbrace f \in A \rbrace = \pushforward{f}{\mu}(A)
+\end{align*}
+so the $f(\xi_n)$ are identically distributed with law $\pushforward{f}{\mu}$.  By Lemma \ref{IndependenceComposition} it follows that the $f(\xi), f(\xi_1), f(\xi_2), \dotsc$ are i.i.d.  Observe that 
+\begin{align*}
+\expectation{f(\xi)} = \int f \, d\mu 
+\end{align*}
+and 
+\begin{align*}
+\expectation{f^2(\xi)} = \int f^2 \, \mu < \infty
+\end{align*}
+(so $\variance{f(\xi)} = \int f^2 \, d\mu - \left(\int f \, d\mu\right)^2$).  Hence we may apply the Central Limit Theorem \ref{CentralLimitTheorem} to conclude 
+\begin{align*}
+\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^n f(\xi_i) - \int f , d\mu \right) \todist N(0, \variance{f(\xi)} )
+\end{align*}
+
+TODO: The more general finite dimensional case with $f_1, \dotsc, f_m$.
+
 \section{Weak Convergence in Non Separable Spaces}
 
 \subsection{Outer Expectations and Measurable Cover}
 
-\begin{defn}Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $f : \Omega \to [-\infty, \infty]$ (not assumed to be measurable).  Then consider the two conditions
+\begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f : \Omega \to [-\infty, \infty]$ (not assumed to be measurable).  Then consider the two conditions
 \begin{itemize}
-\item [(i)] for every measurable $g : \Omega \to [-\infty, \infty]$ with $g \geq f$ everywhere the integral $\int g \, dP$ is defined (i.e. $\int g_+ \, dP < \infty$ or $\int g_- \, dP < \infty$) 
-\item [(ii)] or there exists a measurable $g : \Omega \to [-\infty, \infty]$  with $g \geq f$ everywhere (? or a.s.) such that $\int g \, dP = -\infty$ 
+\item [(i)] for every measurable $g : \Omega \to [-\infty, \infty]$ with $g \geq f$ everywhere the integral $\int g \, d\mu$ is defined 
+\item [(ii)] or there exists a measurable $g : \Omega \to [-\infty, \infty]$  with $g \geq f$ everywhere such that $\int g \, d\mu = -\infty$ 
 \end{itemize}
-When (i) holds we define the \emph{outer expectation}
+When (i) holds we define the \emph{outer integral}
 \begin{align*}
-\oexpectation{f} &= \int^* f \, dP = \inf \left \lbrace \int g  \, dP \mid \text{ $g$ measurable, } g \geq f \right \rbrace
+\int^* {f} \, d\mu &= \inf \left \lbrace \int g  \, d\mu \mid \text{ $g$ measurable, } g \geq f \right \rbrace
 \end{align*}
-and when (ii) holds we define $\int^* f \, dP = -\infty$.
-If neither (i) nor (ii) hold then we say that the outer expectation $\int^* f \, dP$ is not defined.  Given a subset $A \subset \Omega$ we define the outer probability to be
+and when (ii) holds we define $\int^* f \, d\mu = -\infty$.
+If neither (i) nor (ii) hold then we say that the outer integral $\int^* f \, d\mu$ is not defined.  If $\mu$ is a probability measure then we will call $\int^* f \, d\mu$ and \emph{outer expectation}.  If the probability measure is clear in a context we may write $\oexpectation{f}$ for an outer expectation.  Given a subset $A \subset \Omega$ we define the outer probability to be
 \begin{align*}
 \oprobability{A} &= \inf \lbrace \probability{B} \mid B \supset A, B \in \mathcal{A} \rbrace
 \end{align*}
 \end{defn}
 
-We show how to calculate outer expectations.
+Note that there is no ambiguity in the above definition of an outer integral (i.e. suppose both (i) and (ii) hold then the existence of the $g$ in (ii) implies that the infimum in (i) is $-\infty$).
+
+This result is analogous to Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual} and shows that an outer integral is insensitive to changes in behavior of the integrand on a null set.
+\begin{prop}\label{OuterIntegralAlmostEverywhereEqualIntegralEqual}Given $f,g : \Omega \to [-\infty, \infty]$ be functions such that $f = g$ almost everywhere then $\int^* f \, d\mu$ is defined if and only if $\int^* g \, d\mu$ is defined and in that case
+\begin{align*}
+\int^* f \, d\mu &= \int^* g \, d\mu
+\end{align*}
+\end{prop}
+\begin{proof}
+Let $A \in \mathcal{A}$ be a measurable set with $\mu(A) = 0$ and $\lbrace f \neq g \rbrace \subset A$.  Because all of the assertions are symmetric in $f$ and $g$, it suffices to suppose that $\int^* f \, d\mu$ is defined and to show that $\int^* g \, d\mu$ is defined and $\int^* f \, d\mu=\int^* g \, d\mu$.
+
+For the first case suppose there exists a measurable $h$ such that $h \geq f$ and $\int h \, d\mu=-\infty$ so $\int^* f \, d\mu =-\infty$.  It follows that 
+\begin{align*}
+\tilde{h}(\omega) &= \begin{cases}
+\infty & \text{if $\omega \in A$} \\
+h(\omega) & \text{if $\omega \notin A$}
+\end{cases}
+\end{align*}
+then $\tilde{h}$ is measurable, $\tilde{h} \geq g$ and $\int \tilde{h} \, d\mu = \int h \, d\mu=-\infty$.  Thus $\int^* g \, d\mu$ is defined and $\int^*f \, d\mu = \int^* g \, d\mu = -\infty$.  
+\begin{align*}
+\end{align*}
+
+For the second case suppose that $\int h \, d\mu$ is defined for every measurable $h$ with $h \geq f$.  Then $\int^* f \, d\mu$ is the infimum of such integrals $\int h \, d\mu$.  Suppose $h$ is measurable and $h \geq g$.  Defining $\tilde{h}$ as above we know that $\tilde{h} \geq f$ hence $\int \tilde{h} \, d\mu$ is defined.  By Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual} this implies that $\int h \, d\mu$ is defined.  As $h$ was arbitrary, this implies that $\int^* g \, d\mu$ is defined and is equal to the infimum the integrals $\int h \, d\mu$.  Let $h$ be measurable with $h \geq f$ then $\tilde{h} \geq g$ and $\int \tilde{h} \, d\mu = \int h \, d\mu$.  Arguing symmetrically we see that we have the set equality 
+\begin{align*}
+\left \lbrace \int h  \, d\mu \mid \text{ $h$ measurable, } h \geq f \right \rbrace = \left \lbrace \int h  \, d\mu \mid \text{ $h$ measurable, } h \geq g \right \rbrace
+\end{align*}
+so it follows that $\int^* f \, d\mu = \int^* g \, d\mu$.
+\end{proof}
+
+Note that by arguments similar to those in the preceeding proof it is easy to see that in the definition of the outer integral we can replace the condition $h \geq f$  in (i) and (ii) with $h \geq f$ almost everywhere.
+
+TODO: Here I am exploring the possibility of an analogue of Proposition \ref{SignedIntegralMonotonicity}.  Note that for outer expectations we will prove the existence of measurable covers.  Thus I believe this result will be implied by Lemma \ref{SignedIntegralMonotonicity}.
+\begin{prop}\label{OuterIntegralMonotonicity}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f,g: \Omega \to [-\infty, \infty]$ be functions with
+$f \leq g$ then one of the following is true
+\begin{itemize}
+\item[(i)]Both $\int^* f \, d\mu$ and $\int^* g \, d\mu$ are defined and $\int^* f \, d\mu \leq \int^* g \, d\mu$
+\item[(ii)]$\int^* f \, d\mu$ is undefined, $\int^* g \, d\mu$ is defined and $\int^* g \, d\mu = \infty$
+\item[(iii)]$\int^* g \, d\mu$ is undefined, $\int^* f \, d\mu$ is defined and $\int^* f \, d\mu = -\infty$
+\item[(iv)]Both $\int^* f \, d\mu$ and $\int^* g \, d\mu$ are undefined
+\end{itemize}
+\end{prop}
+\begin{proof}
+Suppose that $\int^* g \, d\mu$ is undefined and $\int^* f \, d\mu$ is defined.  Suppose $\int h \, d\mu$ is defined for every measurable $h$ with $h \geq f$. Since $f \leq g$ it would follow that the same is true of $g$ which is a contradicts the assumtion that $\int^* g \, d\mu$ is not defined.  It follows that $\int^* f \, d\mu = -\infty$.  
+ 
+Suppose $\int^* f \, d\mu$ is undefined and $\int^* g \, d\mu$ is defined.  Note that there cannot be a measurable $h$ with $h \geq g$ and $\int h \, d\mu = -\infty$.  That same $h$ would imply that $\int^* f \, d\mu = -\infty$ is defined which is a contradiction.  Thus we know that for every measurable $j \geq g$ the integral $\int j \, d\mu$ is defined.  Since $\int^* f \, d\mu$ is not defined there exists a measurable $h \geq f$ for which $\int h \, d\mu$ is not defined; that is to say $\int h_\pm \, d\mu = \infty$.  Pick an measurable arbitrary measurable $j \geq g \geq f$; as noted $\int j \, d\mu$ exists hence either $\int j_- \, d\mu<\infty$ or $\int j_+ \, d\mu<\infty$.  We claim that $\int j_+ \, d\mu = \infty$.  
+To see this note that we have $f_+ \leq h_+$ and $f_+ \leq g_+ \leq j_+$, so $f_+ \leq h_+ \minop j_+$.  If $\int h_+ \minop j_+ \, d\mu < \infty$ it would follow that $f \leq h_+ \minop j_+ - h_-$ and 
+\begin{align*}
+\int (h_+ \minop j_+ - h_-) \, d\mu &= \int  (h_+ \minop j_+) \, d\mu  - \int  h_- \, d\mu = -\infty
+\end{align*} 
+which implies $\int f \, d\mu=-\infty$ is defined.  Thus $\int h_+ \minop j_+ \, d\mu = \infty$ hence $\int j_+ = \infty$.  
+
+From the claim and property (i) for $g$ we know that $\int j_- \, d\mu < \infty$ hence $\int j \, d\mu = \infty$.  Since $j \geq g$ was arbitrary it follows that $\int g \, d\mu = \infty$.
+
+Lastly assume that both $\int^* f \, d\mu$ and $\int^* g \, d\mu$ are defined.  If there is a measurable $h$ with $h \geq g$ and $\int h \, d\mu = -\infty$ then $\int^* g \, d\mu = -\infty$.  That $h$ also implies $\int^* f \, d\mu=-\infty$ so the result holds in this case.  Thus we assume that such an $h$ doesn't exist and therefore $\int^* g \, d\mu$ is infimum of all $\int h \, d\mu$ with $h$ measurable and $h \geq g$.  If $\int^* f \, d\mu=-\infty$ then (i) follows trivially so we assume $\int^* f \, d\mu > -\infty$ and 
+$\int^* f \, d\mu$ is the infimum of integrals $\int h \, d\mu$ with $h$ measurable and $h \geq f$.  The latter set of integrals is a superset of the set of integrals defining $\int^* g \, d\mu$ hence it follows that $\int^* f \, d\mu \leq \int^* g \, d\mu$.
+\end{proof}
+
+
+We show how to calculate outer expectations in terms of ordinary expectations.
 \begin{defn}Let $\mathcal{J}$ be a subset of $\mathcal{L}^0(\Omega, \mathcal{A}, P, [-\infty, \infty])$ the we say that $f \in \mathcal{L}^0$ is an \emph{essential infimum of $\mathcal{J}$} if 
 for every $j \in \mathcal{J}$ we have $f \leq j$ a.s. and moreover for any $g \in \mathcal{L}^0$ such that $g \leq j$ a.s. for every $j \in \mathcal{J}$ we also have $g \leq f$ a.s.
 \end{defn}
 
-\begin{prop}\label{AlmostSureUniquenessEssentialInfimum}If $f$ and $g$ are both essential infima of $\mathcal{J}$ then $f = g$ a.s.
+\begin{prop}\label{AlmostSureUniquenessEssentialInfimum}If $\mathcal{I} \subset \mathcal{J}$ the then the essential infimum of $\mathcal{J}$ is less than or equal to the essential infimum of $\mathcal{I}$ almost surely.  If $f$ and $g$ are both essential infima of $\mathcal{J}$ then $f = g$ a.s.
 \end{prop}
 \begin{proof}
-By the definition of an essential infimum we have both $f \leq g$ a.s. and $g \leq f$ a.s.
+Let $g$ be the essential infimum of $\mathcal{J}$.  Clearly for all $j \in \mathcal{I} \subset \mathcal{J}$ we know $g \leq j$ a.s.  so by definition the essential infimum of $\mathcal{I}$ is greater than or equal to $f$ a.s.  By the first part of the proposition, we have both $f \leq g$ a.s. and $g \leq f$ a.s. hence $f=g$ a.s.
 \end{proof}
 
 \begin{thm}\label{ExistenceMeasurableCover}For any $\mathcal{J} \subset \mathcal{L}^0(\Omega, \mathcal{A}, P, [-\infty, \infty])$ and essential infimum of $\mathcal{J}$ exists.  Given $f : \Omega \to (-\infty, \infty)$ let
@@ -91,7 +168,7 @@ that $\int g_\pm \, dP = \infty$.  By definition of the essential infimum we kno
 \end{align*}
 and on the other hand for all $j \geq f$ everywhere we have $f^* \leq j$ a.s. hence
 \begin{align*}
-\int f* \, dP &\leq \inf_{j \geq f} \int j \, dP = \int^* f \, dP
+\int f^* \, dP &\leq \inf_{j \geq f} \int j \, dP = \int^* f \, dP
 \end{align*}
 
 If we consider $\characteristic{A}$ then it is clear from the definition that $\int^* \characteristic{A} \, dP \leq \oprobability{A}$.  On the other hand, we claim that we can find measurable sets $\dotsb \supset A_n \supset A_{n+1} \supset \dotsb$ such that $\left( \characteristic{A} \right)^* = \lim_{n \to \infty} \characteristic{A_n}$.  First note that if $f^*$ is a measurable cover of $\characteristic{A}$ then $\characteristic{f^* \geq 1}$ is also a measurable cover of $\characteristic{A}$.  This follows since $f^* \geq f \geq 0$ therefore $f^* \geq \characteristic{f^* \geq 1} \geq \characteristic{A}$ everywhere.  By the construction above we know that there are measurable $j_1, j_2, \dotsc$ with $j_n \geq \characteristic{A}$ and $j_1 \minop \dotsb \minop j_n  \downarrow f^*$.  Define $A_n = \lbrace j_1 \minop \dotsb \minop j_n \geq 1 \rbrace$.  Since $f^* =  \characteristic{f^* \geq 1}$ a.s. we know that $\lim_{n\to \infty} j_1 \minop \dotsb \minop j_n \in \lbrace 0, 1 \rbrace$ a.s.  Since
@@ -101,22 +178,48 @@ $j_1 \minop \dotsb \minop j_n$ is a decreasing sequence we know that $ j_1 \mino
 \end{align*}
 \end{proof}
 
-\begin{prop}\label{BasicPropertiesOfMeasurableCover} Let $(\Omega, \mathcal{A}, P)$  be a probability space and let $f,g : \Omega \to (-\infty, \infty]$ then $(f+g)^* \leq f^* + g^*$ a.s. and
-$(f - g)^* \geq f^* - g^*$ a.s. whenever both sides are defined a.s.  If $A$ is measurable, $g$ is measurable and $f \leq g$ a.s. on $A$ we have $f^* \leq g$ a.s. on $A$.  If $A$ is measurable, $g$ is measurable and $f = g$ a.s. on $A$ we have $f^* = g$ a.s. on $A$
+\begin{defn}Given a measure space $(\Omega, \mathcal{A}, \mu$) and $f : \Omega \to [-\infty, \infty]$ an essential infimum of $\mathcal{J}_f$ is called the \emph{minimal measurable majorant} or the \emph{measurable cover} of $f$ with respect to $\mu$.
+\end{defn}
+We have just proven that measurable covers for arbitrary functions always exist on probability spaces.  TODO: Apparently it is not hard to bootstrap to showing that measurable covers exist on all $\sigma$-finite measure spaces.  Put this in the exercises or an appendix and prove it.  It is also know that measurable covers may not exist in the non $\sigma$-finite case.
+
+TODO: We really don't need Proposition \ref{OuterIntegralMonotonicity} do we?
+\begin{prop}\label{OuterExpectationMonotonicity}Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $f,g: \Omega \to [-\infty, \infty]$ be functions with
+$f \leq g$ then one of the following is true
+\begin{itemize}
+\item[(i)]Both $\int^* f \, dP$ and $\int^* g \, dP$ are defined and $\int^* f \, dP \leq \int^* g \, dP$
+\item[(ii)]$\int^* f \, dP$ is undefined, $\int^* g \, dP$ is defined and $\int^* g \, dP = \infty$
+\item[(iii)]$\int^* g \, dP$ is undefined, $\int^* f \, dP$ is defined and $\int^* f \, dP = -\infty$
+\item[(iv)]Both $\int^* f \, dP$ and $\int^* g \, dP$ are undefined
+\end{itemize}
 \end{prop}
 \begin{proof}
-By Theorem \ref{ExistenceMeasurableCover} we know that $f^* \geq f > -\infty$ and $g^* \geq g > -\infty$ everywhere thus $f^* + g^*$ is well defined everywhere (possibly $+\infty$).  The function
-$f^* + g^*$ is measurable and $f+g \leq f^* + g^*$ therefore it follows that $(f+g)^* \leq f^* + g^*$.
-
-By assumption $f^* - g^*$ is defined a.s. therefore $f^*$ is finite a.s. on $\lbrace g^* = \infty \rbrace$.  It follows that $f^* - g^* = -\infty$ a.s. on $\lbrace g^* = \infty \rbrace$ and therefore it is trivial that $(f-g)^* \geq f^* - g^*$ a.s. on $\lbrace g^* = \infty \rbrace$.  On $\lbrace -\infty < g^* < \infty \rbrace$ we know that $g \leq g^* < \infty$ hence we may write $f = (f - g) + g$ and by the first part of this result we get $f^* \leq (f -g)^*+ g^*$ a.s. which implies $f^* - g^* \leq (f - g)^*$.
-
-Now assume that $A$ is measurable, $g$ is measurable and $f \leq g$ a.s. on $A$.  Consider $h = g \cdot \characteristic{A} + f^* \cdot \characteristic{A^c}$.  Since $f^* \leq f$ everywhere we have
-$\lbrace h \geq f \rbrace \subset \lbrace g  \geq f \rbrace$ hence is a null set.  Therefore $f^* \leq h$ a.s and therefore $f^* \leq g$ a.s. on $A$.
-
-If $A$ is measurable, $g$ is measurable and $f = g$ a.s. on $A$ then by the previous fact we have $f^* \leq g$ a.s on $A$.  On the other hand, $g = f \leq f^*$ a.s so it follows that $f^* = g$ a.s on $A$.
+Let $f^*$ and $g^*$ be the measurable cover of $f$ and $g$ respectively.  Note that $f^* \leq g^*$ a.s. by Proposition \ref{AlmostSureUniquenessEssentialInfimum}.  Now apply   Proposition \ref{SignedIntegralMonotonicity} to $f^*$ and $g^*$ and use Theorem \ref{ExistenceMeasurableCover} to get the result.
 \end{proof}
 
-\begin{lem}Let $(\Omega, \mathcal{A}, P)$  be a probability space  and $V$ be a vector space with seminorm $\norm{\cdot}$ then given $f,g : \Omega \to V$ we have
+\begin{prop}\label{BasicPropertiesOfMeasurableCover} Let $(\Omega, \mathcal{A}, P)$  be a probability space and let $f,g : \Omega \to (-\infty, \infty]$ then
+\begin{itemize}
+\item[(i)] $(f+g)^* \leq f^* + g^*$ a.s.
+\item[(ii)] $(f - g)^* \geq f^* - g^*$ a.s. whenever both sides are defined a.s. 
+\item[(iii)] If $A$ is measurable, $g$ is measurable and $f \leq g$ a.s. on $A$ we have $f^* \leq g$ a.s. on $A$.  
+\item[(iv)] If $A$ is measurable, $g$ is measurable and $f = g$ a.s. on $A$ we have $f^* = g$ a.s. on $A$.
+\item[(v)] $(f \maxop g)^* = f^* \maxop g^*$ a.s.
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see (i), by Theorem \ref{ExistenceMeasurableCover} we know that $f^* \geq f > -\infty$ and $g^* \geq g > -\infty$ everywhere thus $f^* + g^*$ is well defined everywhere (possibly $+\infty$).  The function
+$f^* + g^*$ is measurable and $f+g \leq f^* + g^*$ therefore it follows that $(f+g)^* \leq f^* + g^*$.
+
+To see (ii), by assumption $f^* - g^*$ is defined a.s. therefore $f^*$ is finite a.s. on $\lbrace g^* = \infty \rbrace$.  It follows that $f^* - g^* = -\infty$ a.s. on $\lbrace g^* = \infty \rbrace$ and therefore it is trivial that $(f-g)^* \geq f^* - g^*$ a.s. on $\lbrace g^* = \infty \rbrace$.  On $\lbrace -\infty < g^* < \infty \rbrace$ we know that $g \leq g^* < \infty$ hence we may write $f = (f - g) + g$ and by the first part of this result we get $f^* \leq (f -g)^*+ g^*$ a.s. which implies $f^* - g^* \leq (f - g)^*$.
+
+For (iii), assume that $A$ is measurable, $g$ is measurable and $f \leq g$ a.s. on $A$.  Consider $h = g \cdot \characteristic{A} + f^* \cdot \characteristic{A^c}$.  Since $f^* \leq f$ everywhere we have
+$\lbrace h \geq f \rbrace \subset \lbrace g  \geq f \rbrace$ hence is a null set.  Therefore $f^* \leq h$ a.s and therefore $f^* \leq g$ a.s. on $A$.
+
+For (iv), if $A$ is measurable, $g$ is measurable and $f = g$ a.s. on $A$ then by the previous fact we have $f^* \leq g$ a.s on $A$.  On the other hand, $g = f \leq f^*$ a.s so it follows that $f^* = g$ a.s on $A$.
+
+For (v), note that $(f \maxop g)^*$ is measurable and $f \leq f \maxop g \leq (f \maxop g)^*$ hence by (iii) we have $f^* \leq (f \maxop g)^*$.  Similarly $g^* \leq (f \maxop g)^*$ a.s. hence $f^* \maxop g^* \leq (f \maxop g)^*$ a.s.  For the opposite inequality because $f \leq f^*$ and $g \leq g^*$ we know that $f \maxop g \leq f^* \maxop g^*$.  Since $f^* \maxop g^*$ is measurable (iii) implies $(f \maxop g)^* \leq f^* \maxop g^*$ a.s.
+\end{proof}
+
+\begin{lem}\label{MeasurableCoverTriangleInequality}Let $(\Omega, \mathcal{A}, P)$  be a probability space  and $V$ be a vector space with seminorm $\norm{\cdot}$ then given $f,g : \Omega \to V$ we have
 \begin{align*}
 \norm{f+g}^* \leq (\norm{f}+\norm{g})^* \leq \norm{f}^* + \norm{g}^* \text{ a.s.}
 \end{align*}
@@ -130,6 +233,10 @@ By the triangle inequality we know $\norm{f+g} \leq \norm{f}+\norm{g}$ hence $\n
 
 By measurability of constant functions it is clear that $\norm{0}^* = 0$ hence we may assume that $c \neq 0$.  Suppose that $g$ is measurable and $\norm{cf} \leq g$.  This equivalent to $\norm{f} \leq g/\abs{c}$ and it follows that $\abs{c} \norm{f}^* \leq g$ a.s.  Suppose $h$ is measurable and for every measurable $g$ with $g \geq \norm{cf}$ everywhere we have $g \geq h$ a.s.   If $g$ is measurable such that $g \geq \norm{f}$ everywhere then $\abs{c} g \geq \norm{c f}$ everywhere hence we conclude $g \geq h/\abs{c}$ a.s. Therefore by the maximality of the measurable cover $f^*$ we have $\norm{f}^* \geq h/\abs{c}$ a.s. equivalently $\abs{c}\norm{f}^* \geq h$ a.s.
 \end{proof}
+
+\subsection{Independence, Iterated Outer Integrals and Limit Theorems}
+
+TODO: Make some comments about how to think about independence.  When you don't have measurability you can't say $\probability{\xi \in A; \eta \in B} = \probability{\xi \in A} \probability{\eta \in B}$.  The answer is not to define independence as $\oprobability{\xi \in A; \eta \in B} = \oprobability{\xi \in A} \oprobability{\eta \in B}$ (WHY?  I suspect there are simple answers why this doesn't describe our intuition about independence).  Rather we take a structural approach and say that $\xi$ and $\eta$ are independent when they are defined on a product measurable space $(\Omega \times \Omega^\prime, \mathcal{A} \otimes \mathcal{A}^\prime)$ and $\xi$ depends only on the first coordinate and $\eta$ depends only on the second coordinate.
 
 Under an assumption of independence the measurable cover of a sum is the sum of measurable covers.
 \begin{prop}\label{MeasurableCoverSumOfIndependent}For $i=1, \dotsc, n$ let $(\Omega_i, \mathcal{A}_i, P_i)$  be probability spaces and $f_i : \Omega_i \to (-\infty, \infty]$ be functions.  If we define $g : \Omega_1 \times \dotsb \times \Omega_n \to (-\infty, \infty]$ by
@@ -169,7 +276,7 @@ which implies $f_2^*(\omega_2) < r$ yielding a contradiction.
 \end{proof}
 
 Under an assumption of independence and nonnegativity the measurable cover of a product is the product of measurable covers.  In addition, if a function on a product does not depend one of the factors of the product, the measurable cover may be chosen so that it also does not depend on that factor of the product.
-\begin{prop}\label{MeasurableCoverProductOfIndependent}For $i=1, \dotsc, n$ let $(\Omega_i, \mathcal{A}_i, P_i)$  be probability spaces and $f_i : \Omega_i \to [-\infty, \infty]$ be functions.  If either $f_i \geq 0$ for $i=1, \dotsc, n$ or $n=2$ and $f_1 \equiv 1$ and we define $g : \Omega_1 \times \dotsb \times \Omega_n \to (-\infty, \infty]$ by
+\begin{prop}\label{MeasurableCoverProductOfIndependent}For $i=1, \dotsc, n$ let $(\Omega_i, \mathcal{A}_i, P_i)$  be probability spaces and $f_i : \Omega_i \to [-\infty, \infty]$ be functions and let $f_i^*$ be the measurable cover of $f_i$ with repsect to $P_i$.  If either $f_i \geq 0$ for $i=1, \dotsc, n$ or $n=2$ and $f_1 \equiv 1$ and we define $g : \Omega_1 \times \dotsb \times \Omega_n \to (-\infty, \infty]$ by
 \begin{align*}
 g(\omega_1, \dotsc, \omega_n) &= f_1(\omega_1) \dotsb f_n(\omega_n)
 \end{align*}
@@ -197,7 +304,7 @@ have
 so there exists $\omega_1$ such that $\sprobability{g^*(\omega_1,\omega_2) < t < f_2^*(\omega_2)}{2}>0$.  
 Since $f_2 = g \leq g^*$ everywhere, by Proposition \ref{BasicPropertiesOfMeasurableCover}  we conclude $f_2^* \leq t$ a.s. on $\lbrace g^*(\omega_1,\omega_2) < t < f_2^*(\omega_2) \rbrace$ which is a contradiction.
 
-Now consider the case in which $f_1,f_2 \geq 0$.  Via a similar argument as in Proposition \ref{MeasurableCoverProductOfIndependent} there exists $t, q, r \in \rationals$ with $t>0$,$q>0$, $r>0$, $qr>t$ so that if we define 
+Now consider the case in which $f_1,f_2 \geq 0$.  Via a similar argument as in Proposition \ref{MeasurableCoverSumOfIndependent} there exists $t, q, r \in \rationals$ with $t>0$,$q>0$, $r>0$, $qr>t$ so that if we define 
 \begin{align*}
 A &= \lbrace g^*(\omega_1,\omega_2) < t < f_1^*(\omega_1) f_2^*(\omega_2); f_1^*(\omega_1) > q ; f_2^*(\omega_2) > r \rbrace
 \end{align*}
@@ -210,7 +317,7 @@ We argue by contradiction.   By Tonelli's Theorem \ref{Fubini} we have
 0 < \probability{A} = \int \sprobability{A_{\omega_1}}{2} \, P_1(d\omega_1)
 \end{align*}
 and conclude $\sprobability{\sprobability{A_{\omega_1}}{2}>0}{1}>0$.
- If $f_1 \leq q$ everywhere on $\lbrace \sprobability{A_{\omega_1}}{2}>0 \rbrace$ then by Proposition \ref{MeasurableCoverProductOfIndependent} we have $f_1^* \leq q$ $P_1$-a.s. on $\lbrace \sprobability{A_{\omega_1}}{2}>0 \rbrace$, i.e. $\sprobability{\sprobability{A_{\omega_1}}{2}>0; f_1^* \leq q}{1}=\sprobability{\sprobability{A_{\omega_1}}{2}}{1}>0$.
+ If $f_1 \leq q$ everywhere on $\lbrace \sprobability{A_{\omega_1}}{2}>0 \rbrace$ then by Proposition \ref{BasicPropertiesOfMeasurableCover} we have $f_1^* \leq q$ $P_1$-a.s. on $\lbrace \sprobability{A_{\omega_1}}{2}>0 \rbrace$, i.e. $\sprobability{\sprobability{A_{\omega_1}}{2}>0; f_1^* \leq q}{1}=\sprobability{\sprobability{A_{\omega_1}}{2}}{1}>0$.
 In particular, there exists $\omega_1$ with $f_1^*(\omega_1) \leq q$ and $A_{\omega_1} \neq \emptyset$.  The latter statement implies that $f_1^*(\omega_1) > q$ which is a contradiction.
 
 By the claim we select $\omega_1$ with $\sprobability{A_{\omega_1}}{2}>0$ and $f_1(\omega_1) > q$.  Pick $\omega_2 \in A_{\omega_1}$ and then note
@@ -224,4 +331,540 @@ q f_2^*(\omega_2) \leq g^*(\omega_1, \omega_2) < t < qr
 \end{align*}
 hence $f_2^*(\omega_2)<r$ which is a contradicts the fact that $(\omega_1,\omega_2) \in A$ implies $f_2^*(\omega_2)>r$.
 \end{proof}
+
+\begin{cor}\label{OuterProbabilityIndependentEvents}For $i=1, \dotsc, n$ let $(\Omega_i, \mathcal{A}_i, P_i)$  be probability spaces and $A_i \subset \Omega_i$ then
+\begin{align*}
+\left( P_1 \otimes \dotsb \otimes P_n \right)^* (A_1 \times \dotsb \times A_n) &= \left( P_1 \right)^*(A_1)  \dotsb \left( P_n \right)^*(A_n)
+\end{align*}
+\end{cor}
+\begin{proof}
+By Theorem \ref{ExistenceMeasurableCover} and Proposition \ref{MeasurableCoverProductOfIndependent}
+\begin{align*}
+\left( P_1 \otimes \dotsb \otimes P_n \right)^* (A_1 \times \dotsb \times A_n) 
+&= \int \left( \characteristic{A_1} \dotsb \characteristic{A_n} \right)^* \, d \left( P_1 \otimes \dotsb \otimes P_n \right)  \\
+&= \int \characteristic{A_1}^* \dotsb \characteristic{A_n}^* \, d \left( P_1 \otimes \dotsb \otimes P_n \right)   \\
+&= \int \characteristic{A_1}^* \, dP_1 \dotsb \int \characteristic{A_n}^* \, dP_n  \\
+&= P_1^*(A_1) \dotsb P_n^*(A_n)\
+\end{align*}
+\end{proof}
+
+\begin{lem}Let $(\Omega, \mathcal{A}, P) = \prod_{j=1}^3 (\Omega_i, \mathcal{A}_i, P_i)$ and for each $i=1,2,3$ let $\pi_i : \Omega \to \Omega_i$ be the $i^{th}$ coordinate projection.  Suppose that $f : \Omega_1 \times \Omega_3 \to (-\infty, \infty)$ is a bounded function and let $g : \Omega \to (-\infty, \infty)$ be defined by $g(\omega_1,\omega_2,\omega_3) = f(\omega_1, \omega_3)$ then 
+\begin{align*}
+\cexpectationlong{(\pi_1, \pi_2)^{-1} (\mathcal{A}_1 \otimes \mathcal{A}_2)}{g^*} &= \cexpectationlong{\pi_1^{-1} (\mathcal{A}_1)}{g^*} \text{ $P$-a.s.}
+\end{align*}
+\end{lem}
+\begin{proof}
+By Proposition \ref{MeasurableCoverProductOfIndependent} we may select $g^*$ so that it doesn't depend on $\omega_2$; in particular we have $g^* \Independent \pi_2^{-1}(\mathcal{A}_2)$ (see Example \ref{IndependenceOnProductSpaces}).  If $A_1 \in \mathcal{A}_1$ and $A_2 \in \mathcal{A}_2$ the
+$(\pi_1, \pi_2)^{-1}(A_1 \times A_2) = \pi_1^{-1}(A_1) \cap \pi_2^{-1}(A_2)$ and 
+\begin{align*}
+\expectation{ g^* ; \pi_1^{-1}(A_1) \cap \pi_2^{-1}(A_2)} &= \expectation{ g^* ; \pi_1^{-1}(A_1)} \probability{ \pi_2^{-1}(A_2)}  \\
+&=\expectation{ \cexpectationlong{\pi_1^{-1}(\mathcal{A}_1)}{g^*} ; \pi_1^{-1}(A_1)} \probability{ \pi_2^{-1}(A_2)} \\
+&=\expectation{ \cexpectationlong{\pi_1^{-1}(\mathcal{A}_1)}{g^*} ; \pi_1^{-1}(A_1) \cap \pi_2^{-1}(A_2)} 
+\end{align*}
+Since $\cexpectationlong{\pi_1^{-1}(\mathcal{A}_1)}{g^*}$ is $\mathcal{A}_1 \otimes \mathcal{A}_2$-measurable and sets of the form $A_1 \times A_2$ are a $\pi$-system generating $\mathcal{A}_1 \otimes \mathcal{A}_2$ the result follows from Lemma \ref{ConditionalExpectationExtension}.
+\end{proof}
+
+\begin{prop}\label{OuterTailProbabilities}Let $(\Omega, \mathcal{A}, P)$ be a probability space, let $f : \Omega \to (-\infty, \infty)$ be a function and $f^*$ the measurable cover of $f$. For all $-\infty < t < \infty$, 
+\begin{itemize}
+\item[(i)] $\oprobability{f > t} = \probability{f^* > t}$
+\item[(ii)] for all $\epsilon > 0$, 
+\begin{align*}
+\oprobability{f \geq t} &\leq \probability{f^* \geq t} \leq \oprobability{f \geq t - \epsilon}
+\end{align*}
+\end{itemize}
+\end{prop}
+\begin{proof}
+Since $f \leq f^*$ a.s. we have $\lbrace f > t \rbrace \subset \lbrace f^* > t \rbrace$ hence $\oprobability{f > t} < \oprobability{f^* > t}$.  Let $A$ be a measurable cover of $\lbrace f > t \rbrace$.  Note that $f \leq t$ on $A^c$ hence by Proposition \ref{BasicPropertiesOfMeasurableCover}  we have $f^* \leq t$ on $A^c$ showing
+\begin{align*}
+\probability{f^* > t} &= 1 - \probability{f^* \leq t} \geq 1 - \probability{A^c} = \probability{A} = \oprobability{f > t}
+\end{align*}
+so (i) is proven.
+
+To see (ii), by subadditivity of outer measure, $\oprobability{f \geq t} \leq \oprobability{f^* \geq t}=\probability{f^* \geq t}$ which shows the first inequality of (ii).   Let $\epsilon > 0$ be given and let $0 < \delta < \epsilon$ be chosen arbitrarily.  By subadditivity and (i) we have
+\begin{align*}
+\probability{f^* > t - \delta} &\leq \probability{f^* > t - \epsilon} = \oprobability{f > t - \epsilon} \leq \oprobability{f \geq t - \epsilon}
+\end{align*}
+Now use the fact that $\lbrace f^* \geq t \rbrace = \cap_{0 < \delta <\epsilon} \lbrace f^* > t - \delta \rbrace$ and continuity of measure Lemma \ref{ContinuityOfMeasure} to see that
+\begin{align*}
+\probability{f^* \geq t} &= \lim_{\delta \to 0^+} \probability{f^* > t - \delta} \leq \oprobability{f \geq t - \epsilon}
+\end{align*}
+\end{proof}
+
+\begin{thm}\label{FubiniOuterExpectation}Let $(S, \mathcal{S}, P)$ and $(T, \mathcal{T}, Q)$ be probability spaces, $f : S \times T \to [0, +\infty]$ and let $f^*$ be the measurable cover of $f$ with respect to $P \otimes Q$, then 
+\begin{align*}
+\int^* \left [ \int^* f(s,t) \, Q(dt) \right ] \, P(ds) &\leq \int^* f(s,t) \, (P \otimes Q)(ds,dt)
+\end{align*}
+If $Q$ is purely atomic (i.e. there exist $t_1, t_2, \dotsc \in T$ such that $Q = \sum_{n=1}^\infty Q \lbrace t_n \rbrace \delta_{t_n}$) then 
+\begin{align*}
+\int^* \left [ \int f(s,t) \, Q(dt) \right ] \, P(ds) &\leq \int^* f(s,t) \, (P \otimes Q)(ds,dt) = \int \left [ \int^* f(s,t) \, P(ds) \right ] \, Q(dt) 
+\end{align*}
+\end{thm}
+\begin{proof}
+For each $s \in S$ let $f_s : T \to [0,+\infty]$ be the section $f_s(t) = f(s,t)$.  For every fixed $s \in S$ we have $f_s(t) = f(s,t) \leq f^*(s,t)$ and sections of $f^*$ are $\mathcal{S}$-measurable (Lemma \ref{MeasurableSections}) thus $f_s^*(t) \leq f^*(s,t)$ $Q$-a.s.   It follows from this inequality and Theorem \ref{ExistenceMeasurableCover} that 
+\begin{align*}
+\int^* f(s,t) \, Q(dt) &= \int f^*_s(t) \, Q(dt) \leq \int f^*(s,t) \, Q(dt)
+\end{align*}
+We have observed Tonelli's Theorem \ref{Fubini} implies $\int f^*(s,t) \, Q(dt)$ is $\mathcal{S}$-measurable and therefore $\left [ \int^* f(s,t) \, Q(dt) \right]^* \leq \int f^*(s,t) \, Q(dt)$ $P$-a.s.  and it follows by another application of Tonelli's Theorem \ref{Fubini} that
+\begin{align*}
+\int^*\left [ \int^* f(s,t) \, Q(dt) \right] \, P(ds) &= \int \left [ \int^* f(s,t) \, Q(dt) \right]^* \, P(ds) \\
+&\leq \int \int f^*(s,t) \, Q(dt) P(ds) = \int f(s,t) \, (P \otimes Q)(ds,dt)
+\end{align*}
+
+Now we assume that $Q$ is purely atomic and $Q = \sum_{n=1}^\infty Q \lbrace t_n \rbrace \delta_{t_n}$.
+
+\begin{clm}If $Q$ is purely atomic then every $f : T \to [0,\infty]$ is measurable in the $Q$-completion $\mathcal{T}^Q$ and $\int^* f(t) \, Q(dt) = \int f(t) \, \tilde{Q}(dt)$ where $\tilde{Q}$ denotes the unique extension of $Q$ to $\mathcal{T}^Q$ (Lemma \ref{CompletionOfMeasure}).
+\end{clm}
+The first part of the claim is equivalent to saying that every set is $\mathcal{T}^Q$-measurable.  So let $A \subset T$ and define $B = A \cap \lbrace t_1, t_2, \dotsc \rbrace$.  Clearly $B \subset A$ and $A \setminus B \subset T \setminus \lbrace t_1, t_2, \dotsc \rbrace$ hence it follows that $A \Delta B = A \setminus B$ is a $Q$-null set.  For the second part of the claim,
+since $f$ is $\mathcal{T}^Q$-measurable by Lemma \ref{CompletionOfSigmaAlgebra} there exists a $\mathcal{T}$-measurable $g$ such that $f=g$ $Q$-a.s.  If $f^*$ is the $Q$-measurable cover of $f$ then by Proposition \ref{BasicPropertiesOfMeasurableCover} it follows that $f^* = g$ $Q$-a.s.  hence by  Theorem \ref{ExistenceMeasurableCover}, Proposition \ref{AlmostEverywhereEqualIntegralEqual} and Lemma \ref{CompletionOfMeasure}
+\begin{align*}
+\int^* f \, dQ &= \int f^* \, dQ = \int g \, dQ = \int f \, d \tilde{Q}
+\end{align*}
+
+In what follows we abuse notation slightly and use the notation $Q$ to denote the extension of $Q$ to the completion $\mathcal{T}^Q$.  By the claim and the first part of this result
+\begin{align*}
+\int^* \left [ \int f(s,t) \, Q(dt) \right ] \, P(ds) = \int^* \left [ \int^* f(s,t) \, Q(dt) \right ] \, P(ds) \leq \int^* f(s,t) \, (P \otimes Q)(ds,dt)
+\end{align*}
+
+For the equality in the second part of this result we first need the following claim.  For $t \in T$ we now let  $f_t : S \to [0,\infty]$ represent the section $f_t(s) = f(s,t)$.  
+\begin{clm} $f^*(s,t_n) = f_{t_n}^*(s)$ $P$-a.s. 
+\end{clm}
+From the first part of the proof we know $f^*(s,t_n) \geq f_{t_n}^*(s)$ $P$-a.s. so it suffices to show $f^*(s,t_n) \leq f_{t_n}^*(s)$ $P$-a.s.  If $j : S \to [0,\infty]$ is $\mathcal{S}$-measurable and satisfies $j \geq f_{t_n}$ everywhere.  Define $h(s,t) = j(s) \characteristic{t_n}(t) + f^*(s,t) \characteristic{T \setminus \lbrace t_n \rbrace }(t)$.  Then
+$h(s,t_n) = j(s) \geq f(s,t_n)$ and for $t \neq t_n$ we have $h(s,t) = f^*(s,t) \geq f(s,t)$.  Since $h$ is $\mathcal{S} \otimes \mathcal{T}$-measurable we conclude that $h \geq f^*$ $(P \otimes Q)$-a.s.  and therefore since $Q\lbrace y_n \rbrace > 0$  we have $f^*(s, y_n) \leq h(s, y_n) = j(s)$ $P$-a.s. From the definition, we conclude that $f^*(\cdot, y_n) \leq f_{t_n}^*$ $P$-a.s.
+
+Now we simply compute with  Theorem \ref{ExistenceMeasurableCover}, Tonelli's Theorem \ref{Fubini} and the explicit formula for the integral with respect to $Q$,
+\begin{align*}
+\int^* f(s,t) \,  (P \otimes Q)(ds,dt) &= \int f^*(s,t) \, (P \otimes Q)(ds,dt)  \\
+&= \int \left [ \int f^*(s,t) \, P(ds) \right ] \,   Q(dt)\\
+&= \sum_{n=1}^\infty Q \lbrace t_n \rbrace \int f^*(s,t_n) \, P(ds) \\
+&= \sum_{n=1}^\infty Q \lbrace t_n \rbrace \int f_{t_n}^*(s) \, P(ds) \\
+&= \sum_{n=1}^\infty Q \lbrace t_n \rbrace \int^* f(s, t_n) \, P(ds) \\
+&= \int \left [ \int^* f(s, t) \, P(ds) \right ] \,   Q(dt)\\
+\end{align*}
+
+TODO: Dudley says this last part (the equality) is an immediate consequence of Tonelli, my proof is quite a few lines...  Looking at my notes I am pretty confused here and should probably look for a simpler proof (though I don't see it following immediately from Tonelli). 
+
+TODO: Delete this cruft once I'm sure it is irrelevant:
+
+By the claim and taking an intersection of a countable number of $P$-a.s. events we know that for $P$-almost every $s$ we have $f^*(s,t_n) \leq f_{t_n}^*(s)$ for all $n \in \naturals$ and since $Q\lbrace t_1, t_2, \dotsc \rbrace = 1$ it follows that $f^*(s,t) \leq \sum_{n=1}^\infty f_{t_n}^*(s) \characteristic{t_n}(t)$ $(P \otimes Q)$-a.s.   
+hence by Theorem \ref{ExistenceMeasurableCover}, Tonelli's Theorems \ref{TonelliIntegralSum}  and \ref{Fubini} 
+\begin{align*}
+\int^* f(s,t) \,  (P \otimes Q)(ds,dt) &= \int f^*(s,t) \, (P \otimes Q)(ds,dt)  \\
+&\leq \int \sum_{n=1}^\infty f_{t_n}^*(s) \characteristic{t_n}(t) \,  (P \otimes Q)(ds,dt) \\
+&= \sum_{n=1}^\infty\int \left [ \int f_{t_n}^*(s) \, P(ds) \right ] \characteristic{t_n}(t) \,   Q(dt)\\
+&= \sum_{n=1}^\infty \int \left [ \int^* f(s, t_n) \, P(ds) \right ] \characteristic{t_n}(t) \,   Q(dt)\\
+&= \int \left [ \int^* f(s, t) \, P(ds) \right ] \,   Q(dt)\\
+\end{align*}
+where in the last line we have used the fact that an integral over $T$ is determined by the values of the integrand at $t_1, t_2, \dotsc$.  From the first part of the Theorem we know that $\int \left [ \int^* f(s, t) \, P(ds) \right ] \,   Q(dt) \leq \int^* f(s,t) \,  (P \otimes Q)(ds,dt)$ so the equality follows.
+
+\end{proof}
+
+
+\begin{thm}[Monotone Convergence Theorem for Outer Expectations]\label{MCTOuterExpectation}Let $f_n \uparrow f$ with $\oexpectation{f_1} > - \infty$ then
+$\oexpectation{f_n} \uparrow \oexpectation{f}$.
+\end{thm}
+\begin{proof}
+Since $f_1 \leq f_n$ and $f_1 \leq f$ and $\oexpectation{f_1} > - \infty$, Proposition \ref{OuterExpectationMonotonicity} implies that $\oexpectation{f_n}$ and $\oexpectation{f}$ are all defined. 
+We know that $\int^* f_n dP = \int f_n^* dP$ and we know that $f_n \leq f_{n+1}$ implies $\mathcal{J}_{f_{n+1}} \subset \mathcal{J}_{f_n}$ hence $f_n^* \leq f_{n+1}^*$ a.s.  (Proposition \ref{AlmostSureUniquenessEssentialInfimum}).  Therefore $g=\lim_{n \to \infty} f^*_n$ exists, is measurable and by Monotone Convergence Theorem for signed functions (Theorem \ref{SignedMCT})
+\begin{align*}
+\lim_{n \to \infty} \oexpectation{f_n} &= \lim_{n \to \infty} \int f_n^* dP = \int g dP
+\end{align*}  
+By the previous argument 
+we also have $f^*_n \leq f^*$ a.s. and therefore $g \leq f^*$ a.s.  Suppose $\probability{g < f^*} > 0$.  Since $f_n \leq g$ everywhere (in particular on $\lbrace g < f^* \rbrace$) we know that $f \leq g$ on $\lbrace g < f^* \rbrace$ and therefore by Proposition \ref{BasicPropertiesOfMeasurableCover} we have $f^* \leq g$ a.s. on $\lbrace g < f^* \rbrace$ which is a contradiction.  It follows that $g = f^*$ a.s. and therefore $\int g dP = \oexpectation{f}$ and the result follows.
+\end{proof}
+
+TODO: Somewhere note explicity that for any $f \geq 0$ we have $\int^* f \, d\mu$ exists (trivial that $\int h \, d\mu$ exists for any measurabe $h$ with $h\geq f \geq 0$)?
+\begin{thm}[Fatou's Lemma for Outer Expectations]\label{FatouOuterExpectation}Given $f_1, f_2, \dots$
+  positive functions from
+  $(\Omega, \mathcal{A}, P)$ to $[0,\infty]$,
+  then $\int^* \liminf_{n \to \infty} f_n d P \leq \liminf_{n \to
+    \infty} \int^* f_n d P$.
+\end{thm}
+\begin{proof}
+This is essentially the same proof as Theorem \ref{Fatou}.  For each $k \in \naturals$ let $g_k = \inf_{m \geq k} f_m$.  Then $g_k \geq 0$ and $0 \leq g_k \uparrow \liminf_{n \to \infty} f_n$ so by Theorem \ref{MCTOuterExpectation} and 
+\begin{align*}
+\int^* \liminf_{n \to \infty} f_n \, dP &= \lim_{k \to \infty} \int^* g_k \, dP = \lim_{k \to \infty} \int^* \inf_{m \geq k} f_m \, dP \\
+&\leq \lim_{k \to \infty} \inf_{m \geq k}\int^* f_m \, dP  = \liminf_{n \to \infty} \int^* f_n \, dP
+\end{align*}
+\end{proof}
+
+\subsection{Perfect Functions}
+
+One of the most useful facts of integration theory is the abstract change of variables formula Lemma \ref{ChangeOfVariables} (and the special case for probability theory: the Expectation Rule Lemma \ref{ExpectationRule}): $\int (f \circ g) \, d\mu = \int f \, d\pushforward{g}{\mu}$.  We want an analogous result for outer expectations.  To get such a result we clearly need $g$ to be measurable (otherwise we can't even make sense of $\pushforward{g}{\mu}$).  In fact we need to require a bit more of $g$ which leads to the following definition.
+
+\begin{defn}Let $(\Omega, \mathcal{A}, P)$ be a probability space, $(S, \mathcal{S})$ be a measurable space and $g : \Omega \to S$ be measurable.  For any $f : S \to (-\infty, \infty)$ let $f^*$ be the measurable cover with respect to $\pushforward{g}{P}$.  We say $g$ is \emph{perfect} if for every $f : S \to (-\infty, \infty)$ we have $(f \circ g)^* = f^* \circ g$ $P$-a.s.
+\end{defn}
+
+It is useful to have some conditions for $g$ that are equivalent to it being perfect.  TODO: Note that van der Vaart and Wellner call $g$ perfect if $(f \circ g)^* = f^* \circ g)$ for all bounded $f$ but don't mention that this implies $(f \circ g)^* = f^* \circ g$ for all $f$: this seem to be implied by Dudley's theorem below just make sure there isn't a gap in the proof that assumed boundedness of $f$.
+\begin{thm}\label{PerfectFunctions}Let $(\Omega, \mathcal{A}, P)$ be a probability space, $(S, \mathcal{S})$ be a measurable space and $g : \Omega \to S$ be measurable.  For any $f : S \to (-\infty, \infty)$ let $f^*$ be the measurable cover with respect to $\pushforward{g}{P}$.  The following are equivalent
+\begin{itemize}
+\item[(i)] $g$ is perfect
+\item[(ii)] For every $C \subset S$ we have $(\characteristic{C} \circ g)^* = \characteristic{C}^* \circ g$ $P$-a.s.
+\item[(iii)] For every $A \in \mathcal{A}$ there exists $B \in \mathcal{S}$ such that $B \subset g(A)$ and $P(g^{-1}(B)) \geq P(A)$
+\item[(iv)] For every $A \in \mathcal{A}$ with $P(A) > 0$ there exists $B \in \mathcal{S}$ such that $B \subset g(A)$ and $P(g^{-1}(B)) > 0$
+\end{itemize}
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
+
+\begin{cor}\label{cor:OuterExpectationRule}$(\Omega, \mathcal{A}, P)$ be a probability space, $(S, \mathcal{S})$ be a measurable space and $g : \Omega \to S$ be perfect.  For any $f : S \to (-\infty, \infty)$
+\begin{align*}
+\int^* (f \circ g) \, dP &= \int^* f \, d\pushforward{g}{P}
+\end{align*}
+\end{cor}
+\begin{proof}
+We compute using Theorem \ref{ExistenceMeasurableCover}, Theorem \ref{PerfectFunctions}, Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual} and Lemma \ref{ExpectationRule}
+\begin{align*}
+\int^* (f \circ g) \, dP &= \int (f \circ g)^* \, dP = \int (f^* \circ g) \, dP = \int f^* \, d\pushforward{g}{P} = \int^* f  \, d\pushforward{g}{P}
+\end{align*}
+\end{proof}
+
+We will often require the fact that coordinate projections on product spaces are perfect.
+\begin{prop}\label{prop:CoordinateProjectionsArePerfect}Let $(S, \mathcal{S}, \mu)$ and $(T, \mathcal{T}, \nu)$ be probability spaces and let $(\Omega, \mathcal{A}, P) = (S\times T, \mathcal{S}\otimes \mathcal{T}, \mu \otimes \nu)$.  Then the coordinate projection $\pi : \Omega \to T$ is perfect.
+\end{prop}
+\begin{proof}
+TODO : Note that Dudley provides a proof of this fact doesn't rely on the $n=2$ case of Proposition \ref{MeasurableCoverProductOfIndependent}; it seems to me this is a simple corollary of that right?
+\end{proof}
+
+\section{Bootstrap}
+
+\begin{defn}A random variable $\epsilon$ with values in $\lbrace -1, 1 \rbrace$ such that $\probability{\epsilon = 1} = \probability{\epsilon = -1} = 1/2$ is called a \emph{Rademacher variable}.
+\end{defn}
+
+Some basic motivation for what follows (e.g. Koltchinski's St. Flour notes have some useful stuff in its introduction).   Also Pollard tries to motivate symmetrization techniques but I haven't gotten much out of his stuff.
+
+TODO: Dudley calls this a desymmetrization fact.  What the heck does that mean?  I actually think this is what Van der Vaart and Wellner call Ottaviani's inequality.  
+\begin{lem}Let $(\Omega, \mathcal{A}, P)$ and $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$ be probability spaces form the product $(\Omega \times \Omega^\prime, \mathcal{A} \otimes  \mathcal{A}^\prime, P \otimes P^\prime)$ and let $\pi : \Omega \times \Omega^\prime \to \Omega$ and $\pi^\prime : \Omega \times \Omega^\prime \to \Omega^\prime$ be the coordinate projections.  Suppose $T$ be a set, $X_t : \Omega \to \reals^T$ and $Y_t : \Omega^\prime \to \reals^T$ be stochastic processes (TODO: Do we really need measurability of $X_t$ and $Y_t$?; I suspect not.).   Then
+\begin{itemize}
+\item[(i)] For any $s>0$ and $u > 0$ such that $\sup_{t \in T} P^\prime( \abs{Y_t} \geq u )< 1$ we have
+\begin{align*}
+\inf_{t \in T}  P^\prime( \abs{Y_t} < u ) P^*(\sup_{t \in T} \abs{X_t} > s) &\leq (P \otimes P^\prime)^* (\sup_{t \in T} \abs{X_t \circ \pi  - Y_t \circ \pi^\prime} > s - u)
+\end{align*}
+\item[(ii)] If $\theta > \sup_{t \in T} \int Y_t^2 \, dP^\prime$ and $s>0$ then
+\begin{align*}
+P^*(\sup_{t \in T} \abs{X_t} > s) &\leq 2 (P \otimes P^\prime) ( \sup_{t \in T} \abs{X_t \circ \pi  Y_t \circ \pi^\prime} > s - (2\theta)^{1/2})
+\end{align*}
+\end{itemize}
+\end{lem}
+\begin{proof}
+To see (i), by the Tonelli Theorem \ref{FubiniOuterExpectation} we have
+\begin{align*}
+&(P \otimes P^\prime)^* (\sup_{t \in T} \abs{X_t \circ \pi  - Y_t \circ \pi^\prime} > s - u) \\
+&=\int^* \characteristic{\sup_{t \in T} \abs{X_t \circ \pi  - Y_t \circ \pi^\prime} > s - u}(\omega, \omega^\prime) (P \otimes P^\prime)(d\omega, d\omega^\prime) \\
+&\geq \int^* \left [ \int^* \characteristic{\sup_{t \in T} \abs{X_t \circ \pi  - Y_t \circ \pi^\prime} > s - u}(\omega, \omega^\prime) P^\prime(d\omega^\prime) \right ] P(d\omega)\\
+&\geq \int^* \characteristic{\sup_{t \in T} \abs{X_t} > s}(\omega) \left [ \int^* \characteristic{\sup_{t \in T} \abs{X_t \circ \pi  - Y_t \circ \pi^\prime} > s - u}(\omega, \omega^\prime) P^\prime(d\omega^\prime) \right ] P(d\omega)\\
+&\geq P(\sup_{t \in T} \abs{X_t} > s)  \inf_{\lbrace w \in \reals^T \mid \sup_{t \in T} \abs{w_t} > s \rbrace} P^\prime (\sup_{t \in T} \abs{w_t  - Y_t} > s - u)\\
+&\geq P(\sup_{t \in T} \abs{X_t} > s) \inf_{t \in T} P^\prime(\abs{Y_t} > u) \\
+\end{align*}
+where in the last line we observe that for $w \in \reals^T$ such that $\sup_{t \in T} \abs{w_t} > s$ we can pick $t_0$ such that $\abs{w_{t_0}} > s$; for that $t_0$ we see that $\abs{Y_{t_0}} < u$ implies $\abs{w_{t_0} - Y_{t_0}} > s - u$ so by monotonicity 
+\begin{align*}
+\inf_{t \in T} P^\prime ( \abs{Y_t} < u) &\leq P^\prime ( \abs{Y_{t_0}} < u) \leq P^\prime(\abs{w_{t_0} - Y_{t_0}} > s - u) \leq \sup_{t \in T} P^\prime(\abs{w_t - Y_t} > s - u)
+\end{align*}
+
+To see (ii) note that by Markov's Inequality
+\begin{align*}
+P^\prime(\abs{Y_t} \geq (2\theta)^{1/2}) &\leq \frac{\expectation{Y_t^2}}{2\theta} \leq \frac{\sup_{t \in T} \expectation{Y_t^2}}{2\theta} \leq \frac{1}{2}
+\end{align*}
+Therefore $\inf_{t \in T} P^\prime(\abs{Y_t} < (2\theta)^{1/2}) \geq \frac{1}{2}$ and (ii) follows from (i).
+\end{proof}
+
+TODO: In this result check if it is true for stochastic processes and not just the empirical processes (the second part looks to be specific to the empirical process case in fact requires $\mathcal{F} \subset L^2(S, \mathcal{S}, P)$)
+\begin{lem}For any $\lambda > 0$ and $n \in \naturals$,
+\begin{itemize}
+\item[(i)]
+\begin{align*}
+\oprobability{\norm{\sum_{i=1}^n \epsilon_i f(\xi_i)} > \lambda} &\leq 2 \max_{1 \leq k \leq n} \oprobability{\norm{\sum_{i=1}^k f(\xi_i)} > \lambda/2}
+\end{align*}
+\item[(ii)] Let $\alpha^2 = \sup_{f \in \mathcal{F}} \int (f - \expectation{f})^2 \, dP$, then for every $n \in \naturals$ and $\lambda > \sqrt{2n} \alpha$ 
+\begin{align*}
+\oprobability{\norm{\sum_{i=1}^n (f(\xi_i) - \expectation{f})} > \lambda} &\leq 
+4 \oprobability{\norm{\sum_{i=1}^n \epsilon_i f(\xi_i)} > (t - \sqrt{2n} \alpha)/2}
+\end{align*}
+\end{itemize}
+\end{lem}
+\begin{proof}
+Let $E_n = \lbrace 0, 1 \rbrace^n$ and let $\tilde{\epsilon}_n = (\epsilon_1, \dotsc, \epsilon_n)$ so $\tilde{\epsilon}_n : \Omega^\prime \to E_n$.  
+Using subadditivity of outer probability  and Corollary \ref{OuterProbabilityIndependentEvents}
+\begin{align*}
+\oprobability{\norm{\sum_{i=1}^n \epsilon_i f(\xi_i)} > \lambda}
+&= \oprobability{\norm{\sum_{i=1}^n \epsilon_i f(\xi_i)} > \lambda ; \cup_{\tau \in E_n} \lbrace \tilde{\epsilon}_n = \tau \rbrace } \\
+&\leq \sum_{\tau \in E_n} \oprobability{\norm{\sum_{i=1}^n \epsilon_i f(\xi_i)} > \lambda ; \tilde{\epsilon}_n = \tau} \\
+&= \sum_{\tau \in E_n} \oprobability{\norm{\sum_{\tau_i=1} f(\xi_i) -\sum_{\tau_i=-1} f(\xi_i) } > \lambda ; \tilde{\epsilon}_n = \tau} \\
+&= \sum_{\tau \in E_n} (P^n)^*\left (\norm{\sum_{\tau_i=1} f(\xi_i) -\sum_{\tau_i=-1} f(\xi_i) } > \lambda \right )  P^\prime \left(\tilde{\epsilon}_n = \tau\right ) \\
+&= \sum_{\tau \in E_n} (P^n)^*\left (\norm{\sum_{\tau_i=1} f(\xi_i) -\sum_{\tau_i=-1} f(\xi_i) } > \lambda \right )  \frac{1}{2^n}\\
+&\leq \frac{1}{2^n} \sum_{\tau \in E_n} \left [ (P^n)^*\left (\norm{\sum_{\tau_i=1} f(\xi_i)} > \lambda/2 \right) + (P^n)^*\left (\norm{\sum_{\tau_i=-1} f(\xi_i) } > \lambda/2 \right )  \right ] \\
+\end{align*}
+
+TODO: I think the following makes sense...  
+\begin{clm} $(P^n)^*\left (\norm{\sum_{\tau_i=1} f(\xi_i)} > \lambda/2 \right)= (P^n)^*\left (\norm{\sum_{i=1}^{\card{\tau_i=1}} f(\xi_i)} > \lambda/2 \right)$ 
+\end{clm}
+Let $k = \card{\tau_i = 1}$.  (Note: here we are using measurability and the i.i.d. property).  Let $\pi : \Omega \to \prod_{\tau_i =1} S^i$ be the projection map onto the $i$ for which $\tau_i=1$.  By Proposition \ref{prop:CoordinateProjectionsArePerfect}, projection maps are perfect and therefore we can apply the Expectation Rule Corollary \ref{cor:OuterExpectationRule}
+\begin{align*}
+(P^n)^*\left (\norm{\sum_{\tau_i=1} f(\xi_i)} > \lambda/2 \right) &= (\pushforward{\pi}{P^n})^*\left (\norm{\sum_{\tau_i=1} f(\xi_i)} > \lambda/2 \right) \\
+&= (P^k)^*\left (\norm{\sum_{i=1}^k f(\xi_i)} > \lambda/2 \right) 
+\end{align*}
+noting that the value of the right hand side depends on the set $\tau_i=1$ only through the value of $k$.  In particular the value is equal to $(P^n)^*\left (\norm{\sum_{i=1}^{\card{\tau_i=1}} f(\xi_i)} > \lambda/2 \right)$
+
+Now by the previous claim we get
+
+TODO:
+\end{proof}
+
+TODO: Clarify the general stochastic process setting versus the empirical process setting.  
+
+When thinking about stochastic processes $X$, we often think of the index set $T$ as representing time.  In the theory of empirical processes that intuition has to be cast aside and one is usually thinking about the index set as being some set of functions $\mathcal{F}$.  In the standard setup assume that we have two probability spaces $(S, \mathcal{S}, P)$ and $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$.  For every $n \in \naturals$ we consider the product probability space
+$(S^n \times \Omega^\prime, \mathcal{S}^n \otimes \mathcal{A}^\prime, P^n \otimes P^\prime)$ and for each $1 \leq i \leq n$ the coordinate projections $X_i : S^n \times \Omega^\prime \to S$.  We can then form the \emph{empirical measure} $\mathds{P}_n = \frac{1}{n} \sum_{i=1}^n \delta_{X_i}$ and the \emph{empirical process} 
+$\mathds{G}_n = \sqrt{n}( \mathds{P}_n - P)$ (TODO: show that $\mathds{P}_n$ is measurable).  An alternative way of thinking about these objects is to use the random measures to integrate a measurable function on $S$, $\mathds{P}_n(f) = \frac{1}{n} \sum_{i=1}^n f(X_i)$ and $\mathds{G}_n(f) = \sqrt{n}(\mathds{P}_n(f) - \expectation{f})$.  Clearly for each such $f$, $\mathds{P}_n(f)$ is a sum of a composition of measurable functions hence is measurable; thus each of of $\mathds{P}_n$ and $\mathds{G}_n$ defines a stochastic process indexed by a set of measurable functions.  In some cases it is also useful to consider the \emph{partial sum process} $\sum_{i=1}^n f(X_i)$.   Note that as a special case of indexing by measurable functions is indexing by a set of characteristic functions (or equivalently indexing by a set of measurable subsets of $S$).  In the general theory of empirical process there are many results that aren't specific to processes defined above and in those cases we'll strive to formulate them in the most general way possible.
+
+TODO: Actually some of the inequalities are not supposed to even require meaurability of the $X_t$.  So we aren't really even talking about stochastic processes here: simply families of functions!
+
+\begin{defn}Let $(\Omega \times \Omega^\prime, \mathcal{A} \otimes \mathcal{A}^\prime, P \otimes P^\prime)$ be a product of probability spaces and $V$ be a vector space with seminorm $\norm{\cdot}$.  A stochastic process $X$ on time scale $T$ is said to be \emph{symmetric} if $X$ and $-X$ have the same distribution.
+\end{defn}
+
+TODO: Van der Vaart and Wellner have versions of these inequalities for symmetric processes; do we need those for the bootstrap?
+\begin{lem}[Hoffman-J\o rgensen Inequalities]\label{HoffmanJorgensenInequalities}Let $(\Omega_i,\mathcal{A}_i, P_i)$ for each $i=1, \dotsc, n$ and $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$ be probability spaces and let $(\Omega, \mathcal{A}, P)$ be the product $\Omega_1 \times \dotsb \times \Omega_n \times \Omega^\prime$.  Let $T$ be an index set and for every $i=1, \dotsc, n$ suppose $X^i_t : \Omega \to \reals$ be the pullback of a function $\Omega_i \to \reals$ (i.e. $X^i_t$ depends only on the $i^{th}$ coordinate).  For any $t \in T$ and $k=1, \dotsc, n$ let $S^k_t = X^1_t + \dotsb + X^k_t$.  For any $\lambda,\eta>0$ we have
+\begin{align*}
+\oprobability{\max_{1 \leq k \leq n} \sup_{t \in T} \abs{S^k_t} > 3\lambda + \eta} 
+&\leq \oprobability{\max_{1 \leq k \leq n} \sup_{t \in T} \abs{S^k_t} > \lambda}^2 + \oprobability{\max_{1 \leq k \leq n} \sup_{t \in T} \abs{X^k_t} > \eta}
+\end{align*}
+\end{lem}
+\begin{proof}
+Let for any $Y : T \to \reals$ let $\norm{Y} = \sup_{t \in T} \abs{Y_t}$.  
+By Proposition \ref{OuterTailProbabilities} and Proposition \ref{BasicPropertiesOfMeasurableCover} we have
+\begin{align*}
+\oprobability{\max_{1 \leq k \leq n} \norm{S^k} > 3\lambda + \eta} 
+&= \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > 3\lambda + \eta} 
+= \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > 3\lambda + \eta} 
+\end{align*}
+and similarly with the other outer probabilities.  For each $k=1, \dotsc, n$ let $A_k$ be the event that $k$ is the first index with $\norm{S^{k}}^* > \lambda$:
+\begin{align*}
+A_k &= \left \lbrace \norm{S^1}^* \leq \lambda \right \rbrace \cap \dotsb \cap  
+\left \lbrace \norm{S^{k-1}}^* \leq \lambda \right \rbrace 
+cap \left \lbrace \norm{S^{k}}^* > \lambda \right \rbrace 
+\end{align*}
+Thus $\left \lbrace \max_{1 \leq k \leq n} \norm{S^k}^* > \lambda\right \rbrace$ is the disjoint union of $A_1, \dotsc, A_n$.  For every $k=1, \dotsc, n$, since $\norm{\cdot}$ is a norm we have by Lemma \ref{MeasurableCoverTriangleInequality} for every $j \geq k$,
+\begin{align*}
+\norm{S^j}^* &= \norm{S^{k-1} + X^k + S^j - S^k}^* 
+\leq \norm{S^{k-1}}^* + \norm{X^k}^* + \norm{S^j - S^k}^*
+\end{align*}
+so (noting that of course $S^j-S^k=0$ when $k=j$),
+\begin{align*}
+A_k &\subset \left \lbrace \max_{1 \leq j \leq n} \norm{S^j}^* \leq \lambda + \sup_{1 \leq j \leq n} \norm{X^j}^* + \max_{k < j \leq n} \norm{S^j - S^k}^*  \right \rbrace \text{ a.s.}
+\end{align*}
+Thus on $A_k$, $\max_{1 \leq j \leq n} \norm{S^j}^* > 3\lambda + \eta$ implies either $\sup_{1 \leq j \leq n} \norm{X^j}^* > \eta$ or $\max_{k < j \leq n} \norm{S^j - S^k}^* > 2\lambda$ so by subadditivity and the fact that $A_k$ is independent of $\left \lbrace \max_{k < j \leq n} \norm{S^j - S^k}^* \right \rbrace$
+\begin{align*}
+&\probability{\max_{1 \leq j \leq n} \norm{S^j}^* > 3\lambda + \eta} 
+= \sum_{k=1}^n \probability{\max_{1 \leq j \leq n} \norm{S^j}^* > 3\lambda + \eta ; A_k} \\
+&\leq \sum_{k=1}^n \probability{\sup_{1 \leq j \leq n} \norm{X^j}^* > \eta ; A_k} + \sum_{k=1}^n \probability{\max_{k < j \leq n} \norm{S^j - S^k}^* > 2\lambda ; A_k} \\
+&\leq \probability{\sup_{1 \leq j \leq n} \norm{X^j}^* > \eta ; \cup_{k=1}^n A_k} + \sum_{k=1}^n \probability{\max_{k < j \leq n} \norm{S^j - S^k}^* > 2\lambda} \probability{A_k} \\
+&\leq \probability{\sup_{1 \leq j \leq n} \norm{X^j}^* > \eta} + \sum_{k=1}^n \probability{\max_{k \leq  j \leq n} \norm{S^j}^* > \lambda} \probability{A_k} \\
+&\leq \probability{\sup_{1 \leq j \leq n} \norm{X^j}^* > \eta} + \probability{\max_{1 \leq  j \leq n} \norm{S^j}^* > \lambda}^2\\
+\end{align*}
+\end{proof}
+
+\begin{thm}\label{HoffmanJorgensenMomentInequalities}Let $(\Omega_i,\mathcal{A}_i, P_i)$ for each $i=1, \dotsc, n$ and $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$ be probability spaces and let $(\Omega, \mathcal{A}, P)$ be the product $\Omega_1 \times \dotsb \times \Omega_n \times \Omega^\prime$.  Let $T$ be an index set and for every $i=1, \dotsc, n$ suppose $X^i_t : \Omega \to \reals$ be the pullback of a function $\Omega_i \to \reals$ (i.e. $X^i_t$ depends only on the $i^{th}$ coordinate).  For any $t \in T$ and $k=1, \dotsc, n$ let $S^k_t = X^1_t + \dotsb + X^k_t$.  Then for any $0 < p < \infty$ there exist a constant $C_p$ such that
+\begin{align*}
+\oexpectation{\max_{1 \leq k \leq n} \norm{S^k}^p} &\leq C_p \left( \oexpectation{\max_{1 \leq k \leq n} \norm{X^k}^p} + F^{-1}(1/(24^p))^p \right)
+\end{align*}
+where $F(u) = \oprobability{\max_{1 \leq k \leq n} \norm{S^k}>u}$.
+\end{thm}
+\begin{proof}
+We use Theorem \ref{ExistenceMeasurableCover}, the Lemma \ref{TailsAndExpectations}, a change of variables and Lemma \ref{HoffmanJorgensenInequalities} to see that for all $\lambda > 0$,
+\begin{align*}
+&\oexpectation{\max_{1 \leq k \leq n} \norm{S^k}^p} 
+= \expectation{\max_{1 \leq k \leq n} (\norm{S^k}^*)^p}  
+= p \int_0^\infty t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > t}  dt \\
+&= 4^p p \int_0^\infty t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > 4t}  dt \\
+&= 4^p p \int_0^\lambda t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > 4t}  dt  + 4^p p\int_\lambda^\infty t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > 4t}  dt \\
+&\leq 4^p p \int_0^\lambda  t^{p-1}  dt  + 4^p p \int_\lambda^\infty t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > t}^2  dt \\
+&\qquad + 4^p p \int_\lambda^\infty t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{X^k}^* > t}  dt \\
+&\leq (4\lambda)^p  + 4^p p \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > \lambda} \int_0^\infty t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{S^k}^* > t}  dt \\
+&\qquad + 4^p p \int_0^\infty t^{p-1} \probability{\max_{1 \leq k \leq n} \norm{X^k}^* > t}  dt \\
+&= (4\lambda)^p  + 4^pF(\lambda) \oexpectation{\max_{1 \leq k \leq n} \norm{S^k}^p} + 4^p \oexpectation{\max_{1 \leq k \leq n} \norm{X^k}^p}
+\end{align*}
+Now pick $\lambda = u_p = F^{-1}(\frac{1}{24^p})$ so that $4^p F(\lambda) \leq 1/2$ and rearrange terms to get
+\begin{align*}
+\oexpectation{\max_{1 \leq k \leq n} \norm{S^k}^p}  \leq 2 4^p  \oexpectation{\max_{1 \leq k \leq n} \norm{X^k}^p} + 2 (4 F^{-1}(1/(24^p)))^p
+\end{align*}
+\end{proof}
+
+\begin{lem}\label{JensenConsequencesForOuterExpectations}Let $(\Omega, \mathcal{A})$ be a measurable space with probability measures $P$ and $Q$
+\begin{itemize}
+\item[(i)]If $\mathcal{F} \subset \mathcal{L}^1(\Omega, \mathcal{A}, P)$ then 
+\begin{align*}
+\norm{\int f \, dP}_{\mathcal{F}} &\leq \int^* \norm{f}_{\mathcal{F}} \, dP
+\end{align*}
+\item[(ii)]If $\mathcal{F} \subset \mathcal{L}^0(\Omega, \mathcal{A})$  such that for all $f \in \mathcal{F}$,  $\int f \, dQ=0$ then
+\begin{align*}
+\int^* \norm{f(x)}_{\mathcal{F}} \, (P \otimes Q)(dx,dy) &\leq \int^* \norm{f(x)+f(y)}_{\mathcal{F}} \, (P \otimes Q)(dx,dy) 
+\end{align*}
+\end{itemize}
+\end{lem}
+\begin{proof}
+To prove (i), since $\abs{f} \leq \sup_{f \in \mathcal{F}} \abs{f} \leq \left( \sup_{f \in \mathcal{F}} \abs{f} \right)^*$ we have for all $f \in \mathcal{F}$,
+\begin{align*}
+\abs{\int f \, dP} &\leq \int \abs{f} \, dP \leq \int \left( \sup_{f \in \mathcal{F}} \abs{f} \right)^* \, dP = \int^* \norm{f}_{\mathcal{F}} \, dP
+\end{align*}
+Now take the supremum over all $f$ to conclude that $\norm{\int f \, dP}_{\mathcal{F}} \leq \int^* \norm{f}_{\mathcal{F}} \, dP$.
+
+To see (ii), let $x \in \Omega$ be fixed for the moment.  Thinking of $y \in \Omega$ as variable,
+\begin{align*}
+\abs{f(x) + f(y)} &\leq \sup_{f \in \mathcal{F}} \abs{f(x) + f(y)} \leq \left(\sup_{f \in \mathcal{F}} \abs{f(x) + f(y)} \right)^*
+\end{align*}
+where the measurable cover on the right hand side is taken with respect to $Q$ (and depends on $x \in \Omega$).  Thus $\int \abs{f(x) + f(y)} \, Q(dy) \leq \int^* \sup_{f \in \mathcal{F}} \abs{f(x) + f(y)} \, Q(dy)$ and taking the supremum over $f \in \mathcal{F}$ we get for each $x \in \Omega$,
+\begin{align}\label{JensenConsequencesForOuterExpectations:Ineq}
+\norm{\int \abs{f(x) + f(y)} \, Q(dy)}_{\mathcal{F}} &\leq \int^* \sup_{f \in \mathcal{F}} \abs{f(x) + f(y)} \, Q(dy) = \int^* \norm{f(x)+f(y)}_{\mathcal{F}} \, Q(dy)
+\end{align}
+Now for a fixed $x \in \Omega$ and $f \in \mathcal{F}$ we know that the function $z \mapsto \abs{f(x) + z}$ is convex so by the Jensen's Inequality Theorem \ref{Jensen} we get 
+\begin{align*}
+\abs{f(x)} &= \abs{f(x) + \int f(y) \, Q(dy)} \leq \int \abs{f(x) + f(y)} \, Q(dy) 
+\end{align*}
+Taking the supremum over $f \in \mathcal{F}$ and the outer integral over $x$, we get using Corollary \ref{cor:OuterExpectationRule}, \eqref{JensenConsequencesForOuterExpectations:Ineq} and the Tonelli Theorem \ref{FubiniOuterExpectation}
+\begin{align*}
+\int^* \norm{f(x)}_{\mathcal{F}} \, (P\otimes Q)(dx, dy) &= \int^* \norm{f(x)}_{\mathcal{F}} \, P(dx) \leq \int^* \norm {\int \abs{f(x) + f(y)} \, Q(dy)}_{\mathcal{F}}  \, P(dx) \\
+&\leq \int^* \left[ \int^* \norm{f(x) + f(y)}_{\mathcal{F}} \, Q(dy) \right ] \, P(dx) \\
+&\leq \int^* \norm{f(x) + f(y)}_{\mathcal{F}}  \, (P \otimes Q)(dx,dy)
+\end{align*}
+
+TODO: I think we actually need the following generalization of (ii):
+To see (ii), let $x_1 \in \Omega$ be fixed for the moment.  Thinking of $x_2, \dotsc, x_n \in \Omega$ as variable,
+\begin{align*}
+\abs{f(x_1) + \dotsb + f(x_n)} &\leq \sup_{f \in \mathcal{F}} \abs{f(x_1) + \dotsb + f(x_n)} \leq \left(\sup_{f \in \mathcal{F}} \abs{f(x_1) + \dotsb + f(x_n)} \right)^*
+\end{align*}
+where the measurable cover on the right hand side is taken with respect to $P_2 \otimes \dotsb \otimes P_n$ (and depends on $x_1 \in \Omega$).  Thus 
+\begin{align*}
+&\int \abs{f(x_1) + \dotsb + f(x_n)} \, (P_2 \otimes \dotsb \otimes P_n)(dx_2, \dotsc, dx_n) \\
+&\qquad \leq \int^* \sup_{f \in \mathcal{F}} \abs{f(x_1) +  \dotsb + f(x_n)} \, (P_2 \otimes \dotsb P_n)(dx_2, \dotsc, dx_n)
+\end{align*} 
+and taking the supremum over $f \in \mathcal{F}$ we get for each $x_1 \in \Omega$,
+\begin{align}
+&\norm{\int \abs{f(x_1) + \dotsb + f(x_n)} \, (P_2 \otimes \dotsb \otimes P_n)(dx_2, \dotsc, dx_n)}_{\mathcal{F}} \\
+&\qquad \leq \int^* \sup_{f \in \mathcal{F}} \abs{f(x_1) + \dotsb + f(x_n)} \, (P_2 \otimes \dotsb \otimes P_n)(dx_2, \dotsc, dx_n) \\
+&\qquad = \int^* \norm{f(x_1)+ \dotsb + f(x_n)}_{\mathcal{F}} \, (P_2 \otimes \dotsb \otimes P_n) (dx_2, \dotsc, dx_n)
+\end{align}\label{eq:JensenConsequencesForOuterExpectations:Ineq2}
+Now for a fixed $x_1 \in \Omega$ and $f \in \mathcal{F}$ we know that the function $z \mapsto \abs{f(x_1) + z}$ is convex so by the Jensen's Inequality Theorem \ref{Jensen} we get 
+\begin{align*}
+\abs{f(x_1)} &= \abs{f(x_1) + \int ( f(x_2) + \dotsb + f(x_n) )\, (P_2 \otimes \dotsb \otimes P_n)(dx_2, \dotsc, dx_n)} \\
+&\leq \int \abs{f(x_1) + \dotsb + f(x_n)} \, (P_2 \otimes \dotsb \otimes P_n)(dx_2, \dotsc, dx_n) 
+\end{align*}
+Taking the supremum over $f \in \mathcal{F}$ and the outer integral over $x_1$, we get using Corollary \ref{cor:OuterExpectationRule}, \eqref{eq:JensenConsequencesForOuterExpectations:Ineq2}, monotonicity of outer expectation (Proposition \ref{OuterExpectationMonotonicity}) and the Tonelli Theorem \ref{FubiniOuterExpectation}
+\begin{align*}
+&\int^* \norm{f(x_1)}_{\mathcal{F}} \, (P_1 \otimes \dotsb \otimes P_n)(dx_1, \dotsc, dx_n) 
+= \int^* \norm{f(x_1)}_{\mathcal{F}} \, P(dx_1) \\
+&\leq \int^* \norm {\int \abs{f(x_1) +  \dotsb + f(x_n)} \, (P_2 \otimes \dotsb \otimes P_n)(dx_2, \dotsc, dx_n)}_{\mathcal{F}}  \, P_1(dx_1) \\
+&\leq \int^* \left[ \int^* \norm{f(x_1) + \dotsb + f(x_n)}_{\mathcal{F}} \, (P_2 \otimes \dotsb \otimes P_n)(dx_2, \dotsc, dx_n) \right ] \, P_1(dx_1) \\
+&\leq \int^* \norm{f(x_1) + \dotsb + f(x_n)}_{\mathcal{F}}  \, (P_1 \otimes \dotsb \otimes P_n)(dx_1, \dotsc, ,dx_n)
+\end{align*}
+\end{proof}
+
+\subsection{Poissonization}
+
+\begin{lem}[Le Cam's Poissonization Lemma]\label{LeCamPoissonization}For each $i \in \naturals$ let $X^i$ be a centered stochastic process in $\reals$ indexed by a set $T$ defined on a probability space $(\Omega_i, \mathcal{A}_i, P_i)$.  For each $i \in \naturals$ let $X^{i,1}, X^{i,2}, \dotsc$ be independent copies of $X^i$ so that the $X^{i,j}$ are defined on the product $(\Omega, \mathcal{A}, P) = (\prod_{i=1}^\infty \Omega_i^\infty, \otimes_{i=1}^\infty \mathcal{A}_i^{\infty}, \otimes_{i=1}^\infty P_i^\infty$.  Suppose that $N_1, N_2, \dotsb$ are independent Poisson random variables of rate $1$ defined on $(\Omega^\prime, \mathcal{A}^\prime, Q)$.  We consider the $X^{i,j}$ and $N_i$ to be mutually independent random elements defined on $\Omega \times \Omega^\prime$.  Then
+\begin{align*}
+\oexpectation{\norm{\sum_{i=1}^n X^i}_T} &\leq \frac{e}{e-1} \oexpectation{\norm{\sum_{i=1}^n \sum_{j=1}^{N_i} X^{i,j}}_T}
+\end{align*}
+\end{lem}
+\begin{proof}
+Since each $N_i$ is Poisson with rate $1$ we have 
+\begin{align*}
+\expectation{N_i  \minop 1} &= \frac{1}{e} \sum_{n=0}^\infty \frac{(n \minop 1)}{n!} = \frac{1}{e} \sum_{n=1}^\infty \frac{1}{n!} = \frac{e-1}{e}
+\end{align*}
+Therefore by (i) of Lemma \ref{JensenConsequencesForOuterExpectations} and the Tonelli Theorem \ref{FubiniOuterExpectation} we have
+\begin{align*}
+\frac{e-1}{e} \oexpectation{\norm{\sum_{i=1}^n X^i}_T} 
+&= \int^* \norm{ \sum_{i=1}^n \frac{e-1}{e}  X^i}_T \, dP \\
+&= \int^* \norm{\int \sum_{i=1}^n (N_i \minop 1)  X^i \, dQ}_T \, dP \\
+&\leq \int^* \int \norm{ \sum_{i=1}^n (N_i \minop 1) X^i}_T dQ \, dP \\
+&\leq \int^* \norm{ \sum_{i=1}^n (N_i \minop 1) X^i}_T \, d(P \otimes Q) \\
+&= \int \left [ \int^* \norm{ \sum_{i=1}^n (N_i \minop 1) X^i}_T \, dP\right ] \, dQ \\
+\end{align*}
+
+Fix $N_1, \dotsc, N_n$.  The idea at this point is for $N_i=0$ replace the term $(N_i \minop 1) X^i=0$ by $0$, for $N_i=1$ we replace $(N_i \minop 1) X^i=X^i$ by $X^{i,1}$, for $N_i=2$ we replace $(N_i \minop 1) X^i$ by $X^{i,1} + X^{i,2}$ and so on.  For the first two substitutions we obviously haven't changed anything, however for the remaining substitutions we need to argue as in (ii) of Lemma \ref{JensenConsequencesForOuterExpectations} to get
+\begin{align*}
+\frac{e-1}{e} \oexpectation{\norm{\sum_{i=1}^n X^i}_T}  &\leq \int \left [ \int^* \norm{\sum_{i=1}^n \sum_{j=1}^{N_i} X^{i,j}}_T \, dP \right ] \, dQ
+\end{align*}
+
+Here is a detailed proof of the variant of  Lemma \ref{JensenConsequencesForOuterExpectations}  that is needed.  To simplify notation, let $\mu$ be the product $P_{11} \otimes \dotsb \otimes P_{n1}$
+and let $\eta$ denote the product of $P_{ij}$ for $i=1, \dotsc, n$ and $j=2,\dotsc, N_i$.  Let $\omega_{11}, \dotsc, \omega_{n1} \in \Omega$ be fixed for the moment.  Thinking of $\omega_{i2}, \dotsc, \omega_{iN_i} \in \Omega$ as variable,
+\begin{align*}
+\abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} &\leq \sup_{t \in T} \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \leq \left(\sup_{t \in T} \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \right)^*
+\end{align*}
+where the measurable cover on the right hand side is taken with respect to $\eta$ (and depends on $\omega_{11}, \dotsc, \omega_{n1} \in \Omega$).  Thus 
+\begin{align*}
+\int \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \, d\eta 
+&\leq \int^* \sup_{t \in T} \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \, d\eta
+&=\int^* \norm{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})}_T \, d\eta
+\end{align*} 
+and taking the supremum over $t \in T$ we get for each $\omega_{11}, \dotsc, \omega_{n1} \in \Omega$,
+\begin{align}\label{eq:LeCamPoissonizationIneq}
+\norm{\int \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \, d\eta}_{T} 
+&\leq \int^* \norm{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})}_T \, d\eta
+\end{align} 
+Now for a fixed $\omega_{11}, \dotsc, \omega_{n1}  \in \Omega$ and $t \in T$ we know that the function $z \mapsto \abs{\sum_{i=1}^n X^{i,1}_t(\omega_{i1})+ z}$ is convex so by the Jensen's Inequality Theorem \ref{Jensen} and the fact that $X^i$ is centered we get 
+\begin{align*}
+\abs{\sum_{i=1}^n X^{i,1}_t(\omega_{i1})} &= \abs{\sum_{i=1}^n X^{i,1}_t(\omega_{i1}) + \int \sum_{i=1}^n \sum_{j=2}^{N_i} X_t^{i,j}(\omega_{ij}) \, d\eta} 
+\leq \int \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \, d\eta
+\end{align*}
+Taking the supremum over $t \in T$ yields
+\begin{align*}
+\norm{\sum_{i=1}^n X^{i,1}_t(\omega_{i1})}_T &\leq \norm{\int \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \, d\eta}_T
+\end{align*}
+Now take the outer integral over $\omega_{11}, \dotsc, \omega_{n1}$ and use Corollary \ref{cor:OuterExpectationRule}, equation \eqref{eq:LeCamPoissonizationIneq}, monotonicity of outer expectation (Proposition \ref{OuterExpectationMonotonicity}) and the Tonelli Theorem \ref{FubiniOuterExpectation} to get
+\begin{align*}
+&\int^* \norm{\sum_{i=1}^n X^i_t(\omega_{i1})}_{T} \, dP
+= \int^* \norm{\sum_{i=1}^n X^i_t(\omega_{i1})}_{T} \, d\mu \\
+&\leq \int^* \norm {\int \abs{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})} \, d\eta}_{T}  \, d\mu\\
+&\leq \int^* \left[ \int^* \norm{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})}_{T} \, d\eta \right ] \, d\mu \\
+&\leq \int^* \norm{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})}_{T}  \, d(\mu \otimes \eta) \\
+&\leq \int^* \norm{\sum_{i=1}^n \sum_{j=1}^{N_i} X_t^{i,j}(\omega_{ij})}_{T}  \, dP \\
+\end{align*}
+\end{proof}
+
+If we let $V$ be separable Banach space then addition makes $V$ into a measurable Abelian group (TODO: Show this somewhere; the key is separability is required so that $\mathcal{B}(V \times V) = \mathcal{B}(V) \otimes \mathcal{B}(V)$ and therefore continuity of addition implies Borel measurability).  By Lemma \ref{Convolution}, given two $\sigma$-finite signed Borel measures $\mu$ and $\nu$ on $V$ we can define the convolution of $\mu$ and $\nu$ as 
+\begin{align*}
+(\mu * \nu)(A) &= \int \mu(A - v) \, \nu(dv) 
+\end{align*}
+and the convolution operation is associative and commutative.  
+\begin{defn}Given a finite signed measure $\mu$, for any $k \in \naturals$ we can take the $k$-fold convolution $\mu^k = \mu * \dotsb * \mu$.  Define $\mu^0 = \delta_0$ and the exponential $e^{\mu} = \sum_{k=0}^\infty \frac{\mu^k}{k!}$
+\end{defn}
+
+Note that it is simple to see that the convolution of finite signed measures is finite and in particular 
+\begin{align*}
+(\mu * \nu)(V) &= \int \mu(V - v) \, \nu(dv) = \mu(V - v) \int \, \nu(dv) = \mu(V) \nu(V)
+\end{align*}
+It follows that $e^{\mu}(V) = \sum_{k=0}^\infty \frac{\mu(V)^k}{k!} = e^{\mu(V)}$.  Thus if $\mu \geq 0$ and we define $\poisop{\mu} = e^{-\mu(V)} e^\mu $ then $\pois{\mu}$ is a probability measure.
+
+\begin{prop}\label{PoissonOperator}Let $\mu$ and $\nu$ be finite measures on a separable Banach space $V$ then $\pois{\mu + \nu} = \pois{\mu} * \pois{\nu}$ and for every $v \in V$ and $c > 0$ we have $\pois{c\delta_v} = \law{N_c v}$ where $N_c$ is a Poisson random variable with parameter $c$.
+\end{prop}
+\begin{proof}
+Consider the convolution
+\begin{align*}
+((\mu + \nu) * (\mu + \nu))(A) &= \int (\mu + \nu)(V - v) \, (\mu + \nu)(dv) \\
+&= \int \mu(V - v) \, \mu(dv) + \int \mu(V - v) \, \nu(dv) + \int \nu(V - v) \, \mu(dv) + \int \nu(V - v) \, \nu(dv) \\
+&= (\mu * \mu)(A) + 2 (\mu * \nu)(A) + (\nu * \nu)(A)
+\end{align*}
+From which it follows that $e^{\mu + \nu} = e^{\mu} * e^{\nu}$ and therefore 
+\begin{align*}
+\pois{\mu + \nu} &= e^{-(\mu + \nu)(V)} e^{\mu + \nu} = e^{-\mu(V)} e^{\mu} * e^{-\nu(V)} e^{\nu} = \pois{\mu} * \pois{\nu}
+\end{align*}
+
+Now look at the self convolution of a point measure,
+\begin{align*}
+(\delta_v * \delta_v)(A) &= \int \delta_v(A - w) \, \delta_v(dw) = \delta_v(A - v) = \delta_{2v}(A)
+\end{align*}
+so by induction $\delta_v^k = \delta_{kv}$ and thus 
+\begin{align*}
+e^{c \delta_v} (A) &= \sum_{k=0}^\infty \frac{c^k \delta_{kv}(A)}{k!} = \sum_{k=0}^\infty \delta_{kv}(A) \probability{N_c = k} e^c \\
+&= e^c \probability{N_c v \in A} = e^c \law{N_c v}(A) 
+\end{align*}
+Since $\pois{c \delta_v}$ is proportional to $e^{c \delta_v}$ is a probability measure it follows that $\pois{c \delta_v} = \law{N_c v}$.
+\end{proof}
+
+
+TODO: At this point Dudley is bringing in separability assumption; how will that play out when combined with inequalities defined in terms of general processes $X^i$?  Do we assume that $X^i$ takes values in a separable subset of $\ell^\infty(T)$?  For example Dudley combines convolutions with Le Cam's Lemma (the latter of which was stated for general stochastic processes in $\reals^T$ which isn't even a normed space).
+
+\subsection{Triangular Array}
+
+
+
 

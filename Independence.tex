@@ -42,6 +42,21 @@
   \{(0,0,0),(1,0,1)\}$ and $A_3 = \{(0,1,1),(1,0,1)\}$.  Note that the
   events are pairwise independent but not independent.
 \end{examp}
+\begin{examp}\label{IndependenceOnProductSpaces}For $i=1, \dotsc, n$ let $(\Omega_i, \mathcal{A}_i, P_i)$
+  be a probability space, $(S_i, \mathcal{S}_i)$ be a measurable space and suppose that $f_i : \Omega_i \to S_i$ is
+a random element.  Define the probability space $(\Omega,
+  \mathcal{A}, P)$ to be the product $(\Omega_1 \times \dotsb \times \Omega_n,
+  \mathcal{A}_1 \otimes \dotsb \otimes \mathcal{A}_n, P_1 \otimes
+  \dotsb \otimes P_n)$, for each $i=1, \dotsc, n$ let $\pi_i : \Omega \to \Omega_i$ be the
+$i^{th}$ coordinate projection and let $g_i = f_i \circ \pi_i$ (i.e. $g_i(\omega_1, \dotsc, \omega_n) = f_i(\omega_i)$) then
+$g_1, \dotsc, g_n$ are independent.  This follows by noting that for $A_i \in \mathcal{S}_i$ we have by definition of the 
+product measure
+\begin{align*}
+\probability{g_1^{-1} (A_1) \cap \dotsb \cap g_n^{-1} (A_n)} &= \probability{\pi_1^{-1}(f_1^{-1} (A_1)) \cap \dotsb \cap \pi_n^{-1}(f_n^{-1} (A_n))} \\
+&= \probability{\pi_1^{-1}(f_1^{-1} (A_1))} \dotsb \probability{\pi_n^{-1}(f_n^{-1} (A_n))} \\
+&= \probability{g_1^{-1} (A_1)} \dotsb \probability{g_n^{-1} (A_n)} 
+\end{align*}
+\end{examp}
 
 \begin{lem}\label{IndependenceProductMeasures}Suppose we are given a finite collection of
   random elements $\xi_1, \dots, \xi_n$ in measurable spaces
@@ -76,7 +91,7 @@ integrals.  We make that statement precise in the following result.
 Note that there is an important generalization of this fact that
 eliminates the assumption of independence but requires the development
 of the notion of a conditional distribution (see Theorem
-\ref{Disintegration}).  The result is much simpler than the notation
+\ref{Disintegration}).  The current result is much simpler than the notation
 required to state it.
 
 \begin{lem}\label{DisintegrationIndependentLaws}Let $\xi$ and $\eta$ be

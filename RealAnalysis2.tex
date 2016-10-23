@@ -30,7 +30,20 @@ is equivalent to $\overline{A} \cap U = \emptyset$.
 
 Note that $\overline{U \cap V} \subset \overline{U} \cap \overline{V}$ but they aren't necessarily equal; this follows by considering open intervals $(0,1)$ and $(1,2)$ in $\reals$.
 
-\begin{defn}Let $A \subset X$ then the \emph{interior} of $A$ is the set $\interior(A)$ of
+\begin{lem}\label{OpenAlternative}A set $U \subset X$ is open if and only if for every $x \in
+  U$ there is an open set $V \subset U$ such that $x \in V$.
+\end{lem}
+\begin{proof}
+Suppose $U$ is open and $x \in U$, then let $V = U$.
+
+Suppose for every $x \in U$ there exist an open set $V_x$ such that $x
+\in V_x \subset U$.  Note that $\cup_x V_x \subset U$ because each
+$V_x \subset U$ and on the other hand $\cup_x V_x \supset U$ since
+every $x \in U$ satisfies $x \in V_x$.  Thus $U = \cup_x V_x$ which
+shows that $U$ is open.
+\end{proof}
+
+\begin{defn}Let $A \subset X$ then the \emph{interior} of $A$ is the set $\interior{A}$ of
   $x \in A$ such that there exists an open neighborhood $x \in U \subset A$.
 \end{defn}
 
@@ -44,21 +57,24 @@ any element $x$ of the largest open subset of $A$; that largest open subset is t
 that $x$ is in the interior of $A$.
 \end{proof}
 
-\begin{defn}Let $A \subset X$ then the \emph{boundary} of $A$ is the set $\partial A = \overline{A} \setminus \interior(A)$.
+\begin{defn}Let $A \subset X$ then the \emph{boundary} of $A$ is the set $\partial A = \overline{A} \setminus \interior{A}$.
 \end{defn}
 
-\begin{lem}\label{OpenAlternative}A set $U \subset X$ is open if and only if for every $x \in
-  U$ there is an open set $V \subset U$ such that $x \in V$.
-\end{lem}
+\begin{prop}\label{BoundaryComplement}If $A, B \subset X$ then 
+\begin{itemize}
+\item[(i)] $\partial A = \partial A^c$
+\item[(ii)] $\interior{A \cap B} = \interior{A} \cap \interior{B}$
+\item[(iii)] $\partial (A \cap B) \subset \partial A \cap \partial B$.
+\end{itemize}
+\end{prop}
 \begin{proof}
-Suppose $U$ is open and $x \in U$, then let $V = U$.
+To see (i), if $x \notin \interior{A}$ then every open neighborhood of $x$ intersects $A^c$ hence by definition, $x \in \overline{A^c}$.  If $x \in \overline{A}$ then every open neighborhood of $x$ intersects $A$ hence $x \notin \interior{A^c}$.  Thus if $x \in \partial A$ then it follows that $x \in \partial A^c$.  The same argument switching the roles of $A$ and $A^c$ shows equality.
 
-Suppose for every $x \in U$ there exist an open set $V_x$ such that $x
-\in V_x \subset U$.  Note that $\cup_x V_x \subset U$ because each
-$V_x \subset U$ and on the other hand $\cup_x V_x \supset U$ since
-every $x \in U$ satisfies $x \in V_x$.  Thus $U = \cup_x V_x$ which
-shows that $U$ is open.
+To see (ii) if $x \in \interior{A \cap B}$ then we pick an open neighborhood $x \in U \subset A \cap B$ which shows that $x \in \interior{A} \cap \interior{B}$.  On the other hand if $x \in \interior{A} \cap \interior{B}$ then we pick open neighborhoods $U$ and $V$ with $x \in U \subset A$ and $x \in V \subset B$ then $U \cap V$ is open and $x \in U \cap V \subset A \cap B$ which shows $x \in \interior{A \cap B}$.
+
+To see (iii) we use (ii) and the fact that $\overline{A \cap B} \subset \overline{A} \cap \overline{B}$ (i.e. if every open neighborhood of $x$ intersects $A \cap B$ then every open neighborhood intersects $A$ and $B$).
 \end{proof}
+
 \begin{defn}A mapping $f : X \to Y$ between topological spaces is said
   to be \emph{continuous} if and only if $f^{-1}(V)$ is open in $X$
   for every $V$ open in $Y$.
@@ -579,7 +595,9 @@ Since $f_n(t)=0$ for all $t \notin U$ it follows that $z \in U$.
 \end{defn}
 
 Note that by Lemma \ref{MetricSpaceIsPseudometric} a metric space is a
-pseudometric space.  Every pseudometric space has a topology generated
+pseudometric space.  
+
+Every pseudometric space has a topology generated
 by open balls $B(x,r) = \lbrace y \in S \mid d(x,y) < r \rbrace$; by the triangle inequality
 and Lemma \ref{CharacterizeBaseOfTopology} it is easy to see that the open balls are in fact
 a base for the induced topology.
@@ -3391,13 +3409,438 @@ To finish the proof for every $k \in \naturals$ we define $G_k = \cap_{m=k}^\inf
 For $\epsilon > 0$ given we pick $k \in \naturals$ large enough so that $2^{2-k} < \epsilon$ then $\mu(G_k) > \mu(X) - \epsilon$ and $f_m\mid_{G_k}$ is continuous for $m \geq k$  (observe that if $f$ is continuous on $X$ then for any $A \subset X$ we have $f\mid_A$ is continuous) and, as noted at the beginning of the proof, since $f_m \to f$ uniformly we conclude that $f \mid_{G_k}$ is continuous. 
 \end{proof}
 
+TODO: We haven't discussed completion of metric spaces???
+
+\begin{defn}Let $(S,d)$ be a metric space then a \emph{completion} of $S$ is a metric space $(\hat{S}, \hat{d})$ with an isometry $\phi : S \to \hat{S}$ with $\phi(S)$ dense in $\hat{S}$.
+\end{defn}
+
+\begin{thm}\label{CompletionOfMetricSpace}Let $(S,d)$ be a metric space then a completion exists and is unique up to isometry.
+\end{thm}
+\begin{proof}
+
+\begin{clm} $\hat{d}((x_1, x_2, \dotsc), (y_1, y_2, \dotsc)) = \lim_{n \to \infty} d(x_n, y_n)$ defines a pseudometric on the set of Cauchy sequences in $S$.
+\end{clm}
+TODO: prove claim
+
+Now by Proposition \ref{QuotientOfPseudometricSpace} we know that if we define $\hat{S}$ to be the quotient of the set of Cauchy sequence by the relation $\hat{d}((x_1, x_2, \dotsc), (y_1, y_2, \dotsc)) = \lim_{n \to \infty} d(x_n,y_n) = 0$ then $\hat{S}$ is a metric space.
+
+\begin{clm}$(\hat{S}, \hat{d})$ is complete.
+\end{clm}
+TODO: prove claim
+
+Now it is simple to define $\phi : S \to \hat{S}$ by taking $s \in S$ to the constant sequence $s,s, \dotsc$.  It is immediate that $\phi$ is an isometry.
+\begin{clm} $\phi(S)$ is dense in $(\hat{S}, \hat{d})$
+\end{clm}
+\end{proof}
+
 \begin{defn}A separable metric space $(S,d)$ is \emph{universally measurable} if for every probability measure $\mu$ on the completion $\hat{S}$ there exist Borel measurable sets $A, B \in \mathcal{B}(\hat{S})$ such that $A \subset S \subset B$ and $\mu(A) = \mu(B)$ (i.e. $S$ is measurable in the \emph{universal $\sigma$-algebra} $\cap_{\mu \in \mathcal{P}(\hat{S})} \mathcal{B}(\hat{S})^{\mu}$).
 \end{defn}
 
 \begin{thm}\label{UniversalMeasurabilityAndTightness}A separable metric space $(S,d)$ is universally measurable if and only if every Borel probability measure on $S$ is tight.
 \end{thm}
 \begin{proof}
-TODO:  
+First suppose that $(S,d)$ is universally measurable and let $\mu$ be a Borel probability measure on $S$.  
+\begin{clm}Suppose $A$ is a Borel set in $\hat{S}$ then $A \cap S$ is Borel in $S$.  
+\end{clm}
+Let $\mathcal{C} = \lbrace A \subset \hat{S} \mid A \cap S \in \mathcal{B}(S) \rbrace$.  Note that if $U$ is open in $\hat{S}$ then $U \cap S$ is open in $S$ (it suffices to consider a ball $B(x,r)$ in $\hat{S}$; since $S$ is isometrically embedded in $\hat{S}$ then if we let $y \in B(x,r) \cap S$ and let $z \in S$ such that $d(y,z) < r - \hat{d}(x,y)$ then by the triangle inequality $\hat{d}(x,z) \leq \hat{d}(x,y) + \hat{d}(y,z) < r$ thus $B(x,r) \cap S$ is open in $S$).  
+If $A \in \mathcal{C}$ then 
+\begin{align*}
+S \cap A^c = (S \cap S^c) \cup (S \cap A^c) = S \cap (S^c \cup A^c) = S \cap (S \cap A)^c = S \setminus (S \cap A)
+\end{align*}
+hence $A^c \in \mathcal{C}$.  If $A_1, A_2, \dotsc \in \mathcal{C}$  then $S \cap (\cap_{j=1}^\infty A_j) =  \cap_{j=1}^\infty (S \cap A_j)$ hence $\cap_{j=1}^\infty A_j \in \mathcal{C}$. Thus $\mathcal{C}$ is a $\sigma$-algebra containing the open sets in $\hat{S}$ and therefore contains $\mathcal{B}(\hat{S})$.  
+
+Now we can define a probability measure $\hat{\mu}$ on $\mathcal{B}(\hat{S})$ by $\hat{\mu}(A) = \mu(S \cap A)$ and then by Lemma \ref{CompletionOfMeasure} extend it uniquely to a probability measure $\overline{\hat{\mu}}$ on the $\hat{\mu}$-completion of $\mathcal{B}(\hat{S})$.  Since $\hat{S}$ is complete and separable it follows from Ulam's Theorem \ref{UlamsTheorem} that $\overline{\hat{\mu}}$ is inner regular and since $S$ is 
+$\mathcal{B}(\hat{S})^{\hat{\mu}}$-measurable for every $\epsilon>0$ we can find a compact $K \subset S$ such that 
+\begin{align*}
+\mu(K) &= \overline{\hat{\mu}}(K) \geq  \overline{\hat{\mu}}(S) - \epsilon = 1 - \epsilon
+\end{align*}
+To be precise Ulam's Theorem provides a $K \subset S$ that is compact in $(\hat{S}, \hat{d})$; but that also implies $K$ is compact in $(S,d)$ (e.g. since $\hat{d} = d$ on $K$ the convergence of a sequence in $K$ doesn't depend on whether we consider that sequence in $\hat{S}$ or $S$).  We conclude that $\mu$ is tight.
+
+TODO:  Finish
+\end{proof}
+
+\section{Strassen's Theorem}
+\begin{defn}Let $(S,d)$ be a metric space and $A \subset S$ then for any $\epsilon > 0$ define
+\begin{align*}
+A^{\epsilon]} &= \lbrace x \in S \mid d(x, A) \leq \epsilon \rbrace
+\end{align*}
+\end{defn}
+
+\begin{prop}\label{ClosedMetricThickening}Let $(S,d)$ be a metric space and $A \subset S$ then for any $\epsilon > 0$, $A^{\epsilon]}$ is closed.  Furthermore $\cup_{\delta < \epsilon} A^{\delta]} = A^{\epsilon}$.  For any $\delta, \epsilon > 0$ we have $(A^{\delta]})^\epsilon \subset A^{\delta + \epsilon}$ and $(A^{\delta})^{\epsilon]} \subset A^{\delta + \epsilon]}$
+\end{prop}
+\begin{proof}
+Suppose $x \in S$ and $d(x, A) > \epsilon$.  Then for every $y \in A$, it follows that $d(x,y) \geq d(x,A) > 0$.  If $z \in B(x,(d(x,A) - \epsilon)/2)$ then by the triangle inequality we have for all $y \in A$,
+\begin{align*}
+d(z,y) &\geq d(x,y) - d(x,z) > d(x,A)  - (d(x,A) - \epsilon)/2 =  (d(x,A) + \epsilon)/2 > \epsilon
+\end{align*}
+Thus $S \setminus A^{\epsilon]}$ is open hence $A^{\epsilon]}$ is closed.
+
+Clearly for any $\delta < \epsilon$ we have $A^{\delta]} \subset A^{\epsilon}$.  Suppose $x \in A^{\epsilon}$ so that $d(x,A) < \epsilon$ then by definition $x \in A^{d(x,A)]} \subset \cup_{\delta < \epsilon} A^{\delta]}$.
+
+Let $z \in (A^{\delta]})^\epsilon$ and pick $y \in A^{\delta]}$ such that $d(y,z) < \epsilon$.  Since $y \in A^{\delta]}$ and $\epsilon - d(y,z) > 0$ we can pick $x \in A$ such that $d(x,y) < \delta + \epsilon - d(y,z)$.  By the triangle inequality
+\begin{align*}
+d(z,x) &\leq d(z,y) + d(x,y) < d(z,y) + \delta + \epsilon - d(y,z) = \delta + \epsilon
+\end{align*}
+which implies $z \in A^{\delta + \epsilon}$.
+
+Let $z \in (A^{\delta})^{\epsilon]}$ and let $\rho>0$ be given.  Pick $y \in A^\delta$ such that $d(z,y) < \delta + \rho$.  Since $y \in A^\delta$ we can pick $x \in A$ such that $d(x,y) < \epsilon$.  Now by the triangle inequality,
+\begin{align*}
+d(x,z) &\leq d(x,y) + d(y,z) < \delta + \epsilon + \rho
+\end{align*}
+Letting $\rho \to 0$ we see that $d(z, A) \leq \delta + \epsilon$.
+\end{proof}
+
+\begin{thm}[Marriage Theorem]\label{MarriageTheorem}Let $X$ and $Y$ be finite sets, $K \subset X \times Y$ be a relation and for any $A \subset X$ let 
+\begin{align*}
+A^K &= \lbrace y \in Y \mid (x,y) \in Y \text{ for some } x \in X \rbrace
+\end{align*}
+Suppose for every $A \subset X$ we have $\card{A} \leq \card{A^K}$ then there exists an injective $f : X \to Y$ such that $(x,f(x)) \in K$ for all $x \in X$.  In particular, if $\card{X} = \card{Y}$ we may assume that $f$ is a bijection.
+\end{thm}
+\begin{proof}
+The proof is by induction on $\card{X}$.  First assume that $\card{X} = 1$ so let $X = \lbrace x_0 \rbrace$.  The hypothesis implies that $\card{X^K} > 0$ hence there exists $y \in X^K$.  Simply define $f(x) = y$.  
+
+Now assume that the theorem is proven for any set of cardinality less than $n$ and pick $X$ with $\card{X} = n$.  Pick an arbitrary $x_0 \in X$.  Since $\card{\lbrace x_0 \rbrace^K} > 0$ we may pick $y_0 \in Y$ with $(x_0, y_0) \in K$.  Now consider $K$ restricted to $X \setminus \lbrace x_0 \rbrace \times Y \setminus \lbrace y_0 \rbrace$.  If there exists an injection $g : X \setminus \lbrace x_0 \rbrace  \to Y \setminus \lbrace y_0 \rbrace$ with $(x, g(x)) \in K$ for all $x \in X \setminus \lbrace x_0 \rbrace$ then we can define $f : X \to Y$ by $f(x_0) = y_0$ and $f(x) = g(x)$ if $x \neq x_0$ and we're done.  So, suppose that such a $g$ does not exist and apply the induction hypothesis to conclude that there exists $A \subset X \setminus \lbrace x_0 \rbrace$ such that 
+\begin{align*}
+\card{A} &> \card{\lbrace y \in Y \setminus \lbrace y_0 \rbrace \mid (x,y) \in K \text{ for some } x \in A \rbrace} \\
+&=\card{\lbrace y \in Y \mid (x,y) \in K \text{ for some } x \in A \rbrace \setminus \lbrace y_0 \rbrace}  \\
+&= \card{A^K \setminus \lbrace y_0 \rbrace} \geq \card{A^K} - 1
+\end{align*}
+so $\card{A} \geq \card{A^K}$.  On the other hand by our hypothesis on $X$, $Y$ and $K$ we know that $\card{A} \leq \card{A^K}$ thus we may conclude $\card{A} = \card{A^K}$.    
+
+In what follows we use the following elementary fact.
+\begin{clm}Let $C \subset X$ and $D \subset Y$ then $K \cap C \times D \subset C \times D$ is a relation.  Let $B \subset C$ then $B^{K \cap C \times D} = B^K \cap D$.
+\end{clm}
+Let $y \in B^K \cap D$.  Pick $x \in B$ such that $(x,y) \in K$.  Since $B \subset C$ and $y \in D$ it follows that $(x,y) \in K \cap C \times D$.  On the other hand let $y \in B^{K \cap C \times D}$.  Then there exists $x \in B$ such that $(x,y) \in K \cap C \times D \subset K$.  If follows that $y \in B^K \cap D$.
+
+\begin{clm}There is a bijection $g : A \to A^K$ such that $(x,g(x)) \in K$ for all $x \in A$.
+\end{clm}
+Consider $K$ restricted to $A \times A^K$.  We know that $\card{A} < \card{X}$ so by the induction hypothesis we need only show that for 
+every $B \subset A$ we have $\card{B} \leq \card{B^{K \cap A \times A^K}}$.  By the previous claim, $B^{K \cap A \times A^K} = B^K \cap A^K = B^K$.
+
+Now we consider $K$ restricted to $X \setminus A \times Y \setminus A^K$.  
+\begin{clm}There is an injection $h : X \setminus A \to Y \setminus A^K$ such that $(x,h(x)) \in K$ for all $x \in X \setminus A$.
+\end{clm}
+As in the previous claim it suffices to show that for every $B \subset X \setminus A$ we have $\card{B} \leq \card{B^{K_{A^c}}}$.  If this is not true then
+we pick $B \subset X \setminus A$ with $\card{B} > \card{B^{K \cap A^c \times (A^K)^c}} = \card{B^K \setminus A^K}$.  We have using our choice of $A$ and $B$ (and the disjointness of $A$ and $B$),
+\begin{align*}
+\card{(A \cup B)^K} &= \card{A^K} + \card{B^K \setminus A^K} < \card{A} + \card{B}  = \card{A \cup B}
+\end{align*}
+which is a contradiction.
+
+Putting the last two claims together we define $f : X \to Y$ by $f(x) = g(x)$ if $x \in A$ and $f(x) = h(x)$ if $x \in X \setminus A$.  Since the ranges of $g$ and $h$ are disjoint it follows that $f$ is an injection.  The fact that $(x,f(x)) in K$ for all $x \in X$ follows from the corresponding properties for $g$ and $h$.
+
+Since any injection between finite sets of equal cardinality is a bijection, the last part of the theorem is immediate.
+\end{proof}
+
+\begin{thm}\label{StrassenPlus}Let $(S,d)$ be a separable metric spaces with probability measures $P$ and $Q$, $\alpha, \beta \geq 0$ such that for any closed set $F \subset S$ we have $P(F) \leq Q(F^{\alpha]}) + \beta$ then for any $a > \alpha$ and $b > \beta$ there exist Borel measures $\eta$ and $\gamma$ on $S \times S$ such that
+\begin{itemize}
+\item[(i)] $\eta + \gamma$ is a probability measure with marginals $P$ and $Q$
+\item[(ii)] $\eta \lbrace d(x,y) > a \rbrace = 0$
+\item[(iii)] $\gamma(S \times S) \leq b$
+\item[(iv)] Both $\eta$ and $\gamma$ are finite sums of product measures
+\end{itemize}
+\end{thm}
+\begin{proof}
+Pick $0 < \epsilon < (a - \alpha, b - \beta)/5$.  The proof proceeds by considering a sequence of simplifications utilmately reducing the result to the Marriage Theorem.
+
+For the first case, suppose that $S$ is infinite and there exists $n \in \naturals$ with $1/n < \epsilon$ and finite subsets $M, N \subset S$ with $\card{M} = \card{N} = n$ and $P \lbrace x \rbrace = 1/n$ for every $x \in M$  and $Q \lbrace y \rbrace = 1/n$ for every $y \in N$.  Since $1 < n \epsilon$ we may pick
+a $k \in \naturals$ such that $n \beta < k < n ( \beta + \epsilon)$.  
+
+Since we have assume that $S$ is infinite there exists sets $U$ and $V$ each of cardinality $k$ such that $M, N, U$ and $V$ are all pairwise disjoint.  Define
+$X = M \cup U$, $Y = N \cup V$ and the relation 
+\begin{align*}
+K = U \times \lbrace Y \cup X \times V \cup \lbrace (x,y) \in M \times N \mid d(x,y) \leq \alpha \rbrace
+\end{align*}
+
+Let $A \cup X$.  If $A \cap U \neq \emptyset$ then it follows that $A^K = Y$ hence $\card{A^K} \leq \card{X} = \card{Y} = \card{A^K}$.  On the other hand if
+$A \subset M$ then 
+\begin{align*}
+\card{A} &= n P(A) \leq n (Q(A^{\alpha]}) + \beta) \leq \card{A^K \cap N} + n \beta \leq \card{A^K \cap N} + k = \card{A^K}
+\end{align*}
+Therefore we may apply the Marriage Theorem \ref{MarriageTheorem} create a bijection $f : X \to Y$ such that $(x,f(x)) \in K$ for all $x \in X$.  Define $T = f^{-1}(N) \cap M$.  Because $f$ is a bijection $\card{f^{-1}(N)} = n$ and it follows that 
+\begin{align*}
+\card{T} &= \card{f^{-1}(N)} - \card{f^{-1}(N) \setminus M} \geq \card{f^{-1}(N)} - \card{X\setminus M} = n - k
+\end{align*}
+and $\card{X \setminus T} \leq k$.  Now pick an arbitrary bijection $h : M \setminus T \to N \setminus f(T)$, define the bijection $g : M \to N$ to be $g(x) = f(x)$ if $x \in T$ and $g(x) = h(x)$ if $x \in M \setminus T$ and let
+\begin{align*}
+\eta &= \frac{1}{n} \sum_{x \in T} \delta_{(x,g(x))} &&\gamma =  \frac{1}{n} \sum_{x \in M \setminus T} \delta_{(x,g(x))}
+\end{align*}
+We have
+\begin{align*}
+(\eta + \gamma)(S \times S) &=  \frac{1}{n} \sum_{x \in M} \delta_{(x,g(x))} (S \times S) 
+= \frac{1}{n} \card{M} = 1
+\end{align*}
+so $\eta + \gamma$ is a probabilty measure.  For $y \in M$
+\begin{align*}
+(\eta + \gamma)(\lbrace y \rbrace \times S) 
+&= \frac{1}{n} \sum_{x \in M} \delta_{(x,g(x))} (\lbrace y \rbrace \times S) = \frac{1}{n} = P\lbrace y \rbrace
+\end{align*}
+and similarly $(\eta + \gamma)(S \times \lbrace y \rbrace) = Q \lbrace y \rbrace$ so that $\eta +\gamma$ has residuals $P$ and $Q$.  Since for $x \in T$ we know that $d(x,g(x)) = d(x,f(x)) \leq \alpha$ therefore it follows that $\eta \lbrace d(x,y) > \alpha \rbrace = 0$ and (ii) holds.  To see (iii) we compute
+\begin{align*}
+\gamma(S \times S) &= \frac{1}{n} \sum_{x \in M \setminus T} \delta_{(x,g(x))}(S \times S) = \frac{\card{M \setminus T}}{n} \leq \frac{k}{n} \leq \beta + \epsilon < b
+\end{align*}
+Lastly to see (iv), since each $\delta_{(x,g(x))}$ is the product $\delta_{x} \otimes \delta_{g(x)}$ it follows that both $\eta$ and $\gamma$ are finite sums of product measures. 
+
+Now we extend the case in which $P$ and $Q$ is supported on finitely many points and each probability is a rational number.  Let $n \in \naturals$ be chosen as common denominator for these probabilities and assume as well that $\frac{1}{n} < \epsilon$.  Therefore the values of $P$ and $Q$ are taken from the set $\lbrace j/n \mid j=0, \dotsc, n \rbrace$.  Let consider the natural numbers with the metric $d^\prime(n,m) = \epsilon$ if $n\neq m$ and $e(n,n) = 0$ for all $n,m \in \naturals$.  Form the product metric space $S^\prime = S \times \naturals$ with the metric $e((x,m), (y,n)) = d(x,y) + d^\prime(m,n) \leq d(x,y) + \epsilon$.  Clearly by countability of $\naturals$, $S^\prime$ is separable.  Define the probability measure $P_1$ on $S^\prime$ by splitting each atom $x$ of $P$ with $P\lbrace x \rbrace = j/n$ into the $j$ points $(x,1), \dotsc, (x,j)$ each of mass $1/n$.  Define $Q_1$ in an analogous manner.  Note that for each atom $x$ of $P$,
+\begin{align*}
+P_1(\lbrace x \rbrace \times \naturals)  = \sum_{m=1}^{nP \lbrace x \rbrace} P_1 \lbrace x, m \rbrace = P \lbrace x \rbrace
+\end{align*}
+and similarly with $Q_1$ and $Q$.  Let $A \subset S^\prime$ be a Borel set and let $\pi : S^\prime \to S$ be the coordinate projection onto $S$.  Note for any $x, y \in S$ with $d(x,y) \leq \alpha$ we have $e((x,m), (y,n)) \leq \alpha + \epsilon$ for all $m,n \in \naturals$; therefore $\pi(A)^{\alpha]} \subset A^{\alpha + \epsilon]}$.  Therefore we may compute
+\begin{align*}
+P_1 (A) &\leq P( \pi (A)) \leq Q( \pi(A)^{\alpha]}) + \beta \leq Q_1 (A^{\alpha + \epsilon]}) + \beta
+\end{align*}
+Now we may apply the first case to conclude that there exist measures $\eta_1$ and $\gamma_1$  on $S^\prime \times S^\prime$ with properties (i) - (iv).  Let $\pi : S^\prime \times S^\prime \to S \times S$ and define $\eta = \pushforward{\pi}{\eta_1}$ and $\gamma=\pushforward{\pi}{\gamma_1}$.  Note that for $A \subset S$ a Borel set we have
+\begin{align*}
+(\eta + \gamma)(A \times S) &= (\eta + \gamma)(A \times \naturals \times S \times \naturals) = P_1 (A \times \naturals) = P(A)
+\end{align*}
+and similarly $(\eta + \gamma)(S \times A) = Q(A)$.  Thus $\eta + \gamma$ is a probability measure with marginals $P$ and $Q$.  To see (ii) note that $e((x,m), (y,n)) > d(x,y)$ for all $m,n \in \naturals$ and $\alpha + \epsilon < a$ so by property (ii) of $\eta_1$,
+\begin{align*}
+\eta \lbrace d(x,y) > a \rbrace &\leq \eta_1 \lbrace e((x,m), (y,n)) > a \rbrace = 0
+\end{align*}
+To see (iii) simply use the coresponding property of $\gamma_1$:
+\begin{align*}
+\gamma (S \times S) &= \gamma_1(S^\prime \times S^\prime) \leq b
+\end{align*}
+Lastly each of $\eta$ and $\gamma$ is an atomic measure supported on a finite subset of $S \times S$ hence is a finite sum of product measures so (iv) follows.
+
+For the general case, we first note that we may assume that $d$ is a bounded metric.  Indeed if $M> a \maxop b$ then define the metric $d \minop M$ which is topologically equivalent to $d$.  Moreover for any $\epsilon < M$ the set $F^\epsilon$ is the same regardless of whether we use the metric $d$ or $d \minop M$.  
+Thus if the hypotheses of the theorem hold with respect to $d$ they hold with respect to $d \minop M$.  If $\eta$ and $\gamma$ are constructed on $(S \times S, d \minop M \times d \minop M)$ then the fact that $\lbrace (d \minop M)(x,y) > a \rbrace = \lbrace d(x,y) > a \rbrace$ implies that $\eta$ and $\gamma$ also work for $(S \times S, d \times d)$.
+
+Let $\epsilon>0$ be given.  Let $A$ be a maximal set with the property that $x,y \in A$ with $x \neq y$ implies $d(x,y) \geq \epsilon$.  By separability of $S$ we know that $A$ is either finite or countable (pick a countable dense subset $y_1, y_2, \dotsc$ then for every $x \in A$ we may pick $j(x) \in \naturals$ such that $d(x, y_{j(x)}) < \epsilon/2$; if $j(x) = j(y)$ then $d(x,y) \leq d(x, j(x)) + d(y,j(x)) < \epsilon$ which implies $x=y$ thus $j$ is an injection of $A$ into $\naturals$).  
+
+If $A$ is infinite let $\mathcal{N} =\naturals$ otherwise let $\mathcal{N} = \lbrace 1, \dotsc, \card{A} \rbrace$ and let $x_n$ for $n \in \mathcal{N}$ be an enumeration of $A$.  Define $B_1 = B(x_1, \epsilon)$ and for $n \in \mathcal{N}$ with $n > 1$ define
+\begin{align*}
+B_n &= B(x_n, \epsilon) \setminus \cup_{j=1}^{n-1} B(x_j, \epsilon) = B(x_n, \epsilon) \setminus \cup_{j=1}^{n-1} B_j
+\end{align*} 
+The $B_n$ are disjoint Borel sets and by the maximality property of $A$ we have $\cup_{n \in \mathcal{N}} B_n = S$.  
+
+We now define approximations of $P$ and $Q$ by purely atomic probability measures.  First define $P^\prime = \sum_{j=1}^\infty P(B_j) \delta_{x_j}$ and $Q^\prime =  \sum_{j=1}^\infty Q(B_j) \delta_{x_j}$ which are each clearly probability measures.  Note that
+\begin{align}\label{StrassenPlus:Ineq1}
+P^\prime(C) &= \sum_{\substack{j \in \naturals \\ x_j \in C}} P(B_j) = P \left( \cup_{\substack{j \in \naturals \\ x_j \in C}} B_j \right) \leq P \left( \cup_{\substack{j \in \naturals \\ x_j \in C}} B(x_j, \epsilon) \right) \leq P(C^\epsilon)
+\end{align}
+Also note that if $B_j \cap C \neq \emptyset$ then we must have $d(x_j, C) < \epsilon$ hence $x_j \in C^\epsilon$.  Using this fact we get
+\begin{align}\label{StrassenPlus:Ineq2}
+P(C) &= \sum_{\substack{j \in \naturals \\ B_j \cap C \neq \emptyset}} P (B_j \cap C ) 
+\leq \sum_{\substack{j \in \naturals \\ B_j \cap C \neq \emptyset}} P(B_j) 
+\leq \sum_{\substack{j \in \naturals \\ x_j \in C^\epsilon}} P(B_j)
+=P^{\prime}(C^\epsilon)
+\end{align}
+
+For each $n \in \naturals$ define 
+\begin{align*}
+P^{\prime \prime}_n &=  \sum_{j=1}^\infty \frac{\floor{nP(B_j)}}{n} \delta_{x_j}
+\end{align*}
+and similarly define $Q^{\prime \prime}_n$.  Each of these is an atomic measure but due to the rounding may have total mass less than $1$ (more generally $P^{\prime \prime}_n(B) \leq P^{\prime}(B)$ for every Borel set $B$).  However 
+\begin{align*}
+\lim_{n \to \infty} P^{\prime \prime}_n (S) &= \lim_{n \to \infty} \sum_{j=1}^\infty  \frac{\floor{nP(B_j)}}{n} = \sum_{j=1}^\infty  \lim_{n \to \infty} \frac{\floor{nP(B_j)}}{n} = P(S) = 1
+\end{align*}
+so we may pick $N$ such that $P^{\prime \prime}_N (S) > 1 - \epsilon$ and $Q^{\prime \prime}_N (S) > 1 - \epsilon$.  We have already noted that for every $C \subset S$ 
+we have $P^{\prime \prime}_N (C) \leq  P^\prime(C)$ but we also have an upper bound
+\begin{align}\label{StrassenPlus:Ineq3}
+P^\prime(C)  - P^{\prime \prime}_N (C) 
+= \sum_{j=1}^\infty (P(B_j) - \frac{\floor{nP(B_j)}}{n}) \delta_{x_j}(C) 
+\leq \sum_{j=1}^\infty (P(B_j) - \frac{\floor{nP(B_j)}}{n}) 
+= 1 - P^{\prime \prime}_N (S) < \epsilon
+\end{align}
+
+We will also need the following fact about the construction of $P^{\prime \prime}_n$.
+\begin{clm}\label{StrassenPlus:ExactApproximation}Suppose $P^{\prime \prime}_n(S) = 1$ then in fact $P^{\prime \prime}_n = P^\prime$.  The same holds for $Q$.
+\end{clm}
+Suppose that $P^{\prime \prime}_n \lbrace x_j \rbrace = P^\prime \lbrace x_j \rbrace = P(B_j)$ for all $j \in \naturals$.  Then for any $C$ by definition 
+\begin{align*}
+P^{\prime \prime}_n (C) &= \sum_{j=1}^\infty P(B_j) \delta_{x_j}(C) = P^\prime(C)
+\end{align*}
+Recalling that $P^{\prime \prime}_n \lbrace x_j \rbrace \leq P^\prime \lbrace x_j \rbrace$ for all $j \in \naturals$,  if $P^{\prime \prime}_n \neq P^\prime$ we know that $P^{\prime \prime}_n \lbrace x_j \rbrace < P^\prime \lbrace x_j \rbrace$ for some $j \in \naturals$ and therefore 
+\begin{align*}
+P^{\prime \prime}_n (S) &= \sum_{j=1}^\infty P^{\prime \prime}_n \lbrace x_j \rbrace < \sum_{j=1}^\infty  P^\prime \lbrace x_j \rbrace =  \sum_{j=1}^\infty  P(B_j) = 1
+\end{align*}
+
+To define probability measures, we pick a point $x_0 \notin S$, define $S^\prime = S \cup  \lbrace x_0 \rbrace$ and form the metric space $(S^\prime, d^\prime)$ where $d^\prime(x,x_0) = M$ for any $M>0$ such that $d(x,y) < M$ for all $x,y \in S$.  Clearly $S^\prime$ is also separable.  The definitions of the $P^{\prime \prime}_N$ and $P^{\prime \prime}_N$ are continue to be valid on $S^\prime$. Furthermore on $S^\prime$ we define probability measures by the formulas
+\begin{align*}
+P^{\prime \prime} &= (1 - P^{\prime \prime}_N (S)) \delta_{x_0} +  P^{\prime \prime}_N, Q^{\prime \prime} &= (1 - Q^{\prime \prime}_N (S)) \delta_{x_0} +  Q^{\prime \prime}_N
+\end{align*}
+
+If we let $F \subset S^\prime$ be a closed set.  Then $F \cap S$ is closed in $S$ and we may compute
+\begin{align*}
+P^{\prime \prime}(F) &= (1 - P^{\prime \prime}_N (S)) \characteristic{F}(x_0) + P^{\prime \prime}_N(F) \\
+&= (1 - P^{\prime \prime}_N (S)) \characteristic{F}(x_0) + P^{\prime \prime}_N(F \cap S) \\
+&\leq \epsilon + P^{\prime}(F \cap S)  & \text{since $P_N^{\prime \prime} \leq P^\prime$}\\
+&\leq \epsilon + P((F \cap S)^\epsilon)  & \text{Equation \eqref{StrassenPlus:Ineq1}}\\
+&\leq \epsilon + Q(((F \cap S)^\epsilon)^{\alpha]}) + \beta \\
+&\leq \epsilon + Q((F \cap S)^{\epsilon+\alpha]}) + \beta & \text{Proposition \ref{ClosedMetricThickening}} \\
+&\leq \epsilon + Q^\prime(((F \cap S)^{\epsilon+\alpha]})^\epsilon) + \beta & \text{Equation \eqref{StrassenPlus:Ineq2}} \\
+&= Q^\prime((F \cap S)^{2\epsilon+\alpha}) + \epsilon + \beta & \text{Proposition \ref{ClosedMetricThickening}} \\
+&\leq Q_N^{\prime \prime} ((F \cap S)^{2\epsilon+\alpha}) + 2\epsilon + \beta & \text{Equation \eqref{StrassenPlus:Ineq2}}  \\
+&\leq Q^{\prime \prime} (F^{2\epsilon+\alpha]}) + 2\epsilon + \beta & \text{since $Q_N^{\prime \prime} \leq Q^{\prime \prime}$} 
+\end{align*}
+
+We now apply case B to $P^{\prime \prime}$ and $Q^{\prime \prime}$ on $S^\prime$ with constants $3\epsilon + \alpha$, $3\epsilon + \beta$ to conclude that there
+exist measures $\eta^{\prime \prime}$ and $\gamma^{\prime \prime}$ on $S^\prime \times S^\prime$ with $\mu^{\prime \prime}= \eta^{\prime \prime} + \gamma^{\prime \prime}$ a 
+probability measure with marginals $P^{\prime \prime}$ and $Q^{\prime \prime}$ and $\eta^{\prime \prime} \lbrace d^\prime(x,y) > 3\epsilon + \alpha \rbrace = 0$ and 
+$\gamma^{\prime \prime}(S^\prime \times S^{\prime}) \leq 3\epsilon + \beta$.
+
+Note that we may write $\eta^{\prime \prime} = \sum_{i,j=0}^\infty \eta_{ij} \delta_{(x_i,x_j)}$ and $\gamma^{\prime \prime}= \sum_{i,j=0}^\infty \gamma_{ij} \delta_{(x_i,x_j)}$ for nonnegative constants $\eta_{ij}$ and $\gamma_{ij}$ satisfying $\sum_{j=0}^\infty (\eta_{ij} + \gamma_{ij}) = P^{\prime \prime}(x_i)$ and $\sum_{i=0}^\infty (\eta_{ij} + \gamma_{ij}) = Q^{\prime \prime}(x_j)$.  Without changing the marginals we may assume that $\eta_{i0} = \eta_{0i} = 0$ for all $i \in \integers_+$ (redefining $\gamma_{i0}$ and $\gamma_{0i}$ by adding the corresponding term from $\eta^{\prime \prime}$).  This also makes the support of $\eta^{\prime \prime}$ smaller and therefore doesn't change the condition $\eta^{\prime \prime} \lbrace d^\prime(x,y) > 3\epsilon + \alpha \rbrace = 0$.  On the other hand with this modification of $\gamma^{\prime \prime}$ we now only have the bound $\gamma^{\prime \prime}(S^\prime \times S^{\prime}) \leq 5\epsilon + \beta$ (recall that $P^{\prime \prime} \lbrace x_0 \rbrace < \epsilon$ and similarly with $Q^{\prime \prime}$).
+
+We now have to smear the point masses in $\eta^{\prime \prime}$ and $\gamma^{\prime \prime}$ out in order to recover the original marginals $P$ and $Q$.  For each $n \in \naturals$ define measures $P_n(C) = P(C \cap B_n) / P(B_n)$ if $P(B_n) > 0$ and $P_n(C) = 0$ otherwise.  Define $Q_n$ similarly.  Now we define
+\begin{align*}
+\eta &= \sum_{i,j = 1}^\infty \eta^{\prime \prime}\lbrace (x_i, x_j) \rbrace P_i \otimes Q_j
+\end{align*}
+Note that even though we have written the sum above as an infinite sum, in fact from case B we know that it is finite.  Therefore $\eta$ is a finite sum of product measures.
+
+\begin{clm}$\eta \lbrace d(x,y) > 5\epsilon + \alpha \rbrace = 0$.
+\end{clm}
+By construction we know that $\eta^{\prime \prime}(\lbrace (x_i,x_j) \rbrace) \neq 0$ implies $d^\prime(x_i,x_j) \leq 3\epsilon + \alpha$, therefore the support of $\eta$ is contained in the union of $B_i \times B_j$ where $i$ and $j$ satisfy $d^\prime(x_i,x_j) \leq 3\epsilon + \alpha$.  Given such $i$ and $j$, $x \in B_i$ and $y \in B_j$
+we have
+\begin{align*}
+d(x,y) &\leq d(x,x_i) + d(x_i,x_j) + d(x_j,y) \leq \epsilon + 3\epsilon + \alpha + \epsilon = 5\epsilon + \alpha
+\end{align*}
+If follows that the support of $\eta$ is contained in $\lbrace d(x,y) \leq 5\epsilon + \alpha \rbrace$.
+
+Now we need to construct $\gamma$.   First we show that if $\eta$ is a probability measure then we may simply take $\gamma = 0$.
+\begin{clm}Suppose $\eta(S \times S) = 1$ then the marginals of $\eta$ are $P$ and $Q$.
+\end{clm}
+Note that (recall that we moved all of the mass on $\lbrace x_0 \rbrace \times S^\prime$ and $S^\prime \times \lbrace x_0 \rbrace$ onto $\gamma^{\prime \prime}$)
+\begin{align*}
+\eta(S \times S) = \sum_{i,j=1}^\infty \eta(B_i \times B_j) = \sum_{i,j=1}^\infty \eta^{\prime \prime}(\lbrace (x_i,x_j) \rbrace) = \eta^{\prime \prime}(S \times S) = \eta^{\prime \prime}(S^\prime \times S^\prime) = 1 - \gamma^{\prime \prime}(S^\prime \times S^\prime)
+\end{align*}
+Thus $\eta(S \times S)=1$ implies that $\gamma^{\prime \prime} = 0$, the marginals of $\eta^{\prime \prime}$ are $P^{\prime \prime}$ and $Q^{\prime \prime}$.  Since $\eta^{\prime \prime}$ is supported on $S \times S$, its marginals are supported on $S$ and we conclude that $P^{\prime \prime}_N(S) = 1$ hence by Claim \ref{StrassenPlus:ExactApproximation} $P^{\prime \prime}_N = P^{\prime}$.  The same argument follows for $Q$.  Let $C$ be a Borel set in $S$,
+\begin{align*}
+\eta(C \times S) &= \sum_{i,j = 1}^\infty \eta^{\prime \prime} \lbrace (x_i, x_j) \rbrace P_i (C) =  \sum_{i = 1}^\infty \eta^{\prime \prime} (\lbrace x_i \rbrace \times S ) P_i (C) \\
+&=  \sum_{i = 1}^\infty P^\prime  \lbrace x_i \rbrace P_i (C)  = \sum_{i = 1}^\infty P(B_i) P_i (C) = \sum_{i = 1}^\infty P(B_i \cap C)  = P(C)
+\end{align*}
+An analogous argument shows that $\eta(S \times C) = Q(C)$.  
+
+We may now assume that $\eta(S \times S) \neq 1$.  We can bound marginals of $\eta$ as follows. 
+Let $C$ be a Borel set in $S$ and note that
+\begin{align*}
+\eta(C \times S) &= \sum_{i,j = 1}^\infty \eta^{\prime \prime} \lbrace (x_i, x_j) \rbrace P_i (C) 
+=  \sum_{i = 1}^\infty \eta^{\prime \prime} (\lbrace x_i \rbrace \times S ) P_i (C) \\
+&\leq  \sum_{i = 1}^\infty \eta^{\prime \prime} (\lbrace x_i \rbrace \times S^\prime ) P_i (C) 
+\leq \sum_{i = 1}^\infty (\eta^{\prime \prime} + \gamma^{\prime \prime}) (\lbrace x_i \rbrace \times S^\prime ) P_i (C) \\
+&= \sum_{i = 1}^\infty P^{\prime \prime} (\lbrace x_i \rbrace) P_i (C) 
+\leq \sum_{i = 1}^\infty P^{\prime} (\lbrace x_i \rbrace) P_i (C) 
+= \sum_{i = 1}^\infty P (B_i) P_i (C) \\
+&= \sum_{i = 1}^\infty P (B_i \cap C) 
+= P(C)\\
+\end{align*}
+An analogous computation shows $\eta(S \times C)  \leq Q(C)$.  Note the bounds on marginals imply that $\eta(S \times S) < 1$.  Let $\pi_1$ and $\pi_2$ define the coordinate projections on $S \times S$ (so that the marginals of $\eta$ are $\pushforward{\pi_i}{\eta}$) and 
+\begin{align*}
+\gamma &= \frac{1}{1 - \eta(S \times S)} (P - \pushforward{\pi_i}{\eta}) \otimes (Q - \pushforward{\pi_2}{\eta})
+\end{align*}
+where the marginals bounds above show that both $P - \pushforward{\pi_i}{\eta}$ and $Q - \pushforward{\pi_2}{\eta}$ are nonnegative measures.  Since $\gamma$ is product measure (iv) is satisfied.
+
+To finish the proof we need to show properties (i) and (iii) of the theorem.
+\begin{clm} $\eta + \gamma$ is a probability measure with marginals $P$ and $Q$ and $\gamma(S \times S) \leq b$.
+\end{clm}
+To see that $\eta + \gamma$ is a probability measure we compute
+\begin{align*}
+(\eta + \gamma)(S \times S) &= \eta(S \times S) + \frac{1}{1 - \eta(S \times S)} (P(S) - \eta(S \times S)) (Q(S) - \eta(S \times S)) \\
+&= \eta(S \times S) + (1 - \eta(S \times S)) = 1
+\end{align*}
+To compute the marginals of $\eta + \gamma$, let $C$ be a Borel subset of $S$ then
+\begin{align*}
+(\eta + \gamma)(C \times S) &= \eta(C \times S) + \frac{1}{1 - \eta(S \times S)} (P(C) - \eta(C \times S)) (Q(S) - \eta(S \times S)) \\
+&= \eta(C \times S) + P(C) - \eta(C \times S) = P(C)
+\end{align*}
+Once again, an analogous computation shows $(\eta + \gamma)(S \times C) = Q(C)$.
+
+The last point is to bound the total mass of $\gamma$:
+\begin{align*}
+\gamma(S \times S) &= \frac{1}{1 - \eta(S \times S)} (P(S) - \eta(S \times S)) (Q(S) - \eta(S \times S)) = 1 - \eta(S \times S) \\
+&=1 - \sum_{i,j=1}^\infty \eta^{\prime \prime}( \lbrace x_i, x_j \rbrace ) = 1 - \eta^{\prime \prime}(S \times S) = \gamma^{\prime \prime}(S \times S) \leq 5\epsilon + \beta \leq b
+\end{align*}
+\end{proof}
+
+We will need to the following construction on a metric space with a bounded metric.
+Let $(S,d)$ be a metric space with $d$ bounded by $M$ and pick a element $x_0 \notin S$.  Define a new metric space $(S^\prime, d^\prime)$ by $S^\prime = S \cup \lbrace x_0 \rbrace$ and 
+$d^\prime(x,y) = d(x,y)$ for $x, y \in S$, $d(x_0,x_0) = 0$ and $d(x_0,x) = d(x,x_0) = M$ for any $x \in S$.  The fact that $d^\prime$ is a metric is simple to validate.  Symmetry, non-negativity and $d(x,y) = 0$ if and only if $x=y$ are all immediate.  The triangle inequality requires considering some special cases.  For example if $x,y \in S$ then $d(x,y) \leq d(x,x_0) + d(x_0, y)$ since the right hand side is infinity.  $d(x_0, x_0) \leq d(x_0,z) + d(z,x_0)$ since the left hand side is zero.  For $x \in S$ and $z \in S^\prime$ we have $d(x,x_0) \leq d(x,z) + d(z,x_0)$ since both sides are infinity.   Note that the inclusion $S \to S^\prime$ is an isometry.  Furthermore for any $y \in S$ we can define a map $\pi_y : S^\prime \to S$ by $\pi_y(x) = x$ for $x \in S$ and $\pi_y(x_0) = y$.  We claim that every $\pi_y$ is continuous.  To see this simply note that for every open $U \subset S$ we have $\pi_y^{-1}(U)$ is either equal to $U$ or $U \cup \lbrace x_0 \rbrace$.  Since $\lbrace x_0 \rbrace$ is open $S^\prime$ (in fact $\lbrace x_0 \rbrace = B(x_0,r)$ for any $0 < r < \infty$) thus $\pi_y$ is continuous.
+
+Given any closed set $F \subset S^\prime$ it follows that $F \cap S$ is closed in $S$.  If $x_1, x_2, \dotsc$ is a sequence in $F \cap S$ that converges $S$ (say $\lim_{n \to \infty} x_n = y$) then it converges to $y$ in $S^\prime$ (because $S$ is isometrically embedded in $S^\prime$).  Since $F$ is closed it follows that $y \in F$.  Since $d(x_n, x_0) =M > 0$ it follows that $y \neq x_0$ hence $y \in F \cap S$. 
+
+\begin{thm}[Strassen's Theorem]\label{Strassen}Let $(S,d)$ be a separable metric spaces with probability measures $P$ and $Q$, $\alpha, \beta \geq 0$ then the following are equivalent
+\begin{itemize}
+\item[(i)] For all closed sets $F \subset S$ we have $P(F) \leq Q(F^{\alpha]}) + \beta$
+\item[(ii)] For every $a > \alpha$ ($a \geq \alpha$ if $P$ and $Q$ are tight) there exists a probability measure $\mu$ on $S \times S$ with marginals $P$ and $Q$ and 
+\begin{align*}
+\mu\left (\lbrace (x,y) \in S \times S \mid d(x,y) > a \rbrace \right ) \leq \beta
+\end{align*}
+\end{itemize}
+\end{thm}
+\begin{proof}
+First we show that (ii) implies (i).  Thus suppose that $a > \alpha$ is chosen and let $\mu$ be a probability measure chosen as in (ii).  Let $F \subset S$ be a closed set then
+\begin{align*}
+P(F) &= \mu(F \times S) = \mu(F \times S \cap \lbrace d(x,y) \leq a \rbrace) + \mu(F \times S \cap \lbrace d(x,y) > a \rbrace) \\
+&\leq \mu(S \times F^{\alpha]})+ \beta = Q(F^{\alpha]} + \beta
+\end{align*}
+In particular we have $P(F) \leq Q(F^{\alpha + 1/n]}) + \beta$ so by continuity of measure and $F^{\alpha]} = \cap{n=1}^\infty F^{\alpha + 1/n]}$ we know that $P(F) \leq Q(F^{\alpha]}) + \beta$.
+
+Now we show that (i) implies (ii).  To begin we assume that both $P$ and $Q$ are tight measures. Apply Theorem \ref{StrassenPlus} to conclude that for each $n \in \naturals$ there exists a probability measure $\mu_n$ on $S \times S$ with marginals $P$ and $Q$ and by properties (ii) and (iii) of that theorem
+\begin{align*}
+\mu_n \lbrace d(x,y) > \alpha + 1/n \rbrace < \beta + 1/n
+\end{align*}
+Let $\epsilon > 0$ be arbitrary, by tightness of $P$ and $Q$ we pick compact sets $K$ and $L$ such that $P(S \setminus K) \leq \epsilon/2$ and $Q(S \setminus L) \leq \epsilon/2$ then $K \times L$ is a compact set in $S \times S$ and for all $n \in \naturals$
+\begin{align*}
+\mu_n(S \times S \setminus K \times L) \leq \mu_n((S \setminus K) \times S) + \mu_n(S \times (S \setminus L)) \leq \epsilon
+\end{align*}
+Thus it follows that $\mu_n$ is a tight sequence of probability measures so by Prohorov's Theorem \ref{Prohorov} there is a subsequence of $\mu_n$ that converges weakly to a probability measure $\mu$.  
+
+\begin{clm}$\mu$ has marginals $P$ and $Q$
+\end{clm}
+TODO: Do we need to know that every $A \times S$ and $S \times A$ is a $\mu$-continuity set?
+
+Note that by the Portmanteau Theorem \ref{PortmanteauTheorem} we have  for every $n \in \naturals$,
+\begin{align*}
+\mu \lbrace d(x,y) > \alpha + 1/n \rbrace &\leq \liminf_{k \to \infty} \mu_{n_k}  \lbrace d(x,y) > \alpha + 1/n \rbrace \\
+&\leq \liminf_{k \to \infty} \mu_{n_k}  \lbrace d(x,y) > \alpha + 1/{n_k} \rbrace \leq \beta
+\end{align*}
+Therefore by continuity of measure we have $\mu \lbrace d(x,y) > \alpha \rbrace = \lim_{n \to \infty} \mu \lbrace d(x,y) > \alpha + 1/n \rbrace \leq \beta$.
+
+Now we drop the assumption that $P$ and $Q$ are tight.  Let $(\hat{S}, \hat{d})$ be the completion of $(S,d)$.  For every Borel set $A \subset \hat{S}$ define $\hat{P}(A) = P(A \cap S)$ (i.e. $\hat{P} = \pushforward{i}{P}$ where $i : S \to \hat{S}$ is the isometric inclusion of $S$ into its completion)  and similarly define $\hat{Q}$.  By Ulam's Theorem \ref{UlamsTheorem} we know that $\hat{P}$ and $\hat{Q}$ are both tight.  Let $F \subset \hat{S}$ be a closed set then
+\begin{align*}
+\hat{P}(F) &= P(F \cap S) \leq Q((F \cap S)^{\alpha]}) + \beta \leq Q(F^{\alpha]} \cap S) + \beta = \hat{Q}(F^{\alpha]}) + \beta
+\end{align*}
+We conclude that there exists a probability measure $\nu$ on $\hat{S} \times \hat{S}$ with marginals $\hat{P}$ and $\hat{Q}$ such that 
+\begin{align*}
+\nu \lbrace d^\prime(x,y) > \alpha \rbrace \leq \beta
+\end{align*}
+Pick $0 < \epsilon < (a - \alpha)/2$ and a countable dense subset $x_1, x_2, \dotsc$ of $S$; since $S$ is dense in $\hat{S}$ they are dense in $\hat{S}$ as well.  Now define $\hat{B}_1 = B(x_1, \epsilon/2)$ and for $n > 1$,
+\begin{align*}
+\hat{B}_n &= B(x_n, \epsilon/2) \setminus \cup_{j=1}^{n-1}  B(x_j, \epsilon/2) = B(x_n, \epsilon/2) \setminus \cup_{j=1}^{n-1}  \hat{B}_j
+\end{align*}
+which is a countable disjoint set of Borel sets with $\cup_{n=1}^\infty \hat{B}_n = \hat{S}$ and $\diam(\hat{B}_n) \leq \epsilon$.  Define $B_n = \hat{B}_n \cap S$ and measures $P_n(A) = P(A \cap B_n) / P(B_n)$ if $P(B_n) \neq 0$ and $P_n(A) = 0$ if $P(B_n)=0$.  Define $Q_n$ analogously and let
+\begin{align*}
+\mu &= \sum_{m,n=1}^\infty \nu(\hat{B}_m \times \hat{B}_n) P_m \otimes Q_n
+\end{align*}
+Let $A \subset S$ be a Borel set.  Observe that by the disjointness of the $B_n$ and $\hat{B}_n$ and the fact that $\hat{P}(\hat{B}_n) = P(\hat{B}_n \cap S) = P(B_n)$ for all $n \in \naturals$,
+\begin{align*}
+\mu(A \times S) &= \sum_{m,n=1}^\infty \nu(\hat{B}_m \times \hat{B}_n) P_m (A)  Q_n(S) = \sum_{m=1}^\infty \nu(\hat{B}_m \times \cup_{n=1}^\infty \hat{B}_n) P_m (A) \\
+&=\sum_{m=1}^\infty \hat{P}(\hat{B}_m) P_m (A)  = \sum_{m=1}^\infty P(B_m) P_m (A)  = \sum_{m=1}^\infty P(A \cap B_m) = P(A)
+\end{align*}
+An analogous argument shows $\mu(S \times A) = Q(A)$.  Lastly suppose there exists $(x_0,y_0) \in \hat{B}_m \times \hat{B}_n$ with $d^\prime(x,y) > \alpha + 2 \epsilon$ then it follows that for all $(x,y) \in \hat{B}_m \times \hat{B}_n$ 
+\begin{align*}
+d^\prime(x,y) &\geq d^\prime(x_0, y_0) - d^\prime(x,x_0) - d^\prime(y,y_0) > \alpha + 2\epsilon - \epsilon - \epsilon = \alpha
+\end{align*}
+\begin{align*}
+\mu \lbrace d(x,y) > \alpha + 2 \epsilon \rbrace &= \mu \left(\lbrace d^\prime(x,y) > \alpha + 2 \epsilon \rbrace \cap S \times S \right) \\
+&\leq \sum_{\substack{m,n\\ \hat{B}_m \times \hat{B}_n \cap \lbrace d^\prime(x,y) > \alpha + 2 \epsilon \rbrace \neq \emptyset}} \mu(\hat{B}_m \times \hat{B}_n \cap S \times S) \\
+&\leq \sum_{\substack{m,n\\ \hat{B}_m \times \hat{B}_n \subset \lbrace d^\prime(x,y) > \alpha \rbrace}} \nu(\hat{B}_m \times \hat{B}_n) P_m(B_m) Q_n(B_n) \\
+&\leq \sum_{\substack{m,n\\ \hat{B}_m \times \hat{B}_n \subset \lbrace d^\prime(x,y) > \alpha \rbrace}} \nu(\hat{B}_m \times \hat{B}_n) \\
+&\leq \nu \lbrace d^\prime(x,y) > \alpha \rbrace \leq \beta
+\end{align*}
+and the result is proven.
+\end{proof}
+
+\begin{cor}\label{StrassenKyFanProhorovBound}Let $(S,d)$ be a separable metric space, $P$ and $Q$ probability measures on $S$ and $\epsilon > 0$ (or $\epsilon \geq 0$ if $P$ and $Q$ are tight).  There exists a probability space $(\Omega, \mathcal{A}, \mu)$ and random elements $\xi$ and $\eta$ in $S$ with $\law{\xi} = P$, $\law{\eta}=Q$ and
+\begin{align*}
+\alpha(\xi, \eta) &\leq \rho(P,Q)  + \epsilon
+\end{align*}
+\end{cor}
+\begin{proof}
+Apply Theorem \ref{Strassen} with $\alpha=\beta=\rho(P,Q)$ and $\rho(P,Q) < a < \rho(P,Q) + \epsilon$ (or $a=\alpha=\rho(P,Q)$ in the tight case) to construct $\mu$ on $S \times S$ with marginals $P$ and $Q$ and $\mu \lbrace d(x,y) > \alpha \rbrace \leq \alpha$.  Let $(\Omega, \mathcal{A}, \mu) = (S \times S, \mathcal{B}(S \times S), \mu)$ and let $\xi$ and $\eta$ be the coordinate projections so that 
+\begin{align*}
+\mu \lbrace d(x,y) > a \rbrace &= \probability{d(\xi, \eta) > a} \leq a
+\end{align*}
+which shows $\alpha(\xi, \eta) \leq a \leq \rho(P,Q)  + \epsilon$.
 \end{proof}
 
 \section{Hausdorff Measure}
@@ -4343,29 +4786,15 @@ therefore by the Chain Rule (Proposition \ref{ChainRuleBanachSpaces}) we know th
 \end{itemize}
 \end{lem}
 \begin{proof}
-First assume that $m=1$.  Define 
+
+First assume that $m=1$.  Lemma
+\ref{ExtensionOfRealValuedLipschitzFunction} shows that the definition
 \begin{align*}
 \overline{f}(x) &= \inf_{a \in A} (f(a) + \Lip(f) \norm{x - a})
 \end{align*}
-\begin{clm} If $x \in A$ then $\overline{f}(x) = f(x)$
-\end{clm}
-Note that for all $a \in A$
-\begin{align*}
-f(x) - f(a) &\leq \abs{f(x) - f(a)} \leq \Lip(f) \norm{x-a}
-\end{align*}
-hence $f(x) \leq f(a) + \Lip(f) \norm{x-a}$ and taking the infimum over all $a \in A$ we conclude $f(x) \leq \overline{f}(x)$.  On the other hand since $x \in A$ it is immediate from the definition
-of $\overline{f}$ that $\overline{f} \leq f(x)$.
+satisfies the requirements of this Lemma.
 
-\begin{clm} $\Lip(\overline{f}) = \Lip(f)$
-\end{clm}
-Given $x,y \in \reals^d$ we get
-\begin{align*}
-\overline{f}(x) &= \inf_{a \in A} (f(a) + \Lip(f) \norm{x-a}) \leq \inf_{a \in A} (f(a) + \Lip(f)\norm{y-a} + \Lip(f) \norm{x-y}) \\
-&= \overline{f}(y) + \Lip(f) \norm{x-y}
-\end{align*}
-By symmetry we also have $\overline{f}(y) \leq \overline{f}(x) + \Lip(f) \norm{x-y}$ and it follows that $\abs{f(x) -f(y)} \leq \Lip(f) \norm{x-y}$ hence $\Lip(\overline{f}) \leq \Lip(f)$.  The fact that $\Lip(f) \leq \Lip(\overline{f})$ follows from the fact that $\overline{f} \mid_A = f$.
-
-Now to handle the case of general $m$ let $f = (f_1, \dotsc, f_m)$ and construct $\overline{f} = (\overline{f}_1, \dotsc, \overline{f}_m)$ and note that
+To handle the case of general $m$, let $f = (f_1, \dotsc, f_m)$ and construct $\overline{f} = (\overline{f}_1, \dotsc, \overline{f}_m)$ and note that
 \begin{align*}
 \norm{\overline{f}(x) - \overline{f}(y)}^2 &= \sum_{j=1}^m \abs{\overline{f}_j(x) - \overline{f}_j(y)}^2 \leq m (\Lip(f))^2 \norm{x-y}
 \end{align*}

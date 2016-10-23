@@ -53,6 +53,8 @@ Now apply the above inequality to the centered random variable $\xi -
 \qedhere
 \end{proof}
 
+\section{Subgaussian Random Variables}
+
 \begin{defn}
 We say that a random variable $\xi$ is \emph{subgaussian} if and only if
 there exist constants $c, C > 0$ such that $\probability { \abs{\xi}
@@ -253,12 +255,19 @@ deriving tail bounds.
 TODO
 \end{proof}
 
-\begin{lem}[Bennett's Inequality]\label{Bennett} Let $\{\xi_i\}_{i=1}^m$ be independent random variables with means $\mu_i$ and variances $\sigma_i$.  Set $\Sigma^2 = \sum_{i=1}^m \sigma_i^2$.  If for every $i$, $|\xi_i - \mu_i| \leq M$ almost everywhere then for every $\lambda > 0$ we have $$
-\probability{\sum_{i=1}^m [\xi_i - \mu_i] > \lambda} \leq 
+\section{Concentration Inequalities}
+
+\begin{lem}[Bennett's Inequality]\label{Bennett} Let
+  $\{\xi_i\}_{i=1}^m$ be independent random variables with 
+means $\mu_i$ and variances $\sigma_i$.  Set $\Sigma^2 = \sum_{i=1}^m \sigma_i^2$.  
+If for every $i$, $|\xi_i - \mu_i| \leq M$ almost everywhere then for every $\lambda > 0$ we have 
+\begin{align*}
+\probability{\sum_{i=1}^m [\xi_i - \mu_i] > \lambda} 
+&\leq 
 e^{
 	-\frac{\lambda}{M}\{(1 + \frac{\Sigma^2}{M\lambda})\log(1+\frac{M\lambda}{\Sigma^2}) - 1\}
 }
-$$
+\end{align*}
 \end{lem}
 \begin{proof}
 First it is easy to see that by subtracting means we may assume that
@@ -312,7 +321,7 @@ Substituting yields the final bound
 
 \begin{lem}[Bernstein's or Chernoff's Inequality]\label{Bernstein} Let
   $\{\xi_i\}_{i=1}^m$ be independent random variables with means
-  $\mu_i$ and variances $\sigma_i$.  Set $\Sigma^2 = \sum_{i=1}^m
+  $\mu_i$ and variances $\sigma^2_i$.  Set $\Sigma^2 = \sum_{i=1}^m
   \sigma_i^2$.  If for every $i$, $|\xi_i - \mu_i| \leq M$ almost
   everywhere then for every $\lambda > 0$ we have 
 \begin{align*}
@@ -566,7 +575,7 @@ Now by Lemma \ref{SizeOfATypeClass} we conclude
 
 \begin{thm}\label{SanovFiniteAlphabets}Let $(\Sigma, 2^\Sigma)$ be a finite measure space, let $\xi_1, \xi_2, \dotsc$ be i.i.d. random elements in $\Sigma$ with $\law{\xi_j} = \mu$ for all $j \in \naturals$ and let $\Gamma$ be a set of probability measures on $\Sigma$ then 
 \begin{align*}
-- \inf_{\nu \in \interior(\Gamma)} \kldiv{\nu}{\mu} 
+- \inf_{\nu \in \interior{\Gamma}} \kldiv{\nu}{\mu} 
 &\leq \liminf_{n \to \infty} \frac{1}{n} \log \probability{\type{(\xi_1, \dotsc, \xi_n)} \in \Gamma} \\
 &\leq \limsup_{n \to \infty} \frac{1}{n} \log \probability{\type{(\xi_1, \dotsc, \xi_n)} \in \Gamma} 
 \leq - \inf_{\nu \in \Gamma} \kldiv{\nu}{\mu} \\
@@ -608,13 +617,13 @@ For the lower bound we start with
 &\geq \liminf_{n \to \infty} (-\inf_{\nu \in \Gamma \cap \types{n}} \kldiv{\nu}{\mu}) \\
 &= -\limsup_{n \to \infty} (\inf_{\nu \in \Gamma \cap \types{n}} \kldiv{\nu}{\mu})
 \end{align*}
-Note that if there is no $\nu \in \interior(\Gamma)$ such that $\nu \ll \mu$ then $-\inf_{\nu \in \interior(\Gamma)} \kldiv{\nu}{\mu}= -\infty$
+Note that if there is no $\nu \in \interior{\Gamma}$ such that $\nu \ll \mu$ then $-\inf_{\nu \in \interior{\Gamma}} \kldiv{\nu}{\mu}= -\infty$
 and the lower bound is trivially true.  Thus we may assume that such a $\nu$ exists and in this case
-$-\inf_{\nu \in \interior(\Gamma)} \kldiv{\nu}{\mu} = -\inf_{\substack{\nu \in \interior(\Gamma) \\ \nu \ll \mu}} \kldiv{\nu}{\mu}$.
-Suppose we are given a $\nu \in \interior(\Gamma)$ such that $\nu \ll \mu$.
+$-\inf_{\nu \in \interior{\Gamma}} \kldiv{\nu}{\mu} = -\inf_{\substack{\nu \in \interior{\Gamma} \\ \nu \ll \mu}} \kldiv{\nu}{\mu}$.
+Suppose we are given a $\nu \in \interior{\Gamma}$ such that $\nu \ll \mu$.
 There exists a $\delta >0$ such that $\norm{\nu^\prime - \nu} < \delta$ implies $\nu^\prime \in \Gamma$ (TODO: We need the fact that
 we are using the total variation metric on the space of probability measures; for finite alphabets it shouldn't matter).  By Lemma ??? we know that we
-can find a sequence $\nu_n$ with $\nu_n \in \types{n}$ and $\lim_{n \to \infty} \norm{\nu_n - \nu} = 0$.  In particular, eventually $\nu_n \in \interior(\Gamma)$.  Furthermore since $\kldiv{\nu}{\mu} < \infty$ and the relative entropy is continuous with respect to the total variation we know that 
+can find a sequence $\nu_n$ with $\nu_n \in \types{n}$ and $\lim_{n \to \infty} \norm{\nu_n - \nu} = 0$.  In particular, eventually $\nu_n \in \interior{\Gamma}$.  Furthermore since $\kldiv{\nu}{\mu} < \infty$ and the relative entropy is continuous with respect to the total variation we know that 
 eventually $\kldiv{\nu_n}{\mu} < \infty$ as well.
 \begin{align*}
 - \limsup_{n \to \infty} \inf_{\nu^\prime \in \Gamma \cap \types{n}} \kldiv{\nu^\prime}{\mu} 
@@ -623,7 +632,7 @@ eventually $\kldiv{\nu_n}{\mu} < \infty$ as well.
 from which it follows that
 \begin{align*}
 \liminf_{n \to \infty} \frac{1}{n} \log \probability{\type{(\xi_1, \dotsc, \xi_n)} \in \Gamma} 
-&\geq \sup_{\substack{\nu \in \interior(\Gamma)\\ \nu \ll \mu}} -\kldiv{\nu}{\mu} = -\inf_{\nu \in \interior(\Gamma)} \kldiv{\nu}{\mu}
+&\geq \sup_{\substack{\nu \in \interior{\Gamma}\\ \nu \ll \mu}} -\kldiv{\nu}{\mu} = -\inf_{\nu \in \interior{\Gamma}} \kldiv{\nu}{\mu}
 \end{align*}
 \end{proof}
 
@@ -641,7 +650,7 @@ I(x) &= \inf \lbrace \kldiv{\nu}{\mu} \mid \sexpectation{f}{\nu}=x \rbrace
 \end{align*}
 then for every $A \subset \reals$
 \begin{align*}
--\inf_{x \in \interior(A)} I(x) 
+-\inf_{x \in \interior{A}} I(x) 
 &\leq \liminf_{n \to \infty} \frac{1}{n} \log \probability{\hat{S}_n \in A} \\
 &\leq \limsup_{n \to \infty} \frac{1}{n} \log \probability{\hat{S}_n \in A} 
 \leq -\inf_{x \in A} I(x)\\
@@ -843,7 +852,7 @@ and therefore by the fact that $\Lambda^* \geq 0$ and continuity of measure (Lem
 0 &\leq \lim_{x \to -\infty} \Lambda^*(x) \leq -\lim_{x \to -\infty} \log \probability{\xi \geq x} = 0
 \end{align*}
 
-To prove the first part of (vii) amounts to justifying exchanging the order of integration and differentiation.  Let $\lambda \in \interior(\domain{\Lambda_\xi})$.  Pick a $\delta >0$ such that $[\lambda - \delta, \lambda + \delta] \subset \interior(\domain{\Lambda_\xi})$.  By elementary calculus we have pointwise $\lim_{h \to 0} \frac{e^{(\lambda + h) \xi} - e^{\lambda \xi}}{h} = \xi e^{\lambda \xi}$.  Writing 
+To prove the first part of (vii) amounts to justifying exchanging the order of integration and differentiation.  Let $\lambda \in \interior{\domain{\Lambda_\xi}}$.  Pick a $\delta >0$ such that $[\lambda - \delta, \lambda + \delta] \subset \interior{\domain{\Lambda_\xi}}$.  By elementary calculus we have pointwise $\lim_{h \to 0} \frac{e^{(\lambda + h) \xi} - e^{\lambda \xi}}{h} = \xi e^{\lambda \xi}$.  Writing 
 \begin{align*}
 \abs{\frac{e^{(\lambda + h) \xi} - e^{\lambda \xi}}{h}} &=e^{\lambda \xi}\abs{\frac{e^{h \xi} - 1}{h}}
 \end{align*}

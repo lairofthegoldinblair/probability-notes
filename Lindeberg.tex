@@ -1,6 +1,45 @@
 \chapter{Lindeberg's Central Limit Theorem}
 
-The Law of Large Numbers tells us that when we are given i.i.d. random
+\begin{prop}[Standard Gaussian Moments]\label{StandardGaussianMoments}For all $n \in \integers_+$ we have
+$\int x^{2n+1} e^{-x^2/2} \, dx = 0$ and 
+\begin{align*}
+\frac{1}{\sqrt{2\pi} } \int x^{2n} e^{-x^2/2} \, dx &= \prod_{j=1}^n (2j-1) = \frac{(2n)!}{2^n n!}
+\end{align*}
+\end{prop}
+\begin{proof}
+The case of $2n+1$ follows immediately from the symmetry of $e^{-x^2/2}$ about $0$ and the antisymmetry of $x^{2n+1}$ about $0$.  As for $2n$,  the initial
+case of $n=0$ is covered by Lemma \ref{IntegralGaussian}.  The case of $n > 0$ is proven by induction using integration by parts ($u=x^{2n-1}$ and $dv = xe^{-x^2/2} \, dx$)
+\begin{align*}
+\int x^{2n} e^{-x^2/2} \, dx &= -x^{2n-1} e^{-x^2/2} \mid_{-\infty}^{\infty} + (2n-1) \int x^{2n - 2} e^{-x^2/2} \, dx = (2n-1) \sqrt{2\pi} \prod_{j=1}^n (2j-1)
+\end{align*}
+\end{proof}
+
+\begin{prop}[Gaussian Density]\label{GaussianDensityAndMoments}For any $\mu \in \reals$ and $\sigma \neq 0$ we have
+\begin{align*}
+\frac{1}{\sigma \sqrt{2 \pi}} \int e^{- \frac{(x-\mu)^2}{2\sigma^2}} \, dx &= 1 \\
+\frac{1}{\sigma \sqrt{2 \pi}} \int x e^{- \frac{(x - \mu)^2}{2\sigma^2}} \,  dx &= \mu  \\
+\frac{1}{\sigma \sqrt{2 \pi}} \int x^2 e^{- \frac{(x-\mu)^2}{2\sigma^2}} \, dx &= \sigma^2 
+\end{align*}
+\end{prop}
+\begin{proof}
+By simple change of variable $y=\frac{x - \mu}{\sigma}$ and Lemma \ref{IntegralGaussian}
+\begin{align*}
+\frac{1}{\sigma \sqrt{2 \pi}} \int e^{- \frac{(x-\mu)^2}{2\sigma^2}} \,  dx 
+&= \frac{1}{\sqrt{2 \pi}} \int e^{- \frac{y^2}{2}} \,  dy =1
+\end{align*}
+With the same change of variables, symmetry of $e^{- \frac{y^2}{2}}$ about the origin and Lemma \ref{IntegralGaussian}
+\begin{align*}
+\frac{1}{\sigma \sqrt{2 \pi}} \int x e^{- \frac{(x-\mu)^2}{2\sigma^2}} \,  dx 
+&= \frac{1}{\sqrt{2 \pi}} \int (\sigma y + \mu) e^{- \frac{y^2}{2}} \,  dy = \mu
+\end{align*}
+With the same change of variables, symmetry of $e^{- \frac{y^2}{2}}$ about the origin, Lemma \ref{IntegralGaussian} and integration by parts
+\begin{align*}
+\frac{1}{\sigma \sqrt{2 \pi}} \int x^2 e^{- \frac{(x-\mu)^2}{2\sigma^2}} \,  dx 
+&= \frac{1}{\sqrt{2 \pi}} \int (\sigma^2 y^2 + 2\sigma\mu y + \mu^2) e^{- \frac{y^2}{2}} \,  dy = \mu^2 + \frac{\sigma^2}{\sqrt{2 \pi}} \int y^2 e^{- \frac{y^2}{2}} \, dy
+\end{align*}
+\end{proof}
+
+ The Law of Large Numbers tells us that when we are given i.i.d. random
 variables $\xi_i$ with finite expectation, we have almost sure
 convergence of $\frac{1}{n} \sum_{k=1}^n \xi_k =
 \expectation{\xi_i}$.  Using different notation we can say, 
@@ -48,7 +87,7 @@ An induction on $m$ together with the observation that $\expectation{\hat{S}_n^0
 = \frac{(2m)!}{2^m m!}\\
 \end{align*}
 We can recognize that these are the moments of the standard normal
-distribution.
+distribution (Proposition \ref{StandardGaussianMoments}).
 
 The above argument is one path to use to see how Gaussian
 distributions might arise when looking at sums of i.i.d random

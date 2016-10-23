@@ -933,7 +933,7 @@ g d \mu \leq \lim_{n \to \infty} \int f_n d \mu$.  Now let $\epsilon \to 0$ to s
 \leq \int \lim_{n \to \infty} f_n d \mu$.
 \end{proof}
 
-\begin{lem}Given $f,g$ positive measurable and $a,b \geq 0$, 
+\begin{lem}\label{LinearityAndMonotonictyPositiveIntegral}Given $f,g$ positive measurable and $a,b \geq 0$, 
 \begin{align*}
 \int \left ( a f + b g \right ) d \mu = a \int f d \mu + b \int g d \mu
 \end{align*}
@@ -950,6 +950,27 @@ and if $f \geq g$,
 Monotonicity follows immediately from noting that any simple $0 \leq h
 \leq g$ also satisfies $0 \leq h \leq f$.
 \end{proof}
+
+It is important to note that two functions equal except on a set of measure zero have the same integral.
+\begin{prop}\label{AlmostEverywhereEqualIntegralEqual}Given $f,g$ positive measurable functions such that $\mu \lbrace f \neq g \rbrace = 0$ then
+\begin{align*}
+\int f \, d\mu &= \int g \, d\mu
+\end{align*}
+\end{prop}
+\begin{proof}
+Let $\epsilon > 0$ and pick a positive simple function $h = c_1 \characteristic{A_1} + \dotsb + c_n \characteristic{A_n}$ 
+such that $h \leq f$ and $\int f \, d\mu \leq \int h \, d\mu + \epsilon = c_1 \mu(A_1) + \dotsb + c_n \mu(A_n) + \epsilon$.  Define $B_j = A_j \setminus \lbrace f \neq g \rbrace$ for $j = 1, \dotsc, n$ and $\tilde{h} = c_1 \characteristic{B_1} + \dotsb + c_n \characteristic{B_n}$.  Because $f=g$ on each $B_j$, we have $0 \leq \tilde{h} \leq g$.  By subadditivity $\mu(B_j) \leq \mu(A_j)$ but also 
+\begin{align*}
+\mu(A_j) &= \mu(A_j \cap \lbrace f \neq g \rbrace)  + \mu(A_j \cap \lbrace f \neq g \rbrace^c) \leq  \mu\lbrace f \neq g \rbrace + \mu(B_j) = \mu(B_j)
+\end{align*}
+so in fact $\mu(A_j) = \mu(B_j)$ for all $j=1, \dotsc, n$ and $\int h \, d\mu = \int \tilde{h} \, d\mu$.   We conclude that 
+\begin{align*}
+\int f \, d\mu &\leq \int h \, d\mu + \epsilon = \int \tilde{h} \, d\mu + \epsilon \leq \int g \, d\mu + \epsilon
+\end{align*}
+Since $\epsilon>0$ was arbitrary we conclude that $\int f \, d\mu \leq \int g \, d\mu$.  Repeating the above argument with the roles of $f$ and $g$ reversed we get 
+$\int g \, d\mu \leq \int f \, d\mu$ as well.
+\end{proof}
+
 Perhaps the most important basic theorems of measure theory are those
 that describe how limits and integrals behave; in particular what
 happens we exchange the order of limits and integrals.  There are three
@@ -983,7 +1004,7 @@ fact that mass can only be lost when passing to the limit of a
 sequence of measurable functions and establishing generally useful
 hypotheses that prevent mass from escaping to infinity.
 
-\begin{thm}\label{MCT}[Monotone Convergence Theorem]Given $f, f_1,
+\begin{thm}[Monotone Convergence Theorem]\label{MCT}Given $f, f_1,
   f_2, \dots$ positive measurable functions from
   $(\Omega, \mathcal{A}, \mu)$ to $\overline{\reals}_+$ such that $0 \leq f_n \uparrow f$, we
   have $\int f_n d \mu \uparrow \int f d \mu$.
@@ -1017,8 +1038,7 @@ functions, now we can calculate the integral of $f$ using $h_{kk}$
 where we have used the monotonicity of the integral in both
 inequalities.  
 \end{proof}
-\begin{cor}\label{TonelliIntegralSum}[Tonelli's Theorem for Integrals
-  and Sums]Given $f_1,
+\begin{cor}[Tonelli's Theorem for Integrals and Sums]\label{TonelliIntegralSum}Given $f_1,
   f_2, \dots$ positive measurable functions from
   $(\Omega, \mathcal{A}, \mu)$ to $\overline{\reals}_+$, we
   have 
@@ -1033,7 +1053,7 @@ inequalities.
  In some cases, we may have a sequence of positive functions that are not known
 to be increasing.  In those cases, limits may not even exists but we
 still have a fundamental inequality
-\begin{thm}\label{Fatou}[Fatou's Lemma]Given $f_1, f_2, \dots$
+\begin{thm}[Fatou's Lemma]\label{Fatou}Given $f_1, f_2, \dots$
   positive measurable functions from
   $(\Omega, \mathcal{A}, \mu)$ to $\overline{\reals}_+$,
   then $\int \liminf_{n \to \infty} f_n d \mu \leq \liminf_{n \to
@@ -1074,15 +1094,25 @@ In prose, by the  definition of the infimum $\inf_{k \geq n} f_k \leq f_k$ for e
 
 Our last task is to eliminate the assumption of positivity in the
 definition of the integral.  
-\begin{defn}A measurable function $f$ on the measure space $(\Omega,
-  \mathcal{A}, \mu)$ is \emph{integrable} if $\int \abs{f} \, d\mu <
-  \infty$.  For any integrable $f$, we define $\int f \, d \mu = \int
-  f_+ \, d\mu - \int f_{-} \, d \mu$.
+\begin{defn}Let $(\Omega,
+  \mathcal{A}, \mu)$ be a measure space and let $f : \Omega \to [-\infty, \infty]$ be a measurable function.  We say that the integral
+$\int f \, d\mu$ is \emph{defined} if at least one of $\int f_\pm \, d\mu < \infty$; in that case we define  $\int f \, d \mu = \int
+  f_+ \, d\mu - \int f_{-} \, d \mu$.  We say that $f$ is \emph{integrable} if $\int \abs{f} \, d\mu <
+  \infty$ (equivalently if $\int f \, d\mu$ is defined and $\int f \, d\mu < \infty$).  
 \end{defn}
 
+\begin{prop}\label{IntegrableAlmostEverywhereEqualIntegralEqual}Given $f,g : \Omega \to [-\infty, \infty]$ be measurable functions such that $\mu \lbrace f \neq g \rbrace = 0$ then $\int f \, d\mu$ is defined if and only if $\int g \, d\mu$ is defined and in that case
+\begin{align*}
+\int f \, d\mu &= \int g \, d\mu
+\end{align*}
+\end{prop}
+\begin{proof}
+Clearly $\lbrace f_\pm \neq g_\pm \rbrace \subset \lbrace f \neq g \rbrace$.  By subadditivity $\mu \lbrace f_\pm \neq g_\pm \rbrace = 0$ and therefore by Proposition \ref{AlmostEverywhereEqualIntegralEqual} we know that $\int f_\pm \, d\mu = \int g_\pm \, d\mu$.
+\end{proof}
+ 
 Note that an integrable function is allowed to take the values $-\infty$ and $\infty$,
 however the condition $\int \abs{f} \, d\mu<\infty$ ensures that $\abs{f} < \infty$ $\mu$-almost everywhere.
-In many cases one ignores the difference between two functions that are equal almost everywhere and it often
+By virtue of Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual} the integral of two functions that are equal almost everywhere is the same and it often
 convenient to simply assume that an integrable function is finite everywhere.
 
 We've defined the integral of an integrable function in terms of a
@@ -1110,12 +1140,13 @@ d\mu - \int  f_- \, d\mu \\
 &= \int f_1 \, d\mu - \int  f_2 \, d\mu
 \end{align*}
 \end{proof}
+
 Also linearity and monotonicity of integrals extend to the integrable
 case.  Linearity of the integral subsumes the previous result.
-\begin{lem}Suppose we are given a measure space $(\Omega, \mathcal{A},
-  \mu)$ and integrable functions $f,g: \Omega \to \reals$.  The for
+\begin{lem}\label{SignedIntegralLinearity}Suppose we are given a measure space $(\Omega, \mathcal{A},
+  \mu)$ and integrable functions $f,g: \Omega \to \reals$.  Then for
   $a,b \in \reals$ we have $\int (af + bg) \, d\mu = a\int f \, d\mu +
-  b\int g \, d\mu$ and if $f \geq g$ then $\int f \, d\mu \geq \int g \, d\mu$.
+  b\int g \, d\mu$.
 \end{lem}
 \begin{proof}
 Write $f = f_+ - f_-$ and $g = g_+ - g_-$.  Define 
@@ -1147,43 +1178,48 @@ and we have
 \int \hat{g}_- \, d\mu \\
 &= a \int f \, d\mu + b \int g \, d\mu
 \end{align*}
-
-To see monotonicity, observe that $f \geq g$ if and only if $f_+ \geq
-g_+$ and $f_- \leq g_-$.
 \end{proof}
 
-Lastly, it is occasionally necessary to deal with integrating
-measurable functions that are either infinite on a set of measure zero
-or undefined on a set of measure zero.  This is permissible by virtue
-of the following Lemma.
-\begin{defn}Let $(\Omega,  \mathcal{A}, \mu)$ be a measure space.  We
-  say that a property hold \emph{almost everywhere} if the set where
-  the property does not hold has measure zero.
-\end{defn}
-\begin{lem}\label{ZeroIntegralImpliesZeroFunction}Let $f \geq 0$ be a measurable function on $(\Omega,
-  \mathcal{A}, \mu)$.  $\int f \, d\mu = 0$ if and only if $f = 0$
-  almost everywhere.
-\end{lem}
-\begin{proof}Clearly this is true by definition for indicator
-  functions.  It also is true by positivity and linearity of integral
-  for simple functions.  For arbitrary $f\geq 0$, we take and
-increasing  approximating sequence of simple functions $f_n \uparrow
-f$ and note that $\int f \, d\mu = 0$ and monotonicity of integral
-implies $\int f \, d\mu = 0$ for each $n$.  Therefore, $f_n = 0$ almost
-everywhere for each $n$ and therefore $f_n = 0$ almost everywhere for
-all $n$ by taking a countable union.  This implies $f = 0$ almost
-everywhere. 
-If on the other hand we assume that $f = 0$ almost
-everywhere, then by the increasing nature of $f_n$, we see that $f_n
-=0$ for all $n$ almost everywhere and therefore $\int f_n \, d\mu = 0$
-for every $n$.  By Monotone Convergence we see that $\int f \, d\mu = 0$.
+TODO: It is also true that if $f$ is integrable and $g$ non-negative measurable then $\int (f+g) \, d\mu = \int f \, d\mu + \int g \, d\mu$.  Do we need that anywhere?
+
+\begin{prop}\label{SignedIntegralMonotonicity}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f,g: \Omega \to [-\infty, \infty]$ be measurable with
+$f \leq g$ almost everywhere then one of the following is true
+\begin{itemize}
+\item[(i)]Both $\int f \, d\mu$ and $\int g \, d\mu$ are defined and $\int f \, d\mu \leq \int g \, d\mu$
+\item[(ii)]$\int f \, d\mu$ is undefined, $\int g \, d\mu$ is defined and $\int g \, d\mu = \infty$
+\item[(iii)]$\int g \, d\mu$ is undefined, $\int f \, d\mu$ is defined and $\int f \, d\mu = -\infty$
+\item[(iv)]Both $\int f \, d\mu$ and $\int g \, d\mu$ are undefined
+\end{itemize}
+\end{prop}
+\begin{proof}
+First by Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual}, the question of whether an integral is defined and it is value isn't changed if the integrand is modified on a null set.  Thus by redefining $g$ to be equal to $f$ on $\lbrace g < f \rbrace$ we may assume that $f \leq g$ everywhere.
+For $f \geq 0$ then by Lemma \ref{LinearityAndMonotonictyPositiveIntegral} we know that the only case is (i).  For the general case we know that $f_+ \leq g_+$ and $f_- \geq g_-$.  If $\int f$ is undefined then $\int f_+ = \int f_- = \infty$ and it follows from the positive case that $\int g_+ = \infty$ hence either $\int g$ is undefined or $\int g = \infty$.  Similarly if $\int g$ is undefined it follows by monotonicity in the positive case that $\int f_- = \infty$ hence either $\int f$ is undefined or $\int f = -\infty$.  If both $\int f$ and $\int g$ are defined then from the non-negative case we have $0 \leq \int f_+  \leq \int g_+ < \infty$ and $0 \leq \int g_- \leq \int f_- < \infty$ so no infinities are involved and we compute
+\begin{align*}
+\int f  &= \int f_+ - \int f_- \leq \int g_+ - \int g_- = \int g
+\end{align*}
 \end{proof}
-Therefore, for the definition of integrability of $f$ can be extended
-to allow $f$ to be redefined arbitrarily on a set of measure zero.
- 
+
 We have the following limit theorem for limits of integrable
 functions.
-\begin{thm}\label{DCT}[Dominated Convergence Theorem]Suppose we are given $f, f_1, f_2, \dots$ and $g,g_1,g_2,
+
+\begin{thm}[Monotone Convergence Theorem for Signed Integrals]\label{SignedMCT}Given $f, f_1,
+  f_2, \dots$ measurable functions from
+  $(\Omega, \mathcal{A}, \mu)$ to $[-\infty, \infty]$ such that $f_n \uparrow f$, $\int f_1 \, d\mu$ exists and $\int f_1 \, d\mu > -\infty$.  Then $f$ is measurable, $\int f \, d\mu$ and $\int f_n \, d\mu$ are defined for all $n \in \naturals$
+and we  have $\int f_n d \mu \uparrow \int f d \mu$.
+\end{thm}
+\begin{proof}
+Note measurability of $f$ follows from Lemma \ref{LimitsOfMeasurable} and Proposition \ref{SignedIntegralMonotonicity} together with the hypothesis that $\int f_1 \, d\mu > -\infty$ implies that all the other integrals are defined and not $-\infty$.  
+
+First assume that $f \leq 0$; then for all $n \in \naturals$, $f_n \leq f \leq 0$ hence $-\infty < \int f_n \, d\mu \leq 0 < \infty$ (i.e. $f, f_1, f_2, \dotsc$ are all integrable).  This implies that almost everywhere $-\infty < f_n \leq 0$ for all $n \in \naturals$.  We redefine $f_n$ be $0$ on the union of $\lbrace f_n = -\infty$ so we can assume $-\infty < f_n \leq 0$ everywhere.  By  Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual} the values of the integrals remain unchanged.  Observe that $0 \leq f_n - f_1 \uparrow f - f_1$, by Lemma \ref{SignedIntegralLinearity} all the functions are integrable and by the Monotone Convergence Theorem \ref{MCT} we have $\int (f_n - f_1) \, d\mu \uparrow \int (f - f_1) \, d\mu$.  By another application of Lemma \ref{SignedIntegralLinearity} we can add $\int f_1  \, d\mu$ to both sides of the limit and conclude that $\int f_n \, d\mu \uparrow \int f \, d\mu$.
+
+In the general case we write $(f_n)_+ \uparrow f_+$ and $(f_n)_- \downarrow f_-$ and $\int (f_1)_- \, d\mu < \infty$.  By Montone Convergence Theorem \ref{MCT} we have $\int (f_n)_+ \, d\mu \uparrow \int f_+\, d\mu$.  By the previous part of this proof $\int (f_n)_- \, d\mu \downarrow \int f_- \, d\mu$ and $\int f_- \, d\mu < \infty$.  Thus,
+\begin{align*}
+\int f_n \, d\mu &= \int (f_n)_+ \, d\mu - \int (f_n)_- \, d\mu \uparrow \int f_+ \, d\mu - \int f_- \, d\mu = \int f \, d\mu
+\end{align*}
+\end{proof}
+
+
+\begin{thm}[Dominated Convergence Theorem]\label{DCT}Suppose we are given $f, f_1, f_2, \dots$ and $g,g_1,g_2,
   \dots$ measurable functions on $(\Omega,
   \mathcal{A}, \mu)$ such that $\abs{f_n} \leq g_n$, $\lim_{n \to
     \infty} f_n = f$, $\lim_{n \to
@@ -1486,39 +1522,100 @@ $\pi$-system (which is clearly generating by the previous Lemma).  Use
 this fact in Lemma \ref{ProcessLawsAndFDDs} and Theorem \ref{ExistenceMarkovProcess}.
 
 \section{Null Sets and Completions of Measures}
-\begin{lem}Let $f \geq 0$ be a measurable function then $\int f \,
-  d\mu$ = 0 if and only if $f = 0$ $\mu$-almost everywhere.
+\begin{defn}Let $(\Omega,  \mathcal{A}, \mu)$ be a measure space.  We
+  say that a property hold \emph{almost everywhere} if the set where
+  the property does not hold is contained in a set of measure zero.
+\end{defn}
+\begin{lem}\label{ZeroIntegralImpliesZeroFunction}Let $f \geq 0$ be a measurable function on $(\Omega,
+  \mathcal{A}, \mu)$.  $\int f \, d\mu = 0$ if and only if $f = 0$
+  almost everywhere.
+\end{lem}
+\begin{proof}Clearly this is true by definition for indicator
+  functions.  It also is true for simple functions by linearity of integral.  Write $f = c_1 \characteristic{A_1} + \dotsb + c_n \characteristic{A_n}$ with $c_j > 0$ for all $j=1, \dotsc, n$ and the $A_j$ disjoint so that 
+$\int f \, d\mu = c_1 \mu(A_1) + \dotsc + c_n \mu(A_n)$.  It is clear that $\int f \, d \mu = 0$ if and only if $\mu(A_j) = 0$ for all $j=1, \dotsc, n$.  Since $\mu \lbrace f \neq 0 \rbrace = \sum_{j=1}^n \mu(A_j)$ the result follows for simple functions.
+
+For arbitrary $f\geq 0$, we take an
+increasing  approximating sequence of simple functions $0 \leq f_n \uparrow
+f$.  If $\int f \, d\mu = 0$, monotonicity of integral
+implies $\int f_n \, d\mu = 0$ for each $n$.  Therefore, $f_n = 0$ almost
+everywhere for each $n$ and therefore $f_n = 0$ almost everywhere for
+all $n$ by taking a countable union.  Thus $f = \lim_{n \to \infty} f_n = 0$ almost
+everywhere. 
+If on the other hand we assume that $f = 0$ almost
+everywhere, then by the increasing nature of $f_n$, we see that $f_n
+=0$ for all $n$ almost everywhere and therefore $\int f_n \, d\mu = 0$
+for every $n$.  By Monotone Convergence we see that $\int f \, d\mu = 0$.
+\end{proof}
+ 
+\begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space then we say $A \subset \Omega$ is a \emph{$\mu$-null set} if
+there exists a measurable $B \in \mathcal{A}$ such that $A \subset B$ and $\mu(B) = 0$.  The $\sigma$-algebra generated by $\mathcal{A}$ and 
+the $\mu$-null sets is called the \emph{$\mu$-completion of $\mathcal{A}$} and is denoted $\mathcal{A}^\mu$.  
+\end{defn}
+
+\begin{lem}\label{CompletionOfSigmaAlgebra}Let $(\Omega, \mathcal{A}, \mu)$ then a set $A \in \mathcal{A}^\mu$ if and only if there exists $B \in \mathcal{A}$ such that $A \Delta B$ is a $\mu$-null set.  Let $(S, \mathcal{S})$ be a Borel space then a function $f : \Omega \to S$ is $\mathcal{A}^\mu$-measurable if and only if there exists a $\mathcal{A}$-measurable $g : \Omega \to S$ such that $f = g$ $\mu$-almost everywhere.
 \end{lem}
 \begin{proof}
-First suppose that $f$ is simple with canonical representation $f = c_1
-\characteristic{A_1} + \dotsb +  c_n
-\characteristic{A_n}$ where $c_i > 0$.  Then $\int f \, d\mu = c_1
-\mu(A_1) + \dotsb +  c_n
-\mu(A_n)$ and it follows the positivity of the $c_i$ that $\int f \, d\mu =0$ if and only if
-$\mu(A_1) = \dotsb = \mu(A_n)$.
-
-Now for a general non-negative measurable $f$ we can find simple $0
-\leq f_n \uparrow f$ such that $\int f \, d\mu = \lim_{n \to \infty}
-\int f_n \, d\mu$.  If $\int f\, d\mu = 0$ then by monotonicity of
-integral and the result for simple functions we know that $f_n \neq 0$
-almost everywhere.  Taking the countable union of sets of measure zero we know
-that $f_n \neq 0$ for all $n$ on a set of measure zero and therefore
-taking limits we conclude $f \neq 0$ on a set of measure zero.
-Conversely if $f \neq 0$ on a set of measure zero then since $f_n$ is
-an increasing sequence if follows that each $f_n \neq 0$ on a set of
-measure zero and applying the result for simple functions $\int f_n \,
-d\mu =0$ for all $n$.  Taking the limits of the integrals we see that
-$\int f \, d\mu =0$.
+TODO: Finish
 \end{proof}
 
-\begin{lem}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space, let
+\begin{lem}\label{CompletionOfMeasure}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space, let
   $\mathcal{F}$ be a sub $\sigma$-algebra of $\mathcal{A}$ and let
-  $\mathcal{F}^{\mu}$ be the $\mu$-completion of $\mathcal{F}$.  The
+  $\mathcal{F}^{\mu}$ be the $\mu$-completion of $\mathcal{F}$.  Then
   for every $A \in \mathcal{F}^{\mu}$ there exist $A_-, A_+ \in
   \mathcal{F}$ such that $A_- \subset A \subset A_+$ and $\mu(A_-) = \mu(A_+)$.
+Moreover if for every $A \in \mathcal{F}^{\mu}$ we define $\tilde{\mu}(A) = \mu(A_-) = \mu(A_+)$ then
+$\tilde{\mu}$ is a measure on $\mathcal{F}^{\mu}$ and is the unique extension
+of $\mu$ to a measure on $\mathcal{F}^{\mu}$.  Suppose $f$ is $\mathcal{F}^\mu$-measurable and either non-negative or integrable and $g$ is $\mathcal{F}$-measurable with
+$f = g$ $\mu$-almost everywhere, then
+\begin{align*}
+\int f d \tilde{\mu} &= \int g \mu
+\end{align*}
 \end{lem}
 \begin{proof}
-TODO
+Pick $B, C, D \in \mathcal{F}$  such that $A \setminus B \subset C$,
+$\mu(C)=0$, $B \setminus A \subset D$  and $\mu(D) = 0$.  Define
+$A_+ = B \cup C$ and $A_- = B \setminus D$  noting that
+\begin{align*}
+A &= A \cap B \cup A \setminus B  \subset B \cup C
+\end{align*}
+and
+\begin{align*}
+A_- &= B \cap D^c \subset B \cap (B \cap A^c)^c  = B \cap A \subset A
+\end{align*}
+To compute the measures
+\begin{align*}
+\mu(B) &= \mu(B \cap D^c) + \mu(B \cap D) \leq \mu(B \setminus D) + \mu(D) = \mu(A_-)
+\end{align*}
+and subadditivity shows $\mu(B) = \mu(A_-)$.  Similarly 
+\begin{align*}
+\mu(A_+) &\leq \mu(B) + \mu(C) = \mu(B)
+\end{align*}
+and subadditivity shows $\mu(A_+) = \mu(B)$.
+
+Suppose we are given $A \in \mathcal{F}^\mu$ and we pick $A_\pm, B_\pm \in \mathcal{A}$ satisfying $A_- \subset A \subset A_+$,  $B_- \subset A \subset B_+$, $\mu(A_-) = \mu(A_+)$ and $\mu(B_-) = \mu(B_+)$.  If follows that $A_- \subset B_+$ and therefore by subadditivity we have $\mu(A_-) \leq \mu(B_+)$.  Reversing the roles of $A_\pm$ and $B_\pm$ we get $\mu(B_-) \leq \mu(A_+)$ and therefore $\mu(A_-) = \mu(A_+) = \mu(B_-) = \mu(B_+)$.  Thus the definition of $\tilde{\mu}$ is consistent.
+To see that $\tilde{\mu}$ is a measure on $\mathcal{F}^{\mu}$, only countable additivity needs to 
+be shown.  By the previous construction and countable additivity of $\mu$ on $\mathcal{F}$, it suffices to show the following claim.
+\begin{clm} Let $A_1, A_2, \dotsc \in \mathcal{F}^{\mu}$ be disjoint there exist disjoint $B_1, B_2, \dotsc, \in \mathcal{F}$ such that
+$A_n \Delta B_n$ is a $\mu$-null set for every $n \in \naturals$.
+\end{clm}
+Pick $C_1, C_2, \dotsc \in \mathcal{F}$ such
+that $A_n \Delta C_n$ is a $\mu$-null set for every $n \in \naturals$.  Define $B_n = C_n \setminus (C_1 \cup \dotsb \cup C_{n-1})$ and note
+that $B_1, B_2, \dotsc \in \mathcal{F}$ and are disjoint.  Also we have using the disjointness of the $A_n$,
+\begin{align*}
+A_n \cap B_n^c &= A_n \cap (C_n \cap (C_1 \cup \dotsb \cup C_{n-1})^c)^c = A_n \cap (C^c_n \cup (C_1 \cup \dotsb \cup C_{n-1})) \\
+&= A_n \setminus C_n \cup (A_n \cap C_1 \cap A_1^c) \cup \dotsb \cup (A_n \cap C_{n-1} \cap A_{n-1}^c)  \\
+&\subset \cup_{i=1}^n A_i \Delta C_i
+\end{align*}
+hence $A_n \setminus B_n$ is a $\mu$-null set.
+Also, trivially since $B_n \subset C_n$ it follows that $B_n \setminus A_n \subset C_n \setminus A_n$ is also a $\mu$-null set.
+
+The fact that the extension described is the only such extension is obvious from the existence of sets $A_\pm$ and subadditivity of measure.
+
+Now suppose $g$ is $\mathcal{F}$-measurable, then $g$ is also $\mathcal{F}^\mu$-measurable and $\int g \mu = \int g \tilde{\mu}$.  If $f$ is $\mathcal{F}^\mu$-measurable then we pick $\mathcal{F}$-measurable $g$ with $\tilde{\mu}\lbrace f = g \rbrace = 0$ and it follows from either 
+Proposition \ref{AlmostEverywhereEqualIntegralEqual} or Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual} that
+\begin{align*}
+\int f \, d \tilde{\mu} &= \int g \, d \tilde{\mu} = \int g \, d \mu
+\end{align*}
 \end{proof}
 
 \section{Outer Measures and Lebesgue Measure on the Real Line}
@@ -1651,13 +1748,13 @@ To define \emph{Lebesgue measure} on $\reals$ we will leverage the
 construction above and first define an outer measure by approximating
 by intervals.  Given an interval $I \subset \reals$, let $\abs{I}$ be
 length of $I$.
-\begin{thm}\label{LebesgueMeasure}[Lebesgue Measure]There exists a
+\begin{thm}[Existence of Lebesgue Measure]\label{LebesgueMeasure}There exists a
   unique measure $\lambda$ on $(\reals, \mathcal{B}(\reals)$ such that
   $\lambda(I) = \abs{I}$ for all intervals $I \subset \reals$.
 \end{thm}
 Before we begin the proof of the theorem we need first construct an
 outer measure.
-\begin{lem}\label{LebesgueOuterMeasure}[Lebesgue Outer Measure]Define the function $\lambda : 2^\reals \to \reals$ defined by 
+\begin{lem}[Lebesgue Outer Measure]\label{LebesgueOuterMeasure}Define the function $\lambda : 2^\reals \to \reals$ defined by 
 \begin{align*}
 \lambda(A) &= \inf_{\{I_k\}} \sum_k \abs{I_k} 
 \end{align*}
@@ -2360,33 +2457,34 @@ in $\overline{\reals}_+$.
 TODO: Clean up the following argument; it has all right details but is
 more than a bit ragged.  Particularly annoying is that this is the
 first time we've talked about defining integrals for signed functions
-that take infinite values on a set of measure zero.
+that take infinite values on a set of measure zero (ACTUALLY I HAVE ADRESSED THIS)
 
 Now assume that $f$ is integrable with respect to $\mu \otimes \nu$: 
 $\int \abs{f(s,t)} \,  d (\mu \otimes \nu) < \infty$.  We
-write $f = f_+ - f_-$ and note that $\int f_\pm(s,t) \,  d (\mu
-\otimes \nu) < \infty$ and use Tonelli's Theorem just proven to see
-that 
+write $f = f_+ - f_-$ and note that 
+\begin{align*}
+\int f_\pm(s,t) \,  d (\mu \otimes \nu) &\leq \int \abs{f(s,t)} \,  d (\mu \otimes \nu)< \infty
+\end{align*} 
+and use Tonelli's Theorem just proven to see that 
 \begin{align*}
 \int f_\pm(s,t) \,  d (\mu \otimes \nu) &= \int \left [ \int f_\pm(s,t) \, d
 \nu(t) \right ] d \mu(s)  = \int \left [ \int f_\pm(s,t) \, d \mu(s)
 \right ] d\nu(t) < \infty
 \end{align*}
 The finiteness of the iterated integrals implies that the integrands
-are almost surely finite and therefore we see that each section 
-$\int f_\pm \, d\mu(s)$ and $\int f_\pm \, d\nu(t)$ is almost surely
-finite.  The trick is that being almost surely finite isn't good
+$\int f_\pm \, d\mu(s)$ and $\int f_\pm \, d\nu(t)$ are finite almost everywhere.  
+The trick is that being finite almost everywhere isn't good
 enough when trying to calculate the iterated integrals of $f$ and we
 might run into the awkward situation in which there is a $t \in T$
-such that \emph{both} $\int f_+ \, d\mu(s)$ and $\int f_+ \, d\mu(s)$
+such that \emph{both} $\int f_+ \, d\mu(s)$ and $\int f_- \, d\mu(s)$
 are infinite.  However define
 $N_S = \{ s \in S \mid \int \abs{f} \, d\nu(t) = \infty \}$ and $N_T =
 \{ t \in T \mid \int \abs{f} \, d\mu(s) = \infty \}$.  We have noted
 that $N_S$ is a $\mu$-null set and that $N_T$ is a $\nu$-null set
 hence $N_S \times N_T$ is a $(\mu \otimes \nu)$-null set.  We modify
 $f$ so that it is zero on $N_S \times N_T$ by defining 
-$\tilde{f}(s,t) = (1 - \characteristic{N_S \times N_T}) f(s,t)$.  Note
-the following 
+$\tilde{f}(s,t) = (1 - \characteristic{N_S \times N_T}) f(s,t)$.  By Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual}
+we have the following equalities
 \begin{align*}
 \int \tilde{f} d(\mu\otimes \nu) &= \int f d(\mu\otimes \nu) \\
 \int \tilde{f} d\mu(s) &= \begin{cases}
@@ -2850,7 +2948,7 @@ Equally important to note is that monotonicity and subadditivity fail for signed
   respect to $\mu$.  We shall soon see that this is the only way to
   construct absolutely continuous measures when the dominating measure is $\sigma$-finite.
 \end{examp}
-\begin{thm}\label{HahnDecomposition}[Hahn Decomposition]Given a
+\begin{thm}[Hahn Decomposition]\label{HahnDecomposition}Given a
   bounded signed measure $\nu$ on a measurable space $(\Omega,
   \mathcal{A})$ there are unique bounded mutually singular positive
   measures $\nu_+$ and $\nu_-$ such that $\nu = \nu_+ - \nu_-$.
@@ -2968,8 +3066,7 @@ there is another important construction for $\reals$.
   \emph{locally finite} if $\mu(I) < \infty$ for every finite interval
   $I \subset \reals$.
 \end{defn}
-\begin{lem}[Lebesgue-Stieltjes
-  Measure]\label{LebesgueStieltjesMeasure}There is a 1-1
+\begin{lem}[Lebesgue-Stieltjes Measure]\label{LebesgueStieltjesMeasure}There is a 1-1
   correspondence between locally finite measures on $(\reals,\mathcal{B}(\reals))$ and
   nondecreasing right continuous functions $F : \reals \to \reals$ such that $F(0)=0$ given by 
 \begin{align*}

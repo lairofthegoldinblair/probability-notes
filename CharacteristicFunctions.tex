@@ -495,8 +495,7 @@ The last piece of the puzzle that we need to put into place before
 proving the Central Limit Theorem is a result that shows we can test
 convergence in distribution by looking at pointwise convergence of
 associated characteristic functions.
-\begin{thm}[Glivenko-Levy Continuity
-  Theorem]\label{GlivenkoLevyContinuity}If $\mu, \mu_1, \mu_2, \dots$
+\begin{thm}[Glivenko-Levy Continuity Theorem]\label{GlivenkoLevyContinuity}If $\mu, \mu_1, \mu_2, \dots$
   are probability measures on $(\reals^n, \mathcal{B}(\reals^n))$,
   then $\mu_n$ converge weakly to $\mu$ if and only if $\hat{\mu}_n(u)$
   converge to $\hat{\mu}(u)$ pointwise.
@@ -512,11 +511,11 @@ $\epsilon > 0$ such that $\norm{\rho_\epsilon * f - f}_\infty <
 \delta$.
 Now, 
 \begin{align*}
-\abs{\int f \, d\mu_n - \int f \, d\mu} &\leq \abs{\int (f - \rho_\epsilon * f) \, d\mu_n} + \abs{\int \rho_\epsilon * f \, d\mu_n -
+&\abs{\int f \, d\mu_n - \int f \, d\mu} \\
+&\qquad \leq \abs{\int (f - \rho_\epsilon * f) \, d\mu_n} + \abs{\int \rho_\epsilon * f \, d\mu_n -
   \int \rho_\epsilon * f \, d\mu} + \abs{\int (\rho_\epsilon * f - f)
   \, d\mu} \\
-&\leq \delta + \frac{1}{2\pi} \abs{\int \hat{f}(t)
-  e^{-\frac{1}{2}\epsilon^2t^2} (\hat{\mu}_n(t) - \hat{\mu}(t)) \, dt}
+&\qquad \leq \delta + \frac{1}{2\pi} \abs{\int \hat{f}(t)  e^{-\frac{1}{2}\epsilon^2t^2} (\hat{\mu}_n(t) - \hat{\mu}(t)) \, dt}
 + \delta 
 \end{align*}
 where we have used the Plancherel Theorem (Theorem
@@ -809,8 +808,8 @@ the characteristic function.
 \varphi_\eta(u) &= 
 e^{i\langle u, \mu \rangle - \frac{1}{2} \langle u, \covariance{\eta} u \rangle} 
 =e^{i\langle u_I, \mu_I \rangle - \frac{1}{2} \langle u_I, \covariance{\xi_I} u_I \rangle} 
-e^{i\langle u_J, \mu_J \rangle - \frac{1}{2} \langle u_J, \covariance{\xi_J} u_J \rangle} 
-= \varphi_{\xi_I}(u) \varphi_{\xi_J}(u)
+e^{i\langle u_J, \mu_J \rangle - \frac{1}{2} \langle u_J, \covariance{\xi_J} u_J \rangle} \\
+&= \varphi_{\xi_I}(u) \varphi_{\xi_J}(u)
 \end{align*}
 which by Theorem \ref{IndependenceProductCharacteristicFunctions} shows that $\xi_I$ and $\xi_J$ are independent.
 \end{proof}
@@ -834,12 +833,29 @@ Continuity Theorem (Theorem \ref{GlivenkoLevyContinuity}) we see
 \begin{align*}
 \varphi_\xi(u) &= \lim_{n \to \infty} \varphi_{\xi_n}(u) = \lim_{n \to
   \infty} e^{i\langle u, \mu_n\rangle - \frac{1}{2}\langle u, C_n
-  y\rangle} = e^{i\langle u, \mu\rangle - \frac{1}{2}\langle u, C
-  y\rangle} 
+  u\rangle} = e^{i\langle u, \mu\rangle - \frac{1}{2}\langle u, C
+  u\rangle} 
 \end{align*}
 where we have used continuity of $e^{ix}$.  Thus, using Lemma
 \ref{GaussianVectorCharacteristicFunction}
 again shows that $\xi$ is $N(\mu, C)$.
+
+TODO: Actually more is true : the fact that $\mu_n$ and $C_n$ converge
+can be a conclusion (I don't need this in the application to Brownian motion).  
+In the univariate case I've given an argument in Proposition \ref{GaussianVersionContinuityCentering}.
+Here is an argument that extends the univariate case to the multivariate case.  Knowing that $\xi$ is Gaussian in the vector case does follow immediately from the univariate case
+because $\xi_n \toas \xi$ implies $\langle a, \xi_n \rangle \toas \langle a, \xi \rangle$ for all $a \in \reals^d$ which
+implies $\langle a, \xi \rangle$ is univariate Gaussian for all $a \in \reals^d$ which implies $\xi$ is Gaussian.  So suppose $\xi$ is $N(\mu,C)$.  Again by the univariate
+case if we let $e_i$ be the $i^{th}$ coordinate vector in $\reals^d$ we know that $\expectation{\xi^i_n} \to \expectation{\xi^i}$ for each
+$i=1, \dotsc, d$ hence $\mu_n = \expectation{\xi_n} \to \expectation{\xi}=\mu$.  Similarly for every $a \in \reals^d$ we know that
+$\variance{\langle a, \xi_n \rangle} = \langle a, C_n a \rangle$ so by the univariate case we have $\lim_{n \to \infty} \langle a, C_n a \rangle = \langle a, C a \rangle$.  By a polarization argument for all $a,b \in \reals^d$ we have
+\begin{align*}
+\lim_{n \to \infty} \langle a, C_n b \rangle 
+&= \frac{1}{4} \left \lbrace \lim_{n \to \infty} \langle(a+b), C_n (a+b) \rangle - \lim_{n \to \infty} \langle(a-b), C_n (a-b) \rangle \right \rbrace \\
+&=\frac{1}{4} \left \lbrace \langle(a+b), C (a+b) \rangle - \langle(a-b), C (a-b) \rangle \right \rbrace \\
+&= \langle a, C b \rangle
+\end{align*}
+from which it follows that $\lim_{n \to \infty} C_n = C$.
 \end{proof}
 
 TODO: Gaussian Random Variables in $\reals^n$ and the multidimensional
@@ -884,7 +900,7 @@ just proven
 &= \lim_{\lambda \to \infty} \lambda^2 \int_\lambda^\infty e^{-x^2/2}
 \, dx \leq \lim_{\lambda \to \infty} \lambda e^{-\lambda^2/2} = 0
 \end{align*}
-and therefore $\lim_{\lambda \to \infty} f(\lambda) = 0$.  In addition
+and therefore $\lim_{\lambda \to \infty} f(\lambda) \leq 0$.  In addition
 we have for $\lambda \geq 0$,
 \begin{align*}
 \frac{d}{d\lambda} f(\lambda) &= e^{-\lambda^2/2} - \lambda^2

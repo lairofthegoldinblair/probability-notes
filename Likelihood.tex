@@ -1195,12 +1195,12 @@ One might jump to the conclusion that $D_{\hat{\theta}_n} \ell_n(\sample{\xi}
 \mid \theta) = 0$ everywhere because $\hat{\theta}_n$ is a maximum,
 however there are some details about handling the issue of boundaries on
 $\Theta$.  One does know that $D_{\hat{\theta}_n} \ell_n(
-\sample{\xi} \mid \theta) = 0$ when $\hat{\theta}_n \in \interior(\Theta)$ but
+\sample{\xi} \mid \theta) = 0$ when $\hat{\theta}_n \in \interior{\Theta}$ but
 there is the possibility that some $\hat{\theta}_n$ lies on the
 boundary of $\Theta$ and the derivative might not vanish in this case.
 To handle the boundary effects, first we know that $\theta_0 \in
-\interior(\Theta)$  and therefore there is an open neighborhood
-$\theta_0 \in U \subset \interior(\Theta)$.  By the vanishing of the
+\interior{\Theta}$  and therefore there is an open neighborhood
+$\theta_0 \in U \subset \interior{\Theta}$.  By the vanishing of the
 derivative at any maximum in the interior, we know
 \begin{align*}
 \frac{1}{\sqrt{n}} D_{\hat{\theta}_n} \ell_n(\sample{\xi} \mid \theta) &=
@@ -1234,7 +1234,7 @@ again there is the issue of boundaries but moreover  the domain
 $\Theta$ is not convex so the Taylor series only applies cleanly when
 $\hat{\theta}_n$ belongs to a ball around $\theta_0$.  To handle this,
 pick an $R > 0$ such that we have $B(\theta_0; R) \subset
-\interior(\Theta)$.  In this case, when $\norm{\hat{\theta}_n -
+\interior{\Theta}$.  In this case, when $\norm{\hat{\theta}_n -
   \theta_0} < R$ then we know there exists a $\theta^*_n$ between $\theta_0$ and
 $\hat{\theta}_n$ such that 
 \begin{align*}

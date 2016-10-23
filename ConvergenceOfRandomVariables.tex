@@ -27,6 +27,9 @@ We write $\xi_n \todist \xi$ to denote convergence in distribution.
 \end{itemize}
 \end{defn}
 
+TODO: Note that to make sense of convergence in probability we need to know that $\lbrace \omega : d(\xi_n(\omega), \xi(\omega)) > \epsilon \rbrace$ 
+is measurable.  This isn't true for general metric spaces but is true for separable metric spaces.
+
 TODO: Note that convergence in distribution is really a property of
 the distribution of the random variables and not the random variables
 themselves.
@@ -77,7 +80,7 @@ simple minded notion of pointwise convergence that we used in the
 development of measure theory (e.g. in all of the limit theorems)
 is too strong for this scenario.  Clearly, it is theoretically
 possible for a person to toss a coin an infinite number of times and
-get only heads.  It is possible by extremely improbable; so improbable
+get only heads.  It is possible but extremely improbable; so improbable
 in fact that its probability is zero.
 
 Motivation for convergence in mean is pretty clear.
@@ -311,9 +314,7 @@ then $d(\xi_n, \xi) \wedge 1 \toas 0$ and Dominated Convergence
 implies $\expectation{d(\xi_n, \xi) \wedge 1} \to 0$.
 
 The relationship between almost sure convergence and convergence in
-probability can be made even tighter than Lemma \ref{ConvergenceAlmostSureImpliesInProbability}.  This suggests that perhaps convergence
-in probability is a topological notion; in fact we shal later see that there is a metric called the Ky-Fan metric which topologizes convergence
-in probability.
+probability can be made even tighter than Lemma \ref{ConvergenceAlmostSureImpliesInProbability}.  
 \begin{lem}\label{ConvergenceInProbabilityAlmostSureSubsequence}Suppose $(S,d)$ is a metric space and let $\xi,
   \xi_1, \xi_2, \dots$ be random elements in $S$.  Then $\xi_n \toprob
   \xi$ if and only for every subsequence $N^\prime \subset \naturals$ there is a
@@ -364,7 +365,9 @@ $\cup_{k \in N^{\prime \prime}, k\geq n} \lbrace d(\xi_k,
 
 The previous lemma has a nice side effect which is a proof that the
 property of convergence in probability does not actually depend on the
-choice of metric.
+choice of metric.  This suggests that perhaps convergence
+in probability is a topological notion; in fact we shal later see that there is a metric on the space of measurable funcitons
+called the Ky-Fan metric which topologizes convergence in probability.
 \begin{cor}\label{ConvergenceInProbabilityIndependentOfMetric}Let $\xi, \xi_1, \xi_2, \dots$ be a random elements in a
   metrizable space $S$.  The property $\xi_n \toprob \xi$ does not
   depend on the choice of metric $d$.
@@ -1772,42 +1775,42 @@ Since $\epsilon$ was arbitrary let it go to $0$ and we are done.
 \end{proof}
 
 \begin{lem}\label{MaxMinOfLipschitz}Let $f,g : S \to \reals$ be Lipschitz with Lipschitz
-  constants $C_f$ and $C_g$ respectively.  Then both $f \wedge g$
-  and $f \vee g$ are Lipschitz with Lipschitz constants $C_f \vee C_g$.
+  constants $C_f$ and $C_g$ respectively.  Then both $f \minop g$
+  and $f \maxop g$ are Lipschitz with Lipschitz constants $C_f \maxop C_g$.
 \end{lem}
 \begin{proof}
 The proof is elementary but long winded; we only do the case of $f
-\wedge g$.  Pick $x,y \in S$ and
-consider $\abs{(f \wedge g)(x) - (f \wedge g)(y)}$.  We break the analysis
+\minop g$.  Pick $x,y \in S$ and
+consider $\abs{(f \minop g)(x) - (f \minop g)(y)}$.  We break the analysis
 down into four cases.  
 
-Case (i): Suppose $(f \wedge g)(x) \geq (f \wedge g)(y)$ and $f(y) \leq g(y)$.
+Case (i): Suppose $(f \minop g)(x) \geq (f \minop g)(y)$ and $f(y) \leq g(y)$.
 \begin{align*}
-\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(x) - f(y) \leq
+\abs{(f \minop g)(x) - (f \minop g)(y)} &= (f \minop g)(x) - f(y) \leq
 f(x) - f(y) \leq C_f d(x,y)
 \end{align*}
 
-Case (ii): Suppose $(f \wedge g)(x) \geq (f \wedge g)(y)$ and $g(y) \leq f(y)$.
+Case (ii): Suppose $(f \minop g)(x) \geq (f \minop g)(y)$ and $g(y) \leq f(y)$.
 \begin{align*}
-\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(x) - g(y) \leq
+\abs{(f \minop g)(x) - (f \minop g)(y)} &= (f \minop g)(x) - g(y) \leq
 g(x) - g(y) \leq C_g d(x,y)
 \end{align*}
 
-Case (iii): Suppose $(f \wedge g)(y) \geq (f \wedge g)(x)$ and $f(x) \leq g(x)$.
+Case (iii): Suppose $(f \minop g)(y) \geq (f \minop g)(x)$ and $f(x) \leq g(x)$.
 \begin{align*}
-\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(y) - f(x) \leq
+\abs{(f \minop g)(x) - (f \minop g)(y)} &= (f \minop g)(y) - f(x) \leq
 f(y) - f(x) \leq C_f d(x,y)
 \end{align*}
 
-Case (iv): Suppose $(f \wedge g)(y) \geq (f \wedge g)(x)$ and $g(x) \leq f(x)$.
+Case (iv): Suppose $(f \minop g)(y) \geq (f \minop g)(x)$ and $g(x) \leq f(x)$.
 \begin{align*}
-\abs{(f \wedge g)(x) - (f \wedge g)(y)} &= (f \wedge g)(y) - g(x) \leq
+\abs{(f \minop g)(x) - (f \minop g)(y)} &= (f \minop g)(y) - g(x) \leq
 g(y) - g(x) \leq C_g d(x,y)
 \end{align*}
-Thus we see $\abs{(f \wedge g)(x) - (f \wedge g)(y)} \leq (C_f \vee
+Thus we see $\abs{(f \minop g)(x) - (f \minop g)(y)} \leq (C_f \vee
 C_g) d(x,y)$.
 
-The case of $f \vee g$ follows in a similar way.
+The case of $f \maxop g$ follows in a similar way.
 \end{proof}
 
 \begin{thm}[Portmanteau Theorem]\label{PortmanteauTheorem}Let $\mu$ and $\mu_n$ be a sequence of
@@ -1903,11 +1906,11 @@ Therefore
   \to \infty} \int f \, d\mu_n = \int f \, d\mu$ and (i) is proven.
 
  (iii) and (iv) imply (v).  Pick a $\mu$-continuity set $A$.  The first thing to
-note is that $\mu(A) = \mu(\overline{A}) = \mu(\interior(A))$ because
+note is that $\mu(A) = \mu(\overline{A}) = \mu(\interior{A})$ because
 they all differ by a subset of $\partial A$.   Now on
 the one hand, 
 \begin{align*}
-\liminf_{n \to \infty} \mu_n(A) &\geq \liminf_{n \to \infty} \mu_n(\interior(A)) \geq \mu(\interior(A)) = \mu(A)
+\liminf_{n \to \infty} \mu_n(A) &\geq \liminf_{n \to \infty} \mu_n(\interior{A}) \geq \mu(\interior{A}) = \mu(A)
 \end{align*}
 On the other hand, 
 \begin{align*}
@@ -2470,7 +2473,7 @@ and since $\epsilon > 0$ was arbitrary, we have $\lim_{n \to \infty} \expectatio
 TODO: Show how the proof of the Weak Law of Large Numbers applies to
 uniformly integrable sequences not just i.i.d.
 
-\begin{lem}$\xi_t$ is uniformly integrable if and only if there exists
+\begin{lem}[de la Vall\'{e}e Poussin Theorem]\label{deLaValleePoussin}$\xi_t$ is uniformly integrable if and only if there exists
   a convex and increasing $f : \reals_+ \to \reals_+$ such that
   $\lim_{x \to \infty} \frac{f(x)}{x} = \infty$ and $\sup_t
   \expectation{f(\abs{\xi_t})} < \infty$.
@@ -2707,4 +2710,245 @@ This last conclusion is more or less obvious but there are some minor details th
 could be filled in here.
 \end{proof}
 
-TODO: Ky Fan metric that metrizes convergence in probability.
+\subsection{The Bounded Lipschitz Metric}
+
+TODO: Bounded Lipschitz metric from Dudley
+
+\begin{defn}Let $(S,d)$ and $(S^\prime, d^\prime)$ be metric spaces and $f : S \to S^\prime$ be Lipschitz continuous then we define 
+\begin{align*}
+\Lip(f) &= \sup_{x \neq y} \frac{d^\prime(f(x), f(y))}{d(x,y)}
+\end{align*}
+\end{defn}
+
+\begin{lem}\label{LipschitzSeminorm}The space of Lipschitz functions is a linear space and $\Lip(f)$ defines a seminorm.  Furthermore $\Lip(f) = 0$ if and only if $f$ is a constant function.
+\end{lem}
+\begin{proof}
+Suppose $f$ be a Lipschitz function. For any $x \neq y \in S$ we have 
+\begin{align*}
+\abs{cf(x) - cf(y)} &= \abs{c}\abs{f(x) - f(y)} \leq \abs{c} \Lip(f) d(x,y)
+\end{align*}
+which shows that $cf$ is Lipschitz and $\Lip(cf) \leq \abs{c} \Lip(f)$.  Let $\epsilon >0$ be arbitrary and pick $x \neq y \in S$ such that $\Lip(f) - \epsilon/c < \frac{\abs{f(x) - f(y)}}{d(x,y)}$.  Multiplying  by $\abs{c}$ we get $\abs{c} \Lip(f) - \epsilon \leq \frac{\abs{cf(x) - cf(y)}}{d(x,y)}$.  Now let $\epsilon \to 0$.  Suppose $f$ and $g$ are Lipschitz then for all $x,y \in S$,
+\begin{align*}
+\abs{(f+g)(x) - (f+g)(y)} &\leq \abs{f(x) - f(y)} + \abs{g(x) - g(y)} \leq (\Lip(f) + \Lip(g)) d(x,y)
+\end{align*}
+hence taking the supremum over $x \neq y$ we get $\Lip(f+g) \leq \Lip(f) + \Lip(g)$.  It is clear that $Lip(c) = 0$ for any constant $c \in \reals$, hence $\Lip(f)$ defines a seminorm.  If $f$ is not constant then we can pick $x \neq y$ with $f(x) \neq f(y)$ and it follows that $\Lip(f) \geq \frac{\abs{f(x) - f(y)}}{d(x,y)} > 0$.
+\end{proof}
+
+\begin{lem}\label{ExtensionOfRealValuedLipschitzFunction}Let $(S,d)$  be a metric space, $A \subset S$ and $f : A \to \reals$ be a Lipschitz function then there exists a Lipschitz function $\overline{f} : S \to \reals^m$ such that
+\begin{itemize}
+\item[(i)] $\overline{f} \mid_A = f$
+\item[(ii)] $\Lip(\overline{f}) = \Lip(f)$
+\end{itemize}
+\end{lem}
+\begin{proof}
+Define 
+\begin{align*}
+\overline{f}(x) &= \inf_{a \in A} (f(a) + \Lip(f) d(x, a))
+\end{align*}
+\begin{clm} If $x \in A$ then $\overline{f}(x) = f(x)$
+\end{clm}
+Note that for all $a \in A$
+\begin{align*}
+f(x) - f(a) &\leq \abs{f(x) - f(a)} \leq \Lip(f) d(x,a)
+\end{align*}
+hence $f(x) \leq f(a) + \Lip(f) d(x,a)$.  Taking the infimum over all $a \in A$ we conclude $f(x) \leq \overline{f}(x)$.  On the other hand since $x \in A$ it is immediate from the definition of $\overline{f}$ that $\overline{f} \leq f(x)$.
+
+\begin{clm} $\Lip(\overline{f}) = \Lip(f)$
+\end{clm}
+Given $x,y \in S$ we get using the triangle inequality 
+\begin{align*}
+\overline{f}(x) &= \inf_{a \in A} (f(a) + \Lip(f) d(x, a)) \leq \inf_{a \in A} (f(a) + \Lip(f)d(y, a) + \Lip(f) d(x, y)) \\
+&= \overline{f}(y) + \Lip(f) d(x, y)
+\end{align*}
+By symmetry we also have $\overline{f}(y) \leq \overline{f}(x) + \Lip(f) d(x,y)$ and it follows that $\abs{\overline{f}(x) -\overline{f}(y)} \leq \Lip(f) d(x,y)$ hence $\Lip(\overline{f}) \leq \Lip(f)$.  The fact that $\Lip(f) \leq \Lip(\overline{f})$ follows from the fact that $\overline{f} \mid_A = f$.
+\end{proof}
+
+\begin{defn}Let $(S,d)$ be a metric space then let $BL(S)$ be the set of all bounded Lipschitz functions $f : S \to \reals$ and define
+\begin{align*}
+\norm{f}_{BL} &= \sup_{x \neq y} \frac{\abs{f(x)-f(y)}}{d(x,y)} + \sup_{x \in S} \abs{f(x)} = \Lip(f) + \norm{f}_\infty
+\end{align*}
+\end{defn}
+
+\begin{prop}\label{BoundedLipschitzDualNormProperties}For a metric space $(S,d)$, $(BL(S), \norm{\cdot}_{BL})$ is a normed linear space and furthermore we have 
+\begin{itemize}
+\item[(i)] $\norm{fg}_{BL} \leq \norm{f}_{BL} \norm{g}_{BL}$ for any $f,g \in BL(S)$
+\item[(ii)] $\norm{f \maxop g}_{BL} \leq 2(\norm{f}_{BL} \maxop \norm{g}_{BL})$ for any $f,g \in BL(S)$
+\item[(iii)] $\norm{f \minop g}_{BL} \leq 2(\norm{f}_{BL} \minop \norm{g}_{BL})$ for any $f,g \in BL(S)$
+\end{itemize}
+\end{prop}
+\begin{proof}
+We already know that $\Lip(f)$ is a seminorm and $\norm{\cdot}_\infty$ is a norm.  
+TODO: Finish
+\end{proof}
+
+\section{Almost Sure Realizations}
+
+Convergence in distribution is implied by almost sure convergence and convergence in probability.  The following theorem provides something of a converse to that fact.  It shows that when laws converge there exist realizations of those laws as random elements so that the elements converge everywhere (in particular almost surely).  
+
+\begin{lem}\label{ContinuitySetsAlgebra}Let $\mu$ be a Borel probability measure on a metric space
+  $S$, then the $\mu$-continuity sets are an algebra.
+\end{lem}
+\begin{proof}
+Clearly $\emptyset$ and $S$ are $\mu$-continuity sets.  Suppose $A$ is a $\mu$-continuity set then by Proposition \ref{BoundaryComplement} $\partial A^c = \partial A$ hence $A^c$ is also a $\mu$-continuity set.  If $A$ and $B$ are $\mu$-continuity sets then another application of Proposition \ref{BoundaryComplement} shows $\partial (A \cap B) \subset \partial A \cap \partial B$ hence it follows that $A \cap B$ is a $\mu$-continuity set.
+\end{proof}
+
+\begin{lem}\label{ApproximatingWithContinuitySets}Let $\mu$ be a Borel probability measure on a separable metric space  $(S,d)$,  then for every $\epsilon > 0$ there exists $n \in \naturals$ and $\mu$-continuity sets $A_1, \dotsc, A_n$ such that $\diam(A_j) < \epsilon$ for all $j=1, \dotsc,n$ and $\mu\left( \cup_{j=1}^n A_j \right) > 1 - \epsilon$.
+\end{lem}
+\begin{proof}
+Let $x_1, x_2, \dotsc$ be a dense sequence in $S$.  Recall that for each $x_j$, $B(x_j, r)$ is a $\mu$-continuity set for at most a countable number of $r$.  In particular there exists $\epsilon/3 < r_j < \epsilon/2$ such that $B(x_j, r_j)$ is a $\mu$-continuity set.  Define $A_1 = B(x_1, r_1)$ and for $j > 1$ let $A_j = B(x_j, r_j) \setminus \cup_{i=1}^{j-1} B(x_i, r_i)$.  Then $A_1, A_2, \dotsc$ are disjoint, $\diam(A_j) \leq 2 r_j < \epsilon$ and by Lemma \ref{ContinuitySetsAlgebra} $A_j$ is a $\mu$-continuity set for every $j \in \naturals$.  By density of $x_1, x_2, \dotsc$ we know that $\cup_{j=1}^\infty A_j = \cup_{j=1}^\infty B(x_j, r_j) = S$ hence by continuity of measure (Lemma \ref{ContinuityOfMeasure}), $\lim_{n \to \infty} \cup_{j=1}^n A_j = 1$ and the result follows.
+\end{proof}
+
+\begin{thm}[Skorohod-Dudley-Wichura]\label{SkorohodDudleyWichura}Let $(S,d)$ be a separable metric space and let $\mu, \mu_1, \mu_2, \dotsc$ be probability measures on $S$ such that $\mu_n \toweak \mu$.  There exists a probability space $(\Omega, \mathcal{A}, P)$ and random elements $\xi, \xi_1, \xi_2, \dotsc$ in $S$ such that $\law{\xi} = \mu$, $\law{\xi_n} = \mu_n$ for all $n \in \naturals$ and $\xi_n \toas \xi$.
+\end{thm}
+\begin{proof}
+First we give an outline of the proof.  We start with a random element $\xi$ with $\law{\xi} = \mu$.  To construct the $\xi_n$ we use an auxilliary construction.  By the separability of $S$ for any $\epsilon>0$ we'll be able to $\mu$-almost cover $S$ by a finite number of small sets $A_1, \dotsc, A_m$; concretely $\mu\left(S \setminus \cup_{j=1}^n A_j \right) < \epsilon$, $\mu(A_j)>0$ and $\diam(A_j) < \epsilon$.  The key trick is that for each $n \in \naturals$ we can find a random element $\xi^\epsilon_n$ such that $\law{\xi^\epsilon_n} = \mu_n$ and for large enough $n$ the probability that $\xi^\epsilon_n$ is in $A_m$ is almost the same as the probability that $\xi$ is in $A_m$.  The intuition here is that, defining $A_0 =  S \setminus \cup_{j=1}^n A_j$, we can write 
+\begin{align*}
+\mu_n(B) &= \sum_{j=0}^m \mu_n(B \cap A_j) = \sum_{j=0}^m \mu_n(A_j) \mu_n(B \mid A_j) \\
+&\approx \sum_{j=1}^m \mu(A_j) \mu_n(B \mid A_j) 
+\end{align*}  
+(here we see that by the Portmanteau Theorem \ref{PortmanteauTheorem} must assume that $A_j$ are $\mu$-continuity sets for $j=1, \dotsc, m$).  This forumula gives us the means of constructing $\xi_n$.  
+Those $\xi_n$ are the candidates that prove the result.  What remains is to use a sequence $\epsilon_N \to 0$ (say $\epsilon \approx 2^{-N}$ so that Borel-Cantelli can be applied) and then pick the candidates $\xi^{\epsilon_N}_n$ so that $n \to \infty$ and show that we converge almost surely (again, even though $\epsilon_N \to 0$ it isn't quite clear why \emph{probability that $\xi^\epsilon_n$ is in $A_m$ is almost the same as the probability that $\xi$ is in $A_m$} actually implies almost sure convergences; it seems that at a minimum we want the sets $(\xi^\epsilon_n)^{-1}(A_m)$ and $\xi^{-1}(A_m)$ be almost the same).
+
+Let $S_j=S$ for $j \in \naturals$, $\Omega = [0,1] \times S \times \prod_{j=1}^\infty S_j$ with the product $\sigma$-algebra $\mathcal{A} = \mathcal{B}([0,1]) \otimes \mathcal{B}(S) \otimes \dotsb$.  We define $\xi : \Omega \to \S$ and $\xi_j : \Omega \to S_j = S$ to be the coordinate projections.  We will construct a probability measure on $\Omega$ with the marginals $\mu, \mu_1, \mu_2, \dotsc$ and such that the set of sequences $(t,x, x_1, x_2, \dotsc)$ with $\lim_{n \to \infty} x_n = x$ has probability one.
+
+Define the sequence $\epsilon_k = 1/k^2$ and for each $k \in \naturals$ by Lemma \ref{ApproximatingWithContinuitySets} pick $J_k \in \naturals$ and $\mu$-continuity sets $A_{k1}, \dotsc, A_{kJ_k}$ such that $\diam(A_{kj}) < \epsilon_k$ for $j=1, \dotsc, J_k$ and $\mu \left( \cup_{j=1}^{J_k} A_{kj} \right) > 1 - \epsilon_k$.  Define $A_{k0} = S \setminus \cup_{j=1}^{J_k} A_{kj}$ ($A_{k0}$ is a $\mu$-continuity set but it may have large diameter; since $\mu(A_{k0}) < \epsilon_k=1/k^2$ what happens on $A_{k0}$ won't matter).  By the Portmanteau Theorem \ref{PortmanteauTheorem} we know that for every $k \in \naturals$ and $j=1, \dotsc, J_k$ we have $\lim_{n \to \infty} \mu_n(A_{kj}) = \mu(A_{kj})$ therefore for each $k \in \naturals$ there exists $N_k$ such that $\mu_n(A_{kj}) > (1 - \epsilon_k) \mu(A_{kj})$ for all $n \geq N_k$.  Note that by taking the maximum of such $N_k$ we may assume that the sequence $N_k$ is non-decreasing and $\lim_{k \to \infty} N_k = \infty$.  It is also convenient to define $N_0 = 1$.
+
+For every $n \in \naturals$ there is a unique $k(n) \in \integers_+$ such that $N_k \leq n < N_{k+1}$.  Using that $k = k(n)$, we define the approximation to $\mu_n$,
+\begin{align*}
+\nu_n(B) &= (1- \epsilon_k) \sum_{j=1}^{J_k} \mu(A_{kj}) \mu_n(B \mid A_{kj})
+\end{align*}
+and the ``error'' measure $\alpha_n = \mu_n - \nu_n$.  Note that $\alpha_n$ is actually a positive measure since for $n \geq N_k$ we have 
+\begin{align*}
+\alpha_n &= \mu_n(A_{k0}) \mu_n( \cdot \mid A_{k0}) + \sum_{j=1}^{J_k} (\mu_n(A_{kj}) - (1 -\epsilon_k) \mu(A_{kj})) \mu_n(\cdot \mid A_{kj}) \geq 0
+\end{align*}
+(if we $\mu_n(A_{k0}) = 0$, take $\mu_n(A_{k0}) \mu_n( \cdot \mid A_{k0})=0$).
+Also define the normalization constant
+\begin{align*}
+t_n &= \alpha_n(S) = 1 - (1 - \epsilon_k) \sum_{j=1}^{J_k} \mu(A_{kj}) \leq 1 - (1 - \epsilon_k)^2 = 2\epsilon_k - \epsilon_k^2 < 2 \epsilon_k
+\end{align*}
+so that
+\begin{align*}
+\sum_{j=1}^{J_k} \mu(A_{kj}) &= \frac{1 - t_n}{1 - \epsilon_k}
+\end{align*}
+and 
+\begin{align*}
+t_n &= 1 - (1 - \epsilon_k) \sum_{j=1}^{J_k} \mu(A_{kj}) \geq 1 - (1 - \epsilon_k) = \epsilon_k = 1/k^2 > 0
+\end{align*}
+Lastly we define for $n \in \naturals$, $0 \leq t \leq 1$, $x \in S$ and $B \in \mathcal{S}$,
+\begin{align*}
+\eta_n(t,x, B) &= \begin{cases}
+\mu_n(B) & \text{if $n < N_1$} \\
+\mu_n(B \mid A_{k(n) j}) & \text{if $n \geq N_1$, $x \in A_{k(n)j}$ for some $1 \leq j \leq J_{k(n)}$ and $t \geq \epsilon_{k(n)}$} \\
+\frac{\alpha_n(B)}{t_n} & \text{if $n \geq N_1$, $x \in A_{k(n)0}$ or $t < \epsilon_{k(n)}$}
+\end{cases}
+\end{align*}
+Conceptually we are saying that conditional on $\xi$ being in some $A_{k(n)j}$ with $j \geq 1$ and conditional on a randomization variable $t$ we construct $\xi_n$ so that it is in the same $A_{k(n)j}$ as $\xi$;  hence $\xi_n$ and $\xi$ are $\epsilon_{k(n)}$ close.
+
+\begin{clm} $\eta_n$ is a probability kernel from $[0,1] \times S$ to $S$.
+\end{clm}
+TODO: Prove claim
+
+
+We can form the product kernel $\eta(t,x,B) = (\eta_1(x,t, \cdot) \otimes \eta_2(x,t, \cdot) \otimes \dotsb)(B)$ from $[0,1] \times S$ to $\prod_{j=1}^\infty S_j$ (TODO: I don't think that we have shown the infinite product measure construction is measurable; heck we haven't even shown the general case of infinite product measure from Ionescu-Tulcea).  
+and then by Lemma \ref{KernelTensorProductMeasurability} we can form the probability measure on $\Omega$, given by
+\begin{align*}
+\probability{C} &= \iiint \characteristic{C}(t,x,y) \, \eta(t,x, dy) \mu(dx) \lambda(dt) \text{ for $C \in \mathcal{B}([0,1]) \otimes \mathcal{S} \otimes \dotsb$}
+\end{align*} 
+where $\lambda$ denotes Lebesgue measure on $[0,1]$.  
+
+\begin{clm} The marginal distributions of $P$ on $S$ are $\mu, \mu_1, \mu_2, \dotsc$.
+\end{clm}
+Suppose that $B \in \mathcal{S}$, then 
+\begin{align*}
+\probability{\xi^{-1}(B)} &= \iiint \characteristic{\xi^{-1}(B)}(t,x,y) \, \eta(t,x, dy) \mu(dx) \lambda(dt) \\
+&= \iiint \characteristic{B}(x) \, \eta(t,x, dy) \mu(dx) \lambda(dt) \\
+&= \mu(B)
+\end{align*}
+Similarly if $n < N_1$ then using the definition of $\eta_n$ as $\mu_n$, we get (writing $y = (y_1, y_2, \dotsc)$)
+\begin{align*}
+\probability{\xi_n^{-1}(B)} &= \iiint \characteristic{\xi_n^{-1}(B)}(t,x,y) \, \eta(t,x, dy) \mu(dx) \lambda(dt) \\
+&= \iiint \characteristic{B}(y_n) \, \eta_n(t,x, dy_n) \mu(dx) \lambda(dt) \\
+&= \int \characteristic{B}(y_n) \, \mu_n(dy_n) = \mu_n(B)
+\end{align*}
+If $n \geq N_1$ then we have
+\begin{align*}
+\probability{\xi_n^{-1}(B)} &= \iiint \characteristic{\xi_n^{-1}(B)}(t,x,y) \, \eta(t,x, dy) \mu(dx) \lambda(dt) \\
+&= \iiint \characteristic{B}(y_n) \, \eta_n(t,x, dy_n) \mu(dx) \lambda(dt) \\
+&= \int \int_{A_{k(n)0}} \int \characteristic{B}(y_n) \, \eta_n(t,x, dy_n) \mu(dx) \lambda(dt) + \\
+& \qquad \sum_{j=1}^{J_{k(n)}} \int_0^{\epsilon_{k(n)}} \int_{A_{k(n)j}} \int \characteristic{B}(y_n) \, \eta_n(t,x, dy_n) \mu(dx) \lambda(dt) + \\
+& \qquad \sum_{j=1}^{J_{k(n)}} \int_{\epsilon_{k(n)}}^1 \int_{A_{k(n)j}} \int \characteristic{B}(y_n) \, \eta_n(t,x, dy_n) \mu(dx) \lambda(dt) \\
+&= \mu(A_{k(n)0}) \frac{\alpha_n(B)}{t_n} + \sum_{j=1}^{J_{k(n)}} \epsilon_{k(n)} \mu(A_{k(n)j})\frac{\alpha_n(B)}{t_n} \\
+& \qquad + \sum_{j=1}^{J_{k(n)}} (1 - \epsilon_{k(n)}) \mu(A_{k(n)j}) \mu_n(B \mid A_{k(n)j}) \\
+&=\left (\frac{1}{t_n} - \frac{(1-t_n)}{t_n(1- \epsilon_{k(n)})} + \frac{\epsilon_{k(n)} (1- t_n)}{t_n(1 - \epsilon_{k(n)})} \right ) \alpha_n(B) + \nu_n(B) \\
+&= \alpha_n(B) + \nu_n(B) = \mu_n(B)
+\end{align*}
+
+\begin{clm} $\xi_n \toas \xi$
+\end{clm}
+For every $k \in \naturals$,  $\probability{\xi \in A_{k0}} = \mu(A_{k0}) < \epsilon_k = 1/k^2$ hence by the Borel-Cantelli Theorem \ref{BorelCantelli} we know that almost surely there exists a random $K$ such that for all $k \geq K$, $\xi \in A_{kj}$ for some $1 \leq j \leq J_k$.  Furthermore for every $0 \leq t \leq 1$ we have 
+$\epsilon_k = 1/k^2 < t$ for all $k \geq \ceil{\sqrt{t}}$.  Since $\lim_{n \to \infty} k(n) = \infty$ we know that almost surely there exists a random $N$ such that $\epsilon_{k(n)} < t$ and $\xi \in A_{k(n)j}$ for some $1 \leq j \leq J_k(n)$ for all $n \geq N_t$.  Under these conditions it follows that $\xi_n \in A_{k(n)j}$ (only almost surely right because of the support of $\eta_n(t,x, \cdot)$?) and therefore $\lim_{n \to \infty} d(\xi_n, \xi) < \lim_{n \to \infty}\epsilon_{k(n)} = 0$ (TODO: Are we at risk of taking an uncountable intersection of almost sure events when we add the restriction that $\xi_n \in A_{k(n)j}$? I should be more careful about defining the event that we converge.)
+\end{proof}
+
+\subsection{The Ky-Fan Metric}
+
+
+\begin{defn}Let $(\Omega, \mathcal{A}, P)$ be a probability space and $(S,d)$ be separable metric space and let $\xi$ and $\eta$ be
+  random elements in $S$ then we define the \emph{Ky-Fan distance}
+  between $\xi$ and $\eta$ to be
+\begin{align*}
+\alpha(\xi, \eta) = \inf \lbrace \epsilon > 0 \mid \probability{d(\xi, \eta) > \epsilon} \leq \epsilon \rbrace
+\end{align*}
+\end{defn}
+
+It is useful to note that the infimum in the definition of the Ky-Fan distance can be replaced by a minimum.
+\begin{prop}\label{KyFanAttainment}Let $(\Omega, \mathcal{A}, P)$ be a probability space and $(S,d)$ be metric space and let $\xi$ and $\eta$ be
+  random elements in $S$ then $\probability{d(\xi, \eta) > \alpha(\xi,\eta)} \leq \alpha(\xi,\eta)$.
+\end{prop}
+\begin{proof}
+Pick a decreasing sequence $\epsilon_k \downarrow \alpha(\xi, \eta)$.  Since $\lbrace d(\xi, \eta) > \epsilon_1 \rbrace \subset \lbrace d(\xi, \eta) > \epsilon_{2} \rbrace \subset \dotsb$ we may apply continuity of measure to conclude that $\probability{d(\xi, \eta) > \epsilon_k}  \uparrow \probability{d(\xi, \eta) > \alpha(\xi, \eta)}$.  Since $\probability{d(\xi, \eta) > \epsilon_k} \leq \epsilon_k \leq \epsilon_j$ for all $j \leq k$, it follows that $\probability{d(\xi, \eta) > \alpha(\xi, \eta)} \leq \epsilon_j$ for all $j \in \naturals$ hence $\probability{d(\xi, \eta) > \alpha(\xi, \eta)} \leq \lim_{j \to \infty} \epsilon_j = \alpha(\xi, \eta)$.
+\end{proof}
+
+
+\begin{thm}\label{KyFanMetric}Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $(S,d)$ be a separable metric space then the Ky-Fan distance defines a pseudometric on $\mathcal{L}^0(\Omega, S)$ defines a metric on $L^0(\Omega, S, P)$.  Given random elements $\xi, \xi_1, \xi_2, \dotsc$ we have $\xi_n \toprob \xi$ if and only if $
+\alpha(\xi_n, \xi) \to 0$.
+\end{thm}
+\begin{proof}
+First we show that $\alpha$ defines a pseudometric on $\mathcal{L}^0(\Omega, S)$.  Nonnegativity and symmetry of $\alpha$ are immediate.  To see the triangle inequality, let $\xi, \eta, \zeta$ be random elements in $S$.  By Proposition \ref{KyFanAttainment} we have $\probability{d(\xi, \eta) > \alpha(\xi, \eta)} \leq \alpha(\xi, \eta)$ and $\probability{d(\eta, \zeta) > \alpha(\eta, \zeta)} \leq \alpha(\eta,\zeta)$. By the triangle
+inequality applied to $d$ and subadditivity of probability we get
+\begin{align*}
+\probability{d(\xi, \zeta) > \alpha(\xi, \eta) + \alpha(\eta, \zeta)} 
+&\leq \probability{d(\xi, \eta) + d(\eta,\zeta) > \alpha(\xi, \eta) + \alpha(\eta, \zeta)} \\
+&\leq \probability{d(\xi, \eta) > \alpha(\xi, \eta)} + \probability{d(\eta,\zeta) > \alpha(\eta, \zeta)}\\
+&\leq  \alpha(\xi, \eta) + \alpha(\eta, \zeta)
+\end{align*}
+and therefore $\alpha(\xi, \zeta) \leq \alpha(\xi, \eta) + \alpha(\eta, \zeta)$.   To see that $\alpha$ is a metric on $L^0$, note that $\alpha(\xi,\eta) = 0$ if and only if $\xi = \eta$ a.s. follows from Proposition \ref{KyFanAttainment} and the fact that $d$ is a metric on $S$.  
+
+Now suppose that $\xi_n \toprob \xi$.  Let $\epsilon > 0$ be given.  We have $\lim_{n \to \infty} \probability{d(\xi_n, \xi) > \epsilon} = 0$.  In particular there exists $N$ such that $\probability{d(\xi_n, \xi) > \epsilon} \leq \epsilon$ for all $n \geq N$ hence $\alpha(\xi_n, \xi) \leq \epsilon$ for all $n \geq N$.  It follows that $\lim_{n \to \infty} \alpha(\xi_n, \xi) \leq \epsilon$.  Now let $\epsilon \downarrow 0$ to see that $\lim_{n \to \infty} \alpha(\xi_n, \xi) = 0$.
+
+On the other hand, suppose that $\lim_{n \to \infty} \alpha(\xi_n, \xi) = 0$.  Let $\epsilon > 0$ and $\delta >0$ be given.  Pick $N$ such that $\alpha(\xi_n, \xi) < \epsilon \minop \delta$ for all $n \geq N$ and therefore
+\begin{align*}
+\probability{d(\xi_n, \xi) > \epsilon} &\leq \probability{d(\xi_n, \xi) > \alpha(\xi_n, \xi)} \leq \alpha(\xi_n, \xi) < \delta
+\end{align*}
+for $n \geq N$ hence $\lim_{n \to \infty} \probability{d(\xi_n, \xi) > \epsilon} =0$.
+\end{proof}
+
+The metrizability of convergence in probability and the subsequence criterion for almost sure convergence (Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence}) together show that almost sure convergence in separable metric spaces can be metrized if and only if it coincides with convergence in probability.
+
+\begin{prop}Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $(S,d)$ be a complete separable metric space then $L^0(\Omega, S, P)$ is complete in the Ky-Fan metric.
+\end{prop}
+\begin{proof}
+TODO: Have I already proven this without calling out the Ky-Fan metric (just using the notion of Cauchy in probability)?
+\end{proof}
+
+\begin{thm}\label{KyFanProhorov}Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $(S,d)$ be a separable metric space then $\rho(\law{\xi}, \law{\eta}) \leq \alpha(\xi, \eta)$.
+\end{thm}
+\begin{proof}
+Let $F$ be a closed subset of $S$, then by Proposition \ref{KyFanAttainment}
+\begin{align*}
+\probability{\xi \in F} &= \probability{\xi \in F; d(\xi, \eta) \leq \alpha(\xi, \eta)} + \probability{\xi \in F; d(\xi, \eta) > \alpha(\xi, \eta)} \\
+&\leq \probability{\eta \in F^{\alpha(\xi, \eta)}; d(\xi, \eta) \leq \alpha(\xi, \eta)} + \probability{d(\xi, \eta) > \alpha(\xi, \eta)} \\
+&\leq \probability{\eta \in F^{\alpha(\xi, \eta)}} + \alpha(\xi, \eta) \\
+\end{align*}
+therefore $\rho(\law{\xi}, \law{\eta}) \leq \alpha(\xi, \eta)$
+\end{proof}
+

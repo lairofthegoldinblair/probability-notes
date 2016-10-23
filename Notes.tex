@@ -11,7 +11,7 @@
 \DeclareMathOperator*{\ImPart}{Im}
 \DeclareMathOperator*{\median}{Med}
 \DeclareMathOperator*{\diag}{Diag}
-\DeclareMathOperator*{\interior}{int}
+\DeclareMathOperator*{\interiorop}{int}
 \DeclareMathOperator*{\diam}{diam}
 \DeclareMathOperator*{\sgn}{sgn}
 \DeclareMathOperator*{\IdentityMatrix}{Id}
@@ -23,6 +23,7 @@
 \DeclareMathOperator*{\loc}{loc}
 \DeclareMathOperator*{\Osc1}{Osc_{1}}
 \DeclareMathOperator*{\osc}{osc}
+\DeclareMathOperator*{\poisop}{Pois}
 
 \newtheorem{thm}{Theorem}[chapter]
 \newtheorem{cor}[thm]{Corollary}
@@ -62,7 +63,7 @@
 \newcommand{\sprobabilityop}[1]{\textbf{P}_{#1}}
 \newcommand{\cprobability}[2]{\textbf{P} \left \{#2 \mid #1 \right \}} 
 \newcommand{\csprobability}[3]{\textbf{P}_{#3} \left \{#2 \mid #1 \right \}} 
-\newcommand{\oprobability}[1]{\textbf{P}^*\{#1\}} 
+\newcommand{\oprobability}[1]{\textbf{P}^* \left \{#1 \right \}} 
 \newcommand{\characteristic}[1]{\textbf{1}_{#1}} 
 \newcommand{\pushforward}[2]{#2 \circ #1^{-1}} 
 \newcommand{\complexes}{\mathbb{C}} 
@@ -105,6 +106,8 @@
 \newcommand{\net}[2]{\langle #1_{#2} \rangle}
 \newcommand{\tvnorm}[1]{\norm{ #1}_{tv}}
 \newcommand{\dual}[1]{{#1}^*}
+\newcommand{\interior}[1]{\interiorop \left( #1 \right)}
+\newcommand{\pois}[1]{\poisop \left( #1 \right)}
 
 \begin{document}
 
