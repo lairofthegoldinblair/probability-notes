@@ -1,5 +1,7 @@
 \chapter{Empirical Processes}
 
+\section{Definitions}
+
 Let $(S, \mathcal{S}, \mu)$ be a probability space.  Suppose that $\xi, \xi_1, \xi_2, \dotsc$ are i.i.d. random elements in $S$ with $\mathcal{L}(\xi_i) = \mu$.  Let $f \in \mathcal{L}(S, \mathcal{S}, \mu)$ be a square integrable real valued function on $S$ and consider the random variables $f(\xi), f(\xi_1), f(\xi_2), \dotsc$.  By the Expectation Rule (Lemma \ref{ExpectationRule}) we know that 
 \begin{align*}
 \probability{f(\xi_n) \in A} &= \int \characteristic{f \in A} \, d\mathcal{L}(\xi_n) = \mu \lbrace f \in A \rbrace = \pushforward{f}{\mu}(A)
@@ -14,10 +16,150 @@ and
 \end{align*}
 (so $\variance{f(\xi)} = \int f^2 \, d\mu - \left(\int f \, d\mu\right)^2$).  Hence we may apply the Central Limit Theorem \ref{CentralLimitTheorem} to conclude 
 \begin{align*}
-\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^n f(\xi_i) - \int f , d\mu \right) \todist N(0, \variance{f(\xi)} )
+\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^n f(\xi_i) - \int f \, d\mu \right) \todist N(0, \variance{f(\xi)} )
 \end{align*}
 
 TODO: The more general finite dimensional case with $f_1, \dotsc, f_m$.
+
+Empirical process theory explores the conditions under which the convergence of $ \frac{1}{n} \sum_{i=1}^n f(\xi_i)$ to $\int f \, d\mu$ and $\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^n f(\xi_i) - \int f , d\mu \right)$ to $N(0, \variance{f(\xi)})$ can be made ``uniform'' of a family of square integrable functions $\mathcal{F}$.  For the moment the meaning of the word uniform is being left vague.  Several details need to be addressed before we can make a precise statement about the convergence we have in mind.  
+
+\begin{defn}
+Let $(S, \mathcal{S}, \mu)$ be a probability space  and suppose we are given a set $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$.  Given $\xi, \xi_1, \xi_2, \dotsc$ are i.i.d. random elements in $S$ with $\mathcal{L}(\xi_i) = \mu$ we now view 
+\begin{align*}
+\mathds{G}^n_f &= \sqrt{n} \left [ \frac{1}{n} \sum_{i=1}^n \left( f(\xi_i) - \int f \, d\mu \right) \right ]
+\end{align*}
+as a stochastic process indexed by $\mathcal{F}$ called the \emph{empirical process}.
+\end{defn} 
+Our observations about the central limit theorem above can be rephrased in the language of stochastic process as say that the finite dimensional distributions converge to multidimensional Gaussians.  It follows that if we are able to make sense of the convergence of the empirical processes to a limiting stochastic process, we know that the limiting stochastic process will be a Gaussian process; in particular one indexed by $\mathcal{F}$ and with finite dimensional distributions $N(0, \covariance{(f_1, \dotsc, f_n)})$.  
+
+The discussion above tells us what the limit of an empirical process will be (should it exist).  Thus we have following definition.
+\begin{defn}Let $(S, \mathcal{S}, \mu)$ and $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ then a centered Gaussian process $\mathds{G}^\mu$ indexed by $\mathcal{F}$ with covariance 
+\begin{align*}
+\scovariance{\mathds{G}^\mu_f}{\mathds{G}^\mu_g} &= \expectation{\mathds{G}^\mu_f \mathds{G}^\mu_g} = \int (f - \int f \, d\mu)(g - \int g \, d\mu) \, d\mu
+\end{align*}
+is called a \emph{$\mu$-Brownian bridge indexed by $\mathcal{F}$}.
+\end{defn}
+
+By virtue of the next result, we'll be able to learn many things about $\mu$-Brownian bridges from results about isonormal processes.
+\begin{prop}\label{prop:GeneralizedBrownianBridgeAndIsonormal}Let $(S, \mathcal{S}, \mu)$, $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ and $\mathds{G}^\mu$ an $\mu$-Brownian bridge.
+\begin{itemize}
+\item[(i)] If $f=g$ a.s. then $\mathds{G}^\mu_f = \mathds{G}^\mu_g$ a.s.
+\item[(ii)] If $a,b \in \reals$ and $f,g, af+bg \in \mathcal{F}$ then $\mathds{G}^\mu_{af+bg} = a\mathds{G}^\mu_f + b \mathds{G}^\mu_g$ a.s.
+\item[(iii)] $\mathds{G}^\mu$ defines an isonormal process on $L^2_0(S, \mathcal{S}, \mu)$
+\end{itemize}
+\end{prop}
+\begin{proof}
+Suppose $f,g \in \mathcal{L}^2(S, \mathcal{S}, \mu)$ and $f = g$ $\mu$-a.s. It follows that $\int f , d\mu = \int g \, d\mu$ and moreover 
+\begin{align*}
+&\expectation{(\mathds{G}^\mu_f - \mathds{G}^\mu_g)^2} = \expectation{(\mathds{G}^\mu_f)^2} - 2\expectation{\mathds{G}^\mu_f \mathds{G}^\mu_g} + \expectation{(\mathds{G}^\mu_g)^2} \\
+&=\int (f - \int f \, d\mu)^2 \, d\mu - 2 \int (f - \int f \, d\mu)(g - \int g \, d\mu) \, d\mu + \int (g - \int g \, d\mu)^2\, d\mu \\
+&=\int (f - \int f \, d\mu)^2 \, d\mu - 2 \int (f - \int f \, d\mu)^2 \, d\mu + \int (f - \int f\, d\mu)^2\, d\mu = 0
+\end{align*}
+It follows that $\mathds{G}^\mu_f = \mathds{G}^\mu_g$ a.s.
+
+To see linearity calculate
+\begin{align*}
+&\expectation{(\mathds{G}^\mu_{a f + b g} - a \mathds{G}^\mu_f - b \mathds{G}^\mu_g)^2} \\
+&=\expectation{(\mathds{G}^\mu_{a f + b g})^2} -2 a\expectation{\mathds{G}^\mu_{a f + b g}\mathds{G}^\mu_{f}} -2 b\expectation{\mathds{G}^\mu_{a f + b g}\mathds{G}^\mu_g} - 2 ab\expectation{\mathds{G}^\mu_{f}\mathds{G}^\mu_g} \\
+&+a^2\expectation{(\mathds{G}^\mu_{f})^2}  + b^2\expectation{(\mathds{G}^\mu_{g})^2}  \\
+&=\int (a f + b g - \sexpectation{a f + b g}{\mu})^2 \, d\mu -2a \int (a f + b g - \sexpectation{a f + b g}{\mu}) (f - \sexpectation{f}{\mu}) \, d\mu \\
+&-2 b\int (a f + b g - \sexpectation{a f + b g}{\mu}) (g - \sexpectation{g}{\mu}) \, d\mu -2 ab\int (f - \sexpectation{ f}{\mu}) (g - \sexpectation{g}{\mu}) \, d\mu \\
+&+a^2 \int (f  - \sexpectation{f}{\mu})^2 \, d\mu + b^2 \int (g - \sexpectation{g}{\mu})^2 \, d\mu \\
+&=\int (a f + b g - \sexpectation{a f + b g}{\mu})^2 \, d\mu -2 \int (a f + b g - \sexpectation{a f + b g}{\mu})^2 \, d\mu \\
+&+\int (a f  - \sexpectation{a f}{\mu} - (b g - \sexpectation{b g}{\mu}))^2 \, d\mu = 0
+\end{align*}
+from which $\mathds{G}^\mu_{af+bg} = a\mathds{G}^\mu_f + b \mathds{G}^\mu_g$ a.s. follows by Lemma \ref{ZeroIntegralImpliesZeroFunction}.
+ 
+Given a $\mu$-Brownian bridge we can also consider the family of centered Gaussian processes on $L^2(S, \mathcal{S}, \mu)$ obtained by defining $\mathds{G}^\mu_{[f]} = \mathds{G}^\mu_{f}$ obtained by picking a representative of each equivalence class $[f] \in L^2(S, \mathcal{S}, \mu)$.  From the above argument we see that every such process is a modification of every other.  In particular the covariances of the representatives.  Suppose that $f,g \in \mathcal{L}_0^2(S, \mathcal{S}, \mu)$ we have
+\begin{align*}
+\scovariance{\mathds{G}^\mu_f}{\mathds{G}^\mu_g} &= \int (f - \int f \, d\mu)(g - \int g \, d\mu) \, d\mu = \int f g \, d\mu = \langle f,g \rangle
+\end{align*}
+and therefore a $\mu$-Brownian bridge restricted to $L_0(S, \mathcal{S}, \mu)$ is isonormal.
+\end{proof}
+
+The previous proposition also shows that $\mu$-Brownian bridges always exist.  
+\begin{prop}\label{ExistenceGeneralizedBrownianBridge}Let $(S, \mathcal{S}, \mu)$ and $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ then $\mu$-Brownian bridge indexed by $\mathcal{F}$ exists.
+\end{prop}
+\begin{proof}
+Let $L$ be an isonormal process on $L^2(S, \mathcal{S}, \mu)$ (which exists by Proposition \ref{ExistenceIsonormalProcess}).  For any $f \in  \mathcal{L}^2(S, \mathcal{S}, \mu)$ we let $[f]$ be the almost sure equivalence class in $L^2(S, \mathcal{S}, \mu)$.  Clearly $[a f + b g] = a [f] + b[g]$ for all $a,b \in \reals$ and $f, g \in \mathcal{L}^2(S, \mathcal{S}, \mu)$.  Define 
+\begin{align*}
+\mathds{G}^\mu_f &= L_{[f - \int f \, d\mu]} = L_{[f]} - \int f \, d\mu L_{[1]}
+\end{align*}
+Since $L$ is a centered Gaussian process it follows that $\mathds{G}^\mu$ is as well.  We can compute the covariance from the definition of an isonormal process
+\begin{align*}
+\expectation{\mathds{G}^\mu_f \mathds{G}^\mu_g} &= \expectation{L_{[f-\int f \, d\mu]}  L_{[g - \int g\, d\mu]}} = \int (f-\int f \, d\mu) (g - \int g\, d\mu) \, d\mu
+\end{align*}
+
+From the linearity of $L$ (Proposition \ref{LinearityIsonormalProcess}) and linearity of the projection $[\cdot] : \mathcal{L}^2 \to L^2$ we know that
+\begin{align*}
+\mathds{G}^\mu_{af + bg} &= L_{[af + bg]} = L_{a[f] + b[g]} = a L_{[f]} + b L_{[g]} = a \mathds{G}^\mu_f + b \mathds{G}^\mu_g \text{ a.s.}
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{prop:GeneralizedBrownianBridgePseudometric}Let $(S, \mathcal{S}, \mu)$, $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ and $\mathds{G}^\mu$ a 
+$\mu$-Brownian bridge then 
+\begin{align*}
+\rho_\mu(f,g) &= \expectation{(\mathds{G}^\mu_f - \mathds{G}^\mu_g)^2}^{1/2}
+\end{align*}
+defines a pseudometric on $\mathcal{F}$.  $\rho_\mu$ induces a pseudometric on $L^2(S, \mathcal{S}, \mu)$ which is the regular Hilbert metric on $L_0^2(S, \mathcal{S}, \mu)$.
+\end{prop}
+\begin{proof}
+Clearly $\rho_\mu(f,g) \geq 0$,  $\rho_\mu(f,f) \geq 0$ and $\rho_\mu(f,g) = \rho_\mu(g,f)$.  The triangle inequality follows from the Minkowski inequality Lemma \ref{MinkowskiInequality}.
+
+If $f=g$ a.s. then by Proposition \ref{prop:GeneralizedBrownianBridgeAndIsonormal} we have $\mathds{G}^\mu_f = \mathds{G}^\mu_g$ a.s. and therefore $\rho_\mu$ is well defined on $L^2$.  Suppose $f,g \in L^2_0(S,\mathcal{S}, \mu)$ then we have since $\mathds{G}^\mu$ is isonormal on $L^2_0$,
+\begin{align*}
+\rho_\mu(f,g) &= \expectation{(\mathds{G}^\mu_f - \mathds{G}^\mu_g)^2}^{1/2} = \norm{(f - g)^2}^{1/2}
+\end{align*}
+\end{proof}
+
+\begin{defn}Let $(S, \mathcal{S}, \mu)$ and $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ then we say that $\mathcal{F}$ is \emph{pregaussian} if there
+exists a $\mu$-Brownian bridge indexed by $\mathcal{F}$ which are bounded and uniformly continuous in the $\rho_\mu$ pseudometric.  If we want to denote the dependence on $G$ then we will write $\rho^G_\mu$.  
+\end{defn}
+
+TODO: Apparently pregaussian-ness is actually equivalent to tightness (this is in Van der Vaart and Wellner).  This leads to a different way of thinking about much of the following I believe.  That way of thinking stresses the analogy of Hoffmann-Jorgensen theory with classical weak convergence theory (tightness, Prohorov and FDDs).  I think the following is true:
+
+In fact the relationship between tightness and sample path continuity is not restricted to sample bounded Gaussian processes, it is a general fact about sample bounded processes.
+\begin{thm}Let $X$ be a stochastic process indexed by $T$ with bounded sample paths.  Then the law of $X$ is a tight Borel probability measure on $\ell^\infty(T)$ if and only if there exists a pseudometric $\tau$ on $T$ such that $T$ is totally bounded with respect to $\rho$ and $X$ has a version (TODO: which sense of version?) with $\rho$-uniformly continuous sample paths.
+\end{thm}
+
+For Gaussian stochastic processes $X$ it turns out that $X$ is tight if and only if the $\rho_\mu$ pseudometric works.
+
+\begin{prop}\label{prop:PregaussianConditions}Let $(S, \mathcal{S}, \mu)$ and $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ then $\mathcal{F}$ is pregaussian if and only if $\pi_0(\mathcal{F})$ is pregaussian.
+\end{prop}
+\begin{proof}
+Suppose $\pi_0(\mathcal{F})$ is pregaussian and $\mathds{G}^\mu$ is a $\mu$-Brownian bridge which is $\rho_\mu$ uniformly continuous and bounded.  For $f \in \mathcal{F}$, define $H^\mu_f = \mathds{G}^\mu_{\pi_0(f)}$ which is a centered Gaussian process by virtue of the corresponding properties of $\mathds{G}^\mu$.  As for covariances, since $\int \pi_0(f) \, d\mu = \int \pi_0(g) \, d\mu = 0$,
+\begin{align*}
+\expectation{H^\mu_f H^\mu_g} &= \expectation{\mathds{G}^\mu_{\pi_0(f)}\mathds{G}^\mu_{\pi_0(g)}} = \int \pi_0(f) \pi_0(g) \, d\mu = \int (f - \int f \, d\mu) (g-\int g \, d\mu) \, d\mu
+\end{align*}
+so $H^\mu$ is a $\mu$-Brownian bridge.  Sample path boundedness of $H^\mu$ is immediate.  To see uniform continuity of $H^\mu$ let $\epsilon>0$ be given and 
+pick $\delta > 0$ such that $\rho^G_\mu(f,g) < \delta$ implies $\abs{\mathds{G}^\mu_f - \mathds{G}^\mu_g} < \epsilon$ for all $f,g \in \pi_0(\mathcal{F})$.  If $f,g \in \mathcal{F}$ then
+\begin{align*}
+\rho^H_\mu(f,g) &= \expectation{(H^\mu_f - H^\mu_g)^2}^{1/2} = \expectation{(\mathds{G}^\mu_{\pi_0(f)} - \mathds{G}^\mu_{\pi_0(g)})^2}^{1/2} = \rho^G_\mu(\pi_0(f), \pi_0(g))
+\end{align*}
+Therefore $\rho^H_\mu(f,g) < \delta$ implies $\abs{H^\mu_f - H^\mu_g} = \abs{\mathds{G}^\mu_{\pi_0(f)} - \mathds{G}^\mu_{\pi_0(g)}} < \epsilon$.
+
+On the other hand suppose $\mathcal{F}$ is pregaussian and let $H^\mu$ be a $\mu$-Brownian bridge which is $\rho^H_\mu$ uniformly continuous and bounded.  
+For every $f \in \pi_0(\mathcal{F})$ we have $f = g - \int g \, d\mu$ for some $g \in \mathcal{F}$, thus for each $f \in \pi_0(\mathcal{F})$ there exists a constant
+$c_f$ such that $f+c_f \in \mathcal{F}$.  Note that if $f \in \pi_0(\mathcal{F})$ and $f+c,f+d \in \mathcal{F}$ for constants $c,d \in \reals$ then
+\begin{align*}
+&\expectation{(H^\mu_{f+c} - H^\mu_{f+d})^2} \\
+&= \int \left(f+c - \int(f+c) \, d\mu\right)^2 \, d\mu  -2 \left(f+c - \int(f+c) \, d\mu\right) \left(f+d - \int(f+d) \, d\mu\right)  \, d\mu \\
+&+ \int \left(f+d - \int(f+d) \, d\mu\right)^2 \, d\mu  \\
+&=0
+\end{align*}
+so $H^\mu_{f+c}=H^\mu_{f+d}$ a.s.
+Define $\mathds{G}^\mu_f = H^\mu_{f+c_f}$; by the previous computation the choice of $c_f$ doesn't change the almost sure equivalence class of $\mathds{G}^\mu_f$.  It is immediate that $\mathds{G}^\mu$ is centered Gaussian and bounded.  To calculate the covariance,
+\begin{align*}
+\expectation{\mathds{G}^\mu_f \mathds{G}^\mu_g} = \expectation{H^\mu_{f+c_f}  H^\mu_{g+c_g}}  &= \int (f+c_f - \sexpectation{f+c_f}{\mu}) (g+c_g - \sexpectation{g+c_g}{\mu}) \, d\mu\\
+&= \int (f- \sexpectation{f}{\mu}) (g - \sexpectation{g}{\mu}) \, d\mu
+\end{align*}
+
+To see uniformly continuity let $\epsilon > 0$ be given and pick $\delta > 0$ such that $\rho^H_\mu(f,g) < \delta$ implies $\abs{H^\mu_f - H^\mu_g}<\epsilon$ for $f,g \in \mathcal{F}$.  Suppose $f,g \in \pi_0(\mathcal{F})$ then 
+\begin{align*}
+\rho^G_\mu(f,g) &= \expectation{(\mathds{G}^\mu_f - \mathds{G}^\mu_g)^2}^{1/2} = \expectation{(H^\mu_{f+c_f} - H^\mu_{g+c_g})^2}^{1/2} = \rho^H_\mu(f+c_f, g+c_g)\\
+ \end{align*}
+Thus if $\rho^G_\mu(f,g)<\delta$ then $\rho^H_\mu(f+c_f, g+c_g)<\delta$ and $\abs{H^\mu_{f+c_f} - H^\mu_{g+c_g}}=\abs{\mathds{G}^\mu_f - \mathds{G}^\mu_g}<\epsilon$.
+\end{proof}
 
 \section{Weak Convergence in Non Separable Spaces}
 
@@ -526,12 +668,142 @@ We will often require the fact that coordinate projections on product spaces are
 TODO : Note that Dudley provides a proof of this fact doesn't rely on the $n=2$ case of Proposition \ref{MeasurableCoverProductOfIndependent}; it seems to me this is a simple corollary of that right?
 \end{proof}
 
+\subsection{Weak Convergence}
+
+\begin{defn}Let $(S,d)$ be a metric space then a \emph{random net in $S$} is a $\mathcal{I}$ a directed set and for every $\alpha \in \mathcal{I}$ a probability space $(\Omega_\alpha, \mathcal{A}_\alpha, P_\alpha)$ and a (not necessarily measurable) map $\xi_\alpha : \Omega_\alpha \to S$.  We will often denote the random net simply as $\net{\xi}{\alpha}$ or $\xi_\alpha$.
+\end{defn}
+
+\begin{defn}Let $(S,d)$ be a metric space with the Borel $\sigma$-algebra and $\xi_\alpha$ a random net in $S$.  Let $\mu$ be a Borel probability measure on $S$ then we that \emph{$\xi_\alpha$ converges weakly to $\mu$}
+if and only if the net $\soexpectation{f(\xi_\alpha)}{\alpha}$ converges to $\int f(\xi) \, d\mu$ for every bounded continuous function $f : S \to \reals$.  We denote convergence in distribution as $\xi_\alpha \toweakhj \mu$.  If $(\Omega, \mathcal{A}, P)$ is a probability space and $\xi : \Omega \to S$ is a measurable random element then we say that \emph{$\xi_\alpha$ converges in distribution to $\xi$} if and only if $\xi_\alpha$ converges weakly to $\law{\xi}$.  We denote convergence in distribution as $\xi_\alpha \todisthj \xi$.
+\end{defn}
+
+TODO: Portmanteau and Skorohod-Dudley-Wichura
+
+\begin{thm}[Portmanteau Theorem]\label{PortmanteauTheoremHoffmanJorgensen}Let $(S,d)$ be a metric space, $\xi_\alpha$ a random net in $S$ and $\mu$ be a
+ Borel probability measure.  The following are equivalent
+\begin{itemize}
+\item[(i)] $\xi_\alpha$ converge weakly to $\mu$.
+\item[(ii)] $\int f \, d\mu_n \to \int f \, d\mu$
+  for all bounded Lipschitz functions $f$.
+\item[(iii)] $\limsup_{\alpha} \oprobability{\xi_\alpha \in C} \leq
+  \mu(C)$ for all closed sets $C$
+\item[(iv)] $\liminf_{\alpha} \iprobability{\xi_\alpha \in U} \geq
+  \mu(U)$ for all open sets $U$
+\item[(v)] $\lim_{\alpha} \oprobability{\xi_\alpha \in A} = \lim_{\alpha} \iprobability{\xi_\alpha \in A} = \mu(A)$ for all
+  $\mu$-continuity sets $A$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+TODO:
+\end{proof}
+
+\subsection{Tightness and Prohorov's Theorem}
+
+\begin{defn}\label{defn:AsymptoticMeasurability}Let $(S,d)$ be a metric space with the Borel $\sigma$-algebra and $\xi_\alpha$ a random net in $S$.  We say that $\xi_\alpha$ is \emph{asymptotically measurable} if for every bounded continuous function $f : S \to \reals$ be have
+\begin{align*}
+\int^* f(\xi_\alpha) \, dP_\alpha - \int_* f(\xi_\alpha)  \, dP_\alpha \to 0
+\end{align*}
+\end{defn}
+
+\begin{defn}\label{defn:AsymptoticTightness}Let $(S,d)$ be a metric space with the Borel $\sigma$-algebra and $\xi_\alpha$ a random net in $S$.  We say that $\xi_\alpha$ is \emph{asymptotically tight} if for every $\epsilon > 0$ there exists a compact set $K$ such that for every $\delta > 0$ 
+\begin{align*}
+\liminf_{\alpha} \iprobability{\xi_\alpha \in K^\delta} \geq 1 - \epsilon
+\end{align*}
+\end{defn}
+
+\begin{prop}Let $(S,d)$ be a metric space  with the Borel $\sigma$-algebra, $\xi_\alpha$ a random net in $S$ and $\mu$ Borel probability measure on $S$ with $\xi_\alpha \toweakhj \mu$ then
+\begin{itemize}
+\item[(i)] $\xi_\alpha$ is asymptotically measurable
+\item[(ii)] $\xi_\alpha$ is asymptotically tight if and only if $\xi$ is tight
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see (i) let $f : S \to \reals$ be bounded continuous then we know that $\soexpectation{f(\xi_\alpha)}{\alpha} \to \int f(\xi) \, d\mu$.  On the other hand, $-f$ is also bounded and continuous and therefore 
+\begin{align*}
+\int_* f(\xi_\alpha) \, dP_\alpha &= - \int^* -f(\xi_\alpha) \, dP_\alpha \to -\int -f(\xi) \, d\mu = \int f(\xi) \, d\mu
+\end{align*}
+
+To see (ii) let $\epsilon > 0$.  Assume that $\mu$ is tight and pick a compact set $K$ with $\mu(K) > 1 - \epsilon$.  By the Portmanteau Theorem \ref{PortmanteauTheoremHoffmanJorgensen} we know that for every $\delta>0$,
+\begin{align*}
+\liminf_\alpha \iprobability{\xi_\alpha \in K^\delta} &\geq \mu(K^\delta) \geq \mu(K) \geq 1 -\epsilon
+\end{align*}
+Conversely assume that $\xi_\alpha$ is asymptotically tight and pick a compact $K$ with $\liminf_{\alpha} \iprobability{\xi_\alpha \in K^\delta} \geq 1 - \epsilon$ for all $\delta>0$.  Again by the Portmanteau Theorem \ref{PortmanteauTheoremHoffmanJorgensen} we get
+\begin{align*}
+\mu(\overline{K^\delta}) &\geq \limsup_\alpha \oprobability{\xi_\alpha \in \overline{K^\delta}} \geq \liminf_{\alpha} \iprobability{\xi_\alpha \in K^\delta} \geq 1 - \epsilon
+\end{align*}
+We claim that $\cap_{\delta > 0} \overline{K^\delta} = K$.  Suppose $x \notin K$ then $d(x,K) > 0$ since otherwise we pick $x_n \in K$ such that $d(x,x_n) < 1/n$ and the by compactness of $K$ we get that $x_n \to x$ along a subsequence which contradicts the fact that $K$ is closed (Lemma \ref{CompactnessInMetricSpaces}).  Now observe $x \notin \overline{K^{d(x,K)/2}}$ to see that $\cap_{\delta > 0} \overline{K^\delta} \subset K$ (the opposite inclusion is obvious. The result follows by continuity of measure (Lemma \ref{ContinuityOfMeasure})
+\begin{align*}
+\mu(K) = \lim_{\delta \to 0} \mu(\overline{K^\delta}) \geq 1-\epsilon
+\end{align*}
+\end{proof}
+
+
+In the following theorem that extends Theorem \ref{Prohorov} to the non-separable case, there are separate statements for nets and sequences; recall that there are subnets of a sequence that are not sequences.  More generally, it may be helpful to recall the subtely in the definition of a subnet (Definition \ref{defn:Subnet}).
+\begin{thm}[Prohorov's Theorem]\label{ProhorovHoffmanJorgensen}Let $(S,d)$ be a metric space  with the Borel $\sigma$-algebra  
+\begin{itemize}
+\item[(i)] Let $\xi_\alpha$ a random net in $S$ that is asymptotically measurable and asymptotically tight then there exists a tight Borel measure $\mu$ and a subnet $\beta$ of $\alpha$ such that $\xi_\beta \toweakhj \mu$.
+\item[(ii)] Let $\xi_n$ be a random sequence in $S$ that is asymptotically measurable and asymptotically tight then there exists a tight Borel measure $\mu$ and a subsequence $n_j$ such that $\xi_{n_j} \toweakhj \mu$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+Let $C_b(S)$ denote the space of bounded continuous $f : S \to \reals$ and let $\norm{f}$ be the supremum of $f$.  Consider the product $Y = \Pi_{f \in C_b(S)} [-\norm{f}, \norm{f}]$ with the product topology and recall that, by Tychonoff's Theorem \ref{Tychonoff}, $Y$ is compact.  The random net $\xi_\alpha$ defines a net $\net{y}{\alpha}$ in $Y$ given by $y_\alpha(f) = \int^* f(\xi_\alpha) \, dP_\alpha$.  By compactness of $Y$ and Theorem \ref{CompactnessAndNets} we know that there is a convergent subnet of $\net{y}{\alpha}$.  
+
+TODO: Finish
+\end{proof}
+
+\section{Asymptotic Equicontinuity}
+
+\begin{defn}Let $(S,\mathcal{S}, \mu)$ be a probability space, $\tau$ be a pseudometric on $S$, $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ and $\mathds{G}^n$ be the empirical process defined by $\mu$.  We say that $\mathcal{F}$ is \emph{asymptotically equicontinuous with respect to $\mu$ and $\tau$} if for every $\epsilon > 0$ there $\delta > 0$ and $N \in \naturals$ such that for all $n \geq N$ 
+\begin{align*}
+\oprobability{\sup \lbrace \abs{\mathds{G}^n_{f-g}} \mid f,g \in \mathcal{F}, \tau(f,g) < \delta \rbrace > \epsilon} < \epsilon
+\end{align*}
+\end{defn}
+
+\begin{defn}Let $(S,\mathcal{S}, \mu)$ and $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ then we say that $\mathcal{F}$ is \emph{Donsker class} if $\mathcal{F}$ is pregaussian and $\mathds{G}^n \todist \mathds{G}^\mu$.
+\end{defn}
+
+\begin{thm}\label{DonskerClassesAndAsymptoticEquicontinuity}Let $(S,\mathcal{S}, \mu)$ and $\mathcal{F} \subset \mathcal{L}^2(S, \mathcal{S}, \mu)$ then the following are equivalent
+\begin{itemize}
+\item[(i)] $\mathcal{F}$ is a Donsker class
+\item[(ii)] $\mathcal{F}$ is totally bounded under the pseudometric $\rho_\mu$ and is asymptotically equicontinuous with respect to $\mu$ and $\rho_\mu$.
+\item[(iii)] There exists a pseudometric $\tau$ on $S$ such that $\mathcal{F}$ is totally bounded under $\tau$ and is asymptotically equicontinuous with respect to $\mu$ and $\tau$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+(i) implies (ii): TODO
+
+(ii) implies (iii) is immediate.
+
+We now move on to the main part of the theorem, (iii) implies (i).  
+
+\begin{clm} For any countable dense $\mathcal{H} \subset \mathcal{G}$, $\mathds{G}^\mu$ has sample functions uniformly continuous on $\mathcal{H}$.
+\end{clm}
+Let $\epsilon > 0$ be given and pick $\delta > 0$ and $N \in \naturals$ as per the asymptotic equicontinuity condition.  Let $h_1, h_2, \dotsc$ be an enumeration of $\mathcal{H}$ and for each $m \in \naturals$ define $\mathcal{H}_m = \lbrace h_1, \dotsc, h_m \rbrace$.  By the finite dimensional Central Limit Theorem we know that $(\mathds{G}^n_{h_1}, \dotsc, \mathds{G}^n_{h_m}) \todist (\mathds{G}_{h_1}, \dotsc, \mathds{G}_{h_m})$.
+\begin{align*}
+\probability{\max \lbrace \abs{\mathds{G}^\mu_{f-g}} \mid f,g \in \mathcal{H}_m, \tau(f,g) < \delta \rbrace > \epsilon} 
+&=\lim_{n \to \infty} \probability{\max \lbrace \abs{\mathds{G}^n_{f-g}} \mid f,g \in \mathcal{H}_m, \tau(f,g) < \delta \rbrace > \epsilon} \\
+&\leq \lim_{n \to \infty} \oprobability{\sup \lbrace \abs{\mathds{G}^n_{f-g}} \mid f,g \in \mathcal{F}, \tau(f,g) < \delta \rbrace > \epsilon} < \epsilon
+\end{align*}
+Now letting $\mathcal{H}_m \uparrow \mathcal{H}$ and use continuity of measure to get
+\begin{align*}
+\probability{\sup \lbrace \abs{\mathds{G}^\mu_{f-g}} \mid f,g \in \mathcal{H}, \tau(f,g) < \delta \rbrace > \epsilon}  \leq \epsilon
+\end{align*}
+from which we get uniform continuity of $\mathcal{G}^\mu$ on $\mathcal{H}$.  TODO: Make sure all the details are correct here.
+
+\begin{clm} $\mathcal{F}$ is pregaussian
+\end{clm}
+To see that the $\tau$-uniformly continuous functions on $\mathcal{F}$ is separable in the supremum norm, by Proposition \ref{QuotientOfPseudometricSpace} we know that this space is isomorphic to the uniformly continuous functions on the quotient of $\mathcal{F}$ under the equivalence relation $\tau(f,g) = 0$.  Proposition \ref{QuotientOfPseudometricSpace}  also tells us that the latter space is a totally bounded metric space and therefore the uniformly continuous functions is separable in the supremum norm by Proposition \ref{SpaceOfUniformlyContinuousFunctionsOnTotallyBoundedSet}.  So pick a countable dense subset $\mathcal{H}$.  
+
+Let $G^\mu$ be a 
+
+\end{proof}
+
 \section{Bootstrap}
 
 \begin{defn}A random variable $\epsilon$ with values in $\lbrace -1, 1 \rbrace$ such that $\probability{\epsilon = 1} = \probability{\epsilon = -1} = 1/2$ is called a \emph{Rademacher variable}.
 \end{defn}
 
-Some basic motivation for what follows (e.g. Koltchinski's St. Flour notes have some useful stuff in its introduction).   Also Pollard tries to motivate symmetrization techniques but I haven't gotten much out of his stuff.
+Some basic motivation for what follows (e.g. Koltchinski's St. Flour notes have some useful stuff in its introduction).   Also Pollard tries to motivate symmetrization techniques but I haven't gotten much out of what he has to say.
 
 TODO: Dudley calls this a desymmetrization fact.  What the heck does that mean?  I actually think this is what Van der Vaart and Wellner call Ottaviani's inequality.  
 \begin{lem}Let $(\Omega, \mathcal{A}, P)$ and $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$ be probability spaces form the product $(\Omega \times \Omega^\prime, \mathcal{A} \otimes  \mathcal{A}^\prime, P \otimes P^\prime)$ and let $\pi : \Omega \times \Omega^\prime \to \Omega$ and $\pi^\prime : \Omega \times \Omega^\prime \to \Omega^\prime$ be the coordinate projections.  Suppose $T$ be a set, $X_t : \Omega \to \reals^T$ and $Y_t : \Omega^\prime \to \reals^T$ be stochastic processes (TODO: Do we really need measurability of $X_t$ and $Y_t$?; I suspect not.).   Then
@@ -613,8 +885,8 @@ TODO:
 TODO: Clarify the general stochastic process setting versus the empirical process setting.  
 
 When thinking about stochastic processes $X$, we often think of the index set $T$ as representing time.  In the theory of empirical processes that intuition has to be cast aside and one is usually thinking about the index set as being some set of functions $\mathcal{F}$.  In the standard setup assume that we have two probability spaces $(S, \mathcal{S}, P)$ and $(\Omega^\prime, \mathcal{A}^\prime, P^\prime)$.  For every $n \in \naturals$ we consider the product probability space
-$(S^n \times \Omega^\prime, \mathcal{S}^n \otimes \mathcal{A}^\prime, P^n \otimes P^\prime)$ and for each $1 \leq i \leq n$ the coordinate projections $X_i : S^n \times \Omega^\prime \to S$.  We can then form the \emph{empirical measure} $\mathds{P}_n = \frac{1}{n} \sum_{i=1}^n \delta_{X_i}$ and the \emph{empirical process} 
-$\mathds{G}_n = \sqrt{n}( \mathds{P}_n - P)$ (TODO: show that $\mathds{P}_n$ is measurable).  An alternative way of thinking about these objects is to use the random measures to integrate a measurable function on $S$, $\mathds{P}_n(f) = \frac{1}{n} \sum_{i=1}^n f(X_i)$ and $\mathds{G}_n(f) = \sqrt{n}(\mathds{P}_n(f) - \expectation{f})$.  Clearly for each such $f$, $\mathds{P}_n(f)$ is a sum of a composition of measurable functions hence is measurable; thus each of of $\mathds{P}_n$ and $\mathds{G}_n$ defines a stochastic process indexed by a set of measurable functions.  In some cases it is also useful to consider the \emph{partial sum process} $\sum_{i=1}^n f(X_i)$.   Note that as a special case of indexing by measurable functions is indexing by a set of characteristic functions (or equivalently indexing by a set of measurable subsets of $S$).  In the general theory of empirical process there are many results that aren't specific to processes defined above and in those cases we'll strive to formulate them in the most general way possible.
+$(S^n \times \Omega^\prime, \mathcal{S}^n \otimes \mathcal{A}^\prime, P^n \otimes P^\prime)$ and for each $1 \leq i \leq n$ the coordinate projections $X_i : S^n \times \Omega^\prime \to S$.  We can then form the \emph{empirical measure} $\mathds{P}^n = \frac{1}{n} \sum_{i=1}^n \delta_{X_i}$ and the \emph{empirical process} 
+$\mathds{G}^n = \sqrt{n}( \mathds{P}^n - P)$ (TODO: show that $\mathds{P}^n$ is measurable).  An alternative way of thinking about these objects is to use the random measures to integrate a measurable function on $S$, $\mathds{P}^n_f = \frac{1}{n} \sum_{i=1}^n f(X_i)$ and $\mathds{G}^n_f = \sqrt{n}(\mathds{P}^n_f - \expectation{f})$.  Clearly for each such $f$, $\mathds{P}^n_f$ is a sum of a composition of measurable functions hence is measurable; thus each of of $\mathds{P}^n$ and $\mathds{G}^n$ defines a stochastic process indexed by a set of measurable functions.  In some cases it is also useful to consider the \emph{partial sum process} $\sum_{i=1}^n f(X_i)$.   Note that as a special case of indexing by measurable functions is indexing by a set of characteristic functions (or equivalently indexing by a set of measurable subsets of $S$).  In the general theory of empirical process there are many results that aren't specific to processes defined above and in those cases we'll strive to formulate them in the most general way possible.
 
 TODO: Actually some of the inequalities are not supposed to even require meaurability of the $X_t$.  So we aren't really even talking about stochastic processes here: simply families of functions!
 

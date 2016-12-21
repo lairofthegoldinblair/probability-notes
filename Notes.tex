@@ -19,6 +19,7 @@
 \DeclareMathOperator*{\essinf}{ess\,inf}
 \DeclareMathOperator*{\bplim}{bp-lim}
 \DeclareMathOperator*{\convexhullop}{conv}
+\DeclareMathOperator*{\symmconvexhullop}{sconv}
 \DeclareMathOperator*{\Lip}{Lip}
 \DeclareMathOperator*{\loc}{loc}
 \DeclareMathOperator*{\Osc1}{Osc_{1}}
@@ -54,6 +55,8 @@
 \newcommand{\oexpectation}[1]{\textbf{E}^*\left[#1\right]} 
 \newcommand{\oexpectationop}{\textbf{E}^*}
 \newcommand{\soexpectation}[2]{\textbf{E}^*_{#2}\left [#1 \right]} 
+\newcommand{\iexpectation}[1]{\textbf{E}_*\left[#1\right]} 
+\newcommand{\iexpectationop}{\textbf{E}_*}
 \newcommand{\variance}[1]{\textbf{Var} \left (#1 \right )} 
 \newcommand{\covariance}[1]{\textbf{Cov} \left (#1 \right )} 
 \newcommand{\scovariance}[2]{\textbf{Cov} \left (#1, #2 \right )} 
@@ -64,6 +67,9 @@
 \newcommand{\cprobability}[2]{\textbf{P} \left \{#2 \mid #1 \right \}} 
 \newcommand{\csprobability}[3]{\textbf{P}_{#3} \left \{#2 \mid #1 \right \}} 
 \newcommand{\oprobability}[1]{\textbf{P}^* \left \{#1 \right \}} 
+\newcommand{\soprobability}[2]{\textbf{P}^*_{#2} \left \{#1 \right \}}
+\newcommand{\iprobability}[1]{\textbf{P}_* \left \{#1 \right \}} 
+\newcommand{\siprobability}[2]{(\textbf{P}_{#2})_* \left \{#1 \right \}}
 \newcommand{\characteristic}[1]{\textbf{1}_{#1}} 
 \newcommand{\pushforward}[2]{#2 \circ #1^{-1}} 
 \newcommand{\complexes}{\mathbb{C}} 
@@ -81,6 +87,8 @@
 \newcommand{\toas}{\overset{a.s.}\to}
 \newcommand{\todist}{\overset{d}\to}
 \newcommand{\toweak}{\overset{w}\to}
+\newcommand{\todisthj}{\overset{d}\to}
+\newcommand{\toweakhj}{\overset{w}\to}
 \newcommand{\tolp}[1]{\overset{L^#1}\to}
 \newcommand{\eqfdd}{\overset{f.d.d.}=}
 \newcommand{\eqdist}{\overset{d}=}
@@ -96,6 +104,8 @@
 \newcommand{\minop}{\wedge}
 \newcommand{\maxop}{\vee}
 \newcommand{\convexhull}[1]{\convexhullop\{#1\}} 
+\newcommand{\symmconvexhull}[1]{\symmconvexhullop\{#1\}} 
+\newcommand{\closedsymmconvexhull}[1]{\overline{\symmconvexhullop}\{#1\}} 
 \newcommand{\type}[1]{\mathcal{T}(#1)}
 \newcommand{\types}[1]{\mathcal{T}_{#1}}
 \newcommand{\typeop}{\mathcal{T})}
@@ -107,6 +117,7 @@
 \newcommand{\tvnorm}[1]{\norm{ #1}_{tv}}
 \newcommand{\dual}[1]{{#1}^*}
 \newcommand{\interior}[1]{\interiorop \left( #1 \right)}
+\newcommand{\boundary}[1]{\partial #1 }
 \newcommand{\pois}[1]{\poisop \left( #1 \right)}
 
 \begin{document}
@@ -281,9 +292,17 @@ f^{-1} f_* (\mathcal{S}) &= \lbrace f^{-1}(A) \mid A \in  f_*
 &\subset \mathcal{S}
 \end{align*}
 
-TODO: Find the examples of strict inclusion.
+For an example of strict inclusion in the first case choose $S =\lbrace 0 \rbrace$ and $T = \lbrace 0,1  \rbrace$ with the
+trivial $\sigma$-algebra $\mathcal{T} = \lbrace \emptyset, T \rbrace$ and $f : S \to T$ the function $f(0) = 0$.  Then 
+$f^{-1} (\mathcal{T}) = \lbrace \emptyset, S \rbrace$ and $f_* f^{-1} (\mathcal{T}) = 2^T \neq \mathcal{T}$ (e.g note that
+$f^{-1} (1) = \emptyset = f^{-1} (\emptyset)$ but $\lbrace 1 \rbrace \notin \mathcal{T}$; quite generally given any $f : S \to T$ and a
+set $A \cap f(T) = \emptyset$ we'll have $A \in f_* f^{-1} (\mathcal{T})$ but not necessarily $A \in \mathcal{T}$).
+
+For an example of strict inclusion in the second case choose $S =\lbrace 0, 1 \rbrace$ with the 
+power set $\sigma$-algebra, $T = \lbrace 0 \rbrace$ and $f : S \to T$ the constant function $f(0) = f(1) = 0$.  
+Then $f_* (2^T) = 2^S = \lbrace \emptyset, S \rbrace$.  Then $f^{-1} f_*(2^T) = \lbrace \emptyset, T \rbrace \neq 2^T$.
 \end{proof}
-\begin{xca}Let $f : S \to T$ be a set function and let $\mathcal{C}
+\begin{xca}\label{PullbackGeneratingSet}Let $f : S \to T$ be a set function and let $\mathcal{C}
   \subset 2^T$ then $f^{-1}(\sigma(\mathcal{C})) = \sigma(f^{-1}(\mathcal{C}))$.
 \end{xca}
 \begin{proof}
@@ -403,7 +422,7 @@ $\sup_n\xi_n(\omega) \leq \eta(\omega)$.
 
 \begin{xca}\label{ExConvProb1}Let $\xi, \xi_n$ be random elements in a metric space $S$
   such that $\xi_n \toprob \xi$, let $A_n$ be events such that
-  $\probability{A_n} = 1$ and let $\eta_n$ be random elements in
+  $\lim_{n \to \infty} \probability{A_n} = 1$ and let $\eta_n$ be random elements in
   $S$ such that $\eta_n = \xi_n$ on $A_n$, show that $\eta_n \toprob \xi$.
 \end{xca}
 \begin{proof}
@@ -411,8 +430,8 @@ Fix $\epsilon > 0$ and note that
 \begin{align*}
 \lim_{n \to \infty} \probability{d(\eta_n, \xi) > \epsilon} &=
 \lim_{n \to \infty} \probability{d(\eta_n, \xi) > \epsilon ; A_n } +
-\lim_{n \to \infty} \probability{d(\eta_n, \xi) > \epsilon;A_n^c}
-\leq \lim_{n \to \infty} \probability{d(\xi_n, \xi) > \epsilon } +
+\lim_{n \to \infty} \probability{d(\eta_n, \xi) > \epsilon;A_n^c} \\
+&\leq \lim_{n \to \infty} \probability{d(\xi_n, \xi) > \epsilon } +
 \lim_{n \to \infty} \probability{A^c_n} = 0
 \end{align*}
 \end{proof}

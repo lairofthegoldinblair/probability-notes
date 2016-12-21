@@ -751,14 +751,15 @@ function must be equal (Theorem
 construction that $\mu = \expectation{\xi}$ and $Q = \covariance{\xi}$.
 \end{proof}
 
-\begin{examp}Let $\xi_1, \dots, \xi_d$ be independent random variables
+\begin{examp}\label{IndependentGaussiansAreJointlyGaussian}Let $\xi_1, \dots, \xi_d$ be independent random variables
   with $\xi_i$ being normal $N(\mu_i, \sigma_i^2)$.  Then $\xi =
   (\xi_1, \dots, \xi_d)$ is a Gaussian random vector.  In fact, if we
   let $\mu = (\mu_1, \dots, \mu_d)$ and 
 \begin{align*}
 Q = \diag(\sigma_1^2, \dots, \sigma_d^2)
 \end{align*}
-then $\xi = N(\mu, Q)$.
+then $\xi = N(\mu, Q)$.  This follows by computing the characteristic
+function of $xi$ using Theorem \ref{IndependenceProductCharacteristicFunctions}
 \end{examp}
 
 \begin{examp}\label{LinearTransformationGaussian}Let $(\xi_1, \dots, \xi_d)$ be $\xi = N(\mu, Q)$.  Let
@@ -780,6 +781,8 @@ A Q A^T
 Gaussian random vectors are easy to handle in many cases because
 independence is so easily verified; this is a case in which
 uncorrelated implies independent.
+
+TODO: The following extends to k-ary independence.
 \begin{prop}\label{GaussianIndependence}Let $\xi$ be a Gaussian random
   vector in $\reals^d$ then for any subset $I\subset \lbrace 1,
   \dotsc, d \rbrace$ let $\xi_I = (\xi_{i_1}, \dotsc, \xi_{i_r})$ be

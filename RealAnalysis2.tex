@@ -408,7 +408,7 @@ Now suppose that every convergent net has a unique limit.  For each $x \in X$ re
 
 
 Now we discuss the relationship between compactness and nets.  The goal is to provide a net-based analogy of sequential compactness that suffices to characterize compactness in general topological spaces; essentially we want to prove a result that says compactness is equivalent to every net having a convergent subnet.   With this goal in mind it is natural that the first step is to define a subnet.
-\begin{defn}If $\mathcal{J}$ is a directed set and $y : \mathcal{J} \to X$ is a net then we say that $\net{y}{\beta}$ is a \emph{subnet}
+\begin{defn}\label{defn:Subnet}If $\mathcal{J}$ is a directed set and $y : \mathcal{J} \to X$ is a net then we say that $\net{y}{\beta}$ is a \emph{subnet}
 of $\net{x}{\alpha}$ if there exists a map $\iota : \mathcal{J} \to \mathcal{I}$ such that $y = x \circ \iota$ (i.e. $x_{\iota(\beta)} = y_\beta$) and for each $\alpha \in \mathcal{I}$ there
 exists $\beta \in \mathcal{J}$ such that $\iota(\gamma) \succ \alpha$ for all $\gamma \succ \beta$. 
 \end{defn}
@@ -602,9 +602,16 @@ by open balls $B(x,r) = \lbrace y \in S \mid d(x,y) < r \rbrace$; by the triangl
 and Lemma \ref{CharacterizeBaseOfTopology} it is easy to see that the open balls are in fact
 a base for the induced topology.
 
-It is often the case that the best way of dealing with a pseudometric space is by passing to quotient to define a metric space.
+It is often the case that the best way of dealing with a pseudometric space is by passing to a quotient to define a metric space.  The following justifies the construction and collects examples of may properties that can be inferred from corresponding properties on the quotient.
 \begin{prop}\label{QuotientOfPseudometricSpace}Let $(S,d)$ be a pseudometric space, the the relation $x \equiv y$ if and only $d(x,y) = 0$ defines an equivalence
-relation on $S$.  Let $T$ be the quotient space $S/\equiv$ and define $d_{\equiv}([x], [y]) = d(x,y)$ then $d_\equiv$ is a metric.
+relation on $S$.  Let $T$ be the quotient space $S/\equiv$ and define $d_{\equiv}([x], [y]) = d(x,y)$ then $d_\equiv$ is a metric.  Let $\pi : S \to T$ be the projection from $S$ to $T$.  
+\begin{itemize}
+\item[(i)] $\pi$ is continuous and open.  
+\item[(ii)] Let $Y$ be a $T_1$ topological space, then every $f \in C(T,Y)$, the map $f \mapsto f \circ \pi$ is a bijection with $C(S,Y)$.  
+\item[(iii)] If $(Y,e)$ is a metric space then $f : T \to Y$ is uniformly continuous if and only if $f \circ pi$ is.  
+\item[(iv)]  If $Y$ is a normed vector space then $f : T \to Y$ is bounded if and only if $f \circ pi$ is and $\sup_{x \in T} \norm{f(x)} = \sup_{y \in S} \norm{(f \circ \pi)(y)}$.
+\item[(v)] $d$ is totally bounded on $S$ if and only if $d_{\equiv}$ is totally bounded on $T$.
+\end{itemize}
 \end{prop}
 \begin{proof}
 The fact that $\equiv$ is reflexive, symmetric and transitive follow immediately from properties (i), (ii) and (iii) of the definition of a pseudometric.
@@ -613,8 +620,27 @@ If $d(x,x^\prime) = d(y,y^\prime) = 0$ then by the triangle inequality
 \begin{align*}
 d(x,y) &\leq d(x, x^\prime) + d(x^\prime, y^\prime) + d(y^\prime, y) = d(x^\prime, y^\prime)
 \end{align*}
-and switching the roles of primed and unprimed points we conclude that $d_\equiv$ is well defined.  Symmetry and the triangle inequality for $d_\equiv$ follow from
+and switching the roles of primed and unprimed points we conclude $d(x,y)=d(x^\prime,y^\prime)$ so that $d_\equiv$ is well defined.  Symmetry and the triangle inequality for $d_\equiv$ follow from
 the corresponding properties of $d$.  If $d_\equiv([x], [y])$ then it follows that $d(x,y) = 0$ and therefore $[x]=[y]$.
+
+Let $\epsilon > 0$, $[x] \in T$ and consider $y \in S$ such that $d_\equiv([x], [y]) < \epsilon$.  If $z \in S$ and $d(y,z) < \epsilon-d_\equiv([x], [y]) = \epsilon - d(x,y)$ then 
+\begin{align*}
+d_\equiv([x], [z]) &\leq d_\equiv([x], [y]) + d_\equiv([y], [z]) = d(x,y) + d(y,z) < \epsilon
+\end{align*}
+Thus $\pi^{-1} B([x], \epsilon)$ is open hence $\pi$ is continuous.   Now let $B(x,\epsilon)$ is $S$ and consider the projection $\pi B(x,\epsilon)$ in $T$.  Suppose $[y] \in \pi B(x,\epsilon)$.  It follows that $d(x,y) = d_\equiv([x], [y]) < \epsilon$.  Suppose that $d_\equiv([y], [z]) < \epsilon - d_\equiv([x], [y])$ then
+\begin{align*}
+d(x,z) &\leq d(x,y) + d(y,z) =  d_\equiv([x], [y]) + d_\equiv([y], [z]) < \epsilon
+\end{align*}
+hence $[z] \in \pi B(x,\epsilon)$ and $\pi$ is an open map.
+
+Since $\pi$ is continuous, $f \mapsto f \circ \pi$ is a well defined function from $C(T, Y)$ to $C(S, Y)$.  Suppose $f \circ \pi = g \circ \pi$, then since $\pi$ is surjective it follows that $f = g$ on $T$.  Let $f : S \to Y$ be continuous.  Suppose $x, y \in S$ with $d(x,y)=0$ and suppose $f(x) \neq f(y)$.  Pick an open neighborhood $V$ of $f(x)$ such that $f(y) \notin V$.   The sequence $x,y,x,y, \dotsc$ converges in $S$ to $x$ so by continuity $f(x), f(y), f(x), f(y), \dotsc$ must converge $f(x)$ in $Y$.  However, the sequence $f(x), f(y), f(x), f(y), \dotsc$ is not in the open neighborhood $V$ infinitely often which is a contradiction.  Thus we conclude that $f(x)=f(y)$.  Therefore we can define a function $[f] : T \to Y$ by $[f]([x]) = f(x)$.  We claim that $[f]$ is continuous.  Let $V \subset Y$ be open and note that $[f]^{-1}(V) = \pi (f^{-1}(V))$ (if $[f]([x]) \in V$ then $f(x) \in V$ and $\pi(x) = [x]$; if $f(x) \in V$ then by definition, $[f](\pi(x)) = f(x) \in V$).   Thus openness of $[f]^{-1}(V)$ follows from continuity of $f$ and openness of $\pi$.
+
+To see (iii), suppose for every $\epsilon > 0$ there exists $\delta>0$ such that $d_\equiv([x], [y]) < \delta$ implies $e(f([x]), f([y])) < \epsilon$; then clearly if $d(x,y) < \delta$ then $e((f\circ \pi)(x), (f \circ \pi)(y)) = e(f([x]), f([y])) < \epsilon$.  Conversely suppose that for every $\epsilon > 0$ there exists $\delta>0$ such that $d(x,y) < \delta$ implies $e((f\circ \pi)(x), (f \circ \pi)(y)) < \epsilon$ then if $d_\equiv([x], [y]) < \delta$ we pick representatives $x,y \in S$ with $d(x,y) = d_\equiv([x], [y]) < \delta$ and conclude $e(f([x]), f([y])) = e((f\circ \pi)(x), (f \circ \pi)(y))< \epsilon$.
+
+To see (iv) suppose $f$ is bounded then it is clear that $f \circ \pi$ is bounded.  Conversely if $f \circ \pi$ is bounded then because $\pi$ is surjective it follows that $f$ is bounded.  Now suppose that $f$ is bounded, let $\epsilon > 0$ and pick $[x] \in T$ such that $\norm{f([x])} > \sup_{z \in T} \norm{f(z)} - \epsilon$; it follows that $\sup_{z \in S} \norm{(f \circ \pi)(z)} \geq \norm{f([x])} > \sup_{z \in T} \norm{f(z)} - \epsilon$.  Let $\epsilon \to 0$ to conclude $\sup_{z \in S} \norm{(f \circ \pi)(z)} \geq \sup_{z \in T} \norm{f(z)}$.  On the other hand let $\epsilon > 0$ and pick $x \in S$ such that $\norm{f([x])} > \sup_{z \in S} \norm{(f \circ pi)(z)} - \epsilon$ then $\sup_{z \in T} \norm{f(z)} \geq \norm{f([x])} > \sup_{z \in S} \norm{(f \circ pi)(z)} - \epsilon$.  Let $\epsilon \to 0$ to conclude $\sup_{z \in T} \norm{f(z)} \geq \sup_{z \in S} \norm{(f \circ pi)(z)}$.
+
+We claim that a finite set of points $x_1, \dotsc, x_n$ in $S$ is an $\epsilon$-net in $S$ if and only if $[x_1], \dotsc, [x_n]$ is an $\epsilon$-net in $T$.  Suppose that for any $y \in S$ there exists $x_j$ with $d(x_j,y) < \epsilon$.  Then given any $[y] \in T$, pick a representative $y \in S$ and $x_j$ with $d(x_j,y) < \epsilon$
+then $d_\equiv([x_j], [y]) = d(x_j,y) < \epsilon$.  Conversely if for any $[y] \in T$ there exists $[x_j]$ with $d_\equiv([x_j], [y]) < \epsilon$.  Let $y \in S$, pick $[x_j]$ with $d_\equiv([x_j], [y]) < \epsilon$ then $d(x_j,y)  = d_\equiv([x_j], [y]) < \epsilon$.   From the claim it follows that $S$ is totally bounded under $d$ if and only if $T$ is totally bounded for $d_\equiv$.  
 \end{proof}
 
 \section{Borel Spaces}
@@ -777,7 +803,7 @@ TODO: Show that $U^d_b(S)$ is a Banach space under the supremum norm.
 \item[(ii)]If $S$ is compact then $C(S; \reals)$ with the uniform
   topology is separable.
 \item[(iii)]If $\hat{d}$ is a totally bounded metric on $S$ then $U^{\hat{d}}(S) = U^{\hat{d}}_b(S)$ and 
-  $U^{\hat{d}}_b(S)$ is separable
+  $U^{\hat{d}}_b(S)$ is separable (we needn't assume that $S$ is separable for this part it follows from the existence of the totally bounded metric).
 \end{itemize}
 \end{lem}
 \begin{proof}
@@ -3411,7 +3437,7 @@ For $\epsilon > 0$ given we pick $k \in \naturals$ large enough so that $2^{2-k}
 
 TODO: We haven't discussed completion of metric spaces???
 
-\begin{defn}Let $(S,d)$ be a metric space then a \emph{completion} of $S$ is a metric space $(\hat{S}, \hat{d})$ with an isometry $\phi : S \to \hat{S}$ with $\phi(S)$ dense in $\hat{S}$.
+\begin{defn}Let $(S,d)$ be a metric space then a \emph{completion} of $S$ is a complete metric space $(\hat{S}, \hat{d})$ with an isometry $\phi : S \to \hat{S}$ with $\phi(S)$ dense in $\hat{S}$.
 \end{defn}
 
 \begin{thm}\label{CompletionOfMetricSpace}Let $(S,d)$ be a metric space then a completion exists and is unique up to isometry.

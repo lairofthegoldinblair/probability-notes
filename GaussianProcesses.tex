@@ -1,5 +1,37 @@
 \chapter{Gaussian Processes}
 
+In so far as boundedness and sample continuity make the basic strategy clear.  View the isonormal process $L$ as the ``universal'' Gaussian process such that all Gaussian processes are constructed by restricting $L$ to subsets $C \subset H$.  Now to study an arbitrary Gaussian process, study the subset $C \subset H$ (in particular study its ``size'' in an appropriate sense).
+
+\section{Gaussian Random Variables}
+
+\subsection{Gaussians and Convexity}
+
+\begin{lem}\label{InteriorsOfFiniteDimensionalSimplex}Let $v_0, \dotsc, v_d \in \reals^d$ be such that $v_1 - v_0, \dotsc, v_d - v_0$ are linearly independent then
+$\convexhull{v_0, \dotsc, v_d}$ has non empty interior.
+\end{lem}
+\begin{proof}
+Consider the point $w = \frac{1}{d+1} \sum_{j=0}^d v_j \in \convexhull{v_0, \dotsc, v_d}$.  
+
+Define the affine map $A : \reals^d \to \reals^d$ given by $A e_j = v_0 + v_j$ for $j=1, \dotsc, d$.  
+TODO: Finish
+\end{proof}
+
+\begin{prop}\label{InteriorsOfFiniteDimensionalConvexSets}A convex set in $A \subset \reals^d$ is either contained in a hyperplane or has non-empty interior.
+\end{prop}
+\begin{proof}
+Pick a point $v \in A$ and let $V$ be the linear span of $\lbrace w - v \mid w \in A \rbrace$.  Suppose that $V \neq \reals^d$ then there exists a non-zero $z \in \reals^d$ such that $z \perp V$.  Then if $w \in A$ we know that $\langle z, w - v \rangle = 0$ hence $w \in v + \lbrace z \rbrace^{\perp}$.  
+
+Therefore we may assume that $V = \reals^d$ and therefore there exist $w_1, \dotsc, w_d$ such that $w_1 -v, \dotsc, w_d - v$ are linearly independent; apply Lemma \ref{InteriorsOfFiniteDimensionalSimplex}.
+\end{proof}
+
+\begin{prop}\label{LebesgueMeasurabilityOfConvexSets}Any convex subset  $A \subset \reals^d$ is Lebesgue measurable and moreover $\lambda^d(\boundary{A}) = 0$.
+\end{prop}
+\begin{proof}
+TODO:
+\end{proof}
+
+\section{Gaussian Processes}
+
 Recall the definition of Gaussian processes Definition \ref{defn:GaussianProcess} and the fact that the distribution of a Gaussian process $X$ is uniquely 
 determined by the first and second moments $\expectation{X_t}$ and $\expectation{X_s X_t}$ (Lemma \ref{GaussianProcessMoments}).  It is easy to use 
 the Daniell-Kolmogorov extension theorem to see that Gaussian processes always exist. 
@@ -10,12 +42,50 @@ the Daniell-Kolmogorov extension theorem to see that Gaussian processes always e
 For each finite subset $I = \lbrace t_1, \cdots, t_d \rbrace \subset T$ we let $\mu_I = (\mu(t_1), \cdots, \mu(t_d))$ and $Q_I$ be $d \times d$ matrix $Q_I(i,j) = C(t_i,t_j)$.  By assumption $Q_I$ is positive semidefinite and therefore there is an $N(\mu_I, Q_I)$ random vector on $\reals^I$.  By construction and Example \ref{LinearTransformationGaussian} applied to the projection $\pi : \reals^I \to \reals^J$ it follows that this defines a projective family of probability measures.  Now since $\reals$ is Borel space we may apply Theorem \ref{DaniellKolmogorovExtension}.
 \end{proof}
 
+\begin{defn}\label{defn:JointlyGaussianProcesses}Let $X^1, \dotsc, X^n$ be stochastic processes indexed by sets  $T_1, \dotsc, T_n$ respectively and define the disjoint union $T=\lbrace (j,t) \mid 1 \leq j \leq n \text { and } t \in T_j \rbrace$. The $X^1, \dotsc, X^n$ are \emph{jointly Gaussian} if the process  $X$ indexed by $T$ and defined by $X_{(j,t)} = X^j_t$ is Gaussian.
+\end{defn}
+
+\begin{prop}\label{IndependentGaussianProcessesAreJointlyGaussian}Let $X^1, \dotsc, X^n$ be independent Gaussian processes indexed by sets  $T_1, \dotsc, T_n$, then $X^1, \dotsc, X^n$ are jointly Gaussian.
+\end{prop}
+\begin{proof}
+Suppose we are given $m_1, \dotsc, m_n \in \naturals$, elements $t^j_1, \dotsc, t^j_{m_j} \in T_j$ and constants $a^j_1, \dotsc, a^j_{m_j} \in \reals$ for $1 \leq j \leq n$.  For each $1 \leq j \leq n$, since $X^j$ is a Gaussian process we know that $a^j_1 X^j_{t_1} + \dotsb + a^j_1 X^j_{t_{m_j}}$ is Gaussian random variable.  By independence of the processes $X^j$ we know that the Gaussian random variables $a^j_1 X^j_{t_1} + \dotsb + a^j_1 X^j_{t_{m_j}}$ are independent.  Therefore the sum 
+is a Gaussian random variable by Example \ref{IndependentGaussiansAreJointlyGaussian}.
+\end{proof}
+
+The following extends Proposition \ref{GaussianIndependence}.
+\begin{prop}\label{GaussianProcessIndependence}Let $X^1, \dotsc, X^n$ be jointly Gaussian processes indexed by $T_1, \dotsc, T_n$ then $X^1, \dotsc, X^n$ are independent if and only if $\scovariance{X^i_s}{X^j_t} = 0$ for all $1 \leq i < j  \leq n$, $s\in T_i$ and $t \in T_j$.
+\end{prop}
+\begin{proof}
+If $X^1, \dotsc, X^n$ are independent then $\scovariance{X^i_s}{X^j_t} = \expectation{X^i_s - \expectation{X^i_s}}\expectation{X^j_t - \expectation{X^j_t}}=0$ by Lemma \ref{IndependenceExpectations}.
+
+On the other hand, by Lemma \ref{IndependenceFinitary} it suffices to show that given finite sets $T^1 \subset T_1, \dotsc, T^n \subset T_n$, the Gaussian vectors $X^1_{T^1}, \dotsc, X^n_{T^n}$ are independent  this follows from Proposition \ref{IndependentGaussianProcessesAreJointlyGaussian} and Proposition \ref{GaussianIndependence} (actually we need the k-ary version of the latter).
+
+TODO: Finish/more detail.
+\end{proof}
+
 \begin{defn}Let $\mu$ be a Borel probability measure on a Banach space $V$ then we say that $P$ is \emph{Gaussian} if $\pushforward{\lambda}{\mu}$ is a Gaussian measure on $\reals$ for every continuous linear functional $\lambda : V \to \reals$.
 \end{defn}
 
 \begin{defn}Let $H$ be a Hilbert space then an \emph{isonormal process} is a real valued process $X$ indexed by $H$ such that $\expectation{X_v} = 0$ for all $v \in H$ and $\scovariance{X_v}{X_w} = \langle v, w \rangle$ for all $v,w \in H$.
 \end{defn}
 
+In the finite dimensional case an isonormal process is trivially constructed.
+\begin{prop}\label{IsonormalFiniteDimensional}Let $H$ be a finite dimensional Hilbert space, let $e_1, \dotsc, e_d$ be an orthonormal basis for $H$ and $\xi_1, \dotsc, \xi_d$ be i.i.d. $N(0,1)$ Gaussian random variables. Then 
+\begin{align*}
+L_v(\omega) &= \langle v, \sum_{j=1}^d \xi_j(\omega) e_j \rangle = \sum_{j=1}^d \langle v, e_j \rangle \xi_j
+\end{align*} 
+is an isonormal process on $H$.
+\end{prop}
+\begin{proof}
+Clearly $\expectation{L_v} = \sum_{j=1}^d \langle v, e_j \rangle \expectation{\xi_j} = 0$.  To calculate the second moments,
+\begin{align*}
+\scovariance{L_v}{L_w}  &= \expectation{L_v L_w}  = \sum_{i=1}^d \sum_{j=1}^d \langle v, e_i \rangle \langle w, e_j \rangle \expectation{\xi_i \xi_j} = \sum_{i=1}^d \langle v, e_i \rangle \langle w, e_i \rangle = \langle v, w \rangle
+\end{align*}
+\end{proof}
+The above construction of the isonormal process shows that one can think of it as a random projection : for a $v \in H$, take a random $w \in H$ from a Gaussian distribution and the take the length of the projection of $v$ onto $w$.  
+
+In the infinite dimensional case one needs to appeal to a less elementary construction (e.g. using the Daniell-Kolmogorov Theorem).   Nonetheless it is interesting 
+to consider the natural analogue to the finite dimensional construction in the separable infinite dimensional case.  If we let $e_1, e_2, \dotsc$ be an infinite orthonormal set in $H$ and $\xi_1, \xi_2, \dotsc$ be i.i.d. standard normal random variables, then one can consider the two expressions $\langle v, \sum_{j=1}^\infty \xi_j e_j \rangle$ and $\sum_{j=1}^\infty \langle v, e_j \rangle \xi_j$ (which are equivalent in the finite dimensional case).  As it turns out, the first expression is meaningless since $\sum_{j=1}^\infty \xi_j^2=\infty$ a.s. and therefore $\sum_{j=1}^\infty \xi_j e_j$ doesn't define an element of $H$.  On the other hand it turns out that $\sum_{j=1}^\infty \langle v, e_j \rangle \xi_j$ is meaningful.  In fact in the second expression is a valid definition of an isonormal process in the separable infinite dimensional Hilbert space case.  One side effect of this is that one can't make literal sense of the random projection interpretation of the isonormal process; however the interpretation is ``almost'' true and the intuition it provides can be helpful.
 
 \begin{prop}\label{ExistenceIsonormalProcess}Let $H$ be a Hilbert space then an isonormal process on $H$ exists.
 \end{prop}
@@ -25,26 +95,26 @@ This follows from Theorem \ref{ExistenceGaussianProcess} once we observe that fo
 \sum_{i,j = 1}^d a_i a_j \langle v_i, v_j \rangle &= \langle \sum_{i=1}^d a_i v_i, \sum_{i=1}^d  v_i \rangle \geq 0
 \end{align*}
 
-Here is an alternative construction that works for separable $H$ (this is from Kallenberg).
-Let $\xi_1, \xi_2, \dotsc$ be a sequence of independent $N(0,1)$ random variables and let $v_1, v_2, \dotsc$ be an orthonormal basis of $H$.  For a general element $v \in H$ we define 
-$X_v = \sum_{n=1}^\infty \langle v, v_n \rangle \xi_n$.  Note that 
+Here is an alternative construction (analogous to the finite dimensional case) that works for separable $H$ (this is from Kallenberg).  
+Let $\xi_1, \xi_2, \dotsc$ be a sequence of independent $N(0,1)$ random variables and let $e_1, e_2, \dotsc$ be an orthonormal basis of $H$.  For a general element $v \in H$ we define 
+$X_v = \sum_{n=1}^\infty \langle v, e_n \rangle \xi_n$.  Note that 
 \begin{align*}
-\sum_{n=1}^\infty \variance{\langle v, v_n \rangle \xi_n} 
-&= \sum_{n=1}^\infty  \langle v, v_n \rangle^2 = \norm{v}^2 < \infty
+\sum_{n=1}^\infty \variance{\langle v, e_n \rangle \xi_n} 
+&= \sum_{n=1}^\infty  \langle v, e_n \rangle^2 = \norm{v}^2 < \infty
 \end{align*}
-and therefore by the Kolmogorov One-Series criterion Lemma \ref{VarianceCriterionSeries} and the independence of $\xi_n$ we see that $\sum_{n=1}^\infty \langle v, v_n \rangle \xi_n$ converges a.s.  In addition we have 
+and therefore by the Kolmogorov One-Series criterion Lemma \ref{VarianceCriterionSeries} and the independence of $\xi_n$ we see that $\sum_{n=1}^\infty \langle v, e_n \rangle \xi_n$ converges a.s.  In addition we have 
 \begin{align*}
-\lim_{n \to \infty} \expectation{\left( \sum_{j=n}^\infty \langle v, v_j \rangle \xi_j \right)^2} 
-&=\lim_{n \to \infty} \sum_{j=n}^\infty \langle v, v_j \rangle^2 = 0
+\lim_{n \to \infty} \expectation{\left( \sum_{j=n}^\infty \langle v, e_j \rangle \xi_j \right)^2} 
+&=\lim_{n \to \infty} \sum_{j=n}^\infty \langle v, e_j \rangle^2 = 0
 \end{align*}
-and therefore the series $\sum_{n=1}^\infty \langle v, v_n \rangle \xi_n$ converges in $L^2$ as well.
+and therefore the series $\sum_{n=1}^\infty \langle v, e_n \rangle \xi_n$ converges in $L^2$ as well.
 
 To validate that $X$ defined in this way is isonormal we first calculate using Cauchy-Schwartz
 \begin{align*}
 \abs{\expectation{X_v} }
-&\leq \lim_{n \to \infty} \left[\abs{\expectation{\sum_{j=1}^n \langle v, v_j \rangle \xi_j}} + \abs{\expectation{\sum_{j=n+1}^\infty \langle v, v_j \rangle \xi_j}} \right] \\
-&\leq \lim_{n \to \infty} \expectation{\abs{\sum_{j=n+1}^\infty \langle v, v_j \rangle \xi_j}} \\
-&\leq \lim_{n \to \infty} \expectation{\left( \sum_{j=n+1}^\infty \langle v, v_j \rangle \xi_j \right )^2}^{1/2} = 0 \\
+&\leq \lim_{n \to \infty} \left[\abs{\expectation{\sum_{j=1}^n \langle v, e_j \rangle \xi_j}} + \abs{\expectation{\sum_{j=n+1}^\infty \langle v, e_j \rangle \xi_j}} \right] \\
+&\leq \lim_{n \to \infty} \expectation{\abs{\sum_{j=n+1}^\infty \langle v, e_j \rangle \xi_j}} \\
+&\leq \lim_{n \to \infty} \expectation{\left( \sum_{j=n+1}^\infty \langle v, e_j \rangle \xi_j \right )^2}^{1/2} = 0 \\
 \end{align*}
 
 TODO: Finish
@@ -52,10 +122,9 @@ Also  by Parseval's Identity (TODO: Where is this)
 
 \begin{align*}
 \expectation{X_v X_w} 
-&= \sum_{j=1}^\infty \langle v, v_j \rangle \langle w, v_j \rangle = \langle v, w \rangle
+&= \sum_{j=1}^\infty \langle v, e_j \rangle \langle w, e_j \rangle = \langle v, w \rangle
 \end{align*}
 \end{proof}
-
 
 \begin{prop}\label{LinearityIsonormalProcess} Let $X$ be an isonormal process on a Hilbert space $H$, $v, w \in H$ and $a \in \reals$ then $X_{av + w} = a X_v + X_w$ a.s. 
 \end{prop}
@@ -372,11 +441,12 @@ d(\epsilon, T) &=
 \end{align*}
 \end{defn}
 
+TODO: Look at the following proof and make the existence of the countable subset more explicit.
 \begin{thm}[Sudakov-Chevet]\label{SudakovChevet}Let $X$ be a centered Gaussian process indexed by a set $T$ such that 
 \begin{align*}
-\limsup_{\epsilon \to 0} \epsilon^2 D(\epsilon, T) = +\infty
+\limsup_{\epsilon \to 0} \epsilon^2 \log D(\epsilon, T) = +\infty
 \end{align*}
-then $\sup_{t \in T} \abs{X_t} = +\infty$ almost surely.
+then $\sup_{t \in T} \abs{X_t} = +\infty$ almost surely.  In fact there exists a countable subset $B \subset T$ such that $\sup_{t \in B} \abs{X_t} = +\infty$ almost surely.
 \end{thm}
 \begin{proof}
 First suppose that $\sup_{t \in T} \variance{X_t} = +\infty$.  Note that for every $M > 0$ we have the simple bound 
@@ -410,7 +480,394 @@ and therefore
 and the claim follows by noting that $\lim_{k \to \infty} \epsilon_k^2 \log D(\epsilon_k, T) = +\infty$, $\lim_{k \to \infty} \epsilon_k^2 \log \epsilon_k =0$, 
 $\lim_{k \to \infty} \epsilon_k^2 \log (\epsilon_k^2 + 2(M^2+1)^2B^2t^2) =0$ and $\lim_{k \to \infty} e_k^{-2} = +\infty$.
 \end{proof}
-\section{Sample Continuity}
+
+\section{Boundedness and Sample Continuity}
+
+TODO: Motivate the consideration of boundedness and sample continuity properties of Gaussian processes as these wind up being important in uniform central limit theorems/empirical process contexts.  Do they also come up as important properties in Malliavin calculus?
+
+\subsection{Boundedness and Sample Continuity for Isonormal Processes}
+
+In this section we examine questions of sample path boundedness and continuity for isonormal processes.  As it turns out, for an infinite dimensional Hilbert space $H$ sample paths of an isonormal process $L$ are not bounded (TODO: in fact almost surely unbounded?).  Therefore the study of boundedness of the sample paths of an isonormal process is about identifying subsets $C \subset H$ such that the sample paths of $L$ restricted to $C$ are in fact bounded.  
+
+In discussing boundedness of sample paths we have to discuss suprema over an uncountably infinite set.  Absent continuity assumptions on sample paths (such as the cadlag property we could arrange for in discussing martingales and Feller processes) there are some measurability issues to deal with.  We need the following definitions (we'll discuss similar ideas in much more depth later on as part of the Hoffmann-Jorgensen theory of weak convergence).
+
+\begin{defn}Let $\mathcal{J}$ be a subset of $\mathcal{L}^0(\Omega, \mathcal{A}, P, [-\infty, \infty])$ the we say that $f \in \mathcal{L}^0$ is an \emph{essential supremum of $\mathcal{J}$} if 
+for every $j \in \mathcal{J}$ we have $f \geq j$ a.s. and moreover for any $g \in \mathcal{L}^0$ such that $g \leq j$ a.s. for every $j \in \mathcal{J}$ we also have $g \geq f$ a.s.  If an essential supremum exists we denote it $\esssup \mathcal{J}$ or $\esssup_{j \in \mathcal{J}} j$
+\end{defn}
+
+\begin{prop}\label{AlmostSureUniquenessEssentialSupremum}If $\mathcal{I} \subset \mathcal{J}$ the then the essential supremum of $\mathcal{J}$ is greater than or equal to the essential supremum of $\mathcal{I}$ almost surely.  If $f$ and $g$ are both essential suprema of $\mathcal{J}$ then $f = g$ a.s.
+\end{prop}
+\begin{proof}
+Let $g$ be the essential supremum of $\mathcal{J}$.  Clearly for all $j \in \mathcal{I} \subset \mathcal{J}$ we know $g \geq j$ a.s.  so by definition the essential supremum of $\mathcal{I}$ is lesss than or equal to $f$ a.s.  By the first part of the proposition, we have both $f \geq g$ a.s. and $g \geq f$ a.s. hence $f=g$ a.s.
+\end{proof}
+
+
+\begin{prop}\label{prop:ExistenceEssentialSupremumIsonormal}Let $H$ be a separable Hilbert space, $L$ be an isonormal process on $H$, $C \subset H$ and $B \subset C$ a  countable dense subset.  Then $\sup_{v \in B} L_v$ is an essential supremum of $\lbrace L_v \mid v \in C \rbrace$ and $\sup_{v \in B} \abs{L_v}$ is an essential supremum of $\lbrace \abs{L_v} \mid v \in C \rbrace$.
+\end{prop}
+\begin{proof}
+We consider the case of $\sup_{v \in B} L_v$ as the proof for $\sup_{v \in B} \abs{L_v}$ is the same.  First by countablility of $B$ and Lemma \ref{LimitsOfMeasurable}, $\sup_{v \in B} L_v$ is measurable. By density of $B$ in $C$, for $v \in C$ we may pick a sequence $v_n \in B$ with $\norm{v - v_n}^2 \leq 1/n^2$.  Let $\epsilon > 0$ be
+given then a Markov bound and the isonormal property we have
+\begin{align*}
+\sum_{n =1}^\infty \probability{\abs{L_{v} - L_{v_n}} \geq \epsilon} &\leq \abs{1}{\epsilon^2} \sum_{n =1}^\infty \expectation{(L_v - L_{v_n})^2} \leq \abs{1}{\epsilon^2} \sum_{n =1}^\infty 1/n^2 < \infty
+\end{align*}
+hence by the Borel-Cantelli Theorem \ref{BorelCantelli} we see that $\probability{\abs{L_{v} - L_{v_n}} \geq \epsilon \text{ i.o.}} = 0$ and thus by Lemma \ref{ConvergenceAlmostSureByInfinitelyOften} we have $L_{v_n} \toas L_v$.  It follows that for $L_v \leq \sup_{v \in B} L_v$ a.s.
+
+Suppose that $g$ is a measurable random variable with $g \geq L_v$ a.s. for all $v \in C$.  Then by subadditivity $\probability {\cup_{v \in B} \lbrace g < L_v \rbrace}=0$ and almost surely $g \geq L_v$ a.s. for all $v \in B$; hence $g \geq \sup_{v \in B} L_v$ a.s.  
+\end{proof}
+
+Based on Proposition \ref{prop:ExistenceEssentialSupremumIsonormal} the following definition makes sense.
+\begin{defn}Let $H$ be a separable Hilbert space, $L$ be an isonormal process on $H$ and $C \subset H$ then we define 
+\begin{align*}
+L(C)^* &= \esssup_{v \in C} L_v, &&\abs{L(C)}^* &= \esssup_{v \in C} \abs{L_v}
+\end{align*}
+We say that $C$ is a \emph{GB-set} if $\abs{L(C)}^* < \infty$ a.s.  for some isonormal process $L$ on $H$.
+\end{defn}
+
+Note that the essential suprema $L(C)^*$ and $\abs{L(C)}^*$ are invariant under modification of $L$.
+
+If $C$ is a GB-set then $\abs{L(C)}^* < \infty$ a.s.  for every isonormal process $L$.  That is because the distribution of $L(C)^*$ and $\abs{L(C)}^*$ do not depend on the choice of $L$ and therefore are properties of the set $C \subset H$ itself.
+\begin{cor}Let $H$ be a separable Hilbert space, $C \subset H$ and let $L$ and $L^\prime$  each be an isonormal process on $H$ then $L(C)^* \eqdist L^\prime(C)^*$ and $\abs{L(C)}^* \eqdist \abs{L^\prime(C)}^*$.
+\end{cor}
+\begin{proof}
+Since each of $L$ and $L^\prime$ the finite dimensional distributions of $L$ and $L^\prime$ are the same.  Pick a countable dense subset $v_1, v_2, \dotsc \in C$ and $x \in \reals$ then by continuity of measure (Lemma \ref{ContinuityOfMeasure}) and $L \eqfdd L^\prime$
+\begin{align*}
+\probability{L(C)^* > x} &= \probability{\sup_{1 \leq j < \infty} L_{v_j} > x} = \probability{\cup_{n=1}^\infty \max_{1 \leq j \leq n} L_{v_j} > x} \\
+&=  \lim_{n \to \infty} \probability{\max_{1 \leq j \leq n} L_{v_j} > x} =  \lim_{n \to \infty} \probability{\max_{1 \leq j \leq n} L^{\prime}_{v_j} > x} 
+= \probability{\cup_{n=1}^\infty \max_{1 \leq j \leq n} L^\prime_{v_j} > x} 
+= \probability{\sup_{1 \leq j < \infty} L^\prime_{v_j} > x} 
+=\probability{L^\prime(C)^* > x} 
+\end{align*}
+Therefore by Lemma \ref{DistributionFunctionCharacterizeProbability} we have $L(C)^* \eqdist L^\prime(C)^*$.  The proof for $\abs{L(C)}^*$ is the same.
+\end{proof}
+
+\begin{lem}\label{EssentialSupremumUnderContraction}Let $B : H \to H$ be a linear operator with $\norm{B} \leq 1$ and $C \subset H$ be non-empty then for any $\lambda \geq 0$ we have
+\begin{align*}
+\probability{\abs{L(BC)}^* \leq \lambda} &\geq \probability{\abs{L(C)}^* \leq \lambda}
+\end{align*}
+\end{lem}
+\begin{proof}
+TODO:
+\end{proof}
+
+With regards to sample continuity we have the following definition.
+\begin{defn}Let $H$ be a separable Hilbert space and $C \subset H$ we say that $C$ is a \emph{GC-set} if $C$ is totally bounded and there exists an isonormal process $L$ on $H$ such that all sample functions $L_v$ are uniformly continuous on $C$.
+\end{defn}
+
+The Sudakov-Chevet Theorem implies the following fact.
+\begin{prop}\label{GCImpliesGB}Let $H$ be a separable Hilbert space then a GB-set is totally bounded.  A GC-set is also a GB-set.
+\end{prop}
+\begin{proof}
+Note that Sudkov-Chevet Theorem can be rephrased as a necessary condition for a set to be a GB-set.   Let $L$ be an isonormal process on $H$ then it centered and Gaussian hence if $C \subset H$ and $\limsup_{\epsilon \to 0} \epsilon^2 D(\epsilon, C) = +\infty$ then by Theorem \ref{SudakovChevet} there exists a countable $B \subset C$ with $\sup_{v \in B} \abs{L_v} = +\infty$ a.s.  By Proposition \ref{prop:ExistenceEssentialSupremumIsonormal} we know that $\sup_{v \in B} \abs{L_v}  = \abs{L(C)}^*$ a.s. therefore we know that $C$ is not a GB-set.  
+
+Therefore suppose that $C$ is a GB-set, we know that $\limsup_{\epsilon \to 0} \epsilon^2 D(\epsilon, C) < \infty$ so there exists $M < \infty$ and $\delta > 0$ such that $D(\epsilon, C) \leq e^{M/\epsilon^2} < \infty$ for all $0 < \epsilon < \delta$.  Let $v_1, \dotsc, v_n$ be a maximial set with the property that $\norm{v_i - v_j} > \epsilon$ for all $1 \leq i < j \leq n$; we know that that $n \leq D(\epsilon,C) < \infty$.  Thus $v_1, \dotsc, v_n$ is an $\epsilon$-net for $C$ and we have $C$ is totally bounded.
+
+Let $C$ be a GC-set and let $L$ be an isonormal process on $H$ such that the sample paths of $L$ are uniformly continuous on $C$.  Since $C$ is totally bounded and a uniformly continuous function on a totally bounded set is bounded (there exists $\epsilon>0$ such that $\norm{v-w} \leq \epsilon$ implies $\abs{L_v - L_w} \leq 1$, pick an $\epsilon$-net $v_1, \dotsc, v_n$ and for any $v \in C$ let $1 \leq m \leq n$ be the smallest integer such that $\norm{v-v_m} \leq \epsilon$ then by the triangle inequality $\abs{L_v} \leq \abs{L_{v_1}} + \abs{L_{v_m} - L_v} + \sum_{j=1}^{m-1} \abs{L_{v_{j+1}} - L_{v_j}} \leq \abs{L_{v_1}} + n$)  it follows that every sample path of $L$ is bounded.  Hence the sample paths of $L$ are bounded on every countable subset of $C$ hence $\abs{L(C)}^* < \infty$ everywhere (not just almost surely). 
+\end{proof}
+
+
+We now establish some conditions that are equivalent to a set being a GC-set.  In order to define them we need some definitions.
+
+First need a definition that characterizes the restrictions of linear functions.
+\begin{defn}Let $V$ be a vector space and $C \subset V$, then a function $f : C \to \reals$ is \emph{prelinear} if and only if for every $n \in \naturals$, 
+$a_1, \dotsc, a_n \in \reals$ and $v_1, \dotsc, v_n \in C$ such that $a_1 v_1 + \dotsb + a_n v_n = 0$ we have $fa_1 (v_1) + \dotsb + a_n f(v_n) = 0$.
+\end{defn}
+
+To see that this is the correct definition we prove the following.
+\begin{prop}\label{PrelinearFunctionsAreRestrictionsOfLinear}Let $V$ be a vector space, $C \subset V$ be a subset and $f : C \to \reals$ be a prelinear function.  For every $n \in \naturals$, $a_1, \dotsc, a_n \in \reals$ and $v_1, \dotsc, v_n \in C$ let 
+\begin{align*}
+g(a_1 v_1 + \dotsb + a_n v_n) = a_1 f(v_1) + \dotsb + a_n f(v_n)
+\end{align*}
+then $g$ is a well defined linear function from the linear span of $C$ to $\reals$.  Such an extension exists if and only if $f$ is prelinear.
+\end{prop}
+\begin{proof}
+To see that $g$ is well defined, let $a_1, \dotsc, a_n, b_1, \dotsc, b_m \in \reals$ and $v_1, \dotsc, v_n, w_1, \dotsc, w_m \in C$ such that $a_1 v_1 + \dotsb + a_n v_n = b_1 w_1 + \dotsb + b_m w_m$.  Then since $f$ is prelinear we know that $a_1 f(v_1) + \dotsb + a_n f(v_n) - b_1 f(w_1) - \dotsb - b_m f(w_m) = 0$ and therefore $g(a_1 v_1 + \dotsb + a_n v_n) = g(b_1 w_1 + \dotsb + b_m w_m)$.  
+
+To see that $g$ extends $f$ simply let $v \in C$ represent itself so $f(v) = g(v)$.  To see that $g$ is linear, let $v, w$ be in the linear span of $C$ then by using zero coefficients as necessary we may assume there exist $v_1, \dotsc, v_n \in C$, $a_1, \dotsc, a_n, b_1, \dotsc, b_n \in \reals$ such that $v = a_1 v_1 + \dotsb + a_n v_n$ and $w = b_1 v_1 + \dotsb + b_n v_n$.  For any $c, d \in \reals$ we have
+\begin{align*}
+g(cv + dw) &= g((ca_1 + d b_1) v_1 + \dotsb + (ca_n + d b_n) v_n) = (ca_1 + d b_1) f(v_1) + \dotsb + (ca_n + d b_n) f(v_n) \\
+&= c( a_1 f(v_1) + \dotsb a_n f(v_n)) + d( b_1 f(v_1) + \dotsb + b_nf(v_n)) = c g(v) + d g(w)
+\end{align*}
+
+Lastly suppose that $f$ has a linear extension $g$ and pick $a_1 v_1 + \dotsb + a_n v_n = 0$ with $a_1, \dotsc, a_n \in \reals$ and $v_1, \dotsc, v_n \in C$.   By linearity of $g$,
+\begin{align*}
+0 &= g(a_1 v_1 + \dotsb + a_n v_n) = a_1 g(v_1) + \dotsb + a_n g(v_n) = a_1 f(v_1) + \dotsb + a_n f(v_n) 
+\end{align*}
+\end{proof}
+
+
+\begin{defn}Let $H$ be a Hilbert space then an orthogonal projection $\pi : H \to H$ with a finite dimensional range is called a \emph{finite dimensional projection}.  If $\pi_n$ is a sequence of projections with $\range{\pi_1} \subset \range{\pi_2} \subset \dotsb$ and $\cup_{n=1}^\infty \range{\pi_n}$ dense in $H$ then we say that $\pi_n \uparrow \IdentityMatrix$.  If $\pi : H \to H$ is any orthogonal projection then we let $\pi^\perp$ be the orthogonal projection onto the orthogonal complement of $\range{\pi_n}$.
+\end{defn}
+
+\begin{prop}\label{FDPAdaptedBasis}Suppose that $H$ be a Hilbert space and $\pi_n$ is a sequence of finite dimensional projections with $\pi_n \uparrow \IdentityMatrix$ then there exists an  orthonormal basis $e_1, e_2, \dotsc$ of $H$ and a subsequence $N_n$ such that $e_1,\dotsc, e_{N_n}$ is an orthonormal basis of $\range{\pi_n}$ for every $n \in \naturals$.
+\end{prop}
+\begin{proof}
+We construct the basis by induction.  Begin by picking an orthonormal basis of $\range{\pi_1}$.  Assume that we have an orthonormal basis of $\range{\pi_n}$.
+We claim that $\range{\pi_{n+1} - \pi_n}$ is the orthogonal complement of $\range{\pi_n}$ in $\range{\pi_{n+1}}$.  To see this first note that $\pi_n = \pi_{n+1} \circ \pi_n = \pi_n \circ \pi_{n+1}$  adjoin an orthonormal basis for that 
+
+To see that $\range{\pi_{n+1} - \pi_n} \subset \range{\pi_{n+1}}$ note that $\pi_{n+1} v - \pi_n v = \pi_{n+1} v - \pi_{n+1} \pi_{n} v = \pi_{n+1}(v - \pi_n v)$.
+
+TODO: Finish
+\end{proof}
+
+TODO: Do we need this result for pseudometric spaces?
+\begin{prop}\label{SpaceOfUniformlyContinuousFunctionsOnTotallyBoundedSet}Let $C$ be a totally bounded subset of a metric space $(S,d)$ and let $\hat{C}$ be the completion of $C$.  Then $\hat{C}$ is compact and the space $U^d(C)$ of uniformly continuous functions on $C$ with the supremum norm is a separable Banach space isometric to $C(\hat{C}; \reals)$.
+\end{prop}
+\begin{proof}
+TODO: I think I have already proved this in Lemma \ref{SeparabilityOfBoundedUniformlyContinuous}.
+
+We first claim that the completion of $C$ remains totally bounded.  Let $(\hat{C}, \hat{d})$ be the completion of $C$ and let $\psi : C \to \hat{C}$ be an isometry with $\psi(C)$ dense.  For $\epsilon > 0$ pick an $\epsilon$-net $x_1, \dotsc, x_n \in C$ (i.e. for every $y \in C$ there exists $1 \leq j \leq n$ with $d(x_j,y) < \epsilon$).  Then $\psi(x_1), \dotsc, \psi(x_n)$ is a $2\epsilon$-net in $\hat{C}$: for any $z \in \hat{C}$ we can pick $y \in C$ with $\hat{d}(y,z) < \epsilon$ and then $1 \leq j \leq n$ with $d(x_j,y) < \epsilon$ so that 
+\begin{align*}
+\hat{d}(\psi(x_j), z) \leq \hat{d}(\psi(x_j), \psi(y)) + \hat{d}(\psi(y), z) = d(x_j, y) + \hat{d}(\psi(y), z) < 2 \epsilon
+\end{align*}
+Since $\hat{C}$ complete and totally bounded it is compact (Theorem \ref{CompactnessInMetricSpaces}).  
+
+Let $f : C \to \reals$ be a uniformly continuous function.  Since $\psi : C \to \hat{C}$ is an isometry then $\psi^{-1} : \psi(C) \to C$ exists and is continuous.  Then since $\psi(C)$ is dense in $\hat{C}$, by Proposition \ref{ExtensionOfUniformlyContinuousMapCompleteRange} $f \circ \psi^{-1}$ has a unique extension to a continuous function $\overline{f} : \hat{C} \to \reals$.  To see that $\sup_{x \in C} \abs{f(x)} = \sup_{x \in \hat{C}} \abs{\overline{f}(x)}$, let $\epsilon > 0$ be given and pick $y \in \hat{C}$ such that $\sup_{x \in \hat{C}} \abs{\overline{f}(x)} < \abs{\overline{f}(y)} + \epsilon/2$.  Since $\overline{f}$ is continuous and $\psi(C)$ is dense in $\hat{C}$ we may pick $z \in C$ such that $\abs{f(z) - \overline{f}(y)}=\abs{\overline{f}(\psi(z)) - \overline{f}(y)}<\epsilon/2$ hence 
+\begin{align*}
+\sup_{x \in \hat{C}} \abs{\overline{f}(x)} &< \abs{\overline{f}(\psi(y))} + \epsilon/2 \leq \abs{f(z) - \overline{f}(y)} + \abs{f(z)} + \epsilon/2 \\
+&< \abs{f(z)} + \epsilon \leq \sup_{x \in C} \abs{f(x)} + \epsilon 
+\end{align*}
+Since $\epsilon > 0$ was arbitrary we conclude that $\sup_{x \in \hat{C}} \abs{\overline{f}(x)} \leq  \sup_{x \in C} \abs{f(x)}$.  The oppositie inequality is immediate.
+
+If we are given an arbitrary $g : \hat{C} \to \reals$ then we can define $g \circ \psi : C \to \reals$.  To see that $g \circ \psi$ is uniformly continuous let $\epsilon > 0$ be given.  Since $\hat{C}$ is compact it is uniformly continuous (Theorem \ref{UniformContinuityOnCompactSets}) hence there exists $\delta>0$ such that $\hat{d}(z,w) < \delta$ implies $\abs{g(z) - g(w)} < \epsilon$.  Let $x,y \in C$ such that $d(x,y) < \delta$ then we have $\hat{d}(\psi(x), \psi(y)) < \delta$ hen $\abs{ (g \circ \psi)(x) - (g \circ \psi) (y)} < \epsilon$.
+
+Separability of $U^d(C)$ follows from the fact that it is isometric to $C(\hat{C})$ and the separability of the latter space (Lemma \ref{SeparabilityOfBoundedUniformlyContinuous}).
+\end{proof}
+
+\begin{prop}\label{PrelinearUniformlyContinuousFunctions}Let $H$ be a separable Hilbert space and $C \subset H$.  For every $v \in H$ the function $f_v(c) = \langle v, c \rangle$ is a uniformly continuous prelinear function on $C$.  The set of prelinear functions in $U(C)$ is closed in the uniform norm.
+\end{prop}
+\begin{proof}
+Let $v \in H$.  Prelinearity of $f_v$ follows from the bilinearity of the inner product: suppose $v_1, \dotsc, v_n \in C$, $a_1, \dotsc, a_n$ with $a_1v_1 + \dotsb + a_nv_n = 0$ then 
+\begin{align*}
+a_1 f_v(v_1) + \dotsb + a_n f_v(v_n) &= \langle v, a_1 v_1 + \dotsb + a_n v_n \rangle = 0
+\end{align*}
+Uniform continuity of $f_v$ follows from the Cauchy Schwartz inequality: suppose $\epsilon > 0$ is given the for all $\norm{c-d} < \epsilon/\norm{v}$ we have
+\begin{align*}
+\abs{f_v(c) - f_v(d)} &= \abs{\langle v, c - d \rangle} \leq \norm{v} \norm{c-d} < \epsilon
+\end{align*}
+
+Now let $f,f_1, f_2, \dotsc \in U(C)$ with $f_{n} \to f$ uniformly and $f_1, f_2, \dotsc$ prelinear.  Suppose $v_1, \dotsc, v_n \in C$, $a_1, \dotsc, a_n$ with $a_1v_1 + \dotsb + a_nv_n = 0$ then  since $f_n \to f$ pointwise we have
+\begin{align*}
+a_1 f(v_1) + \dotsb + a_n f(v_n) &= \lim_{j \to \infty} a_1 f_j(v_1) + \dotsb + a_n f_j(v_n) = 0
+\end{align*}
+\end{proof}
+
+\begin{defn}Let $H$ be a separable Hilbert space and $C \subset H$ and $V \subset \reals^C$ be a set of functions on $C$.  Then the isonormal process $L$ can be \emph{realized} on $V$ if there exists a probability measure $\mu$ on $V$ with respect to the product sigma algebra $\mathcal{B}(\reals)^C$ such that the canonical process $X_c(f) = f(c)$ on $V$ is centered Gaussian with covariance $\expectation{X_c X_d} = \langle c , d \rangle$.
+\end{defn}
+For example if $C$ is a GC-set then $L$ is realized on $U(C)$.
+
+TODO: Show that the product $\sigma$-algebra on $\reals^C$ induces the Borel $\sigma$-algebra on $U(C)$ as well as the prelinear functions in $U(C)$ and the closure of $H$ in $U(C)$ (compare Lemma \ref{BorelGeneratedByProjections}).
+
+\begin{thm}[Levy's Three Series Condition]\label{LevyThreeSeriesCondition}Let $\xi_1, \xi_2, \dotsc$ be independent random variables, then $\sum_{n=1}^\infty \xi_n$ converges a.s. if and only if $\sum_{n=1}^\infty \xi_n$ converges in distribution and if and only if following three conditions hold
+\begin{itemize}
+\item[(i)] $\sum_{n=1}^\infty \probability{ \abs{\xi_n} > 1} < \infty$
+\item[(ii)] $\sum_{n=1}^\infty \expectation{ \xi_n ; \abs{\xi_n} \leq 1}$ converges
+\item[(iii)] $\sum_{n=1}^\infty \variance{ \xi_n ; \abs{\xi_n} \leq 1} < \infty$
+\end{itemize}
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
+\begin{thm}\label{LevySymmetricMaximalInequality}Let $X^1, X^2, \dotsc$ be independent symmetric stochastic processes with countable index set $T$ and $\norm{X^n}_Y < \infty$ a.s. for all $n \in \naturals$ (TODO: Do we really need this?).  For every $n \in \naturals$ define $S_n = X^1 + \dotsc + X^n$. Then for every $\lambda > 0$ and $n \in \naturals$ we have
+\begin{align*}
+\probability{ \max_{1 \leq j \leq n} \norm{S_j}_Y > \lambda} &\leq 2 \probability{\norm{S_n}_Y > \lambda} 
+\end{align*}
+\end{thm}
+\begin{proof}
+TODO
+\end{proof}
+
+\begin{lem}\label{lem:OrthogonalProjectionsAndIndependence}Let $H$ be a separable Hilbert space, $Y \subset H$ a countable subset and $\pi_1, \dotsc, \pi_n$ be finite dimensional projections with $\range{\pi_i} \perp \range{\pi_j}$ for all $1 \leq i < j \leq n$ then $L \circ \pi_1, \dotsc, L \circ \pi_n$ are independent on $Y$.
+\end{lem}
+\begin{proof}
+TODO: See argument in Lemma \ref{lem:FDPUniformConvergence} below.
+
+TODO: Is the restriction to $Y$ countable necessary?
+\end{proof}
+
+\begin{lem}\label{lem:FDPUniformConvergence}Let $H$ be a separable Hilbert space, $C \subset H$ be totally bounded, $Y \subset C$ a countable dense subset and $\pi_1, \pi_2, \dotsc$ be finite dimensional projections with $\pi_n \uparrow \IdentityMatrix$ and $\abs{L(\pi_n^\perp C)}^* \toprob 0$, then $\norm{L \circ \pi_n - L}_Y \toas 0$.
+\end{lem}
+\begin{proof}
+Suppose we have finite dimensional projections $\pi_1, \pi_2, \dotsc$ with $\pi_n \uparrow \IdentityMatrix$.  For $v \in C$ and $n \in \naturals$ define
+\begin{align*}
+X^n_v &= L_{\pi_n v} - L_{\pi_{n-1} v}
+\end{align*}
+
+\begin{clm}For every $n \in \naturals$, $X^1, \dotsc, X^n$ are independent Gaussian processes on $Y$
+\end{clm}
+Since $L$ is a centered Gaussian process, for every $n \in \naturals$ and $v \in C$, $( L_{\pi_{n-1} v},  L_{\pi_{n} v})$ is a centered Gaussian random vector  and therefore $X^n_v$ is a centered Gaussian random variable.  More generally the same argument that $X^1, \dotsc, X^n$ are jointly Gaussian random processes.  Moreover for $m < n$ and $v,w \in C$,
+\begin{align*}
+\expectation{X^n_v X^m_w} &= \expectation{(L_{\pi_n v} - L_{\pi_{n-1} v}) (L_{\pi_m w} - L_{\pi_{m-1} w})} \\
+&=\expectation{L_{\pi_n v}L_{\pi_m w}} - \expectation{L_{\pi_{n-1} v}L_{\pi_m w}} - \expectation{L_{\pi_n v}L_{\pi_{m-1} w}} + \expectation{L_{\pi_{n-1} v}L_{\pi_{m-1} w}} \\
+&=\langle \pi_n v, \pi_m w \rangle - \langle \pi_{n-1} v, \pi_m w \rangle - \langle \pi_n v, \pi_{m-1} w \rangle + \langle \pi_{n-1} v, \pi_{m-1} w \rangle \\
+&=\langle v, \pi_n (\pi_m w) \rangle - \langle v, \pi_{n-1}(\pi_m w) \rangle - \langle v, \pi_n(\pi_{m-1} w) \rangle + \langle v, \pi_{n-1}(\pi_{m-1}) w \rangle \\
+&=\langle v, \pi_m w \rangle - \langle v, \pi_m w \rangle - \langle v, \pi_{m-1} w \rangle + \langle v, \pi_{m-1} w \rangle \\
+&=0
+\end{align*}
+and it follows from Proposition \ref{GaussianProcessIndependence} that $X^1, X^2, \dotsc, X^n$ are independent processes.  TODO: Is it not true that $X^1, \dotsc, X^n$ are independent Gaussian processes on all of $C$?
+
+TODO: Show that $\norm{X^j}_Y < \infty$ a.s.
+Since Gaussians are symmetric we may apply Levy's Inequality Theorem \ref{LevySymmetricMaximalInequality} to conclude (noting that $X^1 + \dotsb + X^n = L \circ \pi_n$):
+\begin{align*}
+\probability{\max_{1 \leq j \leq n} \norm{L \circ \pi_j}_Y > \lambda} &\leq 2 \probability{\norm{L \circ \pi_n}_Y > \lambda}
+\end{align*}
+Equally, for every $k \in \naturals$ we apply Levy's Inequality Theorem \ref{LevySymmetricMaximalInequality} to the sequence $X^{k+1}, X^{k+2}, \dotsc$ (noting that
+$X^{k+1} + \dotsb + X^n = L \circ \pi_n - L \circ \pi_k$) to see that for all $n > k$,
+\begin{align*}
+\probability{\max_{k \leq j \leq n} \norm{L \circ \pi_j - L \circ \pi_k}_Y > \lambda} &\leq 2 \probability{\norm{L \circ \pi_n - L \circ \pi_k}_Y > \lambda}
+\end{align*}
+TODO: Finish
+\end{proof}
+
+TODO: Are the conditions on $\abs{L(\pi_n^\perp C)}^*$ below independent of the choice of orthonormal process $L$?  That is a conclusion of the Theorem but do we use that independence anywhere in the proof?
+
+\begin{lem}\label{lem:DenseSubsetClosedSymmetricConvexHull}Let $V$ be a normed vector space and let $C \subset V$ be a subset.  If $Y$ is a dense subset of $C$ then the set of rational convex combinations of $Y \cup -Y$ is a dense subset of $\closedsymmconvexhull{C}$.
+\end{lem}
+\begin{proof}
+We first address approximation of convex combinations by rational convex combinations.
+\begin{clm}Let $v_1, \dotsc, v_n \in V$, $a_1, \dotsc, a_n \in [0,1]$ with $a_1 + \dotsb + a_n = 1$ and $\epsilon > 0$ then there exist $b_1, \dotsc, b_n \in [0,1] \cap \rationals$ such that $\norm{(a_1-b_1) v_1 + \dotsb + (a_n - b_n) v_n} < \epsilon$.
+\end{clm}
+ The case in which some $a_j=1$ we just define $b_j=a_j$ for all $1 \leq j \leq n$ and f $a_j=0$ then we can just let $b_j=0$ so we assume that $0 < a_j < 1$ for all $1 \leq j \leq n$ (and consequently $n > 1$). For $1 \leq j \leq n -1$ by density of rationals we may pick $b_j \in (0,1) \cap \rationals$ such that 
+\begin{align*}
+\abs{a_j-b_j} &< \frac{\epsilon}{n\norm{v_j}} \minop \frac{\epsilon}{n(n-1)\norm{v_n}} \minop \frac{a_n}{n-1}
+\end{align*}
+and define $b_n = 1 - b_1 - \dotsb - b_{n-1}$.  Note that 
+\begin{align*}
+0 &< b_1 + \dotsb + b_{n-1} \leq a_1 + \dotsb + a_{n-1} + \abs{a_1 - b_1} + \dotsb + \abs{a_{n-1} - b_{n-1} } < 1 - a_n + a_n = 1
+\end{align*}
+so $b_n \in (0,1) \cap \rationals$.  Also,
+\begin{align*}
+\norm{a_n - b_n} &=\norm{b_1 - a_1 + \dotsb + b_{n-1} - a_{n-1}} \leq (n-1) \min_{1 \leq j \leq n-1} \norm{a_j - b_j} < \frac{\epsilon}{n\norm{v_n}}
+\end{align*}
+By the triangle inequality,
+\begin{align*}
+\norm{a_1 v_1 + \dotsb a_n v_n - b_1 v_1 - \dotsb - b_n v_n} 
+&\leq \abs{a_1-b_1} \norm{v_1} + \dotsb + \abs{a_n - b_n}\norm{v_n} 
+< \epsilon
+\end{align*}
+
+Let $v \in \closedsymmconvexhull{C}$ and $\epsilon > 0$ be given.
+Let $w = a_1 w_1 + \dotsb + a_n w_n - a_{n+1} w_{n+1} - \dotsb - a_{n+m} w_{n+m}$ with $a_1, \dotsc, a_{n+m} \in [0,1]$ and $w_1, \dotsc, w_{n+m} \in C$ be a convex combination with $\norm{v - w} < \epsilon/3$.  By density of $Y$ in $C$ for 
+$1 \leq j \leq n+m$ pick $u_j \in Y$ with $\norm{w_j - u_j} < \frac{\epsilon}{3(n+m) a_j}$ if $a_j > 0$ or let $w_j$ be an arbitrary element of $Y$ otherwise.  Then
+\begin{align*}
+&\norm{w - a_1 u_1 - \dotsb - a_n u_n + a_{n+1} u_{n+1} + \dotsb + a_{n+m} u_{n+m}} \\
+&\leq a_1 \norm{w_1 - u_1} + \dotsb + a_{n+m} \norm{w_{n+m} - u_{n+m}} < \epsilon/3
+\end{align*}
+Lastly by the claim pick $b_1, \dotsc, b_{n+m} \in [0,1] \cap \rationals$ with $b_1 + \dotsb + b_{n+m}=1$ such that 
+\begin{align*}
+\norm{(a_1 - b_1) u_1 + \dotsb + (a_n - b_n) u_n - (a_{n+1} -b_{n+1}) u_{n+1} - \dotsb - (a_{n+m} - b_{n+m}) u_{n+m}} < \epsilon/3
+\end{align*}
+It follows that $\norm{v - b_1 u_1 - \dotsb - b_n u_n + b_{n+1} u_{n+1} + \dotsb + b_{n+m} u_{n+m}} < \epsilon$.
+\end{proof}
+
+\begin{lem}\label{lem:IsonormalFiniteDimensionalBoundedPositiveProbability}Let $H$ be a finite dimensional Hilbert space and $C \subset H$ be bounded then $\probability{\abs{L(C)}^* < \lambda} > 0$ for all $\lambda > 0$.
+\end{lem}
+\begin{proof}
+We construct $L$ by taking an orthonormal basis $e_1, \dotsc, e_d$ and i.i.d. standard normals $\xi_1, \dotsc, \xi_d$ so that $L_v = \langle v, \sum_{j=1}^d \xi_j e_j \rangle$ (Proposition \ref{IsonormalFiniteDimensional}).  Let $M > 0$ be such that $\norm{v} \leq M$ for all $v \in C$, then by Cauchy-Schwartz, we have
+\begin{align*}
+\abs{L_v} &= \abs{\langle v, \sum_{j=1}^d \xi_j e_j \rangle} \leq \norm{v} (\xi_1^2 + \dotsc + \xi_d^2)^{1/2} \leq M (\xi_1^2 + \dotsc + \xi_d^2)^{1/2}
+\end{align*}
+Therefore $\probability{\abs{L(C)}^* < \lambda} > \probability{(\xi_1^2 + \dotsc + \xi_d^2)^{1/2} < \lambda/M} > 0$ (TODO: prove the last inequality)
+\end{proof}
+
+\begin{thm}\label{GCSetEquivalentConditions}Let $H$ be a separable Hilbert space and $C \subset H$ be totally bounded then the following are equivalent:
+\begin{itemize}
+\item[(i)] $C$ is a GC-set
+\item[(ii)] $\closedsymmconvexhull{C}$ is a GC-set
+\item[(iii)] For any $\epsilon > 0$, $\probability{\abs{L(C)}^* < \epsilon} > 0$
+\item[(iv)] There exist finite dimensional projections with $\pi_n \uparrow \IdentityMatrix$ such that $\liminf_{n \to \infty} \abs{L(\pi_n^\perp C)}^* = 0$ a.s.
+\item[(v)] There exist finite dimensional projections with $\pi_n \uparrow \IdentityMatrix$ such that $\abs{L(\pi_n^\perp C)}^* \toprob 0$ 
+\item[(vi)] There exist finite dimensional projections with $\pi_n \uparrow \IdentityMatrix$ such that $\abs{L(\pi_n^\perp C)}^* \toas 0$ 
+\item[(vii)] For every sequence of finite dimensional projections with $\pi_n \uparrow \IdentityMatrix$ we have $\abs{L(\pi_n^\perp C)}^* \toprob 0$ 
+\item[(viii)] For every sequence of finite dimensional projections with $\pi_n \uparrow \IdentityMatrix$ we have $\abs{L(\pi_n^\perp C)}^* \toas 0$ 
+\item[(ix)] $L$ can be realized on the closure of $H$ in $U(C)$ 
+\item[(x)] $L$ can be realized on the set of prelinear functions in $U(C)$.
+\item[(xi)] $L$ can be realized on $U(C)$.
+\end{itemize}
+\end{thm}
+\begin{proof}
+By Lemma \ref{ConvergenceAlmostSureImpliesInProbability} (viii) implies (vii) which trivially implies (v).  
+
+We now show that (v) implies (vi).  The key is the following construction.   By Proposition \ref{FDPAdaptedBasis} let $e_1, e_2, \dotsc$ be an orthonormal basis for $H$ such that there exists a subsequence $N_n$ so that $e_1, \dotsc, e_{N_n}$ is an orthonormal basis for $\range{\pi_n}$ for all $n \in \naturals$.
+Define 
+\begin{align*}
+M^n_v &= \sum_{j=1}^{N_n} \langle v, e_j \rangle L_{e_j} = \langle v, \sum_{j=1}^{N_n} L_{e_j} e_j \rangle
+\end{align*} 
+and $M_v = \sum_{j=1}^\infty \langle v, e_j \rangle L_{e_j}$. 
+
+\begin{clm}\label{clm:PrelinearModification} $M$ is a modification of $L$ on $C$ and $\norm{M^n - M}_C \toas 0$.  Furthermore $M$ is in the uniform closure of $H$ in $U(C)$.
+\end{clm}
+Let $v \in C$. Observe that since $L_{e_1}, L_{e_2}, \dotsc$ is an orthonormal set in $L^2(\Omega)$ we have $\norm{M_v}^2 = \sum_{j=1}^\infty \langle v, e_j \rangle = \norm{v}^2 < \infty$ and it follows that $M_v$ is a well defined element of $L^2(\Omega)$ and the partial sums converge in $L^2$: $\sum_{j=1}^n \langle v, e_j \rangle  L_{e_j} \tolp{2} M_v$.  Passing to the subsequence of partial sums we know that $M^n_v \tolp{2} M_v$ as well.  By Lemma \ref{ConvergenceInMeanImpliesInProbability} we know that $\sum_{j=1}^n \langle v, e_j \rangle  L_{e_j} \toprob M_v$.  Since $L_{e_1}, L_{e_2}, \dotsc$ are independent, Theorem \ref{LevyThreeSeriesCondition} applies and we conclude that $\sum_{j=1}^n \langle v, e_j \rangle  L_{e_j} \toas M_v$.  Again, passing to a subsequence we see that $M^n_v \toas M_v$.
+
+By linearity of the isonormal process (Proposition \ref{LinearityIsonormalProcess}) we have for every $v \in C$ that 
+\begin{align*}
+M^n_v &= \sum_{j=1}^{N_n} \langle v, e_j \rangle L_{e_j} =  L_{\sum_{j=1}^{N_n}  \langle v, e_j \rangle e_j} = L_{\pi_n v} \text{ a.s.}
+\end{align*}
+Let $Y$ be a countable dense subset of $C$, it then follows $M^n = L \circ \pi_n$ on $Y$ for all $n \in \naturals$ a.s. and therefore since $\norm{L \circ \pi_n - L}_Y \toas 0$ (Lemma \ref{lem:FDPUniformConvergence}) we know that almost surely $M^n$ converges uniformly on $Y$ (specifically $\norm{M^n - L}_Y \toas 0$).  
+Let $v \in Y$, then almost surely $\lim_{n \to \infty} M^n_v = M_v$ and $\lim_{n \to \infty} M^n_v = L_v$ hence $M_v = L_v$ a.s. and $M$ is a modification of $L$ on $Y$.  
+
+The expression 
+\begin{align*}
+M^n_v &= \langle v, \sum_{j=1}^{N_n} L_{e_j} e_j \rangle
+\end{align*}
+and Proposition \ref{PrelinearUniformlyContinuousFunctions} implies $M^n$ is prelinear and uniformly continuous on $Y$.  Since almost surely $M^n$ converges to $M$ uniformly on $Y$ it follows from Proposition \ref{PrelinearUniformlyContinuousFunctions} that $M$ is uniformly continuous on $Y$ a.s.  Since $Y$ is dense in $C$, by Proposition \ref{ExtensionOfUniformlyContinuousMapCompleteRange}, $M$ extends to an almost surely uniformly continuous process on $C$ (TODO: is it in fact the case that $\lim_{w \to v} M_w = M_v$ or are we redefining $M_v$ on $C \setminus Y$ to be $\lim_{n \to \infty} M_{v_n}$ for some $v_n \to v$ with $v_n \in Y$?)
+
+To see that $M$ is also a modification of $L$ on all of $C$, let $v \in C$ and pick a sequence $v_n \in Y$ such that $\lim_{n \to \infty} v_n = v$ so that $M_v = \lim_{n \to \infty} M_{v_n}$.   Almost surely $M_{v_n} = L_{v_n}$ for all $n \in \naturals$.  Since $L$ is isonormal we have $\expectation{(L_{v_n} - L_v)^2} = \norm{v_n - v}^2 \to 0$ and therefore by Markov bound $L_{v_n} \toprob L_v$.  By Lemma \ref{ConvergenceInProbabilityAlmostSureSubsequence} we know that there is a subsequence $n_k$ such that $\lim_{k \to \infty} L_{v_{n_k}} = L_v$.  Therefore 
+\begin{align*}
+L_v &= \lim_{k \to \infty} L_{v_{n_k}} = \lim_{k \to \infty} M_{v_{n_k}} = M_v \text{ a.s.}
+\end{align*}
+Since $M$ is a modification of $L$ on $C$ we know that $\abs{L(\pi_n^\perp(C))}^* = \abs{M(\pi_n^\perp(C))}^*$. It follows that $\norm{M^n - M}_Y \toas 0$ and $\norm{M^n - M}_C \toas 0$ since $\norm{M^n - M}_Y = \norm{M^n - M}_C$ (since $M$ is the unique uniformly continuous extension of $M$ restricted to $Y$).
+
+By definition for $v \in Y$, we have
+$M^n_v - M_v = M_{\pi_n(v)} - M_v = M_{\pi_n^\perp(v)}$ and therefore since $Y$ is a countable dense subset of $C$ we have 
+\begin{align*}
+\abs{L(\pi_n^\perp(C))}^* &= \abs{M(\pi_n^\perp(C))}^* = \sup_{v \in \pi_n^\perp(Y)} \abs{M_v} = \sup_{v \in Y} \abs{M_{\pi_n^\perp(v)} } \\
+&= \sup_{v \in Y} \abs{M_{\pi_n(v)} - M_v} \toas 0
+\end{align*}
+and therefore (vi) is proven.
+
+We now show that (v) implies (vii) and (viii).  Suppose $\pi_n$ is a sequence of finite dimensional projections as in (v) and let 
+$\gamma_n$ be any other sequence of finite dimensional projections with $\gamma_n \uparrow \IdentityMatrix$.  Let $\epsilon > 0$ be given, pick $k \in naturals$ such that $\probability{\abs{L(\pi_k^\perp(C)) > \epsilon}} \leq \epsilon$.  Let $e_1, e_2, \dotsc$ be an orthonormal
+basis of $H$ as in Proposition \ref{FDPAdaptedBasis} so that $e_1, \dotsc, e_{N_k}$ is an orthonormal basis of $\range{\pi_k}$.  For fixed $j \in \naturals$, $\lim_{m \to \infty} \gamma_m^\perp(e_j) = 0$ (since $\gamma_m \uparrow \IdentityMatrix$).  TODO: For fixed $k \in \naturals$, it follows that $\abs{L(\gamma_m^\perp(\pi_k(C)))}* \toprob 0$.  By Lemma \ref{EssentialSupremumUnderContraction}
+\begin{align*}
+\probability{\abs{L(\gamma_m^\perp(\pi_k^\perp(C)))}^* > \epsilon} \leq \probability{\abs{L(\pi_k^\perp(C))}^* > \epsilon} \leq \epsilon
+\end{align*}
+so $\abs{L(\gamma_m^\perp(\pi_k^\perp(C)))}^* \toprob 0$.
+Since $\abs{L(\gamma_m^\perp(C))}^* \leq \abs{L(\gamma_m^\perp(\pi_k(C)))}^* + \abs{L(\gamma_m^\perp(\pi_k^\perp(C)))}^*$ a.s. (TODO) we see that
+(vii) holds.  Since we know that (v) implies (vi) it follows that (vii) implies (viii).  Thus (v) - (viii) are all equivalent.
+
+As a side effect of the above construction in Claim \ref{clm:PrelinearModification} we see that (v) implies there exists a version of $L$ restricted to $C$ with sample paths in the uniform closure of $H$ in $U(C)$.  Thus (v) implies (ix) which in turn implies (x) and (xi).
+
+(xi) implies (i) is immediate as (xi) is just a restatement of the definition of a GC-set.
+
+To see that (v) implies (ii) first let $\pi : H \to H$ be a finite dimensional projection.  Then we claim that $\abs{L(\pi^\perp\closedsymmconvexhull{C})}^* = \abs{L(\pi^\perp C)}^*$ a.s.  Let $Y$ be a countable dense subset of $C$.  By Lemma \ref{lem:DenseSubsetClosedSymmetricConvexHull} the set of rational convex combinations of $Y \cup -Y$ is a countable dense subset of $\closedsymmconvexhull{C}$.  By Proposition \ref{prop:ExistenceEssentialSupremumIsonormal} we know that $\abs{L(\pi^\perp\closedsymmconvexhull{C})}^*$ is supremum of $\abs{L_v}$ over all projections of rational convex combinations of $Y \cup -Y$.  So pick such a convex combination $a_1 v_1 + \dotsb a_n v_n - a_{n+1} v_{n+1} - \dotsb - a_{n+m} v_{n+m}$.  Then 
+\begin{align*}
+\abs{L_{\pi^\perp(a_1 v_1 + \dotsb a_n v_n - a_{n+1} v_{n+1} - \dotsb - a_{n+m} v_{n+m})}} &= \abs{a_1 L_{\pi^\perp v_1} + \dotsb a_n L_{\pi^\perp v_n} - a_{n+1} L_{\pi^\perp v_{n+1}} - \dotsb - a_{n+m} L_{\pi^\perp v_{n+m}}} \\
+&\leq a_1 \abs{L_{\perp v_1}} + \dotsb a_n \abs{L_{\pi^\perp v_n}} + a_{n+1} \abs{L_{\pi^\perp v_{n+1}}} - \dotsb + a_{n+m} \abs{L_{\pi^\perp v_{n+m}}} 
+\leq (a_1 + \dotsb + a_{n+m}) \sup_{v \in Y} \abs{L_{\pi^\perp v}} \\
+&=\abs{L(\pi^\perp C)}^*
+\end{align*}
+Taking the supremum over all such convex combinations we see that $\abs{L(\pi^\perp\closedsymmconvexhull{C})}^* \leq \abs{L(\pi^\perp C)}^*$ a.s.  By Proposition \ref{AlmostSureUniquenessEssentialSupremum}, the opposite inequality follows from the fact that $\pi^\perp C \subset \pi^\perp\closedsymmconvexhull{C}$ so equality holds.  Thus if (v) holds for $C$ it also holds for $\closedsymmconvexhull{C}$ which as we have argued implies that $\closedsymmconvexhull{C}$ is a GC-set.
+
+TODO: (v) implies (iii).  Assume (v) holds, let $\epsilon > 0$  and pick a finite dimensional projection $\pi : H \to H$ such that $\probability{\abs{L(\pi^\perp C)}* > \epsilon/2} < 1/2$.  On the other hand, $\pi C$ is a bounded set in a finite dimensional space so by Lemma \ref{lem:IsonormalFiniteDimensionalBoundedPositiveProbability} we know that $\probability{\abs{L(\pi C)}* < \epsilon/2} > 0$.  Thus since $L \circ \pi$ and $L \circ \pi^\perp$ are independent (Lemma \ref{lem:OrthogonalProjectionsAndIndependence}) we get
+\begin{align*}
+\probability{\abs{L(C)}* < \epsilon} &= \probability{\abs{L(\pi C \cup \pi^\perp C)}* < \epsilon} = \probability{\abs{L(\pi C)}^* + \abs{L(\pi^\perp C)}* < \epsilon} \\
+&\geq \probability{\abs{L(\pi C)}^* \leq \epsilon/2 ; \abs{L(\pi^\perp C)}* < \epsilon/2} = \probability{\abs{L(\pi C)}^* \leq \epsilon/2} \probability{\abs{L(\pi^\perp C)}* < \epsilon/2} > 1/2  \probability{\abs{L(\pi^\perp C)}* < \epsilon/2} > 0
+\end{align*}
+
+TODO: (iii) implies (iv).
+ 
+TODO: (iv) implies (i).
+ 
+TODO: (i) implies (v).
+ 
+TODO: Finish
+\end{proof}
+
+
+\subsection{Sample Continuity for Compact Index Sets}
+
+In this section we explore conditions for sample continuity of Gaussian processes with compact index sets.
 
 Note that Dudley uses the term version differently than most other authors (at least those that I have read).  Most authors treat version and modification as synonyms (i.e. for all $t \in T$ we have $\probability{X_t = Y_t}=1$).  Dudley says that $X$ and $Y$ are versions if $X \eqdist Y$.
 

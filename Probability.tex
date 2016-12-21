@@ -52,15 +52,22 @@ F(x_1, \dots, x_n) = \probability {\cap_{i=1}^n \left ( \xi_i \leq x_i
   distribution functions $F$ and $G$, then
   $\xi \eqdist \eta$ if and only if $F = G$.
 \end{lem}
-\begin{proof}This follows from Lemma \ref{UniquenessOfMeasure} by
-  noting
-  that sets of the form $(-\infty, x_1] \times \cdots \times (-\infty,
-  x_n]$ form a $\pi$-system that contains $\reals^n$.
+\begin{proof}
+For any $(x_1, \dotsc, x_n), (y_1, \dotsc, y_n) \in \reals^n$ we have
+\begin{align*}
+(-\infty, x_1] \times \cdots \times (-\infty,  x_n] \cap (-\infty,
+  y_1] \times \cdots \times (-\infty, y_n]
+&= (-\infty, x_1 \minop y_1] \times \cdots \times (-\infty,  x_n  \minop y_n] 
+\end{align*}
+Thus  $\reals^n$ plus all sets of the form $(-\infty, x_1] \times \cdots \times (-\infty,
+  x_n]$ for $(x_1, \dotsc, x_n) \in \reals^n$ form a $\pi$-system that contains $\reals^n$.  By Corollary \ref{MultidimensionalIntervalsGenerateBorel}
+we know that this $\pi$-system generates $\mathcal{B}(\reals^n)$ so the result follows from 
+the Uniqueness of Finite Measure Lemma \ref{UniquenessOfMeasure}.
 \end{proof}
 
 The construction of Lebesgue-Stieltjes measure shows that every
 Borel probability measure on $\reals$ is determined uniquely by its distribution function.
-\begin{lem}Probability measures of $(\reals, \mathcal{B}(\reals))$ are
+\begin{lem}\label{CumulativeDistributionFunctions}Probability measures of $(\reals, \mathcal{B}(\reals))$ are
   in one to one correspondence with $F : \reals \to \reals$ that are
   right continuous, nondecreasing such that $\lim_{x \to -\infty} F(x)
   = 0$ and $\lim_{x \to \infty} F(x) = 1$ via the mapping $F(x) =
