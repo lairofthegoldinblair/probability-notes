@@ -1,4 +1,14 @@
 \chapter{Real Analysis}
+
+\begin{prop}\label{real:SupremumOfBivariate}Let $f$ be a real valued  function of two variables then
+\begin{align*}
+\sup_{(x,y) \in A \times B} f(x,y) &= \sup_{x \in A} \sup_{y \in B} f(x,y)
+\end{align*}
+\end{prop}
+\begin{proof}
+Let $\epsilon>0$ and pick $(x,y) \in A \times B$ such that $f(x,y) > \sup_{(x,y) \in A \times B} f(x,y) - \epsilon$.  Clearly $f(x,y) \leq \sup_{y \in B} f(x,y) \leq \sup_{x \in A} \sup_{y \in B} f(x,y)$.  Since $\epsilon > 0$ was arbitrary we have $\sup_{(x,y) \in A \times B} f(x,y) \leq \sup_{x \in A} \sup_{y \in B} f(x,y)$.  In the other direction pick $x \in A$ such that $\sup_{y \in B} f(x,y) > \sup_{x \in A} \sup_{y \in B} f(x,y) - \epsilon/2$ and then pick $y \in B$ such that $f(x,y) > \sup_{y \in B} f(x,y) - \epsilon/2 > \sup_{x \in A} \sup_{y \in B} f(x,y) - \epsilon$.  Let $\epsilon \to 0$.
+\end{proof}
+
 For purposes of our discussion of measure theory, we often make little
 use of the structure of the reals.  In many cases it is with little
 effort that we can state results much more generally.  Sometimes the

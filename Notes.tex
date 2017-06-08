@@ -3,6 +3,7 @@
 \usepackage{dsfont}
 \usepackage{stmaryrd}
 \usepackage{tikz}
+\usepackage{gensymb}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
@@ -25,6 +26,7 @@
 \DeclareMathOperator*{\Osc1}{Osc_{1}}
 \DeclareMathOperator*{\osc}{osc}
 \DeclareMathOperator*{\poisop}{Pois}
+\DeclareMathOperator*{\spectralradiusop}{spr}
 
 \newtheorem{thm}{Theorem}[chapter]
 \newtheorem{cor}[thm]{Corollary}
@@ -77,6 +79,7 @@
 \newcommand{\rationals}{\mathbb{Q}} 
 \newcommand{\naturals}{\mathbb{N}} 
 \newcommand{\integers}{\mathbb{Z}} 
+\newcommand{\field}{\mathbb{F}}
 \newcommand{\distribution}[1]{\textbf{P}^{#1}}
 \newcommand{\borel}[1]{\mathcal{B}(#1)}
 \newcommand{\abs}[1]{\left \vert #1 \right \vert}
@@ -98,6 +101,8 @@
 \newcommand{\range}[1]{\Re(#1)}
 \newcommand{\domain}[1]{\mathcal{D}(#1)}
 \newcommand{\resolventset}[1]{\rho(#1)}
+\newcommand{\spectrum}[1]{\sigma(#1)}
+\newcommand{\spectralradius}[1]{\spectralradiusop(#1)}
 \newcommand{\law}[1]{\mathcal{L}(#1)}
 \newcommand{\andop}{\wedge}
 \newcommand{\orop}{\vee}
@@ -118,7 +123,9 @@
 \newcommand{\dual}[1]{{#1}^*}
 \newcommand{\interior}[1]{\interiorop \left( #1 \right)}
 \newcommand{\boundary}[1]{\partial #1 }
+\newcommand{\closure}[1]{\overline{#1}}
 \newcommand{\pois}[1]{\poisop \left( #1 \right)}
+\newcommand{\adjoint}[1]{{#1}^*}
 
 \begin{document}
 
@@ -161,6 +168,8 @@
 \include{StochasticIntegration}
 
 \include{RealAnalysis2}
+
+\include{HilbertSpace}
 
 \include{Optimization}
 

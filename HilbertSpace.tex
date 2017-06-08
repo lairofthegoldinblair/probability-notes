@@ -1,0 +1,631 @@
+\chapter{Hilbert Spaces}
+
+\section{Basics}
+
+\begin{defn}Let $V$ be a vector space of a field $\field$ ($\field = \reals$ or $\field = \complexes$) then an
+  \emph{inner product} is a map $\langle \cdot , \cdot \rangle : V \times V \to \field$ 
+satisfying the following properties
+\begin{itemize}
+\item[(i)]  For all $v,w \in V$, $\langle v, w \rangle = \overline{\langle w, v \rangle}$
+\item[(ii)] For all $v \in V$, $\langle v,v \rangle \in \reals$, $\langle v,v \rangle \geq 0$ and $\langle v,v \rangle = 0$ if and only if $v=0$.
+\item[(iii)] For all $v,w \in V$ and $c \in \field$, $\langle cv, w \rangle = \overline{c} \langle v,w \rangle$ and $ \langle v,cw \rangle = c \langle v,w \rangle$.
+\item[(iv)] For all $v,w,u \in V$ $\langle v + u, w \rangle = \langle v,w \rangle + \langle u, w \rangle$ and $\langle v, w+u \rangle = \langle v,w \rangle + \langle v, u \rangle$
+\end{itemize}
+\end{defn}
+
+\begin{prop}[Cauchy Schwartz Inequality]\label{hilbert:CauchySchwartz}Let $V$ be an inner product space then for every $v, w \in V$ we have
+\begin{align*}
+\abs{\langle v, w \rangle}^2 &\leq \langle v,v \rangle \langle w,w \rangle
+\end{align*}
+Moreover we have inequality if and only if there exists a constant $c \in \field$ such that $v = c w$.
+\end{prop}
+\begin{proof}
+For the case of $\field = \reals$ just use the proof of Lemma \ref{CauchySchwartz}.  For the case of $\field = \complexes$ let $v, w \in V$.  Note that the result clearly holds when $w=0$ (both sides are $0$) so assume that $w \neq 0$ and define $c = \frac{\overline{\langle v, w \rangle}}{\langle w, w \rangle}$ and note that
+\begin{align*}
+0 &\leq \langle v - c w , v - c w \rangle = \langle v, v \rangle - \overline{c} \overline{\langle v, w \rangle} - c \langle v, w \rangle + \abs{c}^2 \langle w, w \rangle \\
+&= \langle v, v \rangle - \frac{\abs{\langle v, w \rangle}^2}{\langle w, w \rangle} - \frac{\abs{\langle v, w \rangle}^2}{\langle w, w \rangle} + \frac{\abs{\langle v, w \rangle}^2}{\langle w, w \rangle}  \\
+&=\langle v, v \rangle - \frac{\abs{\langle v, w \rangle}^2}{\langle w, w \rangle}
+\end{align*}
+and this shows $\abs{\langle v, w \rangle}^2 \leq \langle v,v \rangle \langle w,w \rangle$.
+
+Now suppose that we have equality.  By the above computation this implies $\langle v - c w , v - c w \rangle$ and therefore $v - cw =0$.  On the other hand if we have $v = cw$ then
+\begin{align*}
+\abs{\langle v, w \rangle}^2 &=  \langle v, c v \rangle \overline{\langle  v, c v \rangle} = c \overline{c} \langle v, v \rangle^2 = \langle v, v \rangle \langle cv, cv \rangle 
+= \langle v, v \rangle \langle w, w \rangle
+\end{align*}
+so equality holds.
+\end{proof}
+
+\begin{prop}\label{hilbert:ContinuityOfInnerProduct}Let $H$ be an inner product space and then for every $v \in H$ the map $\langle v, \cdot \rangle$ is bounded linear and the map $\langle \cdot, v \rangle$ is bounded sesquilinear, hence uniformly continuous.  In particular, if $\sum_{i=1}^\infty v_i$ converges in $H$ and $w \in H$ then $\langle \sum_{i=1}^\infty v_i, w \rangle=\sum_{i=1}^\infty \langle v_i, w \rangle$.
+\end{prop}
+\begin{proof}
+The Cauchy-Schwartz inequality \ref{hilbert:CauchySchwartz} shows that $\langle v, \cdot \rangle$ and $\langle \cdot, v \rangle$ are bounded; (sesqui)linearity follow from the corresponding properties of the inner product.  Uniform continuity of a bounded sesquilinear map follows by the same proof as the one for linear maps.
+\end{proof}
+
+\section{Quadratic Forms}
+
+
+\begin{defn}Let $V$ be a vector space of a field $\field$ ($\field = \reals$ or $\field = \complexes$) then a
+  \emph{sesquilinear form} is a map $L : V \times V \to \field$ 
+satisfying the following properties
+\begin{itemize}
+\item[(i)] For all $v,w \in V$ and $c \in \field$, $L(cv, w)= \overline{c} L(v,w)$ and $L(v,cw)= c L(v,w)$.
+\item[(ii)] For all $v,w,u \in V$ $L(v + u, w) = L(v,w)+ L(u, w)$ and $L(v, w+u) = L(v,w) + L(v, u)$
+\end{itemize}
+A sesquilinear form is \emph{conjugate symmetric} if $L(v,w) = \overline{L(w,v)}$ for all $v, w \in V$.
+A sesquilinear form on a normed vector space $V$ is said to be \emph{bounded} if there exists a constant $C$ such that $\abs{L(v,w)} \leq C \norm{v} \norm{w}$ for all $v, w \in V$.   We define the norm 
+\begin{align*}
+\norm{L} = \sup \lbrace \abs{L(v,w)} \mid \norm{v} \leq 1, \norm{w} \leq 1 \rbrace
+\end{align*}
+\end{defn}
+
+\begin{defn}Let $V$ be a vector space of a field $\reals$ then an
+  \emph{bilinear form} is a map $L : V \times V \to \reals$ 
+satisfying the following properties
+\begin{itemize}
+\item[(i)] For all $v,w \in V$ and $c \in \field$, $L(cv, w)= c L(v,w)$ and $L(v,cw)= c L(v,w)$.
+\item[(ii)] For all $v,w,u \in V$ $L(v + u, w) = L(v,w)+ L(u, w)$ and $L(v, w+u) = L(v,w) + L(v, u)$
+\end{itemize}
+A bilinear form is \emph{symmetric} if $L(v,w) = L(w,v)$ for all $v,w \in V$.
+A bilinear form on a normed vector space $V$ is said to be \emph{bounded} if there exists a constant $C$ such that $\abs{L(v,w)} \leq C \norm{v} \norm{w}$ for all $v, w \in V$.
+\end{defn}
+
+\begin{prop}\label{hilbert:LinearCombinationSesquilinear}Let $V$ be a vector space of a field $\field$ ($\field = \reals$ or $\field = \complexes$) and $L,M$ be sesquilinear forms then for every $a \in \field$, $cL$ is a sesquilinear form and $L+M$ is a sesquilinear form.  If $V$ is a normed vector space then $\norm{L}$ defines a norm on the space of sesquilinear forms.  If $V$ is a Banach space then the space of sesquilinear forms is a Banach space.
+\end{prop}
+\begin{proof}
+To see that $aL$ is sesquilinear, let $v,w \in V$ and $c \in \field$ then 
+\begin{align*}
+(aL)(cv, w)= a \overline{c} L(v,w) = \overline{c} (aL)(v,w)
+\end{align*}
+and similarly $aL(v, cw) = c (aL)(v,w)$.  For $u,v,w \in V$, 
+\begin{align*}
+(aL)(u+v, w) &=a(L(u,w) + L(v,w)) =(aL)(u,w) + (aL)(v,w)
+\end{align*}
+and similarly $(aL)(u,v+w) = (aL)(u,v)+(aL)(u,w)$.  
+
+Let $v,w \in V$ and $c \in \field$ then 
+\begin{align*}
+(L+M)(cv, w)&= L(cv,w) = M(cv,w) = \overline{c} L(v,w)+\overline{c} M(v,w) = \overline{c} (L+M)(v,w)
+\end{align*}
+and similarly $(L+M)(v, cw) = c (L+M)(v,w)$.  For $u,v,w \in V$, 
+\begin{align*}
+(L+M)(u+v, w) &= L(u+v,w) + M(u+v,w) = L(u,w) + L(v,w) + M(u,w) + M(v,w) \\
+&=(L+M)(u,w) + (L+M)(v,w)
+\end{align*}
+and similarly $(L+M)(u,v+w) = (L+M)(u,v)+(L+M)(u,w)$.
+
+Let $V$ be a normed vector space then clearly $\norm{L} \geq 0$ and furthermore if $\norm{L} = 0$ then $L(v,w) = 0$ for all $v,w \in V$ with $\norm{v} \leq 1$ and $\norm{w} \leq 1$.  For arbitrary $v,w \in V$ there exist constants $a,b$ and vectors $\tilde{v}, \tilde{w}$ with $\norm{\tilde{v}} \leq 1$, $\norm{\tilde{w}} \leq 1$, $v = a \tilde{v}$ and $w= b\tilde{w}$.  Thus 
+\begin{align*}
+L(v,w) &= L(a\tilde{v}, b \tilde{w}) = \overline{a} b L(\tilde{v}, \tilde{w}) = 0
+\end{align*}
+To see homogeneity, for all $v, w \in V$ then
+\begin{align*}
+\abs{aL(v,w)} &= \abs{a} \abs{L(v,w)}\leq \abs{a} \norm{L} \norm{v} \norm{w}
+\end{align*}
+which shows that $\norm{aL} \leq \abs{a} \norm{L}$.  In the other direction, let $\epsilon > 0$ and pick $v,w$ with $\norm{v} \leq 1$ and $\norm{w} \leq 1$ such that $\abs{L(v,w)} \geq \norm{L} - \epsilon$ then 
+\begin{align*}
+\norm{aL} &\geq \abs{aL(v,w)} = \abs{a} \abs{L(v,w)} \geq \abs{a} (\norm{L} - \epsilon)
+\end{align*}
+and let $\epsilon \to 0$ to see that $\norm{aL} \geq \abs{a} \norm{L}$.
+
+To see the triangle inequality for $\norm{L}$,  by the triangle inequality in $\field$,
+\begin{align*}
+\abs{(L+M)(v,w)} &\leq \abs{L(v,w)} + \abs{M(v,w)} \leq (\norm{L}+\norm{M}) \norm{v} \norm{w}
+\end{align*}
+which shows $\norm{L+M} \leq \norm{L}+\norm{M}$.
+
+TODO: Do the Banach space part.
+\end{proof}
+
+\begin{prop}[Polarization Identity]\label{hilbert:PolarizationIdentity}Let $V$ be a vector space over $\complexes$ and $L$ a sesquilinear form then for all $v,w \in V$,
+\begin{align*}
+L(v,w) &= \frac{1}{2} \left ( L(v+w, v+w) - L(v,v) - L(w,w) \right) - \frac{i}{2} \left ( L(v+iw, v+iw) - L(v,v) - L(iw,iw) \right) 
+\end{align*}
+Let $V$ be a vector space over $\reals$ and let $L$ be a symmetric bilinear form then for all $v,w \in V$
+\begin{align*}
+L(x,y) &= \frac{1}{4} \left( L(v+w, v+w) - L(v-w, v-w) \right)
+\end{align*}
+\end{prop}
+\begin{proof}
+\begin{align*}
+&\frac{1}{2} \left ( L(v+w, v+w) - L(v,v) - L(w,w) \right) - \frac{i}{2} \left ( L(v+iw, v+iw) - L(v,v) - L(iw,iw) \right) \\
+&=\frac{1}{2} \left ( L(v,w) + L(w,v) \right) - \frac{i}{2} \left ( i L(v, w) - i L(w,v) \right) \\
+&=\frac{1}{2}  L(v,w) + \frac{1}{2}  L(w,v)  + \frac{1}{2}  L(v, w) - \frac{1}{2}  L(w,v) = L(v,w) \\
+\end{align*}
+
+The proof for the symmetric bilinear case is similar.
+\end{proof}
+
+A non-symmetric bilinear form is not uniquely determined by its diagonal elements.
+\begin{examp}In $\reals^2$ consider the matrix for counterclockwise rotation by $90{\degree}$
+\begin{align*}
+A &= \begin{bmatrix} 
+0 & -1 \\ 
+1 & 0 \\
+\end{bmatrix}
+\end{align*}
+and define $L(v,w) = v^T A w$.  Then $L(v,v) = (v_1,v_2) \cdot (-v_2, v_1) = 0$ but 
+\begin{align*}
+L \left( \begin{bmatrix} 
+1 \\ 
+0 \\
+\end{bmatrix},
+\begin{bmatrix} 
+0 \\ 
+1 \\
+\end{bmatrix}
+\right) &= 1
+\end{align*}
+so $L$ is not equal to $0$ (which is also a bilinear form that has $0$ diagonal elements).
+\end{examp}
+
+Since a sesquilinear form is determined by its values on the diagonal we choose to study that restriction.  First we need to characterize such restrictions and give them a name.
+\begin{defn}Let $H$ be a complex Hilbert space then a \emph{quadratic form} is a function $Q : H \to \complexes$ such that 
+\begin{itemize}
+\item[(i)] $Q(c v) = \abs{c}^2 Q(v)$ for all $v \in H$ and $c \in \field$
+\item[(ii)] The expression
+\begin{align*}
+L(v,w) &= \frac{1}{2} \left ( Q(v+w) - Q(v) - Q(w) \right) - \frac{i}{2} \left (Q(v+iw) - Q(v) - Q(iw) \right) 
+\end{align*}
+defines a sesquilinear form.
+\end{itemize}
+We say that $Q$ is bounded if there exists a constant $C$ such that $\abs{Q(v)} \leq C \norm{v}^2$ for all $v \in H$.  If $Q$ is bounded then the infimum of all such $C$ is the \emph{norm} of $Q$.  In that case we can define 
+\begin{align*}
+\norm{Q} = \sup \lbrace \abs{Q(v)} \mid \norm{v} \leq 1 \rbrace
+\end{align*}
+\end{defn}
+
+\begin{prop}\label{hilbert:QuadraticPropertiesToSesquilinearProperties}Let $H$ be a complex Hilbert space, $Q$ a quadratic form and $L$ be the associated sesquilinear form.  Then
+\begin{itemize}
+\item[(i)] $Q(v) = L(v,v)$ for all $v \in H$
+\item[(ii)] If $Q$ is bounded then $L$ is bounded
+\item[(iii)] If $Q$ is real valued then $L$ is conjugate symmetric.
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see (i) we compute using the property $Q(c v) = \abs{c}^2 Q(v)$,
+\begin{align*}
+L(v,v) &= \frac{1}{2} \left ( Q(v+v) - Q(v) - Q(v) \right) - \frac{i}{2} \left (Q(v+iv) - Q(v) - Q(iv) \right)  \\
+&= \frac{1}{2} \left ( 4 - 1 -1 \right)  Q(v) -  \frac{i}{2} \left ( \abs{1+i}^2 - 1 - 1 \right)  Q(v)  = Q(v)
+\end{align*}
+
+To see (ii), suppose $\abs{Q(v)} \leq C \norm{v}^2$ for all $v \in H$.  Let $v, w \in H$ be unit vectors and so that by the triangle inequality in both $\complexes$ and $H$.
+\begin{align*}
+\abs{L(v,w)} &\leq \frac{1}{2} \left(\abs{Q(v+w)} + \abs{Q(v)} + \abs{Q(w)} + \abs{Q(v+iw)} + \abs{Q(v)} + \abs{Q(iw)} \right) \\
+&\leq \frac{C}{2} \left( \norm{v+w}^2 + \norm{v}^2 + \norm{w}^2 + \norm{v+iw}^2 + \norm{v}^2 + \norm{iw}^2 \right ) \\
+&\leq \frac{C}{2} \left( 4 + 1 + 1 + 4 + 1 + 1 \right ) = 6 C
+\end{align*}
+For arbitrary $v,w \in H$ we pick unit vectors $\tilde{v}$ and $\tilde{w}$ such that  $v = \norm{v} \tilde{v}$ and $w = \norm{w} \tilde{w}$ and compute
+\begin{align*}
+\abs{L(v,w)} &= \norm{v} \norm{w} \abs{L(\tilde{v}, \tilde{w})} \leq 6C \norm{v} \norm{w} 
+\end{align*}
+
+To see (iii) suppose that $Q$ is real valued then define
+\begin{align*}
+M(v,w) &= \RePart (L(v,w))  = \frac{1}{2} \left( Q(v+w) - Q(v) - Q(w) \right)
+\end{align*}
+Note that since $L$ is sesquilinear, for $c \in \reals$ and $v,w \in H$,
+\begin{align*}
+M(cv, w) &= \RePart (c L(v,w)) =c \RePart ( L(v,w)) = cM(v,w)
+\end{align*}
+and for $u,v,w \in H$
+\begin{align*}
+M(u+v, w) &= \RePart (L(u+v,w)) =\RePart ( L(u,w) + \RePart ( L(v,w)) = M(u,w) + M(v,w)
+\end{align*}
+Also for $v,w \in H$
+\begin{align*}
+M(v,w) &= \frac{1}{2} \left( Q(v+w) - Q(v) - Q(w) \right) = \frac{1}{2} \left( Q(w+v) - Q(w) - Q(v) \right) = M(w,v)
+\end{align*}
+so $M$ is a symmetric real binear form on $H$.  Lastly sesquilinearity implies $M(iv,iw) = \RePart ( L(iv,iw)) = \RePart (-i^2 L(v,w)) = M(v,w)$ hence 
+\begin{align*}
+M(v,iw) &= M(iw, v) = M(i^2w, iv) = M(-w, iv) = -M(w,iv)
+\end{align*}
+Finally,
+\begin{align*}
+L(v,w) &= M(v,w) - i M(v,iw) = M(w,v) + i M(w, iv) = \overline{L(w, v)}
+\end{align*}
+\end{proof}
+
+We have seen the notion of a bounded sesquilinear form and a bounded quadratic form are equivalent.  If it also the case that in a Hilbert space, bounded quadratic forms are equivalent to bounded linear operators.
+
+\begin{prop}\label{hilbert:QuadraticFormFromOperator}Let $H$ be a complex Hilbert space and $A : H \to H$ a bounded linear operator then $Q(v) = \langle v, A v \rangle$ is a bounded quadratic form with norm bounded above by $\norm{A}$.
+\end{prop}
+\begin{proof}
+Straightforward computation using linearity and the fact that the inner product is sesquilinear shows that 
+\begin{align*}
+Q(cv) &= \langle cv, A (cv) \rangle = \langle cv, c A v \rangle = \abs{c}^2 \langle v, A v \rangle = \abs{c}^2Q(v)
+\end{align*}
+as well as 
+\begin{align*}
+L(cv, w) &= \frac{1}{2} \left ( Q(cv+w) - Q(cv) - Q(w) \right) - \frac{i}{2} \left (Q(cv+iw) - Q(cv) - Q(iw) \right) \\
+&= \frac{1}{2} \left ( \langle cv+w, A(cv+w) \rangle - \langle cv, A(cv) \rangle - \langle w, Aw \rangle \right) \\
+&- \frac{i}{2} \left ( \langle cv+iw, A(cv + iw) \rangle - \langle cv, A(cv) \rangle - \rangle iw, A(iw) \rangle \right) \\
+&= \frac{1}{2} \left ( \langle cv, Aw \rangle + \langle w, A(cv) \rangle \right) - \frac{i}{2} \left ( \langle cv, A(iw) \rangle + \langle iw, A(cv) \rangle \right) \\
+&= \frac{1}{2} \left ( \overline{c} \langle v, Aw \rangle + c \langle w, Av \rangle \right) - \frac{i}{2} \left ( i \overline{c} \langle v, Aw \rangle - ic\langle w, Av \rangle \right) \\
+&= \overline{c} \langle v, Aw \rangle = \overline{c} L(v,w)
+\end{align*}
+and
+\begin{align*}
+L(v, cw) 
+&= \frac{1}{2} \left ( \langle v+cw, A(v+cw) \rangle - \langle v, Av \rangle - \langle cw, A(cw)\rangle \right) \\
+&- \frac{i}{2} \left ( \langle v+icw, A(v + icw) \rangle - \langle v, Av \rangle - \rangle icw, A(icw) \rangle \right) \\
+&= \frac{1}{2} \left ( \langle v, A(cw) \rangle + \langle cw, Av \rangle \right) - \frac{i}{2} \left ( \langle v, A(icw) \rangle + \langle icw, Av \rangle \right) \\
+&= \frac{1}{2} \left ( c \langle v, Aw \rangle + \overline{c} \langle w, Av \rangle \right) - \frac{i}{2} \left ( i c \langle v, Aw \rangle - i\overline{c}\langle w, Av \rangle \right) \\
+&= c \langle v, Aw \rangle = c L(v,w)
+\end{align*}
+\begin{align*}
+L(u+v, w) 
+&= \frac{1}{2} \left ( \langle u+v+w, A(u+v+w) \rangle - \langle u+v, A(u+v) \rangle - \langle w, Aw\rangle \right) \\
+&- \frac{i}{2} \left ( \langle u+v+iw, A(u+v + iw) \rangle - \langle u+v, A(u+v) \rangle - \rangle iw, A(iw) \rangle \right) \\
+&=\frac{1}{2} \left ( \langle u+v, Aw \rangle - \langle w, A(u+v) \rangle  \right) - \frac{i}{2} \left ( i \langle u+v, Aw \rangle - i\langle w, A(u+v) \rangle \right) \\
+&=\langle u+v, Aw \rangle = \langle u, Aw \rangle + \langle v, Aw \rangle = L(u,w) + L(v,w)
+\end{align*}
+\begin{align*}
+L(u, v+w) 
+&= \frac{1}{2} \left ( \langle u+v+w, A(u+v+w) \rangle - \langle u, Au \rangle - \langle v+w, A(v+w)\rangle \right) \\
+&- \frac{i}{2} \left ( \langle u+iv+iw, A(u+iv + iw) \rangle - \langle u, Au \rangle - \rangle iv+iw, A(iv+iw) \rangle \right) \\
+&=\frac{1}{2} \left ( \langle u, A(v+w) \rangle - \langle v+w, Au \rangle  \right) - \frac{i}{2} \left ( i \langle u, A(v+w) \rangle - i\langle v+w, Au \rangle \right) \\
+&=\langle u, A(v+w) \rangle = \langle u, Av \rangle + \langle u, Aw \rangle = L(u,v) + L(u,w)
+\end{align*}
+which show that $Q$ is a quadratic form.  To see that $Q$ is bounded note that by the Cauchy-Schwartz inequality \ref{hilbert:CauchySchwartz}
+\begin{align*}
+\abs{\langle v, Av \rangle}^2 &\leq \norm{v} \norm{Av} \leq \norm{A} \norm{v}^2
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{hilbert:LinearCombinationOfQuadraticForms}Let $H$ be a complex Hilbert space and $Q$ and $R$ be quadratic forms then for every $c \in \complexes$, $cQ$ is a quadratic form and $Q + R$ is a quadratic form.  If $Q$ is bounded with norm $\norm{Q}$ then $cQ$ is bounded with norm $\abs{c}^2\norm{Q}$.  If $Q$ and $R$ are bounded then $Q+R$ is bounded and $\norm{Q+R} \leq \norm{Q} + \norm{R}$. 
+\end{prop}
+\begin{proof}
+For any constants $c, d \in \complexes$ and $v \in H$, we have $(cQ)(dv) = c \abs{d}^2 Q(v) = \abs{d}^2 (cQ)(v)$ and 
+\begin{align*}
+(Q+R) (dv) = Q(dv) + R(dv) = \abs{d}^2 Q(v) + \abs{d}^2 R(v) = \abs{d}^2 (Q+R)(v)
+\end{align*}
+The rest of the proof that $cQ$ and $Q+R$ are quadratic forms follows from Proposition \ref{hilbert:LinearCombinationSesquilinear}.   Assuming $Q$ and $R$ are bounded we have
+\begin{align*}
+\abs{cQ(v)} &\leq \abs{c}\abs{Q(v)} \leq \abs{c} \norm{Q} \norm{v}^2
+\end{align*}
+and 
+\begin{align*}
+\abs{(Q+R)(v)} &\leq \abs{Q(v)} + \abs{R(v)} \leq \norm{Q} \norm{v}^2 +  \norm{R} \norm{v}^2
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{hilbert:OperatorFromQuadraticForm}Let $H$ be a complex Hilbert space and $Q$ a bounded quadratic form then there exists a unique bounded linear operator $A : H \to H$ such that $Q(v) = \langle v, A v \rangle$.  In this case the associated sesquilinear form $L$ has the formula $L(v,w) = \langle v, A w \rangle$.  If $Q$ is real valued then the operator $A$ is self adjoint.
+\end{prop}
+\begin{proof}
+From Proposition \ref{hilbert:QuadraticPropertiesToSesquilinearProperties} we know that sesquilinear form $L$ is bounded hence there exists a constant $C$ such that $L(v,w) \leq C \norm{v}\norm{w}$ for all $v,w \in H$.  Let $v \in H$ be fixed so that $w \mapsto L(v,w)$ is a bounded linear functional on $H$ with norm bounded above by $C \norm{v}$.  By the Riesz Theorem TODO there exists a unique $B(v) \in H$ with $\norm{B(v)} \leq C \norm{v}$ such that $L(v,w) = \langle B(v), w \rangle$ for all $w \in H$.  Let $c \in \complexes$ and observe that 
+\begin{align*}
+\langle c B(v), w \rangle &= \overline{c} \langle B(v), w \rangle = \overline{c} L(v,w) = L(cv, w)
+\end{align*}
+and uniqueness in the Riesz Theorem implies $B(cv) = cB(v)$.  Furthermore for $u,v, w \in H$ we have 
+\begin{align*}
+\langle  B(u) + B(v), w \rangle &= \langle  B(u), w \rangle  + \langle B(v), w \rangle = L(u,w) + L(v,w) = L(u+v, w)
+\end{align*}
+hence $B(u+v) = B(u) + B(v)$ and $B$ is a linear map.  The fact that $\norm{B(v)} \leq C \norm{v}$ implies that $B$ is bounded linear and therefore we can define the adjoint $A = B^*$.  It follows from the definition of $B$ that $L(v,w) = \langle B(v) , w \rangle = \langle v, A w \rangle$ for all $v,w \in H$ and therefore $Q(v) = L(v,v) = \langle v, A v \rangle$.  
+
+To see that for any $Q(v) = \langle v, A v \rangle$ it is necessary that $L(v,w) = \langle v, Aw \rangle$ just use the Polarization identity to compute
+\begin{align*}
+L(v,w) &= \frac{1}{2} \left ( Q(v+w) - Q(v) - Q(w) \right) - \frac{i}{2} \left (Q(v+iw) - Q(v) - Q(iw) \right) \\
+&=\frac{1}{2} \left ( \langle v+w, Av + Aw \rangle - \langle v, Av \rangle - \langle w, A w \rangle \right) - \frac{i}{2} \left ( \langle v+iw, Av + i Aw \rangle - \langle v, A v \rangle - \langle iw, i A w \rangle \right)  \\
+&=\frac{1}{2} \left ( \langle w, Av \rangle + \langle v, Aw \rangle \right) - \frac{i}{2} \left ( i \langle v, Aw \rangle -  i \langle w, A v \rangle \right) \\
+&= \langle v, Aw \rangle
+\end{align*}
+
+To see that $A$ is unique suppose that there exist bounded linear operators $A_1$ and $A_2$ with $Q(v) = \langle v, A_1 v \rangle = \langle v, A_2 v \rangle$ for all $v \in H$ then by the polarization formula above it follows that $\langle v, A_1 w \rangle = \langle v, A_2 w \rangle$ for all $v, w \in H$ so in particular $\norm{(A_1-A_2) v} = \langle (A_1 - A_2) v, (A_1 - A_2) v \rangle = 0$ for all $v \in H$.
+
+Suppose that $Q(v)$ is real valued for all $v \in H$, then by Proposition \ref{hilbert:QuadraticPropertiesToSesquilinearProperties} we know that $L$ is conjugate symmetric and therefore 
+\begin{align*}
+\langle v, A w \rangle &= L(v,w) = \overline{L(w,v)} = \overline{\langle w, A v \rangle} = \langle A v, w \rangle
+\end{align*}
+which implies $A = A^*$.
+\end{proof}
+
+\section{Spectrum of Bounded Linear Operators}
+
+\begin{defn}Let $A : V \to V$ be a bounded linear operator on a Banach
+  space $V$ over the normed field $\field$ ($\field= \reals$ or $\complexes$) then the \emph{resolvent set} $\resolventset{A}$ is the set of $\lambda \in \field$ such that operator $(A - \lambda)$ has a bounded inverse.  For $\lambda \in \resolventset{A}$ the operator $(A - \lambda)^{-1}$ is called the \emph{resolvent} of $A$ at $\lambda$ and is maybe written $R_\lambda$.  The set $\spectrum{A} = \field \setminus \resolventset{A}$ is called the \emph{spectrum} of $A$.
+\end{defn}
+
+Note that by the Open Mapping Theorem the boundedness of the inverse of $A - \lambda$ is is a consequence of the boundedness of $A$ and bijectiveness of $A - \lambda$.  
+
+\begin{prop}\label{BoundedLinearResolventSetOpen}Let $A : V \to V$ be a bounded linear operator on a Banach  space $V$ over the normed field $\field$.  
+\begin{itemize}
+\item[(i)] If $\abs{\lambda} > \norm{A}$ then $\lambda \in \resolventset{A}$.
+\item[(ii)] $\spectrum{A}$ is a closed bounded set of $\field$
+\item[(iii)] $R_\lambda$ is analytic on $\resolventset{A}$
+\item[(iv)] If $\field = \complexes$ then $\spectrum{A} \neq \emptyset$
+\end{itemize}
+\end{prop}
+\begin{proof}
+To see (i), let $\abs{\lambda} > \norm{A}$ and consider the operator $A - \lambda = -\lambda (\IdentityMatrix - \frac{A}{\lambda})$.  We see that $\norm{\frac{A}{\lambda}} < 1$ and therefore by Proposition \ref{banach:InvertibleMapsOpen} we know that $A - \lambda$ has a bounded inverse given by the formula
+\begin{align*}
+(A - \lambda)^{-1} &= -\frac{1}{\lambda} \sum_{n=0}^\infty \left( \frac{A}{\lambda} \right)^n
+\end{align*}
+thus $\lambda \in \resolventset{A}$.  In particular, $\spectrum{A}$ is bounded.
+
+Now let $\lambda_0 \in \resolventset{A}$ so $A -\lambda_0$ has a bounded inverse.  Now suppose 
+\begin{align*}
+\abs{\lambda - \lambda_0}  &< \frac{1}{\norm{(A-\lambda_0)^{-1}}}
+\end{align*}
+then 
+\begin{align*}
+\norm{(A - \lambda) - (A - \lambda_0)} &= \abs{\lambda - \lambda_0} < \frac{1}{\norm{(A-\lambda_0)^{-1}}}
+\end{align*}
+and Proposition \ref{banach:InvertibleMapsOpen} shows that $A- \lambda$ has a bounded inverse.  Thus $ \resolventset{A}$ is open, hence $\spectrum{A}$ is closed.
+
+Let $\lambda_0 \in \resolventset{A}$ and note that again applying Proposition \ref{banach:InvertibleMapsOpen} we see that for 
+\begin{align*}
+\abs{\lambda - \lambda_0}  &< \frac{1}{\norm{(A-\lambda_0)^{-1}}}
+\end{align*}
+we have the formula ($B = A - \lambda$ and $A = A - \lambda_0$)
+\begin{align*}
+R_\lambda &= (A - \lambda)^{-1} = \sum_{n=0}^\infty (A- \lambda_0)^{-n-1} (\lambda - \lambda_0)^n
+\end{align*}
+so $R_\lambda$ is analytic on $\resolventset{A}$.  
+
+Now let $\field = \complexes$ and assume that $\spectrum{A} = \emptyset$ then by (iii) we see that $R_\lambda$ is entire.  From the proof of (i) we have for $\abs{\lambda} > \norm{A}$,
+\begin{align*}
+\norm{R_\lambda} &\leq \frac{1}{\abs{\lambda}} \sum_{n=0}^\infty \left( \frac{\norm{A}}{\abs{\lambda}} \right)^n = \frac{1}{\abs{\lambda}} \frac{1}{1 - \norm{A}/\abs{\lambda}} < \frac{1}{\abs{\lambda}} 
+\end{align*}
+so $R_\lambda$ is bounded and therefore by Liouville's Theorem \ref{banach:LiouvillesTheorem} we know that $R_\lambda$ is constant.  Since the above norm estimate shows $R_\lambda \to 0$ as $\lambda \to \infty$ it follows that $R_\lambda \equiv 0$ which contradicts the identity $(A - \lambda) R_\lambda = \IdentityMatrix$.
+\end{proof}
+
+\section{Functional Calculus}
+
+\subsection{Holomorphic Functional Calculus}
+
+TODO: For bounded linear operators is trivial to define a functional calculus for entire functions (just expand $f(z) = \sum_{n=0}^\infty a_n z^n$ as a power series then define $f(A) = \sum_{n=0}^\infty a_n A^n$), the holomorphic functional calculus extends this to analytic functions $f : U \subset \complexes \to \complexes$ such that $\sigma(A) \subset U$ and $U$ open.  The idea is to use the Cauchy integral formula to show that $f(A) = \oint_{\Gamma} \frac{f(z)}{(z - A)^{-1}} \, dz$; the main issues to get started are that to make sense of the definition one must find curves $\Gamma$ such $\Gamma \cap \sigma(A) = \emptyset$ and then to verify that the integral doesn't depend on the choice of $\Gamma$.
+
+\subsection{Continuous Functional Calculus}
+
+\begin{defn}Let $A : V \to V$ be a bounded linear operator on a Banach space $V$ then the \emph{spectral radius} is defined to be 
+\begin{align*}
+\spectralradius{A} &= \sup \lbrace \abs{\lambda} \mid \lambda \in \sigma{A} \rbrace
+\end{align*}
+\end{defn}
+
+\begin{prop}\label{hilbert:OperatorNormAlternative}Let $V$ and $W$ be Hilbert space over $\field$.   For every $v \in V$ we have $\norm{v} = \sup_{\norm{w}=1} \abs{\langle v, w \rangle}$.  If $A : V \to W$ be a linear operator then $\norm{A} = \sup_{\norm{v} = \norm{w} = 1} \abs{\langle w, A v \rangle}$.
+\end{prop}
+\begin{proof}
+Note that by Cauchy-Schwartz we have for every $\norm{w} = 1$,$\abs{\langle v, w \rangle} \leq \norm{v}\norm{w} = \norm{v}$.  On the other hand if $v \neq 0$ then 
+\begin{align*}
+\abs{\langle v, v/\norm{v} \rangle} &= \langle v, v \rangle/\norm{v} = \norm{v} 
+\end{align*}
+and if $v = 0$ then for every $\norm{w} = 1$ we have $0 = \langle v, w \rangle = \norm{v}$.
+
+By Proposition \label{banach:OperatorNormAlternative}, the first part of this result and Proposition \ref{real:SupremumOfBivariate} we have 
+\begin{align*}
+\norm{A} &= \sup_{\norm{v}=1} \norm{Av}  = \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle w, A v \rangle} = \sup_{\norm{v}=\norm{w}=1} \abs{\langle w, A v \rangle} 
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{hilbert:NormOfAdjoint}Let $V$ be a Hilbert space over $\field$ and $A : V \to V$ be a bounded linear operator then
+\begin{itemize}
+\item[(i)] $\norm{A} = \norm{\adjoint{A}}$
+\item[(ii)] $\norm{\adjoint{A} A} = \norm{A}^2$
+\end{itemize}
+\end{prop}
+\begin{proof}
+By Proposition \ref{hilbert:OperatorNormAlternative} and the definition of the adjoint we have
+\begin{align*}
+\norm{\adjoint{A}} &= \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle w, \adjoint{A} v \rangle} = \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle Aw,  v \rangle} = \norm{A}
+\end{align*}
+
+To see (ii), by Proposition \ref{banach:OperatorNormInequality} and (i), we know that $\norm{\adjoint{A} A} \leq \norm{\adjoint{A}} \norm{A} = \norm{A}^2$.  On the other hand,
+\begin{align*}
+\norm{\adjoint{A} A}  &= \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle w, \adjoint{A} A v \rangle} = \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle A w, A v \rangle} \
+&\geq \sup_{\norm{v} = 1} \abs{\langle A v, A v \rangle} = \sup_{\norm{v} = 1} \norm{Av}^2 = \norm{A}^2
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{hilbert:SpectralRadiusSelfAdjoint}Let $A : H \to H$ be a self adjoint bounded linear operator on the separable Hilbert space $H$ then $\spectralradius{A} = \norm{A}$.
+\end{prop}
+\begin{proof}
+From Proposition \ref {BoundedLinearResolventSetOpen} we have seen that for $\abs{\lambda} > \norm{A}$ we have the absolutely convergent Neumann series expansion
+\begin{align*}
+(A - \lambda)^{-1} &= -\frac{1}{\lambda} \sum_{n=0}^\infty \frac{A^n}{\lambda^n}
+\end{align*}
+Consider what happens when $\abs{\lambda} \leq \norm{A}$.  Since $A$ is self-adjoint, by Proposition \ref{hilbert:NormOfAdjoint} we have $\norm{A^2} = \norm{\adjoint{A}A} = \norm{A}^2$ and by an induction argument $\norm{A^{2^n}} = \norm{A}^{2^n}$ for all $n \in \naturals$ which shows that $\sum_{n=0}^\infty \frac{A^n}{\lambda^n}$  does not converge absolutely for $\abs{\lambda} \leq \norm{A}$.  
+
+By Proposition \ref {BoundedLinearResolventSetOpen} we know that $\spectralradius{A} \leq \norm{A}$ and moreover we showed that for $\lambda_0 \in \resolventset{A}$ and 
+\begin{align*}
+\abs{\lambda - \lambda_0}  &< \frac{1}{\norm{(A-\lambda_0)^{-1}}}
+\end{align*}
+we have 
+\begin{align*}
+(A - \lambda)^{-1} &= \sum_{n=0}^\infty (A- \lambda_0)^{-n-1} (\lambda - \lambda_0)^n
+\end{align*}
+from which we concluded that $(A - \lambda)^{-1}$ was an analytic function on $\resolventset{A}$.  As an analytic function, $(A - \lambda)^{-1}$ has Laurent series about $0$ which (by uniqueness) is given by $-\frac{1}{\lambda} \sum_{n=0}^\infty \frac{A^n}{\lambda^n}$ and converges on the largest open annulus contained in $\resolventset{A}$ which is $\abs{\lambda} > \spectralradius{A}$ (suppose $\abs{\lambda} >  \spectralradius{A}$ then by definition  $\lambda \in \resolventset{A}$ and for any $r < \spectralradius{A}$ there exists a $\lambda \in \spectrum{A}$ with $\abs{\lambda} > r$).  We have already shown that the series diverges for $\abs{\lambda} < \norm{A}$ so it follows that $\spectralradius{A} \geq \norm{A}$.   
+
+TODO:  Get these facts about Laurent series proven for the Banach space case.  Alternatively argue using ordinary complex valued functions...
+\end{proof}
+
+\begin{lem}[Spectral Mapping Theorem]\label{hilbert:SpectralMappingPolynomialBoundedSelfAdjoint}Let $H$ be a separable complex Hilbert space and let $A :H \to H$ be a bounded self adjoint operator then for every polynomial $p$ we have $\spectrum{p(A)} = p(\spectrum{A})$.
+\end{lem}
+\begin{proof}
+If $p$ is a constant $0 \neq c \in \complexes$ then since $(c A - c \lambda)^{-1}  = \frac{1}{c} (A - \lambda)^{-1}$ it follows that $\resolventset{cA} = c \resolventset{A}$ hence $\spectrum{cA} c\spectrum{A}$.  Now let $p$ have non-zero degree and write 
+\begin{align*}
+p(z) &= a_n z^n + a_{n-1} z^{n-1} + \dotsb + a_0
+\end{align*}
+with $a_n \neq 0$.  Suppose $\lambda \in \spectrum{A}$.  Since for any $k \in \naturals$ we can write
+\begin{align*}
+A^k - \lambda^k &= (A - \lambda) (A^{k-1} + \lambda A^{k-2} + \dotsb + \lambda^{k-1} = (A - \lambda) \sum_{j=0}^{k-1} \lambda^{j} A^{k-1-j}
+\end{align*}
+we have
+\begin{align*}
+p(A) - p(\lambda) &= 
+\end{align*}
+\end{proof}
+
+\subsection{Measurable Functional Calculus}
+
+\section{Spectral Theory}
+
+\subsection{Projection Valued Measures}
+
+\begin{defn}Let $H$ be a Hilbert space, $(\Omega, \mathcal{A})$ be a measurable space then a map $\mu : \mathcal{A} \to L(H)$ is a 
+\emph{projection valued measure} if and only if 
+\begin{itemize}
+\item[(i)] For every $A \in \mathcal{A}$ the operator $\mu(A)$ is an orthogonal projection
+\item[(ii)] $\mu(\emptyset) = 0$ and $\mu(H) = \IdentityMatrix$
+\item[(iii)] For $A_1, A_2, \dots \in \mathcal{A}$ disjoint and $v \in H$, the infinite series $\sum_{i=1}^\infty \mu(A_i)v$ converges in $H$ and 
+\begin{align*}
+\mu(\bigcup_{i=1}^\infty A_i)  v &= \sum_{i=1}^\infty \mu(A_i)v
+\end{align*}
+\item[(iv)]For all $A,B \in \mathcal{A}$, $\mu(A \cap B) = \mu(A) \mu(B)$.
+\end{itemize}
+\end{defn}
+
+
+\begin{prop}\label{hilbert:PointwiseEvaluationOfProjectionMeasure}Let $H$ be a Hilbert space and $(\Omega, \mathcal{A})$ be a measurable space and $\mu : \mathcal{A} \to L(H)$ a projection valued measure, then
+for every $v \in H$ the map $\mu_v(A) = \langle v, \mu(A) v \rangle$ is a measure.
+\end{prop}
+\begin{proof}
+Let $v \in H$ then $\mu_v(\emptyset) = \langle v , \mu(\emptyset) v \rangle = \langle v, 0 \rangle = 0$.  If $A_1, A_2, \dots \in \mathcal{A}$ are disjoint
+then using Proposition \ref{hilbert:ContinuityOfInnerProduct} we get
+\begin{align*}
+\mu_v(\bigcup_{i=1}^\infty A_i) &= \langle v , \sum_{i=1}^\infty \mu(A_i)v \rangle = \sum_{i=1}^\infty \langle v , \mu(A_i)v \rangle = \sum_{i=1}^\infty \mu_v (A_i)
+\end{align*}
+\end{proof}
+
+With the previous proposition in hand we can build an integration theory for projection valued measures (TODO: Is this a Bochner integral?)
+\begin{prop}\label{hilbert:OperatorValuedIntegration}Let $H$ be a Hilbert space and $(\Omega, \mathcal{A})$ be a measurable space and $\mu : \mathcal{A} \to L(H)$ a projection valued measure then there exists a unique linear map $\int \cdot \, d\mu : \mathcal{B}(\Omega, \complexes) \to L(H,H)$ ($\mathcal{B}(\Omega, \complexes)$ denotes the space of bounded measurable complex valued functions on $\Omega$) satisfying
+\begin{align}\label{hilbert:DefiningPropertyOfOperatorIntegral}
+\left \langle v, \left(\int f \, d\mu \right) v \right \rangle &= \int f \, d\mu_v \text{, for all $v \in H$ and $f \in \mathcal{B}(\Omega, \complexes)$}
+\end{align}
+The map satisfies
+\begin{itemize}
+\item[(i)] For every $A \in \mathcal{A}$ 
+\begin{align*}
+\int \characteristic{A} \, d\mu = \mu(A)
+\end{align*}
+\item[(ii)] For every $f \in \mathcal{B}(\Omega, \complexes)$, 
+\begin{align*}
+\norm {\int f \, d\mu} &\leq \sup_{v \in H} \abs{f(v)} = \norm{f}_\infty
+\end{align*}
+\item[(iii)] For every $f,g  \in \mathcal{B}(\Omega, \complexes)$, 
+\begin{align*}
+\int f g \, d\mu &= \left ( \int f \, d\mu \right ) \left ( \int g \, d\mu \right )
+\end{align*}
+\item[(iv)] For every $f \in \mathcal{B}(\Omega, \complexes)$, 
+\begin{align*}
+\left( \int f \, d\mu \right)^*  &= \int \overline{f} \, d\mu 
+\end{align*}
+for if $f$ is real valued then $\int f \, d\mu$ is self-adjoint.
+\end{itemize}
+\end{prop}
+\begin{proof}
+
+\begin{clm}For every bounded measurable $f : H \to \complexes$ the map $Q_f(v) = \int f \, d\mu_v$ defines a bounded quadratic form with 
+\begin{align*}
+\norm{Q_f} &\leq \norm{f}_\infty
+\end{align*}
+\end{clm}
+Let $A \in \mathcal{A}$ and define $Q_A : H \to \complexes$ by $Q_A(v) = \mu_v(A) = \langle v , \mu(A) v \rangle$ and it follows from Propositoin \ref{hilbert:QuadraticFormFromOperator} that $Q_A$ is a bounded quadratic form.
+
+Let $f = c_1 \characteristic{A_1} + \dotsb + c_n \characteristic{A_n}$ be a simple function then we see that 
+\begin{align*}
+Q_f(v) = \int f \, d\mu_v &= c_1 \mu_v(A_1) +  \dotsb + c_n \mu_v(A_n) =  c_1 Q_{A_1}(v) +  \dotsb + c_n Q_{A_n}(v) 
+\end{align*}
+and thus by Proposition \ref{hilbert:LinearCombinationOfQuadraticForms} we see that $Q_f$ is a bounded quadratic form.  TODO: Finish claim by limiting argument
+
+From the claim and Proposition  \ref{hilbert:OperatorFromQuadraticForm} for each bounded measurable $f : H \to \complexes$ we construct a unique bounded linear operator $A_f : H \to H$ such that
+$\langle v, A_f v \rangle = \int f \, d \mu_v$.  We know that $\norm{A_f} \leq \norm{Q_f} \leq \norm{f}_\infty$.  We define $\int f \, d\mu$ to be $A_f$ so $\left \langle v, \left(\int f \, d\mu \right) v \right \rangle = \int f \, d\mu_v$ for all $v \in H$.  The fact that the map $f \mapsto \int f \, d\mu$ is uniquely defined by property \eqref{hilbert:DefiningPropertyOfOperatorIntegral} follows from the uniqueness property of Proposition  \ref{hilbert:OperatorFromQuadraticForm}.  We have already observed that properties (i) and (ii) hold.  
+
+To see (iii)
+
+TODO: Finish
+\end{proof}
+
+\begin{thm}Let $H$ be a complex Hilbert space and $A : H \to H$ be a bounded self-adjoint operator then there exists a unique projection valued measure $\mu_A$ on the Borel $\sigma$-algebra on $\sigma(A)$ that satisfies
+\begin{align*}
+A &= \int_{\sigma(A)} \lambda  \, \mu_A(d\lambda)
+\end{align*}
+\end{thm}
+
+\begin{defn}Let $\Omega$ be a set and for every $\omega \in \Omega$ suppose that $H_\omega$ is a separable complex Hilbert space with inner product $\langle \cdot, \cdot \rangle_\omega$.  A function $s$ from $\Omega$ to the disjoint union of $H_\omega$ is said to be a \emph{section} if $s(\omega) \in H_\omega$ for every $\omega \in \Omega$.  A set of sections $e_1, e_2, \dotsc$ is said to be a \emph{simultaneous orthonormal basis} of the family $\lbrace H_\omega \rbrace$ if for every $\omega \in \Omega$ the set $\lbrace e_j(\omega) \mid e_j(\omega) \neq 0 \rbrace$ is an orthonormal basis of $H_\omega$.  If $(\Omega, \mathcal{A})$ is a measurable space then we say that a simultaenous orthonormal basis is a \emph{measurability structure} if for every $i,j \in \naturals$ the function $\omega \mapsto \langle e_i(\omega), e_j(\omega) \rangle_\omega$ is Borel measurable.   An arbitrary section $s$ is said to be measurable if the function 
+$\omega \mapsto \langle e_i(\omega), s(\omega) \rangle_\omega$ is Borel measurable for every $i \in \naturals$.
+\end{defn}
+
+\begin{prop}\label{hilbert:InnerProductOfMeasurableSections}Let $(\Omega, \mathcal{A})$ be a measurable space, $\lbrace H_\omega \rbrace$ be a family of separable complex Hilbert spaces and $e_1, e_2,\dotsc$ be a measurability structure.  Let $s$ and $t$ be measurable sections then the function $\omega \mapsto \langle s(\omega), t(\omega) \rangle_\omega$ is Borel measurable.
+\end{prop}
+\begin{proof}
+Since $e_1, e_2, \dotsc$ is a simultaenous orthonormal basis, for every $\omega \in \Omega$  we have $s(\omega) = \sum_{i=1}^\infty \langle e_i(\omega), s(\omega) \rangle_\omega e_i(\omega)$ and $t(\omega) = \sum_{j=1}^\infty \langle e_j(\omega), t(\omega) \rangle_\omega e_j(\omega)$.  By continuity of the inner product and orthogonality of the $e_i$,
+\begin{align*}
+\langle s(\omega), t(\omega) \rangle_\omega 
+&= \sum_{i=1}^\infty \sum_{j=1}^\infty \langle  s(\omega)  , e_i(\omega)\rangle_\omega \langle e_j(\omega), t(\omega) \rangle_\omega \langle e_i(\omega), e_j(\omega) \rangle_\omega \\
+&=\sum_{i=1}^\infty  \langle s(\omega)  ,e_i(\omega)\rangle_\omega \langle e_i(\omega), t(\omega) \rangle_\omega 
+\end{align*}
+which is measurable since each of $s$ and $t$ is measurable and Lemma \ref{LimitsOfMeasurable}
+\end{proof}
+
+By the previous proposition, if a measurable space $(\Omega, \mathcal{A})$ has measure $\mu$, then we can consider integrals $\int \langle s(\omega), t(\omega) \rangle_\omega \, \mu(d\omega)$.  In particular we can consider square integrable sections for which $\int \langle s(\omega), s(\omega) \rangle_\omega \, \mu(d\omega)$ is finite.
+
+\begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space, $\lbrace H_\omega \rbrace$ be a family of separable complex Hilbert spaces such that the dimension function $\omega \to \dim(H_\omega)$ is measurable and $e_1, e_2,\dotsc$ be a measurability structure. The \emph{direct integral}, denoted
+\begin{align*}
+\int^\oplus H_\omega \, \mu(d\omega)
+\end{align*}
+is the set of almost everywhere equal measurable sections $s$ for which
+\begin{align*}
+\norm{s}^2 &= \int \langle s(\omega), s(\omega) \rangle_\omega \, \mu(d\omega) = \int \norm{ s(\omega)}^2_\omega \, \mu(d\omega) < \infty
+\end{align*}
+Given two square integrable sections $s$ and $t$ we define 
+\begin{align*}
+\langle s, t \rangle &= \int \langle s(\omega), t(\omega) \rangle_\omega \, \mu(d\omega)
+\end{align*}
+\end{defn}
+
+Note that the definition of a square integrable equivlence class of sections is well defined since any two representatives of the equivalence class have the same integral by Proposition \ref{AlmostEverywhereEqualIntegralEqual}.  
+
+\begin{prop}\label{hilbert:DirectIntegralIsHilbertSpace} $\left (\int^\oplus H_\omega \, \mu(d\omega), \langle \cdot, \cdot \rangle \right )$ is a Hilbert space.
+\end{prop}
+\begin{proof}
+First we show that $\langle s, t \rangle$ is well defined and finite.  Pick two representative of the equivalence class of $s$ and $t$ (by abuse of notation calling them $s$ and $t$ respectively).  By Proposition \ref{PropertiesOfComplexIntegrals}, the Cauchy Schwartz inequality in Hilbert space \ref{hilbert:CauchySchwartz} and the Cauchy Schwartz inequality in $L^2$ spaces (Lemma \ref{CauchySchwartz} TODO: this is only stated/proved for probability measures) we know that 
+\begin{align*}
+\abs{\langle s, t \rangle} &\leq \int \abs{\langle s(\omega), t(\omega) \rangle_\omega} \, \mu(d\omega) \\
+&\leq \int \norm{s(\omega)}_\omega \norm{t(\omega)}_\omega\, \mu(d\omega) \\
+&\leq \left( \int \norm{s(\omega)}^2_\omega \, \mu(d\omega) \right)^{1/2} \left(\int \norm{t(\omega)}^2_\omega \, \mu(d\omega) \right)^{1/2} < \infty\\
+\end{align*}
+So $\langle s, t \rangle$ is integrable.  The fact that the inner product doesn't depend on the choice of representatives of the equivalence class follows from Proposition \ref{IntegrableAlmostEverywhereEqualIntegralEqual}.  TODO: Do we need to state a complex analogue of this?
+
+We now show that $\langle s,t \rangle$ is an inner product.  Non-negativity of $\langle s, s \rangle$ follows from the non-negativity of $\langle s(\omega), s(\omega) \rangle_\omega$ for every $\omega \in \Omega$ and monotonicity of integral.  if $\langle s, s \rangle = 0$ then by Lemma \ref{ZeroIntegralImpliesZeroFunction} we know that $\langle s(\omega), s(\omega) \rangle_\omega = 0$ for almost every $\omega \in \Omega$.  To see conjugate symmetry simply use Proposition \ref{PropertiesOfComplexIntegrals} to see
+\begin{align*}
+\langle s, t \rangle &= \int \langle s(\omega), t(\omega) \rangle_\omega \, \mu(d\omega) = \int \overline{\langle t(\omega), s(\omega) \rangle_\omega} \, \mu(d\omega) \\
+&= \overline{\int \langle t(\omega), s(\omega) \rangle_\omega\, \mu(d\omega)} = \overline{\langle t, s \rangle}
+\end{align*}
+Similarly we see sesquilinearity using sesquilinearity of each $\langle \cdot, \cdot \rangle_\omega$ and the linearity of complex integral.
+
+Lastly we need to show completeness.  Let $s_1, s_2, \dotsc$ be a Cauchy sequence of square integrable sections.  TODO: Finish
+\end{proof}
+
+TODO: Show that direct integrals generalize the construction of $L^2(\Omega, \mathcal{A}, \mu)$ (let each $H_\omega = \complexes$) and Hilbert space direct sums (choose $\Omega$ to be countable with counting measure).
+
+\begin{prop}\label{hilbert:DirectIntegralSubspaces} Let $\int^\oplus H_\omega \, \mu(d\omega)$ be a direct integral and suppose $\omega_0 \in \Omega$ with $\lbrace \omega_0 \rbrace$ measurable and $\mu( \lbrace \omega_0 \rbrace) > 0$ then for each $v \in H_{\omega_0}$ define the section $s_v$ by
+\begin{align*}
+s_v(\omega) = 
+\begin{cases}
+\frac{1}{\sqrt{\mu(\lbrace \omega_0 \rbrace)}} v & \text{if $\omega = \omega_0$} \\
+0 & \text{if $\omega \neq \omega_0$} 
+\end{cases}
+\end{align*}
+The the map $v \mapsto s_v$ is an isometry of $H_{\omega_0}$ into $\int^\oplus H_\omega \, \mu(d\omega)$.
+\end{prop}
+\begin{proof}
+It is clear that $v \mapsto s_v$ is linear and to see the isometry property
+ we compute for $v,w \in H_{\omega_0}$
+\begin{align*}
+\langle s_v, s_w \rangle &= \int \langle s_v(\omega), s_w(\omega) \rangle_\omega \, \mu(d\omega) = \langle s_v(\omega_0), s_w(\omega_0) \rangle_{\omega_0} \mu(\lbrace \omega_0 \rbrace) \\
+&=\frac{1}{\mu(\lbrace \omega_0 \rbrace)} \langle v,w \rangle_{\omega_0} \mu(\lbrace \omega_0 \rbrace) = \langle v,w \rangle_{\omega_0}
+\end{align*}
+\end{proof}
+
+\begin{thm}\label{hilbert:SpectralTheoremBoundedSelfAdjointDirectIntegral}Let $H$ be a separable complex Hilbert space and $A : H \to H$ be a bounded self-adjoint linear operator, then there exists a $\sigma$-finite Borel measure on $\sigma(A)$, a direct integral 
+\begin{align*}
+\int^\oplus H_\lambda \, \mu(d\lambda)
+\end{align*}
+and a unitary map $U: H \to \int^\oplus H_\lambda \, \mu(d\lambda)$ such that 
+\begin{align*}
+[UAU^{-1}(s)] (\lambda) = \lambda s(\lambda) 
+\end{align*}
+\end{thm}
+

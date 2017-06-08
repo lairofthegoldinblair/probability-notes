@@ -48,13 +48,28 @@ that we require.
   is measurable if and only $f = h + i g$ where $h,g : (\Omega,
   \mathcal{A}, \mu) \to \reals$ are measurable.  Equivalently,
   $\complexes$ is given the Borel $\sigma$-algebra.
-\begin{itemize}
-\item[(i)] If $\mu(A) < \infty$, then $\abs{\int f \, d\mu} \leq \int
-  \abs{f} \, d\mu$.
-\end{itemize}
 \end{defn}
 \begin{proof}
-By the triangle inequality for the complex norm, we know that given
+\end{proof}
+
+TODO: Some more basic properties of integrals of complex functions.
+\begin{prop}\label{PropertiesOfComplexIntegrals}
+\begin{itemize}
+\item[(i)] Let $f, g$ be integrable and $a, b \in \complexes$ then $af
+  + bg$ is integrable and 
+\begin{align*}
+\int (af + bg) \, d\mu &= a \int f \, d\mu + b \int g \, d\mu
+\end{align*}
+\item[(ii)] If $f$ is integrable then $\overline{\int f \, d\mu} = \int
+  \overline{f} \, d\mu$
+\item[(iii)] If $\mu(A) < \infty$ (TODO: is this necessary???), then $\abs{\int f \, d\mu} \leq \int
+  \abs{f} \, d\mu$.
+\end{itemize}
+\end{prop}
+\begin{proof}
+TODO:
+
+To see (iii), by the triangle inequality for the complex norm, we know that given
 any two $z,w \in \complexes$ and $t \in [0,1]$, $\abs{(1-t) z + t w}
 \leq (1-t) \abs{z} + t \abs{w}$ and therefore the complex norm is
 convex.  Then by Jensen's Inequality (Theorem \ref{Jensen}, $\abs{\int f \, d\mu} \leq \int
