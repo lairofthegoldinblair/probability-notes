@@ -42,6 +42,22 @@ so equality holds.
 The Cauchy-Schwartz inequality \ref{hilbert:CauchySchwartz} shows that $\langle v, \cdot \rangle$ and $\langle \cdot, v \rangle$ are bounded; (sesqui)linearity follow from the corresponding properties of the inner product.  Uniform continuity of a bounded sesquilinear map follows by the same proof as the one for linear maps.
 \end{proof}
 
+TODO: Stuff about orthogonal projections.
+\begin{prop}Let $H$ be a Hilbert space and let $V \subset H$ be a closed subspace then there exists another closed subspace $W$ such that $H = V \oplus W$ and for every $v \in V$ and $w \in W$ we have $\langle v, w \rangle = 0$.  
+\end{prop}
+\begin{proof}
+Let $W = \lbrace w \in H \mid \langle v, w \rangle = 0 \text{ for all $v \in V$}  \rangle$.  
+
+\begin{clm} $W$ is a closed subspace.  
+\end{clm}
+Let $u,w \in W$ and $a \in \field$ then for any $v \in V$ we have $\langle v, au + w \rangle = a \langle v, u \rangle + \langle v, w \rangle = 0$.  Suppose $w_1, w_2, \dotsc \in W$ and $w \in H$ such that $w_n \to w$.  By Proposition \ref{hilbert:ContinuityOfInnerProduct} we have $\langle v, w \rangle = \lim_{n \to \infty} \langle v, w_n \rangle = 0$ which implies $w \in W$.
+
+\begin{clm} $H = V \oplus W$.
+\end{clm}
+Let $v \in H$.  
+TODO: Finish
+\end{proof}
+
 \section{Quadratic Forms}
 
 
@@ -228,44 +244,37 @@ L(v,w) &= M(v,w) - i M(v,iw) = M(w,v) + i M(w, iv) = \overline{L(w, v)}
 
 We have seen the notion of a bounded sesquilinear form and a bounded quadratic form are equivalent.  If it also the case that in a Hilbert space, bounded quadratic forms are equivalent to bounded linear operators.
 
-\begin{prop}\label{hilbert:QuadraticFormFromOperator}Let $H$ be a complex Hilbert space and $A : H \to H$ a bounded linear operator then $Q(v) = \langle v, A v \rangle$ is a bounded quadratic form with norm bounded above by $\norm{A}$.
+\begin{prop}\label{hilbert:QuadraticFormFromOperator}Let $H$ be a complex Hilbert space and $A : H \to H$ a bounded linear operator then $Q(v) = \langle v, A v \rangle$ is a bounded quadratic form with norm bounded above by $\norm{A}$.  The sesquilinear form defined by $Q$ is $L(v,w) = \langle v, Aw \rangle$.
 \end{prop}
 \begin{proof}
-Straightforward computation using linearity and the fact that the inner product is sesquilinear shows that 
+Straightforward computation using linearity and the fact that the inner product is sesquilinear shows that for $v,w \in H$,
 \begin{align*}
-Q(cv) &= \langle cv, A (cv) \rangle = \langle cv, c A v \rangle = \abs{c}^2 \langle v, A v \rangle = \abs{c}^2Q(v)
-\end{align*}
-as well as 
-\begin{align*}
-L(cv, w) &= \frac{1}{2} \left ( Q(cv+w) - Q(cv) - Q(w) \right) - \frac{i}{2} \left (Q(cv+iw) - Q(cv) - Q(iw) \right) \\
-&= \frac{1}{2} \left ( \langle cv+w, A(cv+w) \rangle - \langle cv, A(cv) \rangle - \langle w, Aw \rangle \right) \\
-&- \frac{i}{2} \left ( \langle cv+iw, A(cv + iw) \rangle - \langle cv, A(cv) \rangle - \rangle iw, A(iw) \rangle \right) \\
-&= \frac{1}{2} \left ( \langle cv, Aw \rangle + \langle w, A(cv) \rangle \right) - \frac{i}{2} \left ( \langle cv, A(iw) \rangle + \langle iw, A(cv) \rangle \right) \\
-&= \frac{1}{2} \left ( \overline{c} \langle v, Aw \rangle + c \langle w, Av \rangle \right) - \frac{i}{2} \left ( i \overline{c} \langle v, Aw \rangle - ic\langle w, Av \rangle \right) \\
-&= \overline{c} \langle v, Aw \rangle = \overline{c} L(v,w)
+L(v, w) &= \frac{1}{2} \left ( Q(v+w) - Q(v) - Q(w) \right) - \frac{i}{2} \left (Q(v+iw) - Q(v) - Q(iw) \right) \\
+&= \frac{1}{2} \left ( \langle v+w, A(v+w) \rangle - \langle v, A(v) \rangle - \langle w, Aw \rangle \right) \\
+&- \frac{i}{2} \left ( \langle v+iw, A(v + iw) \rangle - \langle v, A(cv) \rangle - \rangle iw, A(iw) \rangle \right) \\
+&= \frac{1}{2} \left ( \langle v, Aw \rangle + \langle w, A(v) \rangle \right) - \frac{i}{2} \left ( \langle v, A(iw) \rangle + \langle iw, A(v) \rangle \right) \\
+&= \frac{1}{2} \left ( \langle v, Aw \rangle +  \langle w, Av \rangle \right) - \frac{i}{2} \left ( i \langle v, Aw \rangle - i\langle w, Av \rangle \right) \\
+&= \langle v, Aw \rangle 
 \end{align*}
 and
 \begin{align*}
-L(v, cw) 
-&= \frac{1}{2} \left ( \langle v+cw, A(v+cw) \rangle - \langle v, Av \rangle - \langle cw, A(cw)\rangle \right) \\
-&- \frac{i}{2} \left ( \langle v+icw, A(v + icw) \rangle - \langle v, Av \rangle - \rangle icw, A(icw) \rangle \right) \\
-&= \frac{1}{2} \left ( \langle v, A(cw) \rangle + \langle cw, Av \rangle \right) - \frac{i}{2} \left ( \langle v, A(icw) \rangle + \langle icw, Av \rangle \right) \\
-&= \frac{1}{2} \left ( c \langle v, Aw \rangle + \overline{c} \langle w, Av \rangle \right) - \frac{i}{2} \left ( i c \langle v, Aw \rangle - i\overline{c}\langle w, Av \rangle \right) \\
-&= c \langle v, Aw \rangle = c L(v,w)
+Q(cv) &= \langle cv, A (cv) \rangle = \langle cv, c A v \rangle = \abs{c}^2 \langle v, A v \rangle = \abs{c}^2Q(v)
+\end{align*}
+
+The fact that $L$ is sequilinear follows from the fact that the inner product is sequilinear and linearity of $A$,
+as well as 
+\begin{align*}
+L(cv, w) &= \langle cv, Aw \rangle = \overline{c} \langle v, Aw \rangle = \overline{c} L(v,w)
+\end{align*}
+and
+\begin{align*}
+L(v, cw) &= \langle v, A(cw) \rangle = c \langle v, Aw \rangle = c L(v,w)
 \end{align*}
 \begin{align*}
-L(u+v, w) 
-&= \frac{1}{2} \left ( \langle u+v+w, A(u+v+w) \rangle - \langle u+v, A(u+v) \rangle - \langle w, Aw\rangle \right) \\
-&- \frac{i}{2} \left ( \langle u+v+iw, A(u+v + iw) \rangle - \langle u+v, A(u+v) \rangle - \rangle iw, A(iw) \rangle \right) \\
-&=\frac{1}{2} \left ( \langle u+v, Aw \rangle - \langle w, A(u+v) \rangle  \right) - \frac{i}{2} \left ( i \langle u+v, Aw \rangle - i\langle w, A(u+v) \rangle \right) \\
-&=\langle u+v, Aw \rangle = \langle u, Aw \rangle + \langle v, Aw \rangle = L(u,w) + L(v,w)
+L(u+v, w) &=\langle u+v, Aw \rangle = \langle u, Aw \rangle + \langle v, Aw \rangle = L(u,w) + L(v,w)
 \end{align*}
 \begin{align*}
-L(u, v+w) 
-&= \frac{1}{2} \left ( \langle u+v+w, A(u+v+w) \rangle - \langle u, Au \rangle - \langle v+w, A(v+w)\rangle \right) \\
-&- \frac{i}{2} \left ( \langle u+iv+iw, A(u+iv + iw) \rangle - \langle u, Au \rangle - \rangle iv+iw, A(iv+iw) \rangle \right) \\
-&=\frac{1}{2} \left ( \langle u, A(v+w) \rangle - \langle v+w, Au \rangle  \right) - \frac{i}{2} \left ( i \langle u, A(v+w) \rangle - i\langle v+w, Au \rangle \right) \\
-&=\langle u, A(v+w) \rangle = \langle u, Av \rangle + \langle u, Aw \rangle = L(u,v) + L(u,w)
+L(u, v+w) &= \langle u, A(v+w) \rangle = \langle u, Av \rangle + \langle u, Aw \rangle = L(u,v) + L(u,w)
 \end{align*}
 which show that $Q$ is a quadratic form.  To see that $Q$ is bounded note that by the Cauchy-Schwartz inequality \ref{hilbert:CauchySchwartz}
 \begin{align*}
@@ -413,12 +422,12 @@ By Proposition \ref{hilbert:OperatorNormAlternative} and the definition of the a
 
 To see (ii), by Proposition \ref{banach:OperatorNormInequality} and (i), we know that $\norm{\adjoint{A} A} \leq \norm{\adjoint{A}} \norm{A} = \norm{A}^2$.  On the other hand,
 \begin{align*}
-\norm{\adjoint{A} A}  &= \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle w, \adjoint{A} A v \rangle} = \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle A w, A v \rangle} \
+\norm{\adjoint{A} A}  &= \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle w, \adjoint{A} A v \rangle} = \sup_{\norm{v}=1} \sup_{\norm{w}=1} \abs{\langle A w, A v \rangle} \\
 &\geq \sup_{\norm{v} = 1} \abs{\langle A v, A v \rangle} = \sup_{\norm{v} = 1} \norm{Av}^2 = \norm{A}^2
 \end{align*}
 \end{proof}
 
-\begin{prop}\label{hilbert:SpectralRadiusSelfAdjoint}Let $A : H \to H$ be a self adjoint bounded linear operator on the separable Hilbert space $H$ then $\spectralradius{A} = \norm{A}$.
+\begin{prop}\label{hilbert:SpectralRadiusBoundedSelfAdjoint}Let $A : H \to H$ be a self adjoint bounded linear operator on the separable Hilbert space $H$ then $\spectralradius{A} = \norm{A}$.
 \end{prop}
 \begin{proof}
 From Proposition \ref {BoundedLinearResolventSetOpen} we have seen that for $\abs{\lambda} > \norm{A}$ we have the absolutely convergent Neumann series expansion
@@ -447,17 +456,189 @@ If $p$ is a constant $0 \neq c \in \complexes$ then since $(c A - c \lambda)^{-1
 \begin{align*}
 p(z) &= a_n z^n + a_{n-1} z^{n-1} + \dotsb + a_0
 \end{align*}
-with $a_n \neq 0$.  Suppose $\lambda \in \spectrum{A}$.  Since for any $k \in \naturals$ we can write
+with $a_n \neq 0$.  
+
+We will need the following simple fact.
+\begin{clm}Suppose $A$ and $B$ are commuting bounded linear operators such that $AB$ is invertible, then $A$ is invertible.
+\end{clm}
+Note that $A$ and $B$ commute with $(AB)^{-1} = (BA)^{-1}$.  E.g. for $B$ we see
+\begin{align*}
+(AB)^{-1} B  &= (AB)^{-1} B (AB) (AB) ^{-1}  =  (AB)^{-1} (AB) B  (AB) ^{-1} = A  (AB) ^{-1}
+\end{align*}
+We define $C = (AB)^{-1}B = B(AB)^{-1}$.  Then $C A = (AB)^{-1} (AB) = \IdentityMatrix$ and $A C = (A B) (AB)^{-1} = \IdentityMatrix$.
+
+\begin{clm} $p(\spectrum{A}) \subset \spectrum{p(A)}$.
+\end{clm}
+For any $k \in \naturals$ and $\lambda \in \complexes$ we can write
 \begin{align*}
 A^k - \lambda^k &= (A - \lambda) (A^{k-1} + \lambda A^{k-2} + \dotsb + \lambda^{k-1} = (A - \lambda) \sum_{j=0}^{k-1} \lambda^{j} A^{k-1-j}
 \end{align*}
 we have
 \begin{align*}
-p(A) - p(\lambda) &= 
+p(A) - p(\lambda) &=  a_n (A^n - \lambda^n) + a_{n-1} (A^{n-1} - \lambda^{n-1})  + \dotsb + a_1 (A - \lambda) \\
+&= (A - \lambda) \left ( a_n \sum_{j=0}^{n-1} \lambda^{j} A^{n-1-j} + a_{n-1} \sum_{j=0}^{n-2} \lambda^{j} A^{n-2-j} + a_1 \right )
+\end{align*}
+Now suppose that $p(\lambda) \in \resolventset{p(A)}$ then by the previous claim it follows that $\lambda \in \resolventset{A}$.  Taking set complements shows the claim.
+
+\begin{clm} $\spectrum{p(A)}\subset p(\spectrum{A})$.
+\end{clm}
+Let $\lambda \in \spectrum{p(A)}$.  Since $\complexes$ is algebraically closed we may completely factor the polynomial $p(z) - \lambda$:
+\begin{align*}
+p(z) - \lambda &= c(z - b_1) \dotsb (z -b_n)
+\end{align*}
+and therefore
+\begin{align*}
+p(A) - \lambda &= c(A - b_1) \dotsb (A -b_n)
+\end{align*}
+with $c \neq 0$.  If $b_j \in \resolventset{A}$ for every $j=1, \dotsc, n$ then $\frac{1}{c} (A - b_1)^{-1} \dotsb (A -b_n)^{-1}$ would be an bounded inverse of $p(A) - \lambda$ (it is simple to see that the $(A-b_j)^{-1}$ commute) which would contradict $\lambda \in \spectrum{p(A)}$.  Thus for some $j=1, \dotsc, n$ we have $b_j \in \spectrum{A}$.  Since $p(b_j) - \lambda = 0$ we see that $\lambda \in p(\spectrum{A})$.
+\end{proof}
+
+\begin{prop}\label{hilbert:BoundedSelfAdjointProperties}The space of bounded self adjoint operators is a closed real linear subspace of $L(H,H)$.
+\end{prop}
+\begin{proof}
+Let $A$ and $B$ be bounded self adjoint operators and let $a, b \in \reals$, then for all $v,w \in H$,
+\begin{align*}
+\langle v, (aA + bB) w \rangle &= a \langle v, Aw \rangle + b \langle v, B w \rangle =  a \langle A v, w \rangle + b \langle B v, w \rangle = \langle (aA+bB) v, w \rangle
+\end{align*}
+Let $A_n$ be bounded self adjoint operators and suppose that $\lim_{n \to \infty} A_n = A$.  Then for all $v, w \in H$, by Proposition \ref{banach:OperatorNormConvergenceImpliesPointwise} and 
+Proposition \ref{hilbert:ContinuityOfInnerProduct}
+\begin{align*}
+\langle v, A w \rangle &= \lim_{n\to \infty} \langle v, A_n w \rangle = \lim_{n\to \infty} \langle A_n v, w \rangle = \langle A v, w \rangle
 \end{align*}
 \end{proof}
 
+\begin{thm}[Continuous Functional Calculus]\label{hilbert:ContinuousFunctionalCalculusBoundedSelfAdjoint}Let $H$ be a complex Hilbert space and let $A$ be a bounded self adjoint operator then there exists a unique bounded linear map from $\Psi : C(\spectrum{A}; \reals) \to L(H;H)$ such that $\Psi(z^n) = A^n$ for every $n \in naturals$.  For $f \in  C(\spectrum{A}; \reals)$ we will denote $\Psi(f)$ by $f(A)$.  The map $\Psi$ has the following properties for $f,g  \in C(\spectrum{A}; \reals)$ 
+\begin{itemize}
+\item[(i)] $(fg)(A) = f(A) g(A)$.
+\item[(ii)] $f(A)$ is self-adjoint
+\item[(iii)] If $f \geq 0$ then $f(A)$ is a non-negative operator (i.e. $\langle v, Av \rangle \geq 0$ for all $v \in H$)
+\item[(iv)] $\norm{f(A)} = \norm{f}_\infty = \sup_{\lambda \in \spectrum{A}} \abs{\lambda}$
+\item[(v)] $\spectrum{f(A)} = f(\spectrum{A})$
+\end{itemize}
+\end{thm}
+\begin{proof}
+We define $\Psi$ on polynomials by taking $\Psi \left(\sum_{i=0}^n a_i z^i \right) = \sum_{i=0}^n a_i A^i$.  Using Proposition \ref{hilbert:SpectralRadiusBoundedSelfAdjoint} and the Spectral Mapping Theorem \ref{hilbert:SpectralMappingPolynomialBoundedSelfAdjoint} we get
+\begin{align*}
+\norm{p(A)} &= \spectralradius{p(A)} = \sup_{\lambda \in \spectrum{p(A)}} \abs{\lambda} = \sup_{\lambda \in \spectrum{A}} \abs{p(\lambda)} = \norm{p(z)}_\infty
+\end{align*}
+which shows that $\Psi$ is a linear isometry.  In particular it is uniformly continuous and therefore by the Stone Weirstrass Theorem \ref{StoneWeierstrassApproximation} and Proposition \ref{ExtensionOfUniformlyContinuousMapCompleteRange} there is a unique linear extension of $\Psi$ to all of $C(\spectrum{A}; \reals)$.
+
+To see (i), by direct computation we see that (i) holds for polynomials $p$ and $q$.  For general $f$ and $g$ simply choose approximating polynomials and use the continuity of $\Psi$.
+
+To see (ii) use Proposition \ref{hilbert:BoundedSelfAdjointProperties} to observe that $p(A)$ is bounded self adjoint for every polynomial with real coefficients and for arbitrary $f$ approximate by polynomials and use the continuity of $\Psi$.
+
+To see (iii), let $f \in C(\spectrum{A}; \reals)$ satisfy $f \geq 0$.  Then  writing $g = \sqrt{f}$ we have $g \in C(\spectrum{A}; \reals)$ and $f = g^2$.  By (ii), $g(A)$ is self adjoint and therefore by (i) we get for all $v \in H$,
+\begin{align*}
+\langle v, f(A) v \rangle &= \langle v, g(A) g(A) v \rangle = \langle g(A) v, g(A) v \rangle = \norm{g(A)v}^2 \geq 0
+\end{align*}
+
+To see (iv), observe that by construction $\Psi$ was an isometry on polynomials.  Since the operator norm is continuous this extends to all of $C(\spectrum{A}; \reals)$.
+
+To see (v), we first show that $\spectrum{f(A)} \subset f(\spectrum{A})$.  Suppose that $\lambda_0 \in \reals \setminus f(\spectrum{A})$.  Let $g(\lambda) = 1/(f(\lambda - \lambda_0)$ and note that $g \in C(\spectrum{A}; \reals)$.  By (i) we have $g(A)(f(A) - \lambda_0) = (f(A) - \lambda_0) g(A) = \IdentityMatrix$ so $\lambda_0 \in \resolventset{f(A)}$.  To see the opposite inclusion, let $\lambda \in \spectrum{A}$.  Let $p_1, p_2, \dotsc$ be polynomials with $\lim_{n \to \infty} p_n = f$ in $(\spectrum{A}; \reals)$.  By continuity of $\Psi$ we have $\lim_{n \to \infty} p_n(A) - f(\lambda) = f(A) - f(\lambda)$ in the operator norm.  Moreover since $\norm{p_n - f}_\infty \to 0$ we have $\lim_{n \to \infty} p_n(A) - p_n(\lambda) = f(A) - f(\lambda)$ in operator norm.  Suppose that $f(\lambda) \in \resolventset{f(A)}$, then by Proposition \ref{banach:InvertibleMapsOpen} we conclude that $p_n(A) - p_n(\lambda)$ is invertible for $n$ sufficiently large which contradicts the Spectral Mapping Theorem \ref{hilbert:SpectralMappingPolynomialBoundedSelfAdjoint}.
+\end{proof}
+
 \subsection{Measurable Functional Calculus}
+
+We now use the Riesz-Markov Theorem \ref{RieszMarkov} to extend the continuous functional calculus for self adjoint operators to bounded measurable functions on $\spectrum{A}$.
+
+The following application of the standard machinery will be useful.
+
+\begin{lem}\label{hilbert:ContinuousToMeasurable}Let $S$ be a compact metric space and let $C(S; \reals)$ be the space of real valued continuous functions on $S$ and let $\sboundedmeasurable{S}{\complexes}$ be the space of bounded complex valued Borel measurable functions on $S$.  Let $\mathcal{F} \subset \sboundedmeasurable{S}{\complexes}$ such that 
+\begin{itemize}
+\item[(i)] $\mathcal{F}$ is a complex vector space
+\item[(ii)] $C(S; \reals) \subset \mathcal{F}$ 
+\item[(iii)] If $f_1, f_2, \dotsc \in \mathcal{F}$ and there exists $M>0$ such that $\norm{f_n}_\infty \leq M$ for all $n \in \naturals$ and $\lim_n f_n = f$ pointwise then $f \in \mathcal{F}$.
+\end{itemize}
+It follows that $\mathcal{F} = \sboundedmeasurable{S}{\complexes}$.
+\end{lem}
+\begin{proof}
+First we use a monotone class argument to show that every indicator function is in $\mathcal{F}$.  Let $\mathcal{D}$ be the set of Borel subsets in $A \subset S$ such that $\characteristic{A} \in \mathcal{F}$.  Suppose $A, B \in \mathcal{D}$ and $A \subset B$ then $\characteristic{B \setminus A} = \characteristic{B} - \characteristic{A} \in \mathcal{F}$ by (i); thus $B \setminus A \in \mathcal{D}$.  If $A_1, A_2, \dotsc \in \mathcal{D}$ with $A_1 \subset A_2 \subset \dotsc$ and $A = \cup_n A_n$ then $\characteristic{A} = \lim_n \characteristic{A_n}$ and $\characteristic{A_n}$ is uniformly bounded so $\characteristic{A} \in \mathcal{F}$ by (iii) and thus $A \in \mathcal{D}$.  Lastly $\characteristic{S} \equiv 1 \in C(S; \reals)$ hence $S \in \setminus{D}$ by (ii).  It follows that $\characteristic{D}$ is a $\lambda$-system.  Let $F \subset S$ be a closed set then using the standard approximation $f_n(x)  =  nd(x,F)  \wedge 1$ we have $\characteristic{F}$ is the pointwise limit of the uniformly bounded sequence $f_n$.  Since $f_n \in C(S; \reals)$ (in fact $f_n$ is Lipschitz by Lemma \ref{DistanceToSetLipschitz}) we see that $\characteristic{F} \in \mathcal{F}$ by (ii) and (iii); hence all closed sets are in $\mathcal{D}$.  The set of closed sets is a $\pi$-system that generates $\mathcal{B}(S)$ it follows from the $\pi$-$\lambda$ Theorem \ref{MonotoneClassTheorem} that $\mathcal{B}(S) \subset \mathcal{D}$.  
+
+By (i) it follows that $\mathcal{F}$ contains all real valued simple
+functions.  For any $0 \leq f \in \sboundedmeasurable{S}{\reals}$ we
+take simple functions $f_n \uparrow f$ to conclude that $f \in
+\mathcal{F}$ (the $f_n$ are uniformly bounded by $\norm{f}_\infty$).
+We may write any $\sboundedmeasurable{S}{\complexes}$ as a complex
+linear combination of non-negative $f \in
+\sboundedmeasurable{S}{\reals}$ ($f = \RePart(f)_+ - \RePart(f)_- + i \ImPart(f)_+ - i \ImPart(f)_-$) so by (i) we are done.
+\end{proof}
+
+\begin{prop}\label{hilbert:BoundedMeasurableFunctionalCalculusBoundedSelfAdjoint}Let $H$ be a complex Hilbert space and let $A$ be a bounded self adjoint operator then for every $v \in H$ there exists a unique Radon measure $\mu_v$ on $\spectrum{A}$ such that 
+\begin{align*}
+\langle v, f(A) v \rangle &= \int f \, d\mu_v \text{ for all $f \in C(\spectrum{A}; \reals)$}
+\end{align*}
+For every bounded measurable $f : \spectrum{A} \to \complexes$, the map 
+\begin{align*}
+Q_f(v) &= \int f \, d\mu_v
+\end{align*}
+defines a bounded quadratic form.  If we let $f(A) : H \to H$ be the linear operator uniquely associated with $Q_f$ then  
+\begin{itemize}
+\item[(i)] $(af + g)(A) = af(A) + g(A)$ for all $f,g \in \sboundedmeasurable{\spectrum{A}}{\complexes}$ and $a \in \complexes$
+\item[(ii)] $(fg)(A) = f(A) g(A)$ for all $f,g \in \sboundedmeasurable{\spectrum{A}}{\complexes}$
+\item[(iii)] If $f$ is real valued then $f(A)$ is self adjoint
+\end{itemize}
+\end{prop}
+\begin{proof}
+Given $v \in H$, we let $\Lambda_v : C(\spectrum{A}; \reals) \to \reals$ be defined by $\Lambda_v(f) = \langle v, f(A) v \rangle$.  By linearity of the continuous functional calculus, we see that $\Lambda_v$ is linear and since $f(A)$ is a bounded operator we have 
+\begin{align*}
+\abs{\Lambda_v(f)} &=\abs{\langle v, f(A) v \rangle} \leq \norm{v} \norm{f(A) v} \leq \norm{f(A)} \norm{v}^2 = \norm{f}_\infty \norm{v}^2
+\end{align*}
+so $\Lambda_v$ is bounded with $\norm{\Lambda_v} = \norm{v}^2$.  Moreover from Theorem \ref{hilbert:ContinuousFunctionalCalculusBoundedSelfAdjoint} it follows that $\Lambda_v$ is positive hence by the Riesz-Markov Theorem\ref{RieszMarkov} there exists a unique Radon measure $\mu_v$ such that 
+\begin{align*}
+\langle v, f(A) v \rangle &= \Lambda_v(f) = \int f \, d\mu_v
+\end{align*}
+and
+\begin{align*}
+\norm{v}^2 &= \Lambda_v(1) 
+\end{align*}
+For any $f \in \sboundedmeasurable{\spectrum{A}}{\complexes}$ we now define
+\begin{align*}
+Q_f(v) &= \int_{\spectrum{A}} f \, d\mu_v
+\end{align*}
+
+\begin{clm}For any $f \in \sboundedmeasurable{\spectrum{A}}{\complexes}$ define
+\begin{align*}
+Q_f(v) &= \int_{\spectrum{A}} f \, d\mu_v
+\end{align*}
+then $Q_f$ is a bounded quadratic form
+\end{clm}
+For any $f \in C(\spectrum{A}; \reals)$ we have already shown $Q_f(v) = \Lambda_v(f) = \langle v, f(A) v \rangle$ which is a bounded quadratic form by Proposition \ref{hilbert:QuadraticFormFromOperator}.  Let $\mathcal{F} \subset \sboundedmeasurable{\spectrum{A}}{\complexes}$ be the set of functions such that $Q_f$ a quadratic form.  Since
+\begin{align*}
+Q_{af +b}(v) &= \int (a f +g ) \, d\mu_v = a Q_f(v) + Q_g(v)
+\end{align*}
+the fact that $\mathcal{F}$ is a complex vector space follows from the fact that quadratic forms are a complex vector space (TODO: Where do we show this).  We have ready shown that $C(\spectrum{A}; \reals) \subset \mathcal{F}$.  Lastly suppose that $f_1, f_2, \dotsc \in \mathcal{F}$ is a uniformly bounded sequence and $f_n \to f$.  Then by Dominated Convergence we have
+\begin{align*}
+Q_f(v) &= \int f \, d\mu_v = \lim_{n \to \infty} \int f_n \, d\mu_v = \lim_{n \to \infty} Q_{f_n}(v) 
+\end{align*}
+which shows $Q_f$ is a quadratic form (TODO: Where do we show that quadratic forms are closed under pointwise limits).  Now by Lemma \ref{hilbert:ContinuousToMeasurable} it follows that $Q_f$ is a quadratic form for all $f \in \sboundedmeasurable{\spectrum{A}}{\complexes}$.  The fact that $Q_f$ is bounded (and in fact $\norm{Q_f} \leq \norm{f}_\infty$) follows from
+\begin{align*}
+\abs{Q_f(v)} &\leq \int \abs{f} \, d\mu_v \leq \norm{f}_\infty \int \, d\mu_v = \norm{f}_\infty \norm{v}^2
+\end{align*}
+
+By the previous claim and Proposition \ref{hilbert:OperatorFromQuadraticForm} for any $f \in \sboundedmeasurable{\spectrum{A}}{\complexes}$ we can let $f(A)$ be the unique bounded linear operator such that $\langle v , f(A) v \rangle = Q_f(v)$ for all $v \in H$.
+To see that $(af + b)(A) = af(A) + g(A)$ let $v \in H$,
+\begin{align*}
+\langle v, (af(A) + g(A))(v) \rangle &= a \langle v, f(A) v \rangle + \langle v, g(A) v \rangle = a Q_f(v) + Q_g(v) \\
+&= a \int f \, d\mu_v + \int g \, d\mu_v = \int (af + g) \, d\mu_v = Q_{af +g}(v)
+\end{align*}
+so by uniqueness in Proposition \ref{hilbert:OperatorFromQuadraticForm} we have $(af+g)(A) = af(A) + g(A)$.
+
+To see that $(fg)(A) = f(A) g(A)$ we use another monotone class argument.  Let $\mathcal{F}_1 \subset \sboundedmeasurable{\spectrum{A}}{\complexes}$ be the set of $f$ such that $(fg)(A) = f(A) g(A)$ for all $g \in C(\spectrum{A}; \reals)$.  If $f,g \in \mathcal{F}_1$, $a \in \complexes$, $h \in C(\spectrum{A}; \reals)$ and $v \in H$ then
+\begin{align*}
+((af + g) h)Q_{(af +g)h} = a Q_{fh} + Q_{gh} = a Q_f Q_h = Q_g Q_h = Q_{af+g} Q_h 
+\end{align*}
+so $\mathcal{F}_1$.  By the Continuous Functional Calculus Theorem \ref{hilbert:ContinuousFunctionalCalculusBoundedSelfAdjoint} we know that $C(\spectrum{A}; \reals) \subset \mathcal{F}_1$.  Let $f_1, f_2, \dotsc \in \mathcal{F}_1$ be a uniformly bounded sequence with $f_n \to f$.  By Dominated Convergence we know that $Q_{f_n}(v) \to Q_f(v)$ for every $v \in H$.  If we let $L_{f_n}$ and $L_f$ be the sesquilinear forms associated with $Q_{f_n}$ and $Q_f$ then it follows from the polarization identity that $L_{f_n}(v,w)  \to L_f(v,w)$ for all $v,w \in H$.  In particular, for all $v \in H$ and $g \in C(\spectrum{A}; \reals)$, we have 
+\begin{align*}
+\langle v, f(A)g(A) v \rangle &= L_f(v, g(A)v) = \lim_{n \to \infty} L_{f_n}(v, g(A)) = \lim_{n \to \infty} Q_{f_ng}(v) = Q_{fg}(v) = \langle v, (fg)(A) v \rangle
+\end{align*}
+(note that $f_n g$ is also a uniformly bounded sequence and $f_n g \to fg$ pointwise so $Q_{f_ng} = Q_{fg}$ pointwise).  Thus by uniqueness in Proposition \ref{hilbert:OperatorFromQuadraticForm} we have $(fg)(A) = f(A) g(A)$. By Lemma \ref{hilbert:ContinuousToMeasurable} we conclude that $\mathcal{F}_1 = \sboundedmeasurable{\spectrum{A}}{\complexes}$.
+
+Now let $\mathcal{F}_2 \subset \sboundedmeasurable{\spectrum{A}}{\complexes}$ be the set of $f$ such that $(fg)(A) = f(A) g(A)$ for all $g \in \sboundedmeasurable{\spectrum{A}}{\complexes}$.  By the same argument as for $\mathcal{F}_1$ we see that $\mathcal{F}_2$ is a complex vector space that is closed under uniformly bounded pointwise limits.  The argument for $\mathcal{F}_1$ shows that $C(\spectrum{A}; \complexes) \subset \mathcal{F}_2$ so again applying Lemma \ref{hilbert:ContinuousToMeasurable}  we get $\mathcal{F}_2 = \sboundedmeasurable{\spectrum{A}}{\complexes}$.
+
+If $f$ is real valued then by definition $Q_f(v) = \int_{\spectrum{A}} f \, d\mu_v$ is real valued and therefore it follows from Proposition \ref{hilbert:OperatorFromQuadraticForm} that $f(A)$ is self adjoint.
+\end{proof}
+
+TODO: The bounded measurable functional calculus can be extended to unbounded measurable functions but the resulting operators are unbounded when $f$ isn't bounded.   If I continue to follow Hall then we won't develop the unbounded Borel functional calculus directly but will bootstrap from the bounded spectral theorem (self adjoint then normal) to the spectral theorem for unbounded self adjoint and from there we could develop the functional calculus.  
 
 \section{Spectral Theory}
 
@@ -489,9 +670,9 @@ then using Proposition \ref{hilbert:ContinuityOfInnerProduct} we get
 \end{proof}
 
 With the previous proposition in hand we can build an integration theory for projection valued measures (TODO: Is this a Bochner integral?)
-\begin{prop}\label{hilbert:OperatorValuedIntegration}Let $H$ be a Hilbert space and $(\Omega, \mathcal{A})$ be a measurable space and $\mu : \mathcal{A} \to L(H)$ a projection valued measure then there exists a unique linear map $\int \cdot \, d\mu : \mathcal{B}(\Omega, \complexes) \to L(H,H)$ ($\mathcal{B}(\Omega, \complexes)$ denotes the space of bounded measurable complex valued functions on $\Omega$) satisfying
+\begin{prop}\label{hilbert:OperatorValuedIntegration}Let $H$ be a Hilbert space and $(\Omega, \mathcal{A})$ be a measurable space and $\mu : \mathcal{A} \to L(H)$ a projection valued measure then there exists a unique linear map $\int \cdot \, d\mu : \sboundedmeasurable{\Omega}{\complexes} \to L(H,H)$ (recall $\sboundedmeasurable{\Omega}{\complexes}$ denotes the space of bounded measurable complex valued functions on $\Omega$) satisfying
 \begin{align}\label{hilbert:DefiningPropertyOfOperatorIntegral}
-\left \langle v, \left(\int f \, d\mu \right) v \right \rangle &= \int f \, d\mu_v \text{, for all $v \in H$ and $f \in \mathcal{B}(\Omega, \complexes)$}
+\left \langle v, \left(\int f \, d\mu \right) v \right \rangle &= \int f \, d\mu_v \text{, for all $v \in H$ and $f \in \sboundedmeasurable{\Omega}{\complexes}$}
 \end{align}
 The map satisfies
 \begin{itemize}
@@ -499,15 +680,15 @@ The map satisfies
 \begin{align*}
 \int \characteristic{A} \, d\mu = \mu(A)
 \end{align*}
-\item[(ii)] For every $f \in \mathcal{B}(\Omega, \complexes)$, 
+\item[(ii)] For every $f \in \sboundedmeasurable{\Omega}{\complexes}$, 
 \begin{align*}
 \norm {\int f \, d\mu} &\leq \sup_{v \in H} \abs{f(v)} = \norm{f}_\infty
 \end{align*}
-\item[(iii)] For every $f,g  \in \mathcal{B}(\Omega, \complexes)$, 
+\item[(iii)] For every $f,g  \in \sboundedmeasurable{\Omega}{\complexes}$, 
 \begin{align*}
 \int f g \, d\mu &= \left ( \int f \, d\mu \right ) \left ( \int g \, d\mu \right )
 \end{align*}
-\item[(iv)] For every $f \in \mathcal{B}(\Omega, \complexes)$, 
+\item[(iv)] For every $f \in \sboundedmeasurable{\Omega}{\complexes}$, 
 \begin{align*}
 \left( \int f \, d\mu \right)^*  &= \int \overline{f} \, d\mu 
 \end{align*}
@@ -537,11 +718,98 @@ To see (iii)
 TODO: Finish
 \end{proof}
 
-\begin{thm}Let $H$ be a complex Hilbert space and $A : H \to H$ be a bounded self-adjoint operator then there exists a unique projection valued measure $\mu_A$ on the Borel $\sigma$-algebra on $\sigma(A)$ that satisfies
+\begin{lem}Let $V_1, V_2, \dotsc$ be closed pairwise orthogonal subspaces in the Hilbert space $H$, $V$ be the smallest closed subspace containing $V_1, V_2, \dotsc$ then $P_V v = \sum_{i=1}^\infty P_{V_i} v$.  
+\end{lem}
+\begin{proof}
+\begin{clm}Let $v \in V$ and $P_{V_i} v = 0$ for all $i \in \naturals$ then $v=0$.
+\end{clm}
+We argue by contradiction.  Suppose $0 \neq w \in V$ and $P_{V_i} w = 0$ for all $i \in \naturals$.  Let $W$ be the orthogonal complement of $w$ in $V$ (i.e. $W = \lbrace v \in V \mid \langle v,w \rangle=0 \rbrace$.  Observe that $W$ is closed since if $v_1, v_2, \dotsc \in W$ and $v \in H$ with $v_n \to v$ then since $W \subset V$ and $V$ is closed we know that $v \in V$ but by continuity of the inner product $\langle v,w \rangle = \lim_{n \to \infty} \langle v_n, w \rangle = 0$ so $v \in W$.  Also for every $i \in \naturals$ and $v \in V_i$ we have by the self adjointness of orthogonal projections 
+\begin{align*}
+\langle w, v \rangle &= \langle w, P_{V_i} v \rangle = \langle P_{V_i} w, v \rangle = 0
+\end{align*}
+Thus $W$ is a strictly smaller closed subspace that containers all of the $V_i$.
+
+\begin{clm}\label{hilbert:SumOfOrthogonalSubspaces} Let $v_i \in V_i$ for every $i \in \naturals$ then for every $n \in \naturals$, $\norm{\sum_{i=1}^n v_i}^2 =\sum_{i=1}^n \norm{ v_i}^2$ and $\sum_{i=1}^\infty v_i$ converges if and only if $\sum_{i=1}^\infty \norm{v_i}^2 < \infty$.
+\end{clm}
+By orthogonality of the $V_i$ it follows that 
+\begin{align*}
+\norm{\sum_{i=1}^n v_i}^2 &= \langle \sum_{i=1}^n v_i, \sum_{i=1}^n v_i \rangle = \sum_{i=1}^n \langle v_i , v_i \rangle = \sum_{i=1}^n \norm{ v_i}^2
+\end{align*}
+Now suppose $\sum_{i=1}^\infty v_i \in H$ then $\norm{\sum_{i=1}^n v_i} \to \norm{\sum_{i=1}^\infty v_i}$  (generally if $w_n \to w$ in a normed vector space then by the triangle inequality $-\norm{w - w_n} \leq \norm{w} - \norm{w_n} \leq \norm{w - w_n}$ hence $\norm{w_n} \to \norm{w}$).  Thus $\norm{\sum_{i=1}^n v_i}^2 = \sum_{i=1}^n\norm{ v_i}^2$ converges (to $\norm{\sum_{i=1}^\infty v_i}^2 < \infty$).  
+
+On the other hand, suppose $\sum_{i=1}^\infty \norm{v_i}^2 < \infty$.  Then the sequence $\sum_{i=1}^n \norm{v_i}^2$ is Cauchy.  Let $\epsilon > 0$ and pick $n$ such that $\sum_{i=n}^m \norm{v_i}^2 < \epsilon$ for all $m \geq n$.  Then 
+\begin{align*}
+\norm{\sum_{i=1}^n v_i - \sum_{i=1}^m v_i}^2 &= \norm{\sum_{i=n}^m v_i}^2 = \sum_{i=n}^m \norm{ v_i}^2 < \epsilon
+\end{align*}
+and therefore the sequence $\sum_{i=1}^n v_i$ is Cauchy.  By completeness of $H$ the series $\sum_{i=1}^\infty v_i$ converges.
+
+\begin{clm}For $i \neq j$, $P_{V_i} + P_{V_j} = P_{V_i \oplus V_j}$.
+\end{clm}
+As an aside note that $V_i \oplus V_j$ is a closed subspace.  Let $v_n \in V_i \oplus V_j$ converge to $v \in H$.  Then by continuity $P_{V_i} v_n \to P_{V_i} v$ and $P_{V_j} v_n \to P_{V_j} v$.  On the other hand since $V_i$ and $V_j$ are orthogonal, $v_n = P_{V_i} v_n + P_{V_j} v_n$ (write $v_n = x + y$ with $x \in V_i$ and $y \in V_j$ then by orthogonality $P_{V_i} v_n = P_{V_i} x + P_{V_i} y = x$).  Thus, it follows that $v_n \to P_{V_i} v+P_{V_j} v \in V_i \oplus V_j$.  By a similar argument, for $v \in H$ we may write $P_V v = P_{V_i} P_V v + P_{V_j} P_V v = P_{V_i} v + P_{V_j} v$ (generally if $W \subset V$ then $P_W = P_W \circ P_V$).
+
+Now let $v \in H$ and observe that by the previous claim $\sum_{i=1}^n P_{V_i} v = P_{\oplus_{i=1}^n V_i} v$  thus 
+\begin{align*}
+\sum_{i=1}^n \norm{P_{V_i} v}^2 &= \norm{\sum_{i=1}^n  P_{V_i} v}^2 = \norm{P_{\oplus_{i=1}^n V_i} v}^2 \leq \norm{v}^2
+\end{align*}
+which shows us that $\sum_{i=1}^\infty \norm{P_{V_i} v}^2 \leq \norm{v}^2 < \infty$ and therefore the series $\sum_{i=1}^\infty P_{V_i} v$ converges.  Since $V$ is closed it follows that the sum is an element of $V$.  By continuity, for every $i \in \naturals$, 
+\begin{align*}
+P_{V_i} \sum_{i=1}^\infty P_{V_i} v &= \lim_{n \to \infty} P_{V_i} \sum_{i=1}^n P_{V_i} v =P_{V_i} v = P_{V_i} P_V v
+\end{align*}
+and therefore by the first claim, $P_V v = \sum_{i=1}^\infty P_{V_i} v$.
+\end{proof}
+
+\begin{thm}\label{hilbert:SpectralTheoremBoundSelfAdjointProjectionValuedMeasure}Let $H$ be a complex Hilbert space and $A : H \to H$ be a bounded self-adjoint operator then there exists a unique projection valued measure $\mu_A$ on the Borel $\sigma$-algebra on $\sigma(A)$ that satisfies
 \begin{align*}
 A &= \int_{\sigma(A)} \lambda  \, \mu_A(d\lambda)
 \end{align*}
 \end{thm}
+\begin{proof}
+For the existence proof, we define the projection valued measure $\mu_A$ using the bounded Borel functional calculus.  For any Borel measurable $E \in \mathcal{B}(\spectrum{A})$ let
+\begin{align*}
+\mu_A(E) &= \characteristic{E}(A)
+\end{align*}
+Since $\characteristic{E}$ is real valued and satisfies
+$\characteristic{E}^2  = \characteristic{E}$, it follows from Theorem
+\ref{hilbert:BoundedMeasurableFunctionalCalculusBoundedSelfAdjoint}
+that $\mu_A(E) = \characteristic{E}(A)$ is self adjoint and 
+\begin{align*}
+\mu_A(E)^2 &= \characteristic{E}(A)^2 = (\characteristic{E}^2)(A) = \characteristic{E}(A) = \mu_A(E)
+\end{align*}  
+It follows (TODO: Where) that $\mu_A(E)$ is an orthogonal projection.
+
+Let $E$ and $F$ be Borel measurable subsets of $\spectrum{A}$ then since $\characteristic{E} \cdot \characteristic{F} = \characteristic{E \cap F}$ it follows from Theorem \ref{hilbert:BoundedMeasurableFunctionalCalculusBoundedSelfAdjoint} that $\mu_A(E) \mu_A(F) = \mu_A(E \cap F)$.  Suppose that $E_1, E_2, \dotsc$ are disjoint Borel measurable subsets of $\spectrum{A}$.  Then we have shown for every $i \neq j$ that 
+\begin{align*}
+\mu_A(E_i) \mu_A(E_j) = \mu_A(E_i \cap E_j) = \mu_A(\emptyset) = 0
+\end{align*}
+(note that by linearity of the bounded Borel functional calculus and the fact that $\characteristic{\emptyset} \equiv 0$ that $\characteristic{\emptyset}(A) = 0$).  It follows that the range of $\mu_A(E_i)$ and $\mu_A(E_j)$ are orthogonal (for any $v,w \in H$, $\langle \mu_A(E_i) v, \mu_A(E_j) w \rangle = \langle v, \mu_A(E_i) \mu_A(E_j) v \rangle = 0$).  Let $V$ be the smallest closed subspace containing the range of $\mu_A(E_1), \mu_A(E_2), \dotsc$ and let $P_V$ be the orthogonal projection onto this subspace.  By Lemma \ref{hilbert:SumOfOrthogonalSubspaces}, for every $v \in H$, $\sum_{i=1}^\infty \mu_A(E_i)v = P_V v$ where the convergence is in the norm topology.
+
+\begin{clm} $P_V = \mu_A(\cup_{i=1}^\infty E_i)$
+\end{clm}
+If we let $E = \cup_{i=1}^\infty E_i$ then $\lim_{n \to \infty} \sum_{i=1}^n \characteristic{E_i} = \characteristic{E}$ and by disjointness of the $E_i$ the series is bounded by the constant function $1$ (i.e. $\sum_{i=1}^n \characteristic{E_i}  = \characteristic{\cup_{i=1}^n E_i}$) therefore by continuity of inner product Proposition \ref{hilbert:ContinuityOfInnerProduct} and Dominated Convergence, for every $v \in H$,
+\begin{align*}
+\langle v, P_V v \rangle &= \lim_{n \to \infty} \langle v, \sum_{i=1}^n \characteristic{E_i}(A) v \rangle = \lim_{n \to \infty} \int \sum_{i=1}^n \characteristic{E_i} \, d\mu_v = \int \characteristic{E} \, d\mu_v \\
+&= \langle v, \characteristic{E}(A) v \rangle = \langle v, \mu_A(E) v \rangle 
+\end{align*}
+Thus $P_V = \mu_A(E)$.
+
+Therefore $\mu_A$ is countably additive.  
+
+\begin{clm} For all bounded measurable $f$ we have $f(A) = \int_{\spectrum{A}} f(\lambda)  \, \mu_A(d\lambda)$
+\end{clm}
+Let $f = \characteristic{E}$ for some Borel set $E \subset \spectrum{A}$.  Then by the of $\mu_A$ and the properties of
+integration with respect to a projection valued measure,
+\begin{align*}
+\characteristic{E}(A) &= \mu_A(E) = \int_{\spectrum{A}} \characteristic{E} \, d\mu_A
+\end{align*}
+Thus if  $f = a_1 \characteristic{E_1} + \dotsc +  a_n \characteristic{E_n}$ is simple, by linearity of the bounded measurable 
+functional calculus and linear of projection valued integrals,
+\begin{align*}
+f(A) &= a_1 \characteristic{E_1}(A) + \dotsc +  a_n \characteristic{E_n}(A) \\
+= a_1 \int_{\spectrum{A}} \characteristic{E_1} \, d\mu_A + \dotsc + a_1 \int_{\spectrum{A}} \characteristic{E_1} \, d\mu_A = \int_{\spectrum{A}} f \, d\mu_A
+\end{align*}
+
+TODO: Finish
+\end{proof}
 
 \begin{defn}Let $\Omega$ be a set and for every $\omega \in \Omega$ suppose that $H_\omega$ is a separable complex Hilbert space with inner product $\langle \cdot, \cdot \rangle_\omega$.  A function $s$ from $\Omega$ to the disjoint union of $H_\omega$ is said to be a \emph{section} if $s(\omega) \in H_\omega$ for every $\omega \in \Omega$.  A set of sections $e_1, e_2, \dotsc$ is said to be a \emph{simultaneous orthonormal basis} of the family $\lbrace H_\omega \rbrace$ if for every $\omega \in \Omega$ the set $\lbrace e_j(\omega) \mid e_j(\omega) \neq 0 \rbrace$ is an orthonormal basis of $H_\omega$.  If $(\Omega, \mathcal{A})$ is a measurable space then we say that a simultaenous orthonormal basis is a \emph{measurability structure} if for every $i,j \in \naturals$ the function $\omega \mapsto \langle e_i(\omega), e_j(\omega) \rangle_\omega$ is Borel measurable.   An arbitrary section $s$ is said to be measurable if the function 
 $\omega \mapsto \langle e_i(\omega), s(\omega) \rangle_\omega$ is Borel measurable for every $i \in \naturals$.
@@ -619,7 +887,7 @@ It is clear that $v \mapsto s_v$ is linear and to see the isometry property
 \end{align*}
 \end{proof}
 
-\begin{thm}\label{hilbert:SpectralTheoremBoundedSelfAdjointDirectIntegral}Let $H$ be a separable complex Hilbert space and $A : H \to H$ be a bounded self-adjoint linear operator, then there exists a $\sigma$-finite Borel measure on $\sigma(A)$, a direct integral 
+\begin{thm}\label{hilbert:SpectralTheoremBoundedSelfAdjointDirectIntegral}Let $H$ be a separable complex Hilbert space and $A : H \to H$ be a bounded self-adjoint linear operator, then there exists a $\sigma$-finite Borel measure on $\spectrum{A}$, a direct integral 
 \begin{align*}
 \int^\oplus H_\lambda \, \mu(d\lambda)
 \end{align*}

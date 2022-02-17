@@ -1974,28 +1974,28 @@ d(u,w) &= \norm{u - w} = \norm{u - v + v - w} \leq \norm{u - v} + \norm{v - w}  
 \end{defn}
 We start with some of the standard examples of Banach spaces.
 
-\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space, let $B(\Omega)$ be space of bounded measurable functions $f : \Omega \to \reals$ and define $\norm{f}_\infty = \sup_{\omega \in \Omega} \abs{f(\omega)}$.
+\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space, let $\boundedmeasurable{\Omega}$ be space of bounded measurable functions $f : \Omega \to \reals$ and define $\norm{f}_\infty = \sup_{\omega \in \Omega} \abs{f(\omega)}$.
 \end{defn}
 
-\begin{prop}The space $B(\Omega)$ is a Banach space.
+\begin{prop}The space $\boundedmeasurable{\Omega}$ is a Banach space.
 \end{prop}
 \begin{proof}
-It is elementary that $B(\Omega)$ is a vector space : if $f$ is bounded and measurable with $\norm{f}_\infty$ then clearly $af$ is bounded measurable with bound $\abs{a}\norm{f}_\infty$ for all $a \in \reals$ and if $f$ and $g$ are bounded and measurable with bounds $M$ and $N$ respectively then $f+g$ is bounded and measurable with bound $M+N$.
+It is elementary that $\boundedmeasurable{\Omega}$ is a vector space : if $f$ is bounded and measurable with $\norm{f}_\infty$ then clearly $af$ is bounded measurable with bound $\abs{a}\norm{f}_\infty$ for all $a \in \reals$ and if $f$ and $g$ are bounded and measurable with bounds $M$ and $N$ respectively then $f+g$ is bounded and measurable with bound $M+N$.
 
-To see that $\norm{\cdot}_\infty$ is in fact a norm, first note that it is immediate from the definition that $\norm{f}_\infty \geq 0$ and $\norm{f}_\infty$ if and only if $f = 0$.  Let $f \in B(\Omega)$ and let $a \in \reals$ with $a \neq 0$.  Then for every $\epsilon>0$ we may find $\omega \in \Omega$ such that $\norm{f}_\infty - \epsilon/\abs{a} \leq \abs{f(\omega)}$.  It follows that $\abs{a} \norm{f}_\infty - \epsilon \leq \abs{a f (\omega)} \leq \norm{af}_\infty$.  Since $\epsilon >0$  was arbitrary we may take $\epsilon \downarrow 0$ to conclude $\abs{a} \norm{f}_\infty \leq \norm{af}_\infty$.  In a similar way we may find an $\omega \in \Omega$ such that 
+To see that $\norm{\cdot}_\infty$ is in fact a norm, first note that it is immediate from the definition that $\norm{f}_\infty \geq 0$ and $\norm{f}_\infty$ if and only if $f = 0$.  Let $f \in \boundedmeasurable{\Omega}$ and let $a \in \reals$ with $a \neq 0$.  Then for every $\epsilon>0$ we may find $\omega \in \Omega$ such that $\norm{f}_\infty - \epsilon/\abs{a} \leq \abs{f(\omega)}$.  It follows that $\abs{a} \norm{f}_\infty - \epsilon \leq \abs{a f (\omega)} \leq \norm{af}_\infty$.  Since $\epsilon >0$  was arbitrary we may take $\epsilon \downarrow 0$ to conclude $\abs{a} \norm{f}_\infty \leq \norm{af}_\infty$.  In a similar way we may find an $\omega \in \Omega$ such that 
 \begin{align*}
 \norm{af}_\infty - \epsilon &\leq \abs{af(\omega)} = \abs{a}\abs{f(\omega)} \leq \abs{a} \norm{f}_\infty
 \end{align*}
-and since $\epsilon > 0$ was arbitrary we conclude the opposite inequality $\norm{af}_\infty \leq \abs{a} \norm{f}_\infty$.  To see the triangle inequality let $f, g \in B(\Omega)$ be given.  For every $\omega \in \Omega$ we have $\abs{(f+g)(\omega)} \leq \abs{f(\omega)}+\abs{g(\omega)} \leq \norm{f}_\infty + \norm{g}_\infty$.  Now take the supremum over all $\omega$ to conclude $\norm{f+g}_\infty \leq \norm{f}_\infty + \norm{g}_\infty$.
+and since $\epsilon > 0$ was arbitrary we conclude the opposite inequality $\norm{af}_\infty \leq \abs{a} \norm{f}_\infty$.  To see the triangle inequality let $f, g \in \boundedmeasurable{\Omega}$ be given.  For every $\omega \in \Omega$ we have $\abs{(f+g)(\omega)} \leq \abs{f(\omega)}+\abs{g(\omega)} \leq \norm{f}_\infty + \norm{g}_\infty$.  Now take the supremum over all $\omega$ to conclude $\norm{f+g}_\infty \leq \norm{f}_\infty + \norm{g}_\infty$.
 
-Lastly we have to show that $B(\Omega)$ is complete.  Let $f_n$ be a Cauchy sequence in $B(\Omega)$.  Thus for every $\epsilon > 0$ there exists and $n \in \naturals$ such that for all $m \geq n$ we have $\norm{f_n - f_m} < \epsilon$.  In particular, for every $\omega \in \Omega$ we have $\abs{f_n(\omega) - f_m(\omega)} \leq \norm{f_n - f_m} < \epsilon$ so that $f_n(\omega)$ is a Cauchy sequence in $\reals$ for every $\omega \in \Omega$.  By completeness of $\reals$ we know that $f_n$ converges pointwise and by Lemma \ref{LimitsOfMeasurable} we know that there is a measurable function $f : \Omega \to \reals$ such that $f_n \to f$.  
+Lastly we have to show that $\boundedmeasurable{\Omega}$ is complete.  Let $f_n$ be a Cauchy sequence in $\boundedmeasurable{\Omega}$.  Thus for every $\epsilon > 0$ there exists and $n \in \naturals$ such that for all $m \geq n$ we have $\norm{f_n - f_m} < \epsilon$.  In particular, for every $\omega \in \Omega$ we have $\abs{f_n(\omega) - f_m(\omega)} \leq \norm{f_n - f_m} < \epsilon$ so that $f_n(\omega)$ is a Cauchy sequence in $\reals$ for every $\omega \in \Omega$.  By completeness of $\reals$ we know that $f_n$ converges pointwise and by Lemma \ref{LimitsOfMeasurable} we know that there is a measurable function $f : \Omega \to \reals$ such that $f_n \to f$.  
 
 Now note that for any $\epsilon > 0$ we can pick $N \in \naturals$ such that for $m,n \geq N$ we have $\norm{f_n-f_m}_\infty < \epsilon$ so by using the triangle inequality and taking limits over $m \in \naturals$ we get for every $\omega \in \Omega$ and $n \geq N$,
 \begin{align*}
 \abs{f (\omega) -f_n(\omega)}_\infty &\leq \lim_{m \to \infty} \abs{f_m(\omega) -f_n(\omega)} + \lim_{m \to \infty} \abs{f(\omega) -f_m(\omega)} 
 \leq \lim_{m \to \infty} \norm{f_m -f_n}_\infty \leq \epsilon
 \end{align*}
-Now using the fact with the triangle inequality we get $\abs{f(\omega)} \leq \abs{f(\omega) - f_n(\omega)} + \abs{f_n(\omega)} \leq \epsilon + \norm{f_n}_\infty$ which shows $f$ is bounded.  Taking the supremum over $\omega$ shows that $\norm{f -f_n} \leq \epsilon$ for all $n \geq N$ which shows that $f_n$ converges to $f$ in $B(\Omega)$.
+Now using the fact with the triangle inequality we get $\abs{f(\omega)} \leq \abs{f(\omega) - f_n(\omega)} + \abs{f_n(\omega)} \leq \epsilon + \norm{f_n}_\infty$ which shows $f$ is bounded.  Taking the supremum over $\omega$ shows that $\norm{f -f_n} \leq \epsilon$ for all $n \geq N$ which shows that $f_n$ converges to $f$ in $\boundedmeasurable{\Omega}$.
 \end{proof}
 
 \begin{defn}Let $(\Omega, \mathcal{A}, \mu)$ be a measure space and let $f : \Omega \to \reals$ be a measurable function.  We say that $a \in \reals$ is an \emph{essential upper bound of $f$} if $\mu(f^{-1}(a, \infty)) = 0$ (i.e. $f(x) \leq a \mu$-almost everywhere).  The \emph{essential supremum of $f$} is defined as the infimum of the set of essential upper bounds of $f$: 
@@ -2819,7 +2819,7 @@ using the inner regularity of $\mu$ the result follows.
 \end{proof}
 
 
-Before we state an prove the Riesz-Markov theorem we need the
+Before we state and prove the Riesz-Markov theorem we need the
 existence of finite partitions of unity on compact sets in an LCH: a standard
 bit of general topology.
 
@@ -5642,6 +5642,17 @@ Let $0 \neq u \in U$ and suppose that $B u \neq 0$ then
 \end{align*}
 If on the other hand $B u = 0$ then $0 = \frac{\norm{AB u}}{\norm{u}}  \leq \norm{A} \norm{B}$.  It follows that $\norm{AB} \leq \norm{A}\norm{B}$.
 \end{proof}
+
+\begin{prop}\label{banach:OperatorNormConvergenceImpliesPointwise}Let
+  $V$ and $W$ be a normed linear spaces over $\field$ and let $A, A_1, A_2, \dotsc \in L(V,W)$ be linear operators such that $\lim_{n \to \infty} A_n = A$ then for every $v \in V$ we have $\lim_{n \to \infty} A_n v = A v$.
+\end{prop}
+\begin{proof}
+For every $v \in V$,
+\begin{align*}
+0 &\leq \lim_{n \to \infty} \norm{Av - A_n v}  \leq \leq \lim_{n \to \infty} \norm{Av - A_n}  \norm{v} = 0
+\end{align*}
+\end{proof}
+
 
 \begin{prop}\label{banach:AbsoluteConvergenceOfSeriesImpliesConvergence}Let $X$ be a Banach space then if $\sum_{j=0}^\infty a_j$
   converges absolutely then $\sum_{j=0}^\infty a_j$ converges in $X$.
