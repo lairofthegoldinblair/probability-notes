@@ -1,0 +1,31 @@
+*~
+*.orig
+*.rej
+*.swp
+
+# TeX/LaTeX specific ignores
+*.log
+*.aux
+*.bbl
+*.blg
+*.idx
+*.ilg
+*.ind
+*.loe
+*.lof
+*.lop
+*.lot
+*.out
+*.toc
+*.tmp.tex
+*.synctex.gz
+
+# TEMPORARY ignore
+*.eps
+*.ps
+*.pdf
+*.png
+*.dvi
+*.bb
+
+# EoF
