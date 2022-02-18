@@ -44,12 +44,14 @@ another proof of the Central Limit Theorem.
 In this section we start to make use of integrals of complex valued
 measurable functions.  Let's establish the basic definitions and facts
 that we require.
-\begin{defn}A function $f : (\Omega, \mathcal{A}, \mu) \to \complexes$
-  is measurable if and only $f = h + i g$ where $h,g : (\Omega,
-  \mathcal{A}, \mu) \to \reals$ are measurable.  Equivalently,
-  $\complexes$ is given the Borel $\sigma$-algebra.
-\end{defn}
+\begin{prop}\label{BorelMeasurableComplexFunctions}A function $f : (\Omega, \mathcal{A}, \mu) \to \complexes$
+  is Borel measurable if and only $f = h + i g$ where $h,g : (\Omega,
+  \mathcal{A}, \mu) \to \reals$ are measurable.  
+\end{prop}
 \begin{proof}
+Note that $\complexes$ is Borel isomorphic to $\reals^2$ with the product
+$\sigma$-algebra (Proposition \ref{BorelProductSigmaAlgebrasOnProductSpaces}).  Therefore the result follows from 
+Proposition \ref{MeasurableFunctionsIntoProductSigmaAlgebra}.
 \end{proof}
 
 TODO: Some more basic properties of integrals of complex functions.
