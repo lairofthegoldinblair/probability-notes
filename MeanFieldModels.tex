@@ -18,7 +18,7 @@ We will proceed to define a family of stochastic process that can also be interp
 
 TODO: Put this in the measure theory chapter???  Note that we have introduced the total variation norm in Theorem \ref{BanachSpaceBoundedSignedMeasures}  that shows the total variation defines a norm making the space of bounded signed measures into a Banach space.  Perhaps we move some of this to that section.
 
-\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space the we let $\Osc1(\Omega)$ be the set of all measurable functions $f : \Omega \to \reals$ such that $\sup_{x,  y  \in \Omega} \abs{f(x) - f(y)} \leq 1$.
+\begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space the we let $\Osc_{\Omega}$ be the set of all measurable functions $f : \Omega \to \reals$ such that $\sup_{x,  y  \in \Omega} \abs{f(x) - f(y)} \leq 1$.
 \end{defn}
 
 
@@ -27,7 +27,7 @@ TODO: Put this in the measure theory chapter???  Note that we have introduced th
 
 \begin{prop}\label{TotalVariationNormAlternativeFormulasCenteredMeasures}If $\nu$ is a bounded signed measure with $\nu(\Omega) = 0$ and Hahn decomposition $\Omega = A_+ \cup A_+^c$ then 
 \begin{align*}
-\tvnorm{\nu} &= \nu(A_+) = \sup_{A \in \mathcal{A}} \abs{\nu(A)} = \sup_{f \in \Osc1(\Omega)} \abs{\int f \, d\nu}
+\tvnorm{\nu} &= \nu(A_+) = \sup_{A \in \mathcal{A}} \abs{\nu(A)} = \sup_{f \in \Osc_{\Omega}} \abs{\int f \, d\nu}
 \end{align*}
 \end{prop}
 \begin{proof}
@@ -37,13 +37,13 @@ If we let $\nu = \nu_+ - \nu_-$ be the Hahn-Jordan decompostion of $\nu$ then
 \end{align*}
 from which it follows that $\norm{\nu} = \frac{1}{2}(\nu_+(\Omega) + \nu_-(\Omega)) = \nu_+(\Omega) = \nu_-(\Omega)$.  The result follows from the fact that $\nu_+(\Omega) = \nu(A_+) = \sup_{A \in \mathcal{A}} \nu(A)$ and $\nu_-(\Omega) = -\nu(A_-) = \sup_{A \in \mathcal{A}} -\nu(A)$.
 
-To see the last equality we first assume that $f \in \Osc1(\Omega)$ and calculate
+To see the last equality we first assume that $f \in \Osc_{\Omega}$ and calculate
 \begin{align*}
 \abs{\int f \, d\nu} &= \abs{\int f(x) \, d\nu_+(x) - \int f(y) \, d\nu_-(y)} \\
 &= \abs{\frac{1}{\nu_-(\Omega)} \iint f(x) \, d\nu_+(x) d\nu_-(y) - \frac{1}{\nu_-(\Omega)}\iint f(y) \, d \nu_+(x) d\nu_+(y)} \\
 &\leq \frac{1}{\tvnorm{\nu}} \iint \abs{ f(x) - f(y) } \, d\nu_+(x) d\nu_-(y)  \leq \tvnorm{\nu} \\
 \end{align*}
-To see the opposite inequality simply observe that $\characteristic{A_+} \in \Osc1(\Omega)$ so it follows that $\tvnorm{\nu}  = \nu(A_+) \leq \sup_{f \in \Osc1(\Omega)} \abs{\int f \, d\nu}$.
+To see the opposite inequality simply observe that $\characteristic{A_+} \in \Osc_{\Omega}$ so it follows that $\tvnorm{\nu}  = \nu(A_+) \leq \sup_{f \in \Osc_{\Omega}} \abs{\int f \, d\nu}$.
 \end{proof}
 
 \begin{prop}If $\mu$  and $\nu$ be probability measures then 
@@ -282,7 +282,7 @@ The most commonly used $f$-divergences are constructed from functions $g : [0,\i
 Moreover $\beta(\mu)$ is the operator norm of $\mu$ when viewed as a linear operator on $\mathcal{M}_0(S)$ and we have the equalities
 \begin{align*}
 \beta(\mu) &= \sup_{\nu \in \mathcal{M}_0(S) } \frac{\tvnorm{\nu \mu}}{\tvnorm{\nu}} \\
-&= \sup_{g \in \Osc1(T)} \left \lbrace \osc \left( \int g(y) \, \mu(x, dy) \right) \right \rbrace \\
+&= \sup_{g \in \Osc_{T}} \left \lbrace \osc \left( \int g(y) \, \mu(x, dy) \right) \right \rbrace \\
 &=1 - \inf_{x, y \in S}  \inf_n \inf_{A_1 \cup \dotsb \cup A_n = T} \sum_{j=1}^n (\mu(x, A_j) \minop \mu(y, A_j))
 \end{align*}
 \end{prop}
@@ -340,9 +340,9 @@ For $\nu$ a bounded signed measure with $\nu(S) \leq 0$ we apply the result just
 Now since $\mu(x, \cdot) - \mu(y, \cdot)$ is centered we may apply Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures} to calculate
 \begin{align*}
 \beta(\mu) &= \sup_{x,y \in S} \tvnorm{\mu(x, \cdot) - \mu(y, \cdot)} \\
-&= \sup_{x,y \in S}\sup_{g \in \Osc1(T)} \abs{\int g(z) \, \mu(x, dz)  - \int g(z) \, \mu(y, dz)} \\
-&= \sup_{g \in \Osc1(T)} \sup_{x,y \in S} \abs{\int g(z) \, \mu(x, dz)  - \int g(z) \, \mu(y, dz)} \\
-&= \sup_{g \in \Osc1(T)} \osc{\int g(z) \, \mu(x, dz)} \\
+&= \sup_{x,y \in S}\sup_{g \in \Osc_{T}} \abs{\int g(z) \, \mu(x, dz)  - \int g(z) \, \mu(y, dz)} \\
+&= \sup_{g \in \Osc_{T}} \sup_{x,y \in S} \abs{\int g(z) \, \mu(x, dz)  - \int g(z) \, \mu(y, dz)} \\
+&= \sup_{g \in \Osc_{T}} \osc{\int g(z) \, \mu(x, dz)} \\
 \end{align*}
 and the last equality follows by a similar application of Proposition \ref{TotalVariationNormAlternativeFormulasCenteredMeasures}.
 \end{proof}
