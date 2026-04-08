@@ -403,7 +403,7 @@ conclude that $\cexpectationlong{\mathcal{F}_s}{X_t \in \cdot} =
 
 The previous theorem constructs a Markov process with an arbitrary initial distribution.  As it turns out in many cases
 it is useful to consider the collection of Markov processes indexed by the initial distribution.  Such a collection has a
-nice structure that results from the Markov property.  The uncover the structure the first thing to do is to move all of the 
+nice structure that results from the Markov property.  To uncover the structure the first thing to do is to move all of the 
 constructed Markov processes into the canonical picture so that we have a family of probability measures on $S^T$.
 
 \begin{defn}Suppose that a family of transition kernels $\mu_{s,t}$ is
@@ -463,13 +463,12 @@ assume randomization variables exist for some construction).  I still find the v
 interpretations of what a Markov process is to be very confusing.
 Perhaps we should define this latter concept as a Markov family and
 keep the current notion as a Markov process (I think Karatzas and
-Shreve do this).  In the Karatzas and Shreve definition we wind up
+Shreve do this).  In the Karatzas and Shreve definition for Brownian motion we wind up
 with an interesting new concept which is that the kernel
 $\probabilityop_x$ in a Markov family is only assumed to be \emph{universally measurable}
-which is a looser condition than Borel measurability (the universal
-$\sigma$-algebra being the intersection of the completions of the
-Borel $\sigma$-algebra under all probability measures; hence being a
-superset of the Borel $\sigma$-algebra).  This loosening
+which is a looser condition than Borel measurability.  In general given a $\sigma$-algebra $\mathcal{S}$, the \emph{universal completion} of $\mathcal{S}$ is the
+$\sigma$-algebra $\mathcal{S}^*$ which is the intersection of the completions of $\mathcal{S}$ under all probability measures; hence it is a
+superset of $\mathcal{S}$.  A function $f : S \to T$ is universallly measurable if it is $\mathcal{S}^*/\mathcal{T}$-measurable.  This loosening
 seems to come up as important in the context of stochastic control.  I
 am not at all clear on how important it is in the context of Markov
 processes as we are likely to develop it; it seems from Karatzas and
@@ -479,17 +478,17 @@ Markov process (in particular Brownian motion) gives us a Markov
 family.  So, we have shown that a by Kolmogorov existence we can
 construct a Markov family given a set of transition kernels however
 the filtration is not right continuous or complete and this
-construction results in a Borel measurable kernel $\probabilityop_x$.
+construction results in a Borel measurable kernel $\probabilityop_x$ (in the Brownian motion case).
 However if one tries to modify the construction to get a
 right-continuous complete filtration (usual conditions) then one has
-to give up Borel measurability in the kernel and make due with
+to give up strict measurability in the kernel and make due with
 universal measurability.  Perhaps it is worth having a definition of a Markov family 
 and a ``relaxed'' or ``complete'' Markov family.  What I don't have any intuition of 
 is the circumstances under which we are forced to pass to impose the usual conditions and/or require measurability of $\sprobability{A}{x}$ for arbitrary $A \in \mathcal{A}$.  
-The most obvious answer is that we can't consider mixed initial states $\sprobability{A}{\nu}$ to be defined (via $\sprobability{A}{\nu} = \int \sprobability{A}{x}  \, \nu(dx)$) unless we have measurability of $\sprobability{A}{x}$ and therefore we don't even get measures $\probabilityop_{\nu}$ on all of $\mathcal{A}$ until we deal with the measurability issue (but we can always define $\probabilityop_{\nu}$ on $\mathcal{F}^X_\infty$).  Note also that the 
+The most obvious answer is that we can't consider mixed initial states $\sprobability{A}{\nu}$ to be defined (via $\sprobability{A}{\nu} = \int \sprobability{A}{x}  \, \nu(dx)$) unless we have measurability of $\sprobability{A}{x}$ and therefore we don't even get measures $\probabilityop_{\nu}$ on all of $\mathcal{A}$ until we deal with the measurability issue (but we \emph{can} always define $\probabilityop_{\nu}$ on $\mathcal{F}^X_\infty$).  Note also that the 
 concept of universal measurability comes up in the general theory of processes in which
 we have the Debut Theorem that states that every hitting time is universally measurable.  It can also be shown that
-analytic sets are universally measurable.  
+analytic sets are universally measurable (i.e. if a $A$ is $\mathcal{A}$-analytic then it is $\mathcal{A}$-universally measurable).
 
 \begin{defn}\label{MarkovFamilyDefn}
 A \emph{time homogeneous Markov family} is a stochastic process $X_t$ with a
@@ -535,6 +534,8 @@ which shows that the right hand side is closed under countable unions.
 \end{proof}
 Adjoining a point to a measurable space as in the previous lemma will be referred to as \emph{augmenting} the space with the point $\Delta$.
 
+TODO: In the following be more precise about the measurability of the shift operator.  Is it that $\theta_t : \Omega \to \Omega$ is $\mathcal{A}/\mathcal{A}$-measurable for each fixed $t \in T$?   Is it that $\theta : \Omega \times T \to \Omega$ is measurable for some assumed $\sigma$-algebra on the product space?    I don't think we've assumed a measurable structure on $T$ at this point?   
+
 \begin{defn}\label{HomogeneousMarkovFamilyBlumenthalGetoor}
 A \emph{Markov family} is a
 probability space $(\Omega, \mathcal{A})$ with a distinguished point $\omega_\Delta$, a time scale $T
@@ -554,7 +555,7 @@ probability measures $\probabilityop_x$ on $(\Omega, \mathcal{A})$ for $x \in S^
 If in addition we have $X_t \circ \theta_s = X_{t+s}$ for all $t,s \in T$ then we say that the Markov family is \emph{time-homogeneous}.
 \end{defn}
 
-It is worth calling out some subtle points of the defintion.  One of the more significant subtleties is the fact that we do not require that $\probabilityop_x : S^\Delta \times \mathcal{A} \to [0,1]$ is a kernel; while for fixed $x \in S^\Delta$ we know that $\probabilityop_x$ is a probability measure we do not assume that for fixed $A \in \mathcal{A}$ we have $\sprobability{A}{x}$ is $\mathcal{S}^\Delta$-measurable.  This issue will be discussed in some detail later on.  The other most notable issue is that our guiding intuition is that under the probability measure $\probabilityop_x$ $X_t$ is a Markov process starting at $x \in S$, yet we haven't stated that clearly as part of the definition.  At least the fact that $X_t$ is a Markov process under $\probabilityop_x$ $X_t$ can be proven.
+It is worth calling out some subtle points of the defintion.  One of the more significant subtleties is the fact that we do not require that $\probabilityop_x : S^\Delta \times \mathcal{A} \to [0,1]$ is a kernel; while for fixed $x \in S^\Delta$ we know that $\probabilityop_x$ is a probability measure we do not assume that for fixed $A \in \mathcal{A}$ we have $\sprobability{A}{x}$ is $\mathcal{S}^\Delta$-measurable (we only assume that for fixed $B \in \mathcal{S}$ and fixed $t \in T$, $\sprobability{X_t \in B}{x}$ is $\mathcal{S}$-measurable).  This issue will be discussed in some detail later on.  The other most notable issue is that our guiding intuition is that under the probability measure $\probabilityop_x$ $X_t$ is a Markov process starting at $x \in S$, yet we haven't stated that clearly as part of the definition.  At least the fact that $X_t$ is a Markov process under $\probabilityop_x$ $X_t$ can be proven.
 
 \begin{prop} Let $(\Omega, \mathcal{A}, \mathcal{F}_t, X_t, \theta_t, \probabilityop_x)$ be a Markov family then
 \begin{itemize}
@@ -598,25 +599,30 @@ therefore $X_t$ is a Markov process under $\probabilityop_x$ for every $x \in S^
 TODO: A non-homogeneous version of this proof and the proper definition of a non-homogeneous Markov family????
 \end{proof}
 
-Note that Bass doesn't require that $\probabilityop_x$ is a kernel $S
-\to \mathcal{P}(\Omega)$ rather he only requires that
+Note that Bass doesn't require that $\probabilityop_x$ is a kernel $S\to \mathcal{P}(\Omega)$ rather he only requires that
 $\pushforward{X}{\probabilityop_x}$ is a kernel from $S$ to
 $\mathcal{P}(S^T)$ (equivalently for each $t \in T$ and $A \in \mathcal{S}$ we have
 $\sprobability{X_t \in A}{x}$ is a measurable function of $x$ or again
 equivalently $\probabilityop_x$ is a kernel on the natural filtration
-$\mathcal{F}^X_\infty$ (this is the same as Blumenthal and Getoor as I mention above).  What I don't know if whether a universally
-measurable kernel $S \to  \mathcal{P}(\Omega)$ is necessarily Borel
-measurable when restricted to $\mathcal{F}^X_\infty$; heck this isn't necessarily a well posed question since $S$ is not assumed to be
-a topological space at this point.  It is worth noting that Blumenthal and Getoor do show that every Markov family extends to a completed one with 
+$\mathcal{F}^X_\infty$ (this is the same as the Blumenthal and Getoor definition I mention above).  What I don't know is whether a universally
+measurable kernel $S \to  \mathcal{P}(\Omega)$ is necessarily 
+$\mathcal{S}$-measurable when restricted to $\mathcal{F}^X_\infty$.  It is worth noting that Blumenthal and Getoor do show that every Markov family extends to a completed one with 
 the state space given by the universal completion and they assume this completion is in place for much of the subsequent theory.  That said, they
 don't modify the defintion of Markov family in doing so.
 
 TODO: Question:  Given a Markov family as above then given an arbitrary
 initial distribution $\nu$ on $S$ we can define $\probabilityop_\nu$
 by $\sprobability{A}{\nu} = \int \sprobability{A}{x} \, d\nu(x)$.  Is
-$X$ a Markov process with initial distribution $\nu$ under
-$\probabilityop_\nu$?  Blumenthal and Getoor do this but alas universal measurability arises here as well (not when defining
-$\sprobability{A}{\nu}$ for $A \in \sigma(\bigvee_{t \in T} X_t)$ but only when trying to extend to $\mathcal{F}_\infty$)!
+$X$ a Markov process with initial distribution $\nu$ under $\probabilityop_\nu$?  Blumenthal and Getoor do this
+but alas universal measurability arises here as well (not when defining
+$\sprobability{A}{\nu}$ for $A \in \sigma(\bigvee_{t \in T} X_t)=\mathcal{F}^X_t$ but only when trying to extend to $\mathcal{F}_\infty$)!
+
+Universal measurablility also occurs in the projection theorem
+\begin{thm} Let $(\Omega, \mathcal{A})$ be measurable space and let $A \subset \Omega \times \reals$ be $\Omega \otimes \mathcal{B}(\reals)$ measurable then
+  if $\pi_\Omega : \Omega \times \reals \to \Omega$ is the projections on the first coordinate we have $\pi_\Omega(A) \in \mathcal{A}^*$.
+\end{thm}
+
+TODO: Returning to the question of universal measurablity Blumenthal and Getoor prove that when passing to completions of 
 
 \section{Homogeneous Markov Processes}
 
@@ -883,6 +889,8 @@ that involve the following
   the \emph{shift operator}  $\theta_t : S^T \to S^T$ by $\theta_t f
   (s) = f(s +t)$.
 \end{defn}
+
+TODO: State restrictions on $T$ in the following: I believe the second part is assuming that $T = \integers_+$ or $T = \reals_+$
 
 It is clear that for a fixed $t \in T$ the shift operator $\theta_t$
 is measurable but we often need a stronger property the requires some
@@ -2638,6 +2646,8 @@ Markov Processes on $\reals_+$.
   constant with isolated jump discontinuities.
 \end{defn}
 
+TODO: I think we don't need to assume the space is metric.   I think suffices to take an arbitrary measure space and then give it the discrete topology ; then the pure jump condition is that paths are a.s. cadlag.
+
 The first goal is to get a more constructive description of the class
 of pure jump-type Markov processes.  The key idea in achieving that goal
 is to study the random time to the jumps of the process; in fact these
@@ -2810,7 +2820,6 @@ where the jump goes to.  This observation can be used to give us a
 nice description of the entire process.  Before providing the
 construction we settle on some terminology.
 
-
 \begin{defn}Given a pure jump Markov process $X$ with a first jump
   time $\tau_1$ we define the \emph{rate function} to be 
 \begin{align*}
@@ -2878,7 +2887,7 @@ last lemma and the Strong Markov property: our process begins by
 waiting for an exponentially distributed time then makes an
 independent jump to a new state; by the Strong Markov property the
 process starts afresh in the new state waits for another independent
-exponentially distributed time and makes another independent jump and
+xponentially distributed time and makes another independent jump and
 so on. 
 One subtlety arises because the heuristic argument just given
 ignores the fact that our process may jump into an absorbing state.

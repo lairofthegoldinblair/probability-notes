@@ -456,6 +456,24 @@ $f_n^{-1}(k2^{-n}) = f^{-1}[k2^{-n},(k+1)2^{-n})$ is measurable by measurability
 with $f_n^{-1}(n) = f^{-1} [n,\infty)$ and Proposition \ref{prop:SimpleFunctions}.
 \end{proof}
 
+\begin{cor}\label{UniformApproximationOfBoundedBySimple}For any
+  positive bounded measurable function $f : (\Omega,
+  \mathcal{A}) \to \reals$ there exist a sequence of simple measurable
+  functions $f_1, f_2, \dots$ such that
+  \begin{align*}
+    \lim_{n \to \infty}
+    \sup_{\omega \in \Omega} \abs{f(\omega) - f_n(\omega)} &= 0
+  \end{align*}
+\end{cor}
+\begin{proof}
+This is really a corollary of the proof of Lemma
+\ref{PointwiseApproximationBySimple}.   Let $f_n$ be the sequence
+in the proof.  For any $n > \sup_{\omega \in \Omega} f(\omega)$ we see
+that $f_n(\omega) = k 2^{-n}$ for all $\omega \in \Omega$ with
+$k2^{-n} \leq f(\omega) < (k+1)2^{-n}$.   If follows that
+$\sup_{\omega \in \Omega} \abs{f(\omega) - f_n(\omega)} < 2^{-n}$.
+\end{proof}
+
 As an application of approximation by simple functions, 
 \begin{lem}\label{ArithmeticCombinationsOfMeasurableFunctions}
 Let $f,g : (\Omega, \mathcal{A}) \to \reals$ be measurable functions

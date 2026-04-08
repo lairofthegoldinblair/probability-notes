@@ -91,7 +91,7 @@ $B(x;2^{-n}) \bigcap A = \emptyset$ and therefore $A^c$ is open.
 
 As it turns out continuity of a function can be expressed entirely in
 terms of open sets.
-\begin{lem}A function between metric spaces $f : (S,d) -> (T,d^\prime)$ is continuous
+\begin{lem}\label{ContinuousPreImageOfOpenSet}A function between metric spaces $f : (S,d) -> (T,d^\prime)$ is continuous
   if and only if for every open subset $U \subset T$, we have $f^{-1}(U)$ is an
   open subset of $S$.
 \end{lem}
@@ -611,7 +611,7 @@ a simple corollary of the result.
 \end{proof}
 
 Before we begin the proof we need a Lemma.
-\begin{lem}Suppose $C_0 \supset C_1 \supset \cdots$ is a nested
+\begin{lem}\label{IntersectionCompactSets}Suppose $C_0 \supset C_1 \supset \cdots$ is a nested
   sequence of closed and bounded sets $C_k \subset \reals^n$.  Then
   $\cap_k C_k$ is non empty.
 \end{lem}

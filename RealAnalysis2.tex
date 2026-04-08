@@ -179,7 +179,7 @@ Since $X \in \tau$ and $A = A \cap X$ it follows that $A \in \tau_A$.  Similarly
 we see that $\tau_A$ is closed under finite intersections.
 \end{proof}
 
-\begin{defn}If $(X, \tau)$ be a topological space and $A \subset X$ then $\tau_A = \lbrace A \cap U \mid U \in tau \rbrace$ is called the \emph{relative topology} or the \emph{subspace topology} on $A$.  A set $U \in \tau_A$ is said to be \emph{relatively open}.  
+\begin{defn}If $(X, \tau)$ be a topological space and $A \subset X$ then $\tau_A = \lbrace A \cap U \mid U \in \tau \rbrace$ is called the \emph{relative topology} or the \emph{subspace topology} on $A$.  A set $U \in \tau_A$ is said to be \emph{relatively open}.  
 \end{defn}
 
 \begin{defn}
@@ -215,7 +215,30 @@ spaces sequential compactness is equivalent to
 
 Separation axioms tells us that we have enough open sets in a topology
 to distinguish features of the the underlying set (e.g. distinguishing
-points from points or closed sets from closed sets).  Another way of
+points from points or closed sets from closed sets).
+
+\begin{defn}Let $X$ be a topological space then
+  \begin{itemize}
+    \item[(i)] $X$ is said to be $T_1$ if given distinct points $x,y \in X$ there exist open sets $U$ and $V$ such that $x \in U$ and $y \notin U$ and $y \in V$ and $x \notin V$.
+    \item[(ii)] $X$ is said to be $T_2$ or \emph{Hausdorff} if given distinct points $x,y \in X$ there exist disjoint open sets $U$ and $V$ such that $x \in U$ and $y \in V$.
+    \item[(iii)] $X$ is said to be \emph{regular} if given a point $x \in X$ and a closed set $F \subset X$ with $x \notin F$ there exist disjoint open sets $U$ and $V$ such that $x \in U$ and $F \subset V$.
+    \item[(iv)] $X$ is said to be $T_3$ if it is Hausdorff and regular.
+    \item[(v)] $X$ is said to be \emph{normal} if given disjoint closed sets $F,G \subset X$ there exist disjoint open sets $U$ and $V$ such that $F \subset U$ and $G \subset V$.
+    \item[(vi)] $X$ is said to be $T_4$ it is Hausdorff and normal.
+  \end{itemize}
+\end{defn}
+
+As an example, note that all metric spaces are both Hausdorff and normal.
+\begin{prop}\label{MetricSpacesAreT4}All metric spaces are $T_4$.
+\end{prop}
+\begin{proof}
+  Let $X$ be a metric space and suppose $x, y \in X$ are distinct points.   Then $r = d(x,y)>0$ and therefore by the triangle inequality $B(x, r/2) \cap B(y, r/2) = \emptyset$ which shows $X$ is Hausdorff.
+
+  Recall that we define the distance to a set by $d(x,F) = \inf_{y \in F} d(x,y)$.  (see e.g. Lemma
+\ref{DistanceToSetLipschitz}).  Now let $F, G \subset X$ be disjoint closed sets.    Let $U = \cup_{x \in F} B(x, d(x,G)/2)$.   As a union of open sets, $U$ is open and clearly $F \subset U$.   Symmetrically we construct the open set $V = \cup_{y \in G} B(y, d(y, F)/2)$.   We claim $U$ and $V$ are disjoint.   Otherwise, if $z \in U \cap V$ then there exist $x \in F$ and $y \in G$ such that $d(x,z) < d(x,G)/2$ and $d(y,z) < d(y, F)/2$.   By the triangle inequality, $d(x,y) <  d(x,G)/2 + d(y, F)/2$.   If $d(x,G) \leq d(y, F)$ we get $d(x,y) < d(y,F)$ which is a contradiction otherwise we get $d(x,y) < d(x,G)$ also a contradiction.    
+\end{proof}
+
+Another way of
 thinking about the size of a topology is by considering the number of
 continuous functions that the topology allows.  The following theorem
 shows that in normal topological spaces we have enough continuous
@@ -441,7 +464,7 @@ subnet of $\net{x}{\alpha}$ that converges to $x$.
 If $x$ is a cluster point of the net $\net{x}{\alpha}$ then the existence of a subnet follows by applying Proposition \ref{SubnetConstruction} to the set of open neighborhoods of $x$.  On the other hand, suppose that there is a subnet $\net{y}{\beta}$ that converges to $x$.  Let $\mathcal{I}$ be the index set of $\net{x}{\alpha}$ and $\mathcal{J}$ be the index set of $\net{y}{\beta}$ with $\iota : \mathcal{J} \to \mathcal{I}$ defining the subnet.  Let $U$ be an open neighborhood of $x$ and let $\alpha \in \mathcal{I}$. By the convergence of $\net{y}{\beta}$ there exists $\beta \in \mathcal{J}$ such that $y_\delta \in U$ for all $\delta \succ \beta$.  By the subnet property there exists $\gamma \in \mathcal{J}$ such that $\iota(\delta) \succ \alpha$ for all $\delta \succ \gamma$.  Since $\mathcal{J}$ is a directed set there exists $\delta \in \mathcal{J}$ with $\delta \succ \beta$ and $\delta \succ \gamma$ hence $\iota(\delta) \succ \alpha$ and $x_{\iota(\delta)} = y_\delta \in U$.
 \end{proof}
 
-Here is yet another interpretation of the defintion of a cluster point.
+Here is yet another interpretation of the definition of a cluster point.
 \begin{lem}\label{ClusterPointsAndClosures}Let $X$ be a topological space and let $\net{x}{\alpha}$ be a net with index set $\mathcal{I}$.  For each $\alpha \in \mathcal{I}$ define
 \begin{align*}
 A_\alpha &= \lbrace x_\beta \mid \beta \succ \alpha \rbrace
@@ -1969,10 +1992,198 @@ d(u,w) &= \norm{u - w} = \norm{u - v + v - w} \leq \norm{u - v} + \norm{v - w}  
 \end{align*}
 \end{proof}
 
+\begin{prop}\label{banach:ConvergenceOfNorms} Let $V$ be a normed
+  vector space and let $v, v_1, v_2, \dotsc \in V$ such that
+  $\lim_{n  \to \infty} v_n  = v$
+  then $\lim_{n\to \infty} \norm{v_n} = \norm{v}$.   Let $v_n$ be a
+    Cauchy sequence in $V$ the $\norm{v_n}$ converges in $\reals$.
+\end{prop}
+\begin{proof}
+  Both results follow easily from the following:
+  \begin{clm}Let $v,w \in V$ then $\abs{\norm{v} - \norm{w}} \leq
+    \norm{v - w}$.
+  \end{clm}
+  To see this just use the triangle inequality
+  \begin{align*}
+    \norm{v} &= \norm{v - w + w} \leq \norm{v - w} + \norm{w}
+  \end{align*}
+  so $\norm{v} - \norm{w} \leq \norm{v - w}$ and 
+  \begin{align*}
+    \norm{w} &= \norm{w - v + v} \leq \norm{v - w} + \norm{v}
+  \end{align*}
+  so $-\norm{v - w}  \leq \norm{v}  - \norm{w}$ which together show the claim.
+
+  
+  Now assuming $v = \lim_{n \to \infty} v_n$, apply the claim for every $n \in \naturals$,  and   take limits to see that
+   \begin{align*}
+     0 &\leq \lim_{n \to \infty} \abs{\norm{v} - \norm{v_n}} \leq
+         \lim_{n \to \infty}  \norm{v - v_n} = 0
+   \end{align*}
+
+   Let $v_n$ be a Cauchy sequence, let $\epsilon > 0$ be given and
+   pick $N \in \naturals$ so that $\norm{v_n - v_m} \leq \epsilon$ for
+   all $n, m \geq N$.  Apply the claim to see that
+   \begin{align*}
+     \abs{\norm{v_n}-\abs{v_m}} \leq \norm{v_n - v_m} \leq \epsilon
+   \end{align*}
+   and conclude that $\norm{v_n}$ is Cauchy.  The fact that $\reals$
+   are complete implies that the sequence $\norm{v_n}$ converges.
+\end{proof}
+
+\begin{defn}Let $V$ and $W$ be normed vector spaces on $\field$, then
+  a linear map $L : V \to W$ is said to be a \emph{bounded linear operator} if there is
+  a constant $C \geq 0$ such that $\norm{Lv} \leq C \norm{v}$ for all
+  $v \in V$.  The quantity $\norm{V} = \inf \lbrace C | \norm{Lv}
+  \leq C \norm{v} \text { for all } v \in V\rbrace$ is called the
+  \emph{operator norm}.
+\end{defn}
+
+The first thing is to observe that boundedness of a linear map is
+equivalent to continuity.
+\begin{prop}\label{banach:BoundedEquivalentContinuous}Let $V$ and $W$
+  be normed vector spaces over $\field$ and $L : V \to W$ be a linear
+  map then $L$ is bounded if and only if $L$ is continuous.  In fact
+  it suffices that $L$ is continuous at $0 \in V$.   A bounded linear
+  operator is uniformly continuous.
+\end{prop}
+\begin{proof}
+  First suppose that $L$ is bounded and let $C > 0$ be chosen such
+  that $\norm{Lv} \leq C \norm{v}$ for all $v \in V$.   Let $v \in V$
+  and pick $\epsilon > 0$ then for any $\tilde{v} \in V$ with
+  $\norm{\tilde{v} - v} < \epsilon/C$ we have
+  \begin{align*}
+    \norm{Lv - L \tilde{v}} &\leq C \norm{v - \tilde{v}} < \epsilon
+  \end{align*}
+  which shows $L$ is continuous at $v$ (in fact because $C$ is
+  independent of $v$ this shows $L$ is
+  uniformly continuous).
+
+  Now suppose that $L$ is 
+  continuous at $0 \in V$.   Since $L$ is linear $L(0) = 0$. By the definition of continuity there is a constant $C>0$ such that $\norm{v} < C$
+  implies $\norm{Lv} < 1$.   Then for any $v
+  \in V$ with $v \neq 0$, we have by linearity
+  $\norm{\frac{Cv}{2\norm{v}}} = \frac{C}{2} < C$ so
+  \begin{align*}
+    \norm{Lv} &= \norm{\frac{2\norm{v}}{C}  L \frac{Cv}{2\norm{v}}}
+                =\frac{2 \norm{v}}{C}\norm{ L \frac{Cv}{2\norm{v}}} < \frac{2 \norm{v}}{C}
+  \end{align*}
+  which shows that $L$ is bounded.
+\end{proof}
+
+The second thing is to show that operator norm is actually a norm.
+
+\begin{prop}\label{banach:OperatorNorm} Let $V$ and $W$ be normed vector spaces on $\field$, then
+ the space of bounded linear operators is a normed vector space under
+  the operator norm.   Moreover $\norm{L} = \sup_{\norm{v} \leq 1}
+  \norm{Lv}$.   This normed linear space is denoted $L(V,W)$.   If $U$
+  is a third normed vector space on $\field$ and we have $L \in
+  L(V,W)$ and $M \in L(W, U)$ then composition $M \circ L \in L(V, U)$ and
+  $\norm{M L} \leq \norm{M}\norm{L}$.
+\end{prop}
+\begin{proof}
+  The fact that the set of linear maps is a vector space on $\field$
+  is an elementary fact from linear algebra.   The fact that sums and
+  scalar products of bounded linear operators are bounded follows form
+  the proof that the operator norm is a norm.  We proceed to prove this.
+
+  Let $c \in \field$ be non-zero, $L$ be a bounded linear operator and $v \in V$,
+  \begin{align*}
+  \norm{cL v} &= \abs{c} \norm{Lv} \leq \abs{c} \norm{L} \norm{v}
+  \end{align*}
+  which shows $\norm{cL} \leq \abs{c} \norm{L}$.   On the other hand,
+for any $v \in V$ we then have
+  \begin{align*}
+ \norm{Lv} &=\frac{1}{\abs{c} } \norm{cLv} \leq  \frac{1}{\abs{c} } \norm{cL} \norm{v}
+  \end{align*}
+  which shows that $\abs{c} \norm{L} \leq \norm{cL}$, thus $\norm{cL}
+  = \abs{c} \norm{L}$.
+
+To see the triangle inequality, let $L$ and $M$ be bounded linear and
+let $v \in V$ then
+\begin{align*}
+  \norm{(L+M)v} &= \norm {Lv + Mv} \leq \norm{Lv} + \norm{M v} \leq
+                  (\norm{L} + \norm{M}) \norm{v}
+\end{align*}
+which shows $\norm{L+M} \leq \norm{L} + \norm{M}$.
+
+It is clear that $\norm{0} = 0$.  To see the converse we argue by
+contradiction.  If $L$ is a bounded linear operator
+and $\norm{L} = 0$ then pick $v \in V$ such that $v \neq 0$ and $Lv \neq 0$.  This
+implies $\norm{Lv} > 0$.   Then we have $\norm{Lv} \geq
+\frac{\norm{Lv}}{\norm{v}} \norm{v} > 0$ which shows us that
+$\norm{L} \geq \frac{\norm{Lv}}{\norm{v}} >0$ a contradiction.
+
+To verify the alternative formula for the operator norm, observe that
+for all $\norm{v} \leq 1$ we have $\norm{Lv} \leq \norm{L} \norm{v}
+\leq \norm{L}$.  This shows that $\sup_{\norm{v} \leq 1}  \norm{Lv}
+\leq \norm{L}$.  To see the other direction, let $v \in V$ with $v
+\neq 0$ and note that
+\begin{align*}
+  \norm{Lv} &= \norm{ L \frac{v}{\norm{v}}} \norm{v} \leq \left(
+              \sup_{\norm{v} \leq 1} \norm{Lv} \right) \norm{v}
+\end{align*}
+which shows that $\norm{L} \leq   \sup_{\norm{v} \leq 1} \norm{Lv}$.
+
+Now let $L \in  L(V,W)$ and $M \in L(W, U)$ linearity of $M \circ L$
+follows simply by computing for $v,w \in V$ and $c \in \field$,
+\begin{align*}
+  ML (cv + w) &= M( cLv + Lw) = cMLv + MLw 
+\end{align*}
+To see boundedness, pick $v \in V$ and
+note that
+\begin{align*}
+  \norm {M Lv} &\leq
+                 \norm{M}\norm{Lv} \leq \norm{M}\norm{L}\norm{v}
+\end{align*}
+which shows that $M \circ L$ is bounded with $\norm{ML} \leq \norm{M}\norm{L}$.
+\end{proof}
 
 \begin{defn}A normed vector space $V$ is said to be a \emph{Banach space} if it is complete in the topology generated by the metric associated with $\norm{\cdot}$.
 \end{defn}
 We start with some of the standard examples of Banach spaces.
+
+\begin{prop}\label{banach:BoundedLinearMapsBanach}Let $V$ be a normed vector space and $W$ be a Banach space
+  on $\field$, then
+ the space of bounded linear operators $L(V,W)$ is a Banach space under
+  the operator norm.  
+\end{prop}
+\begin{proof}
+  We already know that $L(V,W)$ is a normed vector space so it only
+  remains to show completeness.   Suppose that $L_n$ is a Cauchy
+  sequence in $L(V,W)$.   Let $v \in V$ an note that for all $n,m \in
+  \naturals$, $\norm{L_nv - L_m v} \leq \norm{L_n - L_m } \norm{v}$ so
+  $L_n v$ is Cauchy.   Since $W$ is complete we let $\lim_{n \to
+    \infty} L_n v$ exists.   Define $L : V \to W$ by $L v = \lim_{n \to
+      \infty} L_n v$.
+
+    \begin{clm} $L$ is a bounded linear operator
+    \end{clm}
+
+    The fact that $L$ is a linear operator follows from linearity of
+    limits.  To see boundedness note from Proposition
+    \ref{banach:ConvergenceOfNorms} that $\norm{L_n}$ converges.
+    \begin{align*}
+      \norm{L v} &= \norm{Lv - L_n v + L_n v} \leq \norm{Lv - L_n v} +
+                   \norm{L_nv} \leq \norm{Lv - L_n v} + \norm{L_n}\norm{v}
+    \end{align*}
+    now take limits to see $\norm{Lv} \leq \lim_{n\to \infty}
+    \norm{L_n}\norm{v}$, so $L$ is bounded and $\norm{L} \leq \lim_{n\to \infty} \norm{L_n}$.
+
+    To see that $L_n$ converges to $L$ in operator norm, let $\epsilon
+    > 0$ be given and pick $N \in \naturals$ such that $\norm{L_m -
+      L_n} < \epsilon/2$ for $n, m \geq N$.  Now pick $\norm{v} \leq
+    1$ and select $n \geq N$ such that $\norm{L_n v - Lv} <
+    \epsilon/2$.  Then for all $m \geq N$ we have
+    \begin{align*}
+      \norm{L_m v - L v} &= \norm{L_m v - L_nv + L_nv - L v}
+                           \leq \norm{L_m v - L_nv} + \norm{L_nv - Lv} \\
+                          &\leq  \norm{L_m - L_n} + \norm{L_nv - L v} < \epsilon
+    \end{align*}
+    Since $N$ was chosen independently of $\norm{v} \leq 1$ we can take
+    the supremum over all such $v$ and conclude
+    $\norm{L_m - L} < \epsilon$ for all $m \geq N$.   The proves
+    convergence in the operator norm.
+\end{proof}
 
 \begin{defn}Let $(\Omega, \mathcal{A})$ be a measurable space, let $\boundedmeasurable{\Omega}$ be space of bounded measurable functions $f : \Omega \to \reals$ and define $\norm{f}_\infty = \sup_{\omega \in \Omega} \abs{f(\omega)}$.
 \end{defn}
@@ -2160,7 +2371,6 @@ Therefore $\sup_\alpha \norm{A_\alpha} = \sup_\alpha \sup_{\norm{u}
 \end{proof}
 
 TODO: The Banach-Steinhaus theorem above is apparently important enough that mathematicians (Bourbaki) have decided to study the least restrictive class of spaces in which it holds: barrelled spaces.
-TODO: Open mapping and Closed Graph theorem?
 
 \begin{thm}[Open Mapping Theorem]\label{banach:OpenMappingTheorem}Let $X$ and $Y$ be Banach spaces and let $A : X \to Y$ be a bounded linear operator, if $A$ is surjective then it is open (i.e. if $U \subset X$ is an open set then $A(U)$ is open in $Y$).
 \end{thm}
@@ -2990,7 +3200,7 @@ v(x) &= \begin{cases}
 \end{cases}
 \end{align*}
 Note that we have the property that $u \leq f \leq v$ and moreover we
-have the useful alternative defintion of $u$ and $v$
+have the useful alternative definition of $u$ and $v$
 \begin{align*}
 u(x) &= \frac{1}{n} \sum_{j=1}^n \characteristic{U_j}(x) \\
 v(x) &= \frac{1}{n} \sum_{j=1}^{n} \characteristic{U_{j-1}}(x) \\
@@ -5362,19 +5572,25 @@ $P$ and $Q$ as in the hypotheses we simply find a common refinement
 (e.g. take the union of $P$ and $Q$) and the result follows.
 \end{proof}
 
+\begin{defn}Given $a, b \in \reals$ with $a \leq b$ and a Banach space $X$,
+  define $St_a^b(X)$ to be the set of step maps $f : [a,b] \to X$.   Define the \emph{integral}
+  $I_a^b : St_a^b(X) \to X$ to be $I_a^b(f) = I_P(f)$ where $f$ is a step map with respect to
+  partition $P$.
+\end{defn}
+
 Now we extend the integral by a limiting procedure.  To do this we use 
 somewhat abstract language of Banach space theory.  First let us set
 up the Banach space in which we operate.
 
 \begin{prop}Let $X$ be a normed vector space, let $S$ be an arbitrary
-  set and let $\mathfrak{B}(S, X)$
+  set and let $\sboundedfunctions{S, X}$
   represent the set of bounded functions $f : S \to X$.  Let
   $\abs{x}$ denote the norm on $X$.  If we
   define $\norm{f} = \sup_{s \in S} \abs{f(s)}$ then $\norm{f}$
-  makes $\mathfrak{B}(S, X)$ into a normed vector space.
+  makes $\sboundedfunctions{S, X}$ into a normed vector space.
 \end{prop}
 \begin{proof}
-We first observe that $\mathfrak{B}(S, X)$ is a vector space.  
+We first observe that $\sboundedfunctions{S, X}$ is a vector space.  
 This follows from the fact that if $f$ is bounded by $C$ then for all
 $a \in \reals$ we have $af$ is bounded by $\abs{a} C$ if both $f$ and
 $g$ are bounded by $C_1$ and $C_2$ respectively then using the
@@ -5404,72 +5620,190 @@ have $\abs{f(s) + g(s)} \leq \abs{f(s)} + \abs{g(s)} \leq \norm{f}
 \norm{f} + \norm{g}$.
 \end{proof}
 
+\begin{prop}\label{banach:IntegralOfStepFunctionsBoundedLinear}The set of step maps $St_a^b(X)$ is a linear space of 
+ $\sboundedfunctions{[a,b], X}$,  and $I_a^b : St_a^b(X) \to X$ a bounded linear map with norm $\norm{I_a^b} = b - a$.
+\end{prop}
+\begin{proof}
+  First note that since a step map takes a finite number of values, it is clearly bounded, hence the step maps are a subset of
+  $\sboundedfunctions{[a,b], X}$.  To see that it is a subspace, let $f, g \in St_a^b(X)$ and $c \in \reals$, then by taking a union of
+  partitions we may assume that both $f$ and $g$ are step maps with respect to a common partition $P=\lbrace a_j \rbrace_{j=0}^n$ .
+  Let elements $w_1,  \dotsc, w_n \in X$ (respectively $v_1, \dotsc, v_n \in X$ be chosen so that $f(x) = w_j$ (respectively $g(x) = v_j$)
+  for all $a_j < x < a_{j+1}$ and $0 \leq j < n$.  The it is clear that $cf + g$ is a step map with respect to $P$ and $(cf+g)(x) = cw_j + v_j$ 
+  for all $a_j < x < a_{j+1}$ and $0 \leq j < n$.
+
+  This representation also shows us that 
+  \begin{align*}
+    I_a^b(cf + g) &= \sum_{j=1}^n (a_j - a_{j-1}) (cw_j + v_j) = c\sum_{j=1}^n (a_j - a_{j-1}) w_j  + \sum_{j=1}^n (a_j - a_{j-1}) v_j \\
+    &= cI_a^b(f) + I_a^b(g)
+  \end{align*}
+  so the integral is a linear map.  Lastly we have by the triangle inequality and a telescoping sum,
+  \begin{align*}
+    \norm{I_a^b(f)} &\leq \norm{\sum_{j=1}^n (a_j - a_{j-1}) w_j} \leq \sum_{j=1}^n (a_j - a_{j-1}) \norm{w_j} \\
+    &\leq \norm{f}_\infty \sum_{j=1}^n (a_j - a_{j-1})  = \norm{f}_\infty (b-a)
+  \end{align*}
+  which shows $\norm{I_a^b} \leq (b-a)$.   On the other hand for any $v \in X$, and the constant function $f(x) \equiv v$ we see that $f$
+  is a step map with respect to the two element partition $a = a_0 \leq a_1 = b$ and therefore $I_a^b(f) = (b-a) v$ hence
+  \begin{align*}
+    \norm{I_a^b(f)} &= (b-a) \norm{v}  = (b-a) \norm{f}_\infty
+  \end{align*}
+  which shows us that $\norm{I_a^b} \geq (b-a)$.   The result follows.
+\end{proof}
+
 Now we have the following extension result
 \begin{lem}Let $X$ be a normed vector space and let $Y$ be a Banach
   space.  Suppose that $V \subset X$ is a subspace and $A : V \to Y$
-  is a bounded linear map, then $A$ has a unique extension
+  is a bounded linear map, then $A$ has a unique bounded extension
   $\overline{A} : \overline{V} \to Y$ from the closure of $V$ into
   $Y$.  Moreover if $C$ is a bound on $A$ the $C$ is also a bound on $\overline{A}$.
 \end{lem}
 \begin{proof}
-TODO:
+  Let $C>0$ be a bound for $A$ on $V$.   Let $v_n$ be a sequence of elements in $V$ that converge in $X$.   Since $v_n$ converges in $X$, $v_n$ is a Cauchy sequence and therefore by
+  boundedness of $A$, we know that $Av_n$ is a Cauchy sequence in $Y$.   Since $Y$ is complete we know that $A v_n$ has a limit in $Y$.   Suppose that
+  $w_n$ is a second sequence of elements in $V$ and $lim_{n \to \infty} v_n = lim_{n \to \infty} w_n = v$.    Then for any $\epsilon>0$ we may select $N>0$ such that
+  $\norm{v_n - v} <\epsilon/2C$ and $\norm{w_n - v} <\epsilon/2C$ for all $n \geq N$.   By the triangle inequality if follows that $\norm{v_n - w_n} < \epsilon/C$  and therefore
+  $\norm{A v_n - A w_n} < \epsilon$ for all $n \geq N$.   Thus $lim_{n \to \infty} A v_n = lim_{n \to \infty} A w_n$ and we can unambiguously define $\overline{A} v$ by chosing any sequence converging to $v$.   For any bounded extension of $A$, continuity implies it must agree with the preceeding definition.
+
+  To see that the extension is linear, pick $v, w \in \overline{V}$ and two sequences $v_n$ and $w_n$ in $V$ with $\lim_{n\to \infty} v_n = v$ and $\lim_{n\to \infty} w_n = w$.   Let $c$ be a constant.   Note that $\lim_{n\to \infty} (cv_n + w_n) = cv + w$.   Then by linearity and continuity of $A$,
+  \begin{align*}
+    \overline{A} (c v + w) &= \lim_{n\ to \infty} A ( c v_n + w_n) = c \lim_{n\ to \infty} A v_n +\lim_{n\ to \infty} w_n = c A v + w
+  \end{align*}
+  which shows that $\overline{A}$ is linear.
+
+  Lastly note that
+  \begin{align*}
+    \norm{\overline{A} v} &= \norm{\lim_{n \to \infty} A v_n} = \lim_{n \to \infty}\norm{ A v_n} \leq \lim_{n \to \infty}C \norm{ v_n} = C\norm{v}
+  \end{align*}
+  hence $C$ is also a bound on $\overline{V}$.
 \end{proof}
 
-As is usual to compute with integrals it is imperative to connect the
-integration with differentiation.  Since we are dealing with the
-Riemann integral we must use relatively strong hypotheses however
-these results will suffice for our applications and the proof are very
-simple.  We start with the Fundamental Theorem of Calculus.
+\begin{defn}Let $a,b \in \reals$ with $a \leq b$ and the $X$ be a Banach space then the closure of $\overline{S}_a^b(X)$ in $\sboundedfunctions{[a,b], X}$
+  is called the space of \emph{regulated maps}.   The unique bounded linear extension of the integral of step maps to the space of regulated maps $I_a^b : \overline{S}_a^b(X) \to X$
+  is also called the \emph{integral}.   We may also denote the integral by
+  \begin{align*}
+    \int_a^b f(t) \, dt
+  \end{align*}
+  where the choice of variable name $t$ may be selected for notational convenience.
+\end{defn}
 
-\begin{thm}[Fundamental Theorem of
-  Calculus]\label{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals}Let
- $X$ be a Banach space and let $f : [a,b] \to X$ be continuously
- differentiable then 
-\begin{align*}
-f(b) - f(a) &= \int_a^b Df(t) dt
-\end{align*}
-\end{thm}
+\begin{prop}\label{banach:PiecewiseContinuousIsRegulated}Let $a,b \in \reals$ with $a \leq b$ and the $X$ be a Banach space  then if $f : [a,b] \to X$ is piecewise continuous then $f$ is regulated.
+\end{prop}
 \begin{proof}
-First we let $g(t)$ be a regulated function from $[a,b]$ to $X$ and
-consider the integral $\int_a^s g(t) \, dt$.  Suppose that $g$ is
-continuous at $c \in [a,b]$ and let $\epsilon > 0$ be given.  By
-right continuity we may find $\delta > 0$ such that $\abs{g(c+h) -
-  g(c)} < \epsilon$ for all $\abs{h} < \delta$.  If we let $G(s) = \int_a^s g(t) \,
-dt$ then if $\abs{h} < \delta$ we have
-\begin{align*}
-\abs{ \frac{G(c + h) - G(c)}{h} - g(c)} &= \abs{\frac{1}{h}
-                                          \int_c^{h+c} g(t)\, dt  -
-                                          \frac{1}{h} \int_c^{h+c}
-                                          g(c) \, dt} \\
-&= \abs{\frac{1}{h}  \int_c^{h+c} (g(t) - g(c)) \, dt} \\
-&\leq \frac{1}{\abs{h}} \abs{h} \sup_{c \leq s \leq c+h} \abs{g(t) -
-  g(c)} 
-=\sup_{c \leq s \leq c+h} \abs{g(t) -  g(c)} 
-\end{align*}
-By continuity
-TODO
+  TODO
 \end{proof}
+
+\begin{prop}\label{banach:RiemannIntegralProperties}Let
+  $X$ be a Banach space.
+  \begin{itemize}
+  \item[(i)] If $f : [a,a] \to X$ is arbitrary then $f$ is a step map and $\int_a^a f(t) \, dt = 0$.
+ \item[(ii)] If $f : [a,b] \to X$ is a step map then for every $a \leq c \leq d \leq b$, the restriction of $f$ to $[c,d]$ is a step map.
+ \item[(iii)] If $f : [a,b] \to X$ is regulated then for every $a \leq c \leq d \leq b$, the restriction of $f$ to $[c,d]$ is regulated.
+  \item[(iv)] If $f : [a,b] \to X$ be regulated, then for all $a \leq c \leq b$, 
+\begin{align*}
+\int_a^b f(t) \, dt &= \int_a^c f(t) \, dt + \int_c^b f(t) \, dt
+\end{align*}
+\end{itemize}
+\end{prop}
+\begin{proof}
+  To see (i), for $a \in \reals$ and the trivial interval $[a,a]$ the conditions for a step map are vacuous hence any map is a step map with respect to the partition $a = a_0 \leq a_1 = a$.   Then by the definition of integral with respect to the partition we can choose an arbitrary element $w \in X$ and compute
+  \begin{align*}
+    \int_a^a f(t) \, dt &= I_P(f) = (a_1 - a_0) w = (a - a) w = 0
+  \end{align*}
+  
+  To prove (ii), note that the case of $c=d$ by (i) since every map is a step map.   So suppose that $c < d$.  Since $f$ is a step map we pick a partition $P=\lbrace a_j \rbrace_{j=0}^n$ such that $f$ is a step map with respect to $P$.   If necessary we add both $c$ and $d$ to the partition and thus may assume there are indexes $I< J$ such that $a_I = c$ and $a_J = d$.   Let the representatives be $w_1, \dots, w_n$ such that $f(x) = w_j$ for $a_{j-1} < x < a_j$.   It is clear that the restriction of $f$ to $[c,d]$ is a step map with respect to the partition $P_c^d = \lbrace a_j \rbrace_{j=I}^J$ and representatives $w_{I+1}, \dotsc, w_J$.  
+
+  To prove (iii),  let $f$ be regulated on $[a,b]$ and suppose it is the uniform limit of step maps $f_n$.  We know by (ii) that each $f_n$ restricts to a step map on $[c,d]$ and
+  \begin{align*}
+    \lim_{n \to \infty} \sup_{c \leq x \leq d} \norm{f_n(x) - f(x)} \leq \lim_{n \to \infty} \sup_{a \leq x \leq b} \norm{f_n(x) - f(x)} = 0
+  \end{align*}
+  which shows that $f \in St_c^d(X)$ is a uniform limit of step functions hence is regulated.
+
+
+To prove (iv), we get the special cases of $c=a$ and $c = b$  out of the way first.   The argument is the same in both cases so we only treat the first.  In this case, by (i) every map is regulated on $[a,a]$ and moreover has vanishing integral.  So (ii) reduces to the tautological statement that
+\begin{align*}
+\int_a^b f(t) \, dt &= \int_a^a f(t) \, dt + \int_a^b f(t) \, dt = \int_a^b f(t) \, dt
+\end{align*}
+
+Now we we can assume that $a < c < b$ and show (iv) for step maps.   Arguing as in (ii), let $f \in St_a^b(X)$ and suppose it is a step map with respect to partition $P =\lbrace a_j \rbrace_{j=0}^n$ and has representation given by $w_1, \dotsc, w_n$.   If necessary we
+  add $c$ to the set of $a_j$ and thus we can assume that $c = a_m$ for some $0 < m < n$.   We can calculate the integral
+  \begin{align*}
+    \int_a^b f(t) \, dt &= \sum^n_{j=1} (a_j - a_{j-1}) w_j = \sum^m_{j=1} (a_j - a_{j-1}) w_j + \sum^n_{j=m+1} (a_j - a_{j-1}) w_j \\
+    &= \int_a^c f(t) \, dt  + \int_c^b f(t) \, dt 
+  \end{align*}
+
+  Now let $f$ be regulated on $[a,b]$ and suppose it is the uniform limit of step maps $f_n$. Arguing as in (iii) we know that the restrictions of $f_n$ to $[a,c]$ (respectively $[c,b]$) are step maps that converge uniformly to the restriction of $f$ to $[a,c]$ (respectively $[c,b]$).   Thus
+  \begin{align*}
+    \int_a^b f(t) \, dt &= \lim_{n \to \infty} \int_a^b f_n(t) \, dt = \lim_{n \to \infty} \int_a^c f_n(t) \, dt + \lim_{n \to \infty} \int_c^b f_n(t) \, dt \\
+    &= \int_a^c f(t) \, dt  + \int_c^b f(t) \, dt 
+  \end{align*}
+\end{proof}
+
 
 \begin{prop}\label{NormRiemannIntegralBanachSpace}Let $X$ be a
-  Banach space and let $f : [a,b] \to L(X,Y)$ be regulated then it
-  follows that 
-\begin{align*}
-\norm{\int_a^b f(t) \, dt} &\leq \int_a^b \norm{f(t)} \, dt
+  Banach space and let $f : [a,b] \to X$ be regulated then it
+  follows that $\norm{f} : [a,b] \to \reals$ is regulated and 
+\begin{align*} 
+\norm{\int_a^b f(t) \, dt} &\leq \int_a^b \norm{f(t)} \, dt  \leq (b - a) \norm{f}_\infty
 \end{align*}
 \end{prop}
 \begin{proof}
-TODO
+  First let $f$ be a step map with respect to the partition $P = \lbrace a_j \rbrace_{j=0}^n$ and with representation given by $w_1, \dotsc, w_n$.
+  Then for $1 \leq j \leq n$ and $a_{j-1} < x < a_j$ we have $f(t) = w_j$ hence $\norm{f(t)} = \norm{w_j}$.   If follows that $\norm{f}$ is a step map with respect
+  to $P$ and has representatives $\norm{w_1}, \dotsc, \norm{w_n}$.   Furthermore,  It is clear that $\norm{f}_\infty = \max_{1 \leq j \leq n} \norm{w_j}$.   
+  Thus we can compute
+  \begin{align*}
+    \norm{\int_a^b f(t) \, dt} &= \norm{\sum_{j=1}^n (a_j - a_{j-1}) w_j} \leq \sum_{j=1}^n (a_j - a_{j-1}) \norm{ w_j} \\
+    &= \int_a^b \norm{f(t)} \, dt  
+  \end{align*}
+  But also we have
+  \begin{align*}
+    \int_a^b \norm{f(t)} \, dt  &= \sum_{j=1}^n (a_j - a_{j-1}) \norm{ w_j} \leq \sum_{j=1}^n (a_j - a_{j-1}) \norm{f}_\infty = (b-a) \norm{f}_\infty
+  \end{align*}
+
+  Now suppose that $f$ is regulated and select step maps $f_n$ that converge uniformly to $f$.   By the proof of Propostion \ref{banach:ConvergenceOfNorms} we know that for fixed $a \leq t \leq b$,
+  \begin{align*}
+    \abs{\norm{f_n(t)} - \norm{f(t)}} \leq \norm{f_n(t) - f(t)}
+  \end{align*}
+  and thus by taking suprema of both sides we get
+  \begin{align*}
+    \lim_{n \to \infty} \norm{\norm{f_n} - \norm{f}}_\infty &= \lim_{n \to \infty} \sup_{a \leq t \leq b} \norm{\norm{f_n(t)} - \norm{f(t)}}_\infty\\
+    &\leq \lim_{n \to \infty} \sup_{a \leq t \leq b} \norm{f_n(t) - f(t)} = \lim_{n \to \infty}  \norm{f_n - f}_\infty = 0
+  \end{align*}
+  which shows that $\norm{f}$ is regulated.   We can also use this limit to compute the integral using Propostion \ref{banach:ConvergenceOfNorms} 
+  \begin{align*}
+    \norm{\int_a^b f(t) \, dt} &= \norm{\lim_{n \to \infty} \int_a^b f_n(t) \, dt} = \lim_{n \to \infty} \norm{\int_a^b f_n(t) \, dt} \\
+    &\leq \lim_{n \to \infty} \int_a^b \norm{ f_n(t)} \, dt = \int_a^b \norm{ f(t)} \, dt
+  \end{align*}
+  Also using the final equality in the reverse order and Propostion \ref{banach:ConvergenceOfNorms}  we get
+  \begin{align*}
+    \int_a^b \norm{ f(t)} \, dt &= \lim_{n \to \infty} \int_a^b \norm{ f_n(t)} \, dt \leq (b -a) \lim_{n \to \infty} \norm{f_n}_\infty =  (b -a) \norm{f}_\infty 
+  \end{align*}
 \end{proof}
 
 \begin{prop}\label{RiemannIntegralOfContinuousMaps}Let $X$ and $Y$ be
   Banach spaces and let $f : [a,b] \to L(X,Y)$ be regulated then it
-  follows that for every $x \in X$ we have
+  follows that for every $x \in X$ we have $f \cdot x$ is regulated and 
 \begin{align*}
 \int_a^b f(t) x \, dt &= \int_a^b f(t) \, dt \cdot x
 \end{align*}
 \end{prop}
 \begin{proof}
-TODO
+  Assume first that $f$ is a step map with respect to partition $P = \lbrace a_j \rbrace_{j=0}^n$ and has representation given by $L_1, \dotsc, L_n$.
+  Then it follows that for $1 \leq j \leq n$ and $a_{j-1} < t < a_j$, $f(t) x = L_j x$.   Thus $f \cdot x$ is a step map with respect to $P$ and has
+  representation $L_1 x, \dotsc, L_n x$.
+Therefore we can compute 
+  \begin{align*}
+    \int_a^b f(t) x \, dt &= \sum_{j=1}^n (a_j - a_{j-1}) L_j x = \left[ \sum_{j=1}^n (a_j - a_{j-1}) L_j \right] x = \int_a^b f(t) \, dt \cdot x
+  \end{align*}
+
+  Having shown the result for step maps we now suppose that $f$ is regulated and take step maps $f_n$ that
+  converge to $f$ uniformly.   Note that
+  \begin{align*}
+    \lim_{n \to \infty} \sup_{a \leq t \leq b} \norm{f(t)  x - f_n(t)  x} &\leq \norm{x}  \lim_{n \to \infty} \norm{f- f_n } _\infty = 0
+  \end{align*}
+  so $f_n \cdot x$ are step maps uniformly approximating $f \cdot x$.   This shows that $f \cdot x$ is regulated and moreover,
+  \begin{align*}
+    \int_a^b f(t) x \, dt = \lim_{n \to \infty} \int_a^b f_n(t) x \, dt = \lim_{n \to \infty} \int_a^b f_n(t) \, dt \cdot x = \int_a^b f(t) \, dt \cdot x 
+  \end{align*}
 \end{proof}
 
 \begin{defn}Let $X$ and $Y$ be Banach spaces then an \emph{unbounded
@@ -5517,12 +5851,28 @@ does it exist without that assumption?  What if one uses nets for
 convergence of simple functions instead of sequences?
 
 TODO: Preliminaries on norming subspaces.
+\begin{defn}Let $X$ be a Banach space with dual space $X^*$ and let $S \subset X$ be a subset.  A subset $F \subset X^*$ is
+  \emph{norming for $S$} if for every $x \in S$ we have
+  \begin{align*}
+    \norm{x} &= \sup_{\substack{
+                        x^* \in F \\
+                        \norm{x^*} \leq 1}} \abs{ \langle x^*, x \rangle}
+  \end{align*}
+A subset that is norming for $X$ is said to be \emph{norming}.  
+\end{defn}
+
+\begin{prop}Let $X$ be a Banach space with dual space $X^*$ and let $X_0 \subset X$ be a separable subspace.   If $F$ is a
+  norming subspace for $X_0$ then there exists a countable subset of unit vectors in $F$ which is norming for $X_0$.
+\end{prop}
+\begin{proof}
+  TODO:
+\end{proof}
 
 TODO:
 The Bochner integral is the analogue of a vector valued integral using
 general measure theory.  Though it can be developed in a bit more
 generality, we define it here for Banach space valued functions.  
-The first thing to do is to observe that the defintion of simple functions
+The first thing to do is to observe that the definition of simple functions
 extends trivially to this context.
 \begin{defn}Given a set $(\Omega, \mathcal{A})$, a Banach space $X$
   sets $A_1, \dotsc, A_n \subset \Omega$ and $v_1, \dotsc, v_n \in X$ a
@@ -5649,25 +5999,10 @@ If on the other hand $B u = 0$ then $0 = \frac{\norm{AB u}}{\norm{u}}  \leq \nor
 \begin{proof}
 For every $v \in V$,
 \begin{align*}
-0 &\leq \lim_{n \to \infty} \norm{Av - A_n v}  \leq \leq \lim_{n \to \infty} \norm{Av - A_n}  \norm{v} = 0
+0 &\leq \lim_{n \to \infty} \norm{Av - A_n v}  \leq  \lim_{n \to \infty} \norm{Av - A_n}  \norm{v} = 0
 \end{align*}
 \end{proof}
 
-
-\begin{prop}\label{banach:AbsoluteConvergenceOfSeriesImpliesConvergence}Let $X$ be a Banach space then if $\sum_{j=0}^\infty a_j$
-  converges absolutely then $\sum_{j=0}^\infty a_j$ converges in $X$.
-\end{prop}
-\begin{proof}
-By completeness of $X$ it suffices to show that $S_n = \sum_{j=0}^n
-a_j$ is a Cauchy sequence.  Let $\epsilon > 0$ be given and pick $n >
-0$ such that $\sum_{j=n}^\infty \norm{a_j} < \epsilon$.  Then for all
-$m \geq n$ we have
-\begin{align*}
-\norm{S_m - S_n} &\leq \norm{\sum_{j=n}^{m-1} a_j} \\
-&\leq \sum_{j=n}^{m-1}\norm{ a_j} \leq \sum_{j=n}^{infty}\norm{ a_j} < \epsilon
-\end{align*}
-and we are done.
-\end{proof}
 
 \begin{prop}\label{banach:InvertibleMapsOpen}Let $X$ be a Banach space.  The set of invertible maps in $L(X)$ is open, moreover
   for any invertible map $A \in L(X)$ and any $\norm{A-B} <
@@ -5761,7 +6096,9 @@ TODO: Example of nonlinear G\^{a}teaux derivative
 \begin{proof}
 This follows by a simple change of variable in the limit
 \begin{align*}
-df(x,cv) &= \lim_{t \to  0} \frac{f(x + t c v) - f(x)}{t} = \lim_{t \to  0} \frac{f(x + t v) - f(x)}{t/c} = c \lim_{t \to  0} \frac{f(x + t v) - f(x)}{t} = c df(x,v)
+  df(x,cv)
+  &= \lim_{t \to  0} \frac{f(x + t c v) - f(x)}{t} = \lim_{t \to  0} \frac{f(x + t v) - f(x)}{t/c} \\
+  &= c \lim_{t \to  0} \frac{f(x + t v) - f(x)}{t} = c df(x,v)
 \end{align*} 
 \end{proof}
 
@@ -5861,8 +6198,10 @@ D(g \circ f)(x) &= Dg(f(x)) \circ Df(x)
 \end{prop}
 \begin{proof}
 Let $\epsilon$ be given.  Let $\tilde{\delta} > 0$ be chosen so that
-$\norm{g(f(x) + h) - g(f(x)) - Dg(f(x)) h} < \frac{1}{2} \epsilon
-\norm{h}$ for all $\norm{h} < \tilde{\delta}$.  By continuity of $f$
+\begin{align*}
+  \norm{g(f(x) + h) - g(f(x)) - Dg(f(x)) h} < \frac{1}{2} \epsilon  \norm{h} \text{ for all $\norm{h} < \tilde{\delta}$}
+\end{align*}
+By continuity of $f$
 at $x$ we can choose $\delta_1>0$ such that $\norm{f(x+h) - f(x)} <
 \tilde{\delta}$ for all $\norm{h} < \delta_1$ and by differentiability
 we may choose $\delta_2>0$ such that $\norm{f(x+h) - f(x) - Df(x)h} <
@@ -5882,6 +6221,129 @@ for $\norm{h} < \delta$ we compute
   \norm{h} = \epsilon \norm{h}\\
 \end{align*}
 and we're done.
+\end{proof}
+
+As is usual, it is imperative to connect 
+integration with differentiation.  Since we are dealing with the
+Riemann integral we must use relatively strong hypotheses, however
+these results will suffice for our applications and the proofs are relatively
+simple.  We start with the Fundamental Theorem of Calculus.   We require a preliminary
+result.
+
+\begin{prop}[Mean Value Inequality]\label{banach:MeanValueInequality}Let
+  $X$ be a Banach space and suppose that $f : [a,b] \to X$ be continuous and suppose that
+  $f$ is differentiable on $(a,b)$.   If $\norm{f^\prime(t)} \leq M$ for all $a < t < b$ then
+  $\norm{f(b) - f(a)} \leq M (b - a)$.   
+\end{prop}
+\begin{proof}
+  Let $\epsilon > 0$ be given.   Define
+  \begin{align*}
+    S_\epsilon &= \lbrace t \in [a,b] \mid \norm{f(t) - f(a)} \leq (M+\epsilon) (t -a) + \epsilon \rbrace
+  \end{align*}
+  and note that $a \in S_\epsilon$ so the latter is non-empty.   Note also that $S_\epsilon$ is closed; if $t_n \in S_\epsilon$ and
+  $\lim_{n \to \infty} t_n = t$ then by continuity we have
+  \begin{align*}
+    \norm{f(t) - f(a)}  &= \lim_{n \to \infty} \norm{f(t_n) - f(a)} \le \lim_{n \to \infty} (M+\epsilon) (t_n -a) + \epsilon \\
+    &= (M+\epsilon) (t -a) + \epsilon
+  \end{align*}
+
+  \begin{clm}$sup S_\epsilon = b$.
+  \end{clm}
+  Let $c = sup S_\epsilon$ and suppose that $c < b$.   The we know that $f$ is differentiable at $c$ hence there is a
+  $\delta > 0$ such that $c + \delta < b$ and $\norm{f(c + h) - f(c) - h f^\prime(c)} \leq \epsilon h$ for all $0 < h < \delta$.
+
+  Therefore by the above and the triangle inequality 
+  \begin{align*}
+    \norm{f(c+h) - f(c)} &=  \norm{f(c+h) - f(c) -h f^\prime(c) + h f^\prime(c)} \leq \epsilon h +  \norm{f^\prime(c)} h \\
+    &\leq (M + \epsilon) h
+  \end{align*}
+  Now combine this inequality with the inequality we get from knowing that $c \in S_\epsilon$
+  \begin{align*}
+    \norm{f(c+h) - f(a)} &\leq \norm{f(c+h) - f(c)} + \norm{f(c) - f(a)} \leq  (M + \epsilon) h + (M+\epsilon) (c-a) + \epsilon \\
+    &=(M+\epsilon) (c + h -a) + \epsilon
+  \end{align*}
+  which shows that $c+h \in S_\epsilon$ for $0 < h < \delta$ which is a contradiction.
+
+  With the claim in hand, we know that $\norm{f(b) - f(a)} \leq (M+\epsilon) (b -a) + \epsilon$.   On the other hand $\epsilon > 0$ is arbitrary
+  so we can let $\epsilon \to 0$ and conclude that $\norm{f(b) - f(a)} \leq M (b -a)$.
+\end{proof}
+
+\begin{cor}\label{banach:DerivativeZeroRealDomain}Let
+  $X$ be a Banach space and suppose that $f : [a,b] \to X$ be continuous and suppose that
+  $f^\prime(t) = 0$ for all $a < t < b$ then $f$ is constant.
+\end{cor}
+\begin{proof}
+  Let $a \leq c < d \leq b$ be arbitrary and note that the hypotheses of Proposition \ref{banach:MeanValueInequality} hold for
+  the restriction $f : [c,d] \to X$ and the constant $M = 0$.   The conclusion of that result shows us that
+  $0 \geq \norm{f(d) - f(c)} \leq 0$ and the result is proven.
+\end{proof}
+
+\begin{thm}[Fundamental Theorem of Calculus]\label{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals}Let
+  $X$ be a Banach space and suppose that $f : [a,b] \to X$ is regulated and $f$ is continuous at $a \leq c \leq b$.
+  Define $F(s) = \int_a^s f(t) \, dt$ then $F$ is Frechet differentiable at $s = c$ and
+  \begin{align*}
+    DF(c) \cdot 1 = f(c)
+  \end{align*}
+If on the other hand, we suppose that $f : [a,b] \to X$ is continuously
+ differentiable then 
+\begin{align*}
+f(b) - f(a) &= \int_a^b Df(t) \cdot 1 \, dt
+\end{align*}
+\end{thm}
+\begin{proof}
+First we let $f(t)$ be a regulated function from $[a,b]$ to $X$ and
+consider the integral $F(s) = \int_a^s f(t) \, dt$.  Suppose that $f$ is
+continuous at $c \in [a,b]$ and let $\epsilon > 0$ be given.  By
+continuity we may find $\delta > 0$ such that $\abs{f(c+h) -
+  f(c)} < \epsilon$ for all $\abs{h} < \delta$.  Then if $0 < h < \delta$ we have by Proposition \ref{NormRiemannIntegralBanachSpace}
+\begin{align*}
+\abs{ \frac{F(c + h) - F(c)}{h} - f(c)} &= \abs{\frac{1}{h}
+                                          \int_c^{h+c} f(t)\, dt  -
+                                          \frac{1}{h} \int_c^{h+c}
+                                          f(c) \, dt} \\
+&= \abs{\frac{1}{h}  \int_c^{h+c} (f(t) - f(c)) \, dt} \\
+&\leq \frac{1}{h} h \sup_{c \leq t \leq c+h} \abs{f(t) -
+  f(c)} 
+=\sup_{c \leq t \leq c+h} \abs{f(t) -  f(c)} < \epsilon
+\end{align*}
+
+Now suppose that $-\delta < h < 0$ we compute similarly
+\begin{align*}
+\abs{ \frac{F(c + h) - F(c)}{h} - f(c)} &= \abs{\frac{1}{-h}
+                                          \int_{h+c}^c f(t)\, dt  -
+                                          \frac{1}{-h} \int_{h+c}^c
+                                          f(c) \, dt} \\
+&= \abs{\frac{1}{-h}  \int_{h+c}^c (f(t) - f(c)) \, dt} \\
+&\leq \frac{1}{-h} (-h) \sup_{c+h \leq t \leq c} \abs{f(t) -
+  f(c)} 
+=\sup_{c+h \leq t \leq c} \abs{f(t) -  f(c)} < \epsilon
+\end{align*} 
+This shows us that $F^\prime(c) = \lim_{h \to 0} \abs{ \frac{F(c + h) - F(c)}{h}} = f(c)$.
+
+To see the second part of the theorem,  suppose that $f$ is differentiable and
+use the first part of the theorem to conclude that
+\begin{align*}
+  \left [ \int_a^s Df(t) \cdot 1 \, dt - f(s) \right ]^\prime &= Df(s) \cdot 1 - Df(s) \cdot 1 = 0
+\end{align*}
+and therefore by Corollary \ref{banach:DerivativeZeroRealDomain} we know that $ \int_a^s Df(t) \cdot 1 \, dt - f(s)$ is a constant.
+Evaluating at $s = a$ and using Propostion \ref{banach:RiemannIntegralProperties}, we see that the constant is $-f(a)$, so $\int_a^s Df(t) \cdot 1 \, dt = f(s) - f(a)$ and the result follows.
+\end{proof}
+
+\begin{thm}[Change of Variables]\label{banach:RiemannIntegralChangeOfVariables}Let
+ $X$ be a Banach space, $f : [a,b] \to X$ be continuous and $\alpha : [\tilde{a}, \tilde{b}] \to [a,b]$ be continuously 
+differentiable with $\alpha(\tilde{a}) = a$ and $\alpha(\tilde{b}) = b$ then
+\begin{align*}
+\int_a^b f(t) \, dt &= \int_{\tilde{a}}^{\tilde{b}} f(\alpha(s)) \alpha^\prime(s) \, ds
+\end{align*}
+\end{thm}
+\begin{proof}
+  By the Fundamental Theorem of Calculus \ref{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals} we know that $F(s) =  \int_a^s f(t) \, dt$ is differentiable and
+  $F^\prime(s) = f(s)$.   By the Chain Rule \ref{ChainRuleBanachSpaces} we have $(F \circ \alpha)^\prime(t) = f(\alpha(t)) \alpha^\prime(t)$ and thus by the Fundamental Theorem of Calculus \ref{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals}  and Proposition \ref{banach:RiemannIntegralProperties}
+  \begin{align*}
+    \int_{\tilde{a}}^{\tilde{b}} f(\alpha(t)) \alpha^\prime(t) \, dt &= (F \circ \alpha)(\tilde{b}) -(F \circ \alpha)(\tilde{a}) \\
+                                                                     &= \int_a^{\alpha(\tilde{b})} f(t) \, dt - \int_a^{\alpha(\tilde{a})} f(t) \, dt \\
+                                                                     &= \int_a^{\alpha(\tilde{b})} f(t) \, dt - 0 = \int_a^b f(t) \, dt
+  \end{align*}
 \end{proof}
 
 \subsection{Higher Order Derivatives and Taylor's Theorem}
@@ -5985,7 +6447,7 @@ Now to see that $\phi$ is in fact $C^{\infty}$, we do an induction.
 TODO: Finish
 \end{proof}
 
-With the defintion of higher derivatives available we are now able to
+With the definition of higher derivatives available we are now able to
 extend the Mean Value Theorem to Taylor's Theorem in Banach spaces.  
 \begin{thm}[Taylor's Theorem]\label{TaylorsTheoremBanachSpaces}Let $X$
   and $Y$ be Banach spaces and let $U \subset X$ be open and of class
@@ -6037,8 +6499,6 @@ f(x+y) &= g(1) = g(0) + g^\prime(0) + \dotsm + \frac{g^{(p-1)} (0)}{(p-1)!} +
 \end{align*}
 \end{proof}
 
-TODO: Analytic functional calculus and beyond.
-
 Frechet derivatives of functions that map into product spaces are easily computed.
 \begin{prop}\label{FrechetDerivativeProductSpaces}Let $f : U \to Y \times Z$ be a function then $f$ is Frechet differentiable at $x \in U$ if and only if the coordinate functions $f_1 : U \to Y$ and
 $f_2 : U \to Z$ are Frechet differentiable at $x \in U$ and in this case $Df(x)v = (Df_1(x)v, Df_2(x)v)$.
@@ -6048,7 +6508,8 @@ Let $\pi_1$ and $\pi_2$ be the projections from $Y \times Z$ to $Y$ and $Z$ resp
 
 Suppose that $D f_1(x)$ and $D f_2(x)$ both exist.  Then for any $\epsilon>0$ there exists $\delta>0$ such that $\norm{f_i(x+h) - f_i(x) - Df_i(x) h} < \epsilon \norm{h}/\sqrt{2}$ for any $\norm{h} < \delta$ and $i=1,2$.   The derivative of $f$ follows from 
 \begin{align*}
-\norm{f(x+h) - f(x) - (Df_1(x) h, Df_2(x) h)} &\leq \left(\norm{f_1(x+h) - f_1(x) - Df_1(x) h}^2 +  \norm{f_2(x+h) - f_2(x) - Df_2(x) h}^2 \right)^{1/2} \\
+&\norm{f(x+h) - f(x) - (Df_1(x) h, Df_2(x) h)} \\
+&\leq \left(\norm{f_1(x+h) - f_1(x) - Df_1(x) h}^2 +  \norm{f_2(x+h) - f_2(x) - Df_2(x) h}^2 \right)^{1/2} \\
 &\leq \epsilon \norm{h}^{-1}
 \end{align*}
 \end{proof}
@@ -6077,21 +6538,22 @@ Suppose that continuous partial derivatives exist, let $v=(v_1, \dotsc, v_n) \in
 For each $i=0, \dotsc, n$ let $h^i$ be obtained by $h$ by setting the first $i$ coordinates to $0$; in particular $h^0=h$ and $h^n=0$ and for $i=1, \dotsc, n$ $h^{i-1}-h^{i}$ is non-zero only in the $i^{th}$ coordinate and that coordinate is $h_i$.
 Writing a telescoping sum and using the Mean Value Theorem \ref{MeanValueTheoremBanachSpaces}
 \begin{align*}
-f(v + h) - f(v) &= \sum_{i=1}^{n} (f(v + h^{i-1}) - f(v+h^{i})) = \sum_{i=0}^{n-1} \int_0^1 D_i f(v+h^i + t(h^{i-1}-h^i)) h_i \, dt \\
-&=\sum_{i=0}^{n-1} \int_0^1 D_i f (v) h_i \, dt + \int_0^1 \sum_{i=0}^{n-1} \int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt \\
-&=\sum_{i=0}^{n-1} D_i f (v) h_i + \int_0^1 \sum_{i=0}^{n-1} \int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt \\
+  f(v + h) - f(v) &= \sum_{i=1}^{n} (f(v + h^{i-1}) - f(v+h^{i})) \\
+                  &= \sum_{i=0}^{n-1} \int_0^1 D_i f(v+h^i + t(h^{i-1}-h^i)) h_i \, dt \\
+                  &=\sum_{i=0}^{n-1} \int_0^1 D_i f (v) h_i \, dt + \sum_{i=0}^{n-1} \int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt \\
+                  &=\sum_{i=0}^{n-1} D_i f (v) h_i + \sum_{i=0}^{n-1} \int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt \\
 \end{align*}
-It suffices to show that each term $\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt$ is $o(h)$.  To see this recall $\norm{h_i} \leq \norm{h_1} \vee \dotsb \norm{v_n} = \norm{v}$ and thus we have the simple bound
+It suffices to show that each term $\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt$ is $o(h)$.  To see this recall $\norm{h_i} \leq \norm{h_1} \vee \dotsb \vee \norm{h_n} = \norm{h}$ and thus we have the simple bound
 \begin{align*}
-&\frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h} \\
-&\leq \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h_i} \\
-&\leq \frac{\int_0^1 \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i }\, dt}{h_i} \\
-&\leq \frac{\norm{h_i} \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }}{h_i} \\
+&\frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{\norm{h}} \\
+&\leq \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{\norm{h_i}} \\
+&\leq \frac{\int_0^1 \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i }\, dt}{\norm{h_i}} \\
+&\leq \frac{\norm{h_i} \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }}{\norm{h_i}} \\
 &=  \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }\\
 \end{align*}
 Since $D_i f$ is continuous at $v$, for every $\epsilon > 0$ we may find a $\delta > 0$ such that $\norm{D_i f(v + u) - D_i f(v)} < \epsilon$ for every $\norm{u} < \delta$.  Thus if $\norm{h} < \delta$ then $\norm{h^i + t(h^{i-1}-h^i)} = \abs{t} \norm{h_i} \leq \norm{h} < \delta$ and therefore $\sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }\leq \epsilon$.  Thus 
 \begin{align*}
-&\lim_{h \to 0} \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{h} \\
+&\lim_{h \to 0} \frac{\norm {\int_0^1 (D_i f(v+h^i + t(h^{i-1}-h^i)) h_i - D_i f (v) h_i )\, dt}}{\norm{h}} \\
 &\leq \lim_{h \to 0} \sup_{0 \leq t \leq 1} \norm { D_i f(v+h^i + t(h^{i-1}-h^i)) - D_i f (v) }= 0
 \end{align*}
 
@@ -6101,24 +6563,6 @@ To see the other direction suppose that $Df$ exists and is continuous on $U_1 \t
 &= \norm{f(v + h_i) - f(v) - Df(v) h_i} \leq \norm{h_i} \epsilon = \norm{h} \epsilon
 \end{align*}
 which shows that $D_i f(v)$ exists and $D_i f(v) h = D_i f(v) h_i$.  Continuity of $D_i f$ follows from the continuity of $Df$ and the continuity 
-\end{proof}
-
-\subsection{Complex Analysis in Banach Spaces}
-
-TODO: Show how just about all of elementary complex analysis can be extended functions $f : U \subset \complexes \to V$ with $X$ a complex Banach space.
-
-\begin{thm}[Liouville's Theorem]\label{banach:LiouvillesTheorem}Let $X$ be a complex Banach space and $f : \complexes \to V$ be a bounded entire function then $f$ is constant.
-\end{thm}
-\begin{proof}
-Since $f$ is entire we may write $f(z) = \sum_{n=0}^\infty v_n z^n$ where by Cauchy's integral formula (TODO) we have for every $0 < r < \infty$,
-\begin{align*}
-v_n &= \frac{1}{2\pi i} \oint_{\abs{z} = r} \frac{f(z)}{z^{n+1}} \, dz
-\end{align*}
-Suppose that $f$ is bounded so that $\norm{f(z)} \leq M$ for all $z \in \complexes$ then
-\begin{align*}
-\norm{v_n} &\leq \frac{1}{2\pi} \oint_{\abs{z} = r} \frac{\norm{f(z)}}{\abs{z}^{n+1}} \, d\abs{z} \leq \frac{1}{2\pi} \oint_{\abs{z} = r} \frac{M}{r^{n+1}} \, d\abs{z} \frac{M}{2\pi r^{n+1}}  2 \pi r = \frac{M}{r^n}
-\end{align*}
-Since $0 < r < \infty$ was arbitrary we let $r \to \infty$ and observe that $v_n = 0$ for every $n > 0$.
 \end{proof}
 
 \subsection{Inverse and Implicit Function Theorems}
@@ -6362,8 +6806,8 @@ d(g^n(x), g^m(x)) \leq K^n d(x, g^{m-n}(x))
 In particular, we have that $d(g^n(x), g^{n+1}(x)) \leq K^n d(x,g(x))$
 and therefore by the triangle inequality 
 \begin{align*}
-d(x, g^n(x)) &\leq d(x, g(x)) + \dotsm + d(g^{n-1}(x), g^n(x)) \leq (1
-               + \dotsm + K^{n-1}) d(x,g(x)) < \frac{d(x,g(x))}{1-K}
+d(x, g^n(x)) &\leq d(x, g(x)) + \dotsm + d(g^{n-1}(x), g^n(x)) \\
+&\leq (1 + \dotsm + K^{n-1}) d(x,g(x)) < \frac{d(x,g(x))}{1-K}
 \end{align*}
 Putting these two bounds together we see that $d(g^n(x), g^m(x)) \leq  \frac{K^n
   d(x,g(x))}{1-K}$ hence $g^n(x)$ is Cauchy.  
@@ -6389,7 +6833,8 @@ g_y(x) &= Df(x_0)^{-1} (Df(x_0) \cdot x + f(x) - y) = x + Df(x_0)^{-1} f (x) -  
 \end{align*}
 then a simple calculation shows that $g_y(x) = x$ if and only if $f(x) = y$ (note that the use of $Df(x_0)^{-1}$ in this way is equivalent to redefining $f$ as $Df(x_0)^{-1} \circ f$ and thereby reducing to the case in which $Df(x_0) = \IdentityMatrix$).  As a quick check that we are on the right track now note that
 \begin{align*}
-g_{y_0}(x_0) = x_0 + Df(x_0)^{-1} f (x_0) -  Df(x_0)^{-1} y_0 = x_0 + Df(x_0)^{-1} y_0 -  Df(x_0)^{-1} y_0 = x_0
+g_{y_0}(x_0) &= x_0 + Df(x_0)^{-1} f (x_0) -  Df(x_0)^{-1} y_0 \\
+&= x_0 + Df(x_0)^{-1} y_0 -  Df(x_0)^{-1} y_0 = x_0
 \end{align*}
 as we should expect.
 
@@ -6401,12 +6846,13 @@ Define $g_y$ as above and we will show that for $y$ in a neighborhood of $y_0$ t
 \end{align*}
 From this we compute for $y \in \overline{B}(y_0, r/2 \norm{Df(x_0)^{-1}})$ and $x \in \overline{B}(x_0, r)$
 \begin{align*}
-\norm{g_y(x) - x_0} &\leq \norm{g_y(x) - g_{y_0}(x)} + \norm{g_{y_0}(x) - g_{y_0}(x_0)}
+\norm{g_y(x) - x_0} &\leq \norm{g_y(x) - g_{y_0}(x)} + \norm{g_{y_0}(x) - g_{y_0}(x_0)} \\
 &= \norm{Df(x_0)^{-1}} \norm{y - y_0} + \frac{1}{2} \norm{x - x_0} \leq r
 \end{align*}
 which shows that $g_y$ is a mapping from $\overline{B}(x_0, r)$ to itself.  To see that $g_y$ is a contraction mapping let $x_1, x_2 \in \overline{B}(x_0, r)$ and note that for all $0 \leq t \leq 1$, 
 \begin{align*}
-\norm{x_1 + t (x_2 - x_1) - x_0} &= \norm{(1-t) x_1 + t x_2 - (1-t) x_0 - t x_0}  \leq (1-t) \norm{x_1-x_0} + t \norm{x_2 - x_0} \leq r
+\norm{x_1 + t (x_2 - x_1) - x_0} &= \norm{(1-t) x_1 + t x_2 - (1-t) x_0 - t x_0}  \\
+&\leq (1-t) \norm{x_1-x_0} + t \norm{x_2 - x_0} \leq r
 \end{align*} 
 so another application of the Mean Value Theorem \ref{MeanValueTheoremBanachSpaces}, Proposition \ref{NormRiemannIntegralBanachSpace} and the bounds on $Df(x)$ on $\overline{B}(x_0, r)$ yields
 \begin{align*}
@@ -6486,6 +6932,1126 @@ $\psi(\phi(x,z)) = (x,z)$ on $W$.  It follows that $\phi(x, z) = (x, \phi_2(x,z)
 $(x,0) = \psi(\phi(x,0)) = (x, f(x, g(x)))$; so $f(x, g(x)) = 0$ as required.  Note that $g(x)$ is the unique point in $\phi(W) \cap \lbrace x \rbrace \times Y$ satisfying $f(x, g(x)) = 0$ for $ x \in V$.   This follows since $\psi$ is injective on $\phi(W)$ and therefore if $f(x, a) = f(x, b)$ then $\psi(x,a) = (x, f(x,a)) = (x, f(x,b)) = \psi(x, b)$ which imples $a=b$.
 \end{proof}
 
+\subsection{Power Series in Banach Spaces}
+
+\begin{defn}Let $X$ be a normed vector space and let $a_n$ be a
+  sequence in $X$ then the \emph{series} $\sum_{j=0}^{\infty} a_j$ is
+  said to converge in $X$ if the limit of the \emph{sequence of partial sums}
+  $\lim_{n \to \infty} \sum_{j=0}^n a_j$ exists in $X$.   The
+  series is said to converge absolutely if $\lim_{n \to \infty}
+  \sum_{j=0}^n \norm{a_j}$ exists in $\reals$.
+\end{defn}
+
+\begin{prop}Let $\sum_{j=0}^\infty a_j$ and  $\sum_{j=0}^\infty b_j$
+  be convergent series in a normed vector space $X$ then
+  \begin{itemize}
+    \item[(i)] $\sum_{j=0}^\infty \left(a_j + b_j \right)$ converges
+      and equals $\sum_{j=0}^\infty a_j + \sum_{j=0}^\infty b_j$.
+    \item[(ii)] For every constant $c$, $\sum_{j=0}^\infty ca_j$ converges
+      and equals $c\sum_{j=0}^\infty a_j $.
+  \end{itemize}
+\end{prop}
+\begin{proof}
+Let $S_n = \sum_{j=0}^n a_j$ and $T_n = \sum_{j=0}^n b_j$ be the
+sequences of partial sums which converge by assumption.   Then note
+\begin{align*}
+  \lim_{n \to \infty} \sum_{j=0}^n \left( a_j + b_j \right)
+  &= \lim_{n \to \infty} \sum_{j=0}^n a_j + \lim_{n \to \infty}  \sum_{j=0}^n b_j 
+  = \sum_{j=0}^\infty a_j + \sum_{j=0}^\infty b_j
+\end{align*}
+Similarly let $c$ be a constant then 
+\begin{align*}
+  \lim_{n \to \infty} \sum_{j=0}^n c a_j
+  &= c \lim_{n \to \infty} \sum_{j=0}^n a_j
+  = c \sum_{j=0}^\infty a_j
+\end{align*}
+\end{proof}
+\begin{prop}\label{banach:AbsoluteConvergenceOfSeriesImpliesConvergence}Let $X$ be a Banach space then if $\sum_{j=0}^\infty a_j$
+  converges absolutely then $\sum_{j=0}^\infty a_j$ converges in $X$.
+  Moreover, $\norm{\sum_{j=0}^\infty a_j} \leq \sum_{j=0}^\infty \norm{a_j}$.
+\end{prop}
+\begin{proof}
+To see convergence, by completeness of $X$ it suffices to show that $S_n = \sum_{j=0}^n
+a_j$ is a Cauchy sequence.  Let $\epsilon > 0$ be given and pick $n >
+0$ such that $\sum_{j=n}^\infty \norm{a_j} < \epsilon$.  Then for all
+$m \geq n$ we have
+\begin{align*}
+  \norm{S_m - S_n} 
+  &\leq \norm{\sum_{j=n}^{m-1} a_j} 
+    \leq \sum_{j=n}^{m-1}\norm{ a_j} 
+    \leq \sum_{j=n}^{\infty}\norm{ a_j} 
+    < \epsilon
+\end{align*}
+and we are done.
+
+To get the norm bound let $\epsilon > 0$ be given then pick $n \geq 0$
+such that $\norm{\sum_{j=n+1}^\infty a_j} < \epsilon$ then
+\begin{align*}
+  \norm{\sum_{j=0}^\infty a_j} &\leq \norm{\sum_{j=0}^n a_j} +
+                                 \norm{\sum_{j=n+1}^\infty a_j}
+                                 \leq \sum_{j=0}^n \norm{ a_j} +
+                                 \epsilon < \sum_{j=0}^\infty \norm{ a_j} +
+                                 \epsilon 
+\end{align*}
+Since $\epsilon>0$ was arbitrary the bound follows.
+\end{proof}
+\begin{prop}\label{banach:ConvergenceOfSeriesImpliesTermsConvergeToZero}Let $X$ be a Banach space then if $\sum_{j=0}^\infty a_j$
+  converges then $lim_{n \to \infty} a_n = 0$  in $X$.
+\end{prop}
+\begin{proof}
+Since the sequence of partial sums $S_n = \sum_{j=0}^n a_j$ converges and $X$ is complete we
+know the sequence of partial sums is Cauchy.   Let $\epsilon > 0$ be
+given and pick $N>0$ such that for all $m > n \geq N$,
+\begin{align*}
+  \norm{S_m - S_n} = \norm{\sum_{j=n}^{m-1} a_j} < \epsilon
+\end{align*}
+In particular picking $m = n+1$ we have $\norm{a_n} < \epsilon$ for
+all $n > N$ and we are done.
+\end{proof}
+
+Now we consider sequences and series of Banach space valued functions.
+\begin{defn}Let $S$ be a set and $X$ a Banach space.   Let $f$ be a
+  function $f : S \to X$  and define $\norm{f}_\infty = \sup_{z \in S}
+  \norm{f(z)}$.   We say $f$ is \emph{bounded} if $\norm{f}_\infty <
+  \infty$.  We let $\sboundedfunctions{S}{X}$ be the set of bounded
+  functions from $S$ to $X$.
+\end{defn}
+  
+\begin{prop}Given a set $S$ and a Banach space $X$,
+  $\sboundedfunctions{S}{X}$ is a Banach space with norm $\norm{\cdot}_\infty$.
+\end{prop}
+\begin{proof}
+We show that space of bounded functions is a vector space with
+addition and scalar multiplication defined pointwise at the same time
+we show that $\norm{ \cdot }_\infty$ is a norm.   First note that
+$f(z) = 0$ defines a zero element and it clearly has zero norm.  Let
+$f,g: S \to X$ be bounded then for $z \in S$,
+\begin{align*}
+  \norm{(f+g)(z)} &=  \norm{f(z)+g(z)} \leq \norm{f(z)} +\norm{g(z)}
+                    \leq \norm{f}_\infty + \norm{g}_\infty
+\end{align*}
+Taking supremum over $z \in S$ shows $\norm{f+g}_\infty \leq
+\norm{f}_\infty + \norm{g}_\infty < \infty$.  Note that this also
+gives us the triangle inequality for the norm.
+Similarly let $c$ be a scalar then for $z \in S$,
+\begin{align*}
+  \norm{cf(z)} &= \abs{c} \norm{f(z)} \leq \abs{c} \norm{f}_\infty
+\end{align*}
+Again take the supremum over $z \in S$ to get $\norm{cf}_\infty \leq
+\abs{c}\norm{f}_\infty < \infty$.   In fact assuming $\abs{c} > 0$ and
+given $\epsilon > 0$ we
+can find $z \in S$ such that $\norm{f(z)} > \norm{f}_\infty -
+\epsilon/\abs{c}$.   Then
+\begin{align*}
+  \norm{cf}_\infty &\geq \norm{cf(z)} = \abs{c}\norm{f(z)} >
+                     \abs{c}\norm{f}_\infty - \epsilon
+\end{align*}
+so we have $\abs{c}\norm{f}_\infty - \epsilon < \norm{cf}_\infty \leq \abs{c}\norm{f}_\infty$
+for arbitrary $\epsilon>0$ so $\norm{cf}_\infty =
+\abs{c}\norm{f}_\infty$.
+
+It remains to show completeness.   Let $f_n$ be a Cauchy sequence of
+functions $S \to X$.   Let $\epsilon > 0$ be given and pick $N \geq 0$
+such that $\norm{f_n - f_m}_\infty < \epsilon$ for every $n, m \geq
+N$.  For every $z \in S$, $n,m\geq N$,
+\begin{align*}
+  \norm{f_n(z) - f_m(z)} &= \norm{(f_n-f_m)(z)} \leq \norm{f_n- f_m}_\infty < \epsilon
+\end{align*}
+so each $f_n(z)$ is a Cauchy sequence.   Since $\field$ is complete we
+define $f : S \to X$ by $f(z) = \lim_{n \to \infty} f(z)$.   Let $z
+\in S$ then pick $m \geq N \geq 0$ (depending on $z$) such that $\norm{f(z) -
+  f_m(z)} < \epsilon$.
+The for all $n \geq N$ we have
+\begin{align*}
+  \norm{f(z) - f_n(z)} &= \norm{f(z) - f_m(z) + f_m(z) - f_n(z)} \\
+                       &\leq \norm{f(z) - f_m(z)} + \norm{f_m(z) - f_n(z)}\\
+                       &\leq \norm{f(z) - f_m(z)} + \norm{f_m - f_n}_\infty \\
+                       &\leq 2\epsilon
+\end{align*}
+Take supremum over $z \in S$ to get $\norm{f - f_n}_\infty \leq 2
+\epsilon$ for all $n \geq N$ (reiterating that $N$ is independent of
+$z$).  This shows that $f_n$ converges to $f$.
+\end{proof}
+
+The classical Weierstrass M test applies in this generalized context.
+\begin{thm}\label{banach:WeierstrassMTest}Let $S$ be a set, $X$ be a
+  Banach space and $f_n$ be a sequence in $\sboundedfunctions{S}{X}$.   Suppose there exists a
+  sequence of non-negative real numbers $M_n$ such that
+  \begin{itemize}
+  \item[(i)] $\norm{f_n}_\infty \leq M_n$ for all $n$
+   \item[(ii)] $\sum_{j=0}^\infty M_j < \infty$
+   \end{itemize}
+then $\sum_{j=0}^\infty f_j$ converges absolutely in $\sboundedfunctions{S}{X}$.
+\end{thm}
+\begin{proof}
+Let $\epsilon>0$.   Since $\sum_{j=0}^\infty M_j$ converges we know
+the sequence of partial sums $\sum_{j=0}^n M_j$ is Cauchy.   Therefore
+there exists $N \geq 0$ such that for all $n \geq m \geq N$, we have
+$\sum_{j=m+1}^n M_j < \epsilon$.
+Now it follows that using non-negativity $\norm{\cdot}_\infty$,
+\begin{align*}
+  \abs{\sum_{j=0}^n \norm{f_j}_\infty - \sum_{j=0}^m
+  \norm{f_j}_\infty} &= \abs{\sum_{j=m+1}^n \norm{f_j}_\infty} \\
+  &\leq \sum_{j=m+1}^n \norm{f_j}_\infty \leq  \sum_{j=m+1}^n M_j
+    \leq \epsilon
+\end{align*}
+which shows that the sequence $f_n$ is Cauchy.   The result follows
+from the completeness of the space of bounded functions $S \to X$.
+\end{proof}
+
+\begin{defn}Let $z$ be a symbol and $X$ be a Banach space, then an
+  element of $X[[z]]$ is said to be a \emph{formal power series} with
+  values in $X$.   Such elements $f(z)$ are generally written $f(z) =
+  \sum_{j=0}^\infty a_j z^j$.  The least upper bound of the set of
+  $0 \leq r < \infty$ such that  $\sum_{j=0}^\infty \norm{a_j} r^j$
+        converges is called the \emph{radius of convergence} of the formal power series.
+\end{defn}
+Note that $\sum_{j=0}^\infty \norm{a_j} 0^j$ trivially converges to
+$0$ so the radius convergence is well defined and lives in $[0,
+\infty]$.   Note also that if $X$ is a Banach space on $\field$ and
+$S$ is a bounded subset of $\field$ then each term $a_n z_n$ is a
+bounded function on $S$ and so we can consider the question of
+convergence of the series as an element of $\sboundedfunctions{S}{X}$.
+
+We need a classical result of Abel adapted to the Banach space
+context.
+\begin{lem}\label{banach:AbelLemma}Let $X$ be a Banach space, $a_n$ be
+  a sequence in $X$, $r_0 \geq 0$ and suppose there is a constant $M
+  \geq 0$ such that $\norm{a_n} r_0^n \leq M$ for all $n \geq 0$.
+  Then for all $0 < r < r_0$, $\sum_{j=0}^\infty a_j z^j$ converges
+  uniformly and absolutely on the disk $D_r = \abs{z} \leq r$
+  (i.e. converges absolutely in $\sboundedfunctions{D_r}{X}$).
+\end{lem}
+\begin{proof}
+  We work in the Banach space $\sboundedfunctions{D_r}{X}$ of bounded functions from $D_r \to X$ with the
+  supremum norm.  Being completely pedantic, define $f_n : D_r \to X$
+  by $f_n(z) = a_n z^n$.  Suppose $\abs{z} \in D_r$ then
+  \begin{align*}
+    \norm{f_n(z)} &= \norm{a_n z^n} \leq \norm{a_n} r^n \leq M \left(\frac{r}{r_0}\right)^n
+  \end{align*}
+ Define $M_n = M \left(\frac{r}{r_0}\right)^n$ and take the supremum
+ over $z \in D_r$ to conclude $\norm{f_n}_\infty \leq M_n$.   Since $r
+ < r_0$ it is also clear that $\sum_{j=0}^\infty M_j$ converges so we
+ can apply the Weierstrass M Test (Theorem \ref{banach:WeierstrassMTest}) and
+   the result follows.
+ \end{proof}
+
+\begin{prop} \label{banach:PowerSeriesConvergence}Let $X$ be a Banach space and let $f(z)$ be a formal
+   power series with radius of convergence $\rho$.   Then
+   \begin{itemize}
+     \item[(i)] For all $r < \rho$, $f(z)$ converges absolutely in
+       $\sboundedfunctions{D_r}{X}$
+     \item[(ii)] For all $\abs{z} < \rho$, the series $f(z)$ converges pointwise
+       absolutely in $X$.
+     \item[(iii)] For all $\abs{z} > \rho$, the series $f(z)$ diverges pointwise
+       in $X$.
+   \end{itemize}
+\end{prop}
+\begin{proof}
+Let $f(z) = \sum_{j=0}^\infty a_j z^j$ and suppose we are given $0 < r <
+\rho$, pick $r < r_0 < \rho$. Note that
+$\sum{j=0}^\infty \norm{a_n} r_0^n$ converges by definition of the
+radius of convergence and we conclude that there is $M>0$ such that
+$\norm{a_n}r_0^n < M$ for all $n \geq 0$.  Now apply Abel's Lemma
+(Lemma \ref{banach:AbelLemma}) to conclude that $\sum_{j=0}^\infty
+a_j z^j$ converges absolutely in $\sboundedfunctions{D_r}{X}$.
+Absolute pointwise convergence on $\abs{z} < \rho$ follows by noting
+that we have absolutely convergence on $D_{\abs{z}}$ and $z \in
+D_{\abs{z}}$.
+
+\begin{clm}The sequence $\norm{a_n z^n}$  is unbounded for any $\abs{z} > \rho$.
+\end{clm}
+Suppose there exists $M > 0$
+such that $\norm{a_n z^n} = \norm{a_n} \abs{z}^n < M$ for all $n \geq
+0$.   Then pick $\rho < r_0 < \abs{z}$ and note that $\norm{a_n}
+r_0^n < \norm{a_n} \abs{z}^n < M$ for all $n\geq 0$ and therefore by
+Abel's Lemma we have $\sum_{j=0}^\infty a_j z^j$ converges absolutely
+in $\sboundedfunctions{D_r}{X}$ for $\rho < r < r_0 < \abs{z}$, in
+particular  $\sum_{j=0}^\infty a_j r^j$ converges absolutely which 
+contradicts the definition of $\rho$.
+
+The result follows from the claim since the terms of a convergent series must
+converge to 0 (Proposition \ref{banach:ConvergenceOfSeriesImpliesTermsConvergeToZero}).
+\end{proof}
+
+\begin{prop}\label{banach:DifferentiationOfPowerSeries}Let $X$ be a
+  Banach space over $\field$ and let $a_n$ be a sequence in $X$ with
+  associated series $S(z) = \sum_{n=0}^\infty a_n z^n$, then the
+  \emph{derived series} of $S$ is the series $S^\prime(z) =
+  \sum_{n=1}^\infty n a_n z^{n-1}$.   The radius of convergence
+  $\rho^\prime$ of
+  $S^\prime$ is equal to the radius of convergence $\rho$ of $S$.   If
+  $\rho > 0$ then for all $\abs{z} < \rho$,
+  \begin{align*}
+    S^ \prime(z) &= \lim_{h \to 0} \frac{S(z+h) - S(h)}{h}
+  \end{align*}
+\end{prop}
+\begin{proof}
+  First we show $\rho^\prime \leq \rho$.   This is trivial if
+  $\rho^\prime = 0$ so we may pick $0 < r < \rho^\prime$, then
+  $\sum_{n=1}^\infty n \norm{a_n} r^{n-1} < \infty$.   But then
+  \begin{align*}
+    \sum_{n=0}^\infty \norm{a_n} r^n
+    &= \norm{a_0} + r\sum_{n=1}^\infty \norm{a_n} r^{n-1} \\
+    &\leq \norm{a_0} + r\sum_{n=1}^\infty n\norm{a_n} r^{n-1} < \infty
+  \end{align*}
+  which shows that $\rho \geq r$ for all $0 < r < \rho^\prime$ which
+  shows $\rho^\prime \leq \rho$.
+
+  To see that $\rho\leq \rho^\prime$, again note that we may assume
+  $\rho > 0$ and pick $0 < r < \rho$.   Pick $r < \tilde{r} < \rho$
+  and then we know $\sum{n=0}^\infty \norm{a_n} \tilde{r}^n$ converges
+  hence there exists $M > 0$ such that $\norm{a_n} \tilde{r}^n \leq M$
+  for all $n \in \naturals$.   Thus we may write
+  \begin{align*}
+    \sum_{n=1}^\infty n \norm{a_n} r^{n-1}
+    &= \frac{1}{\tilde{r}}
+                                             \sum_{n=1}^\infty n
+                                             \norm{a_n} \tilde{r}^n
+                                             \left(\frac{r}{\tilde{r}}\right)^{n-1} \\
+    &\leq \frac{M}{\tilde{r}}
+                                             \sum_{n=1}^\infty n
+      \left(\frac{r}{\tilde{r}}\right)^{n-1} < \infty
+  \end{align*}
+  (e.g by the Comparison Test).   Thus $\rho^\prime \geq r$ and since
+  $0 < r < \rho$ is arbitrary we have $\rho^\prime \geq \rho$.
+
+Now pick $\abs{z} < \rho$ and let $r$ be such that $\abs{z} < r <
+\rho$.  Now for any $h$ with $\abs{h} < r - \abs{z}$ we have
+$\abs{z+h} < r$ and therefore $S(z+h)$ is defined.   We need a simple
+algebraic identity.
+
+\begin{clm}For all $a,b \in \field$ and $n \in \naturals$, $a^n - b^n
+  =  (a - b) \sum_{k=0}^{n-1} a^k b^{n-k-1}$.
+\end{clm}
+\begin{align*}
+  (a - b) \sum_{k=0}^{n-1} a^k b^{n-k-1}
+  &= \sum_{k=0}^{n-1} a^{k+1} b^{n-k-1} - \sum_{k=0}^{n-1} a^{k}
+    b^{n-k} \\
+  &= a^n + \sum_{k=0}^{n-2} a^{k+1} b^{n-k-1} - \sum_{k=1}^{n-1} a^{k}
+    b^{n-k} - b^n\\
+  &= a^n + \sum_{k=0}^{n-2} a^{k+1} b^{n-k-1} - \sum_{k=0}^{n-2} a^{k+1}
+    b^{n-k-1} - b^n = a^n - b^n\\
+\end{align*}
+
+Apply the claim with $a = z+h$ and $b=z$ to compute
+\begin{align*}
+  \frac{S(z+h) - S(z)}{h} - S^\prime(z)
+  &= \frac{\sum_{n=0}^\infty a_n\left( (z+h)^n  - z^n\right)}{z+h - z}
+    - \sum_{n=1}^\infty n a_n z^{n-1} \\
+  &= \sum_{n=0}^\infty a_n \left( \sum_{k=0}^{n-1} (z+h)^k z^{n-k-1}
+    - n z^{n-1} \right)
+\end{align*}
+Note that $\abs{z+h} < r$ and $\abs{z} < r$ to conclude
+\begin{align*}
+  \sum_{n=0}^\infty \norm{a_n}  \left( \sum_{k=0}^{n-1} \abs{z+h}^k \abs{z}^{n-k-1} + n \abs{z}^{n-1} \right) 
+  &\leq \sum_{n=0}^\infty \norm{a_n}  \left( \sum_{k=0}^{n-1} r^k r^{n-k-1} + n r^{n-1} \right) \\
+  &= \sum_{n=0}^\infty \norm{a_n}  2n r^{n-1} < \infty
+\end{align*}
+Let an $\epsilon>0$ be given and, by convergence of the infinite series,  choose $N>0$ such that
+$\sum_{n=N+1}^\infty \norm{a_n}  2n r^{n-1} < \epsilon/2$.  Next
+observe that
+\begin{align*}
+  P_N(h) &= \sum_{n=0}^N a_n  \left( \sum_{k=0}^{n-1} (z+h)^k z^{n-k-1}
+           + n z^{n-1} \right)
+\end{align*}
+is a polynomial in $h$ and
+\begin{align*}
+ P_N(0) &= \sum_{n=0}^N a_n  \left( \sum_{k=0}^{n-1} z^k z^{n-k-1}
+           - n z^{n-1} \right) = n z^{n-1} - n z^{n-1} = 0
+\end{align*}
+Since a polynomial is continuous at $0$ we can find $0 < \delta < r -
+\abs{z}$ such that $\norm{P_N(h)} < \epsilon/2$ for all $\abs{h} <
+\delta$.  Then for all $\abs{h} < \delta$,
+\begin{align*}
+  \norm{\frac{S(z+h) - S(z)}{h} - S^\prime(z)} &\leq \norm{P_N(h)} \\
+  &+ \sum_{n=N+1}^\infty \norm{a_n}  \left( \sum_{k=0}^{n-1} \abs{z+h}^k \abs{z}^{n-k-1}
+                                                 + n \abs{z}^{n-1} \right) \\
+  &< \norm{P_N(h)} + \sum_{n=N+1}^\infty \norm{a_n}  2n r^{n-1} <
+  \epsilon
+\end{align*}
+\end{proof}
+
+\begin{cor}\label{banach:MultipleDifferentiationOfPowerSeries} Let $X$ be a
+  Banach space over $\field$ and let $a_n$ be a sequence in $X$ with
+  associated series $S(z) = \sum_{n=0}^\infty a_n z^n$, then for each integer $p \geq 0$, the
+  \emph{$p^{th}$-derived series} of $S$ is the series $S^{(p)}(z) =
+  \sum_{q=0}^\infty  \frac{(p+q)!}{q!} a_{p+q} z^{q}$.   The radius of convergence
+  $\rho^p$ of
+  $S^{(p)}$ is equal to the radius of convergence $\rho$ of $S$.   If
+  $\rho > 0$ then for all $\abs{z} < \rho$ and $p > 0$,
+  \begin{align*}
+    S^{(p)}(z) &= \lim_{h \to 0} \frac{S^{(p-1)}(z+h) - S^{(p-1)}(h)}{h}
+  \end{align*}
+\end{cor}
+\begin{proof}
+  Note that $S^{(0)} = S$ and the result for $p=1$ is precisely Proposition \ref{banach:DifferentiationOfPowerSeries}.  We proceed by induction on $p$.   Compute the derived series of
+  $S^{(p-1)}$, 
+  \begin{align*}
+    \left[S^{(p-1)}\right]^\prime(z) &= \sum_{q=1}^\infty q \frac{(p+q-1)!}{q!} a_{p+q-1} z^{q-1} = \sum_{q=1}^\infty \frac{(p+q-1)!}{(q-1)!} a_{p+q-1} z^{q-1} \\
+    &= \sum_{q=0}^\infty \frac{(p+q)!}{q!} a_{p+q} z^{q} = S^{(p)}(z)
+  \end{align*}
+  now apply Proposition \ref{banach:DifferentiationOfPowerSeries} to complete the induction.
+\end{proof}
+
+\subsection{Analytic Functions in Banach Spaces}
+
+\begin{defn}Let $X$ be a Banach space over $\field$ and let $U \subset \field$ be an open set.   A function $f : U \to X$ is said to be
+  \emph{analytic} on $U$ if for every $x_0 \in U$, there exists a real number $\rho(x_0) > 0$, a power series $\sum_{n=0}^\infty a_n z^n$ with radius of
+  convergence $\geq \rho(x_0)$ such that
+  \begin{align*}
+    f(x) &= \sum_{n=0}^\infty a_n (x - x_0)^n \text{ for all $\abs{x - x_0} < \rho(x_0)$}
+  \end{align*}
+\end{defn}
+
+\begin{prop}\label{banach:ConvergentPowerSeriesAreAnalytic}Let $X$ be a Banach space over $\field$ and let $\sum_{n=0}^\infty a_n z^n$ be a power series with radius of convergence $\rho >0$ then
+  \begin{align*}
+    S(x) = \sum_{n=0}^\infty a_n x^n
+  \end{align*}
+  defines a function  $S : B(0, \rho) \to X$ which is analytic on $B(0, \rho)$.  More specifically, for each $\abs{x_0} < \rho$, the power series
+  \begin{align*}
+    \sum_{n=0}^\infty \frac{1}{n!} S^{(n)}(x_0) z^n
+  \end{align*}
+  has a radius of convergence greater than or equal to $\rho - \abs{x_0}$ and
+  \begin{align*}
+    S(x) = \sum_{n=0}^\infty \frac{1}{n!} S^{(n)}(x_0) (x - x_0)^n \text{ for $\abs{x - x_0} < \rho - \abs{x_0}$}
+  \end{align*}
+\end{prop}
+\begin{proof}
+  The fact that $S$ defines a function follows immediately from Proposition \ref{banach:PowerSeriesConvergence}.   The fact that $S^{(n)}(x_0)$ is well defined for all $\abs{x_0} < \rho$ follows from Proposition \ref{banach:DifferentiationOfPowerSeries} and Proposition \ref{banach:PowerSeriesConvergence}.
+
+By Corollary \ref{banach:MultipleDifferentiationOfPowerSeries} we have for integers $p \geq 0$,
+\begin{align*}
+  \norm{S^{(p)}(x_0)} &\leq \sum_{q = 0}^\infty \frac{(p + q)!}{q!} \norm{a_{p + q}} \abs{x_0}^q
+\end{align*}
+so for any $\abs{x_0} < r < \rho$, we have using the above estimate and the Binomial Theorem
+\begin{align*}
+  \sum_{p=0}^\infty \frac{1}{p!} \norm{S^{(p)}(x_0)} (r - \abs{x_0})^p
+  &\leq \sum_{p=0}^\infty \sum_{q=0}^\infty \frac{(p + q)!}{p!q!} \norm{a_{p + q}} \abs{x_0}^q (r - \abs{x_0})^p \\
+  &= \sum_{n=0}^\infty \sum_{p=0}^n \frac{n!}{p!(n-p)!} \norm{a_{n}} \abs{x_0}^{(n-p)} (r - \abs{x_0})^p \\
+  &= \sum_{n=0}^\infty \norm{a_{n}} r^n < \infty\\
+\end{align*}
+which shows that the radius of convergence of the series $\sum_{n=0}^\infty \frac{1}{n!} S^{(n)}(x_0) z^n$ is greater than or equal to $\rho - \abs{x_0}$.
+
+Now suppose that $\abs{x - x_0} < \rho - \abs{x_0}$ and consider the sum
+\begin{align*}
+  \sum_{p=0}^\infty \sum_{q=0}^\infty \frac{(p + q)!}{p!q!} a_{p + q} x_0^q (x - x_0)^p
+\end{align*}
+The previous computation shows that the sum converges absolutely hence we are free to rearrange terms at will.   First, we proceed analogously to the second half of the preceeding computation by letting $n=p+q$ (and $q=n-p$) and using the Binomial Theorem,
+\begin{align*}
+  \sum_{p=0}^\infty \sum_{q=0}^\infty \frac{(p + q)!}{p!q!} a_{p + q} x_0^q (x - x_0)^p
+  &= \sum_{n=0}^\infty \sum_{p=0}^n \frac{n!}{p!(n-p)!} a_{n} x_0^{n-p} (x - x_0)^p \\
+  &= \sum_{n=0}^\infty a_{n} \sum_{p=0}^n \frac{n!}{p!(n-p)!} x_0^{n-p} (x - x_0)^p \\
+  &= \sum_{n=0}^\infty a_{n} x^n = S(x)\\
+\end{align*}
+Next we compute
+\begin{align*}
+  \sum_{p=0}^\infty \sum_{q=0}^\infty \frac{(p + q)!}{p!q!} a_{p + q} x_0^q (x - x_0)^p
+  &=  \sum_{p=0}^\infty \frac{1}{p!} (x - x_0)^p \sum_{q=0}^\infty \frac{(p + q)!}{q!} a_{p + q} x_0^q \\
+  &= \sum_{p=0}^\infty \frac{1}{p!} S^{(p)}(x_0) (x - x_0)^p 
+\end{align*}
+thus $S(x) = \sum_{p=0}^\infty \frac{1}{p!} S^{(p)}(x_0) (x - x_0)^p $ and the result follows.
+\end{proof}
+
+\section{Complex Analysis in Banach Spaces}
+
+\subsection{Holomorphic Functions}
+
+\begin{defn}Let $X$ be a complex Banach space, let $U \subset
+  \complexes$ be open and let $f : U \to X$ be a function.   We say
+  that $f$ is \emph{holomorphic} at $z \in U$ if the limit
+  \begin{align*}
+    f^\prime(z) &= \lim_{h \to 0} \frac{f(z+h) - f(z)}{h}
+  \end{align*}
+  exists (note $h$ is assumed to be a complex number).   If $f : \complexes \to X$ is holomorphic at every 
+$z\in \complexes$ then we say that $f$ is \emph{entire}.
+\end{defn}
+
+The first class of examples of holomorphic functions is complex analytic functions.
+\begin{prop}\label{banach:ComplexAnalyticImpliesHolomorphic}Let $X$ be a complex Banach space, let $U \subset
+  \complexes$ be open and let $f : U \to X$ be an analytic function, then $f$ is holomorphic at every $z \in U$.
+\end{prop}
+\begin{proof}
+  Let $z_0 \in U$ and pick a $\rho>0$ and a sequence $a_n$ in $X$ such that the power series $S(z) = \sum_{n=0}^\infty a_n z^n$ has radius of convergence greater than or equal to $\rho$ and 
+  \begin{align*}
+    f(z) = S(z - z_0) = \sum_{n=0}^\infty a_n (z - z_0)^n \text{ for $\abs{z - z_0} < \rho$}
+  \end{align*}
+  Then by Proposition \ref{banach:DifferentiationOfPowerSeries} we know that derived power series $S^\prime(z) = \sum_{n=1}^\infty n a_n z^{n-1}$ has radius of convergence greater than or equal to $\rho$ and,
+  \begin{align*}
+    a_1 &= S^\prime(0) = \lim_{h \to 0} \frac{S(h) - S(0)}{h} = \lim_{h \to 0} \frac{f(z_0 + h) - f(z_0)}{h} = f^\prime(z_0)
+  \end{align*}
+  which shows $f$ is holomorphic at $z_0$.   Since the $z_0$ was arbitrary the result follows.
+\end{proof}
+
+\begin{examp}Let $a_n$ be a sequence in a complex Banach space $X$ and
+  suppose the series
+  $S(z) = \sum_{n=0}^\infty a_n z^n$ has radius of convergence $\rho>0$.
+  Then by Proposition \ref{banach:ConvergentPowerSeriesAreAnalytic} we
+  know that $S(z)$ is complex analytic at all $\abs{z} < \rho$ hence by Proposition \ref{banach:ComplexAnalyticImpliesHolomorphic} we deduce that $S(z)$ is
+  holmorphic at all $\abs{z} < \rho$.   In particular, all polynomials are entire.
+\end{examp}
+
+It turns out every holomorphic function is also complex analytic.   Proving this is one of our major goals, but getting to that result takes some time and requires some significant machinery involving curvilinear integrals.
+
+For the next result note that any complex Banach space $X$ is also a
+real Banach space, the metric on $\complexes$ given by absolute value
+is the same as the Euclidean metric on $\reals^2$ (hence they have the
+same topology) and therefore for any open $U \subset \complexes$ and $f : U
+\to X$ we may also consider $f$ a function between real Banach spaces.
+
+\begin{prop}\label{banach:HolomorphicFrechet} Let $X$ be a complex Banach space, $U \subset
+  \complexes$ be open and $f : U \to X$ be a function.  Then $f$ is
+  holomorphic at $z \in U$ if and only if $f$ thought of as a function
+  between real Banach spaces is Frechet differentiable at $z$ and the
+  derivative $Df(z) : \reals^2 \to X$ is $\complexes$-linear.   In this case, $f^\prime(z) = Df(z) \cdot \begin{pmatrix} 1 \\ 0 \\ \end{pmatrix}$.
+\end{prop}
+\begin{proof}
+  First suppose that $f$ is holomorphic at $z$.   We claim that for
+  $\begin{pmatrix} u \\ v \end{pmatrix} \in \reals^2$,
+  \begin{align*}
+    L \begin{pmatrix} u \\ v \end{pmatrix} &= \left(u + iv\right)
+                                                 f^\prime(z)
+  \end{align*}
+  is the Frechet derivative.  Notationally it is much more convenient
+  to just write an element of $\reals^2$ as a complex variable $h$ and then we are
+  claiming that $L h = h f^\prime(z)$.   This follows since
+  \begin{align*}
+    \lim_{h \to 0} \norm{\frac{f(z + h) - f(z) - Lh}{\abs{h}}}
+    &= \lim_{h \to 0} \norm{\frac{f(z + h) - f(z) - hf^\prime(z)}{h}} \\
+    &= \lim_{h \to 0} \norm{\frac{f(z + h) - f(z)}{h} - f^\prime(z)} = 0
+  \end{align*}
+
+We continue to write elements of $\reals^2$ as complex numbers.   To see the converse suppose that $Df(z)$ is the $\complexes$-linear Frechet derivative
+then we claim that $f^\prime(z) = Df(z) \cdot 1$.   By the assumption of $\complexes$-linearity we know that $h f^\prime(z) = Df(z) \cdot h$ for all $h$.   Now we just
+reverse the previous computation to see that $f$ is holomorphic at $z$,
+ \begin{align*}
+   \lim_{h \to 0} \norm{\frac{f(z + h) - f(z)}{h} - f^\prime(z)} 
+    &= \lim_{h \to 0} \norm{\frac{f(z + h) - f(z) - hf^\prime(z)}{h}} \\
+    &=\lim_{h \to 0} \norm{\frac{f(z + h) - f(z) - Df(z) h}{\abs{h}}} = 0
+  \end{align*}
+\end{proof}
+
+\subsection{Contour Integrals}
+
+TODO: What assumptions do we make on $f$?   I.e. what restrictions on $f$ are needed so that $f(\gamma(t)) \gamma^\prime(t) $ is regulated?   It appears that we only need $f$ continuous (in which case $f(\gamma(t)) \gamma^\prime(t) $ is piecewise continuous hence regulated  by Proposition \ref{banach:PiecewiseContinuousIsRegulated}).
+
+We need a notion of line integral for complex Banach space valued functions.   We base this definition on the Riemann integral in Banach spaces.  
+\begin{defn}Given an open set $U \subset \complexes$, a continuous map $\gamma : [a,b] \to U$ is said to be \emph{piecewise differentiable} if there exist $a = a_0 < a_1 < \cdots < a_n = b$ such that $\gamma$ is continuously differentiable when restricted to each interval $(a_i, a_i+1)$ for $i=0, \dots, n-1$ and $\lim_{t \to a_i^+} \gamma^\prime(t)$ and $\lim_{t \to a_{i-1}^-} \gamma^\prime(t)$ exist.  Given a complex Banach space $X$ and a continuous function $f : U \to X$ define the \emph{contour integral} $\oint_\gamma f$ by the formula
+\begin{align*}
+\oint_\gamma f &= \sum_{i=0}^{n-1} \int_{a_i}^{a_{i+1}} f(\gamma(t)) \gamma^\prime(t) \, dt
+\end{align*}
+\end{defn}
+
+The notation we have selected is potentially a little ambiguous since the definition might depend on the partition of the interval $[a,b]$.   It is easy to dispense with this concern.
+\begin{prop}The value of the integral $\oint_\gamma f$ doesn't depend on the partition of $[a,b]$.
+\end{prop} 
+\begin{proof}
+  Suppose $\gamma$ is piecewise differentiable with respect to the partition $a = a_0 < a_1 < \cdots < a_n = b$.  Now let $a \leq c \leq b$ and we consider adding the value $c$ to the existing partition.   Clearly if $a_i=c$ for $0 \leq i \leq n-1$, then the partition doesn't change.   Otherwise there is an $0 \leq i \leq n-1$ such that $a_i < c < a_{i+1}$.   By assumption $\gamma$ is continuously differentiable on each of $(a_i, c)$ and $(c, a_{i+1})$.   Moreover we also know that $\gamma^\prime(c)$ exists and $\gamma^\prime$ is continuous at $c$ hence
+  \begin{align*}
+    \lim_{t \to c^+} \gamma^\prime(t) = \gamma^\prime(c) = \lim_{t \to c^-} \gamma^\prime(t)
+  \end{align*}
+and it follows that $\gamma$ is piecewise differentiable with respect to $a = a_0 < \cdots < a_i < c < a_{i+1} < \cdots < a_n = b$.
+  By Proposition \ref{banach:RiemannIntegralProperties}
+\begin{align*}
+\int_{a_i}^{a_{i+1}} f(\gamma(t)) \gamma^\prime(t) \, dt &= \int_{a_i}^c f(\gamma(t)) \gamma^\prime(t) \, dt + \int_c^{a_{i+1}} f(\gamma(t)) \gamma^\prime(t) \, dt
+\end{align*}
+so the value of $\oint_\gamma f$ is unchanged by the addition of the point $c$.   Suppose are given two different partitions $a = a_0 < a_1 < \cdots < a_n = b$ and $a = b_0 < b_1 < \cdots < b_m = b$ with $\gamma$ piecewise differentiable with respect to both.   Add the elements $b_0, b_1, \dots, b_m$ to the partition $a = a_0 < a_1 < \cdots < a_n = b$ and the integral remain unchanged.   Symmetrically we can start with $a = b_0 < b_1 < \cdots < b_m = b$ and add the $a_i$ without changing the integral.   At the end of both constructions, we have the integral with the partition defined by the union of the $a_0, a_1, \dots a_n$ and the $b_0, b_1, \dots b_m$, implying the two original integrals are equal.
+\end{proof}
+
+It turns out the integral only depends on the image of the curve $\gamma$. 
+\begin{defn}Let $\gamma : [a,b] \to U$ and $\tilde{\gamma} : [\tilde{a}, \tilde{b}] \to U$ be piecewise differentiable curves then we say that $\tilde{\gamma}$ is a \emph{reparameterization} of $\gamma$ if there exists a continuously differentiable $\alpha : [a,b] \to [\tilde{a}, \tilde{b}]$ such that $\alpha^\prime(t) > 0$, $\alpha(a) = \tilde{a}$, $\alpha(b) = \tilde{b}$ and $\gamma(t) = \tilde{\gamma}(\alpha(t))$ for all $a \leq t \leq b$.
+\end{defn}
+
+\begin{prop}\label{banach:ContourIntegralParameterizationIndependence}Let $U \subset \complexes$ be open, $\gamma : [a,b] \to U$ be a piecewise differentiable curve and $\tilde{\gamma} : [\tilde{a}, \tilde{b}] \to U$ be a reparameterization of $\gamma$ then for any complex Banach space $X$ and continuous $f : U \to X$ we have 
+\begin{align*}
+\oint_{\gamma} f &= \oint_{\tilde{\gamma}} f
+\end{align*}
+\end{prop}
+\begin{proof}
+By the definition of the contour integral and restriction to an appropriate interval, it clearly suffices to consider the case in which $\gamma$ is assumed to be continuously differentiable so by the definition of the integral and the Chain Rule,
+\begin{align*}
+\oint_\gamma f &= \int_a^b f(\gamma(t)) \gamma^\prime(t) \, dt = \int_a^b f(\tilde{\gamma}(\alpha(t) ))  \tilde{\gamma}^\prime(\alpha(t)) \alpha^\prime(t) \, dt
+\end{align*}
+Now we perform a change of variables $s = \alpha(t)$ and by the Change of Variables formula (Theorem \ref{banach:RiemannIntegralChangeOfVariables}) we get
+\begin{align*}
+\oint_\gamma f &= \int_{\tilde{a}}^{\tilde{b}} f(\tilde{\gamma}(s)) \tilde{\gamma}^\prime(s) \, ds = \oint_{\tilde{\gamma}} f
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{banach:ContourIntegralOperations}Let $U \subset \complexes$ be open, $\gamma : [a,b] \to U$, $\tilde{\gamma} : [b, c] \to U$ with $\gamma(b) = \tilde{\gamma(b)}$.   Let $-\gamma : [a,b] \to U$ be defined by $-\gamma(t) = \gamma(b+a-t)$ and $\gamma + \tilde{\gamma} : [a,c] \to U$ be defined by
+\begin{align*}
+\left(\gamma + \tilde{\gamma}  \right)(t) = \begin{cases}
+\gamma(t) & \text{for $a \leq t \leq b$} \\
+\tilde{\gamma}(t) & \text{for $b < t \leq c$} \\
+\end{cases}
+\end{align*}
+then each of $-\gamma$ and $\gamma + \tilde{\gamma}$ are piecewise differentiable and for all complex Banach spaces and $X$ and continuous $f : U \to X$
+\begin{itemize}
+\item[(i)] $\oint_{\gamma} f = - \oint_{-\gamma} f$
+\item[(ii)] $\oint_{\gamma + \tilde{\gamma}} f = \oint_{\gamma} f + \oint_{\tilde{\gamma}} f$
+\end{itemize}
+\end{prop}
+\begin{proof}
+First observe that if $a=a_0 < a_1 < \dotsc < a_n=b$ is a partition for which $\gamma$ is continuously differentiable on $(a_i, a_{i+1})$ for all $0 \leq i < n$ then by the Chain Rule $-\gamma$ is also differentiable and therefore $-\gamma$ is piecewise differentiable.   By restriction to the appropriate interval we may assume that $\gamma$ and $\tilde{\gamma}$ are continuously differentiable on $[a,b]$.   Now just compute via the Chain Rule and the change of variables $s = a + b - t$,
+\begin{align*}
+\oint_{-\gamma} f &= \int_a^b f(\gamma(a + b -t)) \cdot -\gamma^\prime(a + b -t) \, dt = \int_b^a f(\gamma(s)) -\gamma^\prime(s) \, -ds \\
+&= -\int_a^b f(\gamma(s)) \gamma^\prime(s) \, ds 
+\end{align*}
+
+Assume that $\gamma$ is piecewise differentiable with respect to partition $a=a_0 < a_1 < \cdots < a_n =b $ and $\tilde{\gamma}$ is piecewise differentiable with respect to the partition $b=a_n < a_{n+1} < \cdots < a_m$ with $m > n$.   Because $\gamma(b) = \tilde{\gamma}(b)$ it follows that $\gamma + \tilde{\gamma}$ is continuous.   It is also clear that $\gamma + \tilde{\gamma}$ is piecewise differentiable with respect to $a=a_0 < a_1 < \cdots < a_m = c$ because $\left(\gamma + \tilde{\gamma} \right)^\prime = \gamma^\prime$ on $(a_i, a_{i+1})$ for $0 \leq i < n$ and
+$\left(\gamma + \tilde{\gamma} \right)^\prime = \tilde{\gamma}^\prime$ on $(a_i, a_{i+1})$ for $n \leq i < m$.   Now by Proposition \ref{banach:RiemannIntegralProperties} we see that
+\begin{align*}
+\oint_{\gamma + \tilde{\gamma}} f &= \int_a^c f\left(\left(\gamma + \tilde{\gamma}\right)(t)\right) \left(\gamma + \tilde{\gamma} \right)^\prime(t) \, dt \\
+&=\int_a^b f\left(\left(\gamma + \tilde{\gamma}\right)(t)\right) \left(\gamma + \tilde{\gamma} \right)^\prime(t) \, dt  + \int_b^c f\left(\left(\gamma + \tilde{\gamma}\right)(t)\right) \left(\gamma + \tilde{\gamma} \right)^\prime(t) \, dt \\
+&=\int_a^b f\left(\gamma(t)\right) \gamma^\prime(t) \, dt + \int_b^c f\left(\tilde{\gamma}(t)\right) \tilde{\gamma}^\prime(t) \, dt = \oint_{\gamma} f + \oint_{\tilde{\gamma}} f
+\end{align*}
+\end{proof}
+
+\begin{prop}\label{banach:FundamentalTheoremOfCalculusForContourIntegrals}Let $U \subset \complexes$ be open, $\gamma : [a,b] \to U$, $X$ a complex Banach space and $f : U \to X$ holomorphic on $U$ then 
+\begin{align*}
+\oint_\gamma f^\prime &= f(\gamma(b)) - f(\gamma(a))
+\end{align*}
+\end{prop}
+\begin{proof}
+We apply the Chain Rule, Proposition \ref{banach:HolomorphicFrechet} and the Fundamental Theorem of
+Calculus (Theorem \ref{FundamentalTheoremOfCalculusForBanachSpaceRiemannIntegrals}) 
+\begin{align*}
+\oint_\gamma f^\prime &= \int_a^b f^\prime(\gamma(t)) \gamma^\prime(t) \, dt = \int_a^b Df(\gamma(t)) \, dt =  f(\gamma(b)) - f(\gamma(a))
+\end{align*}
+\end{proof}
+
+
+
+\begin{defn}Let $U \subset \complexes$ be open and $\gamma : [a,b] \to U$ be piecewise differentiable then we denote the \emph{arclength} of $\gamma$ by
+  \begin{align*}
+    \abs{\gamma} &= \int_a^b \abs{\gamma^\prime(t)} \, dt
+  \end{align*}
+\end{defn}
+
+\begin{prop}\label{banach:ArclengthProperties}Let $U \subset \complexes$ be open and $\gamma : [a,b] \to U$ and $\tilde{\gamma} : [b,c] \to U$ be piecewise differentiable then
+  \begin{itemize}
+  \item[(i)] $\abs{\gamma} = \abs{-\gamma}$
+  \item[(ii)] $\abs{\gamma + \tilde{\gamma}} = \abs{\gamma} + \abs{\tilde{\gamma}}$
+  \item[(iii)] $\norm{\oint_{\gamma} f} \leq \sup_{a \leq t \leq b} \norm{f(\gamma(t))} \abs{\gamma} \leq \norm{f}_\infty \abs{\gamma}$ for all complex Banach spaces $X$ and bounded continuous $f : U \to X$.
+  \end{itemize}
+\end{prop}
+\begin{proof}
+  To see (i), use the change of variables $s = b+a-t$
+  \begin{align*}
+    \abs{\gamma} &= \int_a^b \abs{\gamma^\prime(t)} \, dt = -\int_b^a \abs{\gamma^\prime(b + a - s)} \, ds = \int_a^b \abs{\left(-\gamma\right)^\prime(s)} \, ds  = \abs{-\gamma}
+  \end{align*}
+  To see (ii), just use the definition of $\gamma + \tilde{\gamma}$ and linearity of the integral (Proposition \ref{banach:RiemannIntegralProperties}) to see
+  \begin{align*}
+    \abs{\gamma + \tilde{\gamma}} &= \int_a^c \abs{\left(\gamma + \tilde{\gamma}\right)^\prime(t)} \, dt \\
+    &= \int_a^b \abs{\gamma^\prime(t)} \, dt + \int_b^c \abs{\tilde{\gamma}^\prime(t)} \, dt = \abs{\gamma} + \abs{\tilde{\gamma}}
+  \end{align*}
+  To see (iii), let $f : U \to X$ be given then use the Proposition \ref{NormRiemannIntegralBanachSpace}
+  \begin{align*}
+    \norm{\oint_\gamma f} &= \norm{\int_a^b f(\gamma(t)) \gamma^\prime(t) \, dt} \leq \int_a^b \norm{ f(\gamma(t)) \gamma^\prime(t)}  \, dt \\
+    &\leq \sup_{a \leq t \leq b} \norm{f(\gamma(t))}  \int_a^b \abs{\gamma^\prime(t)} \, dt = \sup_{a \leq t \leq b} \norm{f(\gamma(t))}  \abs{\gamma}
+  \end{align*}
+  The fact that $\sup_{a \leq t \leq b} \norm{f(\gamma(t))} \leq \norm{f}_\infty = \sup_{z \in U} \norm{f(z)}$ follows by noting that $\gamma([a,b]) \subset U$.
+\end{proof}
+
+\begin{examp}\label{banach:ArclengthOfLineSegment}Let $z, w \in \complexes$ and let $\gamma : [a,b] \to \complexes$ be defined by $\gamma(t) = \frac{t-a}{b-a}w + \frac{b -t}{b-a}z$ be the
+  line segment connecting $z$ and $w$ then $\abs{\gamma} = \abs{w -z}$ is the length of the line segment in the Euclidean metric.
+\end{examp}
+\begin{proof}
+  The proof is an elementary computation
+  \begin{align*}
+    \abs{\gamma} &=  \int_a^b \abs{\gamma^\prime(t)} \, dt = \int_a^b \abs{\frac{w}{b-a} - \frac{z}{b-a}} \, dt = \abs{w - z}
+   \end{align*}
+\end{proof}
+
+\subsection{Cauchy's Theorem and Cauchy's Integral Formula}
+
+The most important tool in understanding holomorphic functions is the study of contour integrals of such a function.   In particular, the study of integrals of holomorphic functions on closed curves turns out be very powerful.   As we set out to give the basic theorems in this vein, it is convenient to start with the study of integrals over the boundary of rectangles.   In particular, we study rectangles whose sides are parallel to the real and imaginary axes of the complex plane.
+
+\begin{defn}A \emph{rectangle} in the complex plane $\complexes$ is defined two complex numbers $z = a+bi$ and $w = c + di$ which satisfy $a < c$ and $b < d$.   Up to reparameterization the rectangle is defined by $\gamma : [0,4] \to \complexes$ with the formula
+\begin{align*}
+\gamma(t) &= \begin{cases}
+(a + (c - a) t) + bi & \text{for $0 \leq t \leq 1$} \\
+c + (b + (d-b)(t-1))i & \text{for $1 \leq t \leq 2$} \\
+(c + (a - c) (t - 2)) + di & \text{for $2 \leq t \leq 3$} \\
+a + (d + (b-d)(t-3))i & \text{for $3 \leq t \leq 4$} \\
+\end{cases}
+\end{align*}
+If $U \subset \complexes$ is open then we that the rectangle is \emph{contained} in $U$ is $\gamma([0,4]) \subset U$.   We say that the rectangle is \emph{entirely contained} in $U$ if 
+\begin{align*}
+R &=[a,c] \times [b,d] = \lbrace u + vi \in U | a \leq u \leq c \text{ and } b \leq v \leq d \rbrace \subset U
+\end{align*}
+\end{defn}
+
+Note that by Example \ref{banach:ArclengthOfLineSegment} and Proposition \ref{banach:ArclengthProperties} the arclength of the rectangle is equal to its perimeter in the middle school geometry sense.
+
+\begin{tikzpicture}
+[decoration={markings, 
+    mark= at position 0.5 with {\arrow{stealth}}}
+] 
+\draw [postaction={decorate}] (0,0) -- (10,0);
+\draw [postaction={decorate}] (10,0) -- (10,5);
+\draw [postaction={decorate}] (10,5) -- (0,5);
+\draw [postaction={decorate}] (0,5) -- (0,0);
+\end{tikzpicture}
+
+\begin{lem}(Goursat's Lemma)\label{banach:GoursatLemma}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, and $f : U \to X$ be holomorphic at every $z \in U$, then for every rectangle $\gamma$ contained entirely in $U$ we have $\oint_\gamma f = 0$.   
+\end{lem}
+\begin{proof}
+Let $R = [a,c] \times [b,d]$ as in the definition of rectangles.   Let $P=2\left( c + d - a -b \right)$ be the perimeter/arclength of the rectangle and let $D = \sqrt{(c-a)^2 + (d - b)^2}$ be the diameter of the rectangle (so that if $z,w \in R$ we have $\abs{z -w} \leq D$).
+
+The main idea of the proof is to write the rectangle as a union of the four equally sized rectangles $R_1, R_2, R_3, R_4$ obtained by bisecting its sides.
+
+\begin{tikzpicture}
+[decoration={markings, 
+    mark= at position 0.25 with {\arrow{stealth}},
+    mark= at position 0.75 with {\arrow{stealth}}}
+] 
+\draw [postaction={decorate}] (0,0) -- (10,0);
+\draw [postaction={decorate}] (10,0) -- (10,5);
+\draw [postaction={decorate}] (10,5) -- (0,5);
+\draw [postaction={decorate}] (0,5) -- (0,0);
+\draw (5,0) -- (5,5);
+\draw (0,2.5) -- (10,2.5);
+\draw [->] (3.0,1.25) arc [start angle = 0, end angle = 270, radius = 0.5cm];
+\draw [->] (8.0,1.25) arc [start angle = 0, end angle = 270, radius = 0.5cm];
+\draw [->] (3.0,3.75) arc [start angle = 0, end angle = 270, radius = 0.5cm];
+\draw [->] (8.0,3.75) arc [start angle = 0, end angle = 270, radius = 0.5cm];
+\node at (7.5, 1.25) {$R_1$};
+\node at (7.5, 3.75) {$R_2$};
+\node at (2.5, 3.75) {$R_3$};
+\node at (2.5, 1.25) {$R_4$};
+\end{tikzpicture}
+
+Note that each of the $R_i$ has perimeter $P/2$ and diameter $D/2$.   Note also if we let $\gamma_1, \gamma_2, \gamma_3, \gamma_4$ be boundaries their respective rectangles then by Proposition \ref{banach:ContourIntegralOperations}
+\begin{align*}
+\oint_\gamma f &= \oint_{\gamma_1} f + \oint_{\gamma_2} f + \oint_{\gamma_3} f + \oint_{\gamma_4} f
+\end{align*}
+(this follows because each interior edge is followed twice : once with each orientation).   By the triangle inequality, 
+\begin{align*}
+\norm{\oint_\gamma f} &\leq \norm{\oint_{\gamma_1} f} + \norm{\oint_{\gamma_2} f} + \norm{\oint_{\gamma_3} f} + \norm{\oint_{\gamma_4} f}
+\end{align*}
+and therefore for some $i$, we have $\norm{\oint_{\gamma_i} f} \geq \frac{1}{4} \norm{\oint_\gamma f}$.   
+
+The labels on our subrectangles are arbitrary so let us assume $R_1$ is such a subrectangle and then inductively apply the same bisection procedure to yield a sequence of nested closed rectangles $R_1, R_2, \dots$ with boundaries $\gamma_1, \gamma_2, \dots$ such that for all $n \in \naturals$, the perimeter of $R_n$ is equal to $P/2^n$, the diameter of $R_n$ is $D/2^n$ and 
+\begin{align*}
+\norm{\oint_{\gamma_n} f} &\geq \frac{1}{4^n} \norm{\oint_{\gamma} f}
+\end{align*}
+
+By Lemma \ref{IntersectionCompactSets} we know that $\cap_{n=1}^\infty R_n \neq \emptyset$, so we may pick $z_0 \in \cap_{n=1}^\infty R_n$.  
+We use the holomorphicity of $f$ at $z_0$ to bound the integral $\norm{\oint_{\gamma_n} f}$.   
+Note that by the fact that polynomials are entire and Proposition \ref{banach:FundamentalTheoremOfCalculusForContourIntegrals} 
+we know that $\oint_{\gamma_n} z \, dz=0$ and $\oint_{\gamma_n}dz = 0$ for all $n \in \naturals$.   
+Using the fact that $f$ is holomorphic at $z_0$, let  $\epsilon > 0$ be given and pick $\delta >0$ such that for all $\abs{h} < \delta$,
+\begin{align*}
+\norm{f(z_0+h) - f(z_0) - h f^\prime(z_0)} &< \frac{\epsilon}{PD} \abs{h}
+\end{align*}
+Then pick $n$ large enough so that $D < 2^n \delta$, it follows from the norm bound for contour integrals in Proposition \ref{banach:ArclengthProperties}
+\begin{align*}
+\norm{\oint_{\gamma_n} f(z) \, dz} &= \norm{\oint_{\gamma_n}\left( f(z_0+z - z_0) - f(z_0) - (z - z_0) f^\prime(z_0)\right) \, dz }\\
+&\leq \norm{f(z_0+z - z_0) - f(z_0) - (z - z_0) f^\prime(z_0)} \cdot \frac{P}{2^n}  \\
+&< \frac{\epsilon}{PD} \abs{z - z_0} \cdot \frac{P}{2^n}  \leq \frac{\epsilon}{PD} \frac{D}{2^n} \frac{P}{2^n} = \frac{\epsilon}{4^n} \\
+\end{align*}
+Thus for $D < 2^n \delta$,
+\begin{align*}
+\norm{\oint_{\gamma} f} &\leq 4^n \norm{\oint_{\gamma_n} f} \leq \epsilon 
+\end{align*}
+Since $\epsilon>0$ was arbitrary, the result is proved.
+\end{proof}
+
+\begin{tikzpicture}
+[decoration={markings, 
+    mark= at position 0.25 with {\arrow{stealth}},
+    mark= at position 0.75 with {\arrow{stealth}}}
+] 
+\draw (0,0) -- (10,0);
+\draw (10,0) -- (10,5);
+\draw (10,5) -- (0,5);
+\draw (0,5) -- (0,0);
+\draw (3,0) -- (3,5);
+\draw (4,0) -- (4,5);
+\draw (0,2) -- (10,2);
+\draw (0,3) -- (10,3);
+\node [circle, fill, inner sep=1pt, label=below right:$z_0$] at (3.5, 2.5) {};
+\end{tikzpicture}
+
+The following corollary of Goursat's Lemma appears to be an extension of sorts with relaxed hypotheses.   As we shall later see the seeming relaxation in the hypotheses is illusory and are, in fact, equivalent to the hypotheses in the original version of the lemma.
+\begin{cor}\label{banach:GoursatLemmaPunctured}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, $z_0 \in U$, and $f : U \to X$ be holomorphic at every $z \in U \setminus \lbrace z_0 \rbrace$ such that $\lim_{z \to z_0} (z - z_0) f(z) = 0$, then for every rectangle $\gamma$ contained entirely in $U$ with $z_0$ contained in the interior of $\gamma$, we have $\oint_\gamma f = 0$.   
+\end{cor}
+\begin{proof}
+  Let $\epsilon>0$ be given and pick a $\delta>0$ such that $\norm{(z-z_0) f(z)} < \epsilon$ for all $\abs{z-z_0} < \frac{\delta}{\sqrt{2}}$.   It then follows that for the square $R_\epsilon$ of size $\delta$ and centered at $z_0$ we have $\norm{(z-z_0) f(z)} < \epsilon$ for all $z \in R_\epsilon$.   Let $\gamma_\epsilon$ be the perimeter of $R_\epsilon$ and note that by Goursat's Lemma and the holomorphicity of $f$ away from $z_0$ we have $\oint_\gamma f = \oint_{\gamma_\epsilon} f$ (refer to the picture above).   For all $z \in \gamma_\epsilon$ we have $\abs{z-z_0} \leq \delta/2$ and therefore
+  \begin{align*}
+    \norm{f(z)} &\leq \frac{\epsilon}{\abs{z - z_0}} \leq \frac{\epsilon}{\delta/2}
+  \end{align*}
+  Thus we have
+  \begin{align*}
+    \norm{\oint_{\gamma_\epsilon} f} &\leq \frac{\epsilon}{\delta/2} \abs{\gamma_\epsilon} = 8 \epsilon
+  \end{align*}
+Since $\epsilon>0$ was arbitrary we have $\oint_{\gamma_\epsilon} f = 0$.
+\end{proof}
+
+The previous results allow one to construct (local) antiderivatives (also called primitives) for holomorphic functions.
+\begin{lem}\label{banach:LocalHolomorphicPrimitive}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, and let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$.   Then for every open disk $D \subset U$ there exists a function $F$ holomorphic on $D$ such that $F^\prime = f$ on $D$.   
+\end{lem}
+\begin{proof}
+  Let $z_0 = x_0 + iy_0 \in D$ be the center of the disk.  For every $z = x + i y\in D$ define the curve $\gamma_z : [0,2] \to D$ by
+  \begin{align*}
+    \gamma_z(t) &= \begin{cases}
+      x_0 + i((1-t)y_0 + ty) & \text{for $0 \leq t \leq 1$} \\
+      ((2-t)x_0 + (t-1) x) + iy & \text{for $1 \leq t \leq 2$} \\
+    \end{cases}
+  \end{align*}
+as well as the curve $\tilde{\gamma}_z : [0,2] \to D$
+  \begin{align*}
+    \tilde{\gamma}_z(t) &= \begin{cases}
+      ((1-t)x_0 + tx) + iy+0 & \text{for $0 \leq t \leq 1$} \\
+      x + i((2-t)y_0 + (t-1) y) & \text{for $1 \leq t \leq 2$} \\
+    \end{cases}
+  \end{align*}
+  and note that, in fact, the image of each curve does lie entirely in $D$.  TODO: Show this analytically; it is geometrically obvious.   By assumption, $\gamma_z - \tilde{\gamma}_z$ is a rectangle contained entirely in $U$ hence $\oint_{\gamma_z - \tilde{\gamma}_z} f = \oint_{\gamma_z} f  - \oint_{\tilde{\gamma}_z} f = 0$.    We define $F(z) = \oint_{\gamma_z} f  = \oint_{\tilde{\gamma}_z} f$.
+
+  To see that $F$ is a primitive of $f$ we compute partial derivatives.   Let $h>0$ such that $z+h \in D$ and note that we have
+  \begin{align*}
+    F(z+h) - F(z) &= \oint_{\gamma_{z+h}} f -  \oint_{\gamma_z} f = \int_0^h f(z + t) \, dt
+  \end{align*}
+  Let $\epsilon>0$ be given, then since $f$ is continuous at $z$ we may pick $\delta>0$ such that $\norm{f(z+t) - f(z)} < \epsilon$ for all $\abs{t} < \delta$.   It follows that for $0 < h < \delta$,
+  \begin{align*}
+    \norm{\frac{\int_0^h f(z + t) \, dt }{h} - f(z)} &= \norm{\frac{\int_0^h \left( f(z + t) - f(z) \right) \, dt}{h}} \\
+    &\leq \frac{\int_0^h \norm{ f(z + t) - f(z) } \, dt}{h} \leq \epsilon
+  \end{align*}
+  and therefore $\lim_{h \to 0^+} \frac{F(z+h) - F(z)}{h} = f(z)$.    For $h < 0$ we have $F(z) - F(z+h) = \int_h^0 f(z+t) \, dt$, letting $\epsilon$ and $\delta$ be as above, it follows for $-\delta < h < 0$,
+ \begin{align*}
+    \norm{\frac{\int_h^0 f(z + t) \, dt }{-h} - f(z)} &= \norm{\frac{\int_h^0 \left( f(z + t) - f(z) \right) \, dt}{-h}} \\
+    &\leq \frac{\int_h^0 \norm{ f(z + t) - f(z) } \, dt}{-h} \leq \epsilon
+  \end{align*}
+  and therefore $\lim_{h \to 0^-} \frac{F(z+h) - F(z)}{h} = \lim_{h \to 0^-} \frac{\int_h^0 f(z + t) \, dt }{-h}  = f(z)$.   This shows that $D_1 F(z) = f(z)$ hence is continuous.
+
+Arguing analogously using $\tilde{\gamma}_z$ we see that for $h>0$ such that $z + ih \in D$,
+  \begin{align*}
+    F(z+ih) - F(z) &= \oint_{\tilde{\gamma}_{z+ih}} f -  \oint_{\tilde{\gamma}_z} f = \int_0^h f(z + i t) i \, dt = i \int_0^h f(z + i t) \, dt
+  \end{align*}
+Letting $\epsilon$ and $\delta$ be as above we get 
+ \begin{align*}
+    \norm{\frac{\int_0^h f(z + it) \, dt }{h} - f(z)} &= \norm{\frac{\int_0^h \left( f(z + it) - f(z) \right) \, dt}{h}} \\
+    &\leq \frac{\int_0^h \norm{ f(z +i t) - f(z) } \, dt}{h} \leq \epsilon
+  \end{align*}
+  hence $\lim_{h \to 0^+} \frac{F(z+ih) - F(z)}{h} = i f(z)$.   The argument for $h<0$ proceeds the same way and we conclude $D_2 F(z) = i f(z)$ hence is continuous.   By Proposition \ref{PartialDerivativesBanachSpaces} we know that $F$ is continuously Frechet differentiable and
+  \begin{align*}
+    DF(z) \cdot \begin{pmatrix} x \\ y \end{pmatrix} &= D_1F(z) \cdot x + D_2 F(z) \cdot y = f(z) x + i f(z) y
+  \end{align*}
+  which shows that $DF(z) \cdot w= w f(z)$ is complex linear.   By Proposition \ref{banach:HolomorphicFrechet} we see that $F$ is holomorphic and $F^\prime = f$.
+\end{proof}
+
+\begin{cor}\label{banach:PointContourIntegralZero}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, and let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$.   For any point $z \in U$, $\oint_{\lbrace z \rbrace} f = 0$.
+\end{cor}
+\begin{proof}
+  Parameterize the point contour $\lbrace z \rbrace$ by $\gamma : [0,1] \to U$ with $\gamma(t) = z$ for all $0 \leq t \leq 1$.   Apply Lemma \ref{banach:LocalHolomorphicPrimitive} to get an open disc $D \subset U$ containing $z$ and a holomorphic function $F : D \to X$ such that $F^\prime(w) = f(w)$ for all $w \in D$.   Then by Proposition \ref{banach:FundamentalTheoremOfCalculusForContourIntegrals}, we have
+  \begin{align*}
+     \oint_{\lbrace z \rbrace} f &= \oint_{\gamma} F^\prime = F(\gamma(1)) - F(\gamma(0)) = F(z) - F(z) = 0 
+  \end{align*} 
+\end{proof}
+
+The next step in the development of Cauchy's Theorem is the extension of the result to more general curves.   For that purpose we introduce an important topological
+idea.
+\begin{defn}Let $X$ be a topological space and let $\gamma_0 : [a,b] \to X$ and $\gamma_1: [a,b] \to X$ be continuous with $\gamma_0(a) = \gamma_0(b)$ and $\gamma_1(a) = \gamma_1(b)$.   We say that $\gamma_0$ and $\gamma_1$ are \emph{homotopic} if there exists a continuous map $H : [a,b] \times [0,1] \to X$ such that
+  \begin{itemize}
+  \item[(i)] $H(a,t) = H(b,t)$ for all $0 \leq t \leq 1$
+  \item[(ii)] $H(s,0) = \gamma_0(s)$ for all $a \leq s \leq b$
+  \item[(iii)] $H(s,1) = \gamma_1(s)$ for all $a \leq s \leq b$
+  \end{itemize}
+\end{defn}
+
+Our goal is to show that contour integrals of a holomorphic function over homotopic curves are equal.   To get there, first we need to use some topology to extend our construction of primitives from a purely local construct to one with a more global character.   The arguments that follow require the following sequence of lemmata.
+
+\begin{lem}\label{banach:EuclideanRectangleThickening}Let $F$ be a closed set in $\reals^d$, let $R = [s_1, t_1] \times \dotsc \times [s_d, t_d] \subset F$ and for any $\epsilon > 0$ denote $R_\epsilon = [s_1-\epsilon, t_1+ \epsilon] \times \dotsc \times [s_d - \epsilon, t_d + \epsilon] \subset \reals^d$.   Let $U \subset F$ be open in the relative topology such that $R \subset U$,
+  then there exists $\epsilon > 0$, such that $R_\epsilon \cap F \subset U$.
+\end{lem}
+\begin{proof}
+  Since $U$ is relatively open in $F$ there exists an open set $V \subset \reals^d$ such that $U = V \cap F$.   Clearly $R \subset V$ and since $V$ is open we know that $V^c$ is closed and $d(x, V^c)$ defines a Lipschitz function (hence uniformly continuous) on $R$.   By the Heine-Borel Theorem \ref{HeineBorel} we know that $R$ is compact and then by Theorem \ref{ExistenceGlobalMinimizerContinuous} we know that there exists $x^* \in R$ such that $d(x^*, V^c) \leq d(x, V^c)$ for all $x \in R$.   Moreover since $V^c$ is closed and $R \cap V^c = \emptyset$ we know that $0 < d(x^*, V^c)$.   Let $\epsilon = d(x^*, V^c)/3\sqrt{d}$, then for any $y \in R_\epsilon$, we have $d(y, R) \leq \sqrt{d \epsilon^2} \leq \sqrt{d} \epsilon = d(x^*, V^c)/3$.
+   Pick an $x \in R$ such that $d(y, x) \leq d(y, R) + d(x^*, V^c)/3 $.   By the triangle inequality, for every $x \in R$, and $z \in V^c$,
+  \begin{align*}
+    d(x^*, V^c) &\leq d(x, V^c) \leq d(x, z) \leq d(x, y) + d(y, z) \\
+                &\leq d(y, R) + d(x^*, V^c)/3 + d(y, V^c) \\
+                &\leq  \frac{2}{3}d(x^*, V^c) + d(y, V^c) 
+  \end{align*}
+  Thus $0 < d(x^*,V^c)/3 \leq d(y, V^c)$ therefore $y \in V$.    Therefore $R_\epsilon \subset V$ and $R_\epsilon \cap F \subset V \cap F = U$.
+\end{proof}
+
+\begin{lem}\label{banach:PrimitiveFollowingMappingSubdivision}Let $R= [a_1, b_1] \times \cdots \times [a_d, b_d]$ be a closed rectangle in $\reals^d$ and let $\lbrace U_\alpha \rbrace$ be an open covering of $R$.    There exists finite sequences $a_1 = s^1_0 < s^1_1 < \cdots < s^1_{n_1 + 1} = b_1, \dots, a_d = s^d_0 < s^d_1 < \cdots < s^d_{n_d + 1} = b_d$ such that for every $0 \leq i_j \leq n_j$ for $1\leq j \leq d$ the rectangle $[s^1_{i_1}, s^1_{i_i+1}] \times \cdots \times [s^d_{i_d}, s^d_{i_d+1}]$ is contained in some $U_\alpha$.   
+\end{lem}
+\begin{proof}
+  Let $r = \sqrt{(b_1 - a_1)^2 + \cdots + (b_d-a_d)^2}$ so that $R$ is contained in the open ball of radius $r$ centered at the midpoint of $R$.   Dyadically subdivide the rectangle.   That is to say, for $n > 0$ subdivide each side $1 \leq j \leq d$ of the rectangle into $2^n$ equally sized parts of length $(b_j-a_j)/2^n$ : $s^j_{i,n} = a_j + i(b_j-a_j)/2^n$ for $0 \leq i \leq 2^n$.   Arguing by contradiction, suppose that for every $n > 0$ there exists a dyadic rectangle that is not contained in any of the $\lbrace U_\alpha \rbrace$.   Let that rectangle be $R_n = [s^1_{i_1,n}, s^1_{i_1+1,n}] \times \cdots \times [s^d_{i_d,n}, s^d_{i_d+1,n}]$; let $x_n$ be the center of $R_n$ and note that $R_n \subset B(x_n, r/2^n) \cap R$.   By the Heine-Borel Theorem \ref{HeineBorel} we know that $R$ is compact and therefore the exists a convergent subsequence of $x_n$.   Let $x \in R$ be the limit of the convergent subsequence.
+
+  Let $\epsilon>0$ be given and pick $n$ sufficiently large such that $\abs{x_n - x} < \epsilon/2$ and $r < \epsilon 2^{n-1}$; then by the triangle inequality $B(x_n, r/2^n) \subset  B(x, \epsilon)$.   It follows that $R_n \subset B(x_n, r/2^n) \cap R \subset B(x, \epsilon) \cap R$ which shows that $B(x, \epsilon) \cap R$ is not contained in any $\lbrace U_\alpha \rbrace$.   Since $\epsilon>0$ was arbitrary this contradicts the fact the  $\lbrace U_\alpha \rbrace$ are an open subcover of $R$.
+\end{proof}
+
+\begin{lem}\label{banach:PrimitiveFollowingMappingThickening}Let $R= [a_1, b_1] \times \cdots \times [a_d, b_d]$ be a closed rectangle in $\reals^d$ and let $a_1 = s^1_0 < s^1_1 < \cdots < s^1_{n_1 + 1} = b_1, \dots, a_d = s^d_0 < s^d_1 < \cdots < s^d_{n_d + 1} = b_d$ be finite partitions such that for every $0 \leq i_j \leq n_j$ for $1\leq j \leq d$ the rectangle $R_{i_1, \dots, i_d} = [s^1_{i_1}, s^1_{i_i+1}] \times \cdots \times [s^d_{i_d}, s^d_{i_d+1}]$ is contained in a relatively open set $U_{i_1, \dots, i_d}$ in $R$.   There exists an $\epsilon>0$ such that the thickening $R_{i_1, \dots, i_d, \epsilon} = [s^1_{i_1}  - \epsilon, s^1_{i_i+1}+\epsilon] \times \cdots \times [s^d_{i_d} - \epsilon, s^d_{i_d+1} + \epsilon] \cap R$ is contained in $U_{i_1, \dots, i_d}$.   Morever $R_{i_1, \dots, i_d, \epsilon}  \cap R_{j_1, \dots, j_d, \epsilon} =\emptyset$ whenever there exists $1 \leq k \leq d$ such that $\abs{i_k, j_k} \geq 2$.
+\end{lem}
+\begin{proof}
+  Let $\mathcal{I} = \lbrace (i_1, \dots, i_d) \mid 0 \leq i_j \leq n_j \rbrace$.   Now for each $I \in \mathcal{I}$ with $I = (i_1, \dots, i_d)$, let $R_I = [s^1_{i_1}, s^1_{i_i+1}] \times \cdots \times [s^d_{i_d}, s^d_{i_d+1}]$ be a rectangle and select a particular open neighborhood $U_\alpha$ and call it $U_I$ (so $R_I \subset U_I$).  Apply Lemma \ref{banach:EuclideanRectangleThickening} to each $R_I$ to get an $\epsilon_I > 0$ such that the thickening $R_{I, \epsilon_I} \subset U_I$.   Also let $0 < M = \min_{1 \leq j \leq d} \min_{0 \leq i \leq n_i} (s^j_{i+1} - s^j_i)$ be the minimum distance between adjacent partition element on any of the axes.  Let $\epsilon = \min_{I \in \mathcal{I}} \epsilon_I \wedge M/2$.   For each $I \in \mathcal{I}$, $R_{I, \epsilon} \subset R_{I, \epsilon_I} \subset U_I$.
+
+  Suppose that $I, J \in \mathcal{I}$ and there exists $1 \leq k \leq d$ such that $i_k +2 \leq j_k$.   If $x \in R_{I, \epsilon_I}$ and $x \in R_{J, \epsilon_J}$ then
+  \begin{align*}
+    \norm{x - y} &\geq \abs{x_k - y_k} \geq \abs{(s_{j_k} - \epsilon) - (s_{i_k} + \epsilon)} \geq 2M - 2\epsilon \geq M > 0
+  \end{align*}
+  and therefore $R_{I, \epsilon_I} \cap R_{J, \epsilon_J} = \emptyset$.
+\end{proof}
+
+\begin{defn}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$ and suppose $\gamma : [a,b] \to U$ is continuous.   A \emph{holomorphic primitive along $\gamma$} is a continuous function $\lambda : [a,b] \to X$ such that for every $a \leq t \leq b$ there exists an open neighborhood $\gamma(t) \in U_t\subset \complexes$, a holomorphic function $F_t : U_t \to X$ and $\epsilon_t > 0$ such that 
+  \begin{itemize}
+  \item[(i)] $F_t^{\prime}(z) = f(z)$ for all  $z \in U_t$
+  \item[(ii)] $F_t(\gamma(s)) = \lambda(s)$ for $s \in (t - \epsilon_t, t + \epsilon_t) \cap [a,b]$.
+  \end{itemize}
+\end{defn}
+
+\begin{prop}\label{banach:HolomorphicPrimitive}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$ and suppose $\gamma : [a,b] \to U$ is continuous.   Then a holomorphic primitive $\lambda$ for $f$ along $\gamma$ exists and is unique up to the addition of a constant.
+  Moreover, if $\gamma$ is piecewise smooth, we also know that
+  \begin{align*}
+    \oint_{\gamma} f &= \lambda(b) - \lambda(a)
+  \end{align*}
+\end{prop}
+\begin{proof}
+  By Lemma \ref{banach:LocalHolomorphicPrimitive} we know that for every $a \leq t \leq b$ there exists an open neighborhood $\gamma(t) \in U_t$ and a holomorphic function $\tilde{F}_t : U \to X$ such that $\tilde{F}^\prime_t = f$ on $U_t$.   By continuity of $\gamma$ we know that $\gamma^{-1}(U_t)$ is an open set containing $t$ (e.g. Lemma \ref{ContinuousPreImageOfOpenSet}).   Apply Lemma \ref{banach:PrimitiveFollowingMappingSubdivision} to the open cover $\gamma^{-1}(U_t)$ and get a sequence $a=t_0 < t_1 < \dotsc < t_{n+1} =b$ such that $[t_j, t_{j+1}] \subset \gamma^{-1}(U_t)$ for some $a \leq t \leq b$.   For each $0 \leq j \leq n$ pick such an open set and call it $U_j$ so that $\gamma([t_j, t_{j+1}] \subset U_{j}$.  Also let $\tilde{F}_j$ be the corresponding primitive of $f$ so that $\tilde{F}^\prime_j (z) = f(z)$ for every $z \in U_j$.   Now apply Lemma \ref{banach:PrimitiveFollowingMappingThickening} to get an $\epsilon > 0$ such that $(t_j - \epsilon, t_j + \epsilon) \cap [a,b] \subset \gamma^{-1}(U_j)$ for all $0 \leq j \leq n$.
+
+  We now use the constructed $t_i$ to define $\lambda$ and $F_{t}$ by induction over the intervals $[t_j, t_{j+1}]$.
+ We begin by defining
+$F_{0} =  \tilde{F}_{a}$  and for $a=t_0 \leq t \leq t_1$ define $U_t = U_{0}$ and $F_t = F_0$.   For $a=t_0 \leq t < t_1 + \epsilon$ define
+$\lambda(t) = F_0(\gamma(t))$ (this is a valid definition because $\gamma([t_0, t_1+\epsilon) ) \subset U_0$).  By construction for all
+$F^\prime_{t} (z) = F^\prime_{0} (z) = f(z)$ for all $z \in U_t = U_0$.  Moreover, if $a=t_0 \leq t \leq t_1$ then $(t - \epsilon, t + \epsilon) \cap [a,b] \subset [t_0, t_1 + \epsilon)$
+and it follows by definition of $\lambda$ that $F_t(\gamma(s)) = \lambda(s)$ for all $s \in (t - \epsilon, t + \epsilon) \cap [a,b]$.
+Since by assumption $\gamma$ is continuous and, as a holomorphic function, $F_{0}$ is continuous it follows that $\lambda$ is continuous on $[t_0, t_1+\epsilon)$.
+
+  For the induction step, assume that for $(s,t) \in R_{i,0} \cup \dotsc \cup R_{i, j-1} = [s_i, s_{i+1}] \times [t_0, t_j]$ we have defined $\overline{F}_{s,t}$  and $U_{s,t}$ such that (i) holds.  Also assume that $\lambda_i$ has been defined on $R_{i,0,\epsilon} \cup \dotsc \cup R_{i,j-1, \epsilon}$ such that (ii) holds for all $(s,t) \in R_{i,0} \cup \dotsc \cup R_{i, j-1} = [s_i, s_{i+1}] \times [t_0, t_j]$.   In addition we assume that there exist open sets $U_{i,0}, \dots, U_{i, j-1}$ and holomorphic functions $\overline{F}_{i,0}, \dots, \overline{F}_{i, j-1}$ such that $U^i_{s,t} = U_{i,k}$ and $\overline{F}_{s,t} = \overline{F}_{i, k}$ for $(s,t) \in [s_i, s_{i+1}] \times [t_k, t_{k+1}]$.   TODO: Disambiguate the definition at the points $t_k$.   Now, consider the rectangle $R_{i, j}$.  We know that $\gamma(R_{i,j}) \subset U_{i,j}$ and we have primitive $\tilde{F}_{i,j}$ on $U_{i,j}$.   We know that $\gamma(s_i, t_j) \in U_{i,j-1} \cap U_{i,j}$ and therefore $U_{i,j-1} \cap U_{i,j} \neq \emptyset$.   Furthermore we know from above that since $U_{i,j-1}$ and $U_{i,j}$ are disks hence $U_{i,j-1} \cap U_{i,j}$ is connected.   We know that $\overline{F}_{i, j-1}$ and $\tilde{F}_{i,j}$ are holomorphic on $U_{i,j-1} \cap U_{i,j}$ and $\left(\overline{F}_{i, j-1} - \tilde{F}_{i,j}\right)^\prime = f - f = 0$ hence by TODO: we know that there exists $c \in X$ such that $\overline{F}_{i, j-1} - \tilde{F}_{i,j} = c$ on $U_{i,j-1} \cap U_{i,j}$.   Define $\overline{F}_{i,j} = \tilde{F}_{i,j} + c$ on $U_{i,j}$ so that $\overline{F}_{i, j-1} = \overline{F}_{i,j}$ on $U_{i,j-1} \cap U_{i,j}$.   For $(s,t) \in  [s_i, s_{i+1}]  \times (t_j, t_{j+1}]$, define $U^i_{s,t} = U_{i,j}$ and $\overline{F}_{s,t} = \overline{F}_{i,j}$.   By construction (i) holds on $R_{i,0} \cup \dotsc \cup R_{i, j}$.   Now we need to extend the definition of $\lambda_i$.   On $R_{i,j,\epsilon}$, define $\lambda_i(s,t) = \overline{F}_{i,j}(\gamma(s,t)$.   Arguing as above, it is clear that as a composition of continuous functions, $\lambda_i$ is continuous on $R_{i,j,\epsilon}$.   The first issue we have to resolve is that this definition does not conflict with the previous definiton of $\lambda_i$.   In particular, by the induction hypothesis $\lambda_i(s,t) = \overline{F}_{i,j-1}(\gamma(s,t))$ on $R_{i,j-1,\epsilon}$, so we need to make sure that the new definition agrees with the old one on $R_{i,j-1,\epsilon} \cap R_{i,j,\epsilon}$.   This follows because $\gamma(R_{i,j-1,\epsilon}\cap R_{i,j,\epsilon}) \subset U_{i,j-1} \cap U_{i,j}$ and we have defined $\overline{F}_{i,j}$ so that it equals $\overline{F}_{i,j-1}$ on $U_{i,j-1} \cap U_{i,j}$.   If $j>1$, then we observe that by Lemma \ref{banach:PrimitiveFollowingMappingThickening} $R_{i,k,\epsilon}\cap R_{i,j,\epsilon} = \emptyset$ for all $k \leq j-2$ and so there is no possible conflict from those parts of the domain of $\lambda_i$.
+
+  BEGIN REMOVE
+  Therefore for each $a < t < b$ there exists an open interval $I_t = (t - \epsilon_t, t + \epsilon_t) \subset \gamma^{-1}(U_t)$ as well as relatively open intervals $I_a = [a, a+\epsilon_a) \subset \gamma^{-1}(U_a)$ $I_a = (b - \epsilon_b, b] \subset \gamma^{-1}(U_b)$.  The $I_t$ are an open cover of $[a,b]$ by open intervals.   By the Heine-Borel Theorem \ref{HeineBorel} we know that $[a,b]$ is compact hence there exists a finite subcover $I_{t_0}, I_{t_1}, \dotsc , I_{t_{n+1}}$  of the covering by $I_t$ where can assume indexing is such that $a=t_0 < t_1 < \dotsc < t_{n+1} = b$.   Note also that by dropping as many of the $I_{t_1}, \dotsc , I_{t_{n}}$ as needed, we may assume that no interval in the covering is contained in any other.
+  \begin{clm} $I_{t_i} \cap I_{t_{i+1}} \neq \emptyset$ for $0 \leq i \leq n$.
+  \end{clm}
+  To see the claim argue by contradiction picking a $t_i + \epsilon_{t_i} < t < t_{i+1} - \epsilon_{t_{i+1}}$.   Because $I_{t_0}, I_{t_1}, \dotsc , I_{t_{n+1}}$  are a cover, there would be $t_j$ with $j < i$ or $j > i+1$ such that $t \in I_{t_j}$.   Suppose that $j < i$ then we would have the inequalities $t_j < t_i < t_i + \epsilon_{t_i} < t < t_j + \epsilon_{t_j}$  which shows us that $\epsilon_{t_i} < \epsilon_{t_j}$ and therefore $t_j - \epsilon_{t_j} < t_i - \epsilon_{t_i}< t_i + \epsilon_{t_i}< t_j + \epsilon_{t_j}$ which is a contradiction.   A similar argument works for the case of $j > i+1$.
+
+By the above claim we can define $s_0 = a$, $s_{n+1} = b$ and for $1 \leq i \leq n$ pick an $s_i$ such that $t_{i-1} \vee t_i - \epsilon_{t_i} < s_i < t_{i-1} + \epsilon_{t_{i-1}} \wedge t_i$.  It follows from the construction that $a = s_0 < s_1 < \cdots < s_n < s_{n+1} = b$ and $[s_i, s_{i+1}] \subset I_{t_i}$.   We therefore have $\gamma([s_i, s_{i+1}]) \subset U_{t_i}$.
+
+TODO: The above argument constructing the $s_0 < s_1 < \dotsc < s_{n+1}$ is more finicky than anything I've seen in a book; all of then seem to think this doesn't require any argument at all once you get a finite subcover.   Am I just stupid?
+
+
+We now use the constructed $s_i$ to define $\lambda$, $U_t$, $\epsilon_t$ and $F_{t}$ by induction.   Define $F_{0} =  \tilde{F}_{a}$  and for $a=s_0 \leq s \leq s_1$ define $U_s = U_a = U_{t_0}$, $\epsilon_s = \epsilon_{t_0} - s + t_0$ and $F_s = F_0$.   For $a=s_0 \leq s < t_0 + \epsilon_{t_0}$ define $\lambda(s) = F_0(\gamma(s))$.  Observe that by construction for all $F^\prime_{0} (z) = f(z)$ for all $z \in U_{a}$.  Moreover, if $a=s_0 \leq s \leq s_1$ and $u \in (s - \epsilon_s, s + \epsilon_s) \cap [a,b]$ we have $a \leq u < s + \epsilon_s = t_0 + \epsilon_{t_0}$ and therefore $u \in I_{t_0}$ and it follows that $F_s(\gamma(u)) = \lambda(u)$.
+
+For the induction step, suppose $F_{j-1}$ has been defined and $U_s$, $\epsilon_s$ and $F_{s}$ are defined for  $s_{j-1} < s \leq  s_j$ by
+$U_s = U_{t_{j-1}}$,  $F_s = F_{j-1}$ and $\epsilon_s = \epsilon_{t_{j-1}} - \abs{t_{j-1}-s}$.  Moreover suppose that $\lambda$ has been defined for $[s_{j-1} \leq s \leq  t_{j}+ \epsilon_{t_j})$ by $\lambda(s) = F_{j-1}(\gamma(s))$ and that these definitions satisfy the conditions of the theorem for $[s_0, s_j]$.   We now extend the definitions on the interval $[s_j, s_{j+1}]$.   Note that $U_{t_{j-1}} \cap U_{t_{j}} \neq \emptyset$ (because $\gamma(s_{j}) \in U_{t_{j-1}} \cap U_{t_{j}}$).   Moreover since both $U_{t_{j-1}}$ and $U_{t_{j}}$ are disks the intersection is connected (see below).   Since $F^\prime_{j-1} = \tilde{F}^\prime_{t_{j}} = f$ on $U_{t_{j-1}} \cap U_{t_{j}}$ it follows from TODO: that there exists a constant $c \in X$ such that $F_{j-1} = \tilde{F}_{t_{j}} + c$ on $U_{t_{j-1}} \cap U_{t_{j}}$.   Define $F_{j} = \tilde{F}_{t_{j}} + c$ and for $s_j < s \leq  s_{j+1}$ define $U_s = U_{t_j}$, $\epsilon_s = \epsilon_{t_j} - \abs{t_j - s}$ and $F_s = F_j$.   For  $s_j\leq s < t_{j} + \epsilon_{t_{j}}$ define $\lambda(s) = F_{j}(\gamma(s))$.   Note that we have assumed that $\lambda$ is already defined as $\lambda(s) = F_{j-1}(\gamma(s))$ on $[s_j, t_{j-1} + \epsilon_{t_{j-1}})$, so the first thing to check is that the new definition $\lambda$ agrees with the existing one on that interval.   This will follow if we can show $\gamma([s_j, t_{j-1} + \epsilon_{t_{j-1}})) \subset U_{t_{j-1}} \cap U_{t_{j}}$ because by construction $F_{j-1} = F_j$ on that intersection.  By construction $s_j \in I_{t_{j-1}} \cap I_{t_{j}}$ and that shows $[s_j, t_{j-1} + \epsilon_{t_{j-1}}) \subset I_{t_{j-1}}$ hence $\gamma([s_j, t_{j-1} + \epsilon_{t_{j-1}})) \subset U_{t_{j-1}}$.   We also know that $t_{j-1} + \epsilon_{t_{j-1}} \leq t_{j} + \epsilon_{t_{j}}$ since otherwise, $\epsilon_{t_{j}} < t_{j-1} + \epsilon_{t_{j-1}}  - t_{j} < \epsilon_{t_{j-1}}$ which would imply $t_{j} - \epsilon_{t_{j}} > t_{j-1} - \epsilon_{t_{j-1}}$ and thus $I_{t_{j}} \subset I_{t_{j-1}}$ which is a contradiction.   Note that this argument also shows that $\lambda(s) = F_j(s)$ for any $s \in I{t_j}$.
+
+To see that this definition satisfies the conclusions of the theorem, suppose $s_{j} < s \leq s_{j+1}$ then $U_s = U_{t_j}$ and $F_s = F_{j} = \tilde{F}_{t_{j}} + c$ and therefore (i) holds.   To see
+(ii), note that by choice of $\epsilon_s$, $(s - \epsilon_s, s + \epsilon_s) \subset I_{t_j}$.   As observed above $\lambda(s) = F_j(s)$ for any $s \in I{t_j}$ and (ii) follows.
+
+TODO: Make modifications to account for the final step in the induction when we hit the right endpoint.
+END REMOVE
+
+
+Next we show the uniqueness of $\lambda$ up to an additive constant.   Suppose $\lambda_1$ and $\lambda_2$ are two continuous functions satisfying the conclusion of the result.   There exist open disks $U_1$ and $U_2$ of $\gamma(a)$ and holomorphic functions $F_1 : U_1 \to X$ and $F_2 : U_2 \to X$ such that $F_1^\prime = F_2^\prime = f$ on $U_1 \cap U_2$ and $F_1(\gamma(a)) = \lambda_1(a)$ and $F_2(\gamma(a)= \lambda_2(a)$.   Since we know that $F_1 - F_2$ is constant on $U_1 \cap U_2$, by redefining $\lambda_2$ and $F_2$ by adding a constant we may assume that $\lambda_1$ and $\lambda_2$ agree on a relatively open neighborhood of $a$.   We want to show that $\lambda_1$ is equal to $\lambda_2$ on the entirety of $[a,b]$.  
+
+TODO: Move this to an exercise.
+\begin{clm}Intersection of two disks in a normed vector space is connected.
+\end{clm}
+It suffices to show that a ball contains the line segment containing any two points in the ball.  This follows from the following computation which is valid in any normed vector space $0 \leq t \leq 1$,
+\begin{align*}
+  \norm{tz + (1-t) w - x} &\leq \norm{tz - tx + (1-t) w - (1-t) x} \\
+  &\leq t \norm{z - x}  + (1-t)\norm{w - x}  \leq \norm{z - x} \vee \norm{w - x}
+\end{align*}
+\end{proof}
+
+It is important to note that the existence of holomorphic primitives along a curve applies to general continuous (not necessarily piecewise smooth) $\gamma : [a,b] \to U$.
+The uniqueness up to additive constant of holomorphic primitive $\lambda$ along a curve shows that that the value $\lambda(b) - \lambda(a)$ depends only on the underlying $\gamma$.   Lastly Proposition \ref{banach:HolomorphicPrimitive} shows that the following definition is consistent with our original definition of contour integrals for piecewise smooth $\gamma$.
+
+\begin{defn}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$ and suppose $\gamma : [a,b] \to U$ is continuous.   We define the contour integral
+  \begin{align*}
+    \oint_{\gamma} f &= \lambda(b) - \lambda(a)
+  \end{align*}
+  where $\lambda$ is a holomorphic primitive along $\gamma$.
+\end{defn}
+
+\begin{prop}\label{banach:HolomorphicPrimitiveOnRectangle}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$ and suppose $\gamma : [a,b] \times [c,d] \to U$ is continuous.   There exists a continuous function $\lambda : [a,b] \times [c,d] \to X$ unique up to addition by a constant and an $\epsilon>0$ such that for every $a \leq s \leq b$,  $c \leq t \leq d$ there exists an open neighborhood $\gamma(s,t) \in U_{s,t}\subset \complexes$ and a holomorphic function $F_{s,t} : U_{s,t} \to X$ such that 
+  \begin{itemize}
+  \item[(i)] $F_{s,t}^{\prime}(z) = f(z)$ for all  $z \in U_{s,t}$
+  \item[(ii)] $\gamma((s - \epsilon, s + \epsilon) \times (t - \epsilon,    t+\epsilon) \cap [a,b] \times [c,d]) \subset U_{s,t}$ 
+  \item[(iii)] $F_{s,t}(\gamma(u,v)) = \lambda(s,t)$ for $u \in (s - \epsilon, s + \epsilon) \cap [a,b]$ and $v \in (t - \epsilon, t + \epsilon) \cap [c,d]$ .
+  \end{itemize}
+\end{prop}
+\begin{proof}
+  By Lemma \ref{banach:LocalHolomorphicPrimitive} we know that for every $(s,t) \in [a,b] \times [c,d]$ there exists an open neighborhood $\gamma(s,t) \in U_{s,t}$ and a holomorphic function $\tilde{F}_{s,t} : U_{s,t} \to X$ such that $\tilde{F}^\prime_{s,t} = f$ on $U_{s,t}$.   By continuity of $\gamma$ we know that $\gamma^{-1}(U_{s,t})$ is an open set containing $(s,t)$ (e.g. Lemma \ref{ContinuousPreImageOfOpenSet}).   Apply Lemma \ref{banach:PrimitiveFollowingMappingSubdivision} to the open cover $\gamma^{-1}(U_{s,t})$ and get a sequence $a=s_0 < s_1 < \dotsc < s_{n+1} =b$ and a sequence $c=t_0 < t_1 < \dotsc < t_{m+1} =d$ such that $R_{i,j} = [s_i, s_{i+1}] \times [t_j, t_{j+1}] \subset \gamma^{-1}(U_{s,t})$ for some $(s,t) \in [a,b] \times [c,d]$.  For simplicity, denote that set $U_{i,j}$ so that $\gamma([s_i, s_{i+1}] \times [t_j, t_{j+1}]) \subset U_{i,j}$.  Also denote the corresponding primitive as $\tilde{F}_{i,j}$.    Next apply Lemma \ref{banach:PrimitiveFollowingMappingThickening} to get an $\epsilon>0$ such that $R_{i,j, \epsilon} = [s_i-\epsilon, s_{i+1}+ \epsilon] \times [t_j - \epsilon, t_{j+1}+\epsilon] \cap [a,b] \times [c,d] \subset \gamma^{-1}(U_{i,j})$ for all $0 \leq i \leq n$ and $0 \leq j \leq m$.  
+
+  \begin{clm}For each $0 \leq i \leq n$ there exist holomorphic functions $\overline{F}_{i,j} : U_{i,j} \to X$ and a continuous function $\lambda_i : R_{i,0,\epsilon} \cup \dotsc \cup R_{i,m,\epsilon} \to X$ such that if we define
+    \begin{align*}
+      \overline{F}_{s,t} &= \begin{cases}
+        \overline{F}_{i,0} & \text{ for  $(s,t) \in [s_i, s_{i+1}] \times [t_0, t_1]$} \\
+        \overline{F}_{i,j} & \text{ for $1 \leq j \leq m$ and  $(s,t) \in [s_i, s_{i+1}] \times (t_j, t_{j+1}]$} \\
+        \end{cases} \\
+      U^i_{s,t} &= \begin{cases}
+        U_{i,0} & \text{ for  $(s,t) \in [s_i, s_{i+1}] \times [t_0, t_1]$} \\
+        U_{i,j} & \text{ for $1 \leq j \leq m$ and  $(s,t) \in [s_i, s_{i+1}] \times (t_j, t_{j+1}]$} \\
+      \end{cases}
+    \end{align*}
+then for all $(s,t) \in [s_i, s_{i+1}] \times [c,d]$,     
+  \begin{itemize}
+  \item[(i)] $\overline{F}_{s,t}^{\prime}(z) = f(z)$ for all  $z \in U^i_{s,t}$
+  \item[(ii)] $\overline{F}_{s,t}(\gamma(u,v)) = \lambda_i(s,t)$ for $u \in (s - \epsilon, s + \epsilon) \cap [a,b]$ and $v \in (t - \epsilon, t + \epsilon) \cap [c,d]$ .
+  \end{itemize}
+ \end{clm}
+  To prove the claim, we perform a construction analogous to that in Proposition \ref{banach:HolomorphicPrimitive} on each strip $[s_i, s_{i+1}] \times [c,d]$.   To begin define $\overline{F}_{i,0} = \tilde{F}_{i,0}$ so it is holomorphic on $U_{i,0}$ and $\overline{F}^\prime_{i,0} = f$ on $U_{i,0}$.   For $(s,t) \in R_{i,0}$, define $\overline{F}_{s,t} = \overline{F}_{i,0}$ and $U_{s,t} = U_{u,0}$.   As noted, (i) holds for such $(s,t)$.  For $(s,t) \in R_{i, 0, \epsilon}$, define $\lambda_i(s,t) = F_{i,0}(\gamma(s,t))$.   For $(s,t) \in R_{i,0}$ we have for any $(s,t) \in R_{i,0}$ and $u \in (s - \epsilon, s + \epsilon) \cap [a,b]$ and $v \in (t - \epsilon, t + \epsilon) \cap [c,d]$, $(u,v) \in R_{i,0, \epsilon}$ hence $]\lambda_i(u,v) = \overline{F}_{i,0}(\gamma(u,v))$ by definition.   Since by assumption $\gamma$ is continuous and as a holomorphic function $\overline{F}_{i,0}$ is continuous it follows that $\lambda_i$ is continuous on $R_{i,0, \epsilon}$.
+  For the induction step, assume that for $(s,t) \in R_{i,0} \cup \dotsc \cup R_{i, j-1} = [s_i, s_{i+1}] \times [t_0, t_j]$ we have defined $\overline{F}_{s,t}$  and $U_{s,t}$ such that (i) holds.  Also assume that $\lambda_i$ has been defined on $R_{i,0,\epsilon} \cup \dotsc \cup R_{i,j-1, \epsilon}$ such that (ii) holds for all $(s,t) \in R_{i,0} \cup \dotsc \cup R_{i, j-1} = [s_i, s_{i+1}] \times [t_0, t_j]$.   In addition we assume that there exist open sets $U_{i,0}, \dots, U_{i, j-1}$ and holomorphic functions $\overline{F}_{i,0}, \dots, \overline{F}_{i, j-1}$ such that $U^i_{s,t} = U_{i,k}$ and $\overline{F}_{s,t} = \overline{F}_{i, k}$ for $(s,t) \in [s_i, s_{i+1}] \times [t_k, t_{k+1}]$.   TODO: Disambiguate the definition at the points $t_k$.   Now, consider the rectangle $R_{i, j}$.  We know that $\gamma(R_{i,j}) \subset U_{i,j}$ and we have primitive $\tilde{F}_{i,j}$ on $U_{i,j}$.   We know that $\gamma(s_i, t_j) \in U_{i,j-1} \cap U_{i,j}$ and therefore $U_{i,j-1} \cap U_{i,j} \neq \emptyset$.   Furthermore we know from above that since $U_{i,j-1}$ and $U_{i,j}$ are disks hence $U_{i,j-1} \cap U_{i,j}$ is connected.   We know that $\overline{F}_{i, j-1}$ and $\tilde{F}_{i,j}$ are holomorphic on $U_{i,j-1} \cap U_{i,j}$ and $\left(\overline{F}_{i, j-1} - \tilde{F}_{i,j}\right)^\prime = f - f = 0$ hence by TODO: we know that there exists $c \in X$ such that $\overline{F}_{i, j-1} - \tilde{F}_{i,j} = c$ on $U_{i,j-1} \cap U_{i,j}$.   Define $\overline{F}_{i,j} = \tilde{F}_{i,j} + c$ on $U_{i,j}$ so that $\overline{F}_{i, j-1} = \overline{F}_{i,j}$ on $U_{i,j-1} \cap U_{i,j}$.   For $(s,t) \in  [s_i, s_{i+1}]  \times (t_j, t_{j+1}]$, define $U^i_{s,t} = U_{i,j}$ and $\overline{F}_{s,t} = \overline{F}_{i,j}$.   By construction (i) holds on $R_{i,0} \cup \dotsc \cup R_{i, j}$.   Now we need to extend the definition of $\lambda_i$.   On $R_{i,j,\epsilon}$, define $\lambda_i(s,t) = \overline{F}_{i,j}(\gamma(s,t)$.   Arguing as above, it is clear that as a composition of continuous functions, $\lambda_i$ is continuous on $R_{i,j,\epsilon}$.   The first issue we have to resolve is that this definition does not conflict with the previous definiton of $\lambda_i$.   In particular, by the induction hypothesis $\lambda_i(s,t) = \overline{F}_{i,j-1}(\gamma(s,t))$ on $R_{i,j-1,\epsilon}$, so we need to make sure that the new definition agrees with the old one on $R_{i,j-1,\epsilon} \cap R_{i,j,\epsilon}$.   This follows because $\gamma(R_{i,j-1,\epsilon}\cap R_{i,j,\epsilon}) \subset U_{i,j-1} \cap U_{i,j}$ and we have defined $\overline{F}_{i,j}$ so that it equals $\overline{F}_{i,j-1}$ on $U_{i,j-1} \cap U_{i,j}$.   If $j>1$, then we observe that by Lemma \ref{banach:PrimitiveFollowingMappingThickening} $R_{i,k,\epsilon}\cap R_{i,j,\epsilon} = \emptyset$ for all $k \leq j-2$ and so there is no possible conflict from those parts of the domain of $\lambda_i$.
+
+Having defined the $\lambda_i$ and the $\overline{F}_{s,t}$ on strips, we need to match them up to get a single definition over the entire rectangle.   Another induction argument is required.   To begin the induction, define $\lambda$ on $[s_0, s_1+\epsilon) \times [c,d]$ to be equal to $\lambda_0$.  Furthermore for $(s,t) \in [s_0, s_1] \times [c,d]$ define $F_{s,t} = \overline{F}_{s,t}$.   Then $\lambda$ is continuous, $F_{s,t}$ is holomorphic, $F^\prime_{s,t} = f$ on $U_{s,t}$ and $F_{s,t}(\gamma(u,v)) = \lambda(u,v)$ for $(u,v) \in (s - \epsilon, s + \epsilon) \times (t - \epsilon, t + \epsilon) \cap [a,b] \times [c,d]$.
+  
+  For the induction step, assume that $\lambda$ is defined and continuous on $[s_0, s_i+\epsilon) \times [c,d]$.
+  \begin{clm}There exists a constant $C \in X$ such that $\lambda(s, t) = \lambda_i(s, t)+C$ for all $(s,t) \in (s_i-\epsilon, s_i + \epsilon) \times [c,d]$.
+  \end{clm}
+  By the induction hypothesis, for every $c \leq t \leq d$ we have an
+  open set $U_{s_i, t}$ and a holomorphic function $F_{s_i,t} : U_{s_i,t} \to X$ such that
+  \begin{itemize}
+  \item[(i)] $F^\prime_{s_i,t}(z) = f(z)$ for all  $z \in U_{s_i,t}$
+  \item[(ii)] $\gamma((s_i - \epsilon, s_i+ \epsilon) \times (t - \epsilon,    t+\epsilon)) \subset U_{s_i,t}$ 
+  \item[(iii)]  $\lambda(u,v) = F_{s_i,t}(\gamma(u,v))$  for all $(u,v) \in    (s_i - \epsilon, s_i+ \epsilon) \times (t - \epsilon,  t+\epsilon)$
+  \end{itemize}
+ In addition by the construction on strip $[s_i,s_{i+1}] \times [c,d]$, there is an open set $U^i_{s_i,t}$ and a holomorphic function $\overline{F}_{s_i,t} :
+ U^i_{s_i,t} \to X$ such that
+ \begin{itemize}
+ \item[(i)]$\gamma(s_i,t) \in U^i_{s_i,t}$
+ \item[(ii)] $\lambda_i(u,v) = \overline{F}_{s_i,t}(\gamma(u,v))$ for all $(u,v) \in (s_i - \epsilon, s_i + \epsilon, t-\epsilon, t+ \epsilon)$
+ \item[(iii)] $\overline{F}^\prime_{s_i,t}(z) = f(z)$ for all  $z \in U^i_{s_i,t}$
+ \end{itemize}
+ Since $(s_i,t) \in (s_i - \epsilon, s_i+ \epsilon) \times (t - \epsilon, t+\epsilon)$
+  we know that $U_{s_i,t} \cap U^i_{s_i,t} \neq \emptyset$ and $F^\prime_{s_i,t} - \overline{F}^\prime_{s_i,t} = 0$ on $U_{s_i,t} \cap U^i_{s_i,t}$ which is connected so $F_{s_i,t} - \overline{F}_{s_i,t}$ is constant on $U_{s_i,t} \cap U^i_{s_i,t}$.   This implies that $\lambda - \lambda_i = \left(F_{s_i,t} - \overline{F}_{s_i,t}\right) \circ \gamma$ is locally constant on $(s_i-\epsilon, s_i + \epsilon) \times [c,d]$.  Since $ (s_i-\epsilon, s_i + \epsilon) \times [c,d]$ is connected and $\lambda- \lambda_i$ is continuous, this implies $\lambda - \lambda_i$ is constant on $(s_i - \epsilon, s_i + \epsilon) \times [c,d]$.
+  
+  Define $\lambda : [s_0, s_{i+1}+\epsilon) \times [c,d]$ by 
+  \begin{align*}
+    \lambda(s,t) &= \begin{cases}
+      \lambda(s,t) & \text{for $s_0 \leq s \leq s_i$} \\
+      \lambda_i(s,t) + C & \text{for $s_i < s \leq s_{i+1}+\epsilon$}
+      \end{cases}
+  \end{align*}
+  By the previous claim, this definition is consistent with the existing definition of $\lambda$ on the shared domain $(s_i-\epsilon, s_i + \epsilon) \times [c,d]$
+  and moreover since $\lambda$ and $\lambda_i$ are equal on $\lbrace s_i \rbrace \times [c,d]$ it follows that $\lambda$ is continuous.
+  For $(s,t) \in (s_i,s_{i+1}] \times [c,d]$ define $U_{s,t} =  U^i_{s,t}$ and $F_{s,t} = \overline{F}_{s,t}+C$.   By the construction on strips, $\gamma((s - \epsilon, s + \epsilon) \times (t - \epsilon, t+\epsilon) \cap [a,b] \times [c,d]) \subset U_{s,t}$ and $F_{s,t}$ is holomorphic on $U_{s,t}$.  Since $\overline{F}_{s,t}(\gamma(u,v)) = \lambda_i(u,v)$ for every $(u,v) \in (s - \epsilon, s+\epsilon) \times (t - \epsilon, t+ \epsilon) \cap [a,b] \times [c,d]$ and $\lambda(u,v) = \lambda_i(u,v)$ for every $(u,v) \in (s_i-\epsilon, s_i + \epsilon) \times [c,d]$ we see that $F_{s,t}(\gamma(u,v)) = \lambda(u,v)$ for every $(u,v) \in (s_i-\epsilon, s_i + \epsilon) \times [c,d]$.
+\end{proof}
+
+\begin{thm}\label{banach:ContourIntegralHomotopyTheorem}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$ and let  $\gamma_0 : [a,b] \to U$ and $\gamma_1: [a,b] \to U$ be continuous homotopic curves, then
+  \begin{align*}
+   \oint_{\gamma_0} f &= \oint_{\gamma_1} f
+  \end{align*}
+\end{thm}
+\begin{proof}
+  Let $H : [a,b] \times [0,1] \to U$ be a homotopy of $\gamma_0$ and
+  $\gamma_1$.   Apply Proposition
+  \ref{banach:HolomorphicPrimitiveOnRectangle} to get continuous $\lambda : [a,b] \times [0,1] \to X$.  As noted in the proof of Proposition \ref{banach:HolomorphicPrimitiveOnRectangle}, $\lambda_s : [a,b] \to X$ defined by $\lambda_s(t) = \lambda(t,s)$ is a holomorphic primitive along $\gamma_s(t) = \gamma(t,s)$ and therefore by definition we have $\oint_{\gamma_0} f = \lambda(b,0) - \lambda(a, 0)$ and $\oint_{\gamma_1} f = \lambda(b,1) - \lambda(a, 1)$.   On the other hand, we also know that $\lambda_a(s) = \lambda(a,s)$ (respectively $\lambda_b(s) = \lambda(b,s)$) is a holomorphic primitive of $f$ along $\gamma_a(s) = H(a,s) = \gamma_0(a) = \gamma_1(a)$ (respectively along $\gamma_b(s) = H(b,s) = \gamma_0(b) = \gamma_1(b)$).   Therefore by Corollary \ref{banach:PointContourIntegralZero}  and definition
+  \begin{align*}
+    0 &= \oint_{\gamma_a} = \lambda_a(1) - \lambda_a(0) = \lambda(a, 1) - \lambda(a, 0) \\
+    0 &= \oint_{\gamma_b} = \lambda_b(1) - \lambda_b(0) = \lambda(b, 1) - \lambda(b, 0) \\
+  \end{align*}
+  which shows
+  \begin{align*}
+    \oint_{\gamma_0} f &= \lambda(b,0) - \lambda(a, 0) = \lambda(b,1) - \lambda(a, 1)  = \oint_{\gamma_1} f
+  \end{align*}
+\end{proof}
+
+\begin{thm}[Cauchy's Theorem]\label{banach:CauchysTheorem}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, let $f: U \to X$ be continuous such that $\oint_\gamma f = 0$ for every rectangle $\gamma$ contained entirely in $U$ and let  $\gamma : [a,b] \to U$ and let $\gamma$ be homotopic to a point in $U$ then
+  \begin{align*}
+   \oint_{\gamma} f &= 0
+  \end{align*}
+\end{thm}
+\begin{proof}
+  By Corollary \ref{banach:PointContourIntegralZero} we have $\oint_{\tilde{\gamma}} f = 0$ for any point contour $\tilde{\gamma}$, so this result follows immediately from Theorem \ref{banach:ContourIntegralHomotopyTheorem}.
+\end{proof}
+
+\begin{defn}Let $U \subset \complexes$ be a open set, $\gamma : [a,b] \to U$ and $z_0 \in U$ such that $z_0$ is not contained in the image of $\gamma$ the we let
+  \begin{align*}
+    I(\gamma, z_0) &= \frac{1}{2\pi i}\oint_\gamma \frac{dz}{z - z_0}
+  \end{align*}
+  denote the \emph{index of $\gamma$ with respect to $z_0$}.
+\end{defn}
+
+\begin{thm}[Cauchy's Integral Formula]\label{banach:CauchysIntegralFormula}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set, let $f: U \to X$ be holomorphic and let  $\gamma : [a,b] \to U$ and let $\gamma$ be homotopic to a point in $U$ then for every $z_0 \in U$ such that $z_0$ is not contained in the image of $\gamma$,
+  \begin{align*}
+   f(z_0) \cdot I(\gamma, z_0) &= \frac{1}{2\pi i} \oint \frac{f(z)}{z - z_0} \, dz
+  \end{align*}
+\end{thm}
+\begin{proof}
+  Define the function
+  \begin{align*}
+    g(z) &= \begin{cases}
+      \frac{f(z) - f(z_0)}{z-z_0} & \text{ for $z \in U \setminus \lbrace z_0 \rbrace$} \\
+      f^\prime(z_0) & \text{ for $z = z_0$}
+    \end{cases}
+  \end{align*}
+  Since $f$ is holomorphic, it follows that $g$ is holomorphic on $U \setminus \lbrace z_0 \rbrace$ (hence continuous on $U \setminus \lbrace z_0 \rbrace$).  Also since $f$ is holomorphic, we know that $\lim_{z \to z_0} g(z) = f^\prime(z_0) = g(z_0)$, so $g$ is continuous on all of $U$.   By the punctured Goursat Lemma \ref{banach:GoursatLemmaPunctured} we conclude that $\oint_R g = 0$ for all rectangles entirely contained in $U$ which in turn allows us to conclude by Cauchy's Theorem \ref{banach:CauchysTheorem} that $\oint_\gamma g = 0$.  Applying the definition of $g$ and the index,
+  \begin{align*}
+    0 &= \oint_\gamma g = \oint_\gamma  \frac{f(z) - f(z_0)}{z-z_0}  \, dz = \oint_\gamma  \frac{f(z)}{z-z_0}  \, dz - \oint_\gamma  \frac{f(z_0)}{z-z_0}  \, dz = \oint_\gamma  \frac{f(z)}{z-z_0}  \, dz - 2 \pi i I(\gamma, z_0)
+  \end{align*}
+  and the result follows.
+\end{proof}
+
+TODO: Show index of a circle equals 1, show that index is always an integer, show every holomorphic function is analytic
+
+We are just about ready to show that every holomorphic function is complex analytic, but we need quick lemma about the convergence of the Neumann series in the complex domain.
+
+\begin{lem}\label{banach:ComplexNeumann}The power series $\sum_{n=0}^\infty z^n$ converges absolutely and uniformly on any disk $\abs{z} \leq \rho < 1$.   For any such $\abs{z} < 1$,
+  \begin{align*}
+    \sum_{n=0}^\infty z^n &= \frac{1}{1 - z}
+  \end{align*}
+\end{lem}
+\begin{proof}
+  With $\rho < 1$ fixed and working in $\sboundedfunctions{\overline{B(0, \rho)}, X}$, we note that the function $\norm{z^n}_\infty \leq \rho^n$ for each $n \geq 0$.   Since $\rho < 1$, we have $\sum_{n=0}^\infty \rho^n < \infty$ and therefore the result follows by the Weierstrass M Test (Theorem \ref{banach:WeierstrassMTest}).
+\end{proof}
+
+\begin{thm}\label{banach:ComplexAnalyticHolomorphicEquivalence}Let $X$ be a complex Banach space, $U \subset \complexes$ be an open set and let $f : U \to X$ then $f$ is complex analytic on $U$ if and only if $f$ is holomorphic on $U$.  More specifically, if $f$ is holomorphic on a disk $B(z_0, r_0)$ then it has a convergent power series on $B(z_0, r_0)$.
+\end{thm}
+\begin{proof}
+  We have already seen in Proposition \ref{banach:ComplexAnalyticImpliesHolomorphic} that a complex analytic function $f$ on $U$ is holomorphic on $U$.  Suppose that $f$ is holomorphic on a disk $B(z_0, r)$.   Let $0 < r < r_0$ be given and we will show that there is a power series which converges to $f$ absolutely and uniformly on $\abs{z - z_0} \leq r$.   Pick $0 < r < \rho < r_0$ and let $\abs{z - z_0} = \rho$ denote the standard circle of radius $\rho$ centered at $z_0$.   Then by the Cauchy Integral Formula \ref{banach:CauchysIntegralFormula} we have
+  \begin{align*}
+   f(w) &= \frac{1}{2\pi i}  \oint_{\abs{z - z_0} = \rho} \frac{f(z)}{z - w} \, dz \text{ for all $\abs{w - z_0} \leq r$}
+  \end{align*}
+
+  Next we develop $\frac{1}{z - w}$ in a power series based on the Neumann series where we use the fact that $\abs{\frac{w - z_0}{z - z_0}} \leq \frac{r}{\rho} < 1$ so by Lemma \ref{banach:ComplexNeumann}:
+  \begin{align*}
+    \frac{1}{z - w} &=   \frac{1}{z - z_0 - w + z_0}  = \frac{1}{z - z_0} \cdot \frac{1}{1 - \frac{w - z_0}{z - z_0}} \\
+    &=\frac{1}{z - z_0} \sum_{n=0}^\infty \left(\frac{w - z_0}{z - z_0}\right)^n
+  \end{align*}
+  Also by Lemma \ref{banach:ComplexNeumann}, the series $\sum_{n=0}^\infty \left(\frac{w - z_0}{z - z_0}\right)^n$ converges absolutely and uniformly over $\abs{z - z_0} = \rho$ (with $w$ fixed).   Moreover, $\frac{f(z)}{z - z_0}$ is holomorphic hence continuous on $\abs{z - z_0} = \rho$ and therefore bounded by compactness (Heine-Borel Theorem).
+
+  \begin{clm}For fixed $\abs{w} \leq r$, $\sum_{n=0}^\infty \frac{f(z)}{z - z_0}\left(\frac{w - z_0}{z - z_0}\right)^n$ converges absolutely and uniformly on $\abs{z - z_0} = \rho$.
+  \end{clm}
+  TODO: Proof of claim
+
+
+  TODO: Move this argument to Proposition \ref{banach:ArclengthProperties}.
+  Now with the claim in hand we note that we can exchange the order of summation and integration,
+  for by Proposition \ref{banach:ArclengthProperties},
+  \begin{align*}
+    \norm{\oint_\gamma f_n - \oint_\gamma f} &= \norm{\oint_\gamma (f_n -f) } \leq \norm{f - f_n}_\infty \abs{\gamma}
+  \end{align*}
+  so clearly if $\lim_{n \to \infty} \norm{f_n - f}_\infty = 0$ then $\lim_{n \to \infty} \oint_\gamma f_n = \oint_\gamma f$.   This extends easily to series by treating the sequence of partial sums and using linearity of the integral
+  \begin{align*}
+    \oint_\gamma \sum_{n=0}^\infty f_n &= \oint_\gamma \lim_{m \to \infty} \sum_{n=0}^m f_n = \lim_{m \to \infty} \oint_\gamma \sum_{n=0}^m f_n \\
+    &=\lim_{m \to \infty} \sum_{n=0}^m \oint_\gamma f_n = \sum_{n=0}^\infty \oint_\gamma f_n 
+  \end{align*}
+So applied in this case
+  \begin{align*}
+    f(w) &= \oint_{\abs{z - z_0} = \rho} \frac{f(z)}{z - w} \, dz \\
+    &=\frac{1}{2\pi i}  \oint_{\abs{z - z_0} = \rho} \sum_{n=0}^\infty \frac{f(z)}{z - z_0}\left(\frac{w - z_0}{z - z_0}\right)^n \, dz \\
+    &= \sum_{n=0}^\infty \frac{(w - z_0)^n}{2\pi i} \oint_{\abs{z - z_0} = \rho} \frac{f(z)}{(z - z_0)^{n+1}} \, dz \\
+  \end{align*}
+\end{proof}
+
+\begin{thm}[Liouville's Theorem]\label{banach:LiouvillesTheorem}Let $X$ be a complex Banach space and $f : \complexes \to X$ be a bounded entire function then $f$ is constant.
+\end{thm}
+\begin{proof}
+Since $f$ is entire we may write $f(z) = \sum_{n=0}^\infty v_n z^n$ where by Cauchy's Integral Formula \ref{banach:CauchysIntegralFormula} we have for every $0 < r < \infty$,
+\begin{align*}
+v_n &= \frac{1}{2\pi i} \oint_{\abs{z} = r} \frac{f(z)}{z^{n+1}} \, dz
+\end{align*}
+Suppose that $f$ is bounded so that $\norm{f(z)} \leq M$ for all $z \in \complexes$ then
+\begin{align*}
+\norm{v_n} &\leq \frac{1}{2\pi} \oint_{\abs{z} = r} \frac{\norm{f(z)}}{\abs{z}^{n+1}} \, d\abs{z} \leq \frac{1}{2\pi} \oint_{\abs{z} = r} \frac{M}{r^{n+1}} \, d\abs{z} \frac{M}{2\pi r^{n+1}}  2 \pi r = \frac{M}{r^n}
+\end{align*}
+Since $0 < r < \infty$ was arbitrary we let $r \to \infty$ and observe that $v_n = 0$ for every $n > 0$.
+\end{proof}
+
 \section{Linear Algebra}
 
 This is a little refresher on linear algebra with more of a focus on
@@ -6523,7 +8089,8 @@ TODO: Finish
 \end{defn}
 Note that the dual map is well defined since 
 \begin{align*}
-A^*(\lambda)(av + bw) &= \lambda(A(av+bw)) = \lambda(aAv + b A w) = a \lambda(Av) + b\lambda(Aw) = aA^*(\lambda)(v) + b A^*(\lambda)(w)
+  A^*(\lambda)(av + bw) &= \lambda(A(av+bw)) = \lambda(aAv + b A w) = a \lambda(Av) + b\lambda(Aw) \\
+                        &= aA^*(\lambda)(v) + b A^*(\lambda)(w)
 \end{align*}
 shows that $A^*(\lambda)$ is a linear functional.  The dual space is easily seen to be a vector space and the dual map is easily shown to be a linear map.
 
@@ -6540,9 +8107,10 @@ which shows $A^{-1}( av + b w) = a A^{-1}(v) + b A^{-1} (w)$.
 \begin{prop}$V^*$ is a vector space over $\field$ with addition and scalar multiplication defined pointwise as $(a\lambda + b\mu)(v) = a\lambda v + b \mu(v)$.  With repsect to this vector space structure the dual map $A^*$ is linear.  If $V$ is finite dimensional then $V^*$ is finite dimensional and $\dim V = \dim V^*$.
 \end{prop}
 \begin{proof}
-The proof that $V^*$ is a vector space is elementary and left to the reader.  To see that $A^*$  is a linear map we just compute using the definitions
+  The proof that $V^*$ is a vector space is elementary and left to the reader.  To see that $A^*$  is a linear map we just compute using the definitions for an
+  arbitrary $v \in V$,
 \begin{align*}
-A^*( a \lambda + b \mu)(v) &= (a \lambda + b\mu)(Av) = a \lambda (Av) + b \mu (Av) = (a A^*(\lambda) + b A^*(\mu)) (v) \text{ for all $v \in V$}
+A^*( a \lambda + b \mu)(v) &= (a \lambda + b\mu)(Av) = a \lambda (Av) + b \mu (Av) = (a A^*(\lambda) + b A^*(\mu)) (v) 
 \end{align*}
 
 Now if $V$ is finite dimensional we can select a basis $v_1, \dotsc, v_n$.  Define $v_i^* \in V^*$ by $v_i^*(v_j) = \delta_{ij}$ for $1 \leq i,j \leq n$.  We claim that $v^*_i$ is a basis for $V^*$.  Clearly $v^*_i$ spans $V^*$ since if we are given an arbitrary $\lambda$ then by linearity
@@ -6555,7 +8123,7 @@ Thus $v^*_i$ is a basis hence $\dim V  = \dim V^* = n$.
 
 The basis $v^*_i$ constructed from the basis $v_i$ in the above proof is referred to as the \emph{dual basis}.  
 
-\begin{defn}Let $A$ be an $m \times n$ real matrix, then a triple comprising an $m \times m$ orthogonal matrix $U$, an $n \times n$ orthogonal matrix $V$ and a $m \times n$ diagonal matrix $\Sigma$ with $\Sigma_{11} \geq \dotsb \geq \Sigma_{pp}$ where $p = m \wedge n$ such that $A = U \Sigma V^T$ is called a \emph{singular value decomposition}.
+\begin{defn}Let $A$ be an $m \times n$ real matrix, then a triple comprising an $m \times m$ orthogonal matrix $U$, an $n \times n$ orthogonal matrix $V$ and a $m \times n$ diagonal matrix $\Sigma$ with $\Sigma_{11} \geq \dotsb \geq \Sigma_{pp}$ where $p = m \wedge n$ and satisfying $A = U \Sigma V^T$ is called a \emph{singular value decomposition}.
 \end{defn}
 
 \begin{thm}\label{SingularValueDecomposition}Singular value decompositions exist.

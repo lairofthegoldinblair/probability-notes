@@ -379,7 +379,9 @@ Now to see that (ii) implies (i) suppose that $X$ is uniformly continuous and al
 \end{clm}
 First we establish equicontinuity of $\lbrace \Theta_t(X) \rbrace$.  Let $T > 0$ and $\epsilon > 0$ be given.  By uniform continuity there exists $\delta > 0$ such that $r(X(t), X(s)) < \epsilon$ for all $\abs{t-s}<\delta$. Therefore
 \begin{align*}
-\sup_{\substack{-T \leq u<v \leq T \\ v-u<\delta}} r(\Theta_t(X)(u), \Theta_t(X)(v)) &= \sup_{\substack{-T \leq u<v \leq T \\ v-u<\delta}} r(X(t+u), X(t+v)) \leq \sup_{\substack{-\infty <  u<v <\infty\\ v-u<\delta}} r(X(u), X(v)) < \epsilon
+  \sup_{\substack{-T \leq u<v \leq T \\ v-u<\delta}} r(\Theta_t(X)(u), \Theta_t(X)(v)) &= \sup_{\substack{-T \leq u<v \leq T \\ v-u<\delta}} r(X(t+u), X(t+v)) \\
+                                                                                       &\leq \sup_{\substack{-\infty <  u<v <\infty\\ v-u<\delta}} r(X(u), X(v)) \\
+                                                                                       &< \epsilon
 \end{align*}
 Since $\range{X}$ is relatively compact it follows that $\lbrace \Theta_t(X)(s) \mid t \geq 0 \rbrace$ is relatively compact for every $s$ and therefore we may apply the Arzela-Ascoli Theorem \ref{ArzelaAscoliTheorem} to conclude that $\lbrace \Theta_t(X) \rbrace$ is relatively compact in $C((-\infty,\infty); S)$.  
 
